@@ -3,6 +3,9 @@ runtime_data/*
 
 # Local tooling caches.
 .cache/
+__pycache__/
+*.py[cod]
+*.orig
 
 # Local secrets and service configuration.
 .env
