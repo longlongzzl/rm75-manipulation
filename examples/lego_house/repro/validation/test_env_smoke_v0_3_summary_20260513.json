@@ -1,0 +1,21 @@
+{
+  "version": "v0.3",
+  "validated_at": "2026-05-13",
+  "env_name": "test_env",
+  "python": "D:\\MiniConda\\envs\\test_env\\python.exe",
+  "result": "success",
+  "completed_roles": [
+    "right_wall",
+    "back_wall",
+    "left_wall",
+    "front_wall"
+  ],
+  "report": "D:\\Project\\Scaling\\Beta_demo\\repro_runs\\v0_3_test_env_smoke_pure2\\standard_build_report.json",
+  "latest_stable_state": "D:\\Project\\Scaling\\Beta_demo\\repro_runs\\v0_3_test_env_smoke_pure2\\checkpoints\\stable_04_front_wall_state.json",
+  "latest_video": "D:\\Project\\Scaling\\Beta_demo\\repro_runs\\v0_3_test_env_smoke_pure2\\attempts\\attempt_004_front_wall\\multi_wall_live.mp4",
+  "notes": [
+    "Validation uses the repo-local curobo snapshot.",
+    "Validation requires applying the mirrored ManiSkill realman patch files to the editable ManiSkill source tree.",
+    "standard_four_wall_retry_build.py now follows the current interpreter by default instead of hardcoding sim2real-curobo."
+  ]
+}

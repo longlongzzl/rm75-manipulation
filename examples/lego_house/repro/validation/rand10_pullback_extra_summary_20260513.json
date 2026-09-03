@@ -1,0 +1,320 @@
+[
+  {
+    "case": "extra01",
+    "dx": -0.0204,
+    "dy": 0.0446,
+    "success": true,
+    "wall_clock_sec": 57.151458,
+    "total_attempts": 1,
+    "retry_count": 0,
+    "retry_roles": [],
+    "failed_attempt_count": 0,
+    "failure_counts_by_role": {},
+    "failed_attempts": [],
+    "direct_multi_success": true,
+    "completed_roles": [
+      "right_wall",
+      "back_wall",
+      "left_wall",
+      "front_wall"
+    ],
+    "latest_video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra01_dx_m0204_dy_p0446_20260513\\attempts\\attempt_001_direct_multi\\multi_wall_live.mp4",
+    "folder": "rand10_pullback_extra01_dx_m0204_dy_p0446_20260513"
+  },
+  {
+    "case": "extra02",
+    "dx": 0.0042,
+    "dy": -0.0017,
+    "success": true,
+    "wall_clock_sec": 222.579592,
+    "total_attempts": 7,
+    "retry_count": 2,
+    "retry_roles": [
+      "right_wall",
+      "right_wall"
+    ],
+    "failed_attempt_count": 3,
+    "failure_counts_by_role": {
+      "__direct_multi__": 1,
+      "right_wall": 2
+    },
+    "failed_attempts": [
+      {
+        "attempt_number": 1,
+        "role": "__direct_multi__",
+        "role_attempt": 1,
+        "failed_at": null,
+        "failure_classification": null,
+        "summary": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra02_dx_p0042_dy_m0017_20260513\\attempts\\attempt_001_direct_multi\\multi_wall_summary.json",
+        "video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra02_dx_p0042_dy_m0017_20260513\\attempts\\attempt_001_direct_multi\\multi_wall_live.mp4"
+      },
+      {
+        "attempt_number": 2,
+        "role": "right_wall",
+        "role_attempt": 1,
+        "failed_at": null,
+        "failure_classification": null,
+        "summary": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra02_dx_p0042_dy_m0017_20260513\\attempts\\attempt_002_right_wall\\multi_wall_summary.json",
+        "video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra02_dx_p0042_dy_m0017_20260513\\attempts\\attempt_002_right_wall\\multi_wall_live.mp4"
+      },
+      {
+        "attempt_number": 3,
+        "role": "right_wall",
+        "role_attempt": 2,
+        "failed_at": null,
+        "failure_classification": null,
+        "summary": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra02_dx_p0042_dy_m0017_20260513\\attempts\\attempt_003_right_wall\\multi_wall_summary.json",
+        "video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra02_dx_p0042_dy_m0017_20260513\\attempts\\attempt_003_right_wall\\multi_wall_live.mp4"
+      }
+    ],
+    "direct_multi_success": false,
+    "completed_roles": [
+      "right_wall",
+      "back_wall",
+      "left_wall",
+      "front_wall"
+    ],
+    "latest_video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra02_dx_p0042_dy_m0017_20260513\\attempts\\attempt_007_front_wall\\multi_wall_live.mp4",
+    "folder": "rand10_pullback_extra02_dx_p0042_dy_m0017_20260513"
+  },
+  {
+    "case": "extra03",
+    "dx": 0.04,
+    "dy": 0.0247,
+    "success": true,
+    "wall_clock_sec": 105.493622,
+    "total_attempts": 4,
+    "retry_count": 0,
+    "retry_roles": [],
+    "failed_attempt_count": 1,
+    "failure_counts_by_role": {
+      "__direct_multi__": 1
+    },
+    "failed_attempts": [
+      {
+        "attempt_number": 1,
+        "role": "__direct_multi__",
+        "role_attempt": 1,
+        "failed_at": null,
+        "failure_classification": null,
+        "summary": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra03_dx_p0400_dy_p0247_20260513\\attempts\\attempt_001_direct_multi\\multi_wall_summary.json",
+        "video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra03_dx_p0400_dy_p0247_20260513\\attempts\\attempt_001_direct_multi\\multi_wall_live.mp4"
+      }
+    ],
+    "direct_multi_success": false,
+    "completed_roles": [
+      "left_wall",
+      "back_wall",
+      "right_wall",
+      "front_wall"
+    ],
+    "latest_video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra03_dx_p0400_dy_p0247_20260513\\attempts\\attempt_004_front_wall\\multi_wall_live.mp4",
+    "folder": "rand10_pullback_extra03_dx_p0400_dy_p0247_20260513"
+  },
+  {
+    "case": "extra04",
+    "dx": -0.0297,
+    "dy": 0.0011,
+    "success": true,
+    "wall_clock_sec": 49.428595,
+    "total_attempts": 1,
+    "retry_count": 0,
+    "retry_roles": [],
+    "failed_attempt_count": 0,
+    "failure_counts_by_role": {},
+    "failed_attempts": [],
+    "direct_multi_success": true,
+    "completed_roles": [
+      "right_wall",
+      "back_wall",
+      "left_wall",
+      "front_wall"
+    ],
+    "latest_video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra04_dx_m0297_dy_p0011_20260513\\attempts\\attempt_001_direct_multi\\multi_wall_live.mp4",
+    "folder": "rand10_pullback_extra04_dx_m0297_dy_p0011_20260513"
+  },
+  {
+    "case": "extra05",
+    "dx": -0.0361,
+    "dy": 0.0319,
+    "success": true,
+    "wall_clock_sec": 47.212273,
+    "total_attempts": 1,
+    "retry_count": 0,
+    "retry_roles": [],
+    "failed_attempt_count": 0,
+    "failure_counts_by_role": {},
+    "failed_attempts": [],
+    "direct_multi_success": true,
+    "completed_roles": [
+      "right_wall",
+      "back_wall",
+      "left_wall",
+      "front_wall"
+    ],
+    "latest_video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra05_dx_m0361_dy_p0319_20260513\\attempts\\attempt_001_direct_multi\\multi_wall_live.mp4",
+    "folder": "rand10_pullback_extra05_dx_m0361_dy_p0319_20260513"
+  },
+  {
+    "case": "extra06",
+    "dx": 0.0197,
+    "dy": 0.0095,
+    "success": true,
+    "wall_clock_sec": 116.955947,
+    "total_attempts": 5,
+    "retry_count": 1,
+    "retry_roles": [
+      "right_wall"
+    ],
+    "failed_attempt_count": 1,
+    "failure_counts_by_role": {
+      "right_wall": 1
+    },
+    "failed_attempts": [
+      {
+        "attempt_number": 3,
+        "role": "right_wall",
+        "role_attempt": 1,
+        "failed_at": null,
+        "failure_classification": null,
+        "summary": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra06_dx_p0197_dy_p0095_20260513\\attempts\\attempt_003_right_wall\\multi_wall_summary.json",
+        "video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra06_dx_p0197_dy_p0095_20260513\\attempts\\attempt_003_right_wall\\multi_wall_live.mp4"
+      }
+    ],
+    "direct_multi_success": false,
+    "completed_roles": [
+      "left_wall",
+      "back_wall",
+      "right_wall",
+      "front_wall"
+    ],
+    "latest_video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra06_dx_p0197_dy_p0095_20260513\\attempts\\attempt_005_front_wall\\multi_wall_live.mp4",
+    "folder": "rand10_pullback_extra06_dx_p0197_dy_p0095_20260513"
+  },
+  {
+    "case": "extra07",
+    "dx": 0.0298,
+    "dy": -0.0366,
+    "success": true,
+    "wall_clock_sec": 127.338188,
+    "total_attempts": 5,
+    "retry_count": 1,
+    "retry_roles": [
+      "right_wall"
+    ],
+    "failed_attempt_count": 1,
+    "failure_counts_by_role": {
+      "right_wall": 1
+    },
+    "failed_attempts": [
+      {
+        "attempt_number": 3,
+        "role": "right_wall",
+        "role_attempt": 1,
+        "failed_at": null,
+        "failure_classification": null,
+        "summary": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra07_dx_p0298_dy_m0366_20260513\\attempts\\attempt_003_right_wall\\multi_wall_summary.json",
+        "video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra07_dx_p0298_dy_m0366_20260513\\attempts\\attempt_003_right_wall\\multi_wall_live.mp4"
+      }
+    ],
+    "direct_multi_success": false,
+    "completed_roles": [
+      "left_wall",
+      "back_wall",
+      "right_wall",
+      "front_wall"
+    ],
+    "latest_video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra07_dx_p0298_dy_m0366_20260513\\attempts\\attempt_005_front_wall\\multi_wall_live.mp4",
+    "folder": "rand10_pullback_extra07_dx_p0298_dy_m0366_20260513"
+  },
+  {
+    "case": "extra08",
+    "dx": -0.0001,
+    "dy": 0.0281,
+    "success": true,
+    "wall_clock_sec": 143.268208,
+    "total_attempts": 6,
+    "retry_count": 1,
+    "retry_roles": [
+      "right_wall"
+    ],
+    "failed_attempt_count": 2,
+    "failure_counts_by_role": {
+      "__direct_multi__": 1,
+      "right_wall": 1
+    },
+    "failed_attempts": [
+      {
+        "attempt_number": 1,
+        "role": "__direct_multi__",
+        "role_attempt": 1,
+        "failed_at": null,
+        "failure_classification": null,
+        "summary": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra08_dx_m0001_dy_p0281_20260513\\attempts\\attempt_001_direct_multi\\multi_wall_summary.json",
+        "video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra08_dx_m0001_dy_p0281_20260513\\attempts\\attempt_001_direct_multi\\multi_wall_live.mp4"
+      },
+      {
+        "attempt_number": 2,
+        "role": "right_wall",
+        "role_attempt": 1,
+        "failed_at": null,
+        "failure_classification": null,
+        "summary": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra08_dx_m0001_dy_p0281_20260513\\attempts\\attempt_002_right_wall\\multi_wall_summary.json",
+        "video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra08_dx_m0001_dy_p0281_20260513\\attempts\\attempt_002_right_wall\\multi_wall_live.mp4"
+      }
+    ],
+    "direct_multi_success": false,
+    "completed_roles": [
+      "right_wall",
+      "back_wall",
+      "left_wall",
+      "front_wall"
+    ],
+    "latest_video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra08_dx_m0001_dy_p0281_20260513\\attempts\\attempt_006_front_wall\\multi_wall_live.mp4",
+    "folder": "rand10_pullback_extra08_dx_m0001_dy_p0281_20260513"
+  },
+  {
+    "case": "extra09",
+    "dx": -0.0314,
+    "dy": 0.0306,
+    "success": true,
+    "wall_clock_sec": 72.251849,
+    "total_attempts": 1,
+    "retry_count": 0,
+    "retry_roles": [],
+    "failed_attempt_count": 0,
+    "failure_counts_by_role": {},
+    "failed_attempts": [],
+    "direct_multi_success": true,
+    "completed_roles": [
+      "right_wall",
+      "back_wall",
+      "left_wall",
+      "front_wall"
+    ],
+    "latest_video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra09_dx_m0314_dy_p0306_20260513\\attempts\\attempt_001_direct_multi\\multi_wall_live.mp4",
+    "folder": "rand10_pullback_extra09_dx_m0314_dy_p0306_20260513"
+  },
+  {
+    "case": "extra10",
+    "dx": 0.0263,
+    "dy": -0.0278,
+    "success": true,
+    "wall_clock_sec": 120.718465,
+    "total_attempts": 4,
+    "retry_count": 0,
+    "retry_roles": [],
+    "failed_attempt_count": 0,
+    "failure_counts_by_role": {},
+    "failed_attempts": [],
+    "direct_multi_success": false,
+    "completed_roles": [
+      "left_wall",
+      "back_wall",
+      "right_wall",
+      "front_wall"
+    ],
+    "latest_video": "D:\\Project\\Scaling\\Beta_demo\\rand10_pullback_extra10_dx_p0263_dy_m0278_20260513\\attempts\\attempt_004_front_wall\\multi_wall_live.mp4",
+    "folder": "rand10_pullback_extra10_dx_p0263_dy_m0278_20260513"
+  }
+]

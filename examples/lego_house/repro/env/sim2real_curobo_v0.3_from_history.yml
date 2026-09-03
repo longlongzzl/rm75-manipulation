@@ -1,0 +1,13 @@
+name: sim2real-curobo
+channels:
+  - conda-forge
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+  - https://repo.anaconda.com/pkgs/msys2
+dependencies:
+  - python=3.10
+  - ninja
+  - cuda-nvcc=12.1
+  - cmake
+  - cuda-cudart-dev=12.1.105
+  - cuda-cudart=12.1.105
