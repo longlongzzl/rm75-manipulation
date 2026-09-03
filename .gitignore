@@ -1,0 +1,8 @@
+# Generated runtime state: calibration results, caches, logs and renders.
+runtime_data/*
+
+# Local tooling caches.
+.cache/
+
+# Local secrets and service configuration.
+.env
