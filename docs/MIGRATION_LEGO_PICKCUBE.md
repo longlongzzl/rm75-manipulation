@@ -18,3 +18,11 @@ PYTHONPATH=. python -m pytest tests/test_pickplace_coordinator.py -q
 ```
 
 不应以真实机械臂或 GPU 规划作为迁移验证；这些命令仅验证源码可发现、语法和现有协调器回归。
+
+## 本地 Codex 验证结果
+
+- 2026-09-03：`curobo_rm75_planner.py` 的默认 cuRobo 路径确认存在于 `examples/lego_house/repro/curobo_snapshot`；默认 RM75 URDF 确认存在于本仓 `assets/robot_models/.../RM75-B.urdf`。
+- 扫描 `examples/lego_house/**/*.py`（排除 vendored cuRobo snapshot）未发现旧 `lerobot`、`Beta_demo-*` 或 `pick_jiaobang` 目录引用。
+- `python -m py_compile examples/lego_house/*.py examples/lego_house/assembly_planner/*.py` 通过。
+- `PYTHONPATH=. python -m pytest tests/test_pickplace_coordinator.py -q`：19 passed。
+- 未运行 CUDA、ManiSkill 仿真、真实机器人或训练；这些不是目录独立性的必要验证。
