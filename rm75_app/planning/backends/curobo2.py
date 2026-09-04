@@ -144,9 +144,9 @@ class Curobo2BackendConfig:
     # Match NVIDIA's benchmark routing: try direct TrajOpt first and only
     # invoke PRM on the next attempt when the local optimizer cannot solve.
     enable_graph_attempt: int = 1
-    # At 25 ms per waypoint this still covers 12.5 seconds, without carrying
+    # At 25 ms per waypoint this covers 16 seconds, without carrying
     # cuRobo2's default 5000-point fixed buffer through every batch stage.
-    interpolation_buffer_size: int = 500
+    interpolation_buffer_size: int = 640
     collision_cache_obb: int = 32
     collision_cache_mesh: int = 16
     multi_env: bool = False
