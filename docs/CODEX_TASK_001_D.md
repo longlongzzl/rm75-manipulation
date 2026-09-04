@@ -571,7 +571,7 @@ Recommended E1 fix order: diagnose/fix grasp contact-line cluster first, then at
 # E1A completion
 
 E0 accepted by ChatGPT: yes
-E1A implementation commit: pending
+E1A implementation commit: `39f2ef4`
 Full tests: 131 passed in 18.02s (`PYTHONPATH=. python -m pytest tests -q`)
 
 Cluster A targeted x3:
