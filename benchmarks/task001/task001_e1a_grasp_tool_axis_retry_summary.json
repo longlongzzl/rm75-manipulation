@@ -1,0 +1,118 @@
+{
+  "task": "001-E1A grasp tool-axis retry",
+  "production_relation_screen_mode": "lazy_place",
+  "implementation": {
+    "primary_grasp_attempt": {
+      "stage": "grasp",
+      "project_distance_to_goal": false
+    },
+    "fallback": {
+      "stage": "grasp_tool_axis_retry",
+      "axis": "z",
+      "project_distance_to_goal": true,
+      "same_pregrasp_endpoint": true,
+      "same_grasp_candidate": true,
+      "ignore_object_name": "task.object_name",
+      "allow_start_contact_escape": false,
+      "additional_collision_link_exemptions": false
+    }
+  },
+  "full_tests": {
+    "command": "PYTHONPATH=. python -m pytest tests -q",
+    "result": "131 passed in 18.02s"
+  },
+  "targeted_six_cases": {
+    "repetitions_per_case": 3,
+    "cluster_a": {
+      "current_table_gluestick": {
+        "success_count": 0,
+        "deepest_failure_stage": "grasp_tool_axis_retry",
+        "grasp_tool_axis_retry_used_count": 0,
+        "primary_grasp_status": "linear_planner_failed (24 candidate attempts)",
+        "retry_grasp_status": "linear_planner_failed (24 candidate attempts)",
+        "selected_grasp": null,
+        "selected_place": null
+      },
+      "generated_00": {
+        "success_count": 0,
+        "deepest_failure_stage": "grasp_tool_axis_retry",
+        "grasp_tool_axis_retry_used_count": 0,
+        "primary_grasp_status": "linear_planner_failed (24 candidate attempts)",
+        "retry_grasp_status": "linear_planner_failed (24 candidate attempts)",
+        "selected_grasp": null,
+        "selected_place": null
+      },
+      "generated_02": {
+        "success_count": 0,
+        "deepest_failure_stage": "grasp_tool_axis_retry",
+        "grasp_tool_axis_retry_used_count": 0,
+        "primary_grasp_status": "linear_planner_failed (24 candidate attempts)",
+        "retry_grasp_status": "linear_planner_failed (24 candidate attempts)",
+        "selected_grasp": null,
+        "selected_place": null
+      },
+      "generated_03": {
+        "success_count": 0,
+        "deepest_failure_stage": "grasp_tool_axis_retry",
+        "grasp_tool_axis_retry_used_count": 0,
+        "primary_grasp_status": "linear_planner_failed (24 candidate attempts)",
+        "retry_grasp_status": "linear_planner_failed (24 candidate attempts)",
+        "selected_grasp": null,
+        "selected_place": null
+      }
+    },
+    "cluster_b_observational": {
+      "generated_05": {
+        "success_count": 0,
+        "deepest_failure_stage": "lift",
+        "grasp_tool_axis_retry_used_count": 0,
+        "primary_grasp_status": "linear_planner_failed (18 candidate attempts); other grasp candidates reached lift",
+        "retry_grasp_status": "linear_planner_failed (18 candidate attempts)",
+        "selected_grasp": null,
+        "selected_place": null
+      },
+      "generated_06": {
+        "success_count": 0,
+        "deepest_failure_stage": "lift",
+        "grasp_tool_axis_retry_used_count": 0,
+        "primary_grasp_status": "linear_planner_failed (15 candidate attempts); other grasp candidates reached lift",
+        "retry_grasp_status": "linear_planner_failed (15 candidate attempts)",
+        "selected_grasp": null,
+        "selected_place": null
+      }
+    },
+    "cluster_a_recovered_cases": []
+  },
+  "frozen_16_case_non_regression": {
+    "baseline_d2_success_count": 10,
+    "e1a_success_count": 10,
+    "previous_success_to_new_failure": [],
+    "newly_recovered": [],
+    "new_exceptions": [],
+    "upstream_relation_selection_differences": [],
+    "downstream_selected_chain_observation": {
+      "case": "d0_asym_shuazi",
+      "d2_selected_grasp": "grasp_07_-12deg_tilt_+30deg",
+      "e1a_full_chain_selected_grasp": "grasp_09_-12deg_tilt_+60deg",
+      "screen_only_e1a_selected_grasp": "grasp_07_-12deg_tilt_+30deg",
+      "interpretation": "The screen-only relation selection matches D0; the one full-chain selection difference is downstream MotionGen branch selection, not an E1A relation-screen change."
+    }
+  },
+  "raw_logs": {
+    "targeted": [
+      "/tmp/rm75_relation_screen_benchmark/e1a_current_table.jsonl",
+      "/tmp/rm75_relation_screen_benchmark/e1a_generated_00.jsonl",
+      "/tmp/rm75_relation_screen_benchmark/e1a_generated_02.jsonl",
+      "/tmp/rm75_relation_screen_benchmark/e1a_generated_03.jsonl",
+      "/tmp/rm75_relation_screen_benchmark/e1a_probe_generated05.jsonl",
+      "/tmp/rm75_relation_screen_benchmark/e1a_generated_05_rep1.jsonl",
+      "/tmp/rm75_relation_screen_benchmark/e1a_generated_05_rep2.jsonl",
+      "/tmp/rm75_relation_screen_benchmark/e1a_generated_06_rep0.jsonl",
+      "/tmp/rm75_relation_screen_benchmark/e1a_generated_06_rep1.jsonl",
+      "/tmp/rm75_relation_screen_benchmark/e1a_generated_06_rep2.jsonl"
+    ],
+    "matrix_prefix": "/tmp/rm75_relation_screen_benchmark/e1a_matrix_",
+    "screen_only_check": "/tmp/rm75_relation_screen_benchmark/e1a_brush_screen_only.jsonl"
+  },
+  "conclusion": "The approved tool-axis projection retry recovered none of Cluster A. Per stop condition, no reverse-grasp or lift fix was added."
+}

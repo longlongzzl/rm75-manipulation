@@ -567,3 +567,30 @@ Diagnostics instrumentation added: no; existing `candidate_failures` were suffic
 E0 summary path: `benchmarks/task001/task001_e0_full_chain_failure_diagnosis.json`
 Raw logs: `/tmp/rm75_relation_screen_benchmark/e0_failures.jsonl`
 Recommended E1 fix order: diagnose/fix grasp contact-line cluster first, then attached-object lift; no fix in E0.
+
+# E1A completion
+
+E0 accepted by ChatGPT: yes
+E1A implementation commit: pending
+Full tests: 131 passed in 18.02s (`PYTHONPATH=. python -m pytest tests -q`)
+
+Cluster A targeted x3:
+- current_table_gluestick: 0/3; deepest `grasp_tool_axis_retry`; retry-used 0; primary/retry `linear_planner_failed` (24/24 candidate attempts); no selected grasp/place.
+- generated_00: 0/3; deepest `grasp_tool_axis_retry`; retry-used 0; primary/retry `linear_planner_failed` (24/24); no selected grasp/place.
+- generated_02: 0/3; deepest `grasp_tool_axis_retry`; retry-used 0; primary/retry `linear_planner_failed` (24/24); no selected grasp/place.
+- generated_03: 0/3; deepest `grasp_tool_axis_retry`; retry-used 0; primary/retry `linear_planner_failed` (24/24); no selected grasp/place.
+
+Cluster B observational x3:
+- generated_05: 0/3; deepest `lift`; retry-used 0; primary/retry `linear_planner_failed` (18/18), while other candidates reached lift; no selected grasp/place.
+- generated_06: 0/3; deepest `lift`; retry-used 0; primary/retry `linear_planner_failed` (15/15), while other candidates reached lift; no selected grasp/place.
+
+Tool-axis retry usage: 0 successful retry uses in all six cases. The retry was attempted after every recorded primary grasp failure and returned the same `linear_planner_failed` status.
+Primary/retry statuses: preserved separately as `grasp` and `grasp_tool_axis_retry` in `candidate_failures`.
+16-case baseline -> E1A success: 10/16 -> 10/16
+Recovered cases: none
+Previous-success/new-failure cases: none
+Selected relation differences: none upstream. One downstream full-chain brush branch selected grasp 09 rather than D2's 07; E1A screen-only brush selection is 07, matching D0/D2 relation screening.
+New exceptions: none
+Summary path: `benchmarks/task001/task001_e1a_grasp_tool_axis_retry_summary.json`
+Raw logs: `/tmp/rm75_relation_screen_benchmark/e1a_*.jsonl` (targeted, matrix, and brush screen-only evidence; exact paths in summary)
+Open questions for ChatGPT: the approved same-endpoint tool-axis retry recovered none of Cluster A (all retry statuses remain `linear_planner_failed`). Per E1A stop condition, no reverse-grasp fallback or lift change was added; review whether E1B should test the proposed reverse-validated grasp segment.

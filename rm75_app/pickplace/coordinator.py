@@ -734,9 +734,29 @@ class PickPlaceCoordinator:
                 task=task,
                 ignore_object_name=task.object_name,
             )
+            grasp_tool_axis_retry_used = False
+            grasp_primary_status = None if grasp is None else grasp.status
+            grasp_tool_axis_retry_status = "not_attempted"
             if grasp is None or grasp.trajectory is None:
-                failures.append(dict(self._last_plan_failure))
-                continue
+                primary_grasp_failure = dict(self._last_plan_failure)
+                if grasp_primary_status is None:
+                    primary_candidates = primary_grasp_failure.get("candidates") or ()
+                    if primary_candidates:
+                        grasp_primary_status = primary_candidates[0].get("status")
+                grasp = self._plan_linear_stage(
+                    stage="grasp_tool_axis_retry",
+                    current=pregrasp_end,
+                    candidate=grasp_candidate,
+                    task=task,
+                    axis="z",
+                    project_distance_to_goal=True,
+                    ignore_object_name=task.object_name,
+                )
+                grasp_tool_axis_retry_status = None if grasp is None else grasp.status
+                if grasp is None or grasp.trajectory is None:
+                    failures.extend((primary_grasp_failure, dict(self._last_plan_failure)))
+                    continue
+                grasp_tool_axis_retry_used = True
             grasp_end = self._end_configuration(grasp.trajectory)
             self.planner.attach_object(task.object_name, grasp_end)
             attached = True
@@ -951,6 +971,9 @@ class PickPlaceCoordinator:
                             pregrasp_entry,
                             pregrasp,
                             grasp,
+                            grasp_tool_axis_retry_used,
+                            grasp_primary_status,
+                            grasp_tool_axis_retry_status,
                             lift,
                             preplace,
                             place,
@@ -985,6 +1008,9 @@ class PickPlaceCoordinator:
             pregrasp_entry,
             pregrasp,
             grasp,
+            grasp_tool_axis_retry_used,
+            grasp_primary_status,
+            grasp_tool_axis_retry_status,
             lift,
             preplace,
             place,
@@ -1067,6 +1093,9 @@ class PickPlaceCoordinator:
                     "relation_screen": dict(relation_screen),
                     "planner_mode": "batch64_ik_segmented_motiongen",
                     "pregrasp_initial_fallback_used": pregrasp_entry is not None,
+                    "grasp_tool_axis_retry_used": grasp_tool_axis_retry_used,
+                    "grasp_primary_status": grasp_primary_status,
+                    "grasp_tool_axis_retry_status": grasp_tool_axis_retry_status,
                     "timing": {"segmented_plan_time_s": planning_time_s},
                 },
             )

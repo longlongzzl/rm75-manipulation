@@ -170,6 +170,13 @@ def _run_one(
         "executed_stage_names": list(executor.stage_names),
         "segmented_plan_time_s": dict(result.diagnostics.get("timing") or {}).get("segmented_plan_time_s"),
         "candidate_failures": list(result.diagnostics.get("candidate_failures") or ()),
+        "grasp_tool_axis_retry_used": bool(
+            result.diagnostics.get("grasp_tool_axis_retry_used", False)
+        ),
+        "grasp_primary_status": result.diagnostics.get("grasp_primary_status"),
+        "grasp_tool_axis_retry_status": result.diagnostics.get(
+            "grasp_tool_axis_retry_status"
+        ),
         "selected_grasp": result.selected_grasp,
         "selected_place": result.selected_place,
         "candidate_build_wall_time_s": candidate_build_wall_time_s,

@@ -328,9 +328,10 @@ def test_coordinator_keeps_attachment_boundary_and_state_chain() -> None:
         "retreat",
     ]
     plan_starts = [event[2] for event in planner.events if event[0] == "plan"]
-    assert plan_starts == [(0.0, 0.0), (0.0, 0.0), (6.0, 6.0)]
+    assert plan_starts == [(0.0, 0.0), (0.0, 0.0), (7.0, 7.0)]
     linear_ids = [event[1] for event in planner.events if event[0] == "linear"]
     assert linear_ids == [
+        ("grasp_bad",),
         ("grasp_bad",),
         ("grasp_good",),
         ("lift_world_z:grasp_good",),
@@ -343,12 +344,118 @@ def test_coordinator_keeps_attachment_boundary_and_state_chain() -> None:
     )
     assert lift_linear[3]["allow_start_contact_escape"]
     assert lift_linear[3]["disable_collision_links"] is None
-    assert executor.events[-1] == ("retreat", (7.0, 7.0))
+    assert executor.events[-1] == ("retreat", (8.0, 8.0))
     place_linear = next(
         event for event in planner.events
         if event[0] == "linear" and event[1] == ("bin_a",)
     )
     assert place_linear[3]["disable_collision_links"] is None
+
+
+def test_grasp_primary_success_does_not_invoke_tool_axis_retry() -> None:
+    planner = FakePlanner()
+
+    result = PickPlaceCoordinator(planner, FakeExecutor()).run(_simple_task())
+
+    assert result.success
+    grasp_events = [
+        event
+        for event in planner.events
+        if event[0] == "linear" and event[1] == ("grasp_good",)
+    ]
+    assert len(grasp_events) == 1
+    assert not grasp_events[0][3]["project_distance_to_goal"]
+    assert result.diagnostics["grasp_tool_axis_retry_used"] is False
+
+
+def test_grasp_tool_axis_retry_uses_same_endpoints_and_keeps_chain_sequence() -> None:
+    class RetryPlanner(FakePlanner):
+        def __init__(self) -> None:
+            super().__init__()
+            self.linear_fail_ids = set()
+
+        def plan_linear_candidates(self, request, **kwargs):
+            if (
+                request.candidates[0].candidate_id == "grasp_good"
+                and not kwargs["project_distance_to_goal"]
+            ):
+                identifiers = tuple(item.candidate_id for item in request.candidates)
+                self.events.append(
+                    ("linear", identifiers, tuple(request.current.positions), dict(kwargs))
+                )
+                return BatchPlanningResult(
+                    (CandidatePlan("grasp_good", False, status="primary_failed"),),
+                    self.name,
+                )
+            return super().plan_linear_candidates(request, **kwargs)
+
+    planner = RetryPlanner()
+    executor = FakeExecutor()
+    result = PickPlaceCoordinator(planner, executor).run(_simple_task())
+
+    assert result.success
+    assert result.diagnostics["grasp_tool_axis_retry_used"] is True
+    grasp_events = [
+        event
+        for event in planner.events
+        if event[0] == "linear" and event[1] == ("grasp_good",)
+    ]
+    assert len(grasp_events) == 2
+    primary, retry = grasp_events
+    assert primary[2] == retry[2]
+    assert not primary[3]["project_distance_to_goal"]
+    assert retry[3]["axis"] == "z"
+    assert retry[3]["project_distance_to_goal"] is True
+    assert retry[3]["ignore_object_name"] == "carrot"
+    assert retry[3]["disable_collision_links"] is None
+    assert retry[3]["allow_start_contact_escape"] is False
+    assert result.diagnostics["grasp_primary_status"] == "primary_failed"
+    assert result.diagnostics["grasp_tool_axis_retry_status"] == "linear_success"
+    assert [event[0] for event in executor.events] == [
+        "approach",
+        "grasp",
+        "gripper",
+        "lift",
+        "preplace",
+        "place",
+        "gripper",
+        "retreat",
+    ]
+
+
+def test_grasp_primary_and_retry_failures_are_distinct_and_next_candidate_runs() -> None:
+    planner = FakePlanner()
+    pose = Pose([0.4, 0.0, 0.2], [1.0, 0.0, 0.0, 0.0])
+    task = replace(
+        _simple_task(),
+        grasp_candidates=(
+            PoseCandidate("grasp_bad", pose, score=1.0),
+            PoseCandidate("grasp_good", pose, score=0.8),
+        ),
+    )
+
+    result = PickPlaceCoordinator(planner, FakeExecutor()).run(task)
+
+    assert result.success
+    grasp_events = [
+        event[1]
+        for event in planner.events
+        if event[0] == "linear" and event[1][0].startswith("grasp_")
+    ]
+    assert grasp_events[:3] == [
+        ("grasp_bad",),
+        ("grasp_bad",),
+        ("grasp_good",),
+    ]
+
+    failed_result = PickPlaceCoordinator(
+        FakePlanner(), FakeExecutor()
+    ).run(replace(_simple_task(), grasp_candidates=(PoseCandidate("grasp_bad", pose),)))
+    assert not failed_result.success
+    assert [item["stage"] for item in failed_result.diagnostics["candidate_failures"]] == [
+        "grasp",
+        "grasp_tool_axis_retry",
+    ]
 
 
 def test_lift_falls_back_to_reverse_tool_axis_after_world_z_failure() -> None:
