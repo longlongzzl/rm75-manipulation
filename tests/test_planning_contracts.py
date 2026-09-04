@@ -127,6 +127,28 @@ def test_coarse_screening_keeps_both_fixed_shape_solvers_resident() -> None:
     assert backend._coarse_ik_solver is coarse
 
 
+def test_endpoint_screen_metrics_count_one_padded_solver_invocation() -> None:
+    class Solver:
+        def __init__(self):
+            self.calls = []
+
+        def solve_pose(self, goals, *, current_state, return_seeds):
+            self.calls.append((goals, current_state, return_seeds))
+            return "solved"
+
+    backend = Curobo2Backend()
+    solver = Solver()
+    backend._pose_ik_cache[(1.0,)] = np.asarray([1.0])
+    result = backend._solve_endpoint_pose_batch(solver, "goals", screen_kind="coarse", rows_requested=3, rows_padded=64)
+
+    assert result == "solved"
+    assert len(solver.calls) == 1
+    assert backend.endpoint_screen_metrics() == {"coarse": {"solver_calls": 1, "rows_requested": 3, "rows_padded": 64}}
+    backend.reset_endpoint_screen_metrics()
+    assert backend.endpoint_screen_metrics() == {}
+    assert (1.0,) in backend._pose_ik_cache
+
+
 def test_official_graph_seeding_is_default_but_workaround_remains_opt_in() -> None:
     planner = object()
     backend = Curobo2Backend()

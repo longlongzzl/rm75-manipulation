@@ -122,6 +122,9 @@ def _run_one(
     repetition: int,
     scene_metadata: Mapping[str, Any],
 ) -> dict[str, Any]:
+    reset_metrics = getattr(backend, "reset_endpoint_screen_metrics", None)
+    if callable(reset_metrics):
+        reset_metrics()
     scene = load_task_scene(str(scene_path))
     planner = backend._ensure_planner()
     initial = planner.default_joint_state.position.detach().cpu().numpy().reshape(-1)[:7]
@@ -138,6 +141,9 @@ def _run_one(
     _synchronize(backend)
     screen_wall_time_s = time.perf_counter() - screen_started
     diagnostic = dict(result.diagnostics.get("relation_screen") or {})
+    read_metrics = getattr(backend, "endpoint_screen_metrics", None)
+    backend_metrics = read_metrics() if callable(read_metrics) else {}
+    manifold = dict(diagnostic.get("place_manifold_resolution") or {})
     return {
         "plan": str(plan_path),
         "scene": str(scene_path),
@@ -160,8 +166,13 @@ def _run_one(
         "stable_ik_call_count": diagnostic.get("stable_ik_call_count"),
         "search_tier": diagnostic.get("search_tier"),
         "grasp_candidate_count": diagnostic.get("grasp_candidate_count"),
+        "declared_place_candidate_count": diagnostic.get("unique_place_candidate_count"),
         "place_candidate_count": diagnostic.get("place_candidate_count"),
+        "eligible_place_candidate_count": diagnostic.get("eligible_place_candidate_count"),
+        "pose_manifold_input_count": manifold.get("input_count"),
+        "pose_manifold_resolved_count": manifold.get("resolved_count"),
         "complete_relation_count": diagnostic.get("complete_relation_count"),
+        "backend_endpoint_screen_metrics": backend_metrics,
         **dict(scene_metadata),
         **base_metadata,
     }
@@ -172,6 +183,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--plan", type=Path, action="append", required=True, help="Frozen manipulation_plan.json; repeat for multiple plans.")
     parser.add_argument("--repetitions", type=int, default=10)
     parser.add_argument("--output-jsonl", type=Path, required=True)
+    parser.add_argument("--summary-json", type=Path, default=None)
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--coarse-ik-batch-size", type=int, default=64)
     parser.add_argument("--coarse-ik-num-seeds", type=int, default=32)
@@ -238,6 +250,31 @@ def main() -> int:
         for row in rows:
             stream.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
     warm_rows = [row for row in rows if int(row["repetition"]) > 0]
+    def task_summary(task_rows: list[dict[str, Any]]) -> dict[str, Any]:
+        warm_task_rows = [row for row in task_rows if int(row["repetition"]) > 0]
+        by_kind: dict[str, dict[str, float]] = {}
+        for row in warm_task_rows:
+            for kind, values in dict(row["backend_endpoint_screen_metrics"]).items():
+                aggregate = by_kind.setdefault(str(kind), {"solver_calls": 0.0, "rows_requested": 0.0, "rows_padded": 0.0})
+                for key in aggregate:
+                    aggregate[key] += float(values.get(key, 0))
+        count = len(warm_task_rows)
+        if count:
+            by_kind = {kind: {key: value / count for key, value in values.items()} for kind, values in by_kind.items()}
+        first = task_rows[0]
+        return {
+            "object_id": first["object_id"],
+            "atom_id": first["atom_id"],
+            "warm_relation_screen_wall_time_s": _stats([float(row["screen_wall_time_s"]) for row in warm_task_rows]),
+            "relation_found_rate": sum(bool(row["relation_found"]) for row in warm_task_rows) / count if count else None,
+            "selected_search_tiers": sorted({row["search_tier"] for row in warm_task_rows}),
+            "backend_endpoint_screen_metrics_mean": by_kind,
+        }
+
+    rows_by_task: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
+    for row in rows:
+        key = (str(row["plan_id"]), str(row["atom_id"]), str(row["object_id"]))
+        rows_by_task.setdefault(key, []).append(row)
     summary = {
         "raw_jsonl": str(output),
         "planner_construction_s": planner_construction_s,
@@ -253,10 +290,12 @@ def main() -> int:
         "mean_coarse_ik_calls": statistics.fmean(float(row["coarse_ik_call_count"]) for row in warm_rows) if warm_rows else None,
         "mean_coarse_ik_rows_requested": statistics.fmean(float(row["coarse_ik_rows_requested"]) for row in warm_rows) if warm_rows else None,
         "mean_coarse_ik_rows_padded": statistics.fmean(float(row["coarse_ik_rows_padded"]) for row in warm_rows) if warm_rows else None,
+        "tasks": {"/".join(key): task_summary(task_rows) for key, task_rows in rows_by_task.items()},
         "environment": environment,
         "note": "Screen-only: no MotionGen, trajectory execution, ManiSkill, or robot control was run.",
     }
-    summary_path = output.with_suffix(".summary.json")
+    summary_path = args.summary_json.expanduser().resolve() if args.summary_json is not None else output.with_suffix(".summary.json")
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     print(json.dumps(summary, ensure_ascii=False, indent=2, default=str))
     return 0

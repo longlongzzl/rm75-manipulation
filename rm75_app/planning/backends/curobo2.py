@@ -254,6 +254,7 @@ class Curobo2Backend:
         self._pose_ik_cache: dict[tuple[float, ...], np.ndarray] = {}
         self._pose_ik_metrics: dict[tuple[float, ...], dict[str, Any]] = {}
         self._last_pose_tolerance_diagnostics: dict[str, Any] = {}
+        self._endpoint_screen_metrics: dict[str, dict[str, int]] = {}
         self._gripper_collision_state = "open"
         self._gripper_sphere_controller: DynamicGripperSphereController | None = None
 
@@ -414,6 +415,44 @@ class Curobo2Backend:
 
     def end_coarse_screening(self) -> None:
         """Leave the fixed-shape batch64 solver resident for the next atom."""
+
+    def reset_endpoint_screen_metrics(self) -> None:
+        """Clear solver-batch counters without changing any cached IK result."""
+        self._endpoint_screen_metrics = {}
+
+    def endpoint_screen_metrics(self) -> dict[str, dict[str, int]]:
+        """Return actual endpoint-solver work grouped by screening purpose."""
+        return {
+            str(kind): {
+                "solver_calls": int(values.get("solver_calls", 0)),
+                "rows_requested": int(values.get("rows_requested", 0)),
+                "rows_padded": int(values.get("rows_padded", 0)),
+            }
+            for kind, values in self._endpoint_screen_metrics.items()
+        }
+
+    def _solve_endpoint_pose_batch(
+        self,
+        solver: Any,
+        goals: Any,
+        *,
+        screen_kind: str,
+        rows_requested: int,
+        rows_padded: int,
+    ) -> Any:
+        """Call one fixed-shape endpoint batch and account for that real call."""
+        metrics = self._endpoint_screen_metrics.setdefault(
+            str(screen_kind),
+            {"solver_calls": 0, "rows_requested": 0, "rows_padded": 0},
+        )
+        metrics["solver_calls"] += 1
+        metrics["rows_requested"] += int(rows_requested)
+        metrics["rows_padded"] += int(rows_padded)
+        return solver.solve_pose(
+            goals,
+            current_state=None,
+            return_seeds=int(self.config.coarse_ik_return_seeds),
+        )
 
     def _ensure_gripper_sphere_controller(self) -> DynamicGripperSphereController:
         if self._gripper_sphere_controller is not None:
@@ -1610,10 +1649,12 @@ class Curobo2Backend:
                     )[:, None, None, None, :],
                 )
                 solver.reset_seed()
-                result = solver.solve_pose(
+                result = self._solve_endpoint_pose_batch(
+                    solver,
                     goals,
-                    current_state=None,
-                    return_seeds=int(self.config.coarse_ik_return_seeds),
+                    screen_kind=screen_kind,
+                    rows_requested=count,
+                    rows_padded=batch_size,
                 )
                 success = result.success.reshape(batch_size, -1)
                 solutions = result.solution.reshape(
