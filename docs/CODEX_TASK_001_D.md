@@ -597,7 +597,7 @@ Open questions for ChatGPT: the approved same-endpoint tool-axis retry recovered
 
 # E1B-alt completion
 
-E1B-alt implementation commit: pending
+E1B-alt implementation commit: `ff5b0f2`
 Full tests: 134 passed in 19.70s
 
 Cluster A x3:
