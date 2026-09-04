@@ -72,4 +72,24 @@
     "d1_allowed": false
   },
   "next_action": "Add frozen generic-asymmetric and cubic/box task atoms and complete expanded full-chain comparison before D1; do not change relation-screen defaults."
+  ,"postfix_completion": {
+    "cube_fixture": "benchmarks/task001/fixtures/d0_cube_lvmukuai/manipulation_plan.json",
+    "asymmetric_fixture": "benchmarks/task001/fixtures/d0_asym_shuazi/manipulation_plan.json",
+    "curated_extra_screen_only": {"eager_relation_found": "4/4", "lazy_relation_found": "4/4", "selected_relation_differences": 0},
+    "expanded_full_chain": {
+      "repetitions_per_mode": 1,
+      "case_count": 16,
+      "eager_raw_jsonl": "/tmp/rm75_relation_screen_benchmark/d0_expanded_full_chain_eager.jsonl",
+      "lazy_raw_jsonl": "/tmp/rm75_relation_screen_benchmark/d0_expanded_full_chain_lazy.jsonl",
+      "eager_success_count": 10,
+      "lazy_success_count": 10,
+      "lazy_minus_eager_percentage_points": 0,
+      "eager_success_lazy_failure_cases": [],
+      "selected_relation_difference_cases": [],
+      "known_equal_failures": "current-table gluestick and generated scenes 00,02,03,05,06 failed in both modes at segmented_chain",
+      "interpolation_capacity_exception": false
+    },
+    "d0_accepted_locally": true,
+    "d1_started": false
+  }
 }

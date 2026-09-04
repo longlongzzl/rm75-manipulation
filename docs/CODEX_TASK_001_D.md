@@ -499,3 +499,25 @@ Raw logs:
 - `/tmp/rm75_relation_screen_benchmark/d0_generated10_lazy.jsonl`
 - `/tmp/rm75_relation_screen_benchmark/d0_desk_eager.jsonl`
 - `/tmp/rm75_relation_screen_benchmark/d0_desk_lazy.jsonl`
+
+# D0 completion after ChatGPT post-fix review
+
+D0 completion commit: pending
+Cube fixture/plan: `benchmarks/task001/fixtures/d0_cube_lvmukuai/manipulation_plan.json` (`lvmukuai` -> existing desk `slot_6`)
+Asymmetric fixture/plan: `benchmarks/task001/fixtures/d0_asym_shuazi/manipulation_plan.json` (`shuazi` -> existing desk `slot_4`)
+Full tests: prior post-fix run `126 passed in 16.81s`
+Curated eager/lazy relation recall: 100%; all original smoke, desk regression, cube, and brush screen-only cases match where eager finds a relation.
+Generated eager/lazy relation recall: 20/20 vs 20/20, with zero selected relation/tier differences.
+Expanded eager full-chain success: 10/16
+Expanded lazy full-chain success: 10/16
+Eager-success/lazy-failure cases: none
+Selected-relation differences: none
+Max interpolation waypoints observed: 521 (no capacity exception at 640)
+D0 accepted locally: yes
+D1 started: no (D0 commit follows this handoff)
+
+Raw logs:
+- `/tmp/rm75_relation_screen_benchmark/d0_curated_extra_eager.jsonl`
+- `/tmp/rm75_relation_screen_benchmark/d0_curated_extra_lazy.jsonl`
+- `/tmp/rm75_relation_screen_benchmark/d0_expanded_full_chain_eager.jsonl`
+- `/tmp/rm75_relation_screen_benchmark/d0_expanded_full_chain_lazy.jsonl`

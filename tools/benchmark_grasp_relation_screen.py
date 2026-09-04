@@ -223,8 +223,8 @@ def _parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = _parse_args()
-    if args.repetitions < 2:
-        raise ValueError("--repetitions must be at least 2 so a warm distribution exists")
+    if args.repetitions < 1:
+        raise ValueError("--repetitions must be positive")
     output = args.output_jsonl.expanduser().resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     plans = [path.expanduser().resolve() for path in args.plan]

@@ -1,0 +1,20 @@
+{
+  "schema_version": "rm75.manipulation_plan/v1",
+  "plan_id": "d0_cube_lvmukuai",
+  "user_command": "把绿色方块放到小桌的6号位",
+  "scene_file": "/home/zhangzhao/Desktop/rm75-manipulation/assets/test_scenes/current_table.json",
+  "atoms": [{
+    "atom_id": "atom_01",
+    "primitive": "pick_place",
+    "object_id": "lvmukuai",
+    "object_asset": "lvmukuai",
+    "support_object_id": "desk",
+    "target_pose": [[-0.01916181, -0.99959576, 0.02100787, -0.14540406], [-0.99977636, 0.01934482, 0.00854365, 0.3213212], [-0.00894656, -0.02083945, -0.9997429, 0.1287519], [0.0, 0.0, 0.0, 1.0]],
+    "placement_mode": "surface_place",
+    "semantic_operator": "desk_slot",
+    "success": {"relation": "slot", "position_tolerance_m": 0.02, "orientation_tolerance_deg": 20.0, "settle_steps": 20},
+    "depends_on": [],
+    "metadata": {"description": "lvmukuai -> desk slot_6", "warnings": [], "legacy_rule_primitive": "place_on_slots", "semantic_step": {"kind": "single_step", "operator": "desk_slot", "source_ref": "lvmukuai", "slot_name": "slot_6"}}
+  }],
+  "metadata": {"fixture_source": "SceneState._resolve_single_step", "fixture_purpose": "TASK 001-D0 cubic/box coverage"}
+}

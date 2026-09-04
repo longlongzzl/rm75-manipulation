@@ -1,0 +1,20 @@
+{
+  "schema_version": "rm75.manipulation_plan/v1",
+  "plan_id": "d0_asym_shuazi",
+  "user_command": "把刷子放到小桌的4号位",
+  "scene_file": "/home/zhangzhao/Desktop/rm75-manipulation/assets/test_scenes/current_table.json",
+  "atoms": [{
+    "atom_id": "atom_01",
+    "primitive": "pick_place",
+    "object_id": "shuazi",
+    "object_asset": "shuazi",
+    "support_object_id": "desk",
+    "target_pose": [[-0.01916181, 0.99959576, -0.02100778, -0.4253749], [-0.99977636, -0.01934482, -0.00854366, 0.32670358], [-0.00894656, 0.02083937, 0.9997429, 0.12691584], [0.0, 0.0, 0.0, 1.0]],
+    "placement_mode": "surface_place",
+    "semantic_operator": "desk_slot",
+    "success": {"relation": "slot", "position_tolerance_m": 0.02, "orientation_tolerance_deg": 20.0, "settle_steps": 20},
+    "depends_on": [],
+    "metadata": {"description": "shuazi -> desk slot_4", "warnings": [], "legacy_rule_primitive": "place_on_slots", "semantic_step": {"kind": "single_step", "operator": "desk_slot", "source_ref": "shuazi", "slot_name": "slot_4"}}
+  }],
+  "metadata": {"fixture_source": "SceneState._resolve_single_step", "fixture_purpose": "TASK 001-D0 generic asymmetric coverage"}
+}
