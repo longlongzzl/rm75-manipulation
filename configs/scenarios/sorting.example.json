@@ -23,7 +23,7 @@
       ],
       "support_object_id": "bitong",
       "capacity": 1,
-      "placement_mode": "inside"
+      "placement_mode": "drop_place"
     },
     {
       "target_id": "right_tray",
