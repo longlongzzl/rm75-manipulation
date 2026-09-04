@@ -1,0 +1,14 @@
+{
+  "implementation_commit": "d93b45f",
+  "full_tests": "128 passed in 17.44s",
+  "smoke_timing_lazy": "/tmp/rm75_relation_screen_benchmark/d1_smoke_lazy.summary.json",
+  "smoke_timing_progressive": "/tmp/rm75_relation_screen_benchmark/d1_smoke_progressive.summary.json",
+  "suite_p95_s": {"lazy_place": 4.444387309899957, "progressive": 3.925372455149545},
+  "carrot_p95_s": {"lazy_place": 4.480345082150052, "progressive": 3.9315715378495044},
+  "coarse_rows_requested": {"tennis": [272, 224], "gluestick": [604, 508], "carriot": [7705, 2839]},
+  "relation_found_rate": {"lazy_place": 1.0, "progressive": 1.0},
+  "full_chain_16": {"lazy": "10/16", "progressive": "10/16", "lazy_success_progressive_failure_cases": []},
+  "selected_relation_differences": ["tennis current_table", "carriot current_table"],
+  "raw_log_paths": ["/tmp/rm75_relation_screen_benchmark/d1_smoke_lazy.jsonl", "/tmp/rm75_relation_screen_benchmark/d1_smoke_progressive.jsonl", "/tmp/rm75_relation_screen_benchmark/d1_full_chain_progressive.jsonl"],
+  "acceptance": {"suite_p95_under_5s": true, "no_success_regression": true, "default_changed": false}
+}

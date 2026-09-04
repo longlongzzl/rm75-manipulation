@@ -757,6 +757,41 @@ def test_progressive_preplace_stops_after_nominal_rank_without_duplicate_screeni
     assert all(ignored == ("carrot",) for _ids, ignored in planner.prepared)
 
 
+def test_progressive_preplace_advances_once_to_rank_one_and_retains_fallback_mapping() -> None:
+    class FallbackPlanner(FakePlanner):
+        def __init__(self) -> None:
+            super().__init__()
+            self.prepared: list[tuple[str, ...]] = []
+
+        def prepare_pose_candidates_coarse(self, candidates, scene, **kwargs):
+            del scene, kwargs
+            self.prepared.append(tuple(item.candidate_id for item in candidates))
+
+        def feasible_pose_candidate_ids(self, candidates):
+            return frozenset(
+                item.candidate_id for item in candidates
+                if "preplace" not in item.candidate_id or "75mm" in item.candidate_id
+            )
+
+    planner = FallbackPlanner()
+    pose = Pose([0.4, 0.0, 0.2], [1.0, 0.0, 0.0, 0.0])
+    grasp = PoseCandidate("grasp", pose)
+    place = PoseCandidate("place", pose)
+    task = PickPlaceTask(
+        object_name="carrot", current=JointConfiguration(JOINTS, [0.0, 0.0]),
+        grasp_candidates=(grasp,), place_candidates=(place,),
+        place_candidates_by_grasp={grasp.candidate_id: (place,)},
+        scene=PlanningScene((CollisionObject("carrot", "cuboid", pose, dimensions=[0.1, 0.03, 0.03]),)),
+    )
+    result = PickPlaceCoordinator(planner, FakeExecutor(), relation_screen_mode="lazy_place_progressive_preplace").run(task)
+    assert result.success
+    flattened = [candidate for event in planner.prepared for candidate in event]
+    assert "preplace_world_z:place" in flattened
+    assert "preplace_world_z_75mm:place" in flattened
+    assert not any("50mm" in candidate or "30mm" in candidate for candidate in flattened)
+    assert len(flattened) == len(set(flattened))
+
+
 def test_discrete_success_does_not_invoke_axis_fallback() -> None:
     class DiscreteFirstPlanner(FakePlanner):
         def resolve_axis_constrained_pose_candidates(self, *args, **kwargs):

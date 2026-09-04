@@ -521,3 +521,20 @@ Raw logs:
 - `/tmp/rm75_relation_screen_benchmark/d0_curated_extra_lazy.jsonl`
 - `/tmp/rm75_relation_screen_benchmark/d0_expanded_full_chain_eager.jsonl`
 - `/tmp/rm75_relation_screen_benchmark/d0_expanded_full_chain_lazy.jsonl`
+
+# D1 completion
+
+D0 accepted by ChatGPT: yes
+D1 implementation commit: `d93b45f`
+D1 evidence commit: pending
+Full tests: 128 passed in 17.44s
+
+Timing lazy -> progressive: tennis P95 0.205 -> 0.820s; gluestick 1.709 -> 1.833s; carrot 4.480 -> 3.932s; suite P95 4.444 -> 3.925s.
+
+Solver work lazy -> progressive (coarse requested rows): tennis 272 -> 224; gluestick 604 -> 508; carrot 7705 -> 2839.
+
+Curated relation recall: 100%; expanded smoke relation-found rate: 100% in both modes.
+Downstream full-chain lazy/progressive: 10/16 -> 10/16. Lazy-success/progressive-failure cases: none.
+Selected relation differences: tennis/current_table and carriot/current_table full-chain selections; no success regression.
+Summary path: `benchmarks/task001/task001_d1_progressive_preplace_summary.json`
+Raw logs: `/tmp/rm75_relation_screen_benchmark/d1_smoke_lazy.jsonl`, `/tmp/rm75_relation_screen_benchmark/d1_smoke_progressive.jsonl`, `/tmp/rm75_relation_screen_benchmark/d1_full_chain_progressive.jsonl`
