@@ -33,6 +33,13 @@ from .sorting import (
     SortingSystem,
     SortingTarget,
 )
+from .sorting_io import (
+    load_sorting_request,
+    save_sorting_request,
+    sorting_request_as_dict,
+    sorting_request_from_dict,
+)
+from .system import UnifiedManipulationSystem, UnifiedSystemConfig
 
 __all__ = [
     "AtomBoundaryCommand",
@@ -61,5 +68,11 @@ __all__ = [
     "StepExecutionResult",
     "StepStatus",
     "TrajectoryCommand",
+    "UnifiedManipulationSystem",
+    "UnifiedSystemConfig",
+    "load_sorting_request",
+    "save_sorting_request",
+    "sorting_request_as_dict",
+    "sorting_request_from_dict",
     "stable_fingerprint",
 ]
