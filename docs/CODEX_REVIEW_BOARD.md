@@ -663,3 +663,54 @@ Open questions for ChatGPT:
 - Should the next iteration add the proposed replay benchmark script plus frozen scene-manifest list, so warm P50/P95, feasibility recall, and downstream success can be measured against the legacy implementation?
 - The coordinator currently reports padded rows from `planner.config.coarse_ik_batch_size` when available; should backend-native counters also be added in a later instrumentation-only commit to cover nonstandard chunking paths?
 ```
+
+---
+
+# CODEX FOLLOW-UP — runnable relation-screen replay
+
+**State:** `NEEDS_REVIEW`
+
+Added `tools/benchmark_grasp_relation_screen.py`. It replays frozen
+`manipulation_plan.json` files through the production task builder and
+coordinator, but stops at the segmented-MotionGen handoff. CUDA is synchronized;
+no robot, trajectory execution, or ManiSkill runs. It writes raw JSONL plus a
+summary. Run it with:
+
+```text
+/home/zhangzhao/anaconda3/envs/curobo2/bin/python \
+  tools/benchmark_grasp_relation_screen.py \
+  --plan <frozen manipulation_plan.json> --repetitions 10 \
+  --output-jsonl <output>.jsonl
+```
+
+2026-09-03 smoke replay: three mock-frozen `current_table` tasks; Curobo2
+Python 3.11, torch 2.11.0+cu128, RTX 5060 Ti, batch64 coarse IK, 32 coarse IK
+seeds, and 32 normal IK seeds.
+
+```text
+Planner construction/warmup: 5.482 s
+Warm suite relation-screen wall P50/P95: 6.519 / 9.087 s (N=6)
+Warm relation-found rate: 100% (6/6)
+
+tennis -> inside bitong: 0.201 / 0.230 s (N=2)
+gluestick -> on lvmukuai: 8.960 / 9.129 s (N=2)
+carriot -> on shuazi: 6.513 / 6.524 s (N=2)
+```
+
+Task 001 therefore does not meet the warm P95 <= 5 second target on this local
+suite. Also, the coordinator `screen_total_time_s` does not synchronize CUDA
+and materially under-reports real wall time (gluestick reports about 0.34 s,
+but the synchronized screen wall time is about 9 s). Use the benchmark
+`screen_wall_time_s` until the production diagnostic is corrected.
+
+Host-specific raw evidence, not committed:
+
+```text
+/tmp/rm75_relation_screen_benchmark/current_table_three_tasks.jsonl
+/tmp/rm75_relation_screen_benchmark/current_table_three_tasks.summary.json
+```
+
+This does not establish legacy-vs-current feasibility recall or downstream
+planning non-regression. The local Git history has no recoverable `1.0.25`
+screener, and the current coordinator already includes grasp-first place
+pruning, so a true Phase-B comparison needs a preserved legacy checkout/path.
