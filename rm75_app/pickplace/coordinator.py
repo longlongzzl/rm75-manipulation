@@ -363,7 +363,7 @@ class PickPlaceCoordinator:
         executor: TrajectoryExecutor,
         held_object_refiner: HeldObjectRefinementHook | None = None,
         *,
-        relation_screen_mode: str = "eager",
+        relation_screen_mode: str = "lazy_place",
     ):
         if relation_screen_mode not in {
             "eager",
