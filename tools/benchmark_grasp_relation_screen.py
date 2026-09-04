@@ -212,7 +212,11 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--coarse-ik-batch-size", type=int, default=64)
     parser.add_argument("--coarse-ik-num-seeds", type=int, default=32)
     parser.add_argument("--num-ik-seeds", type=int, default=32)
-    parser.add_argument("--relation-screen-mode", choices=("eager", "lazy_place"), default="eager")
+    parser.add_argument(
+        "--relation-screen-mode",
+        choices=("eager", "lazy_place", "lazy_place_progressive_preplace"),
+        default="eager",
+    )
     parser.add_argument(
         "--full-chain",
         action="store_true",

@@ -365,8 +365,15 @@ class PickPlaceCoordinator:
         *,
         relation_screen_mode: str = "eager",
     ):
-        if relation_screen_mode not in {"eager", "lazy_place"}:
-            raise ValueError("relation_screen_mode must be eager or lazy_place")
+        if relation_screen_mode not in {
+            "eager",
+            "lazy_place",
+            "lazy_place_progressive_preplace",
+        }:
+            raise ValueError(
+                "relation_screen_mode must be eager, lazy_place, or "
+                "lazy_place_progressive_preplace"
+            )
         self.planner = planner
         self.executor = executor
         self.held_object_refiner = held_object_refiner
@@ -1292,7 +1299,13 @@ class PickPlaceCoordinator:
                 "resolved_count": len(all_place_candidates),
             }
             place_manifold_input_candidates = all_place_candidates
-            lazy_place_mode = self.relation_screen_mode == "lazy_place"
+            lazy_place_mode = self.relation_screen_mode in {
+                "lazy_place",
+                "lazy_place_progressive_preplace",
+            }
+            progressive_preplace_mode = (
+                self.relation_screen_mode == "lazy_place_progressive_preplace"
+            )
             resolved_place_by_id: dict[str, PoseCandidate] = {
                 item.candidate_id: item
                 for item in all_place_candidates
@@ -1391,6 +1404,9 @@ class PickPlaceCoordinator:
                     and str(parent) in active_refinement_parent_ids
                 )
             screened_place_ids: set[str] = set()
+            screened_preplace_ids: set[str] = set()
+            progressive_preplace_feasible_ids: set[str] = set()
+            progressive_place_feasible_ids: set[str] = set()
             screened_grasp_ids: set[str] = {
                 item.candidate_id for item in all_grasp_candidates
             }
@@ -1464,6 +1480,105 @@ class PickPlaceCoordinator:
                         place.candidate_id,
                         _place_approach_candidates(place, task.place_clearance),
                     )
+                if progressive_preplace_mode:
+                    new_places = tuple(
+                        item
+                        for item in cumulative_places
+                        if item.candidate_id not in screened_place_ids
+                    )
+                    prepare_coarse_endpoints(
+                        new_places,
+                        ignore_object_names=contact_ignores,
+                    )
+                    screened_place_ids.update(item.candidate_id for item in new_places)
+                    if callable(feasible_pose_ids):
+                        progressive_place_feasible_ids.update(
+                            feasible_pose_ids(new_places)
+                        )
+                    else:
+                        progressive_place_feasible_ids.update(
+                            item.candidate_id for item in new_places
+                        )
+                    ranks = sorted(
+                        {
+                            int(preplace.metadata.get("preplace_clearance_rank", 0))
+                            for place in cumulative_places
+                            for preplace in preplace_by_place_id[place.candidate_id]
+                        }
+                    )
+                    for rank in ranks:
+                        new_preplaces = tuple(
+                            preplace
+                            for place in cumulative_places
+                            for preplace in preplace_by_place_id[place.candidate_id]
+                            if int(preplace.metadata.get("preplace_clearance_rank", 0)) == rank
+                            and preplace.candidate_id not in screened_preplace_ids
+                        )
+                        prepare_coarse_endpoints(
+                            new_preplaces,
+                            ignore_object_names=contact_ignores,
+                        )
+                        screened_preplace_ids.update(
+                            item.candidate_id for item in new_preplaces
+                        )
+                        if callable(feasible_pose_ids):
+                            progressive_preplace_feasible_ids.update(
+                                feasible_pose_ids(new_preplaces)
+                            )
+                        else:
+                            progressive_preplace_feasible_ids.update(
+                                item.candidate_id for item in new_preplaces
+                            )
+                        preplace_feasible = frozenset(progressive_preplace_feasible_ids)
+                        place_feasible = frozenset(progressive_place_feasible_ids)
+                        place_ready_grasps = tuple(
+                            grasp for grasp in all_grasp_candidates
+                            if tier_enabled(grasp, tier)
+                            and any(
+                                place.candidate_id in place_feasible
+                                and any(option.candidate_id in preplace_feasible for option in preplace_by_place_id[place.candidate_id])
+                                for place in places_for_grasp(grasp.candidate_id)
+                            )
+                        )
+                        new_grasps = tuple(
+                            item for item in place_ready_grasps
+                            if item.candidate_id not in screened_grasp_ids
+                        )
+                        if callable(set_gripper_collision_state):
+                            set_gripper_collision_state(False)
+                        prepare_coarse_endpoints(
+                            _approach_offset_candidates(new_grasps, abs(float(task.grasp_approach_offset))) + new_grasps,
+                            ignore_object_names=grasp_ignores,
+                        )
+                        screened_grasp_ids.update(item.candidate_id for item in new_grasps)
+                        cumulative_pregrasps = _approach_offset_candidates(
+                            place_ready_grasps, abs(float(task.grasp_approach_offset))
+                        )
+                        if callable(feasible_pose_ids):
+                            pregrasp_feasible = feasible_pose_ids(cumulative_pregrasps)
+                            grasp_feasible = feasible_pose_ids(place_ready_grasps)
+                        else:
+                            pregrasp_feasible = frozenset(item.candidate_id for item in cumulative_pregrasps)
+                            grasp_feasible = frozenset(item.candidate_id for item in place_ready_grasps)
+                        complete_places_by_grasp = {
+                            grasp.candidate_id: tuple(
+                                place for place in places_for_grasp(grasp.candidate_id)
+                                if tier_enabled(place, tier)
+                                and place.candidate_id in place_feasible
+                                and any(option.candidate_id in preplace_feasible for option in preplace_by_place_id[place.candidate_id])
+                            ) if grasp.candidate_id in grasp_feasible and f"pregrasp:{grasp.candidate_id}" in pregrasp_feasible else ()
+                            for grasp in place_ready_grasps
+                        }
+                        relation_grasp_candidates = tuple(
+                            grasp for grasp in place_ready_grasps
+                            if complete_places_by_grasp.get(grasp.candidate_id)
+                        )
+                        if relation_grasp_candidates:
+                            break
+                    if relation_grasp_candidates:
+                        selected_search_tier = tier
+                        break
+                    continue
                 new_places = tuple(
                     item
                     for item in cumulative_places

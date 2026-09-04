@@ -716,6 +716,47 @@ def test_relation_screen_reports_merged_coarse_ik_batch_metrics() -> None:
     assert diagnostics["complete_relation_count"] == 1
 
 
+def test_progressive_preplace_stops_after_nominal_rank_without_duplicate_screening() -> None:
+    class ProgressivePlanner(FakePlanner):
+        def __init__(self) -> None:
+            super().__init__()
+            self.prepared: list[tuple[tuple[str, ...], tuple[str, ...]]] = []
+
+        def prepare_pose_candidates_coarse(self, candidates, scene, **kwargs):
+            del scene
+            self.prepared.append(
+                (tuple(item.candidate_id for item in candidates), tuple(kwargs["ignore_object_names"]))
+            )
+
+        def feasible_pose_candidate_ids(self, candidates):
+            return frozenset(item.candidate_id for item in candidates)
+
+    planner = ProgressivePlanner()
+    pose = Pose([0.4, 0.0, 0.2], [1.0, 0.0, 0.0, 0.0])
+    grasp = PoseCandidate("grasp", pose)
+    place = PoseCandidate("place", pose)
+    task = PickPlaceTask(
+        object_name="carrot",
+        current=JointConfiguration(JOINTS, [0.0, 0.0]),
+        grasp_candidates=(grasp,),
+        place_candidates=(place,),
+        place_candidates_by_grasp={grasp.candidate_id: (place,)},
+        scene=PlanningScene((CollisionObject("carrot", "cuboid", pose, dimensions=[0.1, 0.03, 0.03]),)),
+    )
+
+    result = PickPlaceCoordinator(
+        planner, FakeExecutor(), relation_screen_mode="lazy_place_progressive_preplace"
+    ).run(task)
+
+    assert result.success
+    prepared_ids = [item for ids, _ignored in planner.prepared for item in ids]
+    assert "preplace_world_z:place" in prepared_ids
+    assert "preplace_tool_z:place" in prepared_ids
+    assert not any("75mm" in item or "50mm" in item or "30mm" in item for item in prepared_ids)
+    assert len(prepared_ids) == len(set(prepared_ids))
+    assert all(ignored == ("carrot",) for _ids, ignored in planner.prepared)
+
+
 def test_discrete_success_does_not_invoke_axis_fallback() -> None:
     class DiscreteFirstPlanner(FakePlanner):
         def resolve_axis_constrained_pose_candidates(self, *args, **kwargs):
