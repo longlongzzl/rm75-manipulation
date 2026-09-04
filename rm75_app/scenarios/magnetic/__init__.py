@@ -24,6 +24,15 @@ from .geometry import (
     MagneticGeometryViolation,
     StrictMagneticAssemblyPlanner,
 )
+from .io import (
+    load_magnetic_assembly,
+    load_magnetic_inventory,
+    magnetic_assembly_as_dict,
+    magnetic_assembly_from_dict,
+    magnetic_inventory_as_dict,
+    magnetic_inventory_from_dict,
+    save_magnetic_assembly,
+)
 from .llm import (
     MagneticAssemblyFrontend,
     OpenAICompatibleStructureClient,
@@ -66,6 +75,13 @@ __all__ = [
     "StructureLLM",
     "catalog_from_scene_metadata",
     "inventory_from_scene",
+    "load_magnetic_assembly",
     "load_magnetic_catalog",
+    "load_magnetic_inventory",
+    "magnetic_assembly_as_dict",
+    "magnetic_assembly_from_dict",
+    "magnetic_inventory_as_dict",
+    "magnetic_inventory_from_dict",
+    "save_magnetic_assembly",
     "save_magnetic_catalog",
 ]
