@@ -1,0 +1,59 @@
+{
+  "schema": "rm75.sorting_request/v1",
+  "request_id": "tabletop_sorting_example",
+  "scene_file": "assets/test_scenes/current_table.json",
+  "user_command": "把网球放入笔筒，把胶棒和胡萝卜整理到右侧托盘",
+  "buffer_target_id": "buffer",
+  "occupancy_radius_m": 0.045,
+  "position_tolerance_m": 0.02,
+  "orientation_tolerance_deg": 20.0,
+  "assignments": [
+    {"object_id": "tennis", "target_id": "inside_holder", "priority": 10},
+    {"object_id": "gluestick", "target_id": "right_tray", "priority": 5},
+    {"object_id": "carriot", "target_id": "right_tray", "priority": 4}
+  ],
+  "targets": [
+    {
+      "target_id": "inside_holder",
+      "pose": [
+        [1.0, 0.0, 0.0, 0.42],
+        [0.0, 1.0, 0.0, 0.08],
+        [0.0, 0.0, 1.0, 0.10],
+        [0.0, 0.0, 0.0, 1.0]
+      ],
+      "support_object_id": "bitong",
+      "capacity": 1,
+      "placement_mode": "inside"
+    },
+    {
+      "target_id": "right_tray",
+      "pose": [
+        [1.0, 0.0, 0.0, 0.40],
+        [0.0, 1.0, 0.0, -0.20],
+        [0.0, 0.0, 1.0, 0.035],
+        [0.0, 0.0, 0.0, 1.0]
+      ],
+      "capacity": 2,
+      "slot_spacing_m": 0.09,
+      "placement_mode": "surface_place"
+    },
+    {
+      "target_id": "buffer",
+      "pose": [
+        [1.0, 0.0, 0.0, 0.28],
+        [0.0, 1.0, 0.0, 0.27],
+        [0.0, 0.0, 1.0, 0.035],
+        [0.0, 0.0, 0.0, 1.0]
+      ],
+      "capacity": 1,
+      "placement_mode": "surface_place",
+      "metadata": {
+        "purpose": "cycle_break_only"
+      }
+    }
+  ],
+  "metadata": {
+    "example_only": true,
+    "poses_must_be_replaced_or_verified_against_current_real2sim_snapshot": true
+  }
+}
