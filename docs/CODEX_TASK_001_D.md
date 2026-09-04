@@ -437,3 +437,39 @@ Open questions for ChatGPT:
 ```
 
 Stop after D1. Do not switch the production default until ChatGPT reviews the evidence.
+
+# CODEX HANDOFF — TASK 001-D
+
+State:
+D0 commit: pending
+D1 commit: not started (D0 downstream blocker)
+Parent: 1ecb5c0f335d6fe8a516029cf5470832fabc9656
+
+D0 full tests: 126 passed in 16.71s (`PYTHONPATH=. python -m pytest tests -q`)
+D0 scene count: screen-only C2 reference has 3 frozen smoke cases; expanded suite not run after downstream blocker
+D0 eager relation success: C2 baseline reference available in `benchmarks/task001/task001_c2_lazy_place_summary.json`
+D0 lazy relation success: 100% (3/3 C2 smoke reference)
+D0 feasibility recall: not expanded
+D0 downstream full-chain eager/lazy: blocked on first lazy full-chain plan before a comparison
+D0 differing cases: none measured
+D0 summary path: `benchmarks/task001/task001_d0_lazy_validation_summary.json`
+
+D1 smoke performance: not run
+D1 solver work: not run
+D1 expanded-suite correctness: not run
+D1 downstream full-chain success: not run
+D1 differing selected relations: not run
+D1 summary path: not created
+
+Failures:
+- `test_cached_scene` was initially missing the migrated carrot perception fixture. Restored from the local legacy lerobot project in commit `3e6522c`; all 126 tests then pass.
+- Production `_run_segmented_chain()` with the D0 no-op executor reached MotionGen `place` planning, where cuRobo requested 521 interpolation steps against the configured 500-row buffer and raised `ValueError: Interpolated trajectory buffer was recreated, but cuda graph is not available`.
+
+Unexpected observations:
+- The full-chain benchmark does not command a robot: its executor records accepted trajectory stage names only. The failure occurs before a successful trajectory can be handed to it.
+
+Raw logs:
+- `/tmp/rm75_relation_screen_benchmark/d0_full_chain_lazy.jsonl` (not written: planner exception interrupted the first sample)
+
+Open questions for ChatGPT:
+- Should D0 rerun after an independently reviewed production MotionGen interpolation-buffer configuration fix? TASK 001-D prohibits changing MotionGen parameters as part of this relation-screen optimization, so D1 was deliberately not started.

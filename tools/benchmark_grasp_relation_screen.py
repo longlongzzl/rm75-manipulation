@@ -81,14 +81,21 @@ class _ScreenOnlyCoordinator(PickPlaceCoordinator):
         )
 
 
-class _UnusedExecutor:
-    """The screen-only coordinator never calls this executor."""
+class _NoopExecutor:
+    """Accept planned trajectories while recording stage names only."""
+
+    def __init__(self) -> None:
+        self.stage_names: list[str] = []
+
+    def reset(self) -> None:
+        self.stage_names.clear()
 
     def execute_trajectory(self, stage: str, trajectory: object) -> None:
-        raise AssertionError(f"relation-screen benchmark unexpectedly executed {stage!r}")
+        del trajectory
+        self.stage_names.append(stage)
 
     def set_gripper(self, closed: bool) -> None:
-        raise AssertionError(f"relation-screen benchmark unexpectedly set gripper={closed}")
+        del closed
 
 
 def _scene_builder(scene_path: Path) -> tuple[FixedSceneAtomTaskBuilder, dict[str, Any]]:
@@ -115,7 +122,8 @@ def _synchronize(backend: Curobo2Backend) -> None:
 def _run_one(
     *,
     backend: Curobo2Backend,
-    coordinator: _ScreenOnlyCoordinator,
+    coordinator: PickPlaceCoordinator,
+    executor: _NoopExecutor,
     plan_path: Path,
     atom: ManipulationAtom,
     scene_path: Path,
@@ -138,6 +146,7 @@ def _run_one(
     candidate_build_wall_time_s = time.perf_counter() - build_started
     _synchronize(backend)
     screen_started = time.perf_counter()
+    executor.reset()
     result = coordinator.run(task)
     _synchronize(backend)
     screen_wall_time_s = time.perf_counter() - screen_started
@@ -153,7 +162,10 @@ def _run_one(
         "repetition": repetition,
         "relation_screen_mode": relation_screen_mode,
         "relation_found": bool(result.success and diagnostic.get("complete_relation_count", 0)),
+        "full_chain_plan_success": bool(result.success),
         "failure_stage": result.failure_stage,
+        "executed_stage_names": list(executor.stage_names),
+        "segmented_plan_time_s": dict(result.diagnostics.get("timing") or {}).get("segmented_plan_time_s"),
         "selected_grasp": result.selected_grasp,
         "selected_place": result.selected_place,
         "candidate_build_wall_time_s": candidate_build_wall_time_s,
@@ -191,6 +203,11 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--coarse-ik-num-seeds", type=int, default=32)
     parser.add_argument("--num-ik-seeds", type=int, default=32)
     parser.add_argument("--relation-screen-mode", choices=("eager", "lazy_place"), default="eager")
+    parser.add_argument(
+        "--full-chain",
+        action="store_true",
+        help="Run production segmented MotionGen with a no-op trajectory executor.",
+    )
     return parser.parse_args()
 
 
@@ -222,9 +239,11 @@ def main() -> int:
             "planner_joint_count": len(planner.joint_names),
             "backend_config": asdict(config),
         }
-        coordinator = _ScreenOnlyCoordinator(
+        executor = _NoopExecutor()
+        coordinator_class = PickPlaceCoordinator if args.full_chain else _ScreenOnlyCoordinator
+        coordinator = coordinator_class(
             backend,
-            _UnusedExecutor(),
+            executor,
             relation_screen_mode=args.relation_screen_mode,
         )
         rows: list[dict[str, Any]] = []
@@ -240,6 +259,7 @@ def main() -> int:
                     row = _run_one(
                         backend=backend,
                         coordinator=coordinator,
+                        executor=executor,
                         plan_path=plan_path,
                         atom=atom,
                         scene_path=scene_path,
@@ -305,7 +325,12 @@ def main() -> int:
         "mean_coarse_ik_rows_padded": statistics.fmean(float(row["coarse_ik_rows_padded"]) for row in warm_rows) if warm_rows else None,
         "tasks": {"/".join(key): task_summary(task_rows) for key, task_rows in rows_by_task.items()},
         "environment": environment,
-        "note": "Screen-only: no MotionGen, trajectory execution, ManiSkill, or robot control was run.",
+        "note": (
+            "Full segmented MotionGen planning used a no-op stage-recording executor; "
+            "no robot control or ManiSkill was run."
+            if args.full_chain else
+            "Screen-only: no MotionGen, trajectory execution, ManiSkill, or robot control was run."
+        ),
     }
     summary_path = args.summary_json.expanduser().resolve() if args.summary_json is not None else output.with_suffix(".summary.json")
     summary_path.parent.mkdir(parents=True, exist_ok=True)

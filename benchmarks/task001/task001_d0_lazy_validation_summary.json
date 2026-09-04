@@ -1,0 +1,40 @@
+{
+  "task": "001-D0",
+  "parent": "1ecb5c0f335d6fe8a516029cf5470832fabc9656",
+  "status": "blocked_downstream_motiongen_configuration",
+  "full_tests": {
+    "command": "PYTHONPATH=. python -m pytest tests -q",
+    "result": "126 passed in 16.71s"
+  },
+  "fixture_migration": {
+    "commit": "3e6522c",
+    "source": "legacy lerobot cached carrot scene",
+    "files": ["sam6d_pose_result.json", "rgb.png", "depth.png", "sam6d_binary_mask.png"],
+    "portability_change": "run_dir is empty so the loader uses the result JSON parent"
+  },
+  "screen_only_c2_reference": {
+    "summary": "benchmarks/task001/task001_c2_lazy_place_summary.json",
+    "relation_found_rate": 1.0,
+    "task_count": 3,
+    "warm_lazy_place_p95_s": 4.478552521400024
+  },
+  "downstream_full_chain": {
+    "command": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python tools/benchmark_grasp_relation_screen.py --full-chain --relation-screen-mode lazy_place --repetitions 2 [three prior frozen smoke plans]",
+    "executor": "no-op; accepts trajectories and records trajectory stage names only; no robot, RealMan, ManiSkill, or sleeps",
+    "result": "blocked before a completed run",
+    "failure_stage": "MotionGen place planning",
+    "exception": "ValueError: Interpolated trajectory buffer was recreated, but cuda graph is not available",
+    "observed_buffer_shape": [16, 500, 7],
+    "required_interpolation_steps": 521,
+    "configured_interpolation_buffer_size": 500,
+    "raw_jsonl": "/tmp/rm75_relation_screen_benchmark/d0_full_chain_lazy.jsonl",
+    "raw_jsonl_status": "not written because the planner exception aborted the first sample"
+  },
+  "acceptance": {
+    "curated_relation_recall": "not expanded: downstream blocker encountered first",
+    "expanded_relation_recall": "not run",
+    "downstream_eager_vs_lazy": "not comparable",
+    "d1_allowed": false
+  },
+  "next_action": "Review whether the production backend's fixed interpolation buffer should be sized for observed complete-chain trajectories; do not change relation-screen defaults or begin D1 first."
+}
