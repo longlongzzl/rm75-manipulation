@@ -28,12 +28,15 @@ from .controller import (
 from .model import PushTGeometry, QuasiStaticPushTModel
 from .mpc import PushTMPC, PushTMPCConfig
 from .sysid import PushTParameterEnsemble
+from .tracking import PoseMatrixPushTTracker, PoseMatrixSample
 
 __all__ = [
     "CuroboWaypointPushBackend",
     "ObjectFramePushExecutor",
     "PlannedPushProgram",
     "PlannedPushSegment",
+    "PoseMatrixPushTTracker",
+    "PoseMatrixSample",
     "PushAction",
     "PushPlanningError",
     "PushTClosedLoopController",
