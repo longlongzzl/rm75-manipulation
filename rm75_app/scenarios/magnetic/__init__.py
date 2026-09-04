@@ -18,6 +18,12 @@ from .contracts import (
     PanelRole,
     ResolvedMagneticPlacement,
 )
+from .geometry import (
+    MagneticGeometryReport,
+    MagneticGeometryValidator,
+    MagneticGeometryViolation,
+    StrictMagneticAssemblyPlanner,
+)
 from .llm import (
     MagneticAssemblyFrontend,
     OpenAICompatibleStructureClient,
@@ -41,6 +47,9 @@ __all__ = [
     "MagneticAssemblySpec",
     "MagneticAssemblySystem",
     "MagneticConnection",
+    "MagneticGeometryReport",
+    "MagneticGeometryValidator",
+    "MagneticGeometryViolation",
     "MagneticInventoryItem",
     "MagneticJointType",
     "MagneticPanelSpec",
@@ -53,6 +62,7 @@ __all__ = [
     "PreparedMagneticProgram",
     "ResolvedMagneticPlacement",
     "RuleViolation",
+    "StrictMagneticAssemblyPlanner",
     "StructureLLM",
     "catalog_from_scene_metadata",
     "inventory_from_scene",
