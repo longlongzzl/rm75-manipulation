@@ -1,5 +1,6 @@
 """Magnetic-panel structure frontend, rules, geometry, and execution facade."""
 
+from .backend import MagneticContactPlanningBackend, MagneticPickPlaceTaskBuilder
 from .catalog import (
     catalog_from_scene_metadata,
     inventory_from_scene,
@@ -56,12 +57,14 @@ __all__ = [
     "MagneticAssemblySpec",
     "MagneticAssemblySystem",
     "MagneticConnection",
+    "MagneticContactPlanningBackend",
     "MagneticGeometryReport",
     "MagneticGeometryValidator",
     "MagneticGeometryViolation",
     "MagneticInventoryItem",
     "MagneticJointType",
     "MagneticPanelSpec",
+    "MagneticPickPlaceTaskBuilder",
     "MagneticPiece",
     "MagneticValidationReport",
     "OpenAICompatibleStructureClient",
