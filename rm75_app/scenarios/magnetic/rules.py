@@ -23,6 +23,14 @@ class RuleViolation:
     connection_id: str | None = None
     details: Mapping[str, Any] = field(default_factory=dict)
 
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "piece_ids",
+            tuple(str(item) for item in self.piece_ids),
+        )
+        object.__setattr__(self, "details", dict(self.details))
+
 
 @dataclass(frozen=True)
 class MagneticValidationReport:
@@ -31,9 +39,28 @@ class MagneticValidationReport:
     topological_piece_order: tuple[str, ...] = ()
     stable_piece_ids: tuple[str, ...] = ()
 
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "violations", tuple(self.violations))
+        object.__setattr__(
+            self,
+            "topological_piece_order",
+            tuple(self.topological_piece_order),
+        )
+        object.__setattr__(
+            self,
+            "stable_piece_ids",
+            tuple(self.stable_piece_ids),
+        )
+
 
 class MagneticAssemblyRules:
-    """Validate assembly semantics before pose or motion planning occurs."""
+    """Validate assembly semantics before pose or motion planning occurs.
+
+    The validator intentionally works on a symbolic graph.  It prevents an LLM
+    or hand-authored frontend from emitting an apparently plausible but
+    physically unsupported structure that the motion planner would only discover
+    after expensive trajectory generation or, worse, during real execution.
+    """
 
     def __init__(
         self,
@@ -51,15 +78,41 @@ class MagneticAssemblyRules:
         self.maximum_gap_m = float(maximum_gap_m)
         self.minimum_clearance_m = float(minimum_clearance_m)
         self.maximum_clearance_m = float(maximum_clearance_m)
+        if not 0.0 <= self.target_overlap_fraction <= 1.0:
+            raise ValueError("target_overlap_fraction must be in [0, 1]")
+        if not 0.0 <= self.overlap_tolerance <= 1.0:
+            raise ValueError("overlap_tolerance must be in [0, 1]")
+        if not 0.0 <= self.minimum_gap_m <= self.maximum_gap_m:
+            raise ValueError("invalid magnetic gap limits")
+        if not 0.0 <= self.minimum_clearance_m <= self.maximum_clearance_m:
+            raise ValueError("invalid magnetic clearance limits")
+
+    @staticmethod
+    def _first_connection_by_child(
+        spec: MagneticAssemblySpec,
+    ) -> dict[str, MagneticConnection]:
+        """Return a deterministic mapping without raising on duplicate inputs.
+
+        Duplicate child connections are reported as validation violations.  The
+        rest of validation must remain total so callers receive all actionable
+        problems in one response instead of an exception from
+        ``connection_for_child``.
+        """
+
+        output: dict[str, MagneticConnection] = {}
+        for connection in spec.connections:
+            output.setdefault(connection.child_id, connection)
+        return output
 
     @staticmethod
     def _topological_order(
         spec: MagneticAssemblySpec,
+        connection_by_child: Mapping[str, MagneticConnection],
     ) -> tuple[tuple[str, ...], tuple[str, ...]]:
         dependencies = {
             piece.piece_id: set(
-                spec.connection_for_child(piece.piece_id).parent_ids
-                if spec.connection_for_child(piece.piece_id) is not None
+                connection_by_child[piece.piece_id].parent_ids
+                if piece.piece_id in connection_by_child
                 else ()
             )
             for piece in spec.pieces
@@ -96,16 +149,24 @@ class MagneticAssemblyRules:
                 )
             )
 
-        connection_by_child: dict[str, list[MagneticConnection]] = {}
+        connections_by_child: dict[str, list[MagneticConnection]] = {}
         for connection in spec.connections:
-            connection_by_child.setdefault(connection.child_id, []).append(connection)
-        for child_id, connections in connection_by_child.items():
+            connections_by_child.setdefault(connection.child_id, []).append(
+                connection
+            )
+        connection_by_child = self._first_connection_by_child(spec)
+        for child_id, connections in connections_by_child.items():
             if len(connections) > 1:
                 violations.append(
                     RuleViolation(
                         "multiple_placement_connections",
                         f"piece {child_id!r} has multiple placement connections",
                         (child_id,),
+                        details={
+                            "connection_ids": [
+                                item.connection_id for item in connections
+                            ]
+                        },
                     )
                 )
 
@@ -116,13 +177,12 @@ class MagneticAssemblyRules:
                 violations.append(
                     RuleViolation(
                         "unknown_panel_asset",
-                        f"no magnetic-panel geometry is registered for "
+                        "no magnetic-panel geometry is registered for "
                         f"{piece.asset_name!r}",
                         (piece.piece_id,),
                     )
                 )
-                continue
-            if piece.role not in panel.allowed_roles:
+            elif piece.role not in panel.allowed_roles:
                 violations.append(
                     RuleViolation(
                         "role_not_supported",
@@ -131,6 +191,7 @@ class MagneticAssemblyRules:
                         (piece.piece_id,),
                     )
                 )
+
             inventory_item = inventory_by_id.get(piece.object_id)
             if inventory_item is None:
                 violations.append(
@@ -151,7 +212,7 @@ class MagneticAssemblyRules:
                     )
                 )
 
-            matches = connection_by_child.get(piece.piece_id, [])
+            matches = connections_by_child.get(piece.piece_id, [])
             connection = matches[0] if len(matches) == 1 else None
             anchored = piece.anchor_offset_m is not None
             if anchored == (connection is not None):
@@ -159,7 +220,7 @@ class MagneticAssemblyRules:
                     RuleViolation(
                         "ambiguous_or_missing_placement",
                         f"piece {piece.piece_id!r} must have exactly one of an "
-                        "anchor offset or a placement connection",
+                        "anchor offset or one placement connection",
                         (piece.piece_id,),
                     )
                 )
@@ -180,9 +241,14 @@ class MagneticAssemblyRules:
         for connection in spec.connections:
             child = piece_by_id[connection.child_id]
             parents = [piece_by_id[item] for item in connection.parent_ids]
-            self._validate_connection(connection, child, parents, violations)
+            self._validate_connection(
+                connection,
+                child,
+                parents,
+                violations,
+            )
 
-        order, cycle = self._topological_order(spec)
+        order, cycle = self._topological_order(spec, connection_by_child)
         if cycle:
             violations.append(
                 RuleViolation(
@@ -195,7 +261,7 @@ class MagneticAssemblyRules:
         stable: set[str] = set()
         for piece_id in order:
             piece = piece_by_id[piece_id]
-            connection = spec.connection_for_child(piece_id)
+            connection = connection_by_child.get(piece_id)
             if connection is None:
                 if (
                     piece.anchor_offset_m is not None
@@ -216,8 +282,10 @@ class MagneticAssemblyRules:
                 stable.add(piece_id)
             elif (
                 connection.joint_type is MagneticJointType.RIGHT_ANGLE_EDGE
+                and piece.pose_class is PanelPoseClass.VERTICAL
                 and all(
-                    piece_by_id[parent_id].pose_class is PanelPoseClass.VERTICAL
+                    piece_by_id[parent_id].pose_class
+                    is PanelPoseClass.VERTICAL
                     for parent_id in connection.parent_ids
                 )
             ):
@@ -247,13 +315,19 @@ class MagneticAssemblyRules:
         parents: list[Any],
         violations: list[RuleViolation],
     ) -> None:
-        def add(code: str, message: str) -> None:
+        def add(
+            code: str,
+            message: str,
+            *,
+            details: Mapping[str, Any] | None = None,
+        ) -> None:
             violations.append(
                 RuleViolation(
                     code,
                     message,
                     tuple([child.piece_id, *connection.parent_ids]),
                     connection.connection_id,
+                    dict(details or {}),
                 )
             )
 
@@ -285,6 +359,11 @@ class MagneticAssemblyRules:
                 add("flat_stack_parent_count", "flat_stack requires one parent")
             if child.pose_class is not PanelPoseClass.FLAT:
                 add("flat_stack_child_not_flat", "flat_stack child must be flat")
+            if parents and parents[0].pose_class is not PanelPoseClass.FLAT:
+                add(
+                    "flat_stack_parent_not_flat",
+                    "flat_stack parent must also be flat",
+                )
             return
 
         if connection.joint_type is MagneticJointType.RIGHT_ANGLE_EDGE:
@@ -292,6 +371,17 @@ class MagneticAssemblyRules:
                 add(
                     "right_angle_parent_count",
                     "right_angle_edge requires one parent and one parent edge",
+                )
+            if child.pose_class is not PanelPoseClass.VERTICAL:
+                add(
+                    "right_angle_child_not_vertical",
+                    "a 90-degree wall corner requires a vertical child panel",
+                )
+            if parents and parents[0].pose_class is not PanelPoseClass.VERTICAL:
+                add(
+                    "right_angle_parent_not_vertical",
+                    "a 90-degree wall corner requires an already-stable "
+                    "vertical parent panel",
                 )
             if (
                 abs(
@@ -304,25 +394,11 @@ class MagneticAssemblyRules:
                     "right_angle_overlap",
                     "90-degree magnetic panels must overlap approximately half "
                     "of the mating edge",
-                )
-            if (
-                parents
-                and parents[0].pose_class is PanelPoseClass.FLAT
-                and child.pose_class is PanelPoseClass.VERTICAL
-            ):
-                add(
-                    "single_flat_support_for_vertical",
-                    "a vertical panel cannot stand on one lying panel; use "
-                    "vertical_slot with two lying supports",
-                )
-            if (
-                parents
-                and parents[0].pose_class is child.pose_class
-                and child.pose_class is PanelPoseClass.FLAT
-            ):
-                add(
-                    "right_angle_flat_flat",
-                    "right_angle_edge cannot connect two flat panels",
+                    details={
+                        "requested_overlap_fraction": connection.overlap_fraction,
+                        "target_overlap_fraction": self.target_overlap_fraction,
+                        "tolerance": self.overlap_tolerance,
+                    },
                 )
             return
 
@@ -357,3 +433,9 @@ class MagneticAssemblyRules:
                 add("bridge_support_count", "bridge requires at least two supports")
             if child.pose_class is not PanelPoseClass.FLAT:
                 add("bridge_child_not_flat", "bridge/roof piece must be flat")
+            return
+
+        add(
+            "unsupported_joint_type",
+            f"unsupported magnetic joint type {connection.joint_type.value!r}",
+        )
