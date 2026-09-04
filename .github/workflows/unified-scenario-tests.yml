@@ -10,6 +10,7 @@ on:
       - "tests/test_scenario_program_runner.py"
       - "tests/test_sorting_scenario.py"
       - "tests/test_magnetic_assembly.py"
+      - "tests/test_magnetic_pickplace_adapter.py"
       - "tests/test_pusht_scenario.py"
       - "tests/test_pickplace_program.py"
       - ".github/workflows/unified-scenario-tests.yml"
@@ -38,5 +39,6 @@ jobs:
             tests/test_scenario_program_runner.py \
             tests/test_sorting_scenario.py \
             tests/test_magnetic_assembly.py \
+            tests/test_magnetic_pickplace_adapter.py \
             tests/test_pusht_scenario.py \
             tests/test_pickplace_program.py
