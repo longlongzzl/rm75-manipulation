@@ -1,0 +1,16 @@
+{
+  "schema": "rm75.magnetic_inventory/v1",
+  "items": [
+    {"object_id": "mag_01", "asset_name": "mag_panel_100x60x8", "tray_slot": "A1"},
+    {"object_id": "mag_02", "asset_name": "mag_panel_100x60x8", "tray_slot": "A2"},
+    {"object_id": "mag_03", "asset_name": "mag_panel_100x60x8", "tray_slot": "A3"},
+    {"object_id": "mag_04", "asset_name": "mag_panel_100x60x8", "tray_slot": "A4"},
+    {"object_id": "mag_05", "asset_name": "mag_panel_100x60x8", "tray_slot": "B1"},
+    {"object_id": "mag_06", "asset_name": "mag_panel_100x60x8", "tray_slot": "B2"},
+    {"object_id": "mag_07", "asset_name": "mag_panel_100x60x8", "tray_slot": "B3"}
+  ],
+  "metadata": {
+    "example_only": true,
+    "replace_object_ids_with_scene_instance_ids": true
+  }
+}
