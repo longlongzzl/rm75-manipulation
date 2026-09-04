@@ -328,10 +328,9 @@ def test_coordinator_keeps_attachment_boundary_and_state_chain() -> None:
         "retreat",
     ]
     plan_starts = [event[2] for event in planner.events if event[0] == "plan"]
-    assert plan_starts == [(0.0, 0.0), (0.0, 0.0), (7.0, 7.0)]
+    assert plan_starts == [(0.0, 0.0), (0.0, 0.0), (6.0, 6.0)]
     linear_ids = [event[1] for event in planner.events if event[0] == "linear"]
     assert linear_ids == [
-        ("grasp_bad",),
         ("grasp_bad",),
         ("grasp_good",),
         ("lift_world_z:grasp_good",),
@@ -344,7 +343,7 @@ def test_coordinator_keeps_attachment_boundary_and_state_chain() -> None:
     )
     assert lift_linear[3]["allow_start_contact_escape"]
     assert lift_linear[3]["disable_collision_links"] is None
-    assert executor.events[-1] == ("retreat", (8.0, 8.0))
+    assert executor.events[-1] == ("retreat", (7.0, 7.0))
     place_linear = next(
         event for event in planner.events
         if event[0] == "linear" and event[1] == ("bin_a",)
@@ -352,7 +351,7 @@ def test_coordinator_keeps_attachment_boundary_and_state_chain() -> None:
     assert place_linear[3]["disable_collision_links"] is None
 
 
-def test_grasp_primary_success_does_not_invoke_tool_axis_retry() -> None:
+def test_primary_only_grasp_success_does_not_invoke_reverse_probe() -> None:
     planner = FakePlanner()
 
     result = PickPlaceCoordinator(planner, FakeExecutor()).run(_simple_task())
@@ -365,10 +364,11 @@ def test_grasp_primary_success_does_not_invoke_tool_axis_retry() -> None:
     ]
     assert len(grasp_events) == 1
     assert not grasp_events[0][3]["project_distance_to_goal"]
-    assert result.diagnostics["grasp_tool_axis_retry_used"] is False
+    assert result.diagnostics["grasp_reverse_fallback_used"] is False
+    assert result.diagnostics["grasp_fallback_mode"] == "primary_only"
 
 
-def test_grasp_tool_axis_retry_uses_same_endpoints_and_keeps_chain_sequence() -> None:
+def test_primary_only_grasp_failure_does_not_invoke_reverse_probe() -> None:
     class RetryPlanner(FakePlanner):
         def __init__(self) -> None:
             super().__init__()
@@ -393,37 +393,18 @@ def test_grasp_tool_axis_retry_uses_same_endpoints_and_keeps_chain_sequence() ->
     executor = FakeExecutor()
     result = PickPlaceCoordinator(planner, executor).run(_simple_task())
 
-    assert result.success
-    assert result.diagnostics["grasp_tool_axis_retry_used"] is True
+    assert not result.success
     grasp_events = [
         event
         for event in planner.events
         if event[0] == "linear" and event[1] == ("grasp_good",)
     ]
-    assert len(grasp_events) == 2
-    primary, retry = grasp_events
-    assert primary[2] == retry[2]
-    assert not primary[3]["project_distance_to_goal"]
-    assert retry[3]["axis"] == "z"
-    assert retry[3]["project_distance_to_goal"] is True
-    assert retry[3]["ignore_object_name"] == "carrot"
-    assert retry[3]["disable_collision_links"] is None
-    assert retry[3]["allow_start_contact_escape"] is False
-    assert result.diagnostics["grasp_primary_status"] == "primary_failed"
-    assert result.diagnostics["grasp_tool_axis_retry_status"] == "linear_success"
-    assert [event[0] for event in executor.events] == [
-        "approach",
-        "grasp",
-        "gripper",
-        "lift",
-        "preplace",
-        "place",
-        "gripper",
-        "retreat",
-    ]
+    assert len(grasp_events) == 1
+    assert not grasp_events[0][3]["project_distance_to_goal"]
+    assert not any(event[1] == ("pregrasp:grasp_good",) for event in planner.events if event[0] == "linear")
 
 
-def test_grasp_primary_and_retry_failures_are_distinct_and_next_candidate_runs() -> None:
+def test_primary_failures_are_distinct_and_next_candidate_runs() -> None:
     planner = FakePlanner()
     pose = Pose([0.4, 0.0, 0.2], [1.0, 0.0, 0.0, 0.0])
     task = replace(
@@ -442,8 +423,7 @@ def test_grasp_primary_and_retry_failures_are_distinct_and_next_candidate_runs()
         for event in planner.events
         if event[0] == "linear" and event[1][0].startswith("grasp_")
     ]
-    assert grasp_events[:3] == [
-        ("grasp_bad",),
+    assert grasp_events[:2] == [
         ("grasp_bad",),
         ("grasp_good",),
     ]
@@ -454,8 +434,120 @@ def test_grasp_primary_and_retry_failures_are_distinct_and_next_candidate_runs()
     assert not failed_result.success
     assert [item["stage"] for item in failed_result.diagnostics["candidate_failures"]] == [
         "grasp",
-        "grasp_tool_axis_retry",
     ]
+
+
+def test_reverse_grasp_probe_reverses_cached_endpoint_path_and_keeps_sequence() -> None:
+    class ReverseProbePlanner(FakePlanner):
+        def configuration_for_pose_candidate(self, candidate, names, reference):
+            assert tuple(names) == JOINTS
+            if candidate.candidate_id != "grasp_good":
+                return None
+            self.events.append(("cached_grasp", tuple(reference.positions)))
+            return JointConfiguration(JOINTS, [50.0, 50.0])
+
+        def plan_linear_candidates(self, request, **kwargs):
+            candidate = request.candidates[0]
+            self.events.append(
+                ("linear", (candidate.candidate_id,), tuple(request.current.positions), dict(kwargs))
+            )
+            if candidate.candidate_id == "grasp_good":
+                return BatchPlanningResult(
+                    (CandidatePlan("grasp_good", False, status="forward_failed"),),
+                    self.name,
+                )
+            if candidate.candidate_id == "pregrasp:grasp_good":
+                return BatchPlanningResult(
+                    (CandidatePlan(
+                        candidate.candidate_id,
+                        True,
+                        trajectory=trajectory(50.0, 2.0),
+                        status="reverse_probe_success",
+                    ),),
+                    self.name,
+                )
+            return super().plan_linear_candidates(request, **kwargs)
+
+    planner = ReverseProbePlanner()
+    executor = FakeExecutor()
+    result = PickPlaceCoordinator(
+        planner, executor, grasp_fallback_mode="reverse_probe_experimental"
+    ).run(_simple_task())
+
+    assert result.success
+    assert result.diagnostics["grasp_reverse_fallback_used"] is True
+    assert result.diagnostics["grasp_reverse_start_gap_rad"] == 0.0
+    assert result.diagnostics["grasp_reverse_probe_status"] == "reverse_probe_success"
+    reverse_event = next(
+        event for event in planner.events
+        if event[0] == "linear" and event[1] == ("pregrasp:grasp_good",)
+    )
+    assert reverse_event[2] == (50.0, 50.0)
+    assert reverse_event[3]["project_distance_to_goal"] is True
+    assert reverse_event[3]["ignore_object_name"] == "carrot"
+    assert reverse_event[3]["disable_collision_links"] is None
+    assert reverse_event[3]["allow_start_contact_escape"] is False
+    grasp_stage = next(stage for stage in result.stages if stage.name == "grasp")
+    assert tuple(grasp_stage.end.positions) == (50.0, 50.0)
+    assert [event[0] for event in executor.events] == [
+        "approach", "grasp", "gripper", "lift", "preplace", "place", "gripper", "retreat"
+    ]
+
+
+def test_reverse_grasp_probe_rejects_discontinuous_path_without_new_ik() -> None:
+    class DiscontinuousReversePlanner(FakePlanner):
+        def configuration_for_pose_candidate(self, candidate, names, reference):
+            del candidate, names, reference
+            return JointConfiguration(JOINTS, [50.0, 50.0])
+
+        def plan_linear_candidates(self, request, **kwargs):
+            candidate = request.candidates[0]
+            if candidate.candidate_id == "grasp_bad":
+                return BatchPlanningResult(
+                    (CandidatePlan("grasp_bad", False, status="forward_failed"),), self.name
+                )
+            if candidate.candidate_id == "pregrasp:grasp_bad":
+                return BatchPlanningResult(
+                    (CandidatePlan(candidate.candidate_id, True, trajectory=trajectory(50.0, 3.0)),),
+                    self.name,
+                )
+            return super().plan_linear_candidates(request, **kwargs)
+
+    pose = Pose([0.4, 0.0, 0.2], [1.0, 0.0, 0.0, 0.0])
+    result = PickPlaceCoordinator(
+        DiscontinuousReversePlanner(),
+        FakeExecutor(),
+        grasp_fallback_mode="reverse_probe_experimental",
+    ).run(replace(_simple_task(), grasp_candidates=(PoseCandidate("grasp_bad", pose),)))
+
+    assert not result.success
+    reverse_failure = result.diagnostics["candidate_failures"][-1]
+    assert reverse_failure["stage"] == "grasp_reverse_probe"
+    assert reverse_failure["candidates"][0]["status"] == "trajectory_discontinuity"
+    assert reverse_failure["candidates"][0]["start_gap_rad"] > 0.10
+
+
+def test_reverse_probe_without_cached_grasp_does_not_invent_endpoint_ik() -> None:
+    planner = FakePlanner()
+    pose = Pose([0.4, 0.0, 0.2], [1.0, 0.0, 0.0, 0.0])
+
+    result = PickPlaceCoordinator(
+        planner,
+        FakeExecutor(),
+        grasp_fallback_mode="reverse_probe_experimental",
+    ).run(replace(_simple_task(), grasp_candidates=(PoseCandidate("grasp_bad", pose),)))
+
+    assert not result.success
+    assert [item["stage"] for item in result.diagnostics["candidate_failures"]] == [
+        "grasp",
+        "grasp_reverse_probe",
+    ]
+    reverse_failure = result.diagnostics["candidate_failures"][-1]
+    assert reverse_failure["candidates"][0]["status"] == "cached_endpoint_ik_not_available"
+    assert not any(
+        event[0] == "linear" and event[1] == ("pregrasp:grasp_bad",)
+        for event in planner.events
+    )
 
 
 def test_lift_falls_back_to_reverse_tool_axis_after_world_z_failure() -> None:

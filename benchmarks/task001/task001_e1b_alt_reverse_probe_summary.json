@@ -1,0 +1,28 @@
+{
+  "task": "001 E1B-alt reverse-validated grasp probe",
+  "reviewed_policy": {
+    "production_grasp_fallback_mode": "primary_only",
+    "experimental_grasp_fallback_mode": "reverse_probe_experimental",
+    "e1a_tool_axis_retry_in_production": false
+  },
+  "full_tests": "134 passed in 19.70s",
+  "cluster_a_targeted": {
+    "repetitions_per_case": 3,
+    "cases": {
+      "current_table_gluestick": {"success": "0/3", "reverse_attempts": 24, "reverse_successes": 0, "reverse_fallback_used": 0, "continuity_rejects": 0, "primary_status": "linear_planner_failed", "reverse_status": "linear_failed (unknown)", "mean_wall_time_s": 8.85},
+      "generated_00": {"success": "0/3", "reverse_attempts": 24, "reverse_successes": 0, "reverse_fallback_used": 0, "continuity_rejects": 0, "primary_status": "linear_planner_failed", "reverse_status": "linear_failed (unknown)", "mean_wall_time_s": 8.247},
+      "generated_02": {"success": "0/3", "reverse_attempts": 24, "reverse_successes": 0, "reverse_fallback_used": 0, "continuity_rejects": 0, "primary_status": "linear_planner_failed", "reverse_status": "linear_failed (unknown)", "mean_wall_time_s": 7.6},
+      "generated_03": {"success": "0/3", "reverse_attempts": 24, "reverse_successes": 0, "reverse_fallback_used": 0, "continuity_rejects": 0, "primary_status": "linear_planner_failed", "reverse_status": "linear_failed (unknown)", "mean_wall_time_s": 7.718}
+    },
+    "reverse_diagnostics": {
+      "cached_grasp_available": "true for all 96 reverse attempts",
+      "cached_grasp_distance_from_pregrasp": "recorded per attempt in raw candidate_failures",
+      "reverse_probe_trajectory_points": "null for all attempts because no reverse probe produced a trajectory",
+      "reversed_start_gap_rad": "null for all attempts because no reverse trajectory was available"
+    }
+  },
+  "cluster_b_observational": {"generated_05": "failed as before", "generated_06": "failed as before", "lift_behavior_changed": false},
+  "frozen_16_case_matrix": {"baseline_d2": "10/16", "e1b_alt": "10/16", "recovered": [], "previous_success_to_new_failure": [], "new_exceptions": [], "upstream_relation_selection_differences": []},
+  "raw_logs": {"targeted": "/tmp/rm75_relation_screen_benchmark/e1b_alt_targeted.jsonl", "matrix": "/tmp/rm75_relation_screen_benchmark/e1b_alt_matrix.jsonl", "observational_05": "/tmp/rm75_relation_screen_benchmark/e1b_alt_generated_05.jsonl", "observational_06": "/tmp/rm75_relation_screen_benchmark/e1b_alt_generated_06.jsonl"},
+  "conclusion": "E1B-alt recovered 0/4 Cluster A cases. The reverse probe itself failed before continuity validation; no additional grasp fallback was added."
+}

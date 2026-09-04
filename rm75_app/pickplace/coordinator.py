@@ -364,6 +364,7 @@ class PickPlaceCoordinator:
         held_object_refiner: HeldObjectRefinementHook | None = None,
         *,
         relation_screen_mode: str = "lazy_place",
+        grasp_fallback_mode: str = "primary_only",
     ):
         if relation_screen_mode not in {
             "eager",
@@ -378,6 +379,12 @@ class PickPlaceCoordinator:
         self.executor = executor
         self.held_object_refiner = held_object_refiner
         self.relation_screen_mode = relation_screen_mode
+        if grasp_fallback_mode not in {"primary_only", "reverse_probe_experimental"}:
+            raise ValueError(
+                "grasp_fallback_mode must be primary_only or "
+                "reverse_probe_experimental"
+            )
+        self.grasp_fallback_mode = grasp_fallback_mode
         self._last_plan_failure: dict[str, Any] = {}
 
     @staticmethod
@@ -734,29 +741,134 @@ class PickPlaceCoordinator:
                 task=task,
                 ignore_object_name=task.object_name,
             )
-            grasp_tool_axis_retry_used = False
             grasp_primary_status = None if grasp is None else grasp.status
-            grasp_tool_axis_retry_status = "not_attempted"
+            grasp_reverse_fallback_used = False
+            grasp_reverse_start_gap_rad: float | None = None
+            grasp_reverse_probe_status = "not_attempted"
+            cached_grasp_available: bool | None = None
+            cached_grasp_distance_from_pregrasp: float | None = None
+            reverse_probe_trajectory_points: int | None = None
             if grasp is None or grasp.trajectory is None:
                 primary_grasp_failure = dict(self._last_plan_failure)
                 if grasp_primary_status is None:
                     primary_candidates = primary_grasp_failure.get("candidates") or ()
                     if primary_candidates:
                         grasp_primary_status = primary_candidates[0].get("status")
-                grasp = self._plan_linear_stage(
-                    stage="grasp_tool_axis_retry",
-                    current=pregrasp_end,
-                    candidate=grasp_candidate,
-                    task=task,
-                    axis="z",
-                    project_distance_to_goal=True,
-                    ignore_object_name=task.object_name,
-                )
-                grasp_tool_axis_retry_status = None if grasp is None else grasp.status
-                if grasp is None or grasp.trajectory is None:
-                    failures.extend((primary_grasp_failure, dict(self._last_plan_failure)))
+                if self.grasp_fallback_mode == "reverse_probe_experimental":
+                    grasp_configuration = _cached_configuration(
+                        self.planner,
+                        grasp_candidate,
+                        pregrasp_end,
+                    )
+                    cached_grasp_available = grasp_configuration is not None
+                    if grasp_configuration is None:
+                        grasp_reverse_probe_status = "cached_endpoint_ik_not_available"
+                        failures.extend(
+                            (
+                                primary_grasp_failure,
+                                {
+                                    "stage": "grasp_reverse_probe",
+                                    "candidates": [
+                                        {
+                                            "candidate_id": grasp_candidate.candidate_id,
+                                            "status": grasp_reverse_probe_status,
+                                            "cached_grasp_available": False,
+                                        }
+                                    ],
+                                },
+                            )
+                        )
+                        continue
+                    cached_positions = np.asarray(
+                        grasp_configuration.positions, dtype=np.float64
+                    )
+                    pregrasp_positions = np.asarray(
+                        pregrasp_end.positions, dtype=np.float64
+                    )
+                    if cached_positions.shape == pregrasp_positions.shape:
+                        cached_grasp_distance_from_pregrasp = float(
+                            np.linalg.norm(cached_positions - pregrasp_positions)
+                        )
+                    reverse_probe = self._plan_linear_stage(
+                        stage="grasp_reverse_probe",
+                        current=grasp_configuration,
+                        candidate=pregrasp_candidate,
+                        task=task,
+                        axis="z",
+                        project_distance_to_goal=True,
+                        ignore_object_name=task.object_name,
+                    )
+                    grasp_reverse_probe_status = (
+                        None if reverse_probe is None else reverse_probe.status
+                    )
+                    if reverse_probe is None or reverse_probe.trajectory is None:
+                        reverse_probe_failure = dict(self._last_plan_failure)
+                        reverse_probe_failure.update(
+                            {
+                                "cached_grasp_available": True,
+                                "cached_grasp_distance_from_pregrasp": (
+                                    cached_grasp_distance_from_pregrasp
+                                ),
+                                "reverse_probe_trajectory_points": None,
+                            }
+                        )
+                        failures.extend(
+                            (
+                                primary_grasp_failure,
+                                reverse_probe_failure,
+                            )
+                        )
+                        continue
+                    reverse_probe_trajectory_points = len(
+                        reverse_probe.trajectory.positions
+                    )
+                    reversed_trajectory = _reverse_trajectory(reverse_probe.trajectory)
+                    grasp_reverse_start_gap_rad = _trajectory_start_gap(
+                        reversed_trajectory,
+                        pregrasp_end,
+                    )
+                    if grasp_reverse_start_gap_rad > 0.10:
+                        failures.extend(
+                            (
+                                primary_grasp_failure,
+                                {
+                                    "stage": "grasp_reverse_probe",
+                                    "candidates": [
+                                        {
+                                            "candidate_id": grasp_candidate.candidate_id,
+                                            "status": "trajectory_discontinuity",
+                                            "reverse_probe_status": (
+                                                grasp_reverse_probe_status
+                                            ),
+                                            "start_gap_rad": grasp_reverse_start_gap_rad,
+                                            "cached_grasp_available": True,
+                                            "cached_grasp_distance_from_pregrasp": (
+                                                cached_grasp_distance_from_pregrasp
+                                            ),
+                                            "reverse_probe_trajectory_points": (
+                                                reverse_probe_trajectory_points
+                                            ),
+                                        }
+                                    ],
+                                },
+                            )
+                        )
+                        continue
+                    grasp = CandidatePlan(
+                        grasp_candidate.candidate_id,
+                        True,
+                        trajectory=reversed_trajectory,
+                        status="reverse_validated_grasp_approach",
+                        diagnostics={
+                            "reverse_start_gap_rad": grasp_reverse_start_gap_rad,
+                            "reverse_probe_status": grasp_reverse_probe_status,
+                            "grasp_configuration_source": "cached_endpoint_ik",
+                        },
+                    )
+                    grasp_reverse_fallback_used = True
+                else:
+                    failures.append(primary_grasp_failure)
                     continue
-                grasp_tool_axis_retry_used = True
             grasp_end = self._end_configuration(grasp.trajectory)
             self.planner.attach_object(task.object_name, grasp_end)
             attached = True
@@ -971,9 +1083,10 @@ class PickPlaceCoordinator:
                             pregrasp_entry,
                             pregrasp,
                             grasp,
-                            grasp_tool_axis_retry_used,
                             grasp_primary_status,
-                            grasp_tool_axis_retry_status,
+                            grasp_reverse_fallback_used,
+                            grasp_reverse_start_gap_rad,
+                            grasp_reverse_probe_status,
                             lift,
                             preplace,
                             place,
@@ -1008,9 +1121,10 @@ class PickPlaceCoordinator:
             pregrasp_entry,
             pregrasp,
             grasp,
-            grasp_tool_axis_retry_used,
             grasp_primary_status,
-            grasp_tool_axis_retry_status,
+            grasp_reverse_fallback_used,
+            grasp_reverse_start_gap_rad,
+            grasp_reverse_probe_status,
             lift,
             preplace,
             place,
@@ -1093,9 +1207,17 @@ class PickPlaceCoordinator:
                     "relation_screen": dict(relation_screen),
                     "planner_mode": "batch64_ik_segmented_motiongen",
                     "pregrasp_initial_fallback_used": pregrasp_entry is not None,
-                    "grasp_tool_axis_retry_used": grasp_tool_axis_retry_used,
                     "grasp_primary_status": grasp_primary_status,
-                    "grasp_tool_axis_retry_status": grasp_tool_axis_retry_status,
+                    "grasp_fallback_mode": self.grasp_fallback_mode,
+                    "grasp_reverse_fallback_used": grasp_reverse_fallback_used,
+                    "grasp_reverse_start_gap_rad": grasp_reverse_start_gap_rad,
+                    "grasp_reverse_probe_status": grasp_reverse_probe_status,
+                    "cached_grasp_available": cached_grasp_available,
+                    "cached_grasp_distance_from_pregrasp": (
+                        cached_grasp_distance_from_pregrasp
+                    ),
+                    "reverse_probe_trajectory_points": reverse_probe_trajectory_points,
+                    "reversed_start_gap_rad": grasp_reverse_start_gap_rad,
                     "timing": {"segmented_plan_time_s": planning_time_s},
                 },
             )

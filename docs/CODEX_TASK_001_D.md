@@ -594,3 +594,26 @@ New exceptions: none
 Summary path: `benchmarks/task001/task001_e1a_grasp_tool_axis_retry_summary.json`
 Raw logs: `/tmp/rm75_relation_screen_benchmark/e1a_*.jsonl` (targeted, matrix, and brush screen-only evidence; exact paths in summary)
 Open questions for ChatGPT: the approved same-endpoint tool-axis retry recovered none of Cluster A (all retry statuses remain `linear_planner_failed`). Per E1A stop condition, no reverse-grasp fallback or lift change was added; review whether E1B should test the proposed reverse-validated grasp segment.
+
+# E1B-alt completion
+
+E1B-alt implementation commit: pending
+Full tests: 134 passed in 19.70s
+
+Cluster A x3:
+- current_table_gluestick: 0/3; reverse attempted/succeeded/used 24/0/0; continuity rejects 0; primary `linear_planner_failed`, reverse `linear_failed (unknown)`.
+- generated_00: 0/3; reverse attempted/succeeded/used 24/0/0; continuity rejects 0; primary `linear_planner_failed`, reverse `linear_failed (unknown)`.
+- generated_02: 0/3; reverse attempted/succeeded/used 24/0/0; continuity rejects 0; primary `linear_planner_failed`, reverse `linear_failed (unknown)`.
+- generated_03: 0/3; reverse attempted/succeeded/used 24/0/0; continuity rejects 0; primary `linear_planner_failed`, reverse `linear_failed (unknown)`.
+
+Reverse probe attempted/succeeded/used: 96/0/0 across Cluster A. Cached grasp configuration was available for every attempt; no reverse probe produced a trajectory, so no continuity check could run.
+Continuity rejects: 0
+Primary/retry/reverse statuses: E1A retry is removed from production. Primary remained `linear_planner_failed`; reverse remained `linear_failed (unknown)` with target-only contact ignore and no added collision-link exemptions.
+16-case baseline -> E1B: 10/16 -> 10/16
+Recovered cases: none
+Previous-success/new-failure cases: none
+New exceptions: none
+Upstream relation differences: none
+Summary path: `benchmarks/task001/task001_e1b_alt_reverse_probe_summary.json`
+Raw logs: `/tmp/rm75_relation_screen_benchmark/e1b_alt_targeted.jsonl`, `/tmp/rm75_relation_screen_benchmark/e1b_alt_matrix.jsonl`, and `e1b_alt_generated_05/06.jsonl`
+Open questions for ChatGPT: reverse planning itself failed in all Cluster-A attempts before continuity validation. Per current review, no fourth grasp heuristic was added; the next candidate task is linear-planner failure instrumentation to distinguish optimizer, interpolation/collision rejection, and branch discontinuity.

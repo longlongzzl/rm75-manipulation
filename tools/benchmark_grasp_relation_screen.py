@@ -177,6 +177,23 @@ def _run_one(
         "grasp_tool_axis_retry_status": result.diagnostics.get(
             "grasp_tool_axis_retry_status"
         ),
+        "grasp_reverse_fallback_used": bool(
+            result.diagnostics.get("grasp_reverse_fallback_used", False)
+        ),
+        "grasp_reverse_start_gap_rad": result.diagnostics.get(
+            "grasp_reverse_start_gap_rad"
+        ),
+        "grasp_reverse_probe_status": result.diagnostics.get(
+            "grasp_reverse_probe_status"
+        ),
+        "cached_grasp_available": result.diagnostics.get("cached_grasp_available"),
+        "cached_grasp_distance_from_pregrasp": result.diagnostics.get(
+            "cached_grasp_distance_from_pregrasp"
+        ),
+        "reverse_probe_trajectory_points": result.diagnostics.get(
+            "reverse_probe_trajectory_points"
+        ),
+        "reversed_start_gap_rad": result.diagnostics.get("reversed_start_gap_rad"),
         "selected_grasp": result.selected_grasp,
         "selected_place": result.selected_place,
         "candidate_build_wall_time_s": candidate_build_wall_time_s,
@@ -227,6 +244,12 @@ def _parse_args() -> argparse.Namespace:
         help="Override the coordinator mode; omit to exercise its production default.",
     )
     parser.add_argument(
+        "--grasp-fallback-mode",
+        choices=("primary_only", "reverse_probe_experimental"),
+        default="primary_only",
+        help="Use reverse_probe_experimental only for E1B-alt validation.",
+    )
+    parser.add_argument(
         "--full-chain",
         action="store_true",
         help="Run production segmented MotionGen with a no-op trajectory executor.",
@@ -275,7 +298,12 @@ def main() -> int:
             {} if args.relation_screen_mode is None
             else {"relation_screen_mode": args.relation_screen_mode}
         )
-        coordinator = coordinator_class(backend, executor, **coordinator_kwargs)
+        coordinator = coordinator_class(
+            backend,
+            executor,
+            grasp_fallback_mode=str(args.grasp_fallback_mode),
+            **coordinator_kwargs,
+        )
         active_relation_screen_mode = coordinator.relation_screen_mode
         rows: list[dict[str, Any]] = []
         for plan_index, plan_path in enumerate(plans):
