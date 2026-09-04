@@ -215,7 +215,8 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--relation-screen-mode",
         choices=("eager", "lazy_place", "lazy_place_progressive_preplace"),
-        default="eager",
+        default=None,
+        help="Override the coordinator mode; omit to exercise its production default.",
     )
     parser.add_argument(
         "--full-chain",
@@ -262,11 +263,12 @@ def main() -> int:
         }
         executor = _NoopExecutor()
         coordinator_class = PickPlaceCoordinator if args.full_chain else _ScreenOnlyCoordinator
-        coordinator = coordinator_class(
-            backend,
-            executor,
-            relation_screen_mode=args.relation_screen_mode,
+        coordinator_kwargs = (
+            {} if args.relation_screen_mode is None
+            else {"relation_screen_mode": args.relation_screen_mode}
         )
+        coordinator = coordinator_class(backend, executor, **coordinator_kwargs)
+        active_relation_screen_mode = coordinator.relation_screen_mode
         rows: list[dict[str, Any]] = []
         for plan_index, plan_path in enumerate(plans):
             plan = load_plan(plan_path)
@@ -290,7 +292,7 @@ def main() -> int:
                         scene_path=scene_path,
                         repetition=repetition,
                         scene_metadata=scene_metadata,
-                        relation_screen_mode=args.relation_screen_mode,
+                        relation_screen_mode=active_relation_screen_mode,
                     )
                     rows.append(row)
                     print(

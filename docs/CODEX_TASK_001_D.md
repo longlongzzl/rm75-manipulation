@@ -538,3 +538,19 @@ Downstream full-chain lazy/progressive: 10/16 -> 10/16. Lazy-success/progressive
 Selected relation differences: tennis/current_table and carriot/current_table full-chain selections; no success regression.
 Summary path: `benchmarks/task001/task001_d1_progressive_preplace_summary.json`
 Raw logs: `/tmp/rm75_relation_screen_benchmark/d1_smoke_lazy.jsonl`, `/tmp/rm75_relation_screen_benchmark/d1_smoke_progressive.jsonl`, `/tmp/rm75_relation_screen_benchmark/d1_full_chain_progressive.jsonl`
+
+# D1 reviewer verdict / D2 completion
+
+D1 reviewed by ChatGPT: yes
+Progressive retained as experimental mode: yes
+Production mode selected: `lazy_place`
+D2 commit: `21680f1`
+Production default source: `PickPlaceCoordinator.__init__.relation_screen_mode`
+Full tests: 128 passed in 17.00s
+Default-path smoke relation success: 3/3
+Default-path smoke P50/P95: 1.621s / 4.391s
+Active mode diagnostics: `lazy_place`
+16-case full-chain success: 10/16
+New exceptions/regressions: none
+D2 summary path: `benchmarks/task001/task001_d2_default_switch_summary.json`
+Raw logs: `/tmp/rm75_relation_screen_benchmark/d2_default_smoke_lazy.jsonl`, `/tmp/rm75_relation_screen_benchmark/d2_full_chain_lazy.jsonl`

@@ -1,0 +1,9 @@
+{
+  "d2_commit": "21680f1",
+  "production_default_source": "PickPlaceCoordinator.__init__.relation_screen_mode",
+  "production_default": "lazy_place",
+  "full_tests": "128 passed in 17.00s",
+  "default_path_smoke": {"raw_jsonl": "/tmp/rm75_relation_screen_benchmark/d2_default_smoke_lazy.jsonl", "active_mode": "lazy_place", "relation_found": "3/3", "warm_p50_s": 1.6205958190003003, "warm_p95_s": 4.390993544499906},
+  "full_chain_16": {"raw_jsonl": "/tmp/rm75_relation_screen_benchmark/d2_full_chain_lazy.jsonl", "success": "10/16", "new_exceptions": []},
+  "default_switch_only": true
+}
