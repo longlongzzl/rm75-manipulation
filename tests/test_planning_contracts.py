@@ -107,7 +107,7 @@ def test_curobo2_fast_path_is_the_default() -> None:
     assert config.coarse_ik_use_cuda_graph is True
     assert config.warmup_planner is True
     assert config.enable_graph_attempt == 1
-    assert config.interpolation_buffer_size == 500
+    assert config.interpolation_buffer_size == 640
     assert config.collision_cache_obb == 32
     assert config.collision_cache_mesh == 16
     assert config.isolate_graph_seed_failures is False
