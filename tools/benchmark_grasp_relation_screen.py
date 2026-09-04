@@ -5,9 +5,12 @@ The timing stops immediately before the segmented MotionGen chain.  It is
 therefore suitable for TASK 001's candidate-build plus relation-screen target,
 without commanding a robot, recording trajectories, or running ManiSkill.
 
-This utility measures the checkout it is invoked from.  A comparison against a
-legacy implementation still requires a checkout (or explicit implementation)
-of that legacy screener; it does not infer one from timing data.
+With ``--full-chain`` it instead runs production segmented MotionGen planning
+through a no-op executor which accepts trajectories and records their stage
+names only.  It never commands a robot or runs ManiSkill.  This utility
+measures the checkout it is invoked from.  A comparison against a legacy
+implementation still requires a checkout (or explicit implementation) of that
+legacy screener; it does not infer one from timing data.
 """
 
 from __future__ import annotations
@@ -195,6 +198,13 @@ def _run_one(
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--plan", type=Path, action="append", required=True, help="Frozen manipulation_plan.json; repeat for multiple plans.")
+    parser.add_argument(
+        "--scene",
+        type=Path,
+        action="append",
+        default=None,
+        help="Optional frozen scene override; provide one per --plan.",
+    )
     parser.add_argument("--repetitions", type=int, default=10)
     parser.add_argument("--output-jsonl", type=Path, required=True)
     parser.add_argument("--summary-json", type=Path, default=None)
@@ -218,6 +228,13 @@ def main() -> int:
     output = args.output_jsonl.expanduser().resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     plans = [path.expanduser().resolve() for path in args.plan]
+    scene_overrides = (
+        [path.expanduser().resolve() for path in args.scene]
+        if args.scene is not None
+        else None
+    )
+    if scene_overrides is not None and len(scene_overrides) != len(plans):
+        raise ValueError("--scene must be given exactly once for every --plan")
     config = Curobo2BackendConfig(
         device=str(args.device),
         coarse_ik_batch_size=int(args.coarse_ik_batch_size),
@@ -247,9 +264,13 @@ def main() -> int:
             relation_screen_mode=args.relation_screen_mode,
         )
         rows: list[dict[str, Any]] = []
-        for plan_path in plans:
+        for plan_index, plan_path in enumerate(plans):
             plan = load_plan(plan_path)
-            scene_path = Path(plan.scene_file).expanduser().resolve()
+            scene_path = (
+                scene_overrides[plan_index]
+                if scene_overrides is not None
+                else Path(plan.scene_file).expanduser().resolve()
+            )
             scene_metadata = {
                 "plan_id": plan.plan_id,
                 "scene_revision": load_task_scene(str(scene_path)).backend_revision,

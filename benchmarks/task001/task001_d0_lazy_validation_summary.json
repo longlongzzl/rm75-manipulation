@@ -1,10 +1,10 @@
 {
   "task": "001-D0",
   "parent": "1ecb5c0f335d6fe8a516029cf5470832fabc9656",
-  "status": "blocked_downstream_motiongen_configuration",
+  "status": "partial_validation_complete; D1 remains gated on remaining expanded coverage",
   "full_tests": {
     "command": "PYTHONPATH=. python -m pytest tests -q",
-    "result": "126 passed in 16.71s"
+    "result": "126 passed in 16.81s after the 640-waypoint infrastructure fix"
   },
   "fixture_migration": {
     "commit": "3e6522c",
@@ -18,7 +18,12 @@
     "task_count": 3,
     "warm_lazy_place_p95_s": 4.478552521400024
   },
-  "downstream_full_chain": {
+  "infrastructure_fix": {
+    "commit": "353c3c1",
+    "change": "Curobo2BackendConfig.interpolation_buffer_size: 500 -> 640",
+    "scope": "fixed interpolation capacity only; no seeds, tolerances, collision rules, graph settings, or relation-screen logic changed"
+  },
+  "downstream_full_chain_initial_blocker": {
     "command": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python tools/benchmark_grasp_relation_screen.py --full-chain --relation-screen-mode lazy_place --repetitions 2 [three prior frozen smoke plans]",
     "executor": "no-op; accepts trajectories and records trajectory stage names only; no robot, RealMan, ManiSkill, or sleeps",
     "result": "blocked before a completed run",
@@ -30,11 +35,41 @@
     "raw_jsonl": "/tmp/rm75_relation_screen_benchmark/d0_full_chain_lazy.jsonl",
     "raw_jsonl_status": "not written because the planner exception aborted the first sample"
   },
+  "downstream_full_chain_after_fix": {
+    "repetitions_per_frozen_case": 2,
+    "eager_raw_jsonl": "/tmp/rm75_relation_screen_benchmark/d0_full_chain_eager.jsonl",
+    "lazy_raw_jsonl": "/tmp/rm75_relation_screen_benchmark/d0_full_chain_lazy_640.jsonl",
+    "interpolation_capacity_exception": false,
+    "cases": {
+      "tennis": {"eager_success": "2/2", "lazy_success": "2/2", "selected_relation_identical": true, "stage_names": ["approach", "grasp", "lift", "preplace", "place", "retreat"]},
+      "gluestick": {"eager_success": "0/2", "lazy_success": "0/2", "failure_stage": "segmented_chain", "selected_relation_identical": true},
+      "carriot": {"eager_success": "2/2", "lazy_success": "2/2", "selected_relation_identical": true, "stage_names": ["approach", "grasp", "lift", "preplace", "place", "retreat"]}
+    },
+    "lazy_vs_eager_success_difference_percentage_points": 0,
+    "observed_required_interpolation_waypoints": 521,
+    "peak_cuda_memory": "not instrumented; point samples while planning were about 2.1 GiB of 8.0 GiB"
+  },
+  "expanded_screen_only": {
+    "generated_random_scenes": "10 frozen yaw_only_current_table scenes from generated_random_batch_001, two repetitions per mode",
+    "eager_raw_jsonl": "/tmp/rm75_relation_screen_benchmark/d0_generated10_eager.jsonl",
+    "lazy_raw_jsonl": "/tmp/rm75_relation_screen_benchmark/d0_generated10_lazy.jsonl",
+    "eager_relation_found": "20/20",
+    "lazy_relation_found": "20/20",
+    "selected_relation_or_tier_differences": 0,
+    "high_search_tier_samples": "24/40 paired samples had search_tier > 0",
+    "desk_regression": {
+      "eager_raw_jsonl": "/tmp/rm75_relation_screen_benchmark/d0_desk_eager.jsonl",
+      "lazy_raw_jsonl": "/tmp/rm75_relation_screen_benchmark/d0_desk_lazy.jsonl",
+      "eager_relation_found": "2/2",
+      "lazy_relation_found": "2/2",
+      "selected_relation_identical": true
+    }
+  },
   "acceptance": {
-    "curated_relation_recall": "not expanded: downstream blocker encountered first",
-    "expanded_relation_recall": "not run",
-    "downstream_eager_vs_lazy": "not comparable",
+    "curated_relation_recall": "covered smoke and desk cases are 100%; generic-asymmetric and cubic/box task atoms are still not covered",
+    "expanded_relation_recall": "100% for the 10 generated gluestick cases plus desk regression; this is incomplete against the full required object diversity",
+    "downstream_eager_vs_lazy": "same 4/6 frozen smoke successes and same selected relations; gluestick fails under both at segmented_chain",
     "d1_allowed": false
   },
-  "next_action": "Review whether the production backend's fixed interpolation buffer should be sized for observed complete-chain trajectories; do not change relation-screen defaults or begin D1 first."
+  "next_action": "Add frozen generic-asymmetric and cubic/box task atoms and complete expanded full-chain comparison before D1; do not change relation-screen defaults."
 }

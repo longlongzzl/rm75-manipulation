@@ -473,3 +473,29 @@ Raw logs:
 
 Open questions for ChatGPT:
 - Should D0 rerun after an independently reviewed production MotionGen interpolation-buffer configuration fix? TASK 001-D prohibits changing MotionGen parameters as part of this relation-screen optimization, so D1 was deliberately not started.
+
+## D0 rerun after infrastructure review
+
+Infrastructure fix commit: `353c3c1` (`interpolation_buffer_size` 500 -> 640; default-contract update `2712408`)
+
+Full tests: `126 passed in 16.81s`
+
+D0 frozen eager full-chain: tennis 2/2 success; gluestick 0/2 `segmented_chain`; carriot 2/2 success.
+
+D0 frozen lazy full-chain: tennis 2/2 success; gluestick 0/2 `segmented_chain`; carriot 2/2 success. The selected grasp/place matched eager for every paired sample, and no interpolation-capacity exception reoccurred.
+
+Expanded D0 eager/lazy correctness: 10 frozen generated gluestick scenes x 2 reps/mode were 20/20 relation-found in both modes, with zero selected tier/grasp/place differences. The fixed `gluestick_desk_regression` was 2/2 in both modes, also with matching selected relation. 24/40 paired generated samples required `search_tier > 0`.
+
+Any full-chain success differences: none (both modes 4/6 successful smoke samples); gluestick remains an equal baseline failure in `segmented_chain`.
+
+Max observed interpolation waypoint requirement: 521. The current 640 capacity did not reallocate during rerun. Point-sampled CUDA memory was approximately 2.1 GiB / 8.0 GiB; peak was not instrumented.
+
+D1 started: no. The D0 matrix still lacks dedicated generic-asymmetric and cubic/box task atoms, plus full-chain validation for the full expanded set. This is recorded rather than treating the current subset as acceptance.
+
+Raw logs:
+- `/tmp/rm75_relation_screen_benchmark/d0_full_chain_eager.jsonl`
+- `/tmp/rm75_relation_screen_benchmark/d0_full_chain_lazy_640.jsonl`
+- `/tmp/rm75_relation_screen_benchmark/d0_generated10_eager.jsonl`
+- `/tmp/rm75_relation_screen_benchmark/d0_generated10_lazy.jsonl`
+- `/tmp/rm75_relation_screen_benchmark/d0_desk_eager.jsonl`
+- `/tmp/rm75_relation_screen_benchmark/d0_desk_lazy.jsonl`
