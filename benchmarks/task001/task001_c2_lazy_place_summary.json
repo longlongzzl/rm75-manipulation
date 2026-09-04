@@ -1,0 +1,196 @@
+{
+  "raw_jsonl": "/tmp/rm75_relation_screen_benchmark/task001_c2_lazy_place.jsonl",
+  "planner_construction_s": 5.450503021000259,
+  "plans": [
+    "/tmp/rm75_task001_c1_plans/20260904_154546_llm_pick_place_pid21903_112358180/case_01/manipulation_plan.json",
+    "/tmp/rm75_task001_c1_plans/20260904_154547_llm_pick_place_pid21961_952932160/case_01/manipulation_plan.json",
+    "/tmp/rm75_task001_c1_plans/20260904_154548_llm_pick_place_pid22023_892553166/case_01/manipulation_plan.json"
+  ],
+  "repetitions_per_atom": 6,
+  "sample_count": 18,
+  "warm_sample_count": 15,
+  "cold_first_call_s": {
+    "count": 3,
+    "p50": 1.8430746819999513,
+    "p90": 3.8550263787999026,
+    "p95": 4.1065203408998965,
+    "p99": 4.307715510579892,
+    "mean": 2.5895532773332284,
+    "max": 4.358014302999891
+  },
+  "warm_candidate_build_wall_time_s": {
+    "count": 15,
+    "p50": 0.09200048100001368,
+    "p90": 0.18750515040010213,
+    "p95": 0.22007010150000494,
+    "p99": 0.2209986067000682,
+    "mean": 0.10877318813336387,
+    "max": 0.221230733000084
+  },
+  "warm_relation_screen_wall_time_s": {
+    "count": 15,
+    "p50": 1.6935291529998722,
+    "p90": 4.44089783419995,
+    "p95": 4.478552521400024,
+    "p99": 4.495304612280024,
+    "mean": 2.0948131016000238,
+    "max": 4.499492635000024
+  },
+  "warm_relation_screen_diagnostic_time_s": {
+    "count": 15,
+    "p50": 0.5005094589996588,
+    "p90": 3.651484566399904,
+    "p95": 3.6901582616000272,
+    "p99": 3.7047038875201723,
+    "mean": 1.4570622948667127,
+    "max": 3.708340294000209
+  },
+  "relation_found_rate": 1.0,
+  "mean_coarse_ik_calls": 44.666666666666664,
+  "mean_coarse_ik_rows_requested": 2767.0,
+  "mean_coarse_ik_rows_padded": 2858.6666666666665,
+  "tasks": {
+    "lazy_place/case_01/atom_01/tennis": {
+      "object_id": "tennis",
+      "atom_id": "atom_01",
+      "warm_relation_screen_wall_time_s": {
+        "count": 5,
+        "p50": 0.20700763700006064,
+        "p90": 0.20887077420029526,
+        "p95": 0.20888016860035352,
+        "p99": 0.2088876841204001,
+        "mean": 0.20585948320012903,
+        "max": 0.20888956300041173
+      },
+      "relation_found_rate": 1.0,
+      "selected_search_tiers": [
+        1
+      ],
+      "backend_endpoint_screen_metrics_mean": {
+        "coarse": {
+          "solver_calls": 6.0,
+          "rows_requested": 272.0,
+          "rows_padded": 384.0
+        }
+      }
+    },
+    "lazy_place/case_01/atom_01/gluestick": {
+      "object_id": "gluestick",
+      "atom_id": "atom_01",
+      "warm_relation_screen_wall_time_s": {
+        "count": 5,
+        "p50": 1.6935291529998722,
+        "p90": 1.6942725582001001,
+        "p95": 1.6942898286000854,
+        "p99": 1.6943036449200737,
+        "mean": 1.65473703079997,
+        "max": 1.6943070990000706
+      },
+      "relation_found_rate": 1.0,
+      "selected_search_tiers": [
+        0
+      ],
+      "backend_endpoint_screen_metrics_mean": {
+        "coarse": {
+          "solver_calls": 11.0,
+          "rows_requested": 604.0,
+          "rows_padded": 704.0
+        },
+        "axis_constrained": {
+          "solver_calls": 5.0,
+          "rows_requested": 70.0,
+          "rows_padded": 320.0
+        },
+        "pose_tolerance": {
+          "solver_calls": 1.0,
+          "rows_requested": 16.0,
+          "rows_padded": 64.0
+        }
+      }
+    },
+    "lazy_place/case_01/atom_01/carriot": {
+      "object_id": "carriot",
+      "atom_id": "atom_01",
+      "warm_relation_screen_wall_time_s": {
+        "count": 5,
+        "p50": 4.397877304999838,
+        "p90": 4.4875268558000245,
+        "p95": 4.493509745400024,
+        "p99": 4.498296057080024,
+        "mean": 4.423842790799972,
+        "max": 4.499492635000024
+      },
+      "relation_found_rate": 1.0,
+      "selected_search_tiers": [
+        1
+      ],
+      "backend_endpoint_screen_metrics_mean": {
+        "coarse": {
+          "solver_calls": 123.0,
+          "rows_requested": 7705.0,
+          "rows_padded": 7872.0
+        },
+        "axis_constrained": {
+          "solver_calls": 5.0,
+          "rows_requested": 70.0,
+          "rows_padded": 320.0
+        },
+        "pose_tolerance": {
+          "solver_calls": 17.0,
+          "rows_requested": 1053.0,
+          "rows_padded": 1088.0
+        }
+      }
+    }
+  },
+  "environment": {
+    "device": "cuda:0",
+    "torch_version": "2.11.0+cu128",
+    "cuda_available": true,
+    "cuda_device_name": "NVIDIA GeForce RTX 5060 Ti",
+    "planner_joint_count": 7,
+    "backend_config": {
+      "curobo_root": "/home/zhangzhao/PycharmProjects/curobo2/curobo",
+      "robot_config": "/home/zhangzhao/Desktop/rm75-manipulation/assets/curobo_rm75_config/rm75.yml",
+      "device": "cuda:0",
+      "max_batch_size": 4,
+      "max_goalset": 4,
+      "num_ik_seeds": 32,
+      "num_trajopt_seeds": 4,
+      "position_tolerance": 0.005,
+      "orientation_tolerance": 0.05,
+      "collision_activation_distance": 0.01,
+      "self_collision_check": true,
+      "use_cuda_graph": true,
+      "warmup_planner": true,
+      "warmup_iterations": 2,
+      "enable_graph_attempt": 1,
+      "interpolation_buffer_size": 500,
+      "collision_cache_obb": 32,
+      "collision_cache_mesh": 16,
+      "multi_env": false,
+      "coarse_ik_batch_size": 64,
+      "coarse_ik_num_seeds": 32,
+      "coarse_ik_return_seeds": 32,
+      "coarse_ik_use_cuda_graph": true,
+      "isolate_graph_seed_failures": false,
+      "attachment_num_spheres": 64,
+      "attachment_surface_radius": 0.002,
+      "attachment_cache_dir": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/curobo2_attachment_spheres",
+      "grasp_linear_non_terminal_scale": 0.5,
+      "free_space_tcp_position_scale": 0.35,
+      "free_space_tcp_orientation_scale": 0.05,
+      "retreat_start_contact_max_penetration_m": 0.02,
+      "retreat_escape_contact_links": [
+        "attached_object",
+        "left_pad",
+        "right_pad"
+      ],
+      "dynamic_gripper_collision": true,
+      "gripper_collision_reference_joint_position": 0.6,
+      "gripper_collision_open_joint_position": 0.0,
+      "gripper_collision_closed_joint_position": 0.6
+    }
+  },
+  "note": "Screen-only: no MotionGen, trajectory execution, ManiSkill, or robot control was run."
+}

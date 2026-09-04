@@ -121,6 +121,7 @@ def _run_one(
     scene_path: Path,
     repetition: int,
     scene_metadata: Mapping[str, Any],
+    relation_screen_mode: str,
 ) -> dict[str, Any]:
     reset_metrics = getattr(backend, "reset_endpoint_screen_metrics", None)
     if callable(reset_metrics):
@@ -150,6 +151,7 @@ def _run_one(
         "atom_id": atom.atom_id,
         "object_id": atom.object_id,
         "repetition": repetition,
+        "relation_screen_mode": relation_screen_mode,
         "relation_found": bool(result.success and diagnostic.get("complete_relation_count", 0)),
         "failure_stage": result.failure_stage,
         "selected_grasp": result.selected_grasp,
@@ -188,6 +190,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--coarse-ik-batch-size", type=int, default=64)
     parser.add_argument("--coarse-ik-num-seeds", type=int, default=32)
     parser.add_argument("--num-ik-seeds", type=int, default=32)
+    parser.add_argument("--relation-screen-mode", choices=("eager", "lazy_place"), default="eager")
     return parser.parse_args()
 
 
@@ -219,7 +222,11 @@ def main() -> int:
             "planner_joint_count": len(planner.joint_names),
             "backend_config": asdict(config),
         }
-        coordinator = _ScreenOnlyCoordinator(backend, _UnusedExecutor())
+        coordinator = _ScreenOnlyCoordinator(
+            backend,
+            _UnusedExecutor(),
+            relation_screen_mode=args.relation_screen_mode,
+        )
         rows: list[dict[str, Any]] = []
         for plan_path in plans:
             plan = load_plan(plan_path)
@@ -238,6 +245,7 @@ def main() -> int:
                         scene_path=scene_path,
                         repetition=repetition,
                         scene_metadata=scene_metadata,
+                        relation_screen_mode=args.relation_screen_mode,
                     )
                     rows.append(row)
                     print(
@@ -273,7 +281,12 @@ def main() -> int:
 
     rows_by_task: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
     for row in rows:
-        key = (str(row["plan_id"]), str(row["atom_id"]), str(row["object_id"]))
+        key = (
+            str(row["relation_screen_mode"]),
+            str(row["plan_id"]),
+            str(row["atom_id"]),
+            str(row["object_id"]),
+        )
         rows_by_task.setdefault(key, []).append(row)
     summary = {
         "raw_jsonl": str(output),

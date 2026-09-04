@@ -390,3 +390,46 @@ Open questions for ChatGPT:
 ```
 
 Stop after C2 and wait for ChatGPT review before implementing tiered grasp screening or reducing any candidate set.
+
+---
+
+# CODEX HANDOFF — TASK 001-C
+
+State: `NEEDS_REVIEW`
+C1 commit: `862c6eb perf: account endpoint solver batches`
+C2 commit: current commit (lazy-place implementation and this handoff)
+Parent commit: `703e589`
+Changed files: `rm75_app/planning/backends/curobo2.py`,
+`rm75_app/pickplace/coordinator.py`, `tools/benchmark_grasp_relation_screen.py`,
+`tests/test_planning_contracts.py`, `benchmarks/task001/*.json`.
+
+C1 backend-native counter result (mean of 5 warm replays):
+- tennis: coarse 6 calls / 272 requested / 384 padded rows; no manifold work.
+- gluestick: coarse 11 / 604 / 704; axis 5 / 70 / 320; pose_tolerance 47 / 3008 / 3008.
+- carrot: coarse 122 / 7696 / 7808; axis 5 / 70 / 320; pose_tolerance 30 / 1872 / 1920.
+
+C2 correctness:
+- eager relation-found: 100% (15/15 warm C1 smoke samples).
+- lazy relation-found: 100% (15/15 warm C2 smoke samples).
+- feasibility recall: 100% on the three smoke tasks.
+- selected tier eager/lazy: tennis 1/1; gluestick 0/0; carrot 1/1.
+- downstream plan success: not re-run; this benchmark deliberately stops before segmented MotionGen.
+- differing selected relations: none observed in screen-only comparison.
+
+C2 performance (warm P50/P95, five repetitions/task):
+- tennis eager/lazy: 0.206/0.208 s -> 0.207/0.209 s.
+- carrot eager/lazy: 6.363/6.379 s -> 4.398/4.494 s.
+- gluestick eager/lazy: 8.851/8.994 s -> 1.694/1.694 s.
+- suite eager/lazy: 6.363/8.946 s -> 1.694/4.479 s.
+
+Solver accounting before/after:
+- gluestick pose_tolerance: 47 calls / 3008 rows -> 1 / 16 rows.
+- carrot pose_tolerance: 30 calls / 1872 rows -> 17 / 1053 rows.
+- strict coarse place/preplace screening remains after manifold resolution.
+
+Tests: `PYTHONPATH=. python -m pytest tests/test_planning_contracts.py tests/test_pickplace_coordinator.py -q` => 32 passed.
+Failures: no screen-only failure. The default Anaconda Python lacks `cuda.core`; benchmarks used `/home/zhangzhao/anaconda3/envs/curobo2/bin/python`.
+Unexpected observations: `screen_total_time_s` remains asynchronous and lower than synchronized benchmark wall time; benchmark `screen_wall_time_s` is authoritative.
+Raw log paths: `/tmp/rm75_relation_screen_benchmark/task001_c1_backend_accounting.jsonl`; `/tmp/rm75_relation_screen_benchmark/task001_c2_lazy_place.jsonl`.
+Committed summary path: `benchmarks/task001/task001_c1_backend_solver_accounting_summary.json`; `benchmarks/task001/task001_c2_lazy_place_summary.json`.
+Open questions for ChatGPT: Review the lazy cache mapping and decide whether the verified `lazy_place` mode should become the production default in a separate tiny commit. Do not start lazy grasp-tier screening until review.

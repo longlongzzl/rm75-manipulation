@@ -362,10 +362,15 @@ class PickPlaceCoordinator:
         planner: PlanningBackend,
         executor: TrajectoryExecutor,
         held_object_refiner: HeldObjectRefinementHook | None = None,
+        *,
+        relation_screen_mode: str = "eager",
     ):
+        if relation_screen_mode not in {"eager", "lazy_place"}:
+            raise ValueError("relation_screen_mode must be eager or lazy_place")
         self.planner = planner
         self.executor = executor
         self.held_object_refiner = held_object_refiner
+        self.relation_screen_mode = relation_screen_mode
         self._last_plan_failure: dict[str, Any] = {}
 
     @staticmethod
@@ -1282,14 +1287,23 @@ class PickPlaceCoordinator:
                 "enabled": bool(
                     callable(place_manifold_resolver) and place_manifold_requested
                 ),
+                "mode": self.relation_screen_mode,
                 "input_count": len(all_place_candidates),
                 "resolved_count": len(all_place_candidates),
             }
             place_manifold_input_candidates = all_place_candidates
+            lazy_place_mode = self.relation_screen_mode == "lazy_place"
+            resolved_place_by_id: dict[str, PoseCandidate] = {
+                item.candidate_id: item
+                for item in all_place_candidates
+                if not bool(item.metadata.get("continuous_place_manifold"))
+            }
+            manifold_attempted_place_ids: set[str] = set()
             if (
                 callable(place_manifold_resolver)
                 and place_manifold_requested
                 and all_place_candidates
+                and not lazy_place_mode
             ):
                 resolved_places = place_manifold_resolver(
                     all_place_candidates,
@@ -1321,12 +1335,23 @@ class PickPlaceCoordinator:
                     place_manifold_resolution["solver_diagnostics"] = (
                         manifold_diagnostics()
                     )
-            preplace_by_place_id = {
-                place.candidate_id: _place_approach_candidates(
-                    place, task.place_clearance
-                )
-                for place in all_place_candidates
-            }
+                resolved_place_by_id = {
+                    item.candidate_id: item for item in all_place_candidates
+                }
+            elif not lazy_place_mode:
+                resolved_place_by_id = {
+                    item.candidate_id: item for item in all_place_candidates
+                }
+            preplace_by_place_id = (
+                {}
+                if lazy_place_mode
+                else {
+                    place.candidate_id: _place_approach_candidates(
+                        place, task.place_clearance
+                    )
+                    for place in all_place_candidates
+                }
+            )
             all_preplace_candidates = tuple(
                 item for options in preplace_by_place_id.values() for item in options
             )
@@ -1375,6 +1400,7 @@ class PickPlaceCoordinator:
             relation_grasp_candidates: tuple[PoseCandidate, ...] = ()
             place_ready_grasps: tuple[PoseCandidate, ...] = ()
             selected_search_tier = max_tier
+            runtime_place_sources_by_grasp = dict(runtime_places_by_grasp)
             place_screen_started = time.perf_counter()
             for tier in tiers:
                 # The previous tier switches to the open gripper before
@@ -1383,11 +1409,61 @@ class PickPlaceCoordinator:
                 # keys remain valid after attach_object() closes the gripper.
                 if callable(set_gripper_collision_state):
                     set_gripper_collision_state(True)
-                cumulative_places = tuple(
+                tier_source_places = tuple(
                     item
                     for item in all_place_candidates
                     if tier_enabled(item, tier)
                 )
+                if lazy_place_mode:
+                    manifold_inputs = tuple(
+                        item
+                        for item in tier_source_places
+                        if bool(item.metadata.get("continuous_place_manifold"))
+                        and item.candidate_id not in manifold_attempted_place_ids
+                    )
+                    if manifold_inputs:
+                        manifold_attempted_place_ids.update(
+                            item.candidate_id for item in manifold_inputs
+                        )
+                        if callable(place_manifold_resolver):
+                            resolved = place_manifold_resolver(
+                                manifold_inputs,
+                                task.scene,
+                                tool_frame=task.tool_frame,
+                                ignore_object_names=contact_ignores,
+                                disable_collision_links=_CONTACT_ENDPOINT_COLLISION_LINKS,
+                            )
+                            resolved_place_by_id.update(
+                                {item.candidate_id: item for item in resolved}
+                            )
+                            place_manifold_resolution["resolved_count"] = len(
+                                resolved_place_by_id
+                            )
+                            place_manifold_resolution[
+                                "contact_endpoint_collision_links_ignored"
+                            ] = list(_CONTACT_ENDPOINT_COLLISION_LINKS)
+                        else:
+                            resolved_place_by_id.update(
+                                {item.candidate_id: item for item in manifold_inputs}
+                            )
+                    runtime_places_by_grasp = {
+                        grasp_id: tuple(
+                            resolved_place_by_id[item.candidate_id]
+                            for item in candidates
+                            if item.candidate_id in resolved_place_by_id
+                        )
+                        for grasp_id, candidates in runtime_place_sources_by_grasp.items()
+                    }
+                cumulative_places = tuple(
+                    resolved_place_by_id[item.candidate_id]
+                    for item in tier_source_places
+                    if item.candidate_id in resolved_place_by_id
+                )
+                for place in cumulative_places:
+                    preplace_by_place_id.setdefault(
+                        place.candidate_id,
+                        _place_approach_candidates(place, task.place_clearance),
+                    )
                 new_places = tuple(
                     item
                     for item in cumulative_places
@@ -1556,6 +1632,13 @@ class PickPlaceCoordinator:
                     float(collision_diagnostics.get("diagnostic_time_s", 0.0))
                     + time.perf_counter()
                     - collision_started
+                )
+            if lazy_place_mode:
+                all_place_candidates = tuple(resolved_place_by_id.values())
+                all_preplace_candidates = tuple(
+                    item
+                    for options in preplace_by_place_id.values()
+                    for item in options
                 )
             preplace_endpoint_summary = endpoint_summary(all_preplace_candidates)
             place_endpoint_summary = endpoint_summary(all_place_candidates)
