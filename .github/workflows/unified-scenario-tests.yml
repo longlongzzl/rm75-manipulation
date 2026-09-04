@@ -1,0 +1,43 @@
+name: unified-scenario-tests
+
+on:
+  push:
+    branches:
+      - chatgpt/unified-three-scenarios
+  pull_request:
+    paths:
+      - "rm75_app/scenarios/**"
+      - "tests/test_scenario_program_runner.py"
+      - "tests/test_sorting_scenario.py"
+      - "tests/test_magnetic_assembly.py"
+      - "tests/test_pusht_scenario.py"
+      - "tests/test_pickplace_program.py"
+      - ".github/workflows/unified-scenario-tests.yml"
+
+jobs:
+  pure-python-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install lightweight test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy pytest trimesh pyyaml
+      - name: Compile scenario modules
+        run: |
+          python -m compileall -q rm75_app/scenarios
+      - name: Run scenario unit tests
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/test_scenario_program_runner.py \
+            tests/test_sorting_scenario.py \
+            tests/test_magnetic_assembly.py \
+            tests/test_pusht_scenario.py \
+            tests/test_pickplace_program.py
