@@ -1,7 +1,7 @@
 """Compile and continuously replay complete pick-place manipulation programs.
 
 The existing :class:`PickPlaceCoordinator` remains the authority for candidate
-screening, attachment-aware planning, and stage construction. This module
+screening, attachment-aware planning, and stage construction.  This module
 replaces the physical executor with an in-memory recorder, allowing a complete
 multi-atom program to be planned before the real robot starts moving.
 """
@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import json
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Callable, Mapping, Protocol
 
@@ -140,11 +140,7 @@ class CompiledPickPlaceProgram:
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "atoms", tuple(self.atoms))
-        object.__setattr__(
-            self,
-            "predicted_final_scene",
-            self.predicted_final_scene.copy(),
-        )
+        object.__setattr__(self, "predicted_final_scene", self.predicted_final_scene.copy())
         object.__setattr__(self, "metadata", dict(self.metadata))
 
     @property
@@ -190,18 +186,15 @@ class CompiledPickPlaceProgram:
                 )
                 payload: dict[str, np.ndarray] = {
                     "positions": np.asarray(
-                        command.trajectory.positions,
-                        dtype=np.float64,
+                        command.trajectory.positions, dtype=np.float64
                     ),
                     "joint_names": np.asarray(
-                        command.trajectory.joint_names,
-                        dtype=np.str_,
+                        command.trajectory.joint_names, dtype=np.str_
                     ),
                 }
                 if command.trajectory.dt is not None:
                     payload["dt"] = np.asarray(
-                        command.trajectory.dt,
-                        dtype=np.float64,
+                        command.trajectory.dt, dtype=np.float64
                     )
                 np.savez_compressed(root / filename, **payload)
                 manifest_commands.append(
@@ -306,6 +299,23 @@ class PickPlaceProgramCompiler:
             atom_started = time.perf_counter()
             try:
                 task = self.task_builder(atom, predicted)
+                task_overrides: dict[str, Any] = {}
+                numeric_overrides = {
+                    "place_clearance_m": "place_clearance",
+                    "grasp_approach_offset_m": "grasp_approach_offset",
+                    "lift_height_m": "lift_height",
+                }
+                for metadata_key, task_field in numeric_overrides.items():
+                    if metadata_key in atom.metadata:
+                        task_overrides[task_field] = float(
+                            atom.metadata[metadata_key]
+                        )
+                if "max_motion_candidates" in atom.metadata:
+                    task_overrides["max_motion_candidates"] = int(
+                        atom.metadata["max_motion_candidates"]
+                    )
+                if task_overrides:
+                    task = replace(task, **task_overrides)
                 coordinator = PickPlaceCoordinator(
                     self.planner,
                     recorder,
@@ -478,9 +488,7 @@ class PickPlaceProgramExecutor:
                         active_atom = None
                     continue
                 if isinstance(command, GripperCommand):
-                    active_stage = (
-                        "gripper_close" if command.closed else "gripper_open"
-                    )
+                    active_stage = "gripper_close" if command.closed else "gripper_open"
                     self.sink.set_gripper(command.closed)
                     continue
                 active_stage = command.stage
