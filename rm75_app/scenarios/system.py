@@ -7,17 +7,15 @@ from typing import Any, Mapping, Sequence
 
 from rm75_app.orchestration.multi_object_executor import TaskSceneState
 from rm75_app.pickplace.atom_task_builder import FixedSceneAtomTaskBuilder
-from rm75_app.planning.contracts import JointConfiguration
 
 from .magnetic import (
     MagneticAssemblyFrontend,
-    MagneticAssemblyPlanner,
     MagneticAssemblySpec,
     MagneticAssemblySystem,
     MagneticInventoryItem,
     MagneticPanelSpec,
-    OpenAICompatibleStructureClient,
     PreparedMagneticProgram,
+    StrictMagneticAssemblyPlanner,
     StructureLLM,
 )
 from .pickplace_program import (
@@ -53,6 +51,10 @@ class UnifiedSystemConfig:
     max_stage_start_gap_rad: float = 0.10
     max_initial_joint_gap_rad: float = 0.12
     magnetic_max_pieces: int = 12
+
+    def __post_init__(self) -> None:
+        if not 1 <= int(self.magnetic_max_pieces) <= 12:
+            raise ValueError("magnetic_max_pieces must be in [1, 12]")
 
 
 class UnifiedManipulationSystem:
@@ -117,7 +119,7 @@ class UnifiedManipulationSystem:
         self,
         catalog: Mapping[str, MagneticPanelSpec],
     ) -> MagneticAssemblySystem:
-        planner = MagneticAssemblyPlanner(catalog)
+        planner = StrictMagneticAssemblyPlanner(catalog)
         return MagneticAssemblySystem(
             planner,
             self.motion_compiler,
