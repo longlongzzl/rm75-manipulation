@@ -12,8 +12,10 @@ from .magnetic import (
     MagneticAssemblyFrontend,
     MagneticAssemblySpec,
     MagneticAssemblySystem,
+    MagneticContactPlanningBackend,
     MagneticInventoryItem,
     MagneticPanelSpec,
+    MagneticPickPlaceTaskBuilder,
     PreparedMagneticProgram,
     StrictMagneticAssemblyPlanner,
     StructureLLM,
@@ -60,10 +62,10 @@ class UnifiedSystemConfig:
 class UnifiedManipulationSystem:
     """Share one PickPlace foundation across sorting and magnetic assembly.
 
-    Push-T deliberately remains a closed-loop scenario because the object state
-    changes continuously during contact.  It still follows the same system
-    pattern: observe reality, imagine/plan in simulation, execute one explicit
-    action program, then observe again.
+    Magnetic placement wraps the same planner/task builder with a scoped
+    multi-support contact adapter. Push-T deliberately remains closed loop
+    because object state changes continuously during contact, but still follows
+    observe -> simulate/plan -> explicit action -> observe.
     """
 
     def __init__(
@@ -102,6 +104,15 @@ class UnifiedManipulationSystem:
             self.program_executor,
         )
 
+    def _magnetic_motion_compiler(self) -> PickPlaceProgramCompiler:
+        return PickPlaceProgramCompiler(
+            MagneticContactPlanningBackend(self.planner),
+            MagneticPickPlaceTaskBuilder(self.task_builder),
+            relation_screen_mode=self.config.relation_screen_mode,
+            grasp_fallback_mode=self.config.grasp_fallback_mode,
+            max_stage_start_gap_rad=self.config.max_stage_start_gap_rad,
+        )
+
     def prepare_sorting(
         self,
         request: SortingRequest,
@@ -119,10 +130,10 @@ class UnifiedManipulationSystem:
         self,
         catalog: Mapping[str, MagneticPanelSpec],
     ) -> MagneticAssemblySystem:
-        planner = StrictMagneticAssemblyPlanner(catalog)
+        structure_planner = StrictMagneticAssemblyPlanner(catalog)
         return MagneticAssemblySystem(
-            planner,
-            self.motion_compiler,
+            structure_planner,
+            self._magnetic_motion_compiler(),
             self.program_executor,
         )
 
