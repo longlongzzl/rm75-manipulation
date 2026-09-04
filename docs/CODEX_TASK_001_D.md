@@ -554,3 +554,16 @@ Active mode diagnostics: `lazy_place`
 New exceptions/regressions: none
 D2 summary path: `benchmarks/task001/task001_d2_default_switch_summary.json`
 Raw logs: `/tmp/rm75_relation_screen_benchmark/d2_default_smoke_lazy.jsonl`, `/tmp/rm75_relation_screen_benchmark/d2_full_chain_lazy.jsonl`
+
+# E0 handoff
+
+E0 commit: pending
+Full tests: 128 passed in 24.68s
+Six failure cases reproduced: yes, 3/3 each
+Per-case deepest stage: current table, generated 00/02/03 = grasp; generated 05/06 = lift.
+Failure clusters: four grasp contact-line `linear_planner_failed` cases; two post-grasp lift cases with `linear_failed (unknown)`.
+Common planner statuses: `linear_planner_failed`, `linear_failed (unknown)`.
+Diagnostics instrumentation added: no; existing `candidate_failures` were sufficient and are retained in the raw JSONL.
+E0 summary path: `benchmarks/task001/task001_e0_full_chain_failure_diagnosis.json`
+Raw logs: `/tmp/rm75_relation_screen_benchmark/e0_failures.jsonl`
+Recommended E1 fix order: diagnose/fix grasp contact-line cluster first, then attached-object lift; no fix in E0.

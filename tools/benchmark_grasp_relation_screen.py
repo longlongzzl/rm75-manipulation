@@ -169,6 +169,7 @@ def _run_one(
         "failure_stage": result.failure_stage,
         "executed_stage_names": list(executor.stage_names),
         "segmented_plan_time_s": dict(result.diagnostics.get("timing") or {}).get("segmented_plan_time_s"),
+        "candidate_failures": list(result.diagnostics.get("candidate_failures") or ()),
         "selected_grasp": result.selected_grasp,
         "selected_place": result.selected_place,
         "candidate_build_wall_time_s": candidate_build_wall_time_s,

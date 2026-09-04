@@ -1,0 +1,21 @@
+{
+  "production_default": "lazy_place",
+  "failure_case_count": 6,
+  "repetitions_per_case": 3,
+  "raw_jsonl": "/tmp/rm75_relation_screen_benchmark/e0_failures.jsonl",
+  "full_tests": "128 passed in 24.68s",
+  "per_case": [
+    {"case_id":"current_table_gluestick","reproduction_rate":"3/3","deepest_failure_stage":"grasp","status":"linear_planner_failed","candidate_failure_count":24},
+    {"case_id":"generated_00","reproduction_rate":"3/3","deepest_failure_stage":"grasp","status":"linear_planner_failed","candidate_failure_count":24},
+    {"case_id":"generated_02","reproduction_rate":"3/3","deepest_failure_stage":"grasp","status":"linear_planner_failed","candidate_failure_count":24},
+    {"case_id":"generated_03","reproduction_rate":"3/3","deepest_failure_stage":"grasp","status":"linear_planner_failed","candidate_failure_count":24},
+    {"case_id":"generated_05","reproduction_rate":"3/3","deepest_failure_stage":"lift","statuses":["linear_planner_failed","linear_failed (unknown)"],"candidate_failure_count":30},
+    {"case_id":"generated_06","reproduction_rate":"3/3","deepest_failure_stage":"lift","statuses":["linear_planner_failed","linear_failed (unknown)"],"candidate_failure_count":33}
+  ],
+  "failure_clusters":[
+    {"name":"grasp_contact_line","case_ids":["current_table_gluestick","generated_00","generated_02","generated_03"],"shared_evidence":"all attempts terminate at grasp with linear_planner_failed; collision diagnostics are empty"},
+    {"name":"post_grasp_lift","case_ids":["generated_05","generated_06"],"shared_evidence":"some grasp attempts pass, but deepest reached stage is lift with linear_failed (unknown)"}
+  ],
+  "next_fix_recommendation_by_cluster":"E1 should separately investigate linear grasp contact planning for cluster A and attached-object lift planning for cluster B; no fix was made in E0.",
+  "diagnostics_instrumentation_added": false
+}
