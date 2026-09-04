@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import numpy as np
 
-from rm75_app.scenarios.pusht import PoseMatrixPushTTracker, PoseMatrixSample
+from rm75_app.scenarios.pusht import (
+    PoseMatrixPushTTracker,
+    PoseMatrixSample,
+    wrap_angle,
+)
 
 
 def _pose(x: float, y: float, yaw: float) -> np.ndarray:
@@ -56,8 +60,11 @@ def test_pose_matrix_tracker_smooths_yaw_across_pi_without_large_jump() -> None:
     first = tracker.observe()
     second = tracker.observe()
 
-    assert abs(second.state.pose.yaw - first.state.pose.yaw) < np.deg2rad(2.0)
-    assert abs(second.state.angular_velocity) < np.deg2rad(2.0)
+    circular_delta = wrap_angle(
+        second.state.pose.yaw - first.state.pose.yaw
+    )
+    assert abs(circular_delta) <= np.deg2rad(1.01)
+    assert abs(second.state.angular_velocity) <= np.deg2rad(1.01)
 
 
 def test_pose_matrix_tracker_rejects_stale_timestamp() -> None:
