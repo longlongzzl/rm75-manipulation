@@ -982,6 +982,7 @@ class Curobo2Backend:
                         0,
                         tuple(request.current.names),
                         end_tstep=last_tsteps[0],
+                        dt=self._interpolation_dt(planner, raw.interpolated_trajectory),
                     )
                     frozen_goal = None
                     if goal_states_for_diagnostics is not None:
@@ -1129,6 +1130,7 @@ class Curobo2Backend:
                     result_index,
                     tuple(request.current.names),
                     end_tstep=last_tsteps[result_index],
+                    dt=self._interpolation_dt(planner, raw.interpolated_trajectory),
                 )
             if bool(success[index]):
                 status = "success"
@@ -1213,6 +1215,7 @@ class Curobo2Backend:
                 winner,
                 tuple(current.names),
                 end_tstep=last_tsteps[winner],
+                dt=self._interpolation_dt(planner, raw.interpolated_trajectory),
             )
         return CandidatePlan(
             candidate_id,
@@ -2019,12 +2022,31 @@ class Curobo2Backend:
         return current, goals
 
     @staticmethod
+    def _interpolation_dt(planner: Any, interpolated_state: Any) -> float | None:
+        """Use solver timing only for interpolated paths, never raw knots.
+
+        A missing interpolated state has unknown timing at this boundary. Do
+        not substitute interpolation_dt for optimized knot spacing.
+        """
+        if interpolated_state is None:
+            return None
+        config = getattr(getattr(planner, "trajopt_solver", None), "config", None)
+        value = getattr(config, "interpolation_dt", None)
+        if value is None:
+            return None
+        dt = float(value)
+        if not np.isfinite(dt) or dt <= 0:
+            raise ValueError("cuRobo interpolation_dt must be finite and positive")
+        return dt
+
+    @staticmethod
     def _trajectory_for_candidate(
         state: Any,
         index: int,
         active_joint_names: tuple[str, ...],
         *,
         end_tstep: int | float | None = None,
+        dt: float | None = None,
     ) -> JointTrajectory | None:
         if state is None:
             return None
@@ -2042,7 +2064,7 @@ class Curobo2Backend:
         if names != active_joint_names:
             indices = [names.index(name) for name in active_joint_names]
             path = path[:, indices]
-        return JointTrajectory(active_joint_names, path)
+        return JointTrajectory(active_joint_names, path, dt=dt)
 
     def _collision_diagnostics_for_states(
         self,
@@ -2385,6 +2407,7 @@ class Curobo2Backend:
             grasp_state,
             winner,
             tuple(planning.current.names),
+            dt=self._interpolation_dt(planner, raw.interpolated_trajectory),
         )
         lift = None
         if request.plan_lift:
@@ -2442,7 +2465,8 @@ class Curobo2Backend:
             lift_success = raw_lift.success.reshape(planner.batch_size, -1).any(dim=-1)
             lift_winner = int(lift_success.nonzero().reshape(-1)[0].item())
             lift = self._trajectory_for_candidate(
-                lift_raw_state, lift_winner, tuple(planning.current.names)
+                lift_raw_state, lift_winner, tuple(planning.current.names),
+                dt=self._interpolation_dt(planner, raw_lift.interpolated_trajectory),
             )
         return GraspCandidatePlan(
             candidate_id=candidate.candidate_id,
@@ -2777,6 +2801,7 @@ class Curobo2Backend:
                         winner_indices[index],
                         tuple(request.current.names),
                         end_tstep=last_tsteps[winner_indices[index]],
+                        dt=self._interpolation_dt(planner, raw.interpolated_trajectory),
                     )
                     if bool(raw_success[winner_indices[index]])
                     else None
@@ -3017,13 +3042,18 @@ class Curobo2Backend:
                 candidate_id=candidate.candidate_id,
                 success=bool(success[index]),
                 approach=self._trajectory_for_candidate(
-                    approach_state, winner_indices[index], names
+                    approach_state, winner_indices[index], names,
+                    dt=self._interpolation_dt(planner, raw.approach_interpolated_trajectory),
                 ),
                 grasp=self._trajectory_for_candidate(
-                    grasp_state, winner_indices[index], names
+                    grasp_state, winner_indices[index], names,
+                    dt=self._interpolation_dt(planner, raw.grasp_interpolated_trajectory),
                 ),
                 lift=(
-                    self._trajectory_for_candidate(lift_state, winner_indices[index], names)
+                    self._trajectory_for_candidate(
+                        lift_state, winner_indices[index], names,
+                        dt=self._interpolation_dt(planner, raw.lift_interpolated_trajectory),
+                    )
                     if request.plan_lift else None
                 ),
                 status=self._official_grasp_status(
@@ -3045,6 +3075,7 @@ class Curobo2Backend:
                     approach_state,
                     int(feasible_approach[0]),
                     names,
+                    dt=self._interpolation_dt(planner, raw.approach_interpolated_trajectory),
                 )
                 if approach is not None:
                     fresh_retry = self._fresh_linear_grasp_retry(

@@ -1,0 +1,32 @@
+{
+  "state": "OFFLINE_VERIFIED",
+  "scope": "Planner timing export and opt-in simulator resampling; not physics replay",
+  "parent_commit": "1ca0621",
+  "full_tests": {"passed": 185, "failed": 0, "skipped": 0, "wall_s": 21.69},
+  "fixed_curobo_regression": {
+    "success": true,
+    "total_wall_s": 10.072111861009034,
+    "initial_gap_rad": 1.1920928955078125e-7,
+    "max_inter_stage_gap_rad": 2.384185791015625e-7,
+    "dt_s": 0.025,
+    "dt_source": "planner.trajopt_solver.config.interpolation_dt for interpolated states only",
+    "stage_points": [61, 41, 21, 41, 21, 21],
+    "stage_order": ["approach", "grasp", "lift", "preplace", "place", "retreat"],
+    "stage_durations_s": [1.5, 1.0, 0.5, 1.0, 0.5, 0.5],
+    "motion_duration_s": 5.0,
+    "raw_directory": "/tmp/rm75_u1_sorting_timed_001",
+    "log": "/tmp/rm75_u1_sorting_timed_001.log"
+  },
+  "resampler": {
+    "opt_in": "control_dt constructor argument",
+    "requires_explicit_dt": true,
+    "vector_dt_contract": "N-1 positive intervals for N positions",
+    "terminal_rounding": "at most one control tick",
+    "uses_legacy_downsample_cap": false
+  },
+  "test_log": "/tmp/rm75_u1_timing_resample_full_tests.log",
+  "sim_state": "PROPOSED",
+  "remaining": ["Connect timed mode using actual simulator control rate", "Replace legacy replay initial-qpos teleport with start-state validation", "Measure physical outcomes, contacts and idle gaps", "20 measured sorting snapshots remain outstanding"],
+  "physical_commands": 0,
+  "physics_identification_enabled": false
+}

@@ -21,6 +21,31 @@ def downsample_joint_path(positions: np.ndarray, max_points: int) -> np.ndarray:
     return path[indices]
 
 
+def sample_timed_joint_path(trajectory: JointTrajectory, control_dt: float) -> np.ndarray:
+    """Targets at simulator ticks, with at most one tick of terminal hold.
+
+    Scalar dt is uniform sample spacing; a vector has one interval per adjacent
+    pair. The t=0 point is the validated initial state, not an extra held tick.
+    """
+    if not np.isfinite(control_dt) or control_dt <= 0:
+        raise ValueError("control_dt must be finite and positive")
+    path = trajectory.positions
+    if len(path) < 2 or trajectory.dt is None:
+        raise ValueError("timed replay requires at least two points and explicit dt")
+    intervals = np.asarray(trajectory.dt, dtype=np.float64)
+    if intervals.ndim == 0:
+        intervals = np.full(len(path) - 1, float(intervals))
+    if intervals.shape != (len(path) - 1,):
+        raise ValueError("dt vector must have one interval per adjacent point pair")
+    if not np.all(np.isfinite(intervals)) or np.any(intervals <= 0):
+        raise ValueError("trajectory dt must be finite and positive")
+    times = np.concatenate(([0.0], np.cumsum(intervals)))
+    count = max(1, int(np.ceil(times[-1] / control_dt - 1e-10)))
+    ticks = np.minimum(np.arange(1, count + 1) * control_dt, times[-1])
+    return np.column_stack([np.interp(ticks, times, path[:, j])
+                            for j in range(path.shape[1])])
+
+
 class RecordingTrajectoryExecutor:
     """Headless executor that also emits portable per-stage trajectory arrays.
 
@@ -121,12 +146,16 @@ class ManiSkillTrajectoryExecutor:
         gripper_closed: float = 1.0,
         gripper_steps: int = 20,
         max_path_points: int = 400,
+        control_dt: float | None = None,
     ):
         self.demo = demo
         self.gripper_open = float(gripper_open)
         self.gripper_closed = float(gripper_closed)
         self.gripper_steps = int(gripper_steps)
         self.max_path_points = int(max_path_points)
+        if control_dt is not None and (not np.isfinite(control_dt) or control_dt <= 0):
+            raise ValueError("control_dt must be finite and positive")
+        self.control_dt = control_dt
         self._gripper_value = self.gripper_open
         self.last_contact_summary: list[dict[str, Any]] = []
 
@@ -156,7 +185,12 @@ class ManiSkillTrajectoryExecutor:
 
     def execute_trajectory(self, stage: str, trajectory: JointTrajectory) -> None:
         contacts: dict[tuple[str, str], dict[str, Any]] = {}
-        for position in downsample_joint_path(trajectory.positions, self.max_path_points):
+        positions = (
+            downsample_joint_path(trajectory.positions, self.max_path_points)
+            if self.control_dt is None
+            else sample_timed_joint_path(trajectory, self.control_dt)
+        )
+        for position in positions:
             action = self.demo.compose_action(position, self._gripper_value)
             self.demo.step_and_render(action, tag=str(stage))
             self._record_contacts(contacts)
