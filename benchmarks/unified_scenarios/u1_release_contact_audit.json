@@ -1,0 +1,19 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "90c6b27",
+  "scope": "All reported scene contact records at 162 control-boundary observations; not every physics substep",
+  "containment_passed": true,
+  "gripper_open_observations": 20,
+  "release_contact_records": [
+    {"pair": ["gripper_Left_Support_Link", "scene-0_tennis"], "records": 24, "max_point_impulse_norm_sum_ns": 0.49064236580643866},
+    {"pair": ["gripper_Right_Support_Link", "scene-0_tennis"], "records": 15, "max_point_impulse_norm_sum_ns": 0.6829737572253253},
+    {"pair": ["scene-0_tennis", "scene-0_bitong"], "records": 2892, "max_point_impulse_norm_sum_ns": 0.018584792573861166},
+    {"pair": ["scene-0_tennis", "scene-0_table-workspace"], "records": 112, "max_point_impulse_norm_sum_ns": 0.0}
+  ],
+  "count_warning": "Multiple contact records per pair per observation; record counts are not contact-step counts or unique impacts",
+  "tests": {"passed": 209, "failed": 0, "skipped": 0, "wall_s": 18.57},
+  "raw": "/tmp/rm75_u1_contact_audit_001/maniskill_gate_result.json",
+  "log": "/tmp/rm75_u1_contact_audit_001.log",
+  "test_log": "/tmp/rm75_u1_contact_audit_tests.log",
+  "limits": ["No automatic allowed/forbidden classification", "Impulse is not force without reliable integration interval", "No full contact safety pass from containment success", "20 measured snapshots, broader programs and real stages incomplete", "Push still pending explicit destination approval"]
+}

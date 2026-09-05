@@ -61,7 +61,8 @@ class ManiSkillJointAdapter:
         limits = array(robot.get_qlimits()).reshape(-1, 2)
         excess = joint_limit_excess(qpos, limits)
         self.joint_limit_samples.append({"tag": tag, "qpos": qpos.tolist(),
-                                         "excess_rad": excess.tolist()})
+                                         "excess_rad": excess.tolist(),
+                                         "contacts": self.robot_contact_pairs(include_nonrobot=True)})
         self.observed_joint_limits = limits.tolist()
 
     def current_arm_qpos(self) -> np.ndarray:
@@ -120,22 +121,27 @@ class ManiSkillJointAdapter:
         self.observe_joint_limits(tag)
         self._render_debug_frame()
 
-    def robot_contact_pairs(self) -> list[dict[str, Any]]:
+    def robot_contact_pairs(self, *, include_nonrobot: bool = False) -> list[dict[str, Any]]:
         """Return current robot contact pairs with their aggregate impulse."""
         result = []
         for contact in self.env.unwrapped.scene.get_contacts():
             body_a = str(contact.bodies[0].entity.name)
             body_b = str(contact.bodies[1].entity.name)
-            if body_a not in self.robot_link_names and body_b not in self.robot_link_names:
+            if not include_nonrobot and body_a not in self.robot_link_names and body_b not in self.robot_link_names:
                 continue
             impulse = np.zeros(3, dtype=np.float64)
+            point_impulses = []
             for point in contact.points:
-                impulse += np.asarray(point.impulse, dtype=np.float64).reshape(3)
+                vector = np.asarray(point.impulse, dtype=np.float64).reshape(3)
+                impulse += vector
+                point_impulses.append(vector.tolist())
             result.append(
                 {
                     "body_a": body_a,
                     "body_b": body_b,
                     "impulse_ns": float(np.linalg.norm(impulse)),
+                    "point_impulses_ns": point_impulses,
+                    "point_impulse_norm_sum_ns": sum(float(np.linalg.norm(vector)) for vector in point_impulses),
                 }
             )
         return result
