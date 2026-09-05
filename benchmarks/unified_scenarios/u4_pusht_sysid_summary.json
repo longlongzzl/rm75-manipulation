@@ -1,0 +1,45 @@
+{
+  "task": "U4.2 held-out system identification sub-gate",
+  "state": "OFFLINE_VERIFIED",
+  "tested_commit": "4fab39519d042327c0e78366d8e0f474bf03d013",
+  "cases": 200,
+  "fit_transitions_per_case": 20,
+  "heldout_transitions_per_case": 20,
+  "suite_seed": 20260905,
+  "suite_sha256": "482d73e8585ba193cef6e881ac4ab99a71952032e7e22a04538112e426f2728a",
+  "nominal_prediction_error_m": {
+    "mean": 0.0033053694230883624,
+    "p50": 0.002749840003478018,
+    "p95": 0.008006109189044071,
+    "max": 0.01915831207833094
+  },
+  "fitted_prediction_error_m": {
+    "mean": 0.0015732616102482572,
+    "p50": 0.0013273373369396154,
+    "p95": 0.0036873939517574595,
+    "max": 0.011438913464511606
+  },
+  "relative_mean_error_reduction": 0.5240285097154784,
+  "improved_cases": 188,
+  "update_latency_s": {
+    "mean": 0.004324352770272526,
+    "p50": 0.004285248498490546,
+    "p95": 0.004468752792308805,
+    "max": 0.0126618569920538
+  },
+  "effective_sample_size": {
+    "mean": 96.96834368223854,
+    "p50": 106.85902388180013,
+    "p95": 129.0463410960514,
+    "max": 141.37876555808472
+  },
+  "raw_log": "/tmp/rm75_u4_sysid/raw.jsonl",
+  "manifest": "/tmp/rm75_u4_sysid/suite.json",
+  "limitations": [
+    "Synthetic noiseless transitions from the same quasi-static model family.",
+    "Held-out action seeds are disjoint from fitting; no tuning performed.",
+    "Prediction improvement is not control improvement or physical validation.",
+    "Four-controller 200-goal benchmark and recorded tracker replay remain unrun.",
+    "Friction, translation gain and efficiency are not individually identifiable from their product in this model."
+  ]
+}
