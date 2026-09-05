@@ -1,0 +1,25 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "23a5207",
+  "tests": {"passed": 223, "failed": 0, "skipped": 0, "wall_s": 19.33},
+  "physical_commands": 0,
+  "experiment": "Initialize carrot and brush at recorded pre-open poses, reset initial velocities, hold robot at environment reset; same geometry, physics parameters and other scene objects",
+  "is_trajectory_replay": false,
+  "baseline_dynamic_open_displacement_m": 0.05572170518257087,
+  "static_displacement_at_1s_m": 0.0019063838334916828,
+  "static_displacement_at_3s_m": 0.0019063838334916828,
+  "sample_count": 61,
+  "control_hz": 20,
+  "sampled_nonzero_robot_carrot_contact_records": 0,
+  "baseline_open_contact_observation": "At control-boundary samples 0-12, carrot nonzero impulses are with brush only; at 13-19 right gripper support also has nonzero impulses. Substep contacts are not excluded by these samples.",
+  "conclusion": "A pose-only static-instability explanation is insufficient: this pose settles stably in the isolated condition. Original opening dynamics, initial velocities and gripper/arm interaction remain to be isolated. No friction or target change justified by this test alone.",
+  "raw": {
+    "tests": "/tmp/rm75_u1_static_support_tests.log",
+    "source_replay": "/tmp/rm75_u1_release_boundary_replay_001/maniskill_gate_result.json",
+    "source_scene": "/tmp/rm75_u1_release_boundary_replay_001/maniskill_scene.json",
+    "static_scene": "/tmp/rm75_u1_static_carrot_support_001/static_scene.json",
+    "static_result": "/tmp/rm75_u1_static_carrot_support_001/result.json",
+    "static_log": "/tmp/rm75_u1_static_carrot_support_001.log"
+  },
+  "limitations": ["Static initial placement is not a successful robot release", "Initial velocity and robot configuration differ from original dynamic state", "Other objects keep source-scene initial poses, not full pre-open dynamic state", "Contact observations are control-step boundaries", "Original failed three-object replay retained; no SIM or REAL pass"]
+}
