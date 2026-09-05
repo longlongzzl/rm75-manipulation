@@ -53,6 +53,8 @@ from rm75_app.scenarios.sorting_io import load_sorting_request
 
 
 def _jsonable(value: Any) -> Any:
+    if isinstance(value, Path):
+        return str(value)
     if is_dataclass(value):
         return _jsonable(asdict(value))
     if isinstance(value, Mapping):

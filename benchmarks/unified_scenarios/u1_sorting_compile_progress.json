@@ -1,0 +1,40 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "76fc0ae00f2e42a97dfc51212b1ad7c825b84eff",
+  "steps": {
+    "1_new_modules": {"state": "OFFLINE_VERIFIED", "passed": 32},
+    "2_full_regression": {"state": "OFFLINE_VERIFIED", "before_passed": 163, "after_passed": 167, "failed": 0, "skipped": 0, "wall_s": 18.75},
+    "3_sorting_full_program": {"state": "OFFLINE_VERIFIED", "scope": "Real sorting compiler, program compiler, FixedSceneAtomTaskBuilder and PickPlaceCoordinator; fake planning backend only", "tests": 3, "buffer_swap_atoms": 3},
+    "4_curobo_fixed_scene": {"state": "NEEDS_REVIEW", "success": false, "failed_atom_id": "sort_01_tennis", "failure_stage": "relation_screen", "message": "no grasp relation has feasible preplace and place endpoints", "completed_atoms": 0},
+    "5_through_14": {"state": "PROPOSED", "note": "Not advanced during this ordered pass. Existing U4 synthetic experiments predate this pass; no physics identification enabled."}
+  },
+  "fixture": {
+    "request": "configs/scenarios/sorting.example.json",
+    "scene": "assets/test_scenes/current_table.json",
+    "joint_source": "planner_default_fixture",
+    "real_snapshot_suite": false,
+    "example_target_world_xyz_m": [0.42, 0.08, 0.10],
+    "support_bitong_world_xyz_m": [-0.29775434732437134, -0.28024864196777344, 0.04883897304534912],
+    "observation": "Example inside-holder target is not aligned with the scene holder. With fallback robot base x=-0.615, target base x is 1.035 m. This is an input mismatch, not evidence of a production solver regression. No target was changed to force success."
+  },
+  "curobo_diagnostic": {
+    "backend_initialization_s": 5.717855287002749,
+    "total_wall_s": 8.877185183999245,
+    "candidate_build_s": 0.36934200300311204,
+    "grasp_candidate_count": 608,
+    "pregrasp_feasible_count": 535,
+    "complete_relation_count": 0,
+    "physical_commands": 0,
+    "motion_program_exported": false
+  },
+  "raw_evidence": {
+    "frozen_inputs": "/tmp/rm75_u1_sorting_fixture_002/frozen_inputs.json",
+    "unabridged_planner_summary": "/tmp/rm75_u1_sorting_fixture_002/summary.json",
+    "gpu_log": "/tmp/rm75_u1_sorting_fixture_002.log",
+    "full_test_log": "/tmp/rm75_u1_full_tests.log",
+    "first_attempt": "/tmp/rm75_u1_sorting_fixture_001/frozen_inputs.json"
+  },
+  "failures_retained": ["Attempt 001 summary serialization failed on PosixPath; writer fixed and regression tested. Attempt 002 reran unchanged scene/request and retained relation-screen failure."],
+  "remaining_inputs": ["At least 20 frozen real snapshots with actual current joints and matching sorting requests", "Successful compiled program before ManiSkill replay"],
+  "production_policy_changes": false
+}
