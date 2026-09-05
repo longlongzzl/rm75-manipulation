@@ -1,0 +1,37 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "24754d5",
+  "fixture": "benchmarks/unified_scenarios/fixtures/sorting_historical_three_objects_generated00.json",
+  "fixture_only": true,
+  "physical_commands": 0,
+  "compile": {"success": true, "completed_atoms": 3, "trajectory_stages": 18, "wall_s": 18.70181965098891, "initial_gap_rad": 0.0, "max_inter_stage_gap_rad": 1.1920928955078125e-7},
+  "strict_physics_replay": {
+    "success": false,
+    "executed_trajectory_stages": 18,
+    "checks": [
+      {"atom": "sort_01_tennis", "status": "passed", "relation": "inside"},
+      {"atom": "sort_02_gluestick", "status": "passed", "relation": "target_pose", "position_error_m": 0.017291080755630562, "orientation_error_deg": 5.73730350554943},
+      {"atom": "sort_03_carriot", "status": "failed", "relation": "target_pose", "position_error_m": 0.13804806527449567, "orientation_error_deg": 33.14564092454395}
+    ],
+    "software_idle_p95_s": 0.0019559990119887506,
+    "software_idle_max_s": 0.0032214390084845945,
+    "joint_limit_sample_count": 464,
+    "sampled_arm_limit_excess_rad": 0.0,
+    "sampled_max_limit_excess_rad": 0.001335442066192627,
+    "max_limit_joint": "gripper_Left_Support_Joint",
+    "carrot_place_endpoint_xyz_m": [-0.1648278534412384, -0.10764437913894653, 0.07261262834072113],
+    "carrot_retreat_endpoint_xyz_m": [-0.19837811589241028, -0.17028266191482544, 0.0493931882083416],
+    "carrot_retreat_right_support_max_net_impulse_ns": 0.0052220346516921225
+  },
+  "raw": {
+    "compile": "/tmp/rm75_u1_cache_three_generated00_001/summary.json",
+    "frozen_inputs": "/tmp/rm75_u1_cache_three_generated00_001/frozen_inputs.json",
+    "program": "/tmp/rm75_u1_cache_three_generated00_001/program/execution.json",
+    "compile_log": "/tmp/rm75_u1_cache_three_generated00_001.log",
+    "replay": "/tmp/rm75_u1_cache_three_generated00_replay_001/maniskill_gate_result.json",
+    "replay_summary": "/tmp/rm75_u1_cache_three_generated00_replay_001/strict_replay_summary.json",
+    "replay_log": "/tmp/rm75_u1_cache_three_generated00_replay_001.log"
+  },
+  "next_diagnostic": "Observe the object and gripper immediately before/after opening to separate release displacement from retreat disturbance; current stage traces cannot isolate these two events",
+  "limitations": ["Not the required measured 20-scene suite", "Same three target assignments and tolerances retained; this separate scene does not replace prior failures", "Surface targets retain target_pose checks, not a separate on_top stability proof", "Limit/contact samples are control-step boundaries, not every physics substep", "Gripper limit excess and failed carrot task prevent SIM_VERIFIED; no real motion or physics identification"]
+}
