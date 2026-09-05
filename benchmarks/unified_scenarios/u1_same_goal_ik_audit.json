@@ -1,0 +1,25 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "48dceeb",
+  "collision_snapshot": {
+    "candidate_contexts": 8,
+    "sphere_shape_both": [1, 112, 4],
+    "max_sphere_parameter_difference": 0.0,
+    "native_disabled_objects": ["gluestick"],
+    "all_other_objects_enabled": true,
+    "raw": "/tmp/rm75_u1_gluestick_world_audit_001.json"
+  },
+  "same_goal_cross_check": {
+    "coarse_goals_tested": 8,
+    "coarse_successes": 0,
+    "native_successes": 0,
+    "coarse_returned_boolean_entries": 128,
+    "coarse_min_position_error_m": 0.03182811662554741,
+    "coarse_max_position_error_m": 0.06503970921039581,
+    "raw": "/tmp/rm75_u1_gluestick_same_goal_001.json"
+  },
+  "finding": "At linear planning time, the coarse solver also fails the identical native goal under matching obstacle switches. Earlier endpoint success must be compared with candidate/criteria/world state at its own invocation, not treated as a matched solver benchmark.",
+  "limits": ["Robot sphere parameter equality does not prove complete world mesh equivalence", "Coarse call uses its ordinary no-current-state mode and four returned seeds; not an exhaustive equivalence proof", "No production changes or recovered path", "Measured snapshot suite and push authorization outstanding"],
+  "tests": {"passed": 213, "failed": 0, "skipped": 0, "wall_s": 18.37},
+  "test_log": "/tmp/rm75_u1_same_goal_tests.log"
+}
