@@ -1,0 +1,17 @@
+{
+  "state": "NEEDS_REVIEW",
+  "scope": "One historical ManiSkill replay, host software idle measurement only",
+  "parent_commit": "abc27c3",
+  "tests": {"passed": 202, "failed": 0, "skipped": 0, "wall_s": 18.46},
+  "containment_passed": true,
+  "adjacent_motion_gaps": 5,
+  "software_idle_p95_s": 0.0010464530059834942,
+  "software_idle_max_s": 0.001049812010023743,
+  "p95_below_150ms": true,
+  "gripper_simulated_dwell_s": [1.0, 1.0],
+  "gripper_host_wall_s": [0.07271218100504484, 0.09110968399909325],
+  "raw": "/tmp/rm75_u1_timing_audit_001/maniskill_gate_result.json",
+  "log": "/tmp/rm75_u1_timing_audit_001.log",
+  "tests_log": "/tmp/rm75_u1_timing_audit_tests.log",
+  "limits": ["Single atom, no inter-atom idle observation", "Synchronous host simulator timings, not real robot communication latency", "Contact/limit safety audit and measured 20-scene suite still required", "No real commands; physics identification disabled; push awaiting destination approval"]
+}

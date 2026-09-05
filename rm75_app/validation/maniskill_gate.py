@@ -182,6 +182,35 @@ def write_scene_spec(plan: ManipulationPlan, output_path: str | Path) -> tuple[P
     return path, state
 
 
+def summarize_replay_timing(records: list[dict]) -> dict:
+    """Host wall-time gaps; simulator stepping time is not real robot latency."""
+    previous = None
+    excluded = 0.0
+    gaps = []
+    for record in records:
+        duration = record["end_s"] - record["start_s"]
+        if duration < 0:
+            raise ValueError("negative replay event duration")
+        if record["kind"] == "trajectory":
+            if previous is not None:
+                raw = record["start_s"] - previous["end_s"]
+                if raw < excluded - 1e-9:
+                    raise ValueError("overlapping replay timing events")
+                gaps.append({"from_stage": previous["stage"], "to_stage": record["stage"],
+                             "wall_gap_s": raw, "excluded_dwell_checkpoint_s": excluded,
+                             "software_idle_s": max(0.0, raw - excluded)})
+            previous, excluded = record, 0.0
+        elif record["kind"] in {"gripper", "checkpoint"}:
+            excluded += duration
+    idle = [row["software_idle_s"] for row in gaps]
+    return {"clock": "host perf_counter, synchronous simulator execution",
+            "adjacent_motion_gaps": gaps,
+            "software_idle_p95_s": None if not idle else float(np.percentile(idle, 95)),
+            "software_idle_max_s": None if not idle else max(idle),
+            "p95_below_150ms": None if not idle else bool(np.percentile(idle, 95) < 0.150),
+            "events": records}
+
+
 def validate_timed_replay_events(events, observed: JointConfiguration, control_dt: float) -> float:
     """Validate the entire package before the first simulated action."""
     trajectories = [event["trajectory"] for event in events if event.get("type") == "trajectory"]
@@ -292,13 +321,17 @@ def run_maniskill_gate(
         active_atom = None
         checks = []
         stage_trace = []
+        timing_records = []
         failed = False
         for event in events:
             event_type = event.get("type")
             if event_type == "atom_start":
                 active_atom = atoms[str(event["atom_id"])]
             elif event_type == "trajectory":
+                event_started = time.perf_counter()
                 motion_executor.execute_trajectory(str(event["stage"]), event["trajectory"])
+                timing_records.append({"kind": "trajectory", "stage": str(event["stage"]),
+                                       "start_s": event_started, "end_s": time.perf_counter()})
                 commanded = np.asarray(event["trajectory"].positions[-1], dtype=np.float64)
                 actual = joint_adapter.current_arm_qpos()
                 tcp_pose = joint_adapter.tcp_pose_matrix()
@@ -328,7 +361,11 @@ def run_maniskill_gate(
                         flush=True,
                     )
             elif event_type == "gripper":
+                event_started = time.perf_counter()
                 motion_executor.set_gripper(bool(event["closed"]))
+                timing_records.append({"kind": "gripper", "closed": bool(event["closed"]),
+                                       "start_s": event_started, "end_s": time.perf_counter(),
+                                       "simulated_dwell_s": motion_executor.gripper_steps / float(env.unwrapped.control_freq)})
             elif event_type == "atom_end":
                 if active_atom is None or active_atom.atom_id != str(event["atom_id"]):
                     raise ValueError("trajectory package has mismatched atom markers")
@@ -339,7 +376,10 @@ def run_maniskill_gate(
                     joint_names=joint_adapter.arm_names,
                     joint_positions=joint_adapter.current_arm_qpos(),
                 )
+                event_started = time.perf_counter()
                 validation = bridge.validate_atom(active_atom, execution, state)
+                timing_records.append({"kind": "checkpoint", "atom_id": active_atom.atom_id,
+                                       "start_s": event_started, "end_s": time.perf_counter()})
                 checks.append(
                     {
                         "atom_id": active_atom.atom_id,
@@ -378,6 +418,7 @@ def run_maniskill_gate(
                     "control_dt_s": control_dt,
                     "checks": checks,
                     "stage_trace": stage_trace,
+                    "replay_timing": summarize_replay_timing(timing_records),
                     "final_scene": state.as_dict(),
                 },
                 ensure_ascii=False,
