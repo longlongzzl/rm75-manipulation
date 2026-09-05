@@ -1,0 +1,20 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "8087ac1",
+  "production_behavior_changed": false,
+  "physical_commands": 0,
+  "tests": {"passed": 235, "failed": 0, "skipped": 0, "wall_s": 19.24},
+  "hypothesis": "Time-scaling the same joint paths reduces release-time motion and improves full-program task outcomes",
+  "invariants": ["All 18 joint-position arrays identical to source", "Joint names and gripper/atom event order unchanged", "Original gripper dwell unchanged", "No initial teleport, same strict continuity checks", "Source manifest and NPZ files untouched", "No target, geometry, friction or tolerance changes"],
+  "experiments": [
+    {"time_factor": 1, "task_success": false, "failed_atom": "sort_03_carriot", "passed_atoms": 2, "raw_dir": "/tmp/rm75_u1_release_motion_audit_001"},
+    {"time_factor": 2, "task_success": false, "failed_atom": "sort_01_tennis", "passed_atoms": 0, "executed_stages": 6, "position_error_m": 0.26405752775589497, "tennis_preopen_linear_speed_m_s": 1.139445419358898, "tennis_preopen_angular_speed_rad_s": 23.736221491239352, "max_sampled_limit_excess_rad": 0.000014134392586129252, "raw_dir": "/tmp/rm75_u1_replay_timefactor2_001"},
+    {"time_factor": 4, "task_success": false, "failed_atom": "sort_02_gluestick", "passed_atoms": 1, "executed_stages": 12, "position_error_m": 0.026452469769426626, "tennis_preopen_linear_speed_m_s": 0.27906164106157594, "tennis_preopen_angular_speed_rad_s": 8.308310924291295, "glue_preopen_linear_speed_m_s": 0.16482093867211223, "glue_preopen_angular_speed_rad_s": 6.804169539204707, "max_sampled_limit_excess_rad": 0.0013369321823120117, "raw_dir": "/tmp/rm75_u1_replay_timefactor4_001"}
+  ],
+  "conclusion": "Slower commanded trajectories do not monotonically improve held-object motion or task success. Do not enable a default time scale or relax tolerances based on these trials.",
+  "tests_log": "/tmp/rm75_u1_replay_speed_tests.log",
+  "program": "/tmp/rm75_u1_cache_three_generated00_001/program/execution.json",
+  "raw_files_in_scaled_dirs": ["diagnostic_summary.json", "maniskill_gate_result.json"],
+  "raw_log_rule": "Each raw_dir has a matching adjacent .log file",
+  "limitations": ["Retimed diagnostic, not unmodified portable-program replay", "Only one frozen synthetic distribution, not measured U1 suite", "Stop-on-failure leaves suffix unexecuted", "Timing change also changes elapsed settling/contact dynamics; does not isolate a unique cause", "No complete SIM safety gate or physical trial approval", "No physics identification enabled"]
+}
