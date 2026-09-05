@@ -1,0 +1,20 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "ce84703",
+  "production_behavior_changed": false,
+  "physical_commands": 0,
+  "tests": {"passed": 227, "failed": 0, "skipped": 0, "wall_s": 19.72},
+  "hypothesis": "Additional closed-gripper dwell at the planned endpoint before opening permits tracking/contact settling without selecting an object-specific hold policy",
+  "experiments": [
+    {"extra_steps_each_open": 5, "extra_sim_s_each_open": 0.25, "task_success": true, "passed_atoms": 3, "glue_error_m": 0.017352620345645626, "carrot_error_m": 0.0018147496301629267, "carrot_error_deg": 3.36044431576615, "max_sampled_gripper_limit_excess_rad": 0.0014987587928771973, "raw_dir": "/tmp/rm75_u1_preopen_settle_5_001"},
+    {"extra_steps_each_open": 10, "extra_sim_s_each_open": 0.5, "task_success": true, "passed_atoms": 3, "glue_error_m": 0.014603842189507856, "carrot_error_m": 0.006394637632283526, "carrot_error_deg": 3.5306177621283683, "max_sampled_gripper_limit_excess_rad": 0.0013912320137023926, "raw_dir": "/tmp/rm75_u1_preopen_settle_10_001"},
+    {"extra_steps_each_open": 20, "extra_sim_s_each_open": 1.0, "task_success": false, "passed_atoms": 1, "failed_atom": "sort_02_gluestick", "glue_error_m": 0.05027813713169626, "glue_error_deg": 17.87302196756119, "third_atom_unexecuted": true, "max_sampled_gripper_limit_excess_rad": 0.0014031529426574707, "raw_dir": "/tmp/rm75_u1_preopen_settle_20_001"}
+  ],
+  "tracking_observation": "At 0.25 and 0.5 s, maximum joint error increased during the added hold at every reached opening. Task success is not evidence of tracking convergence. At 1 s glue error also increased during hold.",
+  "conclusion": "Outcome is sensitive to dwell and not monotonically improved by longer waiting. Do not promote a fixed delay or claim a convergence gate from this single fixture.",
+  "raw_files_in_each_dir": ["diagnostic_summary.json", "maniskill_gate_result.json"],
+  "raw_log_rule": "Each raw_dir has a matching adjacent .log file",
+  "tests_log": "/tmp/rm75_u1_preopen_settle_tests.log",
+  "program": "/tmp/rm75_u1_cache_three_generated00_001/program/execution.json",
+  "limitations": ["Adds explicit simulated dwell: not original program timing", "Extra time is in diagnostic overrides; native gate simulated_dwell_s only counts original opening", "Gripper limit excess persists; no complete SIM gate", "Single synthetic fixture, not 20 measured sorting scenes", "No friction, geometry, pose tolerance or production controller changes", "No real motion or physics identification"]
+}
