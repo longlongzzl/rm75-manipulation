@@ -1842,6 +1842,10 @@ class Curobo2Backend:
                     output[str(candidate.candidate_id)] = dict(record)
                     if bool(success_cpu[index]):
                         self._pose_ik_cache[key] = selected[index]
+                    else:
+                        # A failed rescreen supersedes an earlier success,
+                        # including one obtained with relaxed contact geometry.
+                        self._pose_ik_cache.pop(key, None)
         finally:
             for params, indices, saved in suspended_link_spheres:
                 params.link_spheres[:, indices, :] = saved

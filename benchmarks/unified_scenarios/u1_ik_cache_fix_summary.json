@@ -1,0 +1,42 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "afecd6a",
+  "production_fix_applied": true,
+  "authorization": "User approved the explained failed-rescreen cache invalidation on 2026-09-06",
+  "change": "Remove the same pose/gripper-state cached IK solution when its latest endpoint screen fails; successful screens still replace the cached solution",
+  "tests": {"passed": 219, "failed": 0, "skipped": 0, "wall_s": 22.55, "new_tests": 4},
+  "new_tests_against_parent_function": {"passed": 2, "failed_as_expected": 2},
+  "frozen_full_chain": {
+    "cases": 16,
+    "repetitions_per_case_per_variant": 1,
+    "same_environment_parent_successes": 10,
+    "fixed_successes": 14,
+    "success_regressions": 0,
+    "historical_d2_successes": 10,
+    "historical_successes_retained": 10,
+    "improved_gluestick_scene_suffixes": ["00_00", "00_02", "00_03", "00_06"],
+    "remaining_failures": [
+      {"object": "gluestick", "scene": "current_table.json", "before_stage": "segmented_chain", "after_stage": "relation_screen", "before_complete_relations": 16, "after_complete_relations": 0},
+      {"object": "gluestick", "scene": "yaw_only_current_table_00_05.json", "before_stage": "segmented_chain", "after_stage": "segmented_chain", "after_failed_motion": "lift", "observation": "Start-contact diagnostics report gripper support and attached-object penetration against table; no collision exemption applied"}
+    ]
+  },
+  "environment": {"cpu_python": "3.12.7", "cpu_torch": "2.9.0+cu128", "planner_python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python", "device": "RTX 5060 Ti", "planner_torch": "2.11.0+cu128", "relation_mode": "lazy_place", "grasp_fallback_mode": "primary_only"},
+  "raw": {
+    "tests": "/tmp/rm75_u1_cache_fix_full_tests.log",
+    "red_tests": "/tmp/rm75_u1_cache_fix_red_tests.log",
+    "frozen_input_manifest": "/tmp/rm75_relation_screen_benchmark/d2_full_chain_lazy.jsonl",
+    "before": "/tmp/rm75_u1_cache_fix_parent_frozen.jsonl",
+    "after": "/tmp/rm75_u1_cache_fix_frozen.jsonl",
+    "before_summary": "/tmp/rm75_u1_cache_fix_parent_frozen_summary.json",
+    "after_summary": "/tmp/rm75_u1_cache_fix_frozen_summary.json",
+    "before_log": "/tmp/rm75_u1_cache_fix_parent_frozen.log",
+    "after_log": "/tmp/rm75_u1_cache_fix_frozen.log"
+  },
+  "limitations": [
+    "Single paired run, not a repeated statistical success-rate or latency claim",
+    "Historical frozen inputs are not the required measured 20-scene sorting suite",
+    "No ManiSkill replay or real robot motion in this change",
+    "No full U1 SIM or REAL verification; physics identification remains disabled",
+    "Targets, collision geometry, ignored objects/links, IK tolerances and production screening strategy unchanged"
+  ]
+}
