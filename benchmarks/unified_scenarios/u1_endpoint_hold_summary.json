@@ -1,0 +1,11 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "06b9811",
+  "hypothesis": "Holding measured joints during gripper dwell freezes tracking error; strict replay should preserve commanded endpoint",
+  "same_compiled_program": "/tmp/rm75_u1_sim_start_compile_001/program/execution.json",
+  "before": {"raw": "/tmp/rm75_u1_strict_replay_003", "success": false, "position_error_m": 0.1241348161951144},
+  "after": {"raw": "/tmp/rm75_u1_strict_replay_004", "success": false, "position_error_m": 0.06099666199328739, "final_object_xyz_m": [-0.29893359541893005, -0.2816120684146881, 0.042384073138237]},
+  "full_tests": {"passed": 192, "failed": 0, "skipped": 0, "wall_s": 18.41},
+  "test_log": "/tmp/rm75_u1_endpoint_hold_tests.log",
+  "caveats": ["Single deterministic fixture, not statistical validation", "Existing target_pose criterion still fails", "Sorting compiler does not preserve historical inside success relation; inspect semantics and observed holder geometry before any pass claim", "No real robot commands or collision/tolerance changes", "Push pending explicit destination approval"]
+}

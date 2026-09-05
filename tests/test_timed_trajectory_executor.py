@@ -40,3 +40,22 @@ def test_timed_execution_ignores_legacy_downsampling_cap():
     executor.execute_trajectory("move", JointTrajectory(("j",), np.array([[0], [1]]), dt=1.0))
     assert len(actions) == 20
     np.testing.assert_allclose(actions[-1], [1])
+
+
+def test_timed_gripper_holds_commanded_endpoint_not_observed_tracking_error():
+    actions = []
+    class Sink:
+        def compose_action(self, positions, gripper):
+            return (np.asarray(positions).copy(), gripper)
+        def step_and_render(self, action, tag):
+            actions.append((action, tag))
+        def hold_current_and_set_gripper(self, *args, **kwargs):
+            pytest.fail("must not freeze the observed tracking error")
+    executor = ManiSkillTrajectoryExecutor(Sink(), control_dt=0.05, gripper_steps=3)
+    executor.execute_trajectory("move", JointTrajectory(("j",), np.array([[0], [1]]), dt=0.1))
+    executor.set_gripper(True)
+    executor.set_gripper(False)
+    assert len(actions) == 8
+    for (position, gripper), tag in actions[2:]:
+        np.testing.assert_array_equal(position, [1])
+        assert gripper == (1 if tag == "gripper_close" else -1)
