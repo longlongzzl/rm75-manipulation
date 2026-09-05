@@ -1,0 +1,18 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "000bf93",
+  "finding": "Axis-resolution success cache survives later full-gripper IK failure; feasible_pose_candidate_ids checks cache presence rather than latest failed screen",
+  "production_baseline": {"failed_linear_candidates": 8, "cache_present_latest_screen_false": 8, "complete_relations": 16, "failure_stage": "segmented_chain"},
+  "diagnostic_invalidation": {"complete_relations": 0, "linear_calls": 0, "success": false, "failure_stage": "relation_screen"},
+  "known_success_control": {"object": "tennis", "success": true, "linear_calls": 3},
+  "production_fix_applied": false,
+  "tests": {"passed": 215, "failed": 0, "skipped": 0, "wall_s": 18.74},
+  "raw": {
+    "candidate_trace": "/tmp/rm75_u1_gluestick_candidate_trace_001.json",
+    "baseline": "/tmp/rm75_u1_gluestick_cache_baseline_001.json",
+    "diagnostic": "/tmp/rm75_u1_gluestick_stale_cache_001.json",
+    "success_control": "/tmp/rm75_u1_tennis_stale_cache_control_001.json",
+    "tests": "/tmp/rm75_u1_stale_cache_final_tests.log"
+  },
+  "limits": ["Correcting false feasibility does not make gluestick reachable", "Diagnostic-only cache eviction, production lazy_place unchanged per task restriction", "One successful control is not the complete frozen regression suite", "Production fix approval, measured snapshots and push authorization outstanding"]
+}

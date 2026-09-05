@@ -48,3 +48,20 @@ def test_trace_retains_result_metric_fields_without_reinterpreting_them(monkeypa
         assert owner.solve() is result
     assert rows[0]["position_error"] == 0.04
     assert rows[0]["position_tolerance"] == 0.0
+
+
+@pytest.mark.parametrize("enabled", [False, True])
+def test_failed_rescreen_cache_eviction_is_diagnostic_only(monkeypatch, enabled):
+    from types import SimpleNamespace
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1] / "tools"))
+    from diagnose_linear_solver import TracedBackend, Curobo2Backend
+    monkeypatch.setattr(Curobo2Backend, "_prepare_pose_candidates_with_solver",
+                        lambda self, candidates, **kwargs: {"grasp_a": {"success": False}})
+    backend = TracedBackend.__new__(TracedBackend)
+    backend.reject_stale_cache = enabled
+    backend.screen_trace = []
+    backend._pose_ik_cache = {"grasp_a": object()}
+    backend._pose_cache_key = lambda candidate: candidate.candidate_id
+    candidate = SimpleNamespace(candidate_id="grasp_a", pose=SimpleNamespace(as_curobo_list=lambda: [0]*7))
+    backend._prepare_pose_candidates_with_solver((candidate,))
+    assert ("grasp_a" in backend._pose_ik_cache) is (not enabled)
