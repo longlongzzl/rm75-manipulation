@@ -1,0 +1,29 @@
+{
+  "state": "CUROBO_VERIFIED",
+  "scope": "One historical tennis target through the actual sorting/full-program pipeline, planner-default fixture joints only",
+  "parent_commit": "206bd07",
+  "request": "benchmarks/unified_scenarios/fixtures/sorting_historical_tennis.json",
+  "success": true,
+  "completed_atoms": 1,
+  "total_wall_s": 9.82207871900755,
+  "initial_gap_rad": 1.1920928955078125e-7,
+  "max_inter_stage_gap_rad": 2.384185791015625e-7,
+  "stage_points": {"approach": 61, "grasp": 41, "lift": 21, "preplace": 41, "place": 21, "retreat": 21},
+  "portable_events_loaded": 10,
+  "trajectory_dt": "All six trajectories have dt=None; time-preserving SIM gate not satisfied",
+  "tests": {"focused_passed": 7, "full_passed": 170, "failed": 0, "skipped": 0, "full_wall_s": 19.16},
+  "raw": {
+    "summary": "/tmp/rm75_u1_sorting_historical_001/summary.json",
+    "inputs": "/tmp/rm75_u1_sorting_historical_001/frozen_inputs.json",
+    "program": "/tmp/rm75_u1_sorting_historical_001/program/execution.json",
+    "log": "/tmp/rm75_u1_sorting_historical_001.log",
+    "tests": "/tmp/rm75_u1_portable_full_tests.log"
+  },
+  "limits": [
+    "Independent historical regression, not a replacement for failed example",
+    "Not the required multi-object real-snapshot distribution",
+    "No physics replay or physical commands",
+    "ManiSkill/SAPIEN import succeeds in realman Python 3.11.14; not SIM verification",
+    "Existing backend drops timing and existing ManiSkill executor ignores dt; fix/test before timing-faithful replay"
+  ]
+}

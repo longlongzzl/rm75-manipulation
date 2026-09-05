@@ -20,8 +20,12 @@ DEFAULT_EXTRA_MANISKILL_ROOT = "/home/zhangzhao/anaconda3/envs/realman/lib/pytho
 def load_replay_events(manifest_path: str | Path) -> list[dict[str, Any]]:
     manifest = Path(manifest_path).expanduser().resolve()
     events = json.loads(manifest.read_text(encoding="utf-8"))
+    if isinstance(events, dict):
+        if events.get("schema") != "rm75.compiled_pickplace_program/v1":
+            raise ValueError("unsupported execution manifest schema")
+        events = events.get("commands")
     if not isinstance(events, list):
-        raise ValueError("execution manifest must contain a list")
+        raise ValueError("execution manifest must contain a command list")
     loaded: list[dict[str, Any]] = []
     for event in events:
         item = dict(event)

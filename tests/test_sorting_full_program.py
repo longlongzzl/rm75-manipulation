@@ -13,6 +13,7 @@ from rm75_app.pickplace.atom_task_builder import FixedSceneAtomTaskBuilder
 from rm75_app.planning.contracts import JointConfiguration
 from rm75_app.scenarios.pickplace_program import TrajectoryCommand, GripperCommand
 from rm75_app.scenarios.system import UnifiedManipulationSystem
+from rm75_app.runtime.curobo2_sim_replay import load_replay_events
 
 
 @pytest.mark.parametrize("fail_atom", [None, 2])
@@ -76,6 +77,10 @@ def test_sorting_real_compilers_buffer_swap(tmp_path, fail_atom):
         assert previous.joint_names == following.joint_names
         np.testing.assert_allclose(previous.positions[-1], following.positions[0])
     manifest = json.loads(program.export(tmp_path).read_text())
+    replay_events = load_replay_events(tmp_path / "execution.json")
+    assert len(replay_events) == len(program.commands)
+    assert sum(e["type"] == "atom_start" for e in replay_events) == 3
+    assert sum(e["type"] == "atom_end" for e in replay_events) == 3
     exported = [c for c in manifest["commands"] if c["type"] == "trajectory"]
     assert len(exported) == len(trajectories)
     for entry, trajectory in zip(exported, trajectories):
