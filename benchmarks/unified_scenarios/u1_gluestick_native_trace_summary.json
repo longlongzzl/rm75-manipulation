@@ -1,0 +1,22 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "c056b68",
+  "single_atom_control": {
+    "success": false, "failure_stage": "segmented_chain", "grasp_failures": 8,
+    "complete_endpoint_relations": 16, "executed_stages": [],
+    "raw": "/tmp/rm75_u1_gluestick_control_001.jsonl"
+  },
+  "native_trace": {
+    "success": false, "linear_candidates": 8, "ik_calls": 24,
+    "ik_success_count_each_call": 0, "ik_boolean_result_count_each_call": 16,
+    "graph_seed_calls_observed": 0, "trajectory_optimizer_calls_observed": 0,
+    "raw": "/tmp/rm75_u1_gluestick_native_trace_001.json"
+  },
+  "finding": "Observed linear planning attempts fail before graph/trajopt because native MotionGen goal IK returns no successful result. Coarse endpoint feasibility uses a different path and is not sufficient.",
+  "not_proven": "Why native IK disagrees with endpoint screening; no claim of impossibility or solver regression",
+  "tests": {"passed": 212, "failed": 0, "skipped": 0, "wall_s": 18.82},
+  "test_log": "/tmp/rm75_u1_native_trace_tests.log",
+  "physical_commands": 0,
+  "production_planning_changes": false,
+  "push": "Pending explicit destination approval"
+}
