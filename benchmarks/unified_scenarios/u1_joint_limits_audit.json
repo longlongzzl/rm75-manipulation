@@ -1,0 +1,20 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "90edc12",
+  "scope": "Actual joint-limit measurements at control-step boundaries in one historical replay",
+  "samples": 162,
+  "arm_max_excess_rad": 0.0,
+  "all_joint_max_excess_rad": 0.000010003612260334194,
+  "nonzero_excess": {
+    "gripper_Right_1_Joint": 1.5022899590988459e-9,
+    "gripper_Left_Support_Joint": 0.000010003612260334194,
+    "gripper_Right_Support_Joint": 1.1920928955078125e-7
+  },
+  "containment_passed": true,
+  "joint_limit_safety_pass_claimed": false,
+  "tests": {"passed": 207, "failed": 0, "skipped": 0, "wall_s": 18.49},
+  "raw": "/tmp/rm75_u1_limits_audit_001/maniskill_gate_result.json",
+  "log": "/tmp/rm75_u1_limits_audit_001.log",
+  "test_log": "/tmp/rm75_u1_limits_audit_tests.log",
+  "limits": ["Not every physics substep; sample coverage does not prove continuous compliance", "No numerical slack added; small simulated gripper overrun retained for review", "Task containment success is not a joint-limit or contact safety pass", "Measured 20-scene suite and real gates remain incomplete", "Push awaits explicit destination approval"]
+}

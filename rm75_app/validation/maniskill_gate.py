@@ -20,6 +20,18 @@ from rm75_app.tasks.manipulation_plan import ManipulationPlan
 from rm75_app.validation.contracts import GateResult, GateStatus
 
 
+def joint_limit_excess(qpos: np.ndarray, limits: np.ndarray) -> np.ndarray:
+    qpos = np.asarray(qpos, dtype=np.float64)
+    limits = np.asarray(limits, dtype=np.float64)
+    if qpos.ndim != 1 or limits.shape != (len(qpos), 2):
+        raise ValueError("joint limit audit shape mismatch")
+    if not np.all(np.isfinite(qpos)) or not np.all(np.isfinite(limits)):
+        raise ValueError("non-finite joint limit audit input")
+    if np.any(limits[:, 0] > limits[:, 1]):
+        raise ValueError("reversed joint limits")
+    return np.maximum(0.0, np.maximum(limits[:, 0] - qpos, qpos - limits[:, 1]))
+
+
 class ManiSkillJointAdapter:
     def __init__(self, env: Any, *, debug_viewer: bool = False, playback_hz: float = 20.0):
         self.env = env
@@ -36,6 +48,21 @@ class ManiSkillJointAdapter:
         self.action_dim = int(np.prod(env.action_space.shape))
         self.gripper_value = -1.0
         self.robot_link_names = set(robot.links_map)
+        self.audit_joint_limits = False
+        self.joint_limit_samples: list[dict] = []
+
+    def observe_joint_limits(self, tag: str) -> None:
+        if not self.audit_joint_limits:
+            return
+        robot = self.env.unwrapped.agent.robot
+        def array(value):
+            return np.asarray(value.detach().cpu().numpy() if hasattr(value, "detach") else value, dtype=np.float64)
+        qpos = array(robot.get_qpos()).reshape(-1)
+        limits = array(robot.get_qlimits()).reshape(-1, 2)
+        excess = joint_limit_excess(qpos, limits)
+        self.joint_limit_samples.append({"tag": tag, "qpos": qpos.tolist(),
+                                         "excess_rad": excess.tolist()})
+        self.observed_joint_limits = limits.tolist()
 
     def current_arm_qpos(self) -> np.ndarray:
         qpos = self.env.unwrapped.agent.robot.get_qpos()
@@ -89,8 +116,8 @@ class ManiSkillJointAdapter:
         return action
 
     def step_and_render(self, action: np.ndarray, tag: str = "") -> None:
-        del tag
         self.env.step(action)
+        self.observe_joint_limits(tag)
         self._render_debug_frame()
 
     def robot_contact_pairs(self) -> list[dict[str, Any]]:
@@ -117,9 +144,11 @@ class ManiSkillJointAdapter:
         action = self.compose_action(self.current_arm_qpos(), value)
         for _ in range(int(steps)):
             self.env.step(action)
+            self.observe_joint_limits("gripper_legacy")
             self._render_debug_frame()
 
     def hold_action(self) -> np.ndarray:
+        self.observe_joint_limits("checkpoint_before_step")
         return self.compose_action(self.current_arm_qpos(), self.gripper_value)
 
     def _render_debug_frame(self) -> None:
@@ -284,6 +313,8 @@ def run_maniskill_gate(
             env.unwrapped._viewer = viewer
             env.unwrapped._setup_viewer()
         joint_adapter = ManiSkillJointAdapter(env, debug_viewer=debug_viewer)
+        joint_adapter.audit_joint_limits = strict_timed_replay
+        joint_adapter.observe_joint_limits("initial")
         first_trajectory = next((item["trajectory"] for item in events if item.get("type") == "trajectory"), None)
         if first_trajectory is None:
             raise ValueError("Curobo2 package contains no trajectory")
@@ -378,6 +409,7 @@ def run_maniskill_gate(
                 )
                 event_started = time.perf_counter()
                 validation = bridge.validate_atom(active_atom, execution, state)
+                joint_adapter.observe_joint_limits("checkpoint_final")
                 timing_records.append({"kind": "checkpoint", "atom_id": active_atom.atom_id,
                                        "start_s": event_started, "end_s": time.perf_counter()})
                 checks.append(
@@ -419,6 +451,14 @@ def run_maniskill_gate(
                     "checks": checks,
                     "stage_trace": stage_trace,
                     "replay_timing": summarize_replay_timing(timing_records),
+                    "joint_limit_audit": {
+                        "scope": "control-step boundary samples, not every physics substep",
+                        "joint_names": list(joint_adapter.active_joint_names),
+                        "limits_rad": getattr(joint_adapter, "observed_joint_limits", None),
+                        "samples": joint_adapter.joint_limit_samples,
+                        "max_excess_rad": max((max(row["excess_rad"], default=0.0)
+                                               for row in joint_adapter.joint_limit_samples), default=None),
+                    },
                     "final_scene": state.as_dict(),
                 },
                 ensure_ascii=False,
