@@ -1,0 +1,1838 @@
+{
+  "task": "U0",
+  "tested_commit": "ea1c1aa971a185c9ccc3c03925db6b93a2413de6",
+  "python": "3.12.7",
+  "executable": "/home/zhangzhao/anaconda3/bin/python",
+  "libraries": {
+    "numpy": "1.26.4",
+    "scipy": "1.16.3",
+    "pytest": "7.4.4"
+  },
+  "checks": [
+    {
+      "name": "compileall",
+      "command": [
+        "/home/zhangzhao/anaconda3/bin/python",
+        "-m",
+        "compileall",
+        "-q",
+        "rm75_app/scenarios"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.029431410002871417,
+      "log": "/tmp/rm75_unified_u0/compileall.log"
+    },
+    {
+      "name": "lightweight",
+      "command": [
+        "/home/zhangzhao/anaconda3/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_scenario_program_runner.py",
+        "tests/test_sorting_scenario.py",
+        "tests/test_magnetic_assembly.py",
+        "tests/test_magnetic_pickplace_adapter.py",
+        "tests/test_pusht_scenario.py",
+        "tests/test_pickplace_program.py"
+      ],
+      "returncode": 0,
+      "elapsed_s": 1.4407310849928763,
+      "log": "/tmp/rm75_unified_u0/lightweight.log"
+    },
+    {
+      "name": "full",
+      "command": [
+        "/home/zhangzhao/anaconda3/bin/python",
+        "-m",
+        "pytest",
+        "tests",
+        "-q"
+      ],
+      "returncode": 0,
+      "elapsed_s": 21.396250975012663,
+      "log": "/tmp/rm75_unified_u0/full.log"
+    },
+    {
+      "name": "help",
+      "command": [
+        "/home/zhangzhao/anaconda3/bin/python",
+        "tools/run_unified_scenario.py",
+        "--help"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.5310501600033604,
+      "log": "/tmp/rm75_unified_u0/help.log"
+    },
+    {
+      "name": "sorting",
+      "command": [
+        "/home/zhangzhao/anaconda3/bin/python",
+        "tools/run_unified_scenario.py",
+        "sorting-compile",
+        "--request",
+        "configs/scenarios/sorting.example.json",
+        "--output",
+        "/tmp/rm75_unified_u0/sorting.json"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.5464457509951899,
+      "log": "/tmp/rm75_unified_u0/sorting.log"
+    },
+    {
+      "name": "magnetic_generate",
+      "command": [
+        "/home/zhangzhao/anaconda3/bin/python",
+        "tools/run_unified_scenario.py",
+        "magnetic-generate",
+        "--catalog",
+        "configs/scenarios/magnetic_panel_catalog.example.json",
+        "--inventory",
+        "configs/scenarios/magnetic_inventory.example.json",
+        "--description",
+        "搭一面能稳定站立的磁吸墙",
+        "--output",
+        "/tmp/rm75_unified_u0/wall.json"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.5617902780068107,
+      "log": "/tmp/rm75_unified_u0/magnetic_generate.log"
+    },
+    {
+      "name": "magnetic_validate",
+      "command": [
+        "/home/zhangzhao/anaconda3/bin/python",
+        "tools/run_unified_scenario.py",
+        "magnetic-validate",
+        "--catalog",
+        "configs/scenarios/magnetic_panel_catalog.example.json",
+        "--inventory",
+        "configs/scenarios/magnetic_inventory.example.json",
+        "--assembly",
+        "/tmp/rm75_unified_u0/wall.json",
+        "--output",
+        "/tmp/rm75_unified_u0/wall_validation.json"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.5471907869941788,
+      "log": "/tmp/rm75_unified_u0/magnetic_validate.log"
+    },
+    {
+      "name": "pusht",
+      "command": [
+        "/home/zhangzhao/anaconda3/bin/python",
+        "tools/run_unified_scenario.py",
+        "pusht-sim",
+        "--goal-x",
+        "0.08",
+        "--goal-y",
+        "0.02",
+        "--goal-yaw",
+        "0.0",
+        "--system-identification",
+        "--output",
+        "/tmp/rm75_unified_u0/pusht.json"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.976006212993525,
+      "log": "/tmp/rm75_unified_u0/pusht.log"
+    }
+  ],
+  "failures": [],
+  "calibration": "Example assets only; no physical or cuRobo validation claimed.",
+  "magnetic": {
+    "symbolic_validation": {
+      "valid": true,
+      "violations": [],
+      "topological_piece_order": [
+        "base_left",
+        "base_right",
+        "wall"
+      ],
+      "stable_piece_ids": [
+        "base_left",
+        "base_right",
+        "wall"
+      ]
+    },
+    "structure": {
+      "schema": "rm75.magnetic_assembly/v1",
+      "structure_name": "template_wall",
+      "description": "搭一面能稳定站立的磁吸墙",
+      "max_pieces": 12,
+      "anchor_pose": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "pieces": [
+        {
+          "piece_id": "base_left",
+          "object_id": "mag_01",
+          "asset_name": "mag_panel_100x60x8",
+          "role": "base",
+          "pose_class": "flat",
+          "anchor_offset_m": [
+            0.0,
+            -0.036000000000000004,
+            0.0
+          ],
+          "anchor_yaw_deg": 0.0,
+          "metadata": {}
+        },
+        {
+          "piece_id": "base_right",
+          "object_id": "mag_02",
+          "asset_name": "mag_panel_100x60x8",
+          "role": "base",
+          "pose_class": "flat",
+          "anchor_offset_m": [
+            0.0,
+            0.036000000000000004,
+            0.0
+          ],
+          "anchor_yaw_deg": 0.0,
+          "metadata": {}
+        },
+        {
+          "piece_id": "wall",
+          "object_id": "mag_03",
+          "asset_name": "mag_panel_100x60x8",
+          "role": "wall",
+          "pose_class": "vertical",
+          "anchor_offset_m": null,
+          "anchor_yaw_deg": 0.0,
+          "metadata": {}
+        }
+      ],
+      "connections": [
+        {
+          "connection_id": "slot",
+          "joint_type": "vertical_slot",
+          "child_id": "wall",
+          "parent_ids": [
+            "base_left",
+            "base_right"
+          ],
+          "parent_edges": [
+            "+y",
+            "-y"
+          ],
+          "child_edge": "-y",
+          "overlap_fraction": 0.5,
+          "gap_m": 0.002,
+          "clearance_m": 0.008,
+          "flip": false,
+          "metadata": {}
+        }
+      ],
+      "metadata": {
+        "frontend": "deterministic_template",
+        "llm_errors": []
+      }
+    },
+    "resolved_placements": [
+      {
+        "piece_id": "base_left",
+        "object_id": "mag_01",
+        "asset_name": "mag_panel_100x60x8",
+        "target_pose": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            -0.036000000000000004
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "support_ids": [],
+        "connection_id": null,
+        "clearance_m": 0.008,
+        "depends_on_piece_ids": [],
+        "diagnostics": {
+          "placement_rule": "anchor"
+        }
+      },
+      {
+        "piece_id": "base_right",
+        "object_id": "mag_02",
+        "asset_name": "mag_panel_100x60x8",
+        "target_pose": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.036000000000000004
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "support_ids": [],
+        "connection_id": null,
+        "clearance_m": 0.008,
+        "depends_on_piece_ids": [],
+        "diagnostics": {
+          "placement_rule": "anchor"
+        }
+      },
+      {
+        "piece_id": "wall",
+        "object_id": "mag_03",
+        "asset_name": "mag_panel_100x60x8",
+        "target_pose": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.036000000000000004
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "support_ids": [
+          "base_left",
+          "base_right"
+        ],
+        "connection_id": "slot",
+        "clearance_m": 0.008,
+        "depends_on_piece_ids": [
+          "base_left",
+          "base_right"
+        ],
+        "diagnostics": {
+          "placement_rule": "vertical_slot_two_supports",
+          "support_edge_separation_m": 0.01200000000000001,
+          "child_thickness_m": 0.008,
+          "slot_center": [
+            0.0,
+            0.0,
+            0.004
+          ],
+          "joint_type": "vertical_slot",
+          "overlap_fraction": 0.5,
+          "gap_m": 0.002,
+          "clearance_m": 0.008
+        }
+      }
+    ],
+    "geometry_validation": {
+      "valid": true,
+      "violations": [],
+      "diagnostics": {
+        "slot": {
+          "support_edge_separation_m": 0.01200000000000001,
+          "expected_slot_width_m": 0.012,
+          "slot_width_error_m": 1.0408340855860843e-17,
+          "support_outward_dot": -1.0,
+          "support_tangent_parallel_cosine": 1.0,
+          "support_normal_dot": 1.0,
+          "support_height_mismatch_m": 0.0,
+          "child_vertical_cosine": 1.0
+        }
+      }
+    }
+  },
+  "pusht": {
+    "success": true,
+    "goal": {
+      "pose": {
+        "x": 0.08,
+        "y": 0.02,
+        "yaw": 0.0
+      },
+      "position_tolerance_m": 0.015,
+      "yaw_tolerance_rad": 0.13962634015954636
+    },
+    "transitions": [
+      {
+        "before": {
+          "state": {
+            "pose": {
+              "x": 0.0,
+              "y": 0.0,
+              "yaw": 0.0
+            },
+            "linear_velocity_xy": [
+              0.0,
+              0.0
+            ],
+            "angular_velocity": 0.0
+          },
+          "timestamp_s": 0.0,
+          "confidence": 1.0,
+          "metadata": {
+            "source": "simulated_push_t_world"
+          }
+        },
+        "action": {
+          "contact_local_xy": [
+            -0.025,
+            0.0
+          ],
+          "direction_world_xy": [
+            0.8189205280326743,
+            0.5739069338897083
+          ],
+          "distance_m": 0.023046108429453715,
+          "speed_mps": 0.04,
+          "approach_clearance_m": 0.02
+        },
+        "after": {
+          "state": {
+            "pose": {
+              "x": 0.009605671232896634,
+              "y": 0.006731741526211107,
+              "yaw": -0.03823042986963232
+            },
+            "linear_velocity_xy": [
+              0.012504069303892008,
+              0.008762965183667683
+            ],
+            "angular_velocity": -0.043130543260834805
+          },
+          "timestamp_s": 0.5761527107363429,
+          "confidence": 1.0,
+          "metadata": {
+            "source": "simulated_push_t_world"
+          }
+        },
+        "plan": {
+          "action": {
+            "contact_local_xy": [
+              -0.025,
+              0.0
+            ],
+            "direction_world_xy": [
+              0.8189205280326743,
+              0.5739069338897083
+            ],
+            "distance_m": 0.023046108429453715,
+            "speed_mps": 0.04,
+            "approach_clearance_m": 0.02
+          },
+          "predicted_states": [
+            {
+              "pose": {
+                "x": 0.0,
+                "y": 0.0,
+                "yaw": 0.0
+              },
+              "linear_velocity_xy": [
+                0.0,
+                0.0
+              ],
+              "angular_velocity": 0.0
+            },
+            {
+              "pose": {
+                "x": 0.008968931662534164,
+                "y": 0.006285508659890293,
+                "yaw": -0.036489465007723876
+              },
+              "linear_velocity_xy": [
+                0.011675201073520373,
+                0.008182086809750315
+              ],
+              "angular_velocity": -0.041166433504596436
+            },
+            {
+              "pose": {
+                "x": 0.02665139452218801,
+                "y": 0.016413937444002036,
+                "yaw": 0.004549642518909547
+              },
+              "linear_velocity_xy": [
+                0.01528989576089485,
+                0.009131625073437923
+              ],
+              "angular_velocity": 0.010475473985883253
+            },
+            {
+              "pose": {
+                "x": 0.03579826967827224,
+                "y": 0.017278601664505386,
+                "yaw": -0.00022838032866845381
+              },
+              "linear_velocity_xy": [
+                0.01801601550401112,
+                0.0036246374435434697
+              ],
+              "angular_velocity": -0.002759252918195037
+            }
+          ],
+          "cost": 0.0057328095195319844,
+          "candidate_count": 384,
+          "horizon": 3,
+          "diagnostics": {
+            "cost_p10": 0.008004751576723618,
+            "cost_median": 0.013553467134387652,
+            "cost_p90": 0.037593943355856106,
+            "candidate_contact_count": 10,
+            "future_actions": [
+              {
+                "contact_local_xy": [
+                  -0.025,
+                  0.0
+                ],
+                "direction_world_xy": [
+                  0.8189205280326743,
+                  0.5739069338897083
+                ],
+                "distance_m": 0.023046108429453715
+              },
+              {
+                "contact_local_xy": [
+                  -0.08,
+                  -0.06
+                ],
+                "direction_world_xy": [
+                  0.8677318693936704,
+                  0.4970325973601391
+                ],
+                "distance_m": 0.04288010597853549
+              },
+              {
+                "contact_local_xy": [
+                  -0.025,
+                  0.0
+                ],
+                "direction_world_xy": [
+                  0.9955616591848337,
+                  0.09411154425011242
+                ],
+                "distance_m": 0.019333177237641046
+              }
+            ]
+          }
+        },
+        "parameter_estimate": {
+          "friction": 0.4666666666666667,
+          "translation_gain": 0.82,
+          "rotation_gain": 3.0666666666666664,
+          "linear_damping": 0.25,
+          "angular_damping": 0.3499999999999999,
+          "contact_efficiency": 0.8499999999999999,
+          "anisotropy": 0.0
+        },
+        "execution_diagnostics": {
+          "source": "simulated_push_t_world",
+          "true_parameters": {
+            "friction": 0.45,
+            "translation_gain": 0.82,
+            "rotation_gain": 3.0,
+            "linear_damping": 0.25,
+            "angular_damping": 0.35,
+            "contact_efficiency": 0.9,
+            "anisotropy": 0.0
+          },
+          "true_before": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "true_after": [
+            0.009605671232896634,
+            0.006731741526211107,
+            -0.03823042986963232
+          ],
+          "step_index": 0,
+          "position_error_before_m": 0.08246211251235322,
+          "position_error_after_m": 0.07163384818295265,
+          "progress_m": 0.010828264329400566,
+          "consecutive_stalls": 0,
+          "system_identification": {
+            "update_count": 1,
+            "observation_confidence": 1.0,
+            "sigma_m": 0.012,
+            "best_index": 25,
+            "best_weight": 0.00630847292265617,
+            "best_error_m": 6.374324064141287e-05,
+            "weighted_error_m": 0.0021354843905251166,
+            "effective_sample_size": 161.91413784631078,
+            "best_parameters": {
+              "friction": 0.25,
+              "translation_gain": 0.82,
+              "rotation_gain": 3.0,
+              "linear_damping": 0.25,
+              "angular_damping": 0.35,
+              "contact_efficiency": 0.78,
+              "anisotropy": 0.0
+            }
+          }
+        }
+      },
+      {
+        "before": {
+          "state": {
+            "pose": {
+              "x": 0.009605671232896634,
+              "y": 0.006731741526211107,
+              "yaw": -0.03823042986963232
+            },
+            "linear_velocity_xy": [
+              0.012504069303892008,
+              0.008762965183667683
+            ],
+            "angular_velocity": -0.043130543260834805
+          },
+          "timestamp_s": 0.5761527107363429,
+          "confidence": 1.0,
+          "metadata": {
+            "source": "simulated_push_t_world"
+          }
+        },
+        "action": {
+          "contact_local_xy": [
+            -0.08,
+            -0.06
+          ],
+          "direction_world_xy": [
+            0.9830838563317685,
+            0.18315603025797092
+          ],
+          "distance_m": 0.0227253770008379,
+          "speed_mps": 0.04,
+          "approach_clearance_m": 0.02
+        },
+        "after": {
+          "state": {
+            "pose": {
+              "x": 0.020976445045882725,
+              "y": 0.008850203526308264,
+              "yaw": 0.06916605980404267
+            },
+            "linear_velocity_xy": [
+              0.018136690828859457,
+              0.004987344406200698
+            ],
+            "angular_velocity": 0.10777614302621004
+          },
+          "timestamp_s": 1.1442871357572904,
+          "confidence": 1.0,
+          "metadata": {
+            "source": "simulated_push_t_world"
+          }
+        },
+        "plan": {
+          "action": {
+            "contact_local_xy": [
+              -0.08,
+              -0.06
+            ],
+            "direction_world_xy": [
+              0.9830838563317685,
+              0.18315603025797092
+            ],
+            "distance_m": 0.0227253770008379,
+            "speed_mps": 0.04,
+            "approach_clearance_m": 0.02
+          },
+          "predicted_states": [
+            {
+              "pose": {
+                "x": 0.009605671232896634,
+                "y": 0.006731741526211107,
+                "yaw": -0.03823042986963232
+              },
+              "linear_velocity_xy": [
+                0.012504069303892008,
+                0.008762965183667683
+              ],
+              "angular_velocity": -0.043130543260834805
+            },
+            {
+              "pose": {
+                "x": 0.020232286244062016,
+                "y": 0.008711561058379249,
+                "yaw": 0.06435954519645559
+              },
+              "linear_velocity_xy": [
+                0.017154319268915787,
+                0.004804321082199645
+              ],
+              "angular_velocity": 0.10227703162345322
+            },
+            {
+              "pose": {
+                "x": 0.03280567754997709,
+                "y": 0.022703167371102687,
+                "yaw": 0.007359442296555052
+              },
+              "linear_velocity_xy": [
+                0.013826386164236293,
+                0.011814702979607032
+              ],
+              "angular_velocity": -0.0016764995645844397
+            },
+            {
+              "pose": {
+                "x": 0.04726960836900117,
+                "y": 0.021995389823085087,
+                "yaw": 0.012085780883666963
+              },
+              "linear_velocity_xy": [
+                0.017709279797757056,
+                0.0022562353786336163
+              ],
+              "angular_velocity": 0.0034495603181508524
+            }
+          ],
+          "cost": 0.004658882461886064,
+          "candidate_count": 384,
+          "horizon": 3,
+          "diagnostics": {
+            "cost_p10": 0.006578498252796406,
+            "cost_median": 0.011988056765591719,
+            "cost_p90": 0.03483566784728436,
+            "candidate_contact_count": 10,
+            "future_actions": [
+              {
+                "contact_local_xy": [
+                  -0.08,
+                  -0.06
+                ],
+                "direction_world_xy": [
+                  0.9830838563317685,
+                  0.18315603025797092
+                ],
+                "distance_m": 0.0227253770008379
+              },
+              {
+                "contact_local_xy": [
+                  -0.08,
+                  -0.06
+                ],
+                "direction_world_xy": [
+                  0.6684049089765047,
+                  0.7437976053040979
+                ],
+                "distance_m": 0.03954806015701985
+              },
+              {
+                "contact_local_xy": [
+                  -0.025,
+                  0.0
+                ],
+                "direction_world_xy": [
+                  0.9988048792093437,
+                  -0.048875487389983534
+                ],
+                "distance_m": 0.030444647983515986
+              }
+            ]
+          }
+        },
+        "parameter_estimate": {
+          "friction": 0.46617925254383796,
+          "translation_gain": 0.8203854352780473,
+          "rotation_gain": 3.0664166636851995,
+          "linear_damping": 0.25,
+          "angular_damping": 0.35,
+          "contact_efficiency": 0.850073784957039,
+          "anisotropy": 1.7665673105667057e-05
+        },
+        "execution_diagnostics": {
+          "source": "simulated_push_t_world",
+          "true_parameters": {
+            "friction": 0.45,
+            "translation_gain": 0.82,
+            "rotation_gain": 3.0,
+            "linear_damping": 0.25,
+            "angular_damping": 0.35,
+            "contact_efficiency": 0.9,
+            "anisotropy": 0.0
+          },
+          "true_before": [
+            0.009605671232896634,
+            0.006731741526211107,
+            -0.03823042986963232
+          ],
+          "true_after": [
+            0.020976445045882725,
+            0.008850203526308264,
+            0.06916605980404267
+          ],
+          "step_index": 1,
+          "position_error_before_m": 0.07163384818295265,
+          "position_error_after_m": 0.060067445432833676,
+          "progress_m": 0.011566402750118977,
+          "consecutive_stalls": 0,
+          "system_identification": {
+            "update_count": 2,
+            "observation_confidence": 1.0,
+            "sigma_m": 0.012,
+            "best_index": 25,
+            "best_weight": 0.006556727250763817,
+            "best_error_m": 7.061478345563075e-05,
+            "weighted_error_m": 0.002954454259499365,
+            "effective_sample_size": 161.4552170530139,
+            "best_parameters": {
+              "friction": 0.25,
+              "translation_gain": 0.82,
+              "rotation_gain": 3.0,
+              "linear_damping": 0.25,
+              "angular_damping": 0.35,
+              "contact_efficiency": 0.78,
+              "anisotropy": 0.0
+            }
+          }
+        }
+      },
+      {
+        "before": {
+          "state": {
+            "pose": {
+              "x": 0.020976445045882725,
+              "y": 0.008850203526308264,
+              "yaw": 0.06916605980404267
+            },
+            "linear_velocity_xy": [
+              0.018136690828859457,
+              0.004987344406200698
+            ],
+            "angular_velocity": 0.10777614302621004
+          },
+          "timestamp_s": 1.1442871357572904,
+          "confidence": 1.0,
+          "metadata": {
+            "source": "simulated_push_t_world"
+          }
+        },
+        "action": {
+          "contact_local_xy": [
+            0.0,
+            0.06
+          ],
+          "direction_world_xy": [
+            0.9876368103043072,
+            -0.15675946839643878
+          ],
+          "distance_m": 0.03991538208663638,
+          "speed_mps": 0.04,
+          "approach_clearance_m": 0.02
+        },
+        "after": {
+          "state": {
+            "pose": {
+              "x": 0.0410408330988751,
+              "y": 0.00566554822380103,
+              "yaw": -0.20065599157769665
+            },
+            "linear_velocity_xy": [
+              0.019614365107309597,
+              -0.0011467188158961392
+            ],
+            "angular_velocity": -0.13803448627689746
+          },
+          "timestamp_s": 2.1421716879231996,
+          "confidence": 1.0,
+          "metadata": {
+            "source": "simulated_push_t_world"
+          }
+        },
+        "plan": {
+          "action": {
+            "contact_local_xy": [
+              0.0,
+              0.06
+            ],
+            "direction_world_xy": [
+              0.9876368103043072,
+              -0.15675946839643878
+            ],
+            "distance_m": 0.03991538208663638,
+            "speed_mps": 0.04,
+            "approach_clearance_m": 0.02
+          },
+          "predicted_states": [
+            {
+              "pose": {
+                "x": 0.020976445045882725,
+                "y": 0.008850203526308264,
+                "yaw": 0.06916605980404267
+              },
+              "linear_velocity_xy": [
+                0.018136690828859457,
+                0.004987344406200698
+              ],
+              "angular_velocity": 0.10777614302621004
+            },
+            {
+              "pose": {
+                "x": 0.03972595976913579,
+                "y": 0.005874247253675262,
+                "yaw": -0.1883866303721886
+              },
+              "linear_velocity_xy": [
+                0.018626119528034887,
+                -0.0009898627226076538
+              ],
+              "angular_velocity": -0.13004249485236813
+            },
+            {
+              "pose": {
+                "x": 0.05637462761345313,
+                "y": 0.014007492951751842,
+                "yaw": -0.007564325578368614
+              },
+              "linear_velocity_xy": [
+                0.01747732229600003,
+                0.006015777464211445
+              ],
+              "angular_velocity": 0.07516628607268247
+            },
+            {
+              "pose": {
+                "x": 0.06252414988828617,
+                "y": 0.01216705725736421,
+                "yaw": 0.0028419759381015375
+              },
+              "linear_velocity_xy": [
+                0.018038696162421753,
+                -0.0025870381890511266
+              ],
+              "angular_velocity": 0.04635548114913318
+            }
+          ],
+          "cost": 0.0037284925862742695,
+          "candidate_count": 384,
+          "horizon": 3,
+          "diagnostics": {
+            "cost_p10": 0.00511971248704248,
+            "cost_median": 0.011762897075803871,
+            "cost_p90": 0.042981819981317164,
+            "candidate_contact_count": 10,
+            "future_actions": [
+              {
+                "contact_local_xy": [
+                  0.0,
+                  0.06
+                ],
+                "direction_world_xy": [
+                  0.9876368103043072,
+                  -0.15675946839643878
+                ],
+                "distance_m": 0.03991538208663638
+              },
+              {
+                "contact_local_xy": [
+                  -0.04,
+                  -0.08249999999999999
+                ],
+                "direction_world_xy": [
+                  0.8985142862368405,
+                  0.4389442759944604
+                ],
+                "distance_m": 0.0389570331693742
+              },
+              {
+                "contact_local_xy": [
+                  -0.025,
+                  0.0
+                ],
+                "direction_world_xy": [
+                  0.9580156362015264,
+                  -0.28671595838631775
+                ],
+                "distance_m": 0.013496286060360747
+              }
+            ]
+          }
+        },
+        "parameter_estimate": {
+          "friction": 0.46619773306339873,
+          "translation_gain": 0.8204287815843774,
+          "rotation_gain": 3.0644023897119888,
+          "linear_damping": 0.25,
+          "angular_damping": 0.35,
+          "contact_efficiency": 0.8500142339725909,
+          "anisotropy": -6.777191210450206e-05
+        },
+        "execution_diagnostics": {
+          "source": "simulated_push_t_world",
+          "true_parameters": {
+            "friction": 0.45,
+            "translation_gain": 0.82,
+            "rotation_gain": 3.0,
+            "linear_damping": 0.25,
+            "angular_damping": 0.35,
+            "contact_efficiency": 0.9,
+            "anisotropy": 0.0
+          },
+          "true_before": [
+            0.020976445045882725,
+            0.008850203526308264,
+            0.06916605980404267
+          ],
+          "true_after": [
+            0.0410408330988751,
+            0.00566554822380103,
+            -0.20065599157769665
+          ],
+          "step_index": 2,
+          "position_error_before_m": 0.060067445432833676,
+          "position_error_after_m": 0.04151256669195341,
+          "progress_m": 0.018554878740880264,
+          "consecutive_stalls": 0,
+          "system_identification": {
+            "update_count": 3,
+            "observation_confidence": 1.0,
+            "sigma_m": 0.012,
+            "best_index": 25,
+            "best_weight": 0.00765848129059029,
+            "best_error_m": 0.0001385451651508958,
+            "weighted_error_m": 0.005849086487118661,
+            "effective_sample_size": 156.91971283068406,
+            "best_parameters": {
+              "friction": 0.25,
+              "translation_gain": 0.82,
+              "rotation_gain": 3.0,
+              "linear_damping": 0.25,
+              "angular_damping": 0.35,
+              "contact_efficiency": 0.78,
+              "anisotropy": 0.0
+            }
+          }
+        }
+      },
+      {
+        "before": {
+          "state": {
+            "pose": {
+              "x": 0.0410408330988751,
+              "y": 0.00566554822380103,
+              "yaw": -0.20065599157769665
+            },
+            "linear_velocity_xy": [
+              0.019614365107309597,
+              -0.0011467188158961392
+            ],
+            "angular_velocity": -0.13803448627689746
+          },
+          "timestamp_s": 2.1421716879231996,
+          "confidence": 1.0,
+          "metadata": {
+            "source": "simulated_push_t_world"
+          }
+        },
+        "action": {
+          "contact_local_xy": [
+            0.0,
+            -0.08249999999999999
+          ],
+          "direction_world_xy": [
+            0.9354199568856548,
+            0.3535385470638805
+          ],
+          "distance_m": 0.039867335223862814,
+          "speed_mps": 0.04,
+          "approach_clearance_m": 0.02
+        },
+        "after": {
+          "state": {
+            "pose": {
+              "x": 0.060021531950760446,
+              "y": 0.012839233844849723,
+              "yaw": 0.12113041889507192
+            },
+            "linear_velocity_xy": [
+              0.01918648634265388,
+              0.005111488180159975
+            ],
+            "angular_velocity": 0.16154511301617902
+          },
+          "timestamp_s": 3.13885506851977,
+          "confidence": 1.0,
+          "metadata": {
+            "source": "simulated_push_t_world"
+          }
+        },
+        "plan": {
+          "action": {
+            "contact_local_xy": [
+              0.0,
+              -0.08249999999999999
+            ],
+            "direction_world_xy": [
+              0.9354199568856548,
+              0.3535385470638805
+            ],
+            "distance_m": 0.039867335223862814,
+            "speed_mps": 0.04,
+            "approach_clearance_m": 0.02
+          },
+          "predicted_states": [
+            {
+              "pose": {
+                "x": 0.0410408330988751,
+                "y": 0.00566554822380103,
+                "yaw": -0.20065599157769665
+              },
+              "linear_velocity_xy": [
+                0.019614365107309597,
+                -0.0011467188158961392
+              ],
+              "angular_velocity": -0.13803448627689746
+            },
+            {
+              "pose": {
+                "x": 0.05880145367428091,
+                "y": 0.012378109728354628,
+                "yaw": 0.10696565785289636
+              },
+              "linear_velocity_xy": [
+                0.01826838263472214,
+                0.0047644942459736574
+              ],
+              "angular_velocity": 0.1523073802951787
+            },
+            {
+              "pose": {
+                "x": 0.06742417128317736,
+                "y": 0.008532614527888241,
+                "yaw": 0.02082292280503939
+              },
+              "linear_velocity_xy": [
+                0.017615763002183146,
+                -0.0046282236464158695
+              ],
+              "angular_velocity": -0.05967012130401629
+            },
+            {
+              "pose": {
+                "x": 0.07632894150928338,
+                "y": 0.012309370127849413,
+                "yaw": -9.66365198884489e-06
+              },
+              "linear_velocity_xy": [
+                0.017557359653189043,
+                0.004421667316262688
+              ],
+              "angular_velocity": -0.0475538180916847
+            }
+          ],
+          "cost": 0.002422088292081692,
+          "candidate_count": 384,
+          "horizon": 3,
+          "diagnostics": {
+            "cost_p10": 0.004105719726545341,
+            "cost_median": 0.01044997278201484,
+            "cost_p90": 0.03453334477636764,
+            "candidate_contact_count": 10,
+            "future_actions": [
+              {
+                "contact_local_xy": [
+                  0.0,
+                  -0.08249999999999999
+                ],
+                "direction_world_xy": [
+                  0.9354199568856548,
+                  0.3535385470638805
+                ],
+                "distance_m": 0.039867335223862814
+              },
+              {
+                "contact_local_xy": [
+                  -0.025,
+                  0.06
+                ],
+                "direction_world_xy": [
+                  0.9132928542092243,
+                  -0.40730352619437116
+                ],
+                "distance_m": 0.019824363780390195
+              },
+              {
+                "contact_local_xy": [
+                  -0.025,
+                  0.0
+                ],
+                "direction_world_xy": [
+                  0.9206199034031373,
+                  0.3904599767684243
+                ],
+                "distance_m": 0.020309784760941252
+              }
+            ]
+          }
+        },
+        "parameter_estimate": {
+          "friction": 0.46551440062559557,
+          "translation_gain": 0.8210327875146033,
+          "rotation_gain": 3.0649579053966898,
+          "linear_damping": 0.25,
+          "angular_damping": 0.35,
+          "contact_efficiency": 0.8500811180630208,
+          "anisotropy": 2.584851996318251e-05
+        },
+        "execution_diagnostics": {
+          "source": "simulated_push_t_world",
+          "true_parameters": {
+            "friction": 0.45,
+            "translation_gain": 0.82,
+            "rotation_gain": 3.0,
+            "linear_damping": 0.25,
+            "angular_damping": 0.35,
+            "contact_efficiency": 0.9,
+            "anisotropy": 0.0
+          },
+          "true_before": [
+            0.0410408330988751,
+            0.00566554822380103,
+            -0.20065599157769665
+          ],
+          "true_after": [
+            0.060021531950760446,
+            0.012839233844849723,
+            0.12113041889507192
+          ],
+          "step_index": 3,
+          "position_error_before_m": 0.04151256669195341,
+          "position_error_after_m": 0.02122300067198867,
+          "progress_m": 0.020289566019964744,
+          "consecutive_stalls": 0,
+          "system_identification": {
+            "update_count": 4,
+            "observation_confidence": 1.0,
+            "sigma_m": 0.012,
+            "best_index": 25,
+            "best_weight": 0.00891211761333999,
+            "best_error_m": 0.0001493805708687881,
+            "weighted_error_m": 0.005826233662853981,
+            "effective_sample_size": 150.26425122176107,
+            "best_parameters": {
+              "friction": 0.25,
+              "translation_gain": 0.82,
+              "rotation_gain": 3.0,
+              "linear_damping": 0.25,
+              "angular_damping": 0.35,
+              "contact_efficiency": 0.78,
+              "anisotropy": 0.0
+            }
+          }
+        }
+      },
+      {
+        "before": {
+          "state": {
+            "pose": {
+              "x": 0.060021531950760446,
+              "y": 0.012839233844849723,
+              "yaw": 0.12113041889507192
+            },
+            "linear_velocity_xy": [
+              0.01918648634265388,
+              0.005111488180159975
+            ],
+            "angular_velocity": 0.16154511301617902
+          },
+          "timestamp_s": 3.13885506851977,
+          "confidence": 1.0,
+          "metadata": {
+            "source": "simulated_push_t_world"
+          }
+        },
+        "action": {
+          "contact_local_xy": [
+            0.025,
+            0.06
+          ],
+          "direction_world_xy": [
+            0.9309693288694023,
+            -0.3650973961896397
+          ],
+          "distance_m": 0.016008478060655643,
+          "speed_mps": 0.04,
+          "approach_clearance_m": 0.02
+        },
+        "after": {
+          "state": {
+            "pose": {
+              "x": 0.06760684969720573,
+              "y": 0.009864506673266682,
+              "yaw": 0.0014246567084015282
+            },
+            "linear_velocity_xy": [
+              0.019011560165779727,
+              -0.004296787507814229
+            ],
+            "angular_velocity": -0.13787805557507532
+          },
+          "timestamp_s": 3.539067020036161,
+          "confidence": 1.0,
+          "metadata": {
+            "source": "simulated_push_t_world"
+          }
+        },
+        "plan": {
+          "action": {
+            "contact_local_xy": [
+              0.025,
+              0.06
+            ],
+            "direction_world_xy": [
+              0.9309693288694023,
+              -0.3650973961896397
+            ],
+            "distance_m": 0.016008478060655643,
+            "speed_mps": 0.04,
+            "approach_clearance_m": 0.02
+          },
+          "predicted_states": [
+            {
+              "pose": {
+                "x": 0.060021531950760446,
+                "y": 0.012839233844849723,
+                "yaw": 0.12113041889507192
+              },
+              "linear_velocity_xy": [
+                0.01918648634265388,
+                0.005111488180159975
+              ],
+              "angular_velocity": 0.16154511301617902
+            },
+            {
+              "pose": {
+                "x": 0.06715642466296048,
+                "y": 0.010041149449867368,
+                "yaw": 0.005319603292529784
+              },
+              "linear_velocity_xy": [
+                0.01816746049708181,
+                -0.003965757707358389
+              ],
+              "angular_velocity": -0.13155211935530314
+            },
+            {
+              "pose": {
+                "x": 0.07101412094491863,
+                "y": 0.014615315504861096,
+                "yaw": 0.12270579803031323
+              },
+              "linear_velocity_xy": [
+                0.013799619395211467,
+                0.009985709170798784
+              ],
+              "angular_velocity": 0.19810113976503127
+            },
+            {
+              "pose": {
+                "x": 0.0801158520716938,
+                "y": 0.011063449791083334,
+                "yaw": -0.02493478751985112
+              },
+              "linear_velocity_xy": [
+                0.01682949540189734,
+                -0.002724833178302456
+              ],
+              "angular_velocity": -0.1187593508989348
+            }
+          ],
+          "cost": 0.0016686888975762913,
+          "candidate_count": 384,
+          "horizon": 3,
+          "diagnostics": {
+            "cost_p10": 0.00338661896345544,
+            "cost_median": 0.01082701565732979,
+            "cost_p90": 0.04248176295296016,
+            "candidate_contact_count": 10,
+            "future_actions": [
+              {
+                "contact_local_xy": [
+                  0.025,
+                  0.06
+                ],
+                "direction_world_xy": [
+                  0.9309693288694023,
+                  -0.3650973961896397
+                ],
+                "distance_m": 0.016008478060655643
+              },
+              {
+                "contact_local_xy": [
+                  0.04,
+                  -0.08249999999999999
+                ],
+                "direction_world_xy": [
+                  0.6446994669849474,
+                  0.7644361302746783
+                ],
+                "distance_m": 0.012500967845086324
+              },
+              {
+                "contact_local_xy": [
+                  0.025,
+                  0.06
+                ],
+                "direction_world_xy": [
+                  0.931578637198475,
+                  -0.36353987775130286
+                ],
+                "distance_m": 0.02040809341060912
+              }
+            ]
+          }
+        },
+        "parameter_estimate": {
+          "friction": 0.4627464315969634,
+          "translation_gain": 0.8231178436424476,
+          "rotation_gain": 3.0856143786471577,
+          "linear_damping": 0.24999999999999997,
+          "angular_damping": 0.35,
+          "contact_efficiency": 0.8506489580665566,
+          "anisotropy": 0.000333574707422304
+        },
+        "execution_diagnostics": {
+          "source": "simulated_push_t_world",
+          "true_parameters": {
+            "friction": 0.45,
+            "translation_gain": 0.82,
+            "rotation_gain": 3.0,
+            "linear_damping": 0.25,
+            "angular_damping": 0.35,
+            "contact_efficiency": 0.9,
+            "anisotropy": 0.0
+          },
+          "true_before": [
+            0.060021531950760446,
+            0.012839233844849723,
+            0.12113041889507192
+          ],
+          "true_after": [
+            0.06760684969720573,
+            0.009864506673266682,
+            0.0014246567084015282
+          ],
+          "step_index": 4,
+          "position_error_before_m": 0.02122300067198867,
+          "position_error_after_m": 0.016009946889477968,
+          "progress_m": 0.005213053782510701,
+          "consecutive_stalls": 0,
+          "system_identification": {
+            "update_count": 5,
+            "observation_confidence": 1.0,
+            "sigma_m": 0.012,
+            "best_index": 25,
+            "best_weight": 0.009127865395319673,
+            "best_error_m": 5.792798895484276e-05,
+            "weighted_error_m": 0.00231146090861633,
+            "effective_sample_size": 148.72234752222855,
+            "best_parameters": {
+              "friction": 0.25,
+              "translation_gain": 0.82,
+              "rotation_gain": 3.0,
+              "linear_damping": 0.25,
+              "angular_damping": 0.35,
+              "contact_efficiency": 0.78,
+              "anisotropy": 0.0
+            }
+          }
+        }
+      },
+      {
+        "before": {
+          "state": {
+            "pose": {
+              "x": 0.06760684969720573,
+              "y": 0.009864506673266682,
+              "yaw": 0.0014246567084015282
+            },
+            "linear_velocity_xy": [
+              0.019011560165779727,
+              -0.004296787507814229
+            ],
+            "angular_velocity": -0.13787805557507532
+          },
+          "timestamp_s": 3.539067020036161,
+          "confidence": 1.0,
+          "metadata": {
+            "source": "simulated_push_t_world"
+          }
+        },
+        "action": {
+          "contact_local_xy": [
+            0.0,
+            -0.08249999999999999
+          ],
+          "direction_world_xy": [
+            0.26654437353034477,
+            0.9638226480734493
+          ],
+          "distance_m": 0.0238165475797602,
+          "speed_mps": 0.04,
+          "approach_clearance_m": 0.02
+        },
+        "after": {
+          "state": {
+            "pose": {
+              "x": 0.070837847672844,
+              "y": 0.021547773453779326,
+              "yaw": 0.06228907586894872
+            },
+            "linear_velocity_xy": [
+              0.008822746889694474,
+              0.013642377901216217
+            ],
+            "angular_velocity": 0.018187025299977552
+          },
+          "timestamp_s": 4.134480709530166,
+          "confidence": 1.0,
+          "metadata": {
+            "source": "simulated_push_t_world"
+          }
+        },
+        "plan": {
+          "action": {
+            "contact_local_xy": [
+              0.0,
+              -0.08249999999999999
+            ],
+            "direction_world_xy": [
+              0.26654437353034477,
+              0.9638226480734493
+            ],
+            "distance_m": 0.0238165475797602,
+            "speed_mps": 0.04,
+            "approach_clearance_m": 0.02
+          },
+          "predicted_states": [
+            {
+              "pose": {
+                "x": 0.06760684969720573,
+                "y": 0.009864506673266682,
+                "yaw": 0.0014246567084015282
+              },
+              "linear_velocity_xy": [
+                0.019011560165779727,
+                -0.004296787507814229
+              ],
+              "angular_velocity": -0.13787805557507532
+            },
+            {
+              "pose": {
+                "x": 0.07064456550714084,
+                "y": 0.020848866452644686,
+                "yaw": 0.06026487458020169
+              },
+              "linear_velocity_xy": [
+                0.008579283182300423,
+                0.012762014785453059
+              ],
+              "angular_velocity": 0.015977249372918098
+            },
+            {
+              "pose": {
+                "x": 0.07528596508432249,
+                "y": 0.01675024594644655,
+                "yaw": 0.024316587110103427
+              },
+              "linear_velocity_xy": [
+                0.012907872594599927,
+                -0.006313884813867641
+              ],
+              "angular_velocity": -0.06665445587322379
+            },
+            {
+              "pose": {
+                "x": 0.08521148650100221,
+                "y": 0.014726635114605492,
+                "yaw": 0.03753941709222097
+              },
+              "linear_velocity_xy": [
+                0.017299852388164894,
+                -0.004447644497926852
+              ],
+              "angular_velocity": -0.0070808208184175575
+            }
+          ],
+          "cost": 0.0017072906894572979,
+          "candidate_count": 384,
+          "horizon": 3,
+          "diagnostics": {
+            "cost_p10": 0.003317054971602064,
+            "cost_median": 0.010334841391275388,
+            "cost_p90": 0.03626039117951156,
+            "candidate_contact_count": 10,
+            "future_actions": [
+              {
+                "contact_local_xy": [
+                  0.0,
+                  -0.08249999999999999
+                ],
+                "direction_world_xy": [
+                  0.26654437353034477,
+                  0.9638226480734493
+                ],
+                "distance_m": 0.0238165475797602
+              },
+              {
+                "contact_local_xy": [
+                  -0.025,
+                  0.06
+                ],
+                "direction_world_xy": [
+                  0.7495759677511631,
+                  -0.6619183246971695
+                ],
+                "distance_m": 0.012937035881223339
+              },
+              {
+                "contact_local_xy": [
+                  -0.025,
+                  0.0
+                ],
+                "direction_world_xy": [
+                  0.9798428347904061,
+                  -0.19976991542747627
+                ],
+                "distance_m": 0.021158821278747034
+              }
+            ]
+          }
+        },
+        "parameter_estimate": {
+          "friction": 0.46281357088194514,
+          "translation_gain": 0.8231024775868724,
+          "rotation_gain": 3.0847614822677687,
+          "linear_damping": 0.25000000000000006,
+          "angular_damping": 0.35,
+          "contact_efficiency": 0.8506153942373746,
+          "anisotropy": 0.0003288718644426122
+        },
+        "execution_diagnostics": {
+          "source": "simulated_push_t_world",
+          "true_parameters": {
+            "friction": 0.45,
+            "translation_gain": 0.82,
+            "rotation_gain": 3.0,
+            "linear_damping": 0.25,
+            "angular_damping": 0.35,
+            "contact_efficiency": 0.9,
+            "anisotropy": 0.0
+          },
+          "true_before": [
+            0.06760684969720573,
+            0.009864506673266682,
+            0.0014246567084015282
+          ],
+          "true_after": [
+            0.070837847672844,
+            0.021547773453779326,
+            0.06228907586894872
+          ],
+          "step_index": 5,
+          "position_error_before_m": 0.016009946889477968,
+          "position_error_after_m": 0.00929196631129462,
+          "progress_m": 0.006717980578183347,
+          "consecutive_stalls": 0,
+          "system_identification": {
+            "update_count": 6,
+            "observation_confidence": 1.0,
+            "sigma_m": 0.012,
+            "best_index": 25,
+            "best_weight": 0.009347306287990693,
+            "best_error_m": 6.751970292811186e-05,
+            "weighted_error_m": 0.0022706986172300295,
+            "effective_sample_size": 147.74824587028365,
+            "best_parameters": {
+              "friction": 0.25,
+              "translation_gain": 0.82,
+              "rotation_gain": 3.0,
+              "linear_damping": 0.25,
+              "angular_damping": 0.35,
+              "contact_efficiency": 0.78,
+              "anisotropy": 0.0
+            }
+          }
+        }
+      }
+    ],
+    "final_observation": {
+      "state": {
+        "pose": {
+          "x": 0.070837847672844,
+          "y": 0.021547773453779326,
+          "yaw": 0.06228907586894872
+        },
+        "linear_velocity_xy": [
+          0.008822746889694474,
+          0.013642377901216217
+        ],
+        "angular_velocity": 0.018187025299977552
+      },
+      "timestamp_s": 4.134480709530166,
+      "confidence": 1.0,
+      "metadata": {
+        "source": "simulated_push_t_world"
+      }
+    },
+    "reason": "goal_reached",
+    "parameter_estimate": {
+      "friction": 0.46250954622676754,
+      "translation_gain": 0.8233842697234631,
+      "rotation_gain": 3.083965592517429,
+      "linear_damping": 0.24999999999999997,
+      "angular_damping": 0.35,
+      "contact_efficiency": 0.8506584861304276,
+      "anisotropy": 0.00026178282778115624
+    },
+    "metadata": {
+      "parameter_estimator": {
+        "hypothesis_count": 162,
+        "update_count": 6,
+        "effective_sample_size": 147.74824587028365,
+        "weighted_estimate": {
+          "friction": 0.46250954622676754,
+          "translation_gain": 0.8233842697234631,
+          "rotation_gain": 3.083965592517429,
+          "linear_damping": 0.24999999999999997,
+          "angular_damping": 0.35,
+          "contact_efficiency": 0.8506584861304276,
+          "anisotropy": 0.00026178282778115624
+        },
+        "top": [
+          {
+            "index": 25,
+            "weight": 0.009347306287990693,
+            "last_error_m": 6.751970292811186e-05,
+            "parameters": {
+              "friction": 0.25,
+              "translation_gain": 0.82,
+              "rotation_gain": 3.0,
+              "linear_damping": 0.25,
+              "angular_damping": 0.35,
+              "contact_efficiency": 0.78,
+              "anisotropy": 0.0
+            }
+          },
+          {
+            "index": 97,
+            "weight": 0.009334923678557401,
+            "last_error_m": 0.00018526747754664622,
+            "parameters": {
+              "friction": 0.45,
+              "translation_gain": 0.96,
+              "rotation_gain": 3.0,
+              "linear_damping": 0.25,
+              "angular_damping": 0.35,
+              "contact_efficiency": 0.78,
+              "anisotropy": 0.0
+            }
+          },
+          {
+            "index": 10,
+            "weight": 0.0093306735356642,
+            "last_error_m": 0.0002110676892346226,
+            "parameters": {
+              "friction": 0.25,
+              "translation_gain": 0.68,
+              "rotation_gain": 3.0,
+              "linear_damping": 0.25,
+              "angular_damping": 0.35,
+              "contact_efficiency": 0.92,
+              "anisotropy": 0.0
+            }
+          },
+          {
+            "index": 154,
+            "weight": 0.009320499934314577,
+            "last_error_m": 0.0002627649844942676,
+            "parameters": {
+              "friction": 0.7,
+              "translation_gain": 0.96,
+              "rotation_gain": 3.0,
+              "linear_damping": 0.25,
+              "angular_damping": 0.35,
+              "contact_efficiency": 0.92,
+              "anisotropy": 0.0
+            }
+          },
+          {
+            "index": 82,
+            "weight": 0.009316307483164317,
+            "last_error_m": 0.00028133209553379775,
+            "parameters": {
+              "friction": 0.45,
+              "translation_gain": 0.82,
+              "rotation_gain": 3.0,
+              "linear_damping": 0.25,
+              "angular_damping": 0.35,
+              "contact_efficiency": 0.92,
+              "anisotropy": 0.0
+            }
+          }
+        ]
+      }
+    }
+  }
+}
