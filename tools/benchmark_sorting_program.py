@@ -33,7 +33,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--request", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--fixture-default-joints", action="store_true")
+    joints = parser.add_mutually_exclusive_group()
+    joints.add_argument("--fixture-default-joints", action="store_true")
+    joints.add_argument("--initial-joints", type=Path, help="Explicit observed joint-state JSON, frozen with inputs")
     args = parser.parse_args()
     # Exclusive run directory prevents silently replacing frozen inputs/results.
     args.output_dir.mkdir(parents=True, exist_ok=False)
@@ -41,7 +43,7 @@ def main():
     scene_path = Path(request.scene_file)
     scene = load_task_scene(str(scene_path))
     # The legacy loader intentionally loads objects only, not snapshot joints.
-    payload = json.loads(scene_path.read_text())
+    payload = json.loads((args.initial_joints or scene_path).read_text())
     if payload.get("joint_positions") is not None:
         observed = JointConfiguration(tuple(payload["joint_names"]), payload["joint_positions"])
         if not observed.names:
@@ -53,7 +55,7 @@ def main():
     config = Curobo2BackendConfig()
     result_summary = {
         "state": "NEEDS_REVIEW", "physical_commands": 0,
-        "fixture_only": args.fixture_default_joints or bool(request.metadata.get("example_only")),
+        "fixture_only": args.fixture_default_joints or bool(request.metadata.get("example_only")) or bool(request.metadata.get("fixture_only")),
         "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
         "backend_config": asdict(config), "planned_atoms": len(plan.atoms),
         "limitations": ["Single diagnostic fixture, not the 20 real-snapshot U1 suite.",
@@ -72,8 +74,9 @@ def main():
                 "request": json.loads(args.request.read_text()),
                 "scene": scene.as_dict(), "plan": plan.as_dict(),
                 "input_hashes": {str(p): hashlib.sha256(p.read_bytes()).hexdigest()
-                                 for p in (args.request, scene_path, Path(__file__))},
-                "joint_source": "planner_default_fixture" if args.fixture_default_joints else "snapshot",
+                                 for p in (args.request, scene_path, Path(__file__), *([args.initial_joints] if args.initial_joints else []))},
+                "joint_source": "planner_default_fixture" if args.fixture_default_joints else str(args.initial_joints or "snapshot"),
+                "joint_input": payload if args.initial_joints else None,
             }
             _write_json(args.output_dir / "frozen_inputs.json", frozen)
             builder, frame_metadata = _scene_builder(scene_path)

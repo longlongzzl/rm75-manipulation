@@ -1,0 +1,33 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "4a92cf0",
+  "tests": {"passed": 191, "failed": 0, "skipped": 0, "wall_s": 23.30},
+  "strict_start_rejection": {
+    "attempts": ["/tmp/rm75_u1_strict_replay_001", "/tmp/rm75_u1_strict_replay_002"],
+    "status": "ValueError: timed replay initial gap 1.570796 rad exceeds 0.12; no teleport allowed",
+    "observed_joints": [0, 0, 0, 0, 0, 0, 0]
+  },
+  "recompile_from_observed_sim_start": {
+    "success": true,
+    "initial_gap_rad": 0,
+    "max_inter_stage_gap_rad": 5.960464477539063e-8,
+    "total_wall_s": 11.219180858999607,
+    "raw": "/tmp/rm75_u1_sim_start_compile_001"
+  },
+  "physical_simulation": {
+    "success": false,
+    "raw": "/tmp/rm75_u1_strict_replay_003",
+    "initial_gap_rad": 0,
+    "control_dt_s": 0.05,
+    "teleported_arm": false,
+    "stages_executed": ["approach", "grasp", "lift", "preplace", "place", "retreat"],
+    "stage_end_max_joint_errors_rad": [0.026474833488464355, 0.009941935539245605, 0.057898759841918945, 0.06411558389663696, 0.06315302848815918, 0.012879014015197754],
+    "position_error_m": 0.1241348161951144,
+    "message": "target pose outside tolerance",
+    "final_object_xyz_m": [-0.2073879837989807, -0.33415529131889343, 0.03492876887321472]
+  },
+  "remaining": ["Diagnose physical release/tracking failure using retained video/contact logs", "Complete missing U1 acceptance metrics including idle gaps and broader suite", "Do not advance to real trials before SIM pass and explicit approval"],
+  "physical_robot_commands": 0,
+  "physics_identification_enabled": false,
+  "push": "Pending explicit destination approval requested after auto-review rejection; no retry"
+}

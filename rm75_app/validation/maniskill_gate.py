@@ -12,7 +12,7 @@ import numpy as np
 from rm75_app.assets.object_specs import get_object_spec, resolve_object_spec_scales
 from rm75_app.execution.maniskill_task_bridge import ManiSkillTaskBridge
 from rm75_app.execution.maniskill_scene import gripper_pad_alignment_diagnostics
-from rm75_app.execution.trajectory_executor import ManiSkillTrajectoryExecutor
+from rm75_app.execution.trajectory_executor import ManiSkillTrajectoryExecutor, sample_timed_joint_path
 from rm75_app.orchestration.multi_object_executor import AtomExecution, TaskSceneState, load_task_scene
 from rm75_app.planning.contracts import JointConfiguration
 from rm75_app.runtime.curobo2_sim_replay import load_replay_events
@@ -182,6 +182,27 @@ def write_scene_spec(plan: ManipulationPlan, output_path: str | Path) -> tuple[P
     return path, state
 
 
+def validate_timed_replay_events(events, observed: JointConfiguration, control_dt: float) -> float:
+    """Validate the entire package before the first simulated action."""
+    trajectories = [event["trajectory"] for event in events if event.get("type") == "trajectory"]
+    if not trajectories:
+        raise ValueError("no trajectories in timed replay package")
+    previous = None
+    for trajectory in trajectories:
+        if tuple(trajectory.joint_names) != tuple(observed.names):
+            raise ValueError("timed replay joint names do not match simulator")
+        sample_timed_joint_path(trajectory, control_dt)
+        if previous is not None:
+            gap = float(np.max(np.abs(trajectory.positions[0] - previous)))
+            if gap > 0.10:
+                raise ValueError(f"timed replay stage gap {gap:.6f} rad exceeds 0.10")
+        previous = trajectory.positions[-1]
+    initial_gap = float(np.max(np.abs(trajectories[0].positions[0] - observed.positions)))
+    if initial_gap > 0.12:
+        raise ValueError(f"timed replay initial gap {initial_gap:.6f} rad exceeds 0.12; no teleport allowed")
+    return initial_gap
+
+
 def run_maniskill_gate(
     plan: ManipulationPlan,
     execution_file: str | Path,
@@ -192,6 +213,7 @@ def run_maniskill_gate(
     debug_viewer: bool = False,
     viewer: Any | None = None,
     stop_on_validation_failure: bool = True,
+    strict_timed_replay: bool = False,
 ) -> GateResult:
     output = Path(output_dir).expanduser().resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -236,7 +258,26 @@ def run_maniskill_gate(
         first_trajectory = next((item["trajectory"] for item in events if item.get("type") == "trajectory"), None)
         if first_trajectory is None:
             raise ValueError("Curobo2 package contains no trajectory")
-        joint_adapter.set_arm_qpos(first_trajectory.positions[0])
+        control_dt = None
+        initial_gap = None
+        if strict_timed_replay:
+            control_dt = 1.0 / float(env.unwrapped.control_freq)
+            observed = JointConfiguration(joint_adapter.arm_names, joint_adapter.current_arm_qpos())
+            (output / "replay_initial_state.json").write_text(json.dumps({
+                "joint_names": list(observed.names),
+                "joint_positions": observed.positions.tolist(),
+                "planned_joint_names": list(first_trajectory.joint_names),
+                "planned_joint_positions": first_trajectory.positions[0].tolist(),
+                "control_dt_s": control_dt,
+                "source": "ManiSkill environment reset, no set_arm_qpos",
+            }, indent=2), encoding="utf-8")
+            initial_gap = validate_timed_replay_events(
+                events,
+                observed,
+                control_dt,
+            )
+        else:
+            joint_adapter.set_arm_qpos(first_trajectory.positions[0])
         if debug_viewer:
             env.unwrapped.render_human()
         state.set_joints(joint_adapter.arm_names, joint_adapter.current_arm_qpos())
@@ -246,7 +287,7 @@ def run_maniskill_gate(
             settle_steps=settle_steps,
             hold_action=joint_adapter.hold_action,
         )
-        motion_executor = ManiSkillTrajectoryExecutor(joint_adapter)
+        motion_executor = ManiSkillTrajectoryExecutor(joint_adapter, control_dt=control_dt)
         atoms = {atom.atom_id: atom for atom in plan.atoms}
         active_atom = None
         checks = []
@@ -326,6 +367,9 @@ def run_maniskill_gate(
             json.dumps(
                 {
                     "success": not failed,
+                    "strict_timed_replay": strict_timed_replay,
+                    "initial_gap_rad": initial_gap,
+                    "control_dt_s": control_dt,
                     "checks": checks,
                     "stage_trace": stage_trace,
                     "final_scene": state.as_dict(),
