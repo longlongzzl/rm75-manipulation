@@ -32,6 +32,20 @@ def joint_limit_excess(qpos: np.ndarray, limits: np.ndarray) -> np.ndarray:
     return np.maximum(0.0, np.maximum(limits[:, 0] - qpos, qpos - limits[:, 1]))
 
 
+def observe_gripper_boundary(bridge: Any, adapter: Any, atom: Any) -> dict[str, Any]:
+    """Read a detached snapshot without stepping physics or changing commands."""
+    return {
+        "atom_id": None if atom is None else atom.atom_id,
+        "object_pose": None if atom is None else np.asarray(
+            bridge.observe_object_pose(atom.object_id), dtype=float).tolist(),
+        "support_pose": None if atom is None or not atom.support_object_id else np.asarray(
+            bridge.observe_object_pose(atom.support_object_id), dtype=float).tolist(),
+        "tcp_pose": np.asarray(adapter.tcp_pose_matrix(), dtype=float).tolist(),
+        "arm_qpos_rad": np.asarray(adapter.current_arm_qpos(), dtype=float).tolist(),
+        "gripper_qpos_rad": dict(adapter.current_gripper_qpos()),
+    }
+
+
 class ManiSkillJointAdapter:
     def __init__(self, env: Any, *, debug_viewer: bool = False, playback_hz: float = 20.0):
         self.env = env
@@ -358,6 +372,7 @@ def run_maniskill_gate(
         active_atom = None
         checks = []
         stage_trace = []
+        gripper_trace = []
         timing_records = []
         failed = False
         for event in events:
@@ -398,11 +413,19 @@ def run_maniskill_gate(
                         flush=True,
                     )
             elif event_type == "gripper":
+                before = (observe_gripper_boundary(bridge, joint_adapter, active_atom)
+                          if strict_timed_replay else None)
                 event_started = time.perf_counter()
                 motion_executor.set_gripper(bool(event["closed"]))
+                event_ended = time.perf_counter()
                 timing_records.append({"kind": "gripper", "closed": bool(event["closed"]),
-                                       "start_s": event_started, "end_s": time.perf_counter(),
+                                       "start_s": event_started, "end_s": event_ended,
                                        "simulated_dwell_s": motion_executor.gripper_steps / float(env.unwrapped.control_freq)})
+                if strict_timed_replay:
+                    gripper_trace.append({
+                        "closed": bool(event["closed"]), "before": before,
+                        "after": observe_gripper_boundary(bridge, joint_adapter, active_atom),
+                    })
             elif event_type == "atom_end":
                 if active_atom is None or active_atom.atom_id != str(event["atom_id"]):
                     raise ValueError("trajectory package has mismatched atom markers")
@@ -456,6 +479,7 @@ def run_maniskill_gate(
                     "control_dt_s": control_dt,
                     "checks": checks,
                     "stage_trace": stage_trace,
+                    "gripper_trace": gripper_trace,
                     "replay_timing": summarize_replay_timing(timing_records),
                     "joint_limit_audit": {
                         "scope": "control-step boundary samples, not every physics substep",

@@ -1,0 +1,29 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "50273f4",
+  "change": "Strict replay captures detached object/support/TCP/arm/gripper state immediately before and after each gripper dwell; no physics steps or command changes introduced",
+  "tests": {"passed": 221, "failed": 0, "skipped": 0, "wall_s": 21.51},
+  "same_frozen_three_atom_program": true,
+  "gripper_boundary_pairs": 6,
+  "same_stage_trace_as_uninstrumented": true,
+  "same_checks_as_uninstrumented": true,
+  "replay_success": false,
+  "carrot_open_dwell": {
+    "duration_sim_s": 1.0,
+    "object_displacement_m": 0.05572170518257087,
+    "tcp_displacement_m": 0.0023873484139990647,
+    "support_displacement_m": 0.00007715309732254476,
+    "max_arm_joint_change_rad": 0.0756760835647583
+  },
+  "other_open_displacement_m": {"tennis": 0.09321585846653002, "gluestick": 0.006547384311265863},
+  "interpretation": "Significant carrot displacement already occurs during opening, before retreat. TCP/support translation alone does not explain it. This localizes timing, not the physical causal mechanism; investigate gripper contacts and support stability without relaxing tolerances.",
+  "raw": {
+    "tests": "/tmp/rm75_u1_release_boundary_tests.log",
+    "program": "/tmp/rm75_u1_cache_three_generated00_001/program/execution.json",
+    "before": "/tmp/rm75_u1_cache_three_generated00_replay_001/maniskill_gate_result.json",
+    "after": "/tmp/rm75_u1_release_boundary_replay_001/maniskill_gate_result.json",
+    "after_summary": "/tmp/rm75_u1_release_boundary_replay_001/strict_replay_summary.json",
+    "after_log": "/tmp/rm75_u1_release_boundary_replay_001.log"
+  },
+  "limitations": ["No physics fix or new success claimed", "Two of three task checks pass; carrot remains failed", "Boundary observations are not every physics substep", "Measured sorting suite, full SIM gate and real trial approval still missing", "No physical commands, no physics identification"]
+}
