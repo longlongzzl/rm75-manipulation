@@ -1,0 +1,24 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "c454437",
+  "physical_commands": 0,
+  "production_behavior_changed": false,
+  "tests": {"passed": 227, "failed": 0, "skipped": 0, "wall_s": 19.41},
+  "arm_target_rad": [0, 0, 0, 0, 0, 0, 0],
+  "phases": [
+    {"phase": "open_initial", "duration_s": 3, "max_error_rad": 0.0000428637104050722, "final_error_rad": 0.000042852541810134426},
+    {"phase": "closed", "duration_s": 3, "max_error_rad": 0.000981390941888094, "final_error_rad": 0.00000007251047406953148},
+    {"phase": "open_final", "duration_s": 3, "max_error_rad": 0.0034067784436047077, "final_error_rad": 0.00004273309968993999}
+  ],
+  "sampled_max_limit_excess_rad": 0.0000002611851073197613,
+  "observed_nonzero_robot_contacts": ["gripper_base_link / flange_spacer_8mm"],
+  "flange_base_peak_point_impulse_norm_sum_ns": 0.03796907281503119,
+  "runtime_arm_controller": {"joint_order": ["joint_1", "joint_2", "joint_3", "joint_4", "joint_5", "joint_6", "joint_7"], "stiffness": 1000, "damping": 100, "force_limit": 20, "normalize_action": false, "use_delta": false, "interpolate": false, "drive_mode": "force"},
+  "robot_link_gravity_disabled": true,
+  "repo_and_loaded_urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+  "loaded_urdf": "/home/zhangzhao/.maniskill/data/robots/RM75_gripper/RM75-B/urdf/RM75-B.urdf",
+  "agent_source": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages/mani_skill/agents/robots/realman/realman_with_gripper.py",
+  "conclusion": "Reset-pose empty-gripper hold does not reproduce persistent ~0.08 rad loaded-release error. Action ordering/normalization and stale URDF mismatch are not supported explanations. Fixed mounting self-contact exists but also coexists with stable empty hold; not established as root cause.",
+  "raw": {"result": "/tmp/rm75_u1_robot_hold_audit_001/result.json", "log": "/tmp/rm75_u1_robot_hold_audit_001.log", "tests": "/tmp/rm75_u1_robot_hold_tests.log"},
+  "limitations": ["Simulator-only reset-pose test, not RM75 real low-speed empty trial", "Different pose/load from failed placement, so does not exclude pose/load-dependent controller or contact issues", "Control-boundary contact/limit sampling only", "No stiffness, torque, mass, gravity or collision filtering changes", "Measured scene suite and full SIM/REAL gates still incomplete"]
+}
