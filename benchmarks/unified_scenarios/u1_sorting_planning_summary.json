@@ -1,0 +1,15 @@
+{
+  "state": "NEEDS_REVIEW",
+  "audit_parent_commit": "42e99b9",
+  "required_stage_complete": false,
+  "required_measured_suite_available": false,
+  "required_measured_suite_path": "benchmarks/unified_scenarios/u1_sorting_suite.json",
+  "physical_commands": 0,
+  "frozen_pickplace_regression": {"cases": 16, "before_successes": 10, "after_successes": 14, "success_regressions": 0, "evidence": "benchmarks/unified_scenarios/u1_ik_cache_fix_summary.json", "not_measured_sorting_distribution": true},
+  "three_object_programs": [
+    {"fixture": "benchmarks/unified_scenarios/fixtures/sorting_historical_three_objects.json", "success": false, "evidence": "benchmarks/unified_scenarios/u1_three_object_compile_summary.json"},
+    {"fixture": "benchmarks/unified_scenarios/fixtures/sorting_historical_three_objects_generated00.json", "success": true, "atoms": 3, "trajectory_stages": 18, "initial_gap_rad": 0, "max_inter_stage_gap_rad": 1.1920928955078125e-7, "evidence": "benchmarks/unified_scenarios/u1_three_object_generated00_summary.json"}
+  ],
+  "acceptance_not_proven": ["At least 20 frozen measured snapshots with 3/4/5 objects and real current joints", "Required target arrangements, clutter, swaps and adversarial frontend annotations", "100 percent frontend agreement and manual layout review across required suite", "At least 90 percent full-program compile rate on the selected measured feasible distribution"],
+  "interpretation": "Single-atom frozen regression and individual synthetic full programs are separate evidence scopes. Do not combine them into a measured sorting success rate. Raw failure statuses remain linked from the evidence summaries."
+}

@@ -5,6 +5,28 @@
 > Owner of physical-robot approval: user  
 > Codex role: implement local adapters, execute tests/benchmarks, and record evidence. Do not represent unrun code as verified.
 
+## Current evidence snapshot — 2026-09-06
+
+Audit parent: `42e99b9`. **All stages are NOT complete.** Latest local full regression: 235 passed, zero failures/skips (`/tmp/rm75_u1_replay_speed_tests.log`). Diagnostic repetitions are not substitutes for the measured distributions or physical approvals below.
+
+| Board stage | Current state | Evidence and missing gate |
+| --- | --- | --- |
+| U0 | OFFLINE_VERIFIED | `u0_offline_summary.json` and latest full regression; software evidence only |
+| U1 | NEEDS_REVIEW | Approved IK cache fix: 16 frozen full-chain cases 10/16 -> 14/16, no success regressions. One full three-object compile succeeds; original physics replay fails carrot. Alternative release policies have counterexamples. Required measured 20-scene suite, complete safety audit and real trials missing |
+| U2 | PROPOSED | Example-only offline tests exist; actual panel/inventory catalogs, measurements, 40-graph suite, 30-prompt evidence and human geometry review incomplete |
+| U3 | PROPOSED | Real cuRobo multi-support audit, structure matrix, physical magnetic approximation review and approved real trials incomplete |
+| U4 | NEEDS_REVIEW | Historical 200-case quasi-static/control and synthetic fitting evidence exists; not completion of the later strict sequence, not robust ensemble or tracker/physical evidence |
+| U5 | PROPOSED | Calibrated pusher/coordinate contract, 100 push programs, measured speed, ManiSkill closed loop and approved real ladder incomplete |
+| U6 | PROPOSED | Cannot release/merge before U1-U5 and integration controls are verified; no main merge performed |
+
+Mapping to the user's strict 14-stage sequence: 1-2 offline tests complete; 3-5 full-program/real-cuRobo/ManiSkill validation partial; 6-10 real sorting and calibrated magnetic stages not completed; 11 has historical synthetic-only evidence but is not credited as completing the strict sequence; 12-14 ManiSkill PushT, real closed loop and final physics identification not completed/enabled by this work. Simulator empty-hold diagnostics are **not** stage-6 real low-speed trials.
+
+Canonical partial results: `benchmarks/unified_scenarios/u1_sorting_planning_summary.json` and `benchmarks/unified_scenarios/u1_sorting_sim_summary.json`. Their existence does not mean the corresponding gate passed. Required `u1_sorting_suite.json` remains absent because measured snapshot data were not supplied.
+
+External inputs/authority still needed: measured sorting snapshots with actual joints and matching targets; actual magnetic dimensions/inventory/connection calibration; recorded tracker data and pusher calibration for later stages; explicit destination/payload approval for pending GitHub push. Actual robot movement requires a separate trial approval only after its offline/simulation gates pass. Do not invent calibration or retry rejected push authorization.
+
+Audit handoff: `docs/CODEX_HANDOFF_UNIFIED_COMPLETION_AUDIT.md`. All original requirements below remain in force.
+
 ## 0. Collaboration and safety rules
 
 ### 0.1 Task states
@@ -60,7 +82,7 @@ Open questions for ChatGPT:
 
 # U0 — Branch integrity and pure-software baseline
 
-**State:** `PROPOSED`
+**State:** `OFFLINE_VERIFIED`
 
 ## U0.1 Checkout
 
@@ -145,7 +167,7 @@ Stop for review if U0 is not clean.
 
 # U1 — Sorting: complete program planning and continuous replay
 
-**State:** `PROPOSED`
+**State:** `NEEDS_REVIEW`
 
 ## U1.1 Freeze a real-scene suite
 
@@ -502,7 +524,7 @@ benchmarks/unified_scenarios/u3_real_summary.json  # only after approval
 
 # U4 — Push-T pure simulation and tracker integration
 
-**State:** `PROPOSED`
+**State:** `NEEDS_REVIEW`
 
 ## U4.1 Define the real coordinate contract
 

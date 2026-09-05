@@ -1,0 +1,16 @@
+{
+  "state": "NEEDS_REVIEW",
+  "audit_parent_commit": "42e99b9",
+  "required_stage_complete": false,
+  "full_safety_gate_passed": false,
+  "physical_commands": 0,
+  "original_three_object_replay": {"task_success": false, "passed_atoms": 2, "failed_atom": "sort_03_carriot", "evidence": "benchmarks/unified_scenarios/u1_three_object_generated00_summary.json"},
+  "diagnostic_interventions": [
+    {"evidence": "benchmarks/unified_scenarios/u1_release_hold_summary.json", "finding": "Carrot-only override succeeds; global and surface-only rules regress other atoms"},
+    {"evidence": "benchmarks/unified_scenarios/u1_preopen_settle_summary.json", "finding": "0.25/0.5 second extra holds succeed; 1 second fails glue; tracking convergence not demonstrated"},
+    {"evidence": "benchmarks/unified_scenarios/u1_replay_speed_summary.json", "finding": "Time factors 2 and 4 both fail complete task"}
+  ],
+  "safety_and_motion_evidence": ["benchmarks/unified_scenarios/u1_release_motion_summary.json", "benchmarks/unified_scenarios/u1_robot_hold_audit_summary.json", "benchmarks/unified_scenarios/u1_static_support_summary.json"],
+  "acceptance_not_proven": ["Replay every successful program in required measured distribution", "Full collision/contact safety and every-physics-substep limit coverage", "Resolution of sampled gripper limit excursions", "Reliable release policy across objects and layouts", "Actual execution start/observation invalidation and robot safety readiness for real trial"],
+  "interpretation": "Task-only successes under modified diagnostic commands are not unmodified portable-program or full SIM safety passes. Preserve original failures; no physical trial approval follows from this summary."
+}
