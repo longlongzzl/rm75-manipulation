@@ -1,0 +1,20 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "7f769c4",
+  "production_behavior_changed": false,
+  "physical_commands": 0,
+  "tests": {"passed": 226, "failed": 0, "skipped": 0, "wall_s": 18.93},
+  "hypothesis": "Holding measured arm joints during opening instead of tracking the commanded endpoint reduces release disturbance",
+  "baseline": {"task_success": false, "carrot_position_error_m": 0.13804806527449567, "carrot_open_displacement_m": 0.05572170518257087},
+  "experiments": [
+    {"selected_openings": [3], "task_success": true, "executed_stages": 18, "passed_atoms": 3, "command_delta_rad": 0.07570958137512207, "carrot_open_displacement_m": 0.0020448706247182444, "carrot_position_error_m": 0.0014505584073545798, "carrot_orientation_error_deg": 2.547373338135007, "sampled_gripper_limit_excess_rad": 0.001335442066192627, "raw_dir": "/tmp/rm75_u1_release_hold_observed_001"},
+    {"selected_openings": [1, 2, 3], "task_success": false, "executed_stages": 6, "failed_atom": "sort_01_tennis", "position_error_m": 0.14758417066325583, "actually_overridden_openings": [1], "raw_dir": "/tmp/rm75_u1_release_hold_all_open_001"},
+    {"selected_openings": [2, 3], "task_success": false, "executed_stages": 12, "failed_atom": "sort_02_gluestick", "position_error_m": 0.07581872140979735, "orientation_error_deg": 2.417873411307728, "actually_overridden_openings": [2], "raw_dir": "/tmp/rm75_u1_release_hold_surface_open_001"}
+  ],
+  "conclusion": "Carrot release is sensitive to arm hold policy, but both global and surface-only measured-hold policies regress other atoms. Do not promote either policy or an object-specific exception to production based on this fixture.",
+  "raw_files_in_each_dir": ["diagnostic_summary.json", "maniskill_gate_result.json"],
+  "raw_log_rule": "Each raw_dir has a matching adjacent .log file",
+  "tests_log": "/tmp/rm75_u1_release_hold_final_tests.log",
+  "program": "/tmp/rm75_u1_cache_three_generated00_001/program/execution.json",
+  "limitations": ["Diagnostic changes selected gripper-dwell arm commands; not unmodified replay", "No complete SIM gate: existing gripper limit excess unresolved", "Single frozen scene, not measured 20-scene distribution", "Failures stop execution and leave subsequent requested interventions unexecuted", "No geometry, friction, tolerance or trajectory point edits; physics identification disabled"]
+}
