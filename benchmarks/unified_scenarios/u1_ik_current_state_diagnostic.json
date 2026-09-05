@@ -1,0 +1,22 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "89d4778",
+  "hypothesis": "Endpoint screen omits current_state while MotionGen goal IK receives it",
+  "diagnostic_change": "Only native goal IK current_state=None; trajectory start and linear criteria unchanged",
+  "success": false,
+  "linear_candidates": 8,
+  "ik_calls": 24,
+  "ik_successes": 0,
+  "constraint_feasible_entries": 376,
+  "constraint_infeasible_entries": 8,
+  "position_error_range_m": [0.031010307371616364, 0.049048636108636856],
+  "baseline_position_error_range_m": [0.03112347237765789, 0.06562866270542145],
+  "conclusion": "Current-state conditioning influences the results but removing it alone does not recover any candidate; no production change justified",
+  "tests": {"passed": 213, "failed": 0, "skipped": 0, "wall_s": 18.37},
+  "raw": "/tmp/rm75_u1_gluestick_unconditioned_001.json",
+  "log": "/tmp/rm75_u1_gluestick_unconditioned_001.log",
+  "test_log": "/tmp/rm75_u1_unconditioned_tests.log",
+  "production_changes": false,
+  "physical_commands": 0,
+  "push": "Awaiting destination authorization"
+}
