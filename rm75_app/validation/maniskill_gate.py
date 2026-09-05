@@ -32,6 +32,12 @@ def joint_limit_excess(qpos: np.ndarray, limits: np.ndarray) -> np.ndarray:
     return np.maximum(0.0, np.maximum(limits[:, 0] - qpos, qpos - limits[:, 1]))
 
 
+def _motion_array(value: Any) -> np.ndarray:
+    if hasattr(value, "detach"):
+        value = value.detach().cpu().numpy()
+    return np.asarray(value, dtype=float).reshape(-1)
+
+
 def observe_gripper_boundary(bridge: Any, adapter: Any, atom: Any) -> dict[str, Any]:
     """Read a detached snapshot without stepping physics or changing commands."""
     return {
@@ -42,6 +48,12 @@ def observe_gripper_boundary(bridge: Any, adapter: Any, atom: Any) -> dict[str, 
             bridge.observe_object_pose(atom.support_object_id), dtype=float).tolist(),
         "tcp_pose": np.asarray(adapter.tcp_pose_matrix(), dtype=float).tolist(),
         "arm_qpos_rad": np.asarray(adapter.current_arm_qpos(), dtype=float).tolist(),
+        "arm_qvel_rad_s": adapter.current_arm_qvel().tolist(),
+        "arm_controller_target_rad": adapter.current_arm_controller_target().tolist(),
+        "object_linear_velocity_m_s": None if atom is None else _motion_array(
+            bridge.actor(atom.object_id).get_linear_velocity()).tolist(),
+        "object_angular_velocity_rad_s": None if atom is None else _motion_array(
+            bridge.actor(atom.object_id).get_angular_velocity()).tolist(),
         "gripper_qpos_rad": dict(adapter.current_gripper_qpos()),
     }
 
@@ -94,6 +106,14 @@ class ManiSkillJointAdapter:
             self.active_joint_names[index]: float(values[index])
             for index in self.gripper_indices
         }
+
+    def current_arm_qvel(self) -> np.ndarray:
+        return _motion_array(self.env.unwrapped.agent.robot.get_qvel())[self.arm_indices]
+
+    def current_arm_controller_target(self) -> np.ndarray:
+        # Controller state is a position command, not measured actuator torque.
+        controller = self.env.unwrapped.agent.controller.controllers["arm"]
+        return _motion_array(controller._target_qpos).copy()
 
     def current_gripper_alignment(self) -> dict[str, float] | None:
         return gripper_pad_alignment_diagnostics(self.env)

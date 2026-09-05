@@ -1,0 +1,19 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "3596a77",
+  "production_commands_changed": false,
+  "physical_commands": 0,
+  "tests": {"passed": 228, "failed": 0, "skipped": 0, "wall_s": 21.08},
+  "same_stage_trace_as_baseline": true,
+  "same_checks_as_baseline": true,
+  "opening_before_motion": [
+    {"atom_id": "sort_01_tennis", "object_linear_speed_m_s": 0.5828517416882109, "object_angular_speed_rad_s": 18.63212638253242, "max_arm_speed_rad_s": 1.2595784664154053, "max_arm_target_error_rad": 0.08774948120117188},
+    {"atom_id": "sort_02_gluestick", "object_linear_speed_m_s": 0.18416419405506365, "object_angular_speed_rad_s": 15.712877519234018, "max_arm_speed_rad_s": 0.20431166887283325, "max_arm_target_error_rad": 0.08298063278198242},
+    {"atom_id": "sort_03_carriot", "object_linear_speed_m_s": 0.136891530536695, "object_angular_speed_rad_s": 5.504055198806576, "max_arm_speed_rad_s": 0.2893636226654053, "max_arm_target_error_rad": 0.07570958137512207}
+  ],
+  "arm_controller_target_change_across_each_open_rad": [0, 0, 0],
+  "carrot_after_open": {"object_linear_speed_m_s": 0.024888059080710033, "object_angular_speed_rad_s": 1.5403871852440465, "max_arm_target_error_rad": 0.0008355081081390381},
+  "conclusion": "Trajectory endpoint submission is not a settled-state gate: all objects still have substantial motion immediately before opening. Controller target remains fixed, while actual arm tracking error largely decays during opening. This records timing and correlation, not a fully isolated physical cause.",
+  "raw": {"tests": "/tmp/rm75_u1_release_motion_tests.log", "result": "/tmp/rm75_u1_release_motion_audit_001/maniskill_gate_result.json", "summary": "/tmp/rm75_u1_release_motion_audit_001/strict_replay_summary.json", "log": "/tmp/rm75_u1_release_motion_audit_001.log", "baseline": "/tmp/rm75_u1_release_boundary_replay_001/maniskill_gate_result.json"},
+  "limitations": ["Original three-object task still fails carrot", "No new release velocity threshold or controller policy enabled", "Controller target is not measured actuator torque", "Snapshots are boundary observations, not continuous proof", "No full SIM safety gate or real trial approval", "Measured 20-scene distribution still missing"]
+}
