@@ -1,0 +1,22 @@
+{
+  "state": "NEEDS_REVIEW",
+  "scope": "Explicit inside contract; one historical physical fixture passes existing containment validator, not full U1 SIM acceptance",
+  "parent_commit": "5be15db",
+  "full_tests": {"passed": 198, "failed": 0, "skipped": 0, "wall_s": 18.87},
+  "request": "benchmarks/unified_scenarios/fixtures/sorting_historical_tennis_inside.json",
+  "compile": {"success": true, "total_wall_s": 12.51384294401214, "initial_gap_rad": 0, "max_stage_gap_rad": 5.960464477539063e-8, "raw": "/tmp/rm75_u1_inside_compile_001"},
+  "replay": {
+    "success": true,
+    "relation": "inside",
+    "validation": "existing geometric_containment",
+    "horizontal_excess_m": 0.0,
+    "lower_excess_m": 0.0,
+    "vertical_overlap_m": 0.06939521389411527,
+    "geometry_slack_m": 0.003,
+    "release_pose_distance_m": 0.06099666199328739,
+    "support_pose_source": "observed simulator actor after settling",
+    "raw": "/tmp/rm75_u1_inside_replay_001"
+  },
+  "previous_pose_based_trials": "Remain failed under their frozen target_pose contracts; not relabeled",
+  "limits": ["Single historical fixture and one deterministic seed", "Existing validator uses mesh bounds; not exact hollow-container geometry proof", "Contact/limit and idle-gap acceptance plus measured multi-scene suite remain incomplete", "No real trial or physics identification", "Push awaits explicit destination approval"]
+}

@@ -43,9 +43,15 @@ class SortingTarget:
     placement_mode: PlacementMode = PlacementMode.SURFACE
     metadata: Mapping[str, Any] = field(default_factory=dict)
 
+    success_relation: str = "target_pose"
+
     def __post_init__(self) -> None:
         if not self.target_id:
             raise ValueError("target_id must not be empty")
+        if self.success_relation not in {"target_pose", "inside"}:
+            raise ValueError("unsupported sorting success_relation")
+        if self.success_relation == "inside" and not self.support_object_id:
+            raise ValueError("inside success_relation requires support_object_id")
         if self.capacity < 1:
             raise ValueError("target capacity must be positive")
         if self.slot_spacing_m <= 0.0:
@@ -371,6 +377,14 @@ class SortingPlanCompiler:
         request: SortingRequest,
         scene: TaskSceneState,
     ) -> ManipulationPlan:
+        targets = {target.target_id: target for target in request.targets}
+        for target in request.targets:
+            if target.success_relation == "inside" and target.support_object_id not in scene.objects:
+                raise ValueError(f"inside support {target.support_object_id!r} is absent from scene")
+        for assignment in request.assignments:
+            target = targets[assignment.target_id]
+            if target.success_relation == "inside" and target.support_object_id == assignment.object_id:
+                raise ValueError("object cannot be placed inside itself")
         moves = self._moves(request, scene)
         last_atom_for_object: dict[str, str] = {}
         atoms: list[ManipulationAtom] = []
@@ -393,10 +407,11 @@ class SortingPlanCompiler:
                 support_object_id=move.support_object_id,
                 placement_mode=move.placement_mode,
                 semantic_operator=(
-                    "sorting_buffer" if move.temporary else "sorting_target"
+                    "sorting_buffer" if move.temporary else
+                    "inside" if targets[move.target_id].success_relation == "inside" else "sorting_target"
                 ),
                 success=SuccessCriteria(
-                    "target_pose",
+                    targets[move.target_id].success_relation,
                     request.position_tolerance_m,
                     request.orientation_tolerance_deg,
                     20,

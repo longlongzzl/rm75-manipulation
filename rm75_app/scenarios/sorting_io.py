@@ -25,6 +25,7 @@ def sorting_request_from_dict(value: Mapping[str, Any]) -> SortingRequest:
             ),
             capacity=int(item.get("capacity", 1)),
             slot_spacing_m=float(item.get("slot_spacing_m", 0.07)),
+            success_relation=str(item.get("success_relation", "target_pose")),
             placement_mode=PlacementMode(
                 str(item.get("placement_mode", "surface_place"))
             ),
@@ -89,6 +90,7 @@ def sorting_request_as_dict(request: SortingRequest) -> dict[str, Any]:
                 "support_object_id": item.support_object_id,
                 "capacity": item.capacity,
                 "slot_spacing_m": item.slot_spacing_m,
+                "success_relation": item.success_relation,
                 "placement_mode": item.placement_mode.value,
                 "metadata": dict(item.metadata),
             }

@@ -1,0 +1,27 @@
+{
+  "schema": "rm75.sorting_request/v1",
+  "request_id": "historical_tennis_explicit_inside_regression",
+  "scene_file": "assets/test_scenes/current_table.json",
+  "user_command": "把网球放进笔筒",
+  "position_tolerance_m": 0.04,
+  "assignments": [{"object_id": "tennis", "target_id": "historical_inside_holder"}],
+  "targets": [{
+    "target_id": "historical_inside_holder",
+    "support_object_id": "bitong",
+    "success_relation": "inside",
+    "placement_mode": "drop_place",
+    "capacity": 1,
+    "pose": [
+      [0.6265426874160767, 0.6608725190162659, 0.4131488502025604, -0.29712966084480286],
+      [-0.2774723470211029, 0.6845022439956665, -0.6741407513618469, -0.28010159730911255],
+      [-0.7283223867416382, 0.30774053931236267, 0.6122437715530396, 0.10333520174026489],
+      [0.0, 0.0, 0.0, 1.0]
+    ]
+  }],
+  "metadata": {
+    "fixture_only": true,
+    "not_u1_real_snapshot_suite": true,
+    "source": "/tmp/rm75_task001_c1_plans/20260904_154546_llm_pick_place_pid21903_112358180/case_01/manipulation_plan.json",
+    "purpose": "Separate explicit inside-contract regression, frozen before rerun. Same target pose as historical pose-based fixture. Prior failures remain unchanged; this restores the source task relation rather than loosening its tolerance."
+  }
+}

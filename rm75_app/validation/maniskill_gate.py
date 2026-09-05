@@ -348,6 +348,12 @@ def run_maniskill_gate(
                         "orientation_error_deg": validation.orientation_error_deg,
                         "observed_pose": observed_pose.tolist(),
                         "message": validation.message,
+                        "relation": validation.relation,
+                        "diagnostics": dict(validation.diagnostics),
+                        "observed_support_pose": (
+                            None if not active_atom.support_object_id else
+                            bridge.observe_object_pose(active_atom.support_object_id).tolist()
+                        ),
                     }
                 )
                 committed_pose = (
