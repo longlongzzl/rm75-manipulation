@@ -34,3 +34,17 @@ def test_trace_restores_after_solver_error(monkeypatch):
         with trace_call(solver, "solve", []):
             solver.solve()
     assert solver.solve == original
+
+
+def test_trace_retains_result_metric_fields_without_reinterpreting_them(monkeypatch):
+    from types import SimpleNamespace
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1] / "tools"))
+    from diagnose_linear_solver import trace_call
+    result = SimpleNamespace(position_error=0.04, rotation_error=0.03,
+                             position_tolerance=0.0, orientation_tolerance=0.0)
+    owner = SimpleNamespace(solve=lambda: result)
+    rows = []
+    with trace_call(owner, "solve", rows):
+        assert owner.solve() is result
+    assert rows[0]["position_error"] == 0.04
+    assert rows[0]["position_tolerance"] == 0.0

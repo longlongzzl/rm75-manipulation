@@ -1,0 +1,25 @@
+{
+  "state": "NEEDS_REVIEW",
+  "parent_commit": "1bd64e2",
+  "baseline": {
+    "ik_calls": 24, "returned_boolean_entries": 384, "successes": 0,
+    "constraint_feasible": 370, "constraint_infeasible": 14,
+    "position_error_range_m": [0.03112347237765789, 0.06562866270542145],
+    "rotation_error_range_rad": [0.01202900055795908, 0.07816778868436813],
+    "raw": "/tmp/rm75_u1_gluestick_ik_metrics_001.json"
+  },
+  "terminal_only_ik_diagnostic": {
+    "success": false, "ik_calls": 24, "successes": 0,
+    "constraint_feasible": 370, "constraint_infeasible": 14,
+    "position_error_range_m": [0.03112347237765789, 0.06562866270542145],
+    "linear_trajopt_conditions_retained": true,
+    "raw": "/tmp/rm75_u1_gluestick_terminal_ik_001.json"
+  },
+  "conclusion": "Position convergence fails for every returned goal IK result; resetting IK alone to full terminal pose criteria did not improve this run. No production fix inferred.",
+  "result_field_caveat": "Raw result position_tolerance/orientation_tolerance report default zero; actual configured solver thresholds remain 0.005m/0.05rad. These zero fields are not used as acceptance thresholds here.",
+  "tests": {"passed": 213, "failed": 0, "skipped": 0, "wall_s": 18.73},
+  "test_log": "/tmp/rm75_u1_ik_criteria_final_tests.log",
+  "production_changes": false,
+  "physical_commands": 0,
+  "push": "Awaiting explicit destination authorization"
+}

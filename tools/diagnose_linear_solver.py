@@ -25,6 +25,10 @@ def trace_call(owner, name, rows):
         if success is not None:
             values = success.detach().cpu().numpy()
             row.update(success_count=int(values.sum()), result_count=int(values.size))
+        for field in ("feasible", "position_error", "rotation_error", "position_tolerance", "orientation_tolerance"):
+            value = getattr(result, field, None)
+            if value is not None:
+                row[field] = value.detach().cpu().numpy().tolist() if hasattr(value, "detach") else value
         rows.append(row)
         return result
     setattr(owner, name, traced)
@@ -35,19 +39,31 @@ def trace_call(owner, name, rows):
 
 
 class TracedBackend(Curobo2Backend):
-    def __init__(self):
+    def __init__(self, terminal_only_ik=False):
         super().__init__()
         self.linear_calls = []
+        self.terminal_only_ik = terminal_only_ik
 
     def plan_linear_candidates(self, request, **kwargs):
         planner = self._ensure_planner()
         rows = []
         entry = {"candidates": [c.candidate_id for c in request.candidates], "native_calls": rows}
         self.linear_calls.append(entry)
-        with trace_call(planner.ik_solver, "solve_pose", rows), \
-             trace_call(planner.trajopt_solver, "solve_pose", rows), \
-             trace_call(planner, "_get_graph_seed_trajectories", rows):
-            result = super().plan_linear_candidates(request, **kwargs)
+        original = planner.ik_solver.solve_pose
+        def endpoint_ik(*args, **ik_kwargs):
+            planner.ik_solver.update_tool_pose_criteria({
+                request.tool_frame: self._import_modules()["ToolPoseCriteria"]()})
+            return original(*args, **ik_kwargs)
+        if self.terminal_only_ik:
+            planner.ik_solver.solve_pose = endpoint_ik
+        try:
+            with trace_call(planner.ik_solver, "solve_pose", rows), \
+                 trace_call(planner.trajopt_solver, "solve_pose", rows), \
+                 trace_call(planner, "_get_graph_seed_trajectories", rows):
+                result = super().plan_linear_candidates(request, **kwargs)
+        finally:
+            if self.terminal_only_ik:
+                planner.ik_solver.solve_pose = original
         entry["statuses"] = [p.status for p in result.plans]
         return result
 
@@ -56,17 +72,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--plan", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--terminal-only-ik", action="store_true", help="Diagnostic only; retain linear TrajOpt conditions")
     args = parser.parse_args()
     if args.output.exists():
         parser.error("output already exists")
     plan = load_plan(args.plan)
     scene = load_task_scene(plan.scene_file)
-    with TracedBackend() as backend:
+    with TracedBackend(terminal_only_ik=args.terminal_only_ik) as backend:
         native = backend._ensure_planner()
         scene.set_joints(tuple(native.joint_names), native.default_joint_state.position.detach().cpu().numpy().reshape(-1)[:7])
         builder, _ = _scene_builder(Path(plan.scene_file))
         result = PickPlaceCoordinator(backend, _NoopExecutor()).run(builder(plan.atoms[0], scene))
         _write_json(args.output, {"fixture_only": True, "success": result.success,
+            "terminal_only_ik": args.terminal_only_ik,
             "failure_stage": result.failure_stage, "linear_calls": backend.linear_calls,
             "diagnostics": result.diagnostics})
     return 0
