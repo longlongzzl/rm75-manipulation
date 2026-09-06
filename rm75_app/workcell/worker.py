@@ -45,7 +45,6 @@ def run_pusht(spec,profile,stop,events):
                       else JsonObserver(camera['observation_file'],stop) if camera['kind']=='json_live' else None)
             if observer is None:
                 raise ValueError('Unknown live PushT observer')
-            # Prove valid live perception before opening the arm control connection.
             observer.observe().validate(max_age_s=config.max_observation_age_s,real=True)
             options=dict(section.get('planner',{}))
             for key in ('robot_config','curobo_root'):
@@ -102,4 +101,38 @@ def main(argv=None):
     result=None
     try:
         if spec['mode']=='real':
-            if not args.real_authorized or profile.get('hardware',{}).get('hardware
+            if not args.real_authorized or profile.get('hardware',{}).get('hardware_reviewed') is not True:
+                raise PermissionError('Real execution is not authorized')
+            if profile.get(spec['task'],{}).get('integration_qualified') is not True:
+                raise PermissionError('Task integration has not passed local hardware qualification')
+        with ResourceLease(args.app_root/'runtime_data'/'workcell'/'robot.lock'):
+            stop.check();events.emit('task_started',task=spec['task'],mode=spec['mode'])
+            if spec['mode']=='preview':
+                result=preview(spec,profile)
+            elif spec['task']=='pusht':
+                result=run_pusht(spec,profile,stop,events)
+            else:
+                from .legacy import run_working
+                result=run_working(spec,profile,args.app_root,run_dir,stop,events)
+                verify=profile.get(spec['task'],{}).get('post_verification')
+                if spec['mode']=='real' and verify:
+                    from .verification import wait_for_poses
+                    if verify.get('task_request_digest')!=digest(spec):
+                        raise ValueError('Verification targets are not bound to this exact task request')
+                    result.update(wait_for_poses(verify,after=time.time(),stop=stop))
+            result['status']=('succeeded' if result.get('task_success') is True
+                              else 'verification_failed' if result.get('task_success') is False
+                              else 'command_completed_unverified')
+    except Cancelled as exc:
+        result={'status':'cancelled','command_success':False,'task_success':None,'error':str(exc)}
+    except BaseException as exc:
+        result={'status':'failed','command_success':False,'task_success':None,
+                'error':f'{type(exc).__name__}: {exc}'}
+        (run_dir/'traceback.txt').write_text(traceback.format_exc(),encoding='utf-8')
+    finally:
+        result.update({'finished_at':time.time(),'task':spec['task'],'mode':spec['mode']})
+        atomic_json(run_dir/'result.json',result);events.emit('task_finished',result=result)
+    return 1 if result['status'] in ('failed','verification_failed') else 0
+
+if __name__=='__main__':
+    raise SystemExit(main())
