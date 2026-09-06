@@ -67,4 +67,9 @@ def install_subprocess_bridge(directory):
                         index += 1
                     if index < len(args) and str(args[index]).endswith('.py') and Path(str(args[index])).resolve() != bootstrap:
                         command = [*args[:index], str(bootstrap), *args[index:]]
-                        env = dict(os.environ if kwargs.get('env') is None else kwargs['env
+                        env = dict(os.environ if kwargs.get('env') is None else kwargs['env'])
+                        env['RM75_WORKCELL_INPUT_DIR'] = str(Path(directory).resolve())
+                        kwargs['env'] = env
+            super().__init__(command, *positional, **kwargs)
+    subprocess.Popen = BridgedPopen
+    return original
