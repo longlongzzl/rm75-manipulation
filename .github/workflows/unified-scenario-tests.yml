@@ -15,6 +15,8 @@ on:
       - "tests/test_pusht_scenario.py"
       - "tests/test_pusht_tracking.py"
       - "tests/test_pickplace_program.py"
+      - "tests/test_rrtrack_scenario_bridge.py"
+      - "tests/test_release_readiness.py"
       - ".github/workflows/unified-scenario-tests.yml"
 
 jobs:
@@ -48,5 +50,9 @@ jobs:
         run: python -m pytest -q tests/test_pusht_scenario.py
       - name: Test Push-T tracker adapter
         run: python -m pytest -q tests/test_pusht_tracking.py
+      - name: Test shared RRTrack scenario bridge
+        run: python -m pytest -q tests/test_rrtrack_scenario_bridge.py
+      - name: Test release readiness diagnostics
+        run: python -m pytest -q tests/test_release_readiness.py
       - name: Test full PickPlace program compilation
         run: python -m pytest -q tests/test_pickplace_program.py
