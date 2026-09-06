@@ -1,0 +1,54 @@
+name: reviewer-offline-validation
+
+on:
+  push:
+    branches: [chatgpt/unified-three-scenarios]
+    paths:
+      - .github/workflows/reviewer-offline-validation.yml
+      - rm75_app/scenarios/**
+      - tests/test_review_*.py
+      - tools/benchmark_world_model_baselines.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reviewer-offline-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  offline-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install offline test dependencies
+        run: python -m pip install numpy pytest trimesh pyyaml scipy pillow
+      - name: Record checked-in source and environment
+        run: |
+          mkdir -p review-artifacts
+          git rev-parse HEAD > review-artifacts/source_commit.txt
+          git archive --format=zip --output=review-artifacts/source.zip HEAD
+          python -m pip freeze > review-artifacts/python_packages.txt
+      - name: Compile Python modules
+        run: python -m compileall -q rm75_app/scenarios
+      - name: Run offline regression (no GPU or robot commands)
+        run: |
+          set -o pipefail
+          python -m pytest tests -q --junitxml=review-artifacts/pytest.xml 2>&1 | tee review-artifacts/pytest.log
+      - name: Publish source and exact regression results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: offline-review-${{ github.sha }}
+          path: review-artifacts/
+          retention-days: 7
+          if-no-files-found: error
