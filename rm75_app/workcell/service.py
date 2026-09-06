@@ -53,7 +53,6 @@ class WorkcellService:
         self.allow_real=allow_real;self.legacy_busy=legacy_busy or (lambda:False)
         self.csrf=secrets.token_urlsafe(32);self._lock=threading.RLock()
         self.active=None;self.process=None;self._tokens={};self._thread=None;self._input_nonces=set()
-        # A previous real worker/process interruption is not silently cleared.
         self.latch=self.root/'REAL_REVIEW_REQUIRED.json'
 
     def info(self):
@@ -99,7 +98,6 @@ class WorkcellService:
             job_id=uuid.uuid4().hex;directory=self.root/'jobs'/job_id
             directory.mkdir(parents=True)
             atomic_json(directory/'request.json',spec)
-            # Snapshot server-side config so it cannot be changed after approval.
             atomic_json(directory/'machine_profile.json',self.profile)
             python=(sys.executable if spec['mode']=='preview' or spec['task']=='pusht' and spec['mode']=='sim'
                     else self.profile.get(spec['task'],{}).get('python',sys.executable))
@@ -135,8 +133,6 @@ class WorkcellService:
                     'mode':spec['mode'],'task':spec['task'],'finished_at':time.time()})
             result=read_json(directory/'result.json')
             if spec['mode']=='real':
-                # Even nominal completion with unknown object outcome needs local
-                # inspection before a different task can move the same arm.
                 if result.get('status')=='succeeded' and result.get('task_success') is True:
                     self.latch.unlink(missing_ok=True)
                 else:
@@ -166,3 +162,60 @@ class WorkcellService:
             events=[]
             for raw in rows[-40:]:
                 try:
+                    events.append(loads(raw.decode()))
+                except (UnicodeError,ValueError):
+                    pass
+            result['events']=events
+        log=directory/'stdout.log'
+        if log.exists():
+            with log.open('rb') as stream:
+                stream.seek(max(0,log.stat().st_size-16000))
+                result['log']=stream.read().decode('utf-8',errors='replace')
+        return result
+
+    def respond_input(self,job_id,nonce,value):
+        with self._lock:
+            if job_id!=self.active or self.process is None or self.process.poll() is not None:
+                raise ValueError('Task is not running')
+            if value not in ('','r','q'):
+                raise ValueError('Only original Enter/r/q confirmation is supported')
+            progress=read_json(self.root/'jobs'/job_id/'pending_input.json')
+            if nonce!=progress.get('nonce') or nonce in self._input_nonces:
+                raise ValueError('No matching unconsumed original-runtime prompt')
+            self._input_nonces.add(nonce)
+            self.process.stdin.write((value+'\n').encode());self.process.stdin.flush()
+            return {'accepted':True,'nonce':nonce}
+
+    def cancel(self,job_id):
+        with self._lock:
+            if job_id!=self.active or self.process is None:
+                raise ValueError('This job is not running')
+            directory=self.root/'jobs'/job_id;process=self.process
+            spec=read_json(directory/'request.json')
+            (directory/'STOP').write_text('operator requested stop\n')
+            stop_result={'requested':True,'physical_estop':False}
+            if spec['mode']=='real' and process.poll() is None:
+                try:
+                    os.killpg(process.pid,signal.SIGSTOP)
+                    stop_result['controller_ack']=controller_stop(self.profile['hardware'])
+                except Exception as exc:
+                    stop_result['error']=str(exc);stop_result['requires_physical_estop']=True
+                finally:
+                    try:
+                        os.killpg(process.pid,signal.SIGKILL)
+                    except ProcessLookupError:
+                        pass
+                atomic_json(self.latch,{'job_id':job_id,'reason':'operator_stopped_real_job','stop':stop_result})
+            elif process.poll() is None:
+                try:
+                    os.killpg(process.pid,signal.SIGTERM)
+                except ProcessLookupError:
+                    pass
+            atomic_json(directory/'stop_result.json',stop_result)
+            return stop_result
+
+    def close(self):
+        if self.active:
+            self.cancel(self.active)
+        if self._thread:
+            self._thread.join(timeout=5)
