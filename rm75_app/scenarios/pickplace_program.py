@@ -416,11 +416,25 @@ class PickPlaceProgramExecutor:
         joint_state_provider: JointStateProvider | None = None,
         max_initial_joint_gap_rad: float = 0.12,
         atom_callback: AtomCallback | None = None,
+        scene_stamp_provider: Callable[[], SceneStamp] | None = None,
+        require_state_feedback: bool = False,
+        atom_validator: Callable[[CompiledPickPlaceAtom], bool] | None = None,
+        pre_release_gate: Callable[[str], bool] | None = None,
+        cancellation_requested: Callable[[], bool] | None = None,
+        stop_callback: Callable[[], None] | None = None,
     ) -> None:
         self.sink = sink
         self.joint_state_provider = joint_state_provider
         self.max_initial_joint_gap_rad = float(max_initial_joint_gap_rad)
         self.atom_callback = atom_callback
+        self.scene_stamp_provider = scene_stamp_provider
+        self.require_state_feedback = bool(require_state_feedback)
+        self.atom_validator = atom_validator
+        self.pre_release_gate = pre_release_gate
+        self.cancellation_requested = cancellation_requested
+        self.stop_callback = stop_callback
+        if not np.isfinite(self.max_initial_joint_gap_rad) or self.max_initial_joint_gap_rad <= 0:
+            raise ValueError("initial joint gap threshold must be finite and positive")
 
     def _validate_initial_joint_state(
         self,
@@ -434,11 +448,21 @@ class PickPlaceProgramExecutor:
             ),
             None,
         )
-        if first is None or self.joint_state_provider is None:
+        if first is None:
+            return False, "compiled program contains no motion", None
+        if self.require_state_feedback and (self.joint_state_provider is None or self.scene_stamp_provider is None):
+            return False, "execution requires live joint and scene feedback", None
+        if self.scene_stamp_provider is not None:
+            current_stamp = self.scene_stamp_provider()
+            if not program.source_stamp.compatible_with(current_stamp, require_fingerprint=True):
+                return False, "compiled program source scene is stale or unverifiable", None
+        if self.joint_state_provider is None:
             return True, "", None
         observed = self.joint_state_provider()
         if tuple(observed.names) != tuple(first.trajectory.joint_names):
             return False, "real joint names do not match the compiled program", None
+        if not np.all(np.isfinite(observed.positions)):
+            return False, "observed joints are not finite", None
         gap = float(
             np.max(
                 np.abs(
@@ -460,7 +484,10 @@ class PickPlaceProgramExecutor:
         self,
         program: CompiledPickPlaceProgram,
     ) -> PickPlaceExecutionReport:
-        valid, message, initial_gap = self._validate_initial_joint_state(program)
+        try:
+            valid, message, initial_gap = self._validate_initial_joint_state(program)
+        except Exception as exc:
+            valid, message, initial_gap = False, f"feedback unavailable: {type(exc).__name__}: {exc}", None
         if not valid:
             return PickPlaceExecutionReport(
                 False,
@@ -470,11 +497,18 @@ class PickPlaceProgramExecutor:
                 diagnostics={"initial_joint_gap_rad": initial_gap},
             )
         completed: list[str] = []
+        by_id = {item.atom.atom_id: item for item in program.atoms}
+        validated_atoms: list[str] = []
+        command_timings: list[dict[str, Any]] = []
+        grasp_close_commanded = False
         active_atom: str | None = None
         active_stage: str | None = None
         started = time.perf_counter()
         try:
             for command in program.commands:
+                if self.cancellation_requested is not None and self.cancellation_requested():
+                    active_stage = "cancelled"
+                    raise RuntimeError("execution cancelled; remaining commands were not submitted")
                 if isinstance(command, AtomBoundaryCommand):
                     if command.starting:
                         active_atom = command.atom_id
@@ -482,6 +516,11 @@ class PickPlaceProgramExecutor:
                             self.atom_callback(command.atom_id, True)
                     else:
                         if command.success:
+                            if self.atom_validator is not None:
+                                active_stage = "atom_outcome_validation"
+                                if not self.atom_validator(by_id[command.atom_id]):
+                                    raise RuntimeError("observed atom outcome failed; precompiled suffix invalidated")
+                                validated_atoms.append(command.atom_id)
                             completed.append(command.atom_id)
                         if self.atom_callback is not None:
                             self.atom_callback(command.atom_id, False)
@@ -489,11 +528,29 @@ class PickPlaceProgramExecutor:
                     continue
                 if isinstance(command, GripperCommand):
                     active_stage = "gripper_close" if command.closed else "gripper_open"
+                    if not command.closed and grasp_close_commanded and self.pre_release_gate is not None:
+                        active_stage = "release_readiness"
+                        if not self.pre_release_gate(command.atom_id):
+                            raise RuntimeError("release readiness not confirmed; gripper kept at its commanded state")
+                        active_stage = "gripper_open"
+                    submitted = time.perf_counter()
                     self.sink.set_gripper(command.closed)
+                    grasp_close_commanded = command.closed
+                    command_timings.append({"stage": active_stage, "submitted_s": submitted - started,
+                                            "returned_s": time.perf_counter() - started})
                     continue
                 active_stage = command.stage
+                submitted = time.perf_counter()
                 self.sink.execute_trajectory(command.stage, command.trajectory)
+                command_timings.append({"stage": active_stage, "submitted_s": submitted - started,
+                                        "returned_s": time.perf_counter() - started})
         except Exception as exc:
+            stop_error = None
+            if self.stop_callback is not None:
+                try:
+                    self.stop_callback()
+                except Exception as stop_exc:
+                    stop_error = f"{type(stop_exc).__name__}: {stop_exc}"
             return PickPlaceExecutionReport(
                 False,
                 tuple(completed),
@@ -501,11 +558,16 @@ class PickPlaceProgramExecutor:
                 failed_stage=active_stage,
                 message=f"{type(exc).__name__}: {exc}",
                 total_time_s=time.perf_counter() - started,
-                diagnostics={"initial_joint_gap_rad": initial_gap},
+                diagnostics={"initial_joint_gap_rad": initial_gap,
+                             "validated_atoms": validated_atoms, "command_timings": command_timings,
+                             "task_success_verified": False, "stop_callback_error": stop_error},
             )
         return PickPlaceExecutionReport(
             True,
             tuple(completed),
             total_time_s=time.perf_counter() - started,
-            diagnostics={"initial_joint_gap_rad": initial_gap},
+            diagnostics={"initial_joint_gap_rad": initial_gap,
+                         "validated_atoms": validated_atoms, "command_timings": command_timings,
+                         "completion_kind": "observed_atoms" if self.atom_validator is not None else "command_dispatch",
+                         "task_success_verified": self.atom_validator is not None and len(validated_atoms) == len(program.atoms)},
         )

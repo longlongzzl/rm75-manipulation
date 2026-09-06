@@ -35,8 +35,20 @@ class PushTMPCConfig:
     seed: int = 0
 
     def __post_init__(self) -> None:
-        if self.horizon < 1 or self.candidate_sequences < 1:
+        if any(isinstance(value, bool) or not isinstance(value, int) or value < 1
+               for value in (self.horizon, self.candidate_sequences)):
             raise ValueError("MPC horizon and candidate count must be positive")
+        if not all(np.isfinite(value) for value in (
+            self.minimum_push_m, self.maximum_push_m, self.push_speed_mps,
+            self.direction_noise_rad, self.goal_steering_fraction, self.position_weight,
+            self.yaw_weight, self.intermediate_weight, self.effort_weight, self.regress_penalty,
+        )):
+            raise ValueError("MPC numeric parameters must be finite")
+        if self.push_speed_mps <= 0 or any(value < 0 for value in (
+            self.direction_noise_rad, self.position_weight, self.yaw_weight,
+            self.intermediate_weight, self.effort_weight, self.regress_penalty,
+        )):
+            raise ValueError("MPC speed must be positive and costs nonnegative")
         if not 0.0 < self.minimum_push_m <= self.maximum_push_m:
             raise ValueError("invalid Push-T push distance range")
         if not 0.0 <= self.goal_steering_fraction <= 1.0:
@@ -180,6 +192,9 @@ class PushTMPC:
         goal: PushTGoal,
         parameters: PushTModelParameters,
     ) -> PushTPlan:
+        state_validator = getattr(self.model, "state_is_valid", None)
+        if callable(state_validator) and not state_validator(state):
+            raise ValueError("initial Push-T state is outside the model workspace")
         contacts = self.model.geometry.candidate_contact_points()
         best_actions: tuple[PushAction, ...] | None = None
         best_states: tuple[PushTState, ...] | None = None
@@ -192,7 +207,8 @@ class PushTMPC:
                 parameters,
                 contacts,
             )
-            cost = self._cost(state, states, actions, goal)
+            valid = not callable(state_validator) or all(state_validator(item) for item in states)
+            cost = self._cost(state, states, actions, goal) if valid else float("inf")
             costs[index] = cost
             if cost < best_cost:
                 best_cost = cost
@@ -207,9 +223,12 @@ class PushTMPC:
             self.config.candidate_sequences,
             self.config.horizon,
             diagnostics={
-                "cost_p10": float(np.percentile(costs, 10.0)),
-                "cost_median": float(np.median(costs)),
-                "cost_p90": float(np.percentile(costs, 90.0)),
+                "planner_algorithm": "random_shooting_mpc",
+                "invalid_future_count": int(np.sum(~np.isfinite(costs))),
+                "model_step_evaluations": self.config.candidate_sequences * self.config.horizon,
+                "cost_p10": float(np.percentile(costs[np.isfinite(costs)], 10.0)),
+                "cost_median": float(np.median(costs[np.isfinite(costs)])),
+                "cost_p90": float(np.percentile(costs[np.isfinite(costs)], 90.0)),
                 "candidate_contact_count": len(contacts),
                 "future_actions": [
                     {

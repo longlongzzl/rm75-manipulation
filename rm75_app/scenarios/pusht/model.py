@@ -32,7 +32,7 @@ class PushTGeometry:
             self.stem_width_m,
             self.stem_height_m,
         )
-        if any(float(item) <= 0.0 for item in values):
+        if not np.all(np.isfinite(values)) or any(float(item) <= 0.0 for item in values):
             raise ValueError("Push-T geometry dimensions must be positive")
 
     @property
@@ -81,7 +81,23 @@ class QuasiStaticPushTModel:
         workspace_bounds_xy: tuple[float, float, float, float] | None = None,
     ) -> None:
         self.geometry = geometry or PushTGeometry()
+        if workspace_bounds_xy is not None:
+            if len(workspace_bounds_xy) != 4 or not np.all(np.isfinite(workspace_bounds_xy)):
+                raise ValueError("workspace bounds must be four finite values")
+            xmin, xmax, ymin, ymax = workspace_bounds_xy
+            if not xmin < xmax or not ymin < ymax:
+                raise ValueError("workspace bounds must have positive area")
         self.workspace_bounds_xy = workspace_bounds_xy
+
+    def state_is_valid(self, state: PushTState) -> bool:
+        """Conservative full-object containment; not a collision/safety proof."""
+        if self.workspace_bounds_xy is None:
+            return True
+        xmin, xmax, ymin, ymax = self.workspace_bounds_xy
+        radius = self.geometry.characteristic_radius_m
+        x, y = state.pose.xy
+        return bool(xmin + radius <= x <= xmax - radius
+                    and ymin + radius <= y <= ymax - radius)
 
     @staticmethod
     def _rotation(yaw: float) -> np.ndarray:
@@ -130,15 +146,8 @@ class QuasiStaticPushTModel:
         delta_yaw = float(np.clip(delta_yaw, -0.45, 0.45))
 
         new_xy = state.pose.xy + delta_xy
-        if self.workspace_bounds_xy is not None:
-            xmin, xmax, ymin, ymax = self.workspace_bounds_xy
-            new_xy = np.asarray(
-                [
-                    np.clip(new_xy[0], xmin, xmax),
-                    np.clip(new_xy[1], ymin, ymax),
-                ],
-                dtype=np.float64,
-            )
+        # Bounds are a planner constraint, not an unmodeled physical wall.
+        # Keep the true model prediction and reject it in MPC if out of bounds.
 
         duration = max(float(action.distance_m / action.speed_mps), 1.0e-3)
         measured_velocity = delta_xy / duration

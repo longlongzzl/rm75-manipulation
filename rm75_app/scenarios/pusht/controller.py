@@ -17,6 +17,7 @@ from .contracts import (
     PushTRunReport,
     PushTState,
     PushTTransition,
+    wrap_angle,
 )
 from .model import QuasiStaticPushTModel
 from .mpc import PushTMPC
@@ -57,14 +58,21 @@ class PushTControllerConfig:
     minimum_progress_m: float = 0.001
     max_consecutive_stalls: int = 3
     max_observation_jump_m: float = 0.20
+    max_observation_jump_rad: float = np.pi / 2.0
+    yaw_progress_scale_m: float = 0.06
 
     def __post_init__(self) -> None:
         if self.max_steps < 1 or self.max_consecutive_stalls < 1:
             raise ValueError("Push-T controller step limits must be positive")
         if not 0.0 <= self.minimum_tracking_confidence <= 1.0:
             raise ValueError("tracking confidence threshold must be in [0, 1]")
-        if self.settle_time_s < 0.0:
-            raise ValueError("settle time must not be negative")
+        values = [self.settle_time_s, self.minimum_progress_m,
+                  self.max_observation_jump_m, self.max_observation_jump_rad,
+                  self.yaw_progress_scale_m]
+        if not np.all(np.isfinite(values)) or self.settle_time_s < 0.0:
+            raise ValueError("Push-T controller thresholds must be finite; settle time non-negative")
+        if any(value <= 0.0 for value in values[1:]):
+            raise ValueError("Push-T progress and jump thresholds must be positive")
 
 
 class ObjectFramePushExecutor:
@@ -144,6 +152,14 @@ class PushTClosedLoopController:
         transitions: list[PushTTransition] = []
         stalls = 0
         observation = self.tracker.observe()
+        # The report always retains the latest accepted observation. Never fit
+        # simulator parameters from a failed command or rejected sensor sample.
+        def abort(reason: str, step_index: int, **details: Any) -> PushTRunReport:
+            return PushTRunReport(
+                False, goal, tuple(transitions), observation, reason, self._parameters(),
+                metadata={"failed_step": step_index, **details},
+            )
+
         if observation.confidence < self.config.minimum_tracking_confidence:
             return PushTRunReport(
                 False,
@@ -165,13 +181,30 @@ class PushTClosedLoopController:
 
         for step_index in range(self.config.max_steps):
             parameters = self._parameters()
-            plan = self.mpc.plan(observation.state, goal, parameters)
-            execution = dict(
-                self.executor.execute_push(plan.action, observation)
-            )
+            try:
+                plan = self.mpc.plan(observation.state, goal, parameters)
+            except Exception as exc:
+                return abort("planning_failed", step_index,
+                             error=f"{type(exc).__name__}: {exc}")
+            try:
+                execution = dict(self.executor.execute_push(plan.action, observation))
+            except Exception as exc:
+                # The actuator outcome is unknown: never replay/retry blindly.
+                return abort("execution_exception", step_index,
+                             error=f"{type(exc).__name__}: {exc}",
+                             execution_outcome_unknown=True)
+            if "success" in execution and not bool(execution["success"]):
+                return abort("execution_failed", step_index, execution=execution)
             if self.config.settle_time_s > 0.0:
                 self.sleep(self.config.settle_time_s)
-            after = self.tracker.observe()
+            try:
+                after = self.tracker.observe()
+            except Exception as exc:
+                return abort("tracking_exception", step_index,
+                             error=f"{type(exc).__name__}: {exc}", execution=execution)
+            if after.timestamp_s <= observation.timestamp_s:
+                return abort("tracking_timestamp_not_increasing", step_index,
+                             rejected_timestamp_s=after.timestamp_s, execution=execution)
             if after.confidence < self.config.minimum_tracking_confidence:
                 return PushTRunReport(
                     False,
@@ -201,14 +234,30 @@ class PushTClosedLoopController:
                     },
                 )
 
+            yaw_jump = abs(wrap_angle(after.state.pose.yaw - observation.state.pose.yaw))
+            if yaw_jump > self.config.max_observation_jump_rad:
+                return abort("tracking_yaw_jump_rejected", step_index,
+                             observed_yaw_jump_rad=yaw_jump, execution=execution)
+
             before_error = float(
                 np.linalg.norm(observation.state.pose.xy - goal.pose.xy)
             )
             after_error = float(
                 np.linalg.norm(after.state.pose.xy - goal.pose.xy)
             )
+            before_yaw_error = abs(wrap_angle(observation.state.pose.yaw - goal.pose.yaw))
+            after_yaw_error = abs(wrap_angle(after.state.pose.yaw - goal.pose.yaw))
             progress = before_error - after_error
-            if progress < self.config.minimum_progress_m:
+            # Turning a T at its target position is real progress. Errors
+            # already within task tolerance do not dominate the stall score.
+            def remaining_pose_error(position: float, yaw: float) -> float:
+                return float(np.hypot(
+                    max(0.0, position - goal.position_tolerance_m),
+                    self.config.yaw_progress_scale_m * max(0.0, yaw - goal.yaw_tolerance_rad),
+                ))
+            pose_progress = (remaining_pose_error(before_error, before_yaw_error)
+                             - remaining_pose_error(after_error, after_yaw_error))
+            if pose_progress < self.config.minimum_progress_m:
                 stalls += 1
             else:
                 stalls = 0
@@ -227,6 +276,9 @@ class PushTClosedLoopController:
                     "position_error_before_m": before_error,
                     "position_error_after_m": after_error,
                     "progress_m": progress,
+                    "pose_progress_m": pose_progress,
+                    "yaw_error_before_rad": before_yaw_error,
+                    "yaw_error_after_rad": after_yaw_error,
                     "consecutive_stalls": stalls,
                     "system_identification": dict(system_identification),
                 }

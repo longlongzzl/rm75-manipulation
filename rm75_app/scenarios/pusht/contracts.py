@@ -54,6 +54,8 @@ class PushTGoal:
     yaw_tolerance_rad: float = np.deg2rad(8.0)
 
     def __post_init__(self) -> None:
+        if not np.all(np.isfinite([self.position_tolerance_m, self.yaw_tolerance_rad])):
+            raise ValueError("Push-T goal tolerances must be finite")
         if self.position_tolerance_m <= 0.0 or self.yaw_tolerance_rad <= 0.0:
             raise ValueError("Push-T goal tolerances must be positive")
 
@@ -85,6 +87,10 @@ class PushAction:
         direction = np.asarray(self.direction_world_xy, dtype=np.float64)
         if contact.shape != (2,) or direction.shape != (2,):
             raise ValueError("Push-T contact and direction must be 2-vectors")
+        if not np.all(np.isfinite(contact)) or not np.all(np.isfinite(direction)):
+            raise ValueError("Push-T contact and direction must be finite")
+        if not np.all(np.isfinite([self.distance_m, self.speed_mps, self.approach_clearance_m])):
+            raise ValueError("Push-T distance, speed and clearance must be finite")
         norm = float(np.linalg.norm(direction))
         if norm < 1.0e-9:
             raise ValueError("Push-T direction must not be zero")
@@ -92,7 +98,7 @@ class PushAction:
             raise ValueError("Push-T distance and speed must be positive")
         if self.approach_clearance_m < 0.0:
             raise ValueError("Push-T approach clearance must not be negative")
-        object.__setattr__(self, "contact_local_xy", contact)
+        object.__setattr__(self, "contact_local_xy", contact.copy())
         object.__setattr__(self, "direction_world_xy", direction / norm)
 
 
@@ -125,6 +131,8 @@ class PushTModelParameters:
             raise ValueError("friction must not be negative")
         if self.translation_gain <= 0.0 or self.rotation_gain < 0.0:
             raise ValueError("model gains are invalid")
+        if not 0.0 <= self.linear_damping <= 1.0 or not 0.0 <= self.angular_damping <= 1.0:
+            raise ValueError("damping factors must be in [0, 1]")
         if not 0.0 < self.contact_efficiency <= 1.5:
             raise ValueError("contact_efficiency is outside a reasonable range")
 
@@ -154,6 +162,10 @@ class PushTPlan:
     diagnostics: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
+        if not np.isfinite(self.cost):
+            raise ValueError("Push-T plan cost must be finite")
+        if self.candidate_count < 1 or self.horizon < 1:
+            raise ValueError("Push-T plan counts must be positive")
         object.__setattr__(self, "predicted_states", tuple(self.predicted_states))
         object.__setattr__(self, "diagnostics", dict(self.diagnostics))
 

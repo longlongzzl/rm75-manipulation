@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Mapping, Sequence
+from typing import Any, Callable, Mapping, Sequence
 
 from rm75_app.orchestration.multi_object_executor import TaskSceneState
 from rm75_app.pickplace.atom_task_builder import FixedSceneAtomTaskBuilder
@@ -21,11 +21,13 @@ from .magnetic import (
     StructureLLM,
 )
 from .pickplace_program import (
+    CompiledPickPlaceAtom,
     PickPlaceExecutionReport,
     PickPlaceProgramCompiler,
     PickPlaceProgramExecutor,
     TrajectorySink,
 )
+from .contracts import SceneStamp
 from .pusht import (
     ObjectFramePushExecutor,
     PushTClosedLoopController,
@@ -53,9 +55,11 @@ class UnifiedSystemConfig:
     max_stage_start_gap_rad: float = 0.10
     max_initial_joint_gap_rad: float = 0.12
     magnetic_max_pieces: int = 12
+    # Opt in for physical deployments; offline recording remains compatible.
+    require_execution_feedback: bool = False
 
     def __post_init__(self) -> None:
-        if not 1 <= int(self.magnetic_max_pieces) <= 12:
+        if isinstance(self.magnetic_max_pieces, bool) or not isinstance(self.magnetic_max_pieces, int) or not 1 <= self.magnetic_max_pieces <= 12:
             raise ValueError("magnetic_max_pieces must be in [1, 12]")
 
 
@@ -76,6 +80,11 @@ class UnifiedManipulationSystem:
         trajectory_sink: TrajectorySink | None = None,
         joint_state_provider: Any | None = None,
         config: UnifiedSystemConfig | None = None,
+        scene_stamp_provider: Callable[[], SceneStamp] | None = None,
+        atom_validator: Callable[[CompiledPickPlaceAtom], bool] | None = None,
+        pre_release_gate: Callable[[str], bool] | None = None,
+        cancellation_requested: Callable[[], bool] | None = None,
+        stop_callback: Callable[[], None] | None = None,
     ) -> None:
         self.planner = planner
         self.task_builder = task_builder
@@ -93,6 +102,12 @@ class UnifiedManipulationSystem:
             else PickPlaceProgramExecutor(
                 trajectory_sink,
                 joint_state_provider=joint_state_provider,
+                scene_stamp_provider=scene_stamp_provider,
+                require_state_feedback=self.config.require_execution_feedback,
+                atom_validator=atom_validator,
+                pre_release_gate=pre_release_gate,
+                cancellation_requested=cancellation_requested,
+                stop_callback=stop_callback,
                 max_initial_joint_gap_rad=(
                     self.config.max_initial_joint_gap_rad
                 ),

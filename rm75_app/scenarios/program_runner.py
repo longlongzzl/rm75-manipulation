@@ -35,9 +35,13 @@ class ScenarioProgramRunner:
         *,
         stop_on_failure: bool = True,
         replan_on_invalidation: bool = True,
+        max_replans_per_step: int = 1,
     ) -> None:
         self.stop_on_failure = bool(stop_on_failure)
         self.replan_on_invalidation = bool(replan_on_invalidation)
+        if isinstance(max_replans_per_step, bool) or int(max_replans_per_step) != max_replans_per_step or max_replans_per_step < 0:
+            raise ValueError("max_replans_per_step must be a non-negative integer")
+        self.max_replans_per_step = int(max_replans_per_step)
 
     @staticmethod
     def _successful(result: StepExecutionResult) -> bool:
@@ -50,6 +54,15 @@ class ScenarioProgramRunner:
     ) -> ScenarioRunReport:
         steps = ensure_dependency_order(program.steps)
         mode = ExecutionMode(program.execution_mode)
+        # After a failed action, a predicted suffix is not authoritative.  In
+        # continue-on-failure mode only independent steps may proceed, planned
+        # from a fresh observation (never a failed parent's predicted effects).
+        if not self.stop_on_failure and mode is not ExecutionMode.CLOSED_LOOP:
+            report = self._run_closed_loop(program, steps, runtime)
+            return replace(report, metadata={
+                **dict(report.metadata), "requested_mode": mode.value,
+                "mode_downgrade_reason": "continue_on_failure_requires_observed_dependencies",
+            })
         if mode is ExecutionMode.FULL_PLAN:
             return self._run_full_plan(program, steps, runtime)
         if mode is ExecutionMode.LOOKAHEAD:
@@ -76,7 +89,17 @@ class ScenarioProgramRunner:
         planning_time = 0.0
         execution_time = 0.0
         results: list[StepExecutionResult] = []
+        completed: set[str] = set()
+        replans = invalidated = 0
         for step in steps:
+            missing = set(step.depends_on) - completed
+            if missing:
+                results.append(StepExecutionResult(
+                    False, step.step_id, StepStatus.SKIPPED,
+                    message="dependency_not_succeeded",
+                    diagnostics={"unsatisfied_dependencies": sorted(missing)},
+                ))
+                continue
             observation = runtime.observe()
             planning_started = time.perf_counter()
             prepared = runtime.plan_step(step, observation)
@@ -84,6 +107,17 @@ class ScenarioProgramRunner:
                 float(prepared.planning_time_s),
                 time.perf_counter() - planning_started,
             )
+            prepared, extra_time, retries, rejected, observation = self._refresh_step(
+                step, prepared, runtime
+            )
+            planning_time += extra_time
+            replans += retries
+            invalidated += rejected
+            if prepared is None:
+                results.append(self._invalidated(step, observation))
+                if self.stop_on_failure:
+                    break
+                continue
             execution_started = time.perf_counter()
             result = runtime.execute_step(prepared)
             execution_time += max(
@@ -91,6 +125,8 @@ class ScenarioProgramRunner:
                 time.perf_counter() - execution_started,
             )
             results.append(result)
+            if self._successful(result):
+                completed.add(step.step_id)
             if not self._successful(result) and self.stop_on_failure:
                 break
         success = len(results) == len(steps) and all(
@@ -103,8 +139,39 @@ class ScenarioProgramRunner:
             tuple(results),
             planning_time,
             execution_time,
+            replans,
+            invalidated,
             metadata={"effective_mode": ExecutionMode.CLOSED_LOOP.value},
         )
+
+    @staticmethod
+    def _invalidated(step: ProgramStep, observation: ScenarioObservation) -> StepExecutionResult:
+        return StepExecutionResult(
+            False, step.step_id, StepStatus.INVALIDATED, observation=observation,
+            message="plan does not match a fresh observation after bounded replanning",
+        )
+
+    def _refresh_step(
+        self, step: ProgramStep, prepared: PreparedStep, runtime: ScenarioRuntime,
+    ) -> tuple[PreparedStep | None, float, int, int, ScenarioObservation]:
+        """Reobserve AFTER planning; planning itself can take several seconds.
+
+        Compatibility must be checked again after a replan.  A moving scene is
+        not a reason to execute a known-stale command or to replan indefinitely.
+        """
+        elapsed = 0.0
+        retries = rejected = 0
+        while True:
+            current = runtime.observe()
+            if runtime.plan_is_compatible(prepared, current):
+                return prepared, elapsed, retries, rejected, current
+            rejected += 1
+            if not self.replan_on_invalidation or retries >= self.max_replans_per_step:
+                return None, elapsed, retries, rejected, current
+            started = time.perf_counter()
+            prepared = runtime.plan_step(step, current)
+            elapsed += max(float(prepared.planning_time_s), time.perf_counter() - started)
+            retries += 1
 
     def _build_suffix(
         self,
@@ -149,9 +216,13 @@ class ScenarioProgramRunner:
         current = initial
         while index < len(steps):
             prepared = prepared_steps[index]
-            if not runtime.plan_is_compatible(prepared, current):
+            # Do not compare with the pre-compilation snapshot or an old
+            # execution result while a long suffix has been prepared.
+            current = runtime.observe()
+            retries = 0
+            while not runtime.plan_is_compatible(prepared, current):
                 invalidated += len(steps) - index
-                if not self.replan_on_invalidation:
+                if not self.replan_on_invalidation or retries >= self.max_replans_per_step:
                     results.append(
                         StepExecutionResult(
                             False,
@@ -169,6 +240,10 @@ class ScenarioProgramRunner:
                 replans += 1
                 prepared_steps[index:] = rebuilt
                 prepared = prepared_steps[index]
+                retries += 1
+                current = runtime.observe()
+            if results and results[-1].status is StepStatus.INVALIDATED:
+                break
             started = time.perf_counter()
             result = runtime.execute_step(prepared)
             execution_time += max(
@@ -223,7 +298,11 @@ class ScenarioProgramRunner:
         current = runtime.observe()
 
         def plan(step: ProgramStep, observation: ScenarioObservation) -> PreparedStep:
-            return runtime.plan_step(step, observation)
+            started = time.perf_counter()
+            result = runtime.plan_step(step, observation)
+            return replace(result, planning_time_s=max(
+                float(result.planning_time_s), time.perf_counter() - started,
+            ))
 
         with ThreadPoolExecutor(
             max_workers=1,
@@ -236,15 +315,22 @@ class ScenarioProgramRunner:
                 time.perf_counter() - started,
             )
             for index, _step in enumerate(steps):
+                prepared, extra_time, retries, rejected, current = self._refresh_step(
+                    steps[index], prepared, runtime
+                )
+                planning_time += extra_time
+                replans += retries
+                invalidated += rejected
+                if prepared is None:
+                    results.append(self._invalidated(steps[index], current))
+                    break
                 predicted = (
                     prepared.predicted_observation
                     if prepared.predicted_observation is not None
                     else runtime.predict_observation(prepared, current)
                 )
                 future: Future[PreparedStep] | None = None
-                future_started = 0.0
                 if index + 1 < len(steps):
-                    future_started = time.perf_counter()
                     future = pool.submit(plan, steps[index + 1], predicted)
                 execute_started = time.perf_counter()
                 result = runtime.execute_step(prepared)
@@ -266,32 +352,10 @@ class ScenarioProgramRunner:
                 if future is None:
                     continue
                 candidate = future.result()
-                planning_time += max(
-                    float(candidate.planning_time_s),
-                    time.perf_counter() - future_started,
-                )
-                if runtime.plan_is_compatible(candidate, current):
-                    prepared = candidate
-                    continue
-                invalidated += 1
-                if not self.replan_on_invalidation:
-                    results.append(
-                        StepExecutionResult(
-                            False,
-                            steps[index + 1].step_id,
-                            StepStatus.INVALIDATED,
-                            observation=current,
-                            message="lookahead plan invalidated by the observed transition",
-                        )
-                    )
-                    break
-                replan_started = time.perf_counter()
-                prepared = plan(steps[index + 1], current)
-                planning_time += max(
-                    float(prepared.planning_time_s),
-                    time.perf_counter() - replan_started,
-                )
-                replans += 1
+                # Future wait time includes execution; do not bill it as
+                # planning latency. The worker above measured actual planning.
+                planning_time += float(candidate.planning_time_s)
+                prepared = candidate
         success = len(results) == len(steps) and all(
             self._successful(item) for item in results
         )

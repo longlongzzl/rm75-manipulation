@@ -118,6 +118,17 @@ def _pose_from_axes(
     return transform
 
 
+def _support_top(pose: np.ndarray, panel: MagneticPanelSpec) -> np.ndarray:
+    """Center of the highest box face, not an assumed local +Y endpoint.
+
+    Intended for the axis-aligned flat/upright panel domain. The strict
+    validator separately rejects support faces that are not approximately level.
+    """
+    local_axis = int(np.argmax(np.abs(pose[2, :3])))
+    sign = 1.0 if pose[2, local_axis] >= 0.0 else -1.0
+    return pose[:3, 3] + sign * pose[:3, local_axis] * (0.5 * panel.size_xyz_m[local_axis])
+
+
 class MagneticAssemblyPlanner:
     """Resolve a validated symbolic structure into world-space placements."""
 
@@ -304,14 +315,17 @@ class MagneticAssemblyPlanner:
             parent_spec,
             parent_edge,
         )
-        child_y = tangent
         child_z = outward if not connection.flip else -outward
-        child_x = _normalized(np.cross(child_y, child_z))
-        child_local_point, _unused, _child_tangent = _edge_local_geometry(
+        child_local_point, _unused, child_tangent = _edge_local_geometry(
             child_spec,
             connection.child_edge,
         )
-        rotation = np.stack((child_x, child_y, child_z), axis=1)
+        # Map the SELECTED child's edge tangent, not always its local Y.
+        # The old construction only worked for +/-X mating edges.
+        local_z = np.asarray([0.0, 0.0, 1.0])
+        local_basis = np.stack((child_tangent, np.cross(local_z, child_tangent), local_z), axis=1)
+        world_basis = np.stack((tangent, np.cross(child_z, tangent), child_z), axis=1)
+        rotation = world_basis @ local_basis.T
         half_overlap_offset = (
             0.5 - float(connection.overlap_fraction)
         ) * child_spec.size_xyz_m[2]
@@ -344,17 +358,7 @@ class MagneticAssemblyPlanner:
             parent_specs,
             parent_pose_classes,
         ):
-            if pose_class is PanelPoseClass.VERTICAL:
-                top = (
-                    pose[:3, 3]
-                    + pose[:3, 1] * (0.5 * panel.size_xyz_m[1])
-                )
-            else:
-                top = (
-                    pose[:3, 3]
-                    + pose[:3, 2] * (0.5 * panel.size_xyz_m[2])
-                )
-            top_points.append(top)
+            top_points.append(_support_top(pose, panel))
         center_support = np.mean(np.stack(top_points), axis=0)
         direction = _normalized(top_points[-1] - top_points[0])
         up = np.asarray([0.0, 0.0, 1.0], dtype=np.float64)

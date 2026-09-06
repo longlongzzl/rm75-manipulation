@@ -15,7 +15,7 @@ from .contracts import (
     PanelPoseClass,
     ResolvedMagneticPlacement,
 )
-from .planner import MagneticAssemblyPlanner
+from .planner import MagneticAssemblyPlanner, _support_top
 
 
 def _normalized(value: np.ndarray) -> np.ndarray:
@@ -179,7 +179,11 @@ class MagneticGeometryValidator:
                         parent_panels,
                     )
                 ]
-                separation = float(np.linalg.norm(points[1] - points[0]))
+                delta = points[1] - points[0]
+                # Width is signed distance across the facing inner edges;
+                # Euclidean center distance confounds slot width and shear.
+                separation = float(np.dot(delta, edges[0][1]))
+                shear = abs(float(np.dot(delta, edges[0][2])))
                 expected = (
                     child_panel.size_xyz_m[2] + 2.0 * connection.gap_m
                 )
@@ -187,10 +191,26 @@ class MagneticGeometryValidator:
                 facing = float(np.dot(edges[0][1], edges[1][1]))
                 tangent_parallel = abs(float(np.dot(edges[0][2], edges[1][2])))
                 support_normal_parallel = float(np.dot(edges[0][3], edges[1][3]))
-                up = _normalized(edges[0][3] + edges[1][3])
+                normal_sum = edges[0][3] + edges[1][3]
+                up = _normalized(normal_sum if np.linalg.norm(normal_sum) > 1e-9 else edges[0][3])
                 height_mismatch = abs(float(np.dot(points[1] - points[0], up)))
+                if shear > self.maximum_edge_line_error_m:
+                    add(connection.connection_id, "slot_edges_sheared",
+                        "support edges are shifted along the slot", connection.parent_ids,
+                        shear_m=shear)
+                expected_bottom = 0.5 * (points[0] + points[1]) + up * connection.gap_m
+                actual_bottom = child_pose[:3, 3] - child_pose[:3, 1] * (0.5 * child_panel.size_xyz_m[1])
+                placement_error = float(np.linalg.norm(actual_bottom - expected_bottom))
+                if placement_error > self.maximum_edge_line_error_m:
+                    add(connection.connection_id, "slot_child_not_centered",
+                        "vertical child is not seated at the declared slot", (connection.child_id,),
+                        bottom_error_m=placement_error)
+                thickness_alignment = abs(float(np.dot(child_pose[:3, 2], edges[0][1])))
+                if thickness_alignment < self.minimum_parallel_cosine:
+                    add(connection.connection_id, "slot_child_thickness_axis_misaligned",
+                        "child thickness axis is not across the slot", (connection.child_id,))
                 child_up = _normalized(child_pose[:3, 1])
-                child_vertical = abs(float(np.dot(child_up, up)))
+                child_vertical = float(np.dot(child_up, up))
                 connection_diagnostics.update(
                     {
                         "support_edge_separation_m": separation,
@@ -333,11 +353,11 @@ class MagneticGeometryValidator:
                     parent_panels,
                     parent_pieces,
                 ):
-                    axis = 1 if piece.pose_class is PanelPoseClass.VERTICAL else 2
-                    extent = panel.size_xyz_m[axis]
-                    top_points.append(
-                        pose[:3, 3] + _normalized(pose[:3, axis]) * (0.5 * extent)
-                    )
+                    top_points.append(_support_top(pose, panel))
+                    if float(np.max(np.abs(pose[2, :3]))) < self.minimum_parallel_cosine:
+                        add(connection.connection_id, "bridge_support_face_not_level",
+                            "bridge support has no approximately horizontal face",
+                            (piece.piece_id,))
                 span = max(
                     float(np.linalg.norm(left - right))
                     for left in top_points
@@ -345,10 +365,17 @@ class MagneticGeometryValidator:
                 )
                 heights = [float(item[2]) for item in top_points]
                 height_range = max(heights) - min(heights)
-                available_span = max(
-                    child_panel.size_xyz_m[0],
-                    child_panel.size_xyz_m[1],
-                )
+                # Use the resolved footprint, not max(width, length): a long
+                # side perpendicular to the supports cannot bridge the gap.
+                available_span = child_panel.size_xyz_m[0]
+                local_supports = [child_pose[:3, :3].T @ (point - child_pose[:3, 3]) for point in top_points]
+                for local_point, parent in zip(local_supports, parent_pieces):
+                    outside = bool(np.any(np.abs(local_point[:2]) > 0.5 * np.asarray(child_panel.size_xyz_m[:2]) + self.maximum_edge_line_error_m))
+                    height_error = abs(float(local_point[2] + 0.5 * child_panel.size_xyz_m[2] + connection.gap_m))
+                    if outside or height_error > self.maximum_support_height_mismatch_m:
+                        add(connection.connection_id, "bridge_support_outside_footprint",
+                            "bridge does not cover the resolved support at its bottom surface",
+                            (connection.child_id, parent.piece_id), local_support=local_point.tolist())
                 connection_diagnostics.update(
                     {
                         "support_span_m": span,

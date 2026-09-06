@@ -44,6 +44,9 @@ def pose_matrix(value: Sequence[Sequence[float]]) -> np.ndarray:
         raise ValueError("pose must be a finite 4x4 matrix")
     if not np.allclose(matrix[3], [0.0, 0.0, 0.0, 1.0], atol=1.0e-6):
         raise ValueError("pose is not homogeneous")
+    rotation = matrix[:3, :3]
+    if not np.allclose(rotation.T @ rotation, np.eye(3), atol=1.0e-6) or not np.isclose(np.linalg.det(rotation), 1.0, atol=1.0e-6):
+        raise ValueError("pose rotation must be a proper orthonormal rotation")
     return matrix.copy()
 
 
@@ -68,8 +71,10 @@ class MagneticPanelSpec:
         if not self.asset_name:
             raise ValueError("asset_name must not be empty")
         size = tuple(float(item) for item in self.size_xyz_m)
-        if len(size) != 3 or any(item <= 0.0 for item in size):
+        if len(size) != 3 or not np.all(np.isfinite(size)) or any(item <= 0.0 for item in size):
             raise ValueError("panel dimensions must contain three positive values")
+        if not np.all(np.isfinite([self.grasp_clearance_m, self.engagement_clearance_m])) or min(self.grasp_clearance_m, self.engagement_clearance_m) <= 0:
+            raise ValueError("panel clearances must be finite and positive")
         object.__setattr__(self, "size_xyz_m", size)
         object.__setattr__(
             self,
@@ -106,11 +111,13 @@ class MagneticPiece:
     def __post_init__(self) -> None:
         if not self.piece_id or not self.object_id or not self.asset_name:
             raise ValueError("piece_id, object_id, and asset_name must not be empty")
+        if not np.isfinite(self.anchor_yaw_deg):
+            raise ValueError("anchor yaw must be finite")
         object.__setattr__(self, "role", PanelRole(self.role))
         object.__setattr__(self, "pose_class", PanelPoseClass(self.pose_class))
         if self.anchor_offset_m is not None:
             offset = tuple(float(item) for item in self.anchor_offset_m)
-            if len(offset) != 3:
+            if len(offset) != 3 or not np.all(np.isfinite(offset)):
                 raise ValueError("anchor_offset_m must have three values")
             object.__setattr__(self, "anchor_offset_m", offset)
         object.__setattr__(self, "metadata", dict(self.metadata))
@@ -147,6 +154,8 @@ class MagneticConnection:
         object.__setattr__(self, "child_edge", PanelEdge(self.child_edge))
         if not 0.0 <= float(self.overlap_fraction) <= 1.0:
             raise ValueError("overlap_fraction must be in [0, 1]")
+        if not np.all(np.isfinite([self.gap_m, self.clearance_m])):
+            raise ValueError("gap and clearance must be finite")
         if self.gap_m < 0.0 or self.clearance_m < 0.0:
             raise ValueError("gap and clearance must not be negative")
         object.__setattr__(self, "metadata", dict(self.metadata))
@@ -165,6 +174,8 @@ class MagneticAssemblySpec:
     def __post_init__(self) -> None:
         if not self.structure_name:
             raise ValueError("structure_name must not be empty")
+        if isinstance(self.max_pieces, bool) or int(self.max_pieces) != self.max_pieces or not 1 <= self.max_pieces <= 12:
+            raise ValueError("max_pieces must be an integer in [1, 12]")
         pieces = tuple(self.pieces)
         connections = tuple(self.connections)
         if not pieces:
