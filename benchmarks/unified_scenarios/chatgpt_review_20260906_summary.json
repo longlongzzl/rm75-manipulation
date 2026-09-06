@@ -1,0 +1,55 @@
+{
+  "review_date": "2026-09-06",
+  "repository": "longlongzzl/rm75-manipulation",
+  "branch": "chatgpt/unified-three-scenarios",
+  "audited_parent": "d9385fda6e07916ce7b4f30689314f5d5e3050d9",
+  "source_fix_commit": "f59f4bec25c1137dc3f09e72690a4c954822a833",
+  "collision_path_fix_commit": "487a3edc6c81b13eac64881aa14a1bdbdb5d880a",
+  "tested_commit": "1db7e3ecef65829310796220fa6e42e5b3c37b7a",
+  "workflow_run_id": 34020841433,
+  "artifact_id": 9985439281,
+  "evidence_level": "OFFLINE_VERIFIED",
+  "full_pytest": {
+    "passed": 294,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 23.772
+  },
+  "local_focused": {
+    "passed": 87,
+    "seconds": 1.37
+  },
+  "local_remote_changed_source_mismatches": [],
+  "source_verified_against_workflow_archive": true,
+  "physical_robot_commands": 0,
+  "gpu_planning_runs": 0,
+  "maniskill_physics_runs": 0,
+  "main_merged": false,
+  "external_baselines_reproduced": [],
+  "analytic_smoke": {
+    "episodes_per_method": 4,
+    "model_steps_per_decision": 96,
+    "h1_nominal_success": 4,
+    "h3_nominal_success": 4,
+    "claim": "Protocol smoke only; no evidence that larger horizon improves success."
+  },
+  "remaining_gates": [
+    "GPU frozen-case regression",
+    "Measured multi-object sorting suite",
+    "Synchronized release/contact and joint-limit diagnostics",
+    "Real magnetic/tray calibration",
+    "Independent PushT physics/recorded tracking",
+    "Unified web integration",
+    "User-approved physical trials"
+  ],
+  "docs": [
+    "docs/CHATGPT_REVIEW_UNIFIED_20260906.md",
+    "docs/SIMULATION_BRAIN_BASELINES.md"
+  ],
+  "notes": [
+    "Earlier CI failures exposed missing dependencies and a pre-existing absolute collision-file path; no tests were skipped to obtain this pass.",
+    "URDF and asset_root deployment paths still require explicit local verification.",
+    "success in the legacy executor without an outcome validator remains command dispatch, not physical task success."
+  ]
+}
