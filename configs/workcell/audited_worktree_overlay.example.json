@@ -1,0 +1,12 @@
+{
+  "schema": "rm75.audited_worktree_overlay/v1",
+  "source_head": "REPLACE_WITH_OLD_REPO_HEAD",
+  "source_status_sha256": "REPLACE_WITH_SHA256_OF_GIT_STATUS_PORCELAIN_V1_Z",
+  "files": [
+    {
+      "path": "pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py",
+      "sha256": "REPLACE_WITH_FILE_SHA256",
+      "reason": "EXAMPLE ONLY: include this file only if read-only dependency-closure audit confirms the dirty worktree copy contains final validated PickPlace behavior that is not present in the fixed baseline."
+    }
+  ]
+}
