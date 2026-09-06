@@ -1,29 +1,44 @@
 """Shared bridge from the PickPlace RRTrack chain into all three scenarios.
 
-This module deliberately does *not* implement a second tracker.  Sorting,
-magnetic assembly and Push-T all consume the same ``RRTrackOutput`` produced by
-``rm75_app.perception.rrtrack``.  Scenario-specific code only changes how that
+This module deliberately does *not* implement a second tracker. Sorting,
+magnetic assembly and Push-T all consume the same RRTrack result produced by
+``rm75_app.perception.rrtrack``. Scenario-specific code only changes how that
 6D pose is consumed:
 
 * sorting / magnetic assembly update the planning ``TaskSceneState``;
 * Push-T projects the same 6D pose into table-frame ``(x, y, yaw)`` through the
   existing ``PoseMatrixPushTTracker`` adapter.
 
-The camera->planning/table calibration is always explicit; this bridge never
-silently assumes camera and robot/table frames are identical.
+The bridge uses a structural protocol instead of importing the full RRTrack
+package. This keeps the lightweight scenario API free from OpenCV / tracker
+runtime dependencies while remaining directly compatible with ``RRTrackOutput``.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, Iterable, Mapping, Sequence
+from typing import Any, Callable, Iterable, Mapping, Protocol, Sequence
 import math
 
 import numpy as np
 
 from rm75_app.orchestration.multi_object_executor import ObjectLifecycle, TaskSceneState
-from rm75_app.perception.rrtrack import RRTrackOutput, TrackerState
 
 from .pusht.tracking import PoseMatrixPushTTracker, PoseMatrixSample
+
+
+class RRTrackAgreementLike(Protocol):
+    precision: float
+    support: float
+    entropy: float
+
+
+class RRTrackOutputLike(Protocol):
+    frame_index: int
+    state: Any
+    T_cam_obj: Any
+    agreement: RRTrackAgreementLike
+    accepted: bool
+    event: str
 
 
 def _transform(value: Sequence[Sequence[float]], name: str) -> np.ndarray:
@@ -35,20 +50,35 @@ def _transform(value: Sequence[Sequence[float]], name: str) -> np.ndarray:
     return matrix.copy()
 
 
+def _state_value(output: RRTrackOutputLike) -> str:
+    value = getattr(output.state, "value", output.state)
+    return str(value).lower()
+
+
+def _validate_rrtrack_output(output: RRTrackOutputLike) -> None:
+    required = ("frame_index", "state", "T_cam_obj", "agreement", "accepted", "event")
+    missing = [name for name in required if not hasattr(output, name)]
+    if missing:
+        raise TypeError(f"output is not RRTrack-compatible; missing {missing}")
+    agreement = output.agreement
+    for name in ("precision", "support", "entropy"):
+        if not hasattr(agreement, name):
+            raise TypeError(f"RRTrack agreement is missing {name!r}")
+
+
 @dataclass(frozen=True)
 class RRTrackInstanceSample:
     """One timestamped result from the existing RRTrack chain."""
 
     instance_id: str
     asset_name: str
-    output: RRTrackOutput
+    output: RRTrackOutputLike
     timestamp_s: float
 
     def __post_init__(self) -> None:
         if not self.instance_id or not self.asset_name:
             raise ValueError("RRTrack sample needs stable instance_id and asset_name")
-        if not isinstance(self.output, RRTrackOutput):
-            raise TypeError("output must be RRTrackOutput")
+        _validate_rrtrack_output(self.output)
         if not math.isfinite(float(self.timestamp_s)):
             raise ValueError("RRTrack sample timestamp must be finite")
         object.__setattr__(self, "timestamp_s", float(self.timestamp_s))
@@ -58,14 +88,14 @@ class RRTrackInstanceSample:
         return bool(
             self.output.accepted
             and self.output.T_cam_obj is not None
-            and self.output.state not in {TrackerState.LOST, TrackerState.RECOVERING}
+            and _state_value(self.output) not in {"lost", "recovering"}
         )
 
     def pose_matrix_sample(self) -> PoseMatrixSample:
         """Expose the exact RRTrack pose to the planar Push-T adapter.
 
         Confidence intentionally follows RRTrack's own accepted/rejected gate
-        (1/0) rather than inventing a second quality threshold.  Precision and
+        (1/0) rather than inventing a second quality threshold. Precision and
         support are retained in metadata for logging and later calibration.
         """
 
@@ -80,8 +110,8 @@ class RRTrackInstanceSample:
                 "source": "rrtrack",
                 "instance_id": self.instance_id,
                 "asset_name": self.asset_name,
-                "rrtrack_state": self.output.state.value,
-                "rrtrack_event": self.output.event,
+                "rrtrack_state": _state_value(self.output),
+                "rrtrack_event": str(self.output.event),
                 "rrtrack_accepted": bool(self.output.accepted),
                 "rrtrack_precision": float(agreement.precision),
                 "rrtrack_support": float(agreement.support),
@@ -103,7 +133,7 @@ class RRTrackSceneUpdate:
 class RRTrackSceneAdapter:
     """Update a task scene from accepted RRTrack 6D poses.
 
-    The adapter preserves object identity and lifecycle.  In particular it does
+    The adapter preserves object identity and lifecycle. In particular it does
     not overwrite a ``HELD`` object's planner attachment state by default.
     Rejected/lost tracker outputs are recorded in object metadata but never
     committed as new geometry.
@@ -150,8 +180,8 @@ class RRTrackSceneAdapter:
             tracking_metadata = {
                 "timestamp_s": sample.timestamp_s,
                 "frame_index": int(sample.output.frame_index),
-                "state": sample.output.state.value,
-                "event": sample.output.event,
+                "state": _state_value(sample.output),
+                "event": str(sample.output.event),
                 "accepted": bool(sample.output.accepted),
                 "precision": float(sample.output.agreement.precision),
                 "support": float(sample.output.agreement.support),
