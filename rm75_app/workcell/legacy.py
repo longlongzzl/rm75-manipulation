@@ -32,7 +32,10 @@ def snapshot_root(app_root):
 def import_working_entry(root,task):
     path=root/ENTRYPOINTS[task]
     os.environ['LEROBOT_ROOT']=str(root)
-    for directory in (root,root/'pick_jiaobang',path.parent):
+    # Match native script startup. Portable Jimu inserts pick_jiaobang itself;
+    # pre-inserting it here prevents that insertion and lets Jimu's same-named
+    # curobo_rm75_planner shadow the planner imported by the PickPlace wrapper.
+    for directory in (root,path.parent):
         sys.path.insert(0,str(directory))
     spec=importlib.util.spec_from_file_location('_rm75_working_entry',path)
     module=importlib.util.module_from_spec(spec)

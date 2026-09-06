@@ -16,7 +16,7 @@ function spec(mode){let parameters;if(task==='pickplace')parameters={object_name
  else if(task==='magnetic')parameters={design:JSON.parse(JSON.stringify(design))};
  else parameters={initial_pose:[number('push-x'),number('push-y'),number('push-yaw')*Math.PI/180],goal_pose:[number('goal-x'),number('goal-y'),number('goal-yaw')*Math.PI/180],speed_mps:number('push-speed'),max_steps:number('push-steps')};
  return {task,mode,parameters};}
-function stateButtons(){for(const id of ['preview','simulate','real'])$(id).disabled=busy||!!active||(id==='real'&&(!info?.allow_real||info?.real_latched));$('stop').disabled=!active;}
+function stateButtons(){for(const id of ['preview','simulate','real'])$(id).disabled=!info||busy||!!active||(id==='real'&&(!info?.allow_real||info?.real_latched));$('stop').disabled=!active;}
 async function start(mode){if(active||busy)return;busy=true;stateButtons();$('error').textContent='';try{
  const request=spec(mode);let token;
  if(mode==='real'){
@@ -79,4 +79,24 @@ $('apply-json').addEventListener('click',()=>{try{loadDesign(JSON.parse($('desig
 $('export-design').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(design,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='jimu_builder_scene_v1.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
 for(const id of ['push-x','push-y','push-yaw','goal-x','goal-y','goal-yaw'])$(id).addEventListener('input',()=>{observed=null;drawPush();});
 $('pusht-canvas').addEventListener('click',event=>{if(active)return;const rect=event.target.getBoundingClientRect(),x=(event.clientX-rect.left)*800/rect.width,y=(event.clientY-rect.top)*440/rect.height,w=model().workspace;$('goal-x').value=(w[0]+(x-45)/710*(w[1]-w[0])).toFixed(3);$('goal-y').value=(w[2]+(405-y)/365*(w[3]-w[2])).toFixed(3);drawPush();});
-(async()=>{try{info=await api('info');$('connection').textContent=info.real_latched?'真机待现场复核':info.allow_real?'真机许可已启用 · 仍需单次确认':'默认不连接真机';$('migration-state').textContent=info.snapshot_installed
+for(const [id,value] of [['confirm-input',''],['retry-input','r'],['quit-input','q']]){
+ $(id).addEventListener('click',async()=>{
+  if(!active||!pendingNonce)return;
+  const nonce=pendingNonce;
+  for(const name of ['confirm-input','retry-input','quit-input'])$(name).disabled=true;
+  try{await api('jobs/'+active+'/input',{nonce,value});pendingNonce=null;$('native-prompt').classList.add('hidden');}
+  catch(e){fail(e);}finally{for(const name of ['confirm-input','retry-input','quit-input'])$(name).disabled=false;}
+ });
+}
+stateButtons();
+(async()=>{
+ try{
+  info=await api('info');
+  $('connection').textContent=info.real_latched?'真机待现场复核':info.allow_real?'真机许可已启用 · 仍需单次确认':'默认不连接真机';
+  $('migration-state').textContent=info.snapshot_installed?'已安装快照（不代表 GPU / 真机验收通过）':'尚未安装工作快照';
+  for(const name of info.pickplace_objects){const option=document.createElement('option');option.value=name;option.textContent=name;$('object-name').appendChild(option);}
+  fillPieces();drawPush();
+  if(info.active_job){active=info.active_job;polling=setInterval(poll,350);await poll();}
+ }catch(e){fail(e);$('connection').textContent='连接失败 · 不启用真机';}
+ finally{stateButtons();}
+})();

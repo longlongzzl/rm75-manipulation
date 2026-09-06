@@ -1,0 +1,67 @@
+{
+  "schema": "rm75.audited_worktree_overlay/v1",
+  "source_head": "36798efbd12814841607951c9af470b309b34fd3",
+  "source_status_sha256": "7a7759758ac9b3ed67e54374cdcb10f9837bb3c5507c79bae41348deacb60658",
+  "files": [
+    {
+      "path": "pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py",
+      "sha256": "adddaf46c4455c5feba49a7bbbf130afc0e79ee034de507da5381b74fc4d96b6",
+      "reason": "SAM6D imports direct. Preserve audited current clearance/return prevalidation, reusable lift and transport carry routing; baseline lacks these behavior changes. Includes dormant free-motion diagnostics, not enabled in validation. Functional equivalence to be validated, not assumed."
+    },
+    {
+      "path": "pick_jiaobang/rm75_jiaobang_pick_real_with_foundationpose.py",
+      "sha256": "13405376f31c45f88fce12c087571d81e55658c7fb6fab0e8c8067db6004e5c3",
+      "reason": "targeted imports base executor. Preserve current reset pose selection, q_sent return semantics and arm/gripper synchronization used by portable Jimu. No real execution in this pass."
+    },
+    {
+      "path": "pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo.py",
+      "sha256": "c5bb5436695d8dd4ce79bbdb3f6b8886884cbdd729e33c52ed2665c1ad523c70",
+      "reason": "direct imports wrapper. Current direct/portable reference trajopt/interpolation configuration; preserve CLI and cache key together with planner fields."
+    },
+    {
+      "path": "pick_jiaobang/curobo_rm75_planner.py",
+      "sha256": "d42e24949af6df44055ad60b4c7a36e6b37f7989849644da0909308f29004aff",
+      "reason": "Direct curobo wrapper imports this planner. Preserve optional trajopt_tsteps/interpolation_steps transport configuration; no collision/seeds/tolerance change by migration."
+    },
+    {
+      "path": "Beta_demo-codex-v0.9/rm75_jimu_four_wall_portable.py",
+      "sha256": "ddbd9ccfa32b6cdf4c15882b3d40aa8790e2db8a7f73e0cb729e1a497d852b9d",
+      "reason": "Triangle imports portable. Preserve current builder coordinate handling, rectangular half-plate symmetry, same-type tray retry and partial-release/retreat ordering. Candidate behavior from audited working version; tests pending."
+    },
+    {
+      "path": "Beta_demo-codex-v0.9/rm75_jimu_triangle_roof_apriltag_portable.py",
+      "sha256": "c6c29a9adf6815e52426f81e496705d43e525d2628a26165dd3ecff8bb1c578b",
+      "reason": "Selected native magnetic entry. Preserve current builder roles/offsets, triangle slots and half-square grasp/placement semantics absent in fixed source."
+    },
+    {
+      "path": "Beta_demo-codex-v0.9/jimu_sam6d_pose_provider.py",
+      "sha256": "7a491834596fc419fe0a46d4f4ef2fc2cfbfb0c9407b56c71f8c852e9da4e4a6",
+      "reason": "Triangle directly imports provider. Preserve consistent frontend-visible tag frame, multiframe corner/PnP selection and projection diagnostics needed by current builder coordinate contract."
+    },
+    {
+      "path": "lerobot/common/robots/realman_lerobot/realman_arm.py",
+      "sha256": "87fa8a423ee93f0a96d41cbadb21318c3fa90f759e150d154a66bd290f000e2f",
+      "reason": "Base executor -> lerobot_sim2real.config.real_robot -> RealManArm. Preserve current reset/socket and gripper target/feedback semantics; no connection or motion authorized."
+    },
+    {
+      "path": "Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6p5x74.glb",
+      "sha256": "74a6cafb5938e7d6f041dd184c3793d0d71e675819ec94553d3a003bb26e93d7",
+      "reason": "Individually audited untracked dependency: portable DEFAULT_SIM_ASSET_FILE / DEFAULT_HALF_SIM_ASSET_FILE explicitly names these plate meshes; associated COACD collider preserves provided geometry, not regenerated or simplified. Fixed inventory contains none of these."
+    },
+    {
+      "path": "Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6p5x74.glb.coacd.ply",
+      "sha256": "77d42d299bf4a4b16fcc8dd86b72976965948d15695a624256c58fae2238724e",
+      "reason": "Individually audited untracked dependency: portable DEFAULT_SIM_ASSET_FILE / DEFAULT_HALF_SIM_ASSET_FILE explicitly names these plate meshes; associated COACD collider preserves provided geometry, not regenerated or simplified. Fixed inventory contains none of these."
+    },
+    {
+      "path": "Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_half_plate_37x6p5x74.glb",
+      "sha256": "ae6ec74c3e89598ee29308ef92cd1d59dd3c2155bc675d5c043457ae9dc02d89",
+      "reason": "Individually audited untracked dependency: portable DEFAULT_SIM_ASSET_FILE / DEFAULT_HALF_SIM_ASSET_FILE explicitly names these plate meshes; associated COACD collider preserves provided geometry, not regenerated or simplified. Fixed inventory contains none of these."
+    },
+    {
+      "path": "Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_half_plate_37x6p5x74.glb.coacd.ply",
+      "sha256": "d7dee2f9727703fa3751b2fa488a17a6bf629ca6f7e32b3b96e4f692cc9c204f",
+      "reason": "Individually audited untracked dependency: portable DEFAULT_SIM_ASSET_FILE / DEFAULT_HALF_SIM_ASSET_FILE explicitly names these plate meshes; associated COACD collider preserves provided geometry, not regenerated or simplified. Fixed inventory contains none of these."
+    }
+  ]
+}

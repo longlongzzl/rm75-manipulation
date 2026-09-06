@@ -6,7 +6,13 @@ from rm75_app.workcell.service import WorkcellService
 from rm75_app.workcell.server import WorkcellWSGI
 @pytest.fixture
 def service(tmp_path,profile):
-    app=tmp_path/'app';app.mkdir();(app/'rm75_app').symlink_to(Path(__file__).resolve().parents[2]/'rm75_app',target_is_directory=True);path=tmp_path/'profile.json';atomic_json(path,profile);svc=WorkcellService(app,path);yield svc;svc.close()
+    app=tmp_path/'app';app.mkdir();package=app/'rm75_app';package.mkdir()
+    # This fixture deliberately has no installed native source. Linking the
+    # whole package accidentally imports the developer's real vendored snapshot.
+    for source in (Path(__file__).resolve().parents[2]/'rm75_app').iterdir():
+        if source.name not in ('_vendor','__pycache__'):
+            (package/source.name).symlink_to(source,target_is_directory=source.is_dir())
+    path=tmp_path/'profile.json';atomic_json(path,profile);svc=WorkcellService(app,path);yield svc;svc.close()
 def wait(service,job,timeout=10):
     deadline=time.monotonic()+timeout
     while service.active and time.monotonic()<deadline:time.sleep(.03)
