@@ -1,0 +1,7 @@
+{
+  "schema": "jimu_builder_scene_v1",
+  "pieces": [
+    {"id":"floor","role":"floor","type":"square","locked":true,"center":[0,0.00325,0],"u":[1,0,0],"n":[0,1,0],"v":[0,0,1]},
+    {"id":"right_wall","role":"right_wall","type":"square","locked":false,"parentRole":"floor","center":[0.037,0.0435,0],"u":[0,0,1],"n":[1,0,0],"v":[0,1,0]}
+  ]
+}
