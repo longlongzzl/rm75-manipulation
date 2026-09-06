@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
+from enum import Enum
+
 import numpy as np
 
 from rm75_app.orchestration.multi_object_executor import (
@@ -7,13 +10,33 @@ from rm75_app.orchestration.multi_object_executor import (
     SceneObjectState,
     TaskSceneState,
 )
-from rm75_app.perception.rrtrack import RRTrackOutput, TrackerState
-from rm75_app.perception.rrtrack.models import Agreement
 from rm75_app.scenarios.rrtrack_bridge import (
     RRTrackInstanceSample,
     RRTrackPushTTracker,
     RRTrackSceneAdapter,
 )
+
+
+class FakeTrackerState(str, Enum):
+    TRACKING = "tracking"
+    LOST = "lost"
+
+
+@dataclass(frozen=True)
+class FakeAgreement:
+    precision: float = 0.9
+    support: float = 0.8
+    entropy: float = 0.1
+
+
+@dataclass(frozen=True)
+class FakeRRTrackOutput:
+    frame_index: int
+    state: FakeTrackerState
+    T_cam_obj: np.ndarray | None
+    agreement: FakeAgreement
+    accepted: bool
+    event: str = "tracked"
 
 
 def _pose(x: float, y: float, z: float = 0.0, yaw: float = 0.0) -> np.ndarray:
@@ -28,18 +51,15 @@ def _output(
     pose: np.ndarray | None,
     *,
     accepted: bool = True,
-    state: TrackerState = TrackerState.TRACKING,
+    state: FakeTrackerState = FakeTrackerState.TRACKING,
     frame_index: int = 10,
-) -> RRTrackOutput:
-    return RRTrackOutput(
-        frame_index=frame_index,
-        state=state,
-        T_cam_obj=pose,
-        mask=np.ones((2, 2), dtype=bool),
-        rendered_mask=np.ones((2, 2), dtype=bool),
-        agreement=Agreement(0.9, 0.8, 0.1, 4, 4, 4),
-        accepted=accepted,
-        event="tracked",
+) -> FakeRRTrackOutput:
+    return FakeRRTrackOutput(
+        frame_index,
+        state,
+        pose,
+        FakeAgreement(),
+        accepted,
     )
 
 
@@ -90,6 +110,25 @@ def test_scene_adapter_does_not_commit_rejected_rrtrack_pose() -> None:
     assert update.scene.revision == scene.revision
     assert np.allclose(update.scene.objects["obj:0"].pose, initial)
     assert update.scene.objects["obj:0"].metadata["rrtrack"]["accepted"] is False
+
+
+def test_lost_rrtrack_pose_is_not_committed_even_if_accepted_flag_is_true() -> None:
+    initial = _pose(0.3, 0.4)
+    scene = TaskSceneState({"obj:0": SceneObjectState("obj:0", "obj", initial)})
+    adapter = RRTrackSceneAdapter(np.eye(4))
+    update = adapter.update(
+        scene,
+        [
+            RRTrackInstanceSample(
+                "obj:0",
+                "obj",
+                _output(_pose(1.0, 1.0), accepted=True, state=FakeTrackerState.LOST),
+                1.0,
+            )
+        ],
+    )
+    assert update.rejected_instance_ids == ("obj:0",)
+    assert np.allclose(update.scene.objects["obj:0"].pose, initial)
 
 
 def test_pusht_tracker_projects_same_rrtrack_pose_into_table_frame() -> None:
