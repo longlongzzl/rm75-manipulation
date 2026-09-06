@@ -13,15 +13,17 @@ import hashlib
 import json
 import subprocess
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from rm75_app.workcell.io import atomic_json, read_json
-from rm75_app.workcell.migration import relocate, selected, verify_snapshot
+from rm75_app.workcell.migration import EXCLUDED, EXTENSIONS, relocate, selected, verify_snapshot
 
 MANIFEST_NAME = "MIGRATION_MANIFEST.json"
 OVERLAY_SCHEMA = "rm75.audited_worktree_overlay/v1"
+AUDIT_ONLY_ROOTS = ("jimu_builder_frontend/", "jimu_tasks/", "Demo_Triangle/")
+AUDIT_ONLY_FILES = {"FoundationPose/run_demo_scale.py"}
 
 
 def _run(repo: Path, *args: str) -> bytes:
@@ -34,6 +36,18 @@ def _run(repo: Path, *args: str) -> bytes:
 
 def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def _overlay_selected(path: str) -> bool:
+    if selected(path):
+        return True
+    candidate = PurePosixPath(path)
+    if candidate.is_absolute() or ".." in candidate.parts or EXCLUDED.intersection(candidate.parts):
+        return False
+    if any("失败" in part or "备份" in part for part in candidate.parts):
+        return False
+    permitted = path in AUDIT_ONLY_FILES or path.startswith(AUDIT_ONLY_ROOTS)
+    return bool(permitted and candidate.suffix.lower() in EXTENSIONS)
 
 
 def _load_overlay(path: Path) -> dict:
@@ -92,12 +106,13 @@ def main(argv=None) -> int:
         if isinstance(item, dict) and item.get("path")
     }
     approved: dict[str, bytes] = {}
+    source_sizes: dict[str, int] = {}
     relocated_counts: dict[str, int] = {}
     reasons: dict[str, str] = {}
 
     for item in overlay["files"]:
         path = str(item.get("path") or "")
-        if not selected(path):
+        if not _overlay_selected(path):
             raise ValueError(f"path is not permitted by migration policy: {path}")
         expected = str(item.get("sha256") or "").lower()
         if len(expected) != 64 or any(ch not in "0123456789abcdef" for ch in expected):
@@ -122,6 +137,7 @@ def main(argv=None) -> int:
 
         output, changes = relocate(raw, path, root)
         approved[path] = output
+        source_sizes[path] = len(raw)
         relocated_counts[path] = int(changes)
         reasons[path] = reason
 
@@ -142,15 +158,14 @@ def main(argv=None) -> int:
             "path": path,
             "source_blob": None,
             "base_source_blob": previous.get("source_blob"),
-            "source_bytes": (source / path).stat().st_size,
+            "source_bytes": source_sizes[path],
             "installed_sha256": _sha256(data),
             "relocated_literals": relocated_counts[path],
             "worktree_overlay": True,
             "audit_reason": reasons[path],
         }
 
-    # Preserve the original fixed-snapshot order; append genuinely new audited
-    # dependencies deterministically.
+    # Preserve original baseline order; append genuinely new audited dependencies.
     original_order = [str(item["path"]) for item in base["files"]]
     extra = sorted(set(updated_by_path) - set(original_order))
     base["files"] = [updated_by_path[path] for path in [*original_order, *extra]]
