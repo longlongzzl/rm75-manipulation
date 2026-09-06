@@ -18,7 +18,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from rm75_app.workcell.io import atomic_json, read_json
-from rm75_app.workcell.migration import MANIFEST, relocate, selected, verify_snapshot
+from rm75_app.workcell.migration import relocate, selected, verify_snapshot
+
+MANIFEST_NAME = "MIGRATION_MANIFEST.json"
+OVERLAY_SCHEMA = "rm75.audited_worktree_overlay/v1"
 
 
 def _run(repo: Path, *args: str) -> bytes:
@@ -33,13 +36,19 @@ def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def _load_manifest(path: Path) -> dict:
+def _load_overlay(path: Path) -> dict:
     payload = read_json(path)
-    if payload.get("schema") != "rm75.audited_worktree_overlay/v1":
+    if payload.get("schema") != OVERLAY_SCHEMA:
         raise ValueError("unsupported overlay manifest schema")
     files = payload.get("files")
     if not isinstance(files, list) or not files:
         raise ValueError("overlay manifest requires a non-empty files list")
+    seen: set[str] = set()
+    for item in files:
+        path_value = str(item.get("path") or "")
+        if path_value in seen:
+            raise ValueError(f"duplicate overlay path: {path_value}")
+        seen.add(path_value)
     return payload
 
 
@@ -52,7 +61,8 @@ def main(argv=None) -> int:
 
     source = args.source_repo.expanduser().resolve()
     target = args.target_repo.expanduser().resolve()
-    overlay = _load_manifest(args.manifest.expanduser().resolve())
+    manifest_path = args.manifest.expanduser().resolve()
+    overlay = _load_overlay(manifest_path)
 
     head = _run(source, "rev-parse", "HEAD").decode().strip()
     if head != overlay.get("source_head"):
@@ -67,21 +77,30 @@ def main(argv=None) -> int:
         raise RuntimeError("source worktree status changed since audit")
 
     root = target / "rm75_app" / "_vendor" / "working_snapshot"
-    base = read_json(root / MANIFEST)
+    base = read_json(root / MANIFEST_NAME)
     if base.get("source_worktree_overlay"):
         raise RuntimeError(
             "snapshot already has a worktree overlay; recreate the fixed baseline "
             "instead of stacking overlays"
         )
+    if not isinstance(base.get("files"), list):
+        raise ValueError("fixed snapshot manifest has an unexpected files format")
 
+    base_by_path = {
+        str(item["path"]): dict(item)
+        for item in base["files"]
+        if isinstance(item, dict) and item.get("path")
+    }
     approved: dict[str, bytes] = {}
+    relocated_counts: dict[str, int] = {}
     reasons: dict[str, str] = {}
+
     for item in overlay["files"]:
         path = str(item.get("path") or "")
         if not selected(path):
             raise ValueError(f"path is not permitted by migration policy: {path}")
         expected = str(item.get("sha256") or "").lower()
-        if len(expected) != 64:
+        if len(expected) != 64 or any(ch not in "0123456789abcdef" for ch in expected):
             raise ValueError(f"invalid sha256 for {path}")
         reason = str(item.get("reason") or "").strip()
         if not reason:
@@ -94,16 +113,20 @@ def main(argv=None) -> int:
             raise ValueError(f"path escapes source repo: {path}") from exc
         if not source_path.is_file() or source_path.is_symlink():
             raise ValueError(f"overlay path is not a regular file: {path}")
-        data = source_path.read_bytes()
-        if len(data) > 80 * 1024 * 1024:
+        raw = source_path.read_bytes()
+        if len(raw) > 80_000_000:
             raise ValueError(f"overlay file too large: {path}")
-        actual = _sha256(data)
+        actual = _sha256(raw)
         if actual != expected:
             raise RuntimeError(f"overlay file changed since audit: {path}")
 
-        approved[path] = relocate(path, data, root)
+        output, changes = relocate(raw, path, root)
+        approved[path] = output
+        relocated_counts[path] = int(changes)
         reasons[path] = reason
 
+    # Recheck before writing anything to the new repository. The old repository
+    # must remain byte-for-byte the same status snapshot used by the audit.
     if _sha256(_run(source, "status", "--porcelain=v1", "-z")) != status_sha:
         raise RuntimeError("source worktree changed during overlay collection")
 
@@ -112,34 +135,44 @@ def main(argv=None) -> int:
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_bytes(data)
 
-    files = dict(base.get("files", {}))
+    updated_by_path = dict(base_by_path)
     for path, data in approved.items():
-        files[path] = {
+        previous = base_by_path.get(path, {})
+        updated_by_path[path] = {
+            "path": path,
             "source_blob": None,
+            "base_source_blob": previous.get("source_blob"),
+            "source_bytes": (source / path).stat().st_size,
             "installed_sha256": _sha256(data),
-            "size": len(data),
+            "relocated_literals": relocated_counts[path],
             "worktree_overlay": True,
             "audit_reason": reasons[path],
         }
-    base["files"] = files
+
+    # Preserve the original fixed-snapshot order; append genuinely new audited
+    # dependencies deterministically.
+    original_order = [str(item["path"]) for item in base["files"]]
+    extra = sorted(set(updated_by_path) - set(original_order))
+    base["files"] = [updated_by_path[path] for path in [*original_order, *extra]]
+    base["file_count"] = len(base["files"])
     base["source_worktree_overlay"] = {
-        "schema": overlay["schema"],
+        "schema": OVERLAY_SCHEMA,
         "source_head": head,
         "source_status_sha256": status_sha,
-        "audit_manifest": str(args.manifest.expanduser().resolve()),
+        "audit_manifest": str(manifest_path),
         "files": [
             {
                 "path": path,
-                "sha256": files[path]["installed_sha256"],
+                "sha256": updated_by_path[path]["installed_sha256"],
                 "reason": reasons[path],
             }
-            for path in approved
+            for path in sorted(approved)
         ],
     }
     # Local GPU/dependency validation must be rerun after any overlay.
     base["runtime_gpu_verified"] = False
     base["dependency_completeness_verified"] = False
-    atomic_json(root / MANIFEST, base)
+    atomic_json(root / MANIFEST_NAME, base)
 
     report = verify_snapshot(root)
     print(
@@ -148,6 +181,7 @@ def main(argv=None) -> int:
                 "ok": True,
                 "overlay_files": len(approved),
                 "source_head": head,
+                "source_status_sha256": status_sha,
                 "snapshot_files": report["file_count"],
                 "runtime_gpu_verified": False,
                 "dependency_completeness_verified": False,
