@@ -25,6 +25,12 @@ from .pickplace_program import (
     TrajectoryCommand,
 )
 from .program_runner import ScenarioProgramRunner
+from .rrtrack_bridge import (
+    RRTrackInstanceSample,
+    RRTrackPushTTracker,
+    RRTrackSceneAdapter,
+    RRTrackSceneUpdate,
+)
 from .sorting import (
     PreparedSortingProgram,
     SortingAssignment,
@@ -54,6 +60,10 @@ __all__ = [
     "PreparedSortingProgram",
     "PreparedStep",
     "ProgramStep",
+    "RRTrackInstanceSample",
+    "RRTrackPushTTracker",
+    "RRTrackSceneAdapter",
+    "RRTrackSceneUpdate",
     "ScenarioKind",
     "ScenarioObservation",
     "ScenarioProgram",
