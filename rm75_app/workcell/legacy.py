@@ -68,8 +68,6 @@ def build_native_argv(module,spec,profile,run_dir,root):
         options.append(flag)
         if value is not None:
             options.extend(str(x) for x in (value if isinstance(value,(tuple,list)) else [value]))
-    # Only server-side profile can select interpreter, model paths or safety flags.
-    # Browser never supplies free-form command-line arguments.
     machine_args=profile.get(spec['task'],{}).get('native_args',[])
     if not isinstance(machine_args,list) or not all(isinstance(x,str) for x in machine_args):
         raise ValueError('native_args must be a trusted machine-profile string list')
@@ -97,8 +95,6 @@ def build_native_argv(module,spec,profile,run_dir,root):
         if spec['task']=='magnetic':
             add('--jimu-apriltag-anchor-localization')
     else:
-        # Explicitly reject a native argv list that would enable hardware through
-        # an alias. argparse destination is authoritative, not just string search.
         fixed=profile.get(spec['task'],{}).get('fixed_scene')
         if fixed:
             fixed=Path(fixed)
@@ -112,8 +108,6 @@ def build_native_argv(module,spec,profile,run_dir,root):
     if bool(getattr(parsed,'execute_real',False)) != (mode=='real'):
         raise PermissionError('Parsed original CLI real flag does not match authorized task mode')
     if mode == 'real':
-        # Inspect argparse destinations as well as option strings, so aliases
-        # cannot sneak a frozen scene into a real-observation run.
         for key in ('sam6d_fixed_scene_result_file', 'fixed_scene_file',
                     'cached_pose_result', 'skip_foundationpose'):
             if getattr(parsed, key, None):
@@ -122,10 +116,80 @@ def build_native_argv(module,spec,profile,run_dir,root):
 
 
 def install_progress_hooks(module,stop,events):
-    """Observe the actual original episode/stage boundaries; preserve their values.
+    """Observe actual original episode/stage boundaries without changing values."""
+    direct=getattr(module,'direct',None)
+    if direct is None and getattr(module,'portable',None) is not None:
+        direct=module.portable.direct
+    if direct is None:
+        raise RuntimeError('Working source no longer exposes the reviewed direct boundary')
+    original=direct.run_targeted_place_episode_curobo_direct
+    results=[]
+    @functools.wraps(original)
+    def episode(*args,**kwargs):
+        stop.check();events.emit('legacy_episode_start',index=len(results))
+        value=original(*args,**kwargs)
+        known=None
+        if isinstance(value,bool): known=value
+        elif isinstance(value,dict) and type(value.get('success')) is bool: known=value['success']
+        elif isinstance(value,tuple) and value and type(value[0]) is bool: known=value[0]
+        results.append(known)
+        events.emit('legacy_episode_end',index=len(results)-1,command_success=known,
+                    return_type=type(value).__name__,task_success=None)
+        stop.check();return value
+    direct.run_targeted_place_episode_curobo_direct=episode
+    original_stage=getattr(direct,'_profile_stage',None)
+    if callable(original_stage):
+        @functools.wraps(original_stage)
+        def stage(*args,**kwargs):
+            stop.check()
+            name=args[1] if len(args)>1 and isinstance(args[1],str) else kwargs.get('stage_name','profile_call')
+            events.emit('legacy_profile_call',stage=str(name)[:200])
+            value=original_stage(*args,**kwargs)
+            events.emit('legacy_profile_return',stage=str(name)[:200],return_type=type(value).__name__)
+            return value
+        direct._profile_stage=stage
+    return results
 
-    These callbacks are cooperative. Parent-controlled stop remains available
-    while an original GPU/driver call blocks. Original False return values are
-    returned unchanged: the working engine uses them for same-family source
-    retries, so converting them into exceptions would change its algorithm.
-    Dependency sequencing remains owned by the migrated working runtime
+
+def run_working(spec,profile,app_root,run_dir,stop,events):
+    root=snapshot_root(app_root)
+    provenance=verify_snapshot(root)
+    events.emit('working_source_verified',commit=provenance['source_commit'],files=provenance['file_count'])
+    old_argv=sys.argv[:];old_cwd=Path.cwd()
+    from .input_bridge import install as install_input_bridge, install_subprocess_bridge
+    import subprocess
+    original_input=install_input_bridge(run_dir)
+    old_input_dir=os.environ.get('RM75_WORKCELL_INPUT_DIR')
+    original_popen=install_subprocess_bridge(run_dir)
+    os.environ['RM75_WORKCELL_INPUT_DIR']=str(run_dir.resolve())
+    try:
+        sys.argv=[str(root/ENTRYPOINTS[spec['task']])]
+        os.chdir(root)
+        module=import_working_entry(root,spec['task'])
+        argv=build_native_argv(module,spec,profile,run_dir,root)
+        atomic_json(run_dir/'native_command.json',{'entrypoint':ENTRYPOINTS[spec['task']],
+             'argv':argv,'source_commit':provenance['source_commit'],'mode':spec['mode']})
+        results=install_progress_hooks(module,stop,events)
+        sys.argv=[str(root/ENTRYPOINTS[spec['task']]),*argv]
+        stop.check()
+        try:
+            return_value=module.main()
+        except SystemExit as exc:
+            if exc.code not in (None,0):
+                raise RuntimeError(f'Working engine exit {exc.code}') from exc
+            return_value=0
+        if type(return_value) is int and return_value!=0:
+            raise RuntimeError(f'Working engine returned {return_value}')
+        stop.check()
+        return {'command_success':True,'task_success':None,'verification':'not_observed',
+                'source_commit':provenance['source_commit'],'episode_command_results':results,
+                'original_algorithms_preserved':True,
+                'note':'Normal process return is not proof of a real grasp or magnetic connection'}
+    finally:
+        builtins.input=original_input
+        subprocess.Popen=original_popen
+        if old_input_dir is None:
+            os.environ.pop('RM75_WORKCELL_INPUT_DIR',None)
+        else:
+            os.environ['RM75_WORKCELL_INPUT_DIR']=old_input_dir
+        sys.argv=old_argv;os.chdir(old_cwd)
