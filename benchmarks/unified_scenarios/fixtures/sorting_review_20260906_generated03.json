@@ -1,0 +1,130 @@
+{
+  "schema": "rm75.sorting_request/v1",
+  "request_id": "review_20260906_three_objects_generated03",
+  "scene_file": "assets/test_scenes/generated_random_batch_001/yaw_only_current_table_00_03.json",
+  "user_command": "网球放入笔筒，胶棒放到绿木块上，胡萝卜放到刷子上",
+  "position_tolerance_m": 0.02,
+  "orientation_tolerance_deg": 20,
+  "assignments": [
+    {
+      "object_id": "tennis",
+      "target_id": "inside_holder",
+      "priority": 10
+    },
+    {
+      "object_id": "gluestick",
+      "target_id": "on_cube",
+      "priority": 5
+    },
+    {
+      "object_id": "carriot",
+      "target_id": "on_brush",
+      "priority": 4
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "inside_holder",
+      "support_object_id": "bitong",
+      "success_relation": "inside",
+      "placement_mode": "drop_place",
+      "pose": [
+        [
+          0.6265426874160767,
+          0.6608725190162659,
+          0.4131488502025604,
+          -0.29712966084480286
+        ],
+        [
+          -0.2774723470211029,
+          0.6845022439956665,
+          -0.6741407513618469,
+          -0.28010159730911255
+        ],
+        [
+          -0.7283223867416382,
+          0.30774053931236267,
+          0.6122437715530396,
+          0.10333520174026489
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "target_id": "on_cube",
+      "support_object_id": "lvmukuai",
+      "success_relation": "target_pose",
+      "placement_mode": "surface_place",
+      "pose": [
+        [
+          -1.9416093621771324e-08,
+          -0.9995540380477905,
+          0.029862232506275177,
+          -0.05218431353569031
+        ],
+        [
+          0,
+          -0.02986225299537182,
+          -0.9995540380477905,
+          0.05158147215843201
+        ],
+        [
+          1,
+          0,
+          -1.9416093621771324e-08,
+          0.04644995182752609
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "target_id": "on_brush",
+      "support_object_id": "shuazi",
+      "success_relation": "target_pose",
+      "placement_mode": "surface_place",
+      "pose": [
+        [
+          0.6579346656799316,
+          3.837371309600712e-08,
+          -0.7530750036239624,
+          -0.1637449413537979
+        ],
+        [
+          0.7530750036239624,
+          -1.708544239420462e-08,
+          0.6579347252845764,
+          -0.10657167434692383
+        ],
+        [
+          3.837371309600712e-08,
+          -1,
+          -5.19460243708636e-08,
+          0.07237691432237625
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ]
+    }
+  ],
+  "metadata": {
+    "fixture_only": true,
+    "not_u1_real_snapshot_suite": true,
+    "source": "TASK001 C1 case_01 frozen plans, timestamps 20260904_154546/154547/154548",
+    "purpose": "Independent second synthetic layout for original-program evidence. All assignments, goals and tolerances retained. Frozen before compilation; not measured scenes and not a replacement for failures.",
+    "source_request": "benchmarks/unified_scenarios/fixtures/sorting_historical_three_objects.json"
+  }
+}
