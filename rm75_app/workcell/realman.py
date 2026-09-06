@@ -106,4 +106,53 @@ class RealManArm:
             try:
                 self.controlled_stop()
             except Exception as stop_error:
-                self.events.emit('stop_failed',error=str
+                self.events.emit('stop_failed',error=str(stop_error),requires_physical_estop=True)
+            raise
+
+    def close(self):
+        if self.connected:
+            with self._lock:
+                self.sdk.rm_delete_robot_arm()
+                self.connected=False
+
+
+def time_parameterize(path,fk_xyz,*,speed_mps,hz=30,joint_speed_rad_s=.3,joint_accel_rad_s2=.6):
+    """Conservative stop-at-waypoint quintic interpolation; never skips a waypoint.
+
+    The endpoint FK arc is rechecked on emitted samples and the whole schedule
+    slowed if necessary. This bounds the sampled reference speed, not hardware
+    tracking error; hardware following/endpoint checks remain mandatory.
+    """
+    path=np.asarray(path,dtype=float)
+    if path.ndim!=2 or path.shape[1]!=7 or len(path)<2 or not np.isfinite(path).all():
+        raise ValueError('Expected finite Nx7 path with at least two points')
+    speed=finite(speed_mps,'speed_mps',.001,.05)
+    hz=finite(hz,'hz',10,100)
+    vmax=finite(joint_speed_rad_s,'joint_speed_rad_s',.01,.5)
+    amax=finite(joint_accel_rad_s2,'joint_accel_rad_s2',.01,1.)
+    xyz=np.asarray([fk_xyz(q) for q in path],dtype=float)
+    output=[path[0]];times=[0.]
+    for index,(a,b) in enumerate(zip(path,path[1:])):
+        delta=abs(b-a).max()
+        if delta<1e-10:
+            continue
+        duration=max(1.875*delta/vmax,np.sqrt(5.8*delta/amax),
+                     2*np.linalg.norm(xyz[index+1]-xyz[index])/speed,2/hz)
+        count=max(2,int(np.ceil(duration*hz)))
+        duration=count/hz
+        for j in range(1,count+1):
+            u=j/count;scale=10*u**3-15*u**4+6*u**5
+            output.append(a+(b-a)*scale)
+            times.append(times[-1]+1/hz)
+    if len(output)==1:
+        output.append(path[0].copy());times.append(1/hz)
+    out=np.asarray(output);ts=np.asarray(times)
+    xyz=np.asarray([fk_xyz(q) for q in out],dtype=float)
+    cart=np.linalg.norm(np.diff(xyz,axis=0),axis=1)/np.diff(ts)
+    vel=np.diff(out,axis=0)/np.diff(ts)[:,None]
+    acc=np.diff(vel,axis=0)/(np.diff(ts)[:-1,None]) if len(vel)>1 else np.zeros((1,7))
+    slowdown=max(1.,float(cart.max(initial=0))/speed,float(abs(vel).max(initial=0))/vmax,
+                 float(np.sqrt(abs(acc).max(initial=0)/amax)))
+    if not np.isfinite(slowdown):
+        raise ValueError('Invalid FK/timing result')
+    return out,ts*slowdown
