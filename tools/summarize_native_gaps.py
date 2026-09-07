@@ -26,7 +26,7 @@ def negative_pairs(detail):
 
 
 def event_summary(path,*,bare=False):
-    counts=Counter();near=Counter();pairs={};audits=[];first=None;filters=set()
+    counts=Counter();near=Counter();pairs={};audits=[];first=None;first_return=None;release_observations=[];filters=set()
     with path.open() as stream:
         for line in stream:
             row=json.loads(line)
@@ -50,9 +50,28 @@ def event_summary(path,*,bare=False):
                        'recorded_q_role':row.get('diagnosed_q_role'),
                        'geometry_detail_recorded':row.get('geometry_detail_recorded'),
                        'negative_pairs':negative_pairs(row)}
+            if event=='jimu_return_query_diagnostic' and first_return is None:
+                first_return={key:row.get(key) for key in ('step_id','source','native_status',
+                    'native_success','diagnostic_complete','state_unchanged','released','attached',
+                    'world_constraint_enabled','self_constraint_enabled','disabled_links','disabled_objects')}
+                first_return['endpoints']={name:{'valid':detail.get('valid'),'status':detail.get('status'),
+                    'geometry_detail_recorded':detail.get('geometry_detail_recorded'),
+                    'negative_pairs':negative_pairs(detail)} for name,detail in row.get('endpoints',{}).items()}
+            if event=='jimu_release_execution_observation':
+                observation={key:row.get(key) for key in
+                    ('step_id','source','diagnostic_only','execution_guard','diagnostic_complete','state_unchanged',
+                     'released','attached','table_present','max_gripper_model_error_rad','path_points','audited_samples',
+                     'invalid_samples','native_all_valid','disabled_links','disabled_objects',
+                     'world_constraint_enabled','self_constraint_enabled','model_sync_requested')}
+                observation['first_invalid']=[{**{key:item.get(key) for key in
+                    ('index','status','geometry_detail_recorded')},'negative_pairs':negative_pairs(item)}
+                    for item in row.get('first_invalid',[])]
+                release_observations.append(observation)
     return {'event_counts':dict(counts),'near_ik_promotions':dict(near),
         'near_ik_negative_pairs':sorted(pairs.values(),key=lambda row:row['clearance_m']),
-        'first_read_only_diagnostic':first,'grasp_contact_ik_links':sorted(filters),
+        'first_read_only_diagnostic':first,'first_return_query_diagnostic':first_return,
+        'release_execution_observations':release_observations,
+        'grasp_contact_ik_links':sorted(filters),
         'transport_audits':audits,'transport_samples':sum(row['samples'] for row in audits),
         'transport_all_world_links_checked':bool(audits) and all(row['world_exempt_links']==[] for row in audits)}
 
@@ -95,6 +114,8 @@ def main():
             row['original_task_bundle_sha256']=raw.get('original_task_bundle_sha256')
             row['original_task_bundle_read_only']=raw.get('original_task_bundle_read_only',False)
             row['original_task_bundle_unchanged']=raw.get('original_task_bundle_unchanged')
+            row['documented_start_comparison']=raw.get('documented_start_comparison')
+            row['documented_start_source_unchanged']=raw.get('documented_start_source_unchanged')
             result=raw.get('job',{}).get('result',{})
             row.update(worker_status=raw.get('job',{}).get('status'),
                 fixed_input_sha256=raw.get('fixed_input_sha256'),loaded_mplib_modules=result.get('loaded_mplib_modules'),

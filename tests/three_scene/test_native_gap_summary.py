@@ -53,3 +53,41 @@ def test_pusht_partial_stage_and_injected_gate_evidence_are_not_lost_or_exported
     assert row['execution_gate_audits'][0]['actual_camera_observation'] is False
     text=json.dumps(row)
     assert all(key not in text for key in ('private','positions','raw_observation'))
+
+
+def test_return_endpoint_failure_remains_distinct_from_start_and_exports_no_joints(tmp_path):
+    path=tmp_path/'events.jsonl'
+    path.write_text(json.dumps({'event':'jimu_return_query_diagnostic','state_unchanged':True,
+        'native_status':'TRAJOPT_FAIL','sim_qpos':[1]*15,'gripper_lock_joints':{'private':.6},
+        'endpoints':{'start':{'valid':True,'diagnosed_q':[0]*7},
+                     'goal':{'valid':False,'status':'WORLD_COLLISION','diagnosed_q':[1]*7,
+                         'robot_world_obstacle_contacts':[{'robot_link':'left_pad','obstacle':'placed',
+                             'clearance_m':-.003,'sphere_center':[1,2,3]}]}}}))
+    row=event_summary(path,bare=True)['first_return_query_diagnostic']
+    assert row['state_unchanged'] and row['endpoints']['start']['valid']
+    assert not row['endpoints']['goal']['valid']
+    assert row['endpoints']['goal']['negative_pairs'][0]['clearance_m']==-.003
+    assert all(key not in json.dumps(row) for key in ('diagnosed_q','sim_qpos','sphere_center','private'))
+
+
+def test_release_observation_preserves_unqualified_model_without_raw_joint_state(tmp_path):
+    path=tmp_path/'events.jsonl'
+    path.write_text(json.dumps({'event':'jimu_release_execution_observation','diagnostic_only':True,
+        'execution_guard':False,'native_all_valid':True,'max_gripper_model_error_rad':.119,
+        'table_present':False,'audited_samples':101,'sim_gripper_joints':{'private':.719}}))
+    row=event_summary(path,bare=True)['release_execution_observations'][0]
+    assert row['diagnostic_only'] and not row['execution_guard']
+    assert row['native_all_valid'] and not row['table_present'] and row['max_gripper_model_error_rad']==.119
+    assert 'private' not in json.dumps(row)
+
+
+def test_release_invalid_evidence_exports_pairs_not_q_or_geometry(tmp_path):
+    path=tmp_path/'events.jsonl'
+    path.write_text(json.dumps({'event':'jimu_release_execution_observation','model_sync_requested':True,
+        'first_invalid':[{'index':0,'status':'WORLD_COLLISION','geometry_detail_recorded':True,
+            'diagnosed_q':[1]*7,'robot_world_obstacle_contacts':[{'robot_link':'pad','obstacle':'placed',
+                'clearance_m':-.001,'sphere_center':[1,2,3]}]}]}))
+    row=event_summary(path,bare=True)['release_execution_observations'][0]
+    assert row['model_sync_requested'] and row['first_invalid'][0]['negative_pairs']==[
+        {'robot_link':'pad','obstacle':'placed','clearance_m':-.001}]
+    assert all(key not in json.dumps(row) for key in ('diagnosed_q','sphere_center'))

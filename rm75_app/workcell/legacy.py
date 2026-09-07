@@ -243,6 +243,11 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
                     lambda row:events.emit('contact_audit',evidence=row))
                 guard_jimu_near_ik(module.portable,
                     lambda row:events.emit('contact_audit',evidence=row))
+                from .jimu_return_diagnostics import install_return_diagnostics,install_release_execution_observer
+                install_return_diagnostics(module.portable,
+                    lambda row:events.emit('contact_audit',evidence=row))
+                install_release_execution_observer(module.portable,
+                    lambda row:events.emit('contact_audit',evidence=row),synchronize=True)
         elif policy=='strict':
             install_contact_audit(direct, lambda row: events.emit('contact_audit', evidence=row))
         events.emit('native_contact_policy_selected',policy=policy,mode=spec['mode'],

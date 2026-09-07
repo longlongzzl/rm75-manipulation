@@ -1,6 +1,6 @@
 import hashlib
 import json
-from tools.run_workcell_native_validation import native_outcomes,read_original_task_bundle
+from tools.run_workcell_native_validation import native_outcomes,read_original_task_bundle,read_documented_jimu_start
 import pytest
 
 
@@ -62,3 +62,24 @@ def test_task_bundle_reads_exact_three_file_closure_without_modification(tmp_pat
     assert hashes=={key:hashlib.sha256(path.read_bytes()).hexdigest() for key,path in resolved.items()}
     assert before=={name:(tmp_path/name).read_bytes() for name in files}
     assert set(path.name for path in tmp_path.iterdir())==set(files)
+
+
+def test_documented_start_reads_only_angles_without_other_command_flags(tmp_path):
+    path=tmp_path/'original.md'
+    path.write_text('python native.py --execute-real\n --jimu-sim-start-joints-deg 45 0 0 -90 0 -90 60 \\\n --real-control-hz 15\n')
+    before=path.read_bytes();record=read_documented_jimu_start(path)
+    assert record['joints_deg']==[45,0,0,-90,0,-90,60]
+    assert record['source_sha256']==hashlib.sha256(before).hexdigest()
+    assert record['read_only'] and path.read_bytes()==before
+    assert 'execute-real' not in json.dumps(record)
+
+
+@pytest.mark.parametrize('body',[
+    'no start configuration',
+    '--jimu-sim-start-joints-deg 45 0 0 -90 0 -90 nan',
+    '--jimu-sim-start-joints-deg 45 0 0 -90 0 -90 60 --execute-real',
+    '--jimu-sim-start-joints-deg 45 0 0 -90 0 -90 60\n--jimu-sim-start-joints-deg 90 0 0 -90 0 -90 60',
+])
+def test_missing_ambiguous_or_non_numeric_documented_start_fails_closed(tmp_path,body):
+    path=tmp_path/'original.md';path.write_text(body)
+    with pytest.raises(ValueError):read_documented_jimu_start(path)

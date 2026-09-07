@@ -4,7 +4,9 @@ import argparse
 import hashlib
 import io
 import json
+import math
 from pathlib import Path
+import re
 import sys
 import time
 
@@ -45,6 +47,22 @@ def native_outcomes(text, expected_cycles):
     return capture.report(expected_cycles)
 
 
+def read_documented_jimu_start(path):
+    """Read ONLY seven numeric start angles, never execute a documentation command."""
+    path=Path(path).resolve();raw=path.read_bytes()
+    matches=re.findall(r'--jimu-sim-start-joints-deg[ \t]+([^\r\n\\]+)',raw.decode('utf-8'))
+    vectors=[]
+    for match in matches:
+        values=tuple(float(value) for value in match.split())
+        if len(values)!=7 or not all(math.isfinite(value) for value in values):
+            raise ValueError('Documented Jimu start must contain seven finite angles')
+        vectors.append(values)
+    if not vectors or len(set(vectors))!=1:
+        raise ValueError('Document must name one unambiguous original Jimu start configuration')
+    return {'source_name':path.name,'source_sha256':hashlib.sha256(raw).hexdigest(),
+            'joints_deg':list(vectors[0]),'read_only':True}
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--task',choices=('pickplace','magnetic'),required=True)
@@ -52,6 +70,8 @@ def main():
     parser.add_argument('--extensions',type=Path,required=True)
     parser.add_argument('--design',type=Path)
     parser.add_argument('--task-dir',type=Path,help='Read-only original Jimu manifest + builder + frozen poses, without migration')
+    parser.add_argument('--jimu-start-command-doc',type=Path,
+        help='Separate SIM comparison: read seven start angles from original command documentation')
     inputs=parser.add_mutually_exclusive_group()
     inputs.add_argument('--fixed-sam6d',type=Path)
     inputs.add_argument('--fixed-world',type=Path,help='Original T_world_obj scene; PickPlace SIM direct entry only')
@@ -61,6 +81,10 @@ def main():
         help='Cancel only after the actual GPU transport has passed its complete sampled-path audit')
     parser.add_argument('--stop-after-collision-diagnostic',action='store_true',
         help='Bounded diagnosis: cancel after the first complete read-only GPU collision snapshot')
+    parser.add_argument('--stop-after-return-diagnostic',action='store_true',
+        help='Cancel after the original failed return query records start/goal collision evidence')
+    parser.add_argument('--stop-after-release-observation',action='store_true',
+        help='Cancel after observing the actual Jimu post-release execution boundary')
     parser.add_argument('--timeout-s',type=float,default=600.)
     args=parser.parse_args()
     root=ROOT/'rm75_app/_vendor/working_snapshot';verify_snapshot(root)
@@ -76,6 +100,10 @@ def main():
         parser.error('PickPlace requires an explicit existing frozen input; no camera fallback')
     if args.task!='pickplace' and args.fixed_world is not None:parser.error('World input is PickPlace SIM only')
     if args.task=='magnetic' and args.design is None:parser.error('Supply the original full builder design')
+    documented_start=None
+    if args.jimu_start_command_doc:
+        if args.task!='magnetic':parser.error('Documented start comparison is Jimu SIM only')
+        documented_start=read_documented_jimu_start(args.jimu_start_command_doc)
     fixed=(args.fixed_world or args.fixed_sam6d or root/'Beta_demo-codex-v0.9/jimu_portable_repro/scenes/jimu_assembly_anchors_default_sam6d.json').resolve()
     data=read_json(fixed)
     field,kind=('objects',dict) if args.fixed_world else ('results',list)
@@ -92,6 +120,8 @@ def main():
         section['native_args']+=['--jimu-build-layers','two','--jimu-second-layer-triangle-profile',
                                  '--no-jimu-demo-triangle-apriltag']
         if bundle:section['native_args']+=['--jimu-task-dir',str(bundle['manifest'])]
+        if documented_start:
+            section['native_args']+=['--jimu-sim-start-joints-deg',*[str(q) for q in documented_start['joints_deg']]]
         params={'design':read_json(args.design)}
     else:params={'object_name':args.object_name}
     expected_cycles=len(validate_design(params['design']).ordered_roles) if args.task=='magnetic' else 1
@@ -103,6 +133,7 @@ def main():
         stopped_for_validation=False,completed=False)
     report['original_task_bundle_sha256']=bundle_hashes
     report['original_task_bundle_read_only']=bool(bundle)
+    report['documented_start_comparison']=documented_start
     service=WorkcellService(ROOT,output/'machine.json',allow_real=False)
     started=time.monotonic();job=None
     try:
@@ -128,6 +159,18 @@ def main():
             if args.stop_after_collision_diagnostic and diagnostic:
                 report['diagnostic_trigger']={k:diagnostic.get(k) for k in ('step_id','status','scene_fingerprint')}
                 report['stop_result']=service.cancel(job);report['stopped_for_validation']=True;break
+            return_diag=next((row.get('evidence',{}) for row in state.get('events',[])
+                if row.get('kind')=='contact_audit' and row.get('evidence',{}).get('event')=='jimu_return_query_diagnostic'),None)
+            if args.stop_after_return_diagnostic and return_diag:
+                report['return_diagnostic_trigger']={key:return_diag.get(key) for key in
+                    ('step_id','source','native_status','diagnostic_complete','state_unchanged')}
+                report['stop_result']=service.cancel(job);report['stopped_for_validation']=True;break
+            release_obs=next((row.get('evidence',{}) for row in state.get('events',[])
+                if row.get('kind')=='contact_audit' and row.get('evidence',{}).get('event')=='jimu_release_execution_observation'),None)
+            if args.stop_after_release_observation and release_obs:
+                report['release_observation_trigger']={key:release_obs.get(key) for key in
+                    ('step_id','source','diagnostic_complete','state_unchanged','max_gripper_model_error_rad')}
+                report['stop_result']=service.cancel(job);report['stopped_for_validation']=True;break
             if time.monotonic()-started>args.timeout_s:
                 report['timeout']=True;service.cancel(job);break
             time.sleep(.1)
@@ -144,8 +187,11 @@ def main():
             report['original_task_bundle_sha256_after']={key:hashlib.sha256(path.read_bytes()).hexdigest()
                 for key,path in bundle.items()}
             report['original_task_bundle_unchanged']=report['original_task_bundle_sha256_after']==bundle_hashes
+        if documented_start:
+            report['documented_start_source_unchanged']=(hashlib.sha256(args.jimu_start_command_doc.read_bytes()).hexdigest()
+                ==documented_start['source_sha256'])
         report['completed']=bool(report.get('command_completed') and report.get('native_full_chain_passed')
-            and report.get('original_task_bundle_unchanged',True))
+            and report.get('original_task_bundle_unchanged',True) and report.get('documented_start_source_unchanged',True))
         atomic_json(output/'result.json',report)
     print(json.dumps({k:report.get(k) for k in ('job_id','completed','stopped_for_validation','elapsed_s','error')}))
     return 0 if report['completed'] or (report['stopped_for_validation'] and

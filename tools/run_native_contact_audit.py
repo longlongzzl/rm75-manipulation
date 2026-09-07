@@ -92,6 +92,9 @@ def main():
                 install_read_only_jimu_diagnostics(portable,emit)
                 install_jimu_grasp_ik_contact(direct,emit)
                 guard_jimu_near_ik(portable,emit)
+                from rm75_app.workcell.jimu_return_diagnostics import install_return_diagnostics,install_release_execution_observer
+                install_return_diagnostics(portable,emit)
+                install_release_execution_observer(portable,emit,synchronize=True)
             else:
                 install_contact_audit(direct,emit,strict=not args.compatibility_audit,
                     tray_final_descent=args.tray_final_descent_compatibility)
