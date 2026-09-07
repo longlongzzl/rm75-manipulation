@@ -123,8 +123,22 @@ class CuroboDemoPlanner:
 
 
 def transform_source(source, filename, *, snapshot_root=None):
-    """Only remove dependency/init plumbing, never candidate or solver logic."""
+    """Adapt dependency plumbing and one verified reverse-path reuse predicate.
+
+    Original candidate generation, solver calls and fallback bodies stay intact.
+    The reuse hook is installed by install_release_contact before native main.
+    """
+    direct_entry=Path(filename).name=='rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py'
+    reverse_hooks=[]
     class Rewrite(ast.NodeTransformer):
+        def visit_If(self,node):
+            self.generic_visit(node)
+            if direct_entry and isinstance(node.test,ast.Name) and node.test.id=='reverse_endpoint_valid':
+                reverse_hooks.append(node)
+                check=ast.parse('_rm75_clearance_reverse_path_reusable(planner, demo, args, reverse_clearance_path)',mode='eval').body
+                node.test=ast.copy_location(ast.BoolOp(op=ast.And(),values=[node.test,check]),node.test)
+            return node
+
         def visit_Constant(self,node):
             # Fixed migration rewrote absolute paths, but these 24 original
             # mesh assets use a literal tilde prefix. Their vendored bytes were
@@ -168,7 +182,10 @@ def transform_source(source, filename, *, snapshot_root=None):
                 node.args = [ast.Name(id='self',ctx=ast.Load())]
                 node.keywords = []
             return node
-    return ast.fix_missing_locations(Rewrite().visit(ast.parse(source,filename)))
+    tree=Rewrite().visit(ast.parse(source,filename))
+    if direct_entry and len(reverse_hooks)!=1:
+        raise RuntimeError('Reviewed reverse-clearance reuse boundary changed')
+    return ast.fix_missing_locations(tree)
 
 
 @contextmanager

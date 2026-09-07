@@ -17,6 +17,27 @@ from rm75_app.magnetic.design import validate_design
 from rm75_app.workcell.native_outcome import NativeOutcomeCapture
 
 
+def read_original_task_bundle(directory):
+    """Read one existing task dependency closure; never copy/modify old files."""
+    manifest=Path(directory).resolve()
+    if manifest.is_dir():manifest=manifest/'manifest.json'
+    data=read_json(manifest)
+    if data.get('schema')!='jimu_task_manifest_v1':raise ValueError('Unknown original Jimu manifest schema')
+    files={'manifest':manifest}
+    for name,key in (('builder','builder_scene_json'),('fixed_scene','sam6d_fixed_scene_result_file')):
+        value=data.get(key)
+        if not isinstance(value,str) or not value:raise ValueError('Task manifest dependency missing: '+key)
+        path=(manifest.parent/value).resolve()
+        if not path.is_relative_to(manifest.parent) or not path.is_file():
+            raise ValueError('Task dependency must be an existing file inside its original task directory')
+        files[name]=path
+    validate_design(read_json(files['builder']))
+    fixed=read_json(files['fixed_scene'])
+    if not isinstance(fixed.get('results'),list) or not fixed['results']:
+        raise ValueError('Original task must provide nonempty frozen camera results')
+    return files,{key:hashlib.sha256(path.read_bytes()).hexdigest() for key,path in files.items()}
+
+
 def native_outcomes(text, expected_cycles):
     """Only the original main-loop markers count; prefetch episodes do not."""
     capture=NativeOutcomeCapture(io.StringIO())
@@ -30,6 +51,7 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--extensions',type=Path,required=True)
     parser.add_argument('--design',type=Path)
+    parser.add_argument('--task-dir',type=Path,help='Read-only original Jimu manifest + builder + frozen poses, without migration')
     inputs=parser.add_mutually_exclusive_group()
     inputs.add_argument('--fixed-sam6d',type=Path)
     inputs.add_argument('--fixed-world',type=Path,help='Original T_world_obj scene; PickPlace SIM direct entry only')
@@ -42,6 +64,13 @@ def main():
     parser.add_argument('--timeout-s',type=float,default=600.)
     args=parser.parse_args()
     root=ROOT/'rm75_app/_vendor/working_snapshot';verify_snapshot(root)
+    bundle=None;bundle_hashes=None
+    if args.task_dir:
+        if args.task!='magnetic':parser.error('Original task bundle is Jimu only')
+        if any(value is not None for value in (args.design,args.fixed_sam6d,args.fixed_world)):
+            parser.error('Task bundle must not be mixed with overridden builder/fixed inputs')
+        bundle,bundle_hashes=read_original_task_bundle(args.task_dir)
+        args.design=bundle['builder'];args.fixed_sam6d=bundle['fixed_scene']
     if not 1<=args.timeout_s<=900:raise ValueError('Timeout must be within 1..900 seconds')
     if args.task=='pickplace' and args.fixed_sam6d is None and args.fixed_world is None:
         parser.error('PickPlace requires an explicit existing frozen input; no camera fallback')
@@ -62,6 +91,7 @@ def main():
     if args.task=='magnetic':
         section['native_args']+=['--jimu-build-layers','two','--jimu-second-layer-triangle-profile',
                                  '--no-jimu-demo-triangle-apriltag']
+        if bundle:section['native_args']+=['--jimu-task-dir',str(bundle['manifest'])]
         params={'design':read_json(args.design)}
     else:params={'object_name':args.object_name}
     expected_cycles=len(validate_design(params['design']).ordered_roles) if args.task=='magnetic' else 1
@@ -71,6 +101,8 @@ def main():
     report=dict(task=args.task,mode='sim',execute_real=False,hardware_connected=False,
         verified_task_success=None,fixed_input_sha256=hashlib.sha256(fixed.read_bytes()).hexdigest(),
         stopped_for_validation=False,completed=False)
+    report['original_task_bundle_sha256']=bundle_hashes
+    report['original_task_bundle_read_only']=bool(bundle)
     service=WorkcellService(ROOT,output/'machine.json',allow_real=False)
     started=time.monotonic();job=None
     try:
@@ -108,7 +140,12 @@ def main():
         if job:
             stdout=ROOT/'runtime_data/workcell/jobs'/job/'stdout.log'
             if stdout.is_file():report.update(native_outcomes(stdout.read_text(errors='replace'),expected_cycles))
-        report['completed']=bool(report.get('command_completed') and report.get('native_full_chain_passed'))
+        if bundle:
+            report['original_task_bundle_sha256_after']={key:hashlib.sha256(path.read_bytes()).hexdigest()
+                for key,path in bundle.items()}
+            report['original_task_bundle_unchanged']=report['original_task_bundle_sha256_after']==bundle_hashes
+        report['completed']=bool(report.get('command_completed') and report.get('native_full_chain_passed')
+            and report.get('original_task_bundle_unchanged',True))
         atomic_json(output/'result.json',report)
     print(json.dumps({k:report.get(k) for k in ('job_id','completed','stopped_for_validation','elapsed_s','error')}))
     return 0 if report['completed'] or (report['stopped_for_validation'] and

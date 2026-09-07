@@ -13,6 +13,33 @@ def test_source_transform_removes_external_import_and_constructor():
     assert 'mplib.CuroboDemoPlanner(self)' in text
 
 
+def test_reverse_reuse_predicate_keeps_original_branch_bodies_and_short_circuit():
+    source='''
+def choose(reverse_endpoint_valid):
+    if reverse_endpoint_valid:
+        return 'reuse'
+    else:
+        return 'original_candidate_loop'
+'''
+    filename='rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py'
+    before=ast.parse(source).body[0].body[0]
+    tree=transform_source(source,filename);after=tree.body[0].body[0]
+    assert ast.dump(ast.Module(body=before.body+before.orelse,type_ignores=[]))==ast.dump(
+        ast.Module(body=after.body+after.orelse,type_ignores=[]))
+    calls=[];scope={name:object() for name in ('planner','demo','args','reverse_clearance_path')}
+    scope['_rm75_clearance_reverse_path_reusable']=lambda *args:calls.append(args) or False
+    exec(compile(tree,filename,'exec'),scope)
+    assert scope['choose'](False)=='original_candidate_loop' and not calls
+    assert scope['choose'](True)=='original_candidate_loop' and len(calls)==1
+    scope['_rm75_clearance_reverse_path_reusable']=lambda *args:True
+    assert scope['choose'](True)=='reuse'
+
+
+def test_missing_reviewed_reverse_boundary_fails_closed():
+    with pytest.raises(RuntimeError,match='reuse boundary changed'):
+        transform_source('pass','rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py')
+
+
 def test_original_mesh_tilde_paths_use_existing_snapshot_bytes_only(tmp_path):
     path=tmp_path/'pick_jiaobang/meshs/plate.glb'
     path.parent.mkdir(parents=True);path.write_bytes(b'original mesh bytes')

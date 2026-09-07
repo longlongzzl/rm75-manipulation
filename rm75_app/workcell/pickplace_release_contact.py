@@ -91,6 +91,40 @@ def audit_release_path(planner,path,target):
 
 
 def install_release_contact(direct):
+    records=[];direct._clearance_selection_audits=records
+    def acceptable(planner,demo,args,path,*,kind):
+        from .pickplace_clearance_audit import validate_clearance_path
+        with direct._CUROBO_GPU_LOCK:
+            try:
+                evidence=validate_clearance_path(planner,path)
+            except CuroboOnlyUnsupported:
+                target=release_target(planner,args,direct._current_source_object_name(args))
+                try:evidence=audit_release_path(planner,path,target)
+                except ReleasePathRejected as exc:
+                    row={'kind':kind,'accepted':False,'reason':str(exc),'path_points':len(path)}
+                    records.append(row);print(f'[clearance selection audit] {row}')
+                    return False
+            row={'kind':kind,'accepted':True,**evidence}
+            records.append(row);print(f'[clearance selection audit] {row}')
+            return True
+
+    # Full-path validity supplements the native endpoint check. False uses the
+    # SAME already-present fresh-clearance branch; no new path or fallback.
+    direct._rm75_clearance_reverse_path_reusable=lambda planner,demo,args,path:acceptable(
+        planner,demo,args,path,kind='reverse_reuse')
+
+    original_audit=getattr(direct,'_audit_post_place_clearance_selective_contact_path',None)
+    if callable(original_audit):
+        @functools.wraps(original_audit)
+        def selective(planner,demo,args,path,**kwargs):
+            with direct._CUROBO_GPU_LOCK:
+                result=original_audit(planner,demo,args,path,**kwargs)
+                if (result.get('success') and getattr(args,'_episode_place_released',False)
+                        and not acceptable(planner,demo,args,path,kind='released_candidate')):
+                    return {**result,'success':False,'status':'REJECTED_RELEASE_PATH_AUDIT'}
+                return result
+        direct._audit_post_place_clearance_selective_contact_path=selective
+
     original=direct._plan_constrained_linear_segment
     @functools.wraps(original)
     def segment(planner,demo,args,start_q,pose_start,pose_goal,**kwargs):

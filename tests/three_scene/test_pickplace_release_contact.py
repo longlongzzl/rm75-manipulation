@@ -105,3 +105,41 @@ def test_invalid_target_pose_cannot_disappear_from_analytic_collision_check(pose
     with pytest.raises(CuroboOnlyUnsupported):release_target(p,args,'shuazi')
     with pytest.raises(CuroboOnlyUnsupported):audit_release_path(p,[[0],[.02]],target)
     assert not checks and p._disabled_world_obstacles=={'active_target_object'}
+
+
+def selection_fixture(problem):
+    p,target,_=fixture(problem);native_check=p.check_start_state
+    p.check_start_state=lambda q:native_check(q) if target.name in p._disabled_world_obstacles else (False,'target_contact')
+    original_result={'success':True,'status':'NATIVE_SELECTIVE_CLEAR'}
+    direct=NS(_plan_constrained_linear_segment=lambda *a,**kw:None,
+        _CUROBO_GPU_LOCK=threading.RLock(),_current_source_object_name=lambda args:'shuazi',
+        _audit_post_place_clearance_selective_contact_path=lambda *a,**kw:original_result)
+    install_release_contact(direct)
+    return p,target,direct,original_result
+
+
+def test_valid_reverse_endpoints_do_not_hide_intermediate_contact_growth():
+    p,target,direct,_=selection_fixture('growing')
+    args=NS(execute_real=False,_episode_place_released=True)
+    path=[[0],[.02],[0]]
+    assert not direct._rm75_clearance_reverse_path_reusable(p,None,args,path)
+    assert path==[[0],[.02],[0]] and p._disabled_world_obstacles=={'active_target_object'}
+    assert direct._clearance_selection_audits[-1]['kind']=='reverse_reuse'
+    assert direct._rm75_clearance_reverse_path_reusable(p,None,args,[[0],[-.02]])
+
+
+def test_selective_candidate_rejection_preserves_original_result_and_next_candidate():
+    p,target,direct,original=selection_fixture('growing')
+    args=NS(execute_real=False,_episode_place_released=True)
+    results=[direct._audit_post_place_clearance_selective_contact_path(p,None,args,[[0],[end]])
+             for end in (.02,-.02)]
+    assert not results[0]['success'] and results[1]['success']
+    assert original=={'success':True,'status':'NATIVE_SELECTIVE_CLEAR'}
+    assert p._disabled_world_obstacles=={'active_target_object'}
+
+
+def test_reverse_query_error_is_not_converted_to_retry_or_success():
+    p,target,direct,_=selection_fixture('native_error')
+    with pytest.raises(ValueError,match='native error'):
+        direct._rm75_clearance_reverse_path_reusable(p,None,NS(execute_real=False,_episode_place_released=True),[[0],[.02]])
+    assert p._disabled_world_obstacles=={'active_target_object'}

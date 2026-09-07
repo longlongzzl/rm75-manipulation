@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Real cuRobo2 GPU / synthetic scene validation. NEVER a hardware qualification."""
 import argparse
-from dataclasses import asdict
+from copy import copy
+from dataclasses import asdict, replace
 import json
 from pathlib import Path
 import sys
@@ -83,7 +84,86 @@ class RecordedBackend(Curobo2Backend):
         return result
 
 
-def validation_passed(report, *, audit_blocker=False):
+EXECUTION_GATE_CASES = (
+    'stale', 'replayed', 'non_monotonic', 'changed_session', 'low_confidence',
+    'wrong_frame', 'simulation_source', 'translation_drift', 'yaw_drift', 'joint_drift',
+)
+
+
+def audit_execution_gates(executor, prepared, push, observation):
+    """Injected-input checks AFTER a real GPU plan, never hardware/camera evidence.
+
+    Reuse only this exact prepared chain. A copied executor exercises the real
+    execute_push preflight, with an arm sink that refuses EVERY execute call.
+    No tracker timestamp, backend scene, or production profile is changed.
+    """
+    now = time.time()
+    previous = replace(observation, captured_at=now-executor.config.max_observation_age_s-2)
+    fresh = replace(previous, sequence=previous.sequence+1, captured_at=now,
+                    source='live_tracker')  # Explicit test injection, NOT a live observation.
+    x, y, yaw = fresh.pose
+    cases = {
+        'stale': (replace(fresh, captured_at=now-executor.config.max_observation_age_s-1),
+                  ValueError, 'stale_or_future_observation'),
+        'replayed': (replace(fresh, sequence=previous.sequence),
+                     ValueError, 'replayed_or_changed_capture_session'),
+        'non_monotonic': (replace(fresh, captured_at=previous.captured_at),
+                          ValueError, 'stale_or_future_observation'),
+        'changed_session': (replace(fresh, session_id=previous.session_id+'_restarted'),
+                            ValueError, 'replayed_or_changed_capture_session'),
+        'low_confidence': (replace(fresh, confidence=.1), ValueError, 'low_confidence_observation'),
+        'wrong_frame': (replace(fresh, frame='camera'), ValueError, 'base_link'),
+        'simulation_source': (replace(fresh, source='simulation'), ValueError, 'live observation source'),
+        'translation_drift': (replace(fresh, pose=(x+.004, y, yaw)), RuntimeError, 'Object moved while planning'),
+        'yaw_drift': (replace(fresh, pose=(x, y, yaw+.05)), RuntimeError, 'Object moved while planning'),
+        'joint_drift': (fresh, RuntimeError, 'Robot moved while planning'),
+    }
+    rows = []
+    for name in EXECUTION_GATE_CASES:
+        current, error_class, message = cases[name]
+        calls = {'plan': 0, 'observe': 0, 'execute': 0}
+        test_executor = copy(executor)
+
+        def prepared_only(*args):
+            calls['plan'] += 1
+            return prepared
+
+        def observe(*, after):
+            calls['observe'] += 1
+            if after != previous.captured_at:
+                raise AssertionError('Execution did not request a newer observation')
+            return current
+
+        class NoMotionGateArm:
+            start_gap = .05
+
+            def read_joints(self):
+                joints = prepared.start_q.copy()
+                if name == 'joint_drift':
+                    joints[0] += self.start_gap+.001
+                return joints
+
+            def execute(self, *args, **kwargs):
+                calls['execute'] += 1
+                raise AssertionError('No-motion gate audit cannot execute')
+
+        test_executor.plan_push = prepared_only
+        test_executor.observer = SimpleNamespace(observe=observe)
+        test_executor.arm = NoMotionGateArm()
+        row = dict(case=name, rejected=False, injected_observation=True,
+                   actual_camera_observation=False, reused_gpu_prepared_chain=True)
+        try:
+            test_executor.execute_push(push, previous)
+        except Exception as exc:
+            row.update(error_type=type(exc).__name__, error=str(exc),
+                rejected=isinstance(exc, error_class) and message in str(exc))
+        row.update(calls)
+        row['passed'] = bool(row['rejected'] and calls == {'plan': 1, 'observe': 1, 'execute': 0})
+        rows.append(row)
+    return rows
+
+
+def validation_passed(report, *, audit_blocker=False, audit_gates=False):
     """Planning alone is insufficient if reporting or the dynamics audit failed."""
     if not report.get('complete_chain') or report.get('error'):
         return False
@@ -98,7 +178,15 @@ def validation_passed(report, *, audit_blocker=False):
             value=row.get(key,float('nan'))
             if not np.isfinite(value) or value<0 or value>limit+1e-9:
                 return False
-    return not audit_blocker or report.get('unrelated_obstacle_audit',{}).get('rejected') is True
+    if audit_blocker and report.get('unrelated_obstacle_audit',{}).get('rejected') is not True:
+        return False
+    if audit_gates:
+        rows = report.get('execution_gate_audits', [])
+        if [row.get('case') for row in rows] != list(EXECUTION_GATE_CASES):
+            return False
+        if any(row.get('passed') is not True or row.get('execute') != 0 for row in rows):
+            return False
+    return True
 
 
 def main():
@@ -109,6 +197,8 @@ def main():
     parser.add_argument('--fixture', choices=['raised_table', 'low_table'], default='raised_table')
     parser.add_argument('--speed',type=float,default=.015)
     parser.add_argument('--audit-blocker',action='store_true')
+    parser.add_argument('--audit-execution-gates',action='store_true',
+                        help='Inject stale/replayed/drift inputs after GPU planning; no execute allowed')
     args = parser.parse_args()
     output = args.output.resolve(); output.mkdir(parents=True, exist_ok=False)
     config = Config.from_dict({'speed_mps':args.speed})
@@ -174,6 +264,8 @@ def main():
             item['max_tcp_speed_mps']=float(np.max(np.linalg.norm(np.diff(xyz,axis=0),axis=1)/dt))
             item['max_joint_speed_rad_s']=float(np.max(np.abs(vel)))
             item['max_joint_accel_rad_s2']=float(np.max(np.abs(np.diff(vel,axis=0)/((dt[1:]+dt[:-1])/2)[:,None]))) if len(vel)>1 else 0.
+        if args.audit_execution_gates:
+            report['execution_gate_audits'] = audit_execution_gates(executor, prepared, push, observation)
         if args.audit_blocker:
             # Inject one unrelated object into an already validated positive
             # path. This exercises the actual GPU collision-audit gate, not IK.
@@ -194,7 +286,8 @@ def main():
     finally:
         report.update(elapsed_s=time.monotonic()-started, backend_records=backend.records)
         backend.__exit__(None,None,None)
-        report['validation_success']=validation_passed(report,audit_blocker=args.audit_blocker)
+        report['validation_success']=validation_passed(report,audit_blocker=args.audit_blocker,
+                                                       audit_gates=args.audit_execution_gates)
         atomic_json(output/'result.json',report)
     print(json.dumps({'case':args.case,'complete_chain':report['complete_chain'],
                       'validation_success':report['validation_success'],

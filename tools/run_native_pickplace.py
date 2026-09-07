@@ -106,6 +106,7 @@ def main():
             report['diagnostic_rejections']=getattr(locals().get('module'),'_curobo_diagnostic_rejections',[])
             report['native_final_success']=captured.final
             report['clearance_failures']=captured.clearance_failures
+            report['clearance_selection_audits']=getattr(locals().get('module'),'_clearance_selection_audits',[])
             report['strict_clearance_success']=(report['command_success'] and
                 not captured.clearance_failures and
                 len(report.get('clearance_path_audits',[]))==len(names))

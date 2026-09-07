@@ -274,6 +274,8 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
                 'native_entrypoint':entrypoint,'fixed_scene_format':profile.get(spec['task'],{}).get('fixed_scene_format','sam6d'),
                 'source_commit':provenance['source_commit'],'episode_command_results':results,
                 'contact_policy':policy,'clearance_path_audits':clearance_audits,
+                'clearance_selection_audits':getattr(direct,'_clearance_selection_audits',[]),
+                'independent_clearance_execution_audit_observed':bool(clearance_audits),
                 'loaded_mplib_modules':[n for n in sys.modules if n=='mplib' or n.startswith('mplib.')],
                 'original_algorithms_preserved':True,
                 'note':'Normal process return is not proof of a real grasp or magnetic connection'}
