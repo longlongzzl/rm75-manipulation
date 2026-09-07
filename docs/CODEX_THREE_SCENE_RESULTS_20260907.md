@@ -227,3 +227,5 @@ Reduced-speed free-space、isolated gripper、one PickPlace atom、multi-object 
 ## 后续用户授权的 Jimu 接触策略补充
 
 以上为原轮次历史结果，不覆盖。用户随后确认“其他接触阶段保留、搬运完整计算碰撞、夹指与被抓物体成对豁免”；最新实现与 CPU/GPU 仿真证据见 [搬运碰撞策略回传](CODEX_TRANSPORT_CONTACT_POLICY_20260907.md)。本补充仍不包含真实运动或独立物理成功验收。
+
+用户随后开启三条链路完整推进目标。更新的 Jimu 12/12、PickPlace cuRobo-only、PushT 完整规划接口及明确未完成项，见 [三条链路目标推进记录](CODEX_THREE_CHAIN_GOAL_PROGRESS_20260907.md)。总目标仍 active，不替换上述历史分母。
