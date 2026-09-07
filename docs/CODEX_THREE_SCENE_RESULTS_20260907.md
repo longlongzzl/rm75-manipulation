@@ -1,5 +1,7 @@
 # Codex 三场景本地验证回传 — 2026-09-07
 
+2026-09-08 最新续报：[PushT 下降失败的工具几何证据](CODEX_THREE_SCENE_PUSHT_ENVELOPE_20260908.md)：全量 685 passed / three_scene 363 passed；四项原姿态 GPU 包络诊断完整，两个失败点分别与首次夹爪—T 接触 10/16、11/16 对应。不是新增四条完整链通过，真实工具/接触映射仍待确认。
+
 2026-09-08 最新续报：[Jimu 分段释放执行门与三次 GPU 回归](CODEX_THREE_SCENE_RELEASE_GATE_20260908.md)：全量 676 passed / three_scene 354 passed；四墙 4/4、默认屋顶 12/12、完整 builder 8/12；24 次释放/返回分段 gate 通过，返回无豁免。三条非真机链尚未全部关闭。
 
 2026-09-08 最新续报：[Jimu 返回终点、释放模型同步及六次 GPU 诊断/回归](CODEX_THREE_SCENE_RETURN_STATE_20260908.md)：全量 652 passed / three_scene 330 passed；完整原任务仍 8/12、final=False，三条非真机链未全部关闭。以下链接和正文保留为历史结果。

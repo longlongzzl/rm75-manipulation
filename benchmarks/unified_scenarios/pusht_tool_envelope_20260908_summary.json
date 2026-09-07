@@ -1,0 +1,379 @@
+{
+  "diagnostic_only": true,
+  "elapsed_s": 6.23236327199993,
+  "execute_real": false,
+  "gpu_backend": "curobo2",
+  "hardware_connected": false,
+  "physical_success": null,
+  "raw_artifacts_local_only": true,
+  "runs": [
+    {
+      "arm_self_or_ik_qualified": false,
+      "case": "baseline",
+      "collision_samples": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "complete_chain": false,
+      "contacts": [
+        {
+          "pairs": [
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.00223300486806546
+            },
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.0048000468529474545
+            },
+            {
+              "link": "right_pad",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.0012770312306927302
+            }
+          ],
+          "sample": 10
+        },
+        {
+          "pairs": [
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.0072330048680654575
+            },
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.009800046852947445
+            },
+            {
+              "link": "right_pad",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.006277031230692721
+            }
+          ],
+          "sample": 11
+        },
+        {
+          "pairs": [
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.012233004868065455
+            },
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.014800046852947444
+            },
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.00010404686172237401
+            },
+            {
+              "link": "right_pad",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.011277031230692718
+            }
+          ],
+          "sample": 12
+        },
+        {
+          "pairs": [
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.015694896300499153
+            },
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.016013805718510923
+            },
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.0051040468617223785
+            },
+            {
+              "link": "right_pad",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.015852843212342774
+            }
+          ],
+          "sample": 13
+        },
+        {
+          "pairs": [
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.015694896300499153
+            },
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.016013805718510923
+            },
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.010104046861722383
+            },
+            {
+              "link": "right_pad",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.015852843212342774
+            }
+          ],
+          "sample": 14
+        },
+        {
+          "pairs": [
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.015694896300499153
+            },
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.016013805718510923
+            },
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.015104046861722373
+            },
+            {
+              "link": "right_pad",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.015852843212342774
+            }
+          ],
+          "sample": 15
+        },
+        {
+          "pairs": [
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.015694896300499153
+            },
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.016013805718510923
+            },
+            {
+              "link": "gripper_Right_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.020104046861722385
+            },
+            {
+              "link": "right_pad",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.015852843212342774
+            }
+          ],
+          "sample": 16
+        }
+      ],
+      "cpu_gpu_masks_equal": true,
+      "diagnostic_complete": true,
+      "diagnostic_only": true,
+      "execute_real": false,
+      "first_collision_sample": 10,
+      "fixture": "low_table",
+      "hardware_connected": false,
+      "hardware_profile_qualified": false,
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "native_tool_spheres": 38,
+      "nominal_descend_intervals": 16,
+      "rigidity_error_m": 2.7808881753347784e-8,
+      "sampled_tool_world_clear": false,
+      "state_unchanged": true
+    },
+    {
+      "arm_self_or_ik_qualified": false,
+      "case": "rotated_orthogonal",
+      "collision_samples": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "complete_chain": false,
+      "contacts": [
+        {
+          "pairs": [
+            {
+              "link": "gripper_Left_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.003049097373431694
+            }
+          ],
+          "sample": 11
+        },
+        {
+          "pairs": [
+            {
+              "link": "gripper_Left_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.004566274471647886
+            }
+          ],
+          "sample": 12
+        },
+        {
+          "pairs": [
+            {
+              "link": "gripper_Left_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.004603425131719097
+            }
+          ],
+          "sample": 13
+        },
+        {
+          "pairs": [
+            {
+              "link": "gripper_Left_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.004603425131719097
+            }
+          ],
+          "sample": 14
+        },
+        {
+          "pairs": [
+            {
+              "link": "gripper_Left_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.0030016931159872542
+            },
+            {
+              "link": "gripper_Left_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.004603425131719097
+            }
+          ],
+          "sample": 15
+        },
+        {
+          "pairs": [
+            {
+              "link": "gripper_Left_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.0046214233798008136
+            },
+            {
+              "link": "gripper_Left_Support_Link",
+              "obstacle": "pusht_target_0",
+              "overlap_m": 0.004603425131719097
+            }
+          ],
+          "sample": 16
+        }
+      ],
+      "cpu_gpu_masks_equal": true,
+      "diagnostic_complete": true,
+      "diagnostic_only": true,
+      "execute_real": false,
+      "first_collision_sample": 11,
+      "fixture": "low_table",
+      "hardware_connected": false,
+      "hardware_profile_qualified": false,
+      "input_sha256": "35bbca6ebf9e65e8a0ce784f1c9960a941c90f03bf80460b92587eacc388ea86",
+      "native_tool_spheres": 38,
+      "nominal_descend_intervals": 16,
+      "rigidity_error_m": 2.7808881753347784e-8,
+      "sampled_tool_world_clear": false,
+      "state_unchanged": true
+    },
+    {
+      "arm_self_or_ik_qualified": false,
+      "case": "orthogonal_tool",
+      "collision_samples": [],
+      "complete_chain": false,
+      "contacts": [],
+      "cpu_gpu_masks_equal": true,
+      "diagnostic_complete": true,
+      "diagnostic_only": true,
+      "execute_real": false,
+      "first_collision_sample": null,
+      "fixture": "low_table",
+      "hardware_connected": false,
+      "hardware_profile_qualified": false,
+      "input_sha256": "5d049285b26a5a1261cc51985abec67619f069ff209bc21d29216997de789f5f",
+      "native_tool_spheres": 38,
+      "nominal_descend_intervals": 16,
+      "rigidity_error_m": 2.7808881753347784e-8,
+      "sampled_tool_world_clear": true,
+      "state_unchanged": true
+    },
+    {
+      "arm_self_or_ik_qualified": false,
+      "case": "yaw_matched_tool",
+      "collision_samples": [],
+      "complete_chain": false,
+      "contacts": [],
+      "cpu_gpu_masks_equal": true,
+      "diagnostic_complete": true,
+      "diagnostic_only": true,
+      "execute_real": false,
+      "first_collision_sample": null,
+      "fixture": "low_table",
+      "hardware_connected": false,
+      "hardware_profile_qualified": false,
+      "input_sha256": "20813a1d65dec5a52e44673b90d3b176851e4f351bba7d8e2d6aa88e4307f7aa",
+      "native_tool_spheres": 38,
+      "nominal_descend_intervals": 16,
+      "rigidity_error_m": 2.7808881753347784e-8,
+      "sampled_tool_world_clear": true,
+      "state_unchanged": true
+    }
+  ],
+  "schema": "rm75.pusht_tool_envelope/v1",
+  "tested_base_commit": "ae0ec0e05909a8ff1c22dc72856da47d193f403b",
+  "source_sha256": {
+    "tools/diagnose_pusht_tool_envelope.py": "c044f6c2e8854134a1b0223d8a53f0a676bb342c2b4df110d4d094b08f210528",
+    "tests/three_scene/test_pusht_tool_envelope.py": "a10bb3d2e04e3967242eb62a1beab551764e62d02b835cef762b3868c11805e6"
+  },
+  "checks": {
+    "compileall": {
+      "passed": true,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "three_scene": {
+      "passed": 363,
+      "warnings": 1,
+      "elapsed_s": 11.56,
+      "sha256": "42c9b5de1c7d917c41758f1abb8e3a40c1b3abbd0a6202a26422173f8789b4a5"
+    },
+    "full_tests": {
+      "passed": 685,
+      "warnings": 1,
+      "elapsed_s": 27.81,
+      "sha256": "55877acb339c3f026244415b4e2cef8c3547c3726528bf868d2e78e1847ef4b1"
+    }
+  },
+  "notes": [
+    "Four tool-envelope diagnostics are not four complete-chain GPU planning runs.",
+    "Native closed-gripper geometry is rigidly placed at nominal requested TCP poses; this is not an IK solution, a robot trajectory, arm/self qualification, or hardware measurement.",
+    "Original baseline and rotated-fixed-tool planning failures are retained, not relabeled as successful chains.",
+    "No standoff, TCP/contact mapping, tool orientation, collision exemptions, candidate count, seeds, thresholds or success conditions were changed.",
+    "Actual pusher choice and TCP/contact geometry remain unqualified; wider standoff alone can introduce unmodeled contact before the nominal short push.",
+    "No push/upload performed."
+  ]
+}
