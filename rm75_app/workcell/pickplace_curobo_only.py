@@ -187,6 +187,8 @@ def install(direct):
     install_start_check_restoration(RM75CuRoboPlanner)
     preserve_diagnostic_world_state(RM75CuRoboPlanner,direct._CUROBO_GPU_LOCK)
     serialize_return_planning(direct)
+    from .pickplace_release_contact import install_release_contact
+    install_release_contact(direct)
     original_refresh = direct._refresh_curobo_world
     @functools.wraps(original_refresh)
     def refresh(planner, demo, args, **kwargs):
@@ -215,7 +217,8 @@ def install(direct):
         original_wrappers()
         # Install OUTSIDE native wrappers, including their early dry-run branch.
         from .pickplace_clearance_audit import install_execution_guards
-        install_execution_guards(direct.targeted.base,direct._CUROBO_GPU_LOCK,clearance_audits)
+        install_execution_guards(direct.targeted.base,direct._CUROBO_GPU_LOCK,clearance_audits,
+                                 released_source=direct._current_source_object_name)
     direct._install_dry_run_motion_window_wrappers=install_wrappers
     return clearance_audits
 

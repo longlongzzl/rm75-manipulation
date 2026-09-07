@@ -73,6 +73,9 @@ class RRTracker:
         observed = np.asarray(mask, dtype=bool)
         if np.count_nonzero(observed) < self.config.min_track_area_px:
             raise ValueError("initial RRTrack mask is too small")
+        depth_info=self._depth_evidence(frame,observed)
+        if depth_info['valid_depth_pixels']<self.config.min_valid_depth_px:
+            raise ValueError(f'initial RRTrack mask has insufficient depth: {depth_info}')
         self.pose = np.asarray(T_cam_obj, dtype=np.float64).reshape(4, 4).copy()
         prediction = self.segmenter.initialize(frame.rgb, observed)
         rendered = self.renderer.render(self.pose, frame.K, frame.depth_m.shape)
@@ -95,7 +98,14 @@ class RRTracker:
             accepted=True,
             event="initialized",
             memory_updates=("long",) + (("online_bank",) if bank_updated else ()),
+            metadata={'depth_quality':depth_info},
         )
+
+    def _depth_evidence(self,frame,mask):
+        observed=np.asarray(mask,dtype=bool)
+        depth=np.asarray(frame.depth_m)
+        valid=observed & np.isfinite(depth) & (depth>=self.config.min_depth_m) & (depth<=self.config.max_depth_m)
+        return dict(mask_pixels=int(observed.sum()),valid_depth_pixels=int(valid.sum()))
 
     def step(self, frame: FrameObservation) -> RRTrackOutput:
         if self.pose is None:
@@ -107,8 +117,12 @@ class RRTracker:
         if self.state in {TrackerState.LOST, TrackerState.RECOVERING}:
             return self._step_recovery(frame, prediction)
 
+        depth_info=self._depth_evidence(frame,observed)
+        if depth_info['valid_depth_pixels']<self.config.min_valid_depth_px:
+            return self._mark_lost(frame,prediction,'insufficient_depth',{'depth_quality':depth_info})
+
         event = "tracked"
-        metadata: dict = {}
+        metadata: dict = {'depth_quality':depth_info}
         try:
             estimate = self.pose_refiner.refine(frame, observed, self.pose)
             candidate_pose = np.asarray(estimate.T_cam_obj, dtype=np.float64).reshape(4, 4)
@@ -193,6 +207,11 @@ class RRTracker:
             except Exception as exc:
                 relocalizer_error = str(exc)
 
+        depth_quality=[self._depth_evidence(frame,mask) for mask in candidate_masks]
+        keep=[q['valid_depth_pixels']>=self.config.min_valid_depth_px for q in depth_quality]
+        propagated_candidate_count=sum(keep[:propagated_candidate_count])
+        candidate_masks=[mask for mask,valid in zip(candidate_masks,keep) if valid]
+        depth_rejected=sum(not valid for valid in keep)
         blank = Agreement(0.0, 0.0, 1.0, int(np.count_nonzero(observed)), 0, 0)
         if not candidate_masks:
             self.state = TrackerState.LOST
@@ -205,7 +224,8 @@ class RRTracker:
                 blank,
                 False,
                 "waiting_for_reappearance",
-                metadata={"relocalizer_error": relocalizer_error} if relocalizer_error else {},
+                metadata={'depth_rejected_candidates':depth_rejected,'candidate_depth_quality':depth_quality,
+                          **({"relocalizer_error": relocalizer_error} if relocalizer_error else {})},
             )
         if self.frame_index - self.last_recovery_attempt < self.config.recovery_retry_interval:
             return RRTrackOutput(
@@ -238,6 +258,8 @@ class RRTracker:
             ),
         )
         recovery_meta["mask_candidate_count"] = len(candidate_masks)
+        recovery_meta['depth_rejected_candidates']=depth_rejected
+        recovery_meta['candidate_depth_quality']=depth_quality
         recovery_meta["propagated_mask_candidates"] = propagated_candidate_count
         recovery_meta["sam3_mask_candidates"] = len(candidate_masks) - propagated_candidate_count
         if relocalizer_error:

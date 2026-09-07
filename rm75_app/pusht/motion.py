@@ -12,6 +12,7 @@ from rm75_app.workcell.io import finite
 from rm75_app.workcell.transforms import vector, quaternion_matrix, rotation_error
 from rm75_app.workcell.realman import time_parameterize
 from .model import vertices, rectangles, predict, wrap
+from .cartesian_ik import plan_cartesian_line,PushPathRejected
 
 
 @dataclass(frozen=True)
@@ -69,9 +70,9 @@ class CuroboPushExecutor:
                          and c.get('world_object') in ('pusht_target_0','pusht_target_1')
                          and c.get('robot_link') in self.allowed)]
             if forbidden:
-                raise RuntimeError(f'PushT collision audit rejected path: {forbidden[:3]}')
+                raise PushPathRejected(f'PushT collision audit rejected path: {forbidden[:3]}')
 
-    def _audit_tcp(self,path,start_pose,xyz,*,straight,stage):
+    def _audit_tcp(self,path,start_pose,xyz,*,straight,stage,check_endpoint=True):
         delta=np.asarray(xyz)-start_pose.position
         worst_gap=0.;worst_angle=0.
         for joints in path:
@@ -82,11 +83,11 @@ class CuroboPushExecutor:
                 gap=float(np.linalg.norm(actual.position-(start_pose.position+t*delta)))
                 worst_gap=max(worst_gap,gap);worst_angle=max(worst_angle,angle)
         if straight and (worst_gap>self.corridor or worst_angle>self.orientation_tolerance):
-            raise RuntimeError(f'non_cartesian_contact_path:{stage}: max_gap_m={worst_gap:.8f}, max_angle_rad={worst_angle:.8f}')
+            raise PushPathRejected(f'non_cartesian_contact_path:{stage}: max_gap_m={worst_gap:.8f}, max_angle_rad={worst_angle:.8f}')
         final=self._fk(path[-1])
-        if (np.linalg.norm(final.position-xyz)>self.corridor or
+        if check_endpoint and (np.linalg.norm(final.position-xyz)>self.corridor or
             rotation_error(quaternion_matrix(final.quaternion_wxyz),quaternion_matrix(self.orientation))>self.orientation_tolerance):
-            raise RuntimeError(f'endpoint_error:{stage}')
+            raise PushPathRejected(f'endpoint_error:{stage}')
         return dict(max_corridor_error_m=worst_gap if straight else None,
                     max_orientation_error_rad=worst_angle if straight else None)
 
@@ -113,6 +114,7 @@ class CuroboPushExecutor:
         prepared=[]
         for stage,xyz,straight,contact_allowed in points:
             self.stop.check();pose=Pose(xyz,self.orientation)
+            start_pose=self._fk(q)
             candidate=PoseCandidate(f'pusht:{stage}',pose)
             request=BatchPlanningRequest(JointConfiguration(self.names,q),(candidate,),scene,
                                          tool_frame=self.tool_frame,prefer_direct_tcp_path=straight)
@@ -121,28 +123,24 @@ class CuroboPushExecutor:
                 if contact_allowed:
                     for name in snapshots:
                         self.backend._set_obstacle_enabled(name,False)
-                # A soft free-space TCP preference is not a Cartesian line.
-                # Reuse the native line primitive for world-axis moves.
-                # Other directions retain generic search plus the same strict
-                # corridor audit; never snap/rotate the requested push vector.
-                axis='z' if stage in ('descend','retreat') else None
-                if stage in ('contact','push'):
-                    if abs(direction[1])<1e-10: axis='x'
-                    elif abs(direction[0])<1e-10: axis='y'
-                if axis is not None:
-                    planned=self.backend.plan_linear_candidates(request,axis=axis,
-                        project_distance_to_goal=False,non_terminal_scale=1.0).best((candidate,))
+                if straight:
+                    def validate_edge(edge):
+                        self._audit_tcp(edge,start_pose,xyz,straight=True,stage=stage,check_endpoint=False)
+                        self._audit(edge,contact=contact_allowed)
+                    path,ik_rows=plan_cartesian_line(self.backend,request,validate_edge)
+                    self.events.emit('push_cartesian_ik_planned',stage=stage,waypoints=ik_rows)
                 else:
                     planned=self.backend.plan_candidates(request).best((candidate,))
+                    if planned is None or planned.trajectory is None:
+                        raise RuntimeError(f'PushT motion planning failed at {stage}')
+                    path=planned.trajectory.positions
             finally:
                 for name,enabled in snapshots.items():
                     self.backend._set_obstacle_enabled(name,enabled)
-            if planned is None or planned.trajectory is None or len(planned.trajectory.positions)<2:
+            if len(path)<2:
                 raise RuntimeError(f'PushT motion planning failed at {stage}')
-            path=planned.trajectory.positions
             if abs(path[0]-q).max()>.05:
                 raise RuntimeError(f'Planner returned discontinuity at {stage}')
-            start_pose=self._fk(q)
             self._audit_tcp(path,start_pose,xyz,straight=straight,stage=stage)
             timed,ts=time_parameterize(path,lambda joints:self._fk(joints).position,
                  speed_mps=push.speed_mps,hz=self.arm.hz,

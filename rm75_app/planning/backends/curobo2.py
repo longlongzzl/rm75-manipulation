@@ -2607,6 +2607,25 @@ class Curobo2Backend:
         }
         return not violations, diagnostics
 
+    def solve_pose_ik_variants(self, request: BatchPlanningRequest) -> tuple[JointConfiguration, ...]:
+        """Return all successful full-seed endpoint IK rows from stage state.
+
+        This never proves interpolation validity and never disables collision.
+        """
+        if len(request.candidates) != 1:
+            raise ValueError('stage-state IK requires one endpoint')
+        if request.scene is not self._scene:
+            self.update_scene(request.scene)
+        planner = self._ensure_planner()
+        current, goals = self._make_batch_inputs(request)
+        planner.ik_solver.reset_seed()
+        result = planner.ik_solver.solve_pose(goals,
+            current_state=current, seed_config=current.position[:, None, :].contiguous(),
+            return_seeds=int(self.config.coarse_ik_return_seeds))
+        positions = result.solution.reshape(-1, len(request.current.names)).detach().cpu().numpy()
+        success = result.success.reshape(-1).detach().cpu().numpy().astype(bool)
+        return tuple(JointConfiguration(request.current.names, q) for q in positions[success])
+
     def plan_linear_candidates(
         self,
         request: BatchPlanningRequest,

@@ -75,6 +75,7 @@ class RRTrackConfig:
             "online_bank_capacity",
             "min_snap_area_px",
             "min_track_area_px",
+            "min_valid_depth_px",
             "stagnation_window",
             "lost_patience_frames",
             "global_register_after_retrieval_failures",

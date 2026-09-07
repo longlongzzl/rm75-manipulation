@@ -19,6 +19,8 @@ def build_scene_registry(payload: dict, active_object: str, active_instance_inde
         counts[name] += 1
         instance_id = f"{name}:{instance_index}"
         is_active = name == wanted and instance_index == int(active_instance_index)
+        if is_active and not item.get('ok',True):
+            raise ValueError(f'selected {instance_id} initialization failed; do not renumber another instance')
         run_dir = Path(str(item.get("run_dir", ""))).expanduser()
         entry = {
             "instance_id": instance_id,
@@ -47,7 +49,12 @@ def build_scene_registry(payload: dict, active_object: str, active_instance_inde
 def resolve_active_result(payload: dict, object_name: str, instance_index: int = 0) -> dict:
     results = payload.get("results") if isinstance(payload.get("results"), list) else [payload]
     wanted = normalize_object_name(object_name)
-    matches = [item for item in results if normalize_object_name(item.get("object_name")) == wanted and item.get("ok", True)]
+    # Use the SAME per-class index as the registry, including failed entries.
+    # Filtering failures first silently handed off the next physical instance.
+    matches = [item for item in results if normalize_object_name(item.get("object_name")) == wanted]
     if int(instance_index) < 0 or int(instance_index) >= len(matches):
         raise ValueError(f"SAM6D result has no {object_name!r} instance {instance_index}; found {len(matches)}")
-    return matches[int(instance_index)]
+    selected=matches[int(instance_index)]
+    if not selected.get('ok',True):
+        raise ValueError(f'selected {object_name}:{instance_index} initialization failed; do not renumber another instance')
+    return selected

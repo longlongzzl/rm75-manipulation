@@ -8,7 +8,7 @@ import torch
 from rm75_app.pusht.motion import CuroboPushExecutor
 from rm75_app.pusht.model import Config,Push
 from rm75_app.pusht.observation import Observation
-from rm75_app.planning.contracts import Pose
+from rm75_app.planning.contracts import Pose,JointConfiguration
 
 
 def fixture(failure=None):
@@ -52,6 +52,12 @@ def fixture(failure=None):
         def plan_linear_candidates(self,request,**kwargs):
             trace.append(('linear',request.candidates[0].candidate_id,kwargs))
             return self.plan_candidates(request)
+        def solve_pose_ik_variants(self,request):
+            trace.append(('ik',request.candidates[0].candidate_id,request.candidates[0].pose.position.copy()))
+            result=self.plan_candidates(request).best(request.candidates)
+            q=result.trajectory.positions[-1].copy()
+            if failure=='corridor' and self.stage=='push': q[1]+=.02
+            return (JointConfiguration(request.current.names,q),)
     class Observer:
         def observe(self,after):
             trace.append(('observe',))
@@ -83,7 +89,7 @@ def test_plan_only_has_complete_chain_and_never_observes_or_executes():
 def test_execution_waits_for_entire_audited_chain_and_new_observation():
     e,p,o,t,b=fixture();e.execute_push(p,o)
     first=next(i for i,r in enumerate(t) if r[0]=='execute')
-    assert len([r for r in t[:first] if r[0]=='plan'])==5
+    assert list(dict.fromkeys(r[1] for r in t[:first] if r[0]=='plan'))==['approach','descend','contact','push','retreat']
     assert ('observe',) in t[:first]
     assert [r[1] for r in t if r[0]=='execute']==['approach','descend','contact','push','retreat']
 
@@ -104,12 +110,12 @@ def test_speed_changes_prepared_time_and_cartesian_bound():
         assert np.max(np.linalg.norm(np.diff(path[:,:3],axis=0),axis=1)/np.diff(ts))<=.005+1e-9
 
 
-def test_axis_moves_use_native_lines_without_link_or_world_exemptions():
+def test_contact_moves_use_endpoint_ik_without_changing_requested_line():
     e,p,o,t,b=fixture();e.plan_push(p,o)
-    rows=[r for r in t if r[0]=='linear']
-    assert [r[2]['axis'] for r in rows]==['z','x','x','z']
-    assert all(r[2]=={'axis':axis,'project_distance_to_goal':False,'non_terminal_scale':1.0}
-               for r,axis in zip(rows,['z','x','x','z']))
+    rows=[r for r in t if r[0]=='ik']
+    assert list(dict.fromkeys(r[1].split(':')[1] for r in rows))==['descend','contact','push','retreat']
+    assert not any(r[0]=='linear' for r in t)
+    assert all(abs(r[2][1])<1e-12 for r in rows)
 
 
 def test_time_resampled_path_also_requires_cartesian_corridor(monkeypatch):

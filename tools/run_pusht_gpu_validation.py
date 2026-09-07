@@ -17,6 +17,8 @@ from rm75_app.planning.backends.curobo2 import Curobo2Backend, Curobo2BackendCon
 from rm75_app.pusht.model import Config, choose_push
 from rm75_app.pusht.observation import Observation
 from rm75_app.pusht.motion import CuroboPushExecutor
+from rm75_app.pusht.cartesian_ik import PushPathRejected
+from rm75_app.planning.contracts import CollisionObject,Pose,PlanningScene,JointConfiguration
 from rm75_app.workcell.events import StopToken
 from rm75_app.workcell.io import atomic_json
 
@@ -66,6 +68,13 @@ class RecordedBackend(Curobo2Backend):
             planner.ik_solver.solve_pose = solve
         return planner
 
+    def solve_pose_ik_variants(self, request):
+        self.current_stage=request.candidates[0].candidate_id
+        result=super().solve_pose_ik_variants(request)
+        self.records.append(dict(kind='cartesian_ik',stage=self.current_stage,
+                                 successful_variants=len(result)))
+        return result
+
     def _collision_diagnostics_for_states(self, planner, states, **kwargs):
         result = super()._collision_diagnostics_for_states(planner, states, **kwargs)
         self.records.append({'kind': 'collision_audit',
@@ -74,15 +83,36 @@ class RecordedBackend(Curobo2Backend):
         return result
 
 
+def validation_passed(report, *, audit_blocker=False):
+    """Planning alone is insufficient if reporting or the dynamics audit failed."""
+    if not report.get('complete_chain') or report.get('error'):
+        return False
+    stages=report.get('stages',[])
+    if [row.get('stage') for row in stages]!=['approach','descend','contact','push','retreat']:
+        return False
+    limits={'max_tcp_speed_mps':report['config']['speed_mps'],
+            'max_joint_speed_rad_s':report['motion']['joint_speed_rad_s'],
+            'max_joint_accel_rad_s2':report['motion']['joint_accel_rad_s2']}
+    for row in stages:
+        for key,limit in limits.items():
+            value=row.get(key,float('nan'))
+            if not np.isfinite(value) or value<0 or value>limit+1e-9:
+                return False
+    return not audit_blocker or report.get('unrelated_obstacle_audit',{}).get('rejected') is True
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--case', choices=['baseline', 'orthogonal_tool', 'rotated', 'neighbor_blocked'], default='baseline')
+    parser.add_argument('--case', choices=['baseline', 'orthogonal_tool', 'rotated', 'neighbor_blocked',
+                        'rotated_orthogonal','orthogonal_neighbor_blocked','yaw_matched_tool'], default='baseline')
     parser.add_argument('--fixture', choices=['raised_table', 'low_table'], default='raised_table')
+    parser.add_argument('--speed',type=float,default=.015)
+    parser.add_argument('--audit-blocker',action='store_true')
     args = parser.parse_args()
     output = args.output.resolve(); output.mkdir(parents=True, exist_ok=False)
-    config = Config()
-    pose = (.35, -.18, .3 if args.case == 'rotated' else 0.)
+    config = Config.from_dict({'speed_mps':args.speed})
+    pose = (.35, -.18, .3 if args.case in ('rotated','rotated_orthogonal','yaw_matched_tool') else 0.)
     goal = (.38, -.18, pose[2])
     # Authored simulation fixture, not measurements of the user's workcell.
     motion = dict(tool_frame='gripper_tcp', push_tcp_z_m=.15, hover_clearance_m=.08,
@@ -96,15 +126,19 @@ def main():
         joint_speed_rad_s=.25, joint_accel_rad_s2=.5,
         static_collision_objects=[dict(name='simulation_table', kind='cuboid',
             position=[.40, -.18, .10], quaternion_wxyz=[1,0,0,0], dimensions=[.40,.28,.04])])
-    if args.case == 'orthogonal_tool':
+    if args.case in ('orthogonal_tool','rotated_orthogonal','orthogonal_neighbor_blocked'):
         motion['tool_quaternion_wxyz'] = [0., 1., 0., 0.]
+    if args.case=='yaw_matched_tool':
+        # Separate authored fixture: rotate tool yaw with the target, preserving
+        # their relative geometry. Do not overwrite the fixed-tool failure.
+        motion['tool_quaternion_wxyz']=[0.,float(np.cos(.15)),float(np.sin(.15)),0.]
     if args.fixture == 'low_table':
         # Separate authored fixture selected after a reachability diagnostic;
         # retain the original raised-table failures in the experiment record.
         motion.update(push_tcp_z_m=.02, object_centroid_z_m=.01)
         motion['static_collision_objects'][0]['position'][2] = -.03
     push, prediction = choose_push(pose, goal, config)
-    if args.case == 'neighbor_blocked':
+    if args.case in ('neighbor_blocked','orthogonal_neighbor_blocked'):
         entry = np.asarray(push.contact) - np.asarray(push.direction) * config.approach_gap_m
         motion['static_collision_objects'].append(dict(name='blocking_neighbor',kind='cuboid',
             position=[*entry,motion['push_tcp_z_m']+motion['hover_clearance_m']],
@@ -134,15 +168,38 @@ def main():
         prepared = executor.plan_push(push,observation)
         report.update(complete_chain=True, stages=[dict(stage=name,positions=path.tolist(),
             times=times.tolist()) for name,path,times in prepared.stages])
+        for item,(_,path,times) in zip(report['stages'],prepared.stages):
+            xyz=np.array([backend.tool_pose_for_configuration(JointConfiguration(executor.names,q),'gripper_tcp').position for q in path])
+            dt=np.diff(times);vel=np.diff(path,axis=0)/dt[:,None]
+            item['max_tcp_speed_mps']=float(np.max(np.linalg.norm(np.diff(xyz,axis=0),axis=1)/dt))
+            item['max_joint_speed_rad_s']=float(np.max(np.abs(vel)))
+            item['max_joint_accel_rad_s2']=float(np.max(np.abs(np.diff(vel,axis=0)/((dt[1:]+dt[:-1])/2)[:,None]))) if len(vel)>1 else 0.
+        if args.audit_blocker:
+            # Inject one unrelated object into an already validated positive
+            # path. This exercises the actual GPU collision-audit gate, not IK.
+            scene=executor._scene(observation)
+            path=next(path for name,path,_ in prepared.stages if name=='push')
+            tcp=backend.tool_pose_for_configuration(JointConfiguration(executor.names,path[len(path)//2]),'gripper_tcp')
+            blocker=CollisionObject('gpu_audit_neighbor','cuboid',Pose(tcp.position,[1,0,0,0]),dimensions=[.06,.06,.06])
+            backend.update_scene(PlanningScene((*scene.objects,blocker),revision='negative_audit'))
+            try:
+                executor._audit(path,contact=True)
+                report['unrelated_obstacle_audit']=dict(rejected=False)
+            except PushPathRejected as exc:
+                report['unrelated_obstacle_audit']=dict(rejected=True,error=str(exc))
+            finally:
+                backend.update_scene(scene)
     except Exception as exc:
         report.update(error=f'{type(exc).__name__}: {exc}',traceback=traceback.format_exc())
     finally:
         report.update(elapsed_s=time.monotonic()-started, backend_records=backend.records)
         backend.__exit__(None,None,None)
+        report['validation_success']=validation_passed(report,audit_blocker=args.audit_blocker)
         atomic_json(output/'result.json',report)
     print(json.dumps({'case':args.case,'complete_chain':report['complete_chain'],
+                      'validation_success':report['validation_success'],
                       'error':report.get('error'),'elapsed_s':report['elapsed_s']}))
-    return 0 if report['complete_chain'] else 42
+    return 0 if report['validation_success'] else 42
 
 
 if __name__ == '__main__':

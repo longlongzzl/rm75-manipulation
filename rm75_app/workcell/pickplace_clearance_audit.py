@@ -7,7 +7,7 @@ from .contact_audit import scene_evidence,_plain
 from .transforms import quaternion_matrix
 
 
-def install_execution_guards(base,lock,records):
+def install_execution_guards(base,lock,records,*,released_source=None):
     from .pickplace_curobo_only import CuroboOnlyUnsupported
     for name in ('execute_pose_path_stage','execute_joint_path_stage'):
         original=getattr(base,name)
@@ -23,7 +23,13 @@ def install_execution_guards(base,lock,records):
                 with lock:
                     native=getattr(bound['demo'].planner,'native',None)
                     if native is None:raise CuroboOnlyUnsupported('clearance planner not bound')
-                    evidence=validate_clearance_path(native,bound['q_path'])
+                    try:
+                        evidence=validate_clearance_path(native,bound['q_path'])
+                    except CuroboOnlyUnsupported:
+                        if released_source is None:raise
+                        from .pickplace_release_contact import release_target,audit_release_path
+                        target=release_target(native,bound['args'],released_source(bound['args']))
+                        evidence=audit_release_path(native,bound['q_path'],target)
                     records.append({'stage':label,**evidence})
                     print(f'[curobo clearance audit] {label}: {evidence}')
                     return original(*pos,**kwargs)
