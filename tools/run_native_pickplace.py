@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import sys
 import traceback
+import time
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
@@ -42,10 +43,13 @@ def build_native_argv(case,extensions,*,transport_world_checked=False):
 
 
 def main():
+    started=time.monotonic()
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--extensions',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--audit-clearance',action='store_true')
+    parser.add_argument('--audit-lift-ik',action='store_true',
+        help='Read-only first failed still-attached lift IK per source; original solver results unchanged')
     parser.add_argument('--transport-world-checked',action='store_true',
         help='SIM only: reuse audited native contact compatibility, fully checking loaded transport')
     parser.add_argument('--case',choices=tuple(FIXED_CASES),default='legacy_gluestick')
@@ -70,6 +74,12 @@ def main():
             module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module
             spec.loader.exec_module(module)
             report['clearance_path_audits']=install(module)
+            if args.audit_lift_ik:
+                from rm75_app.workcell.pickplace_lift_diagnostics import install_lift_diagnostics
+                def emit_lift(row):
+                    with (output/'lift_ik.jsonl').open('a') as stream:
+                        stream.write(json.dumps(row,allow_nan=False)+'\n')
+                report['lift_ik_diagnostics']=install_lift_diagnostics(module,emit_lift)
             if args.transport_world_checked:
                 from curobo_rm75_planner import RM75CuRoboPlanner
                 from rm75_app.workcell.transport_contact import install_transport_contact
@@ -111,6 +121,7 @@ def main():
                 not captured.clearance_failures and
                 len(report.get('clearance_path_audits',[]))==len(names))
             report['loaded_mplib_modules']=[n for n in sys.modules if n=='mplib' or n.startswith('mplib.')]
+            report['elapsed_s']=time.monotonic()-started
             atomic_json(output/'result.json',report)
     print(json.dumps(report))
     return 0 if report['strict_clearance_success'] else 42

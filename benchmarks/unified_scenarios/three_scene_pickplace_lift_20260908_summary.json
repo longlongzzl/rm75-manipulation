@@ -1,0 +1,880 @@
+{
+  "camera_captured": false,
+  "checks": {
+    "compileall.log": {
+      "last_line": null,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "full_tests.log": {
+      "last_line": "704 passed, 1 warning in 28.80s",
+      "sha256": "415046b3ed1c31611270d94b47ce04878e082bbd937400cae057a26e69037054"
+    },
+    "snapshot_verify.log": {
+      "last_line": null,
+      "sha256": "3472d89d935f55f6f774f1a285a4ace826aff6f0d0e197bd24180789338e21e5"
+    },
+    "three_scene_tests.log": {
+      "last_line": "382 passed, 1 warning in 11.89s",
+      "sha256": "821da390242e79dc4988a23d054769a4cab65b11e7ae9c40402e0f8056e183cd"
+    }
+  },
+  "execute_real": false,
+  "hardware_connected": false,
+  "notes": [
+    "All three runs are original fixed-scene cuRobo1 GPU/SIM, with no SDK connection, camera capture or physical motion.",
+    "Two seven-object runs each ended exit 42, native 4/7 and final false; the legacy single-object run ended exit 0. No runs were cancelled. Native cycle success is not strict clearance or physical task success.",
+    "Original candidates, seeds, geometry, fallback flags and success conditions are unchanged. Diagnostic checks add overhead; this is not a performance benchmark.",
+    "Native validity is observed within the original lift contact scope; analytical box contacts are unfiltered and do not cover the mesh pencil holder. Self collision retains native adjacency and approved payload/finger pairs only.",
+    "Nominal goal payload/base contacts use the unchanged modeled rigid payload and fixed base, not an alternative IK seed. They do not qualify physical geometry, other links, mesh-world collisions or the entire path.",
+    "Full per-returned-row evidence and raw trajectories/logs stay local. This export retains row counts, statuses, minimum-error examples and nominal target collision evidence.",
+    "No push or upload was performed."
+  ],
+  "physical_success": null,
+  "raw_artifacts_local_only": true,
+  "runs": [
+    {
+      "case": "legacy_gluestick",
+      "clearance_failures": [],
+      "clearance_path_audits": [
+        {
+          "all_valid": true,
+          "samples": 5,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "clearance_selection_audits": [
+        {
+          "accepted": true,
+          "all_valid": true,
+          "kind": "reverse_reuse",
+          "samples": 5,
+          "world_exempt_links": []
+        }
+      ],
+      "command_success": true,
+      "elapsed_s": 13.05796855099834,
+      "error_type": "",
+      "event_counts": {
+        "contact_world_filter_enter": 4,
+        "contact_world_filter_restored": 4,
+        "ik_preselect_table_restored": 2,
+        "transport_full_world_audit": 1
+      },
+      "events_sha256": "1777d61fc9cabde379685cf970f9882a034cbfa2114193c68ab4e6d797da2db8",
+      "expected_cycles": 1,
+      "first_read_only_diagnostic": null,
+      "first_return_query_diagnostic": null,
+      "grasp_contact_ik_links": [],
+      "independent_clearance_execution_audit_observed": null,
+      "jimu_release_execution_audits": [],
+      "lift_ik_diagnostics": [],
+      "loaded_mplib_modules": [],
+      "native_completed_cycles": [
+        1
+      ],
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        }
+      ],
+      "native_final_success": true,
+      "near_ik_negative_pairs": [],
+      "near_ik_promotions": {},
+      "policy_rejections": [],
+      "release_execution_observations": [],
+      "result_sha256": "3151144f765c1013e8312789b891a7b67025b8638b7a79e1190b964ebf6deec2",
+      "run": "legacy_gluestick_v1",
+      "scene": null,
+      "stdout_sha256": "4ff1e0673c46de75f92df7b31bdf617c0ad1a541e99005b9028a76a672495e66",
+      "strict": null,
+      "strict_clearance_success": true,
+      "transport_all_world_links_checked": true,
+      "transport_audits": [
+        {
+          "payload_spheres": 6,
+          "samples": 61,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_top_bias_pos2_tilt25_away_axis_2mm_fast_ik_after_lift",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_path_audits": [
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 6,
+          "samples": 61,
+          "scene_fingerprint": "72e9413ed5cc7e1186aea2b58131a03e0a9407769848685313bebeb3c1e3cf24",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_top_bias_pos2_tilt25_away_axis_2mm_fast_ik_after_lift",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_samples": 61
+    },
+    {
+      "case": "current_table_all",
+      "clearance_failures": [
+        "[warn] post-place clearance planning failed after release; settling the object without moving the arm away first",
+        "[warn] post-place clearance planning failed after release; settling the object without moving the arm away first"
+      ],
+      "clearance_path_audits": [
+        {
+          "all_valid": true,
+          "samples": 5,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        },
+        {
+          "all_valid": true,
+          "samples": 12,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        },
+        {
+          "all_valid": true,
+          "samples": 3,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "clearance_selection_audits": [
+        {
+          "accepted": true,
+          "all_valid": true,
+          "kind": "released_candidate",
+          "samples": 5,
+          "world_exempt_links": []
+        },
+        {
+          "accepted": true,
+          "all_valid": true,
+          "kind": "reverse_reuse",
+          "samples": 12,
+          "world_exempt_links": []
+        },
+        {
+          "accepted": true,
+          "all_valid": true,
+          "kind": "reverse_reuse",
+          "samples": 3,
+          "world_exempt_links": []
+        },
+        {
+          "accepted": false,
+          "kind": "reverse_reuse",
+          "path_points": 6,
+          "reason": "release contact deeper than initial state at 1: initial_m=0.000000000, current_m=0.000028687"
+        },
+        {
+          "accepted": false,
+          "kind": "released_candidate",
+          "path_points": 6,
+          "reason": "release contact deeper than initial state at 1: initial_m=0.000000000, current_m=0.000015457"
+        }
+      ],
+      "command_success": false,
+      "elapsed_s": null,
+      "error_type": "RuntimeError",
+      "event_counts": {
+        "contact_obstacle_relief_refused": 2,
+        "contact_world_filter_enter": 74,
+        "contact_world_filter_restored": 74,
+        "ik_preselect_table_restored": 24,
+        "loaded_world_exclusions_restored": 2,
+        "transport_full_world_audit": 6
+      },
+      "events_sha256": "ee0c6426429342e75983db27ea080e830d44435c251dd22ce344a44c9639ba6e",
+      "expected_cycles": 7,
+      "first_read_only_diagnostic": null,
+      "first_return_query_diagnostic": null,
+      "grasp_contact_ik_links": [],
+      "independent_clearance_execution_audit_observed": null,
+      "jimu_release_execution_audits": [],
+      "lift_ik_diagnostics": [
+        {
+          "attached": true,
+          "collision_model_sha256": "4d4a6cad1444bea5ad922880c8b37f80206106621f41dd3872ff6dee49aaf955",
+          "diagnostic_complete": true,
+          "diagnostic_error_type": "",
+          "diagnostic_only": true,
+          "execution_guard": false,
+          "native_status": "IK_FAIL",
+          "native_success": false,
+          "nominal_goal_payload_base": null,
+          "payload_spheres": 6,
+          "requested_num_seeds": 64,
+          "source": "gluestick",
+          "start": {
+            "box_contacts": [],
+            "native_status": "None",
+            "non_box_objects_not_analytically_audited": [
+              "scene_obstacle_bitong"
+            ],
+            "self_link_pairs": [],
+            "valid": true
+          },
+          "state_unchanged": true,
+          "step_id": "joint_start_tcp_up_lift_grasp_direct_top_bias_center_vertical_fast_ik_straight_ik",
+          "returned_row_count": 64,
+          "finite_row_count": 64,
+          "native_success_count": 0,
+          "status_counts": [
+            {
+              "status": "MotionGenStatus.INVALID_START_STATE_SELF_COLLISION",
+              "count": 63
+            },
+            {
+              "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+              "count": 1
+            }
+          ],
+          "position_error_m_range": [
+            0.000003975237177655799,
+            0.9759713411331177
+          ],
+          "best_position_error_row": {
+            "configuration": {
+              "box_contacts": [],
+              "native_status": "MotionGenStatus.INVALID_START_STATE_SELF_COLLISION",
+              "non_box_objects_not_analytically_audited": [
+                "scene_obstacle_bitong"
+              ],
+              "self_link_pairs": [
+                {
+                  "count": 1,
+                  "link_a": "attached_object",
+                  "link_b": "base_link",
+                  "overlap": 0.007813896946609028
+                }
+              ],
+              "valid": false
+            },
+            "finite": true,
+            "index": 45,
+            "native_success": false,
+            "position_error_m": 0.000003975237177655799,
+            "rotation_error_native": 4.3843425601153285e-7
+          }
+        },
+        {
+          "attached": true,
+          "collision_model_sha256": "2d27dbaea376e7bc770c6629700c319bd5a95b784ef8413f4ff110fb14d58024",
+          "diagnostic_complete": true,
+          "diagnostic_error_type": "",
+          "diagnostic_only": true,
+          "execution_guard": false,
+          "native_status": "IK_FAIL",
+          "native_success": false,
+          "nominal_goal_payload_base": null,
+          "payload_spheres": 6,
+          "requested_num_seeds": 64,
+          "source": "hongshupian",
+          "start": {
+            "box_contacts": [],
+            "native_status": "None",
+            "non_box_objects_not_analytically_audited": [
+              "scene_obstacle_bitong"
+            ],
+            "self_link_pairs": [],
+            "valid": true
+          },
+          "state_unchanged": true,
+          "step_id": "joint_start_tcp_up_lift_grasp_direct_top_bias_center_vertical_fast_ik_straight_ik",
+          "returned_row_count": 64,
+          "finite_row_count": 64,
+          "native_success_count": 0,
+          "status_counts": [
+            {
+              "status": "MotionGenStatus.INVALID_START_STATE_SELF_COLLISION",
+              "count": 64
+            }
+          ],
+          "position_error_m_range": [
+            0.0000036326025565358577,
+            0.014497669413685799
+          ],
+          "best_position_error_row": {
+            "configuration": {
+              "box_contacts": [],
+              "native_status": "MotionGenStatus.INVALID_START_STATE_SELF_COLLISION",
+              "non_box_objects_not_analytically_audited": [
+                "scene_obstacle_bitong"
+              ],
+              "self_link_pairs": [
+                {
+                  "count": 2,
+                  "link_a": "attached_object",
+                  "link_b": "base_link",
+                  "overlap": 0.028971117883920677
+                }
+              ],
+              "valid": false
+            },
+            "finite": true,
+            "index": 55,
+            "native_success": false,
+            "position_error_m": 0.0000036326025565358577,
+            "rotation_error_native": 7.855433636905218e-7
+          }
+        }
+      ],
+      "loaded_mplib_modules": [],
+      "native_completed_cycles": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        },
+        {
+          "cycle": 2,
+          "success": true
+        },
+        {
+          "cycle": 3,
+          "success": true
+        },
+        {
+          "cycle": 4,
+          "success": false
+        },
+        {
+          "cycle": 4,
+          "success": false
+        },
+        {
+          "cycle": 4,
+          "success": true
+        },
+        {
+          "cycle": 5,
+          "success": false
+        },
+        {
+          "cycle": 6,
+          "success": false
+        },
+        {
+          "cycle": 6,
+          "success": false
+        }
+      ],
+      "native_final_success": false,
+      "near_ik_negative_pairs": [],
+      "near_ik_promotions": {},
+      "policy_rejections": [],
+      "release_execution_observations": [],
+      "result_sha256": "4893515a0471b80453295289a2a346c3a244d05f956bdcbee762e4f395d08755",
+      "run": "table_lift_v1",
+      "scene": null,
+      "stdout_sha256": "d48b0ef180f996143cc9550816a3ea15097d5c6315e6f4fae47f8ae19a1a82d1",
+      "strict": null,
+      "strict_clearance_success": false,
+      "transport_all_world_links_checked": true,
+      "transport_audits": [
+        {
+          "payload_spheres": 5,
+          "samples": 51,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_pen_raw_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 50,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_lvmukuai_place_first_target_release_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 65,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_lvmukuai_place_first_target_release_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 53,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_shuazi_place_first_target_release_f_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 100,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_carriot_place_first_target_release__fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 1,
+          "samples": 54,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_yaw_22deg_fast_ik_after_lift",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_path_audits": [
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 5,
+          "samples": 51,
+          "scene_fingerprint": "d22c43e1e681d83345362b67365e3d75438e2cdab65899707e55fb84b96f38d1",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_pen_raw_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 6,
+          "samples": 50,
+          "scene_fingerprint": "93bb99ef4cc5ec3bb438c57cbf69452ef8f1a69917d403c1a2e0ab6514d743ed",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_lvmukuai_place_first_target_release_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 6,
+          "samples": 65,
+          "scene_fingerprint": "7589ae59d2649358451798c483aacfa67f73d362be061f7ea48542ac49cb2059",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_lvmukuai_place_first_target_release_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 6,
+          "samples": 53,
+          "scene_fingerprint": "db44021a26fb3dece21e74846b1a5d733a28b063866da8170f48b43797133755",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_shuazi_place_first_target_release_f_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 6,
+          "samples": 100,
+          "scene_fingerprint": "9bf59a5f7eeb553117b9e309cbe7d02afdf00caf285ee64ddab56da264f73ab5",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_carriot_place_first_target_release__fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 1,
+          "samples": 54,
+          "scene_fingerprint": "fa0f2949ea80c40edd5682ce2745a91a2042143447243faf766b6d545c78cf58",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_yaw_22deg_fast_ik_after_lift",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_samples": 373
+    },
+    {
+      "case": "current_table_all",
+      "clearance_failures": [
+        "[warn] post-place clearance planning failed after release; settling the object without moving the arm away first",
+        "[warn] post-place clearance planning failed after release; settling the object without moving the arm away first"
+      ],
+      "clearance_path_audits": [
+        {
+          "all_valid": true,
+          "samples": 5,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        },
+        {
+          "all_valid": true,
+          "samples": 12,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        },
+        {
+          "all_valid": true,
+          "samples": 14,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "clearance_selection_audits": [
+        {
+          "accepted": true,
+          "all_valid": true,
+          "kind": "released_candidate",
+          "samples": 5,
+          "world_exempt_links": []
+        },
+        {
+          "accepted": true,
+          "all_valid": true,
+          "kind": "reverse_reuse",
+          "samples": 12,
+          "world_exempt_links": []
+        },
+        {
+          "accepted": true,
+          "all_valid": true,
+          "kind": "reverse_reuse",
+          "samples": 14,
+          "world_exempt_links": []
+        }
+      ],
+      "command_success": false,
+      "elapsed_s": 87.6371663380014,
+      "error_type": "RuntimeError",
+      "event_counts": {
+        "contact_obstacle_relief_refused": 2,
+        "contact_world_filter_enter": 83,
+        "contact_world_filter_restored": 83,
+        "ik_preselect_table_restored": 26,
+        "loaded_world_exclusions_restored": 2,
+        "transport_full_world_audit": 6
+      },
+      "events_sha256": "0b6f5cd7eb6556135c9392eab123fded94d3055863fa5073958d86e0bb10a5b9",
+      "expected_cycles": 7,
+      "first_read_only_diagnostic": null,
+      "first_return_query_diagnostic": null,
+      "grasp_contact_ik_links": [],
+      "independent_clearance_execution_audit_observed": null,
+      "jimu_release_execution_audits": [],
+      "lift_ik_diagnostics": [
+        {
+          "attached": true,
+          "collision_model_sha256": "4d4a6cad1444bea5ad922880c8b37f80206106621f41dd3872ff6dee49aaf955",
+          "diagnostic_complete": true,
+          "diagnostic_error_type": "",
+          "diagnostic_only": true,
+          "execution_guard": false,
+          "native_status": "IK_FAIL",
+          "native_success": false,
+          "nominal_goal_payload_base": {
+            "base_comparison_max_delta_m": 0,
+            "base_spheres": 1,
+            "contacts": [
+              {
+                "link_a": "attached_object",
+                "link_b": "base_link",
+                "overlap_m": 0.007817606604482275,
+                "pair_ignored": false
+              }
+            ],
+            "geometric_necessary_condition_only": true,
+            "payload_spheres": 6,
+            "physical_geometry_qualified": false
+          },
+          "payload_spheres": 6,
+          "requested_num_seeds": 64,
+          "source": "gluestick",
+          "start": {
+            "box_contacts": [],
+            "native_status": "None",
+            "non_box_objects_not_analytically_audited": [
+              "scene_obstacle_bitong"
+            ],
+            "self_link_pairs": [],
+            "valid": true
+          },
+          "state_unchanged": true,
+          "step_id": "joint_start_tcp_up_lift_grasp_direct_top_bias_center_vertical_fast_ik_straight_ik",
+          "returned_row_count": 64,
+          "finite_row_count": 64,
+          "native_success_count": 0,
+          "status_counts": [
+            {
+              "status": "MotionGenStatus.INVALID_START_STATE_SELF_COLLISION",
+              "count": 63
+            },
+            {
+              "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+              "count": 1
+            }
+          ],
+          "position_error_m_range": [
+            0.000003975237177655799,
+            0.9759713411331177
+          ],
+          "best_position_error_row": {
+            "configuration": {
+              "box_contacts": [],
+              "native_status": "MotionGenStatus.INVALID_START_STATE_SELF_COLLISION",
+              "non_box_objects_not_analytically_audited": [
+                "scene_obstacle_bitong"
+              ],
+              "self_link_pairs": [
+                {
+                  "count": 1,
+                  "link_a": "attached_object",
+                  "link_b": "base_link",
+                  "overlap": 0.007813896946609028
+                }
+              ],
+              "valid": false
+            },
+            "finite": true,
+            "index": 45,
+            "native_success": false,
+            "position_error_m": 0.000003975237177655799,
+            "rotation_error_native": 4.3843425601153285e-7
+          }
+        },
+        {
+          "attached": true,
+          "collision_model_sha256": "3d4f59a864273dc09aa86db24a128f20a3b942f7a2ae128b2bdbc21423794e5c",
+          "diagnostic_complete": true,
+          "diagnostic_error_type": "",
+          "diagnostic_only": true,
+          "execution_guard": false,
+          "native_status": "IK_FAIL",
+          "native_success": false,
+          "nominal_goal_payload_base": {
+            "base_comparison_max_delta_m": 0,
+            "base_spheres": 1,
+            "contacts": [
+              {
+                "link_a": "attached_object",
+                "link_b": "base_link",
+                "overlap_m": 0.028974598239865007,
+                "pair_ignored": false
+              },
+              {
+                "link_a": "attached_object",
+                "link_b": "base_link",
+                "overlap_m": 0.008170718176343489,
+                "pair_ignored": false
+              }
+            ],
+            "geometric_necessary_condition_only": true,
+            "payload_spheres": 6,
+            "physical_geometry_qualified": false
+          },
+          "payload_spheres": 6,
+          "requested_num_seeds": 64,
+          "source": "hongshupian",
+          "start": {
+            "box_contacts": [],
+            "native_status": "None",
+            "non_box_objects_not_analytically_audited": [
+              "scene_obstacle_bitong"
+            ],
+            "self_link_pairs": [],
+            "valid": true
+          },
+          "state_unchanged": true,
+          "step_id": "joint_start_tcp_up_lift_grasp_direct_top_bias_pos2_vertical_axis_2mm_fast_ik_straight_ik",
+          "returned_row_count": 64,
+          "finite_row_count": 64,
+          "native_success_count": 0,
+          "status_counts": [
+            {
+              "status": "MotionGenStatus.INVALID_START_STATE_SELF_COLLISION",
+              "count": 63
+            },
+            {
+              "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+              "count": 1
+            }
+          ],
+          "position_error_m_range": [
+            0.000005623117885988904,
+            0.9584091901779175
+          ],
+          "best_position_error_row": {
+            "configuration": {
+              "box_contacts": [],
+              "native_status": "MotionGenStatus.INVALID_START_STATE_SELF_COLLISION",
+              "non_box_objects_not_analytically_audited": [
+                "scene_obstacle_bitong"
+              ],
+              "self_link_pairs": [
+                {
+                  "count": 2,
+                  "link_a": "attached_object",
+                  "link_b": "base_link",
+                  "overlap": 0.028968629390001305
+                }
+              ],
+              "valid": false
+            },
+            "finite": true,
+            "index": 39,
+            "native_success": false,
+            "position_error_m": 0.000005623117885988904,
+            "rotation_error_native": 0.000006745789050910389
+          }
+        }
+      ],
+      "loaded_mplib_modules": [],
+      "native_completed_cycles": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        },
+        {
+          "cycle": 2,
+          "success": true
+        },
+        {
+          "cycle": 3,
+          "success": true
+        },
+        {
+          "cycle": 4,
+          "success": false
+        },
+        {
+          "cycle": 4,
+          "success": true
+        },
+        {
+          "cycle": 5,
+          "success": false
+        },
+        {
+          "cycle": 5,
+          "success": false
+        },
+        {
+          "cycle": 6,
+          "success": false
+        },
+        {
+          "cycle": 6,
+          "success": false
+        }
+      ],
+      "native_final_success": false,
+      "near_ik_negative_pairs": [],
+      "near_ik_promotions": {},
+      "policy_rejections": [],
+      "release_execution_observations": [],
+      "result_sha256": "149556e9551aa6f35b60bef78ffac7b55f0441ddc4592b00b2cce550ceff451a",
+      "run": "table_lift_v2",
+      "scene": null,
+      "stdout_sha256": "a8de0667be85700f16bdc455f9826ba249788be09637728b14fbd76b5bc8e828",
+      "strict": null,
+      "strict_clearance_success": false,
+      "transport_all_world_links_checked": true,
+      "transport_audits": [
+        {
+          "payload_spheres": 5,
+          "samples": 51,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_pen_raw_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 50,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_lvmukuai_place_first_target_release_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 65,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_lvmukuai_place_first_target_release_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 54,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_shuazi_place_first_target_release_f_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 90,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_carriot_place_first_target_release__fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 1,
+          "samples": 78,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_path_audits": [
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 5,
+          "samples": 51,
+          "scene_fingerprint": "d22c43e1e681d83345362b67365e3d75438e2cdab65899707e55fb84b96f38d1",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_pen_raw_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 6,
+          "samples": 50,
+          "scene_fingerprint": "93bb99ef4cc5ec3bb438c57cbf69452ef8f1a69917d403c1a2e0ab6514d743ed",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_lvmukuai_place_first_target_release_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 6,
+          "samples": 65,
+          "scene_fingerprint": "7589ae59d2649358451798c483aacfa67f73d362be061f7ea48542ac49cb2059",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_lvmukuai_place_first_target_release_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 6,
+          "samples": 54,
+          "scene_fingerprint": "db44021a26fb3dece21e74846b1a5d733a28b063866da8170f48b43797133755",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_shuazi_place_first_target_release_f_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 6,
+          "samples": 90,
+          "scene_fingerprint": "9bf59a5f7eeb553117b9e309cbe7d02afdf00caf285ee64ddab56da264f73ab5",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_carriot_place_first_target_release__fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "candidate_paths": 1,
+          "event": "transport_full_world_audit",
+          "payload_spheres": 1,
+          "samples": 78,
+          "scene_fingerprint": "7ae8d0850502c430dcfce9a82a0035e4d1cc1d2556c6fb3b0a2cd20d91fd23b7",
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_samples": 388
+    }
+  ],
+  "schema": "rm75.pickplace_lift_diagnostic/v1",
+  "source_sha256": {
+    "rm75_app/workcell/pickplace_lift_diagnostics.py": "06637f1c043f94afe26d1264559b80734419a9abc30b4f7be22b11b7986ed692",
+    "tests/three_scene/test_pickplace_lift_diagnostics.py": "a80042ecd46c7db55e8731aca6b214606c6243feac518c1d5c98b932ed2b78c5",
+    "tests/three_scene/test_pickplace_lift_summary.py": "beb0d47c96f502847a6d47ce77b7803cae3a57f147dccdd97833354a6e1fc4b5",
+    "tools/run_native_pickplace.py": "b1731406719f6616ea2421d1e4b7637a73bac1bf9f52c00c52e2dd65209c1d39",
+    "tools/summarize_native_gaps.py": "aaa75ab2a92703d8335a12b83cfa4b49abfca27b077eb095513a20c7ce61f49b"
+  },
+  "tested_base_commit": "83940552b72ca169dfd30f28376500cead1e871e",
+  "final_source_hashes_apply_to": [
+    "table_lift_v2",
+    "legacy_gluestick_v1"
+  ],
+  "earlier_run_limitations": {
+    "table_lift_v1": "Before nominal target geometry and elapsed reporting; opaque goal not serialized correctly. Native returned-row/contact evidence retained; nominal target and elapsed are not backfilled."
+  },
+  "snapshot_verified_files": 807,
+  "old_worktree_status_sha256_before_after": "15fd1ac40352579a761b4134244c2a74158dd723b2b146c6a39ccf458fe20968"
+}

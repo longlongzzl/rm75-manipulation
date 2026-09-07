@@ -25,6 +25,32 @@ def negative_pairs(detail):
             and all(key in row for key in ('robot_link','obstacle','clearance_m'))]
 
 
+def lift_ik_summary(row):
+    """Whitelist failed-query metrics, excluding raw q, poses, worlds and paths."""
+    def configuration(raw):
+        return {'valid':raw.get('valid'),'native_status':raw.get('native_status'),
+            'box_contacts':[{key:item.get(key) for key in ('link','obstacle','overlap_m','enabled')}
+                            for item in raw.get('box_contacts',[])],
+            'self_link_pairs':[{key:item.get(key) for key in ('link_a','link_b','overlap','count')}
+                               for item in raw.get('self_collision',{}).get('link_pairs',[])],
+            'non_box_objects_not_analytically_audited':raw.get('non_box_objects_not_analytically_audited')}
+    result={key:row.get(key) for key in ('source','step_id','diagnostic_only','execution_guard',
+        'native_success','native_status','requested_num_seeds','diagnostic_complete','state_unchanged',
+        'attached','payload_spheres','collision_model_sha256')}
+    result['diagnostic_error_type']=str(row.get('diagnostic_error','')).split(':',1)[0]
+    result['start']=configuration(row.get('start',{}))
+    result['returned_rows']=[{**{key:item.get(key) for key in
+        ('index','native_success','finite','position_error_m','rotation_error_native')},
+        'configuration':configuration(item.get('configuration',{}))} for item in row.get('returned_rows',[])]
+    nominal=row.get('nominal_goal_payload_base')
+    result['nominal_goal_payload_base']=None if nominal is None else {
+        **{key:nominal.get(key) for key in ('payload_spheres','base_spheres','base_comparison_max_delta_m',
+            'geometric_necessary_condition_only','physical_geometry_qualified')},
+        'contacts':[{key:item.get(key) for key in ('link_a','link_b','overlap_m','pair_ignored')}
+                    for item in nominal.get('contacts',[])]}
+    return result
+
+
 def event_summary(path,*,bare=False):
     counts=Counter();near=Counter();pairs={};audits=[];first=None;first_return=None;release_observations=[];release_audits=[];filters=set()
     with path.open() as stream:
@@ -146,6 +172,7 @@ def main():
             row['fixture_emitted']=(path.parent/'fixed_sam6d_schema.json').is_file()
             row['perception_inference_verified']=False
         elif raw.get('planner')=='curobo_only':
+            row['lift_ik_diagnostics']=[lift_ik_summary(item) for item in raw.get('lift_ik_diagnostics',[])]
             for key in ('case','scene','strict','elapsed_s','expected_cycles','command_success','native_cycles','native_completed_cycles',
                         'native_final_success','clearance_failures','strict_clearance_success',
                         'clearance_path_audits','clearance_selection_audits','transport_path_audits','loaded_mplib_modules',
