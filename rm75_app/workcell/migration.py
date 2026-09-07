@@ -34,6 +34,17 @@ EXCLUDED={'__pycache__','.git','node_modules','weights','checkpoints','planning_
           'sam6d_grasp_scene_runs','sam6d_groundingdino_runs','sam6d_template_cache',
           'sam6d_pem_feature_cache','failure_renders','localization_debug','runs',
           'repro_runs','post_grasp_diagnostics','sam6d_jimu_direct_runs'}
+# This paper's three-scene software package explicitly excludes unrelated RL/policy
+# stacks. The fixed source repository contains large LeRobot/PPO trees that are not
+# dependencies of PickPlace, Jimu, or PushT. Keeping them in the vendored snapshot
+# obscures the paper boundary and inflates the repository, so never migrate them.
+DENIED_PREFIXES=(
+    'lerobot-sim2real/lerobot_sim2real/rl/',
+    'lerobot/common/policies/',
+    'lerobot/common/optim/',
+    'src/lerobot/common/policies/',
+    'src/lerobot/common/optim/',
+)
 
 
 def git(source,*args):
@@ -43,6 +54,8 @@ def git(source,*args):
 def selected(path):
     p=PurePosixPath(path)
     if p.is_absolute() or '..' in p.parts or EXCLUDED.intersection(p.parts):
+        return False
+    if path.startswith(DENIED_PREFIXES):
         return False
     if any('失败' in part or '备份' in part or part.startswith('v6_standard_four_wall_retry_build') for part in p.parts):
         return False
@@ -57,7 +70,6 @@ def relocate(raw,path,final_root):
         text=raw.decode('utf-8')
     except UnicodeDecodeError:
         return raw,0
-    original=text
     # Longest prefix first; otherwise the sibling lerobot-sim2real path is corrupted.
     mappings=[('/home/zhangzhao/Desktop/lerobot-sim2real',str(final_root/'lerobot-sim2real')),
               ('/home/zhangzhao/Desktop/lerobot',str(final_root))]
