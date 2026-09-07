@@ -173,10 +173,19 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
         atomic_json(run_dir/'native_command.json',{'entrypoint':ENTRYPOINTS[spec['task']],
              'argv':argv,'source_commit':provenance['source_commit'],'mode':spec['mode']})
         results=install_progress_hooks(module,stop,events)
+        from .contact_audit import install_contact_audit, StrictContactNotSupported
+        if spec['task'] == 'magnetic':
+            direct = getattr(module, 'direct', None) or module.portable.direct
+            install_contact_audit(direct, lambda row: events.emit('contact_audit', evidence=row))
         sys.argv=[str(root/ENTRYPOINTS[spec['task']]),*argv]
         stop.check()
         try:
             return_value=module.main()
+        except StrictContactNotSupported as exc:
+            return {'command_success': False, 'task_success': None,
+                    'verification': exc.code, 'status': exc.code,
+                    'contact_evidence': exc.evidence,
+                    'episode_command_results': results}
         except SystemExit as exc:
             if exc.code not in (None,0):
                 raise RuntimeError(f'Working engine exit {exc.code}') from exc

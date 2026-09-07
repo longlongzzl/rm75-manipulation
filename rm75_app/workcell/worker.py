@@ -115,14 +115,18 @@ def main(argv=None):
                 from .legacy import run_working
                 result=run_working(spec,profile,args.app_root,run_dir,stop,events)
                 verify=profile.get(spec['task'],{}).get('post_verification')
-                if spec['mode']=='real' and verify:
+                if spec['mode']=='real' and verify and result.get('command_success') is not False:
                     from .verification import wait_for_poses
                     if verify.get('task_request_digest')!=digest(spec):
                         raise ValueError('Verification targets are not bound to this exact task request')
                     result.update(wait_for_poses(verify,after=time.time(),stop=stop))
-            result['status']=('succeeded' if result.get('task_success') is True
-                              else 'verification_failed' if result.get('task_success') is False
-                              else 'command_completed_unverified')
+            if result.get('command_success') is False:
+                result['failure_code'] = result.get('status', 'native_command_failed')
+                result['status'] = 'failed'
+            else:
+                result['status']=('succeeded' if result.get('task_success') is True
+                                  else 'verification_failed' if result.get('task_success') is False
+                                  else 'command_completed_unverified')
     except Cancelled as exc:
         result={'status':'cancelled','command_success':False,'task_success':None,'error':str(exc)}
     except BaseException as exc:
