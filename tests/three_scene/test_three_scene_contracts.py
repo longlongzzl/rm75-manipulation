@@ -64,7 +64,7 @@ def test_real_observation_rejects_stale_wrong_source_or_replay(kwargs):
     with pytest.raises(ValueError):observation(**kwargs).validate(now=100.1,after=99,previous=observation(sequence=0,captured_at=99),real=True)
 
 def test_live_observation_success_and_session_change():
-    observation().validate(now=100.1,after=99,previous=observation(sequence=0),real=True)
+    observation().validate(now=100.1,after=99,previous=observation(sequence=0,captured_at=99),real=True)
     with pytest.raises(ValueError):observation(session_id='new').validate(now=100.1,previous=observation(sequence=0),real=True)
 
 def test_task_contract_rejects_freeform_commands(profile):

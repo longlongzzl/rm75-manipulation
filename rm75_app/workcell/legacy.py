@@ -165,10 +165,18 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
     old_input_dir=os.environ.get('RM75_WORKCELL_INPUT_DIR')
     original_popen=install_subprocess_bridge(run_dir)
     os.environ['RM75_WORKCELL_INPUT_DIR']=str(run_dir.resolve())
+    adapters = contextlib.ExitStack()
     try:
+        if spec['task'] == 'pickplace':
+            from .pickplace_curobo_only import source_adapter
+            adapters.enter_context(source_adapter(root))
         sys.argv=[str(root/ENTRYPOINTS[spec['task']])]
         os.chdir(root)
         module=import_working_entry(root,spec['task'])
+        if spec['task'] == 'pickplace':
+            from .pickplace_curobo_only import install
+            install(module.direct)
+            events.emit('pickplace_backend_selected',planner='curobo',mplib_fallback=False)
         argv=build_native_argv(module,spec,profile,run_dir,root)
         atomic_json(run_dir/'native_command.json',{'entrypoint':ENTRYPOINTS[spec['task']],
              'argv':argv,'source_commit':provenance['source_commit'],'mode':spec['mode']})
@@ -198,6 +206,7 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
                 'original_algorithms_preserved':True,
                 'note':'Normal process return is not proof of a real grasp or magnetic connection'}
     finally:
+        adapters.close()
         builtins.input=original_input
         subprocess.Popen=original_popen
         if old_input_dir is None:

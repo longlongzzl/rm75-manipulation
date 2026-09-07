@@ -42,6 +42,8 @@ class Observation:
             raise ValueError('low_confidence_observation')
         if previous is not None and (self.session_id != previous.session_id or self.sequence <= previous.sequence):
             raise ValueError('replayed_or_changed_capture_session')
+        if previous is not None and self.captured_at <= previous.captured_at:
+            raise ValueError('non_monotonic_capture_timestamp')
         if real and self.source not in ('realsense_apriltag','live_tracker'):
             raise ValueError('Real execution requires a live observation source')
         vector(self.pose,3,'pose')

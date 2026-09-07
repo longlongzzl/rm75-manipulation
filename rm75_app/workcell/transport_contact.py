@@ -90,6 +90,7 @@ def install_transport_contact(direct, planner_class, emit):
     direct._transport_attached_contact_disabled_links = lambda planner, base_links=None: []
     original_refresh = direct._refresh_curobo_world
     active = {}
+    excluded_sources = {}
 
     def failure(planner, label, reason):
         row = {'event': 'transport_policy_rejected', 'step_id': label, 'reason': reason,
@@ -121,6 +122,14 @@ def install_transport_contact(direct, planner_class, emit):
         present = {obj.name for obj in planner._world.objects}
         if 'virtual_table_plane' not in present:
             allowed.add('virtual_table_plane')
+        source = excluded_sources.get(id(planner))
+        if (source and planner.attached_object_active
+                and planner.get_attached_sphere_count() > 0):
+            # A source-specific mesh cache entry is the same object now
+            # represented by attached spheres, not an unrelated obstacle.
+            # Require explicit exclusion by the most recent world refresh.
+            allowed.update(name for name in (source, 'scene_obstacle_' + source)
+                           if name not in present)
         manager = world_only_links(planner, links, allowed_disabled_objects=allowed)
         direct._CUROBO_GPU_LOCK.acquire()
         try:
@@ -145,7 +154,13 @@ def install_transport_contact(direct, planner_class, emit):
             if not getattr(args, 'curobo_table_collision', True):
                 raise failure(planner, kwargs.get('label'), 'transport_table_check_disabled')
             kwargs['include_table'] = True
-        return original_refresh(planner, demo, args, **kwargs)
+        with direct._CUROBO_GPU_LOCK:
+            excluded_sources.pop(id(planner), None)
+            result = original_refresh(planner, demo, args, **kwargs)
+            source = direct._current_source_object_name(args)
+            if source and source in (kwargs.get('exclude_object_names') or ()):
+                excluded_sources[id(planner)] = source
+            return result
     direct._refresh_curobo_world = refresh
 
     def guarded_evaluator(original):

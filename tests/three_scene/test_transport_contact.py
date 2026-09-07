@@ -166,3 +166,25 @@ def test_omitted_table_metadata_is_not_permission_to_disable_present_table():
         direct._set_world_collision_for_links(planner, ['left_pad'], enabled=True, label='paired_relation_ik')
     finally:
         close()
+
+
+@pytest.mark.parametrize('problem', [None, 'no_identity', 'not_excluded', 'no_payload', 'zero_spheres', 'present', 'neighbor'])
+def test_attached_source_cache_requires_identity_and_live_payload(problem):
+    planner, direct, args, _, _, _, close, _ = native_fixture()
+    planner._disabled_world_obstacles.add('scene_obstacle_right_wall')
+    try:
+        if problem != 'no_identity':
+            direct._refresh_curobo_world(planner, None, args, label='lift_world',
+                exclude_object_names=set() if problem == 'not_excluded' else {'right_wall'})
+        if problem == 'no_payload': planner.attached_object_active = False
+        if problem == 'zero_spheres': planner.get_attached_sphere_count = lambda: 0
+        if problem == 'present': planner._world.objects.append(NS(name='scene_obstacle_right_wall'))
+        if problem == 'neighbor': planner._disabled_world_obstacles.add('scene_obstacle_neighbor')
+        if problem:
+            with pytest.raises(StrictContactNotSupported):
+                direct._set_world_collision_for_links(planner, ['left_pad'], enabled=False, label='first_lift')
+        else:
+            direct._set_world_collision_for_links(planner, ['left_pad'], enabled=False, label='first_lift')
+            direct._set_world_collision_for_links(planner, ['left_pad'], enabled=True, label='first_lift')
+    finally:
+        close()

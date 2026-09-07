@@ -5,13 +5,20 @@ corridors, collision contacts and all emitted joint samples. Tool mounting and
 contact links come ONLY from the server-side qualified hardware profile.
 """
 from __future__ import annotations
-from dataclasses import replace
+from dataclasses import dataclass, replace
 import time
 import numpy as np
 from rm75_app.workcell.io import finite
 from rm75_app.workcell.transforms import vector, quaternion_matrix, rotation_error
 from rm75_app.workcell.realman import time_parameterize
 from .model import vertices, rectangles, predict, wrap
+
+
+@dataclass(frozen=True)
+class PreparedPush:
+    """A complete audited chain, not an authorization to execute it."""
+    stages: tuple
+    start_q: np.ndarray
 
 
 class CuroboPushExecutor:
@@ -64,7 +71,12 @@ class CuroboPushExecutor:
             if forbidden:
                 raise RuntimeError(f'PushT collision audit rejected path: {forbidden[:3]}')
 
-    def execute_push(self,push,obs):
+    def plan_push(self,push,obs):
+        """Plan and audit all five stages without issuing any arm command.
+
+        Works with a read-only joint-state provider for GPU no-motion gates;
+        it does not connect hardware or mark any profile qualified.
+        """
         from rm75_app.planning.contracts import BatchPlanningRequest,JointConfiguration,Pose,PoseCandidate
         self.stop.check();scene=self._scene(obs);self.backend.update_scene(scene)
         native=self.backend._ensure_planner();self.names=tuple(native.joint_names)
@@ -128,10 +140,17 @@ class CuroboPushExecutor:
                 finally:
                     self.backend.update_scene(scene)
             prepared.append((stage,timed,ts));q=path[-1]
+        self.events.emit('push_chain_planned',stages=[s for s,_,_ in prepared],
+                         samples=sum(len(p) for _,p,_ in prepared),speed_mps=push.speed_mps)
+        return PreparedPush(tuple(prepared),start_q)
+
+    def execute_push(self,push,obs):
+        planned=self.plan_push(push,obs)
+        prepared=planned.stages;start_q=planned.start_q
         # Planning may take longer than the image freshness window. Obtain a NEW
         # measurement and reject drift; never just renew the old timestamp.
         current=self.observer.observe(after=obs.captured_at)
-        current.validate(previous=obs,max_age_s=self.config.max_observation_age_s,real=True)
+        current.validate(previous=obs,after=obs.captured_at,max_age_s=self.config.max_observation_age_s,real=True)
         if np.linalg.norm(np.asarray(current.pose)[:2]-np.asarray(obs.pose)[:2])>.003 or abs(wrap(current.pose[2]-obs.pose[2]))>.04:
             raise RuntimeError('Object moved while planning; re-observe/replan required')
         if abs(self.arm.read_joints()-start_q).max()>self.arm.start_gap:
