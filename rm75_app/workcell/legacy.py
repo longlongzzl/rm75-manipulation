@@ -23,14 +23,39 @@ ENTRYPOINTS={
  'pickplace':'pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place_sam6d.py',
  'magnetic':'Beta_demo-codex-v0.9/rm75_jimu_triangle_roof_apriltag_portable.py',
 }
+PICKPLACE_WORLD_ENTRY='pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py'
+
+
+def native_entrypoint(spec,profile):
+    """Match original input schema to its original entry; never convert poses."""
+    section=profile.get(spec['task'],{})
+    kind=section.get('fixed_scene_format','sam6d')
+    if kind not in ('sam6d','native_world'):raise ValueError('Unknown fixed native scene format')
+    if kind=='native_world':
+        if spec['task']!='pickplace' or spec['mode']!='sim':
+            raise PermissionError('Original fixed-world entry is PickPlace SIM only')
+        if not section.get('fixed_scene'):raise ValueError('Native world SIM requires a fixed scene file')
+        return PICKPLACE_WORLD_ENTRY
+    return ENTRYPOINTS[spec['task']]
+
+
+def working_direct(module):
+    direct=getattr(module,'direct',None)
+    if direct is None and getattr(module,'portable',None) is not None:direct=module.portable.direct
+    if direct is None and callable(getattr(module,'run_targeted_place_episode_curobo_direct',None)):direct=module
+    if direct is None:raise RuntimeError('Working source no longer exposes the reviewed direct boundary')
+    return direct
 
 
 def snapshot_root(app_root):
     return Path(app_root)/'rm75_app'/'_vendor'/'working_snapshot'
 
 
-def import_working_entry(root,task):
-    path=root/ENTRYPOINTS[task]
+def import_working_entry(root,task,*,entrypoint=None):
+    entrypoint=entrypoint or ENTRYPOINTS[task]
+    if entrypoint not in {*ENTRYPOINTS.values(),PICKPLACE_WORLD_ENTRY}:
+        raise ValueError('Native entrypoint is not in the reviewed allowlist')
+    path=root/entrypoint
     os.environ['LEROBOT_ROOT']=str(root)
     # Match native script startup. Portable Jimu inserts pick_jiaobang itself;
     # pre-inserting it here prevents that insertion and lets Jimu's same-named
@@ -74,6 +99,7 @@ def native_contact_policy(spec,profile):
 
 
 def build_native_argv(module,spec,profile,run_dir,root):
+    entrypoint=native_entrypoint(spec,profile)
     parser=original_parser(module,spec['task'])
     actions=parser._option_string_actions
     options=[]
@@ -123,7 +149,10 @@ def build_native_argv(module,spec,profile,run_dir,root):
                 fixed=root/fixed
             if not fixed.is_file():
                 raise FileNotFoundError(f'Missing fixed scene: {fixed}')
-            add('--sam6d-fixed-scene-result-file',str(fixed))
+            if entrypoint==PICKPLACE_WORLD_ENTRY:
+                add('--skip-foundationpose')
+                add('--fixed-scene-pose-file',str(fixed))
+            else:add('--sam6d-fixed-scene-result-file',str(fixed))
     add('--render-mode',profile.get(spec['task'],{}).get('render_mode','human'),required=False)
     parsed=parser.parse_args(options)
     if bool(getattr(parsed,'execute_real',False)) != (mode=='real'):
@@ -138,11 +167,7 @@ def build_native_argv(module,spec,profile,run_dir,root):
 
 def install_progress_hooks(module,stop,events):
     """Observe actual original episode/stage boundaries without changing values."""
-    direct=getattr(module,'direct',None)
-    if direct is None and getattr(module,'portable',None) is not None:
-        direct=module.portable.direct
-    if direct is None:
-        raise RuntimeError('Working source no longer exposes the reviewed direct boundary')
+    direct=working_direct(module)
     original=direct.run_targeted_place_episode_curobo_direct
     results=[]
     @functools.wraps(original)
@@ -174,6 +199,7 @@ def install_progress_hooks(module,stop,events):
 
 def run_working(spec,profile,app_root,run_dir,stop,events):
     root=snapshot_root(app_root)
+    entrypoint=native_entrypoint(spec,profile)
     provenance=verify_snapshot(root)
     events.emit('working_source_verified',commit=provenance['source_commit'],files=provenance['file_count'])
     old_argv=sys.argv[:];old_cwd=Path.cwd()
@@ -187,10 +213,10 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
     try:
         from .pickplace_curobo_only import source_adapter
         adapters.enter_context(source_adapter(root))
-        sys.argv=[str(root/ENTRYPOINTS[spec['task']])]
+        sys.argv=[str(root/entrypoint)]
         os.chdir(root)
-        module=import_working_entry(root,spec['task'])
-        direct=getattr(module,'direct',None) or module.portable.direct
+        module=import_working_entry(root,spec['task'],entrypoint=entrypoint)
+        direct=working_direct(module)
         if spec['task']=='magnetic':
             from .pickplace_curobo_only import install_jimu_binding
             install_jimu_binding(module.portable)
@@ -198,7 +224,7 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
         clearance_audits=install(direct)
         events.emit('native_backend_selected',task=spec['task'],planner='curobo',mplib_fallback=False)
         argv=build_native_argv(module,spec,profile,run_dir,root)
-        atomic_json(run_dir/'native_command.json',{'entrypoint':ENTRYPOINTS[spec['task']],
+        atomic_json(run_dir/'native_command.json',{'entrypoint':entrypoint,
              'argv':argv,'source_commit':provenance['source_commit'],'mode':spec['mode']})
         results=install_progress_hooks(module,stop,events)
         from .contact_audit import install_contact_audit, StrictContactNotSupported
@@ -209,14 +235,19 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
             adapters.callback(install_transport_contact(direct,RM75CuRoboPlanner,
                 lambda row:events.emit('contact_audit',evidence=row)))
             if spec['task']=='magnetic':
-                from .transport_contact import install_read_only_jimu_diagnostics
+                from .transport_contact import (install_read_only_jimu_diagnostics,guard_jimu_near_ik,
+                                                install_jimu_grasp_ik_contact)
                 install_read_only_jimu_diagnostics(module.portable,
+                    lambda row:events.emit('contact_audit',evidence=row))
+                install_jimu_grasp_ik_contact(direct,
+                    lambda row:events.emit('contact_audit',evidence=row))
+                guard_jimu_near_ik(module.portable,
                     lambda row:events.emit('contact_audit',evidence=row))
         elif policy=='strict':
             install_contact_audit(direct, lambda row: events.emit('contact_audit', evidence=row))
         events.emit('native_contact_policy_selected',policy=policy,mode=spec['mode'],
                     hardware_contact_qualified=False)
-        sys.argv=[str(root/ENTRYPOINTS[spec['task']]),*argv]
+        sys.argv=[str(root/entrypoint),*argv]
         from .native_outcome import NativeOutcomeCapture
         captured=NativeOutcomeCapture(sys.stdout)
         expected_cycles=(len(validate_design(spec['parameters']['design']).ordered_roles)
@@ -240,6 +271,7 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
         outcome=captured.report(expected_cycles)
         return {'command_success':outcome['native_full_chain_passed'],
                 'task_success':None,'verification':'not_observed',**outcome,
+                'native_entrypoint':entrypoint,'fixed_scene_format':profile.get(spec['task'],{}).get('fixed_scene_format','sam6d'),
                 'source_commit':provenance['source_commit'],'episode_command_results':results,
                 'contact_policy':policy,'clearance_path_audits':clearance_audits,
                 'loaded_mplib_modules':[n for n in sys.modules if n=='mplib' or n.startswith('mplib.')],

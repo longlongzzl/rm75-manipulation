@@ -7,6 +7,27 @@ from rm75_app.workcell.contact_audit import StrictContactNotSupported
 from rm75_app.workcell.transport_contact import payload_contact_config, is_transport, install_transport_contact
 
 
+def test_jimu_read_only_details_use_all_links_and_preserve_native_values():
+    import numpy as np
+    from rm75_app.workcell.transport_contact import jimu_collision_details
+    calls=[];planner=object();q=np.arange(7)
+    def geometry(p,joints,disabled_world_collision_links=None):
+        assert p is planner and disabled_world_collision_links is None
+        calls.append(joints.copy());return [{'robot_link':'left_pad','clearance_m':-.004}]
+    portable=NS(_jimu_robot_world_obstacle_contacts=geometry,_jimu_robot_internal_cube_contacts=geometry,
+                _jimu_curobo_raw_world_collision_snapshot=lambda p,joints:{'constraint':[1.0],'nonzero_count':1})
+    detail=jimu_collision_details(portable,planner,q)
+    assert detail['geometry_detail_recorded'] and len(calls)==2
+    assert detail['robot_world_obstacle_contacts'][0]['clearance_m']==-.004
+    assert detail['curobo_raw_world_collision']['constraint']==[1.0]
+    np.testing.assert_array_equal(q,np.arange(7))
+
+
+def test_missing_geometry_diagnostic_cannot_claim_complete_evidence():
+    from rm75_app.workcell.transport_contact import jimu_collision_details
+    assert not jimu_collision_details(NS(),object(),[0]*7)['geometry_detail_recorded']
+
+
 @pytest.mark.parametrize('valid', [False, True])
 def test_jimu_diagnostic_retains_current_world_payload_and_collision_result(valid):
     from rm75_app.workcell.transport_contact import install_read_only_jimu_diagnostics
@@ -141,6 +162,18 @@ def test_container_exclusion_is_restored_for_loaded_lift_and_transport():
         assert calls[-2]['exclude_object_names']=={'right_wall'}
         assert any(row.get('restored_objects')==['unrelated_holder'] for row in rows)
         assert checked==['start','middle','end']
+    finally:close()
+
+
+@pytest.mark.parametrize('label',['winner_chain_ik_preselect_grasp','winner_chain_ik_preselect_grasp_contact'])
+def test_ik_screen_keeps_table_before_selecting_transport_goals(label):
+    planner,direct,args,rows,calls,_,close,_=native_fixture()
+    try:
+        direct._refresh_curobo_world(planner,None,args,label=label,include_table=False,include_active_object=False)
+        assert calls[-1]['include_table'] is True
+        assert calls[-1]['include_active_object'] is False
+        assert rows[-1]['event']=='ik_preselect_table_restored'
+        assert rows[-1]['seeds_or_candidates_changed'] is False
     finally:close()
 
 

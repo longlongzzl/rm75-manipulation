@@ -30,25 +30,32 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--extensions',type=Path,required=True)
     parser.add_argument('--design',type=Path)
-    parser.add_argument('--fixed-sam6d',type=Path)
+    inputs=parser.add_mutually_exclusive_group()
+    inputs.add_argument('--fixed-sam6d',type=Path)
+    inputs.add_argument('--fixed-world',type=Path,help='Original T_world_obj scene; PickPlace SIM direct entry only')
     parser.add_argument('--object-name',default='gluestick')
     parser.add_argument('--stop-after-native-start',action='store_true')
     parser.add_argument('--stop-after-transport-audit',action='store_true',
         help='Cancel only after the actual GPU transport has passed its complete sampled-path audit')
+    parser.add_argument('--stop-after-collision-diagnostic',action='store_true',
+        help='Bounded diagnosis: cancel after the first complete read-only GPU collision snapshot')
     parser.add_argument('--timeout-s',type=float,default=600.)
     args=parser.parse_args()
     root=ROOT/'rm75_app/_vendor/working_snapshot';verify_snapshot(root)
     if not 1<=args.timeout_s<=900:raise ValueError('Timeout must be within 1..900 seconds')
-    if args.task=='pickplace' and args.fixed_sam6d is None:
-        parser.error('PickPlace requires an explicit existing frozen SAM6D result; no camera fallback')
+    if args.task=='pickplace' and args.fixed_sam6d is None and args.fixed_world is None:
+        parser.error('PickPlace requires an explicit existing frozen input; no camera fallback')
+    if args.task!='pickplace' and args.fixed_world is not None:parser.error('World input is PickPlace SIM only')
     if args.task=='magnetic' and args.design is None:parser.error('Supply the original full builder design')
-    fixed=(args.fixed_sam6d or root/'Beta_demo-codex-v0.9/jimu_portable_repro/scenes/jimu_assembly_anchors_default_sam6d.json').resolve()
+    fixed=(args.fixed_world or args.fixed_sam6d or root/'Beta_demo-codex-v0.9/jimu_portable_repro/scenes/jimu_assembly_anchors_default_sam6d.json').resolve()
     data=read_json(fixed)
-    if not isinstance(data.get('results'),list):raise ValueError('Expected original SAM6D result schema')
+    field,kind=('objects',dict) if args.fixed_world else ('results',list)
+    if not isinstance(data.get(field),kind):raise ValueError('Input does not match selected original frozen schema')
     output=args.output.resolve();output.mkdir(parents=True,exist_ok=False)
     profile=read_json(ROOT/'examples/workcell/machine.example.json')
     section=profile[args.task]
     section.update(python=str(Path(sys.executable).resolve()),render_mode='none',fixed_scene=str(fixed),
+        fixed_scene_format='native_world' if args.fixed_world else 'sam6d',
         simulation_contact_policy='transport_world_checked_compatibility')
     section['native_args']=['--curobo-torch-extensions-dir',str(args.extensions.resolve()),
         '--camera-extrinsic-opencv-path',str(ROOT/'assets/calibration/camera_extrinsic_opencv.npy')]
@@ -83,6 +90,12 @@ def main():
                 stop_at=time.monotonic();report['stop_result']=service.cancel(job)
                 report['stop_request_elapsed_s']=time.monotonic()-stop_at
                 report['stopped_for_validation']=True;break
+            diagnostic=next((row.get('evidence',{}) for row in state.get('events',[])
+                if row.get('kind')=='contact_audit' and row.get('evidence',{}).get('event')=='jimu_read_only_collision_diagnostic'
+                and row['evidence'].get('geometry_detail_recorded')),None)
+            if args.stop_after_collision_diagnostic and diagnostic:
+                report['diagnostic_trigger']={k:diagnostic.get(k) for k in ('step_id','status','scene_fingerprint')}
+                report['stop_result']=service.cancel(job);report['stopped_for_validation']=True;break
             if time.monotonic()-started>args.timeout_s:
                 report['timeout']=True;service.cancel(job);break
             time.sleep(.1)

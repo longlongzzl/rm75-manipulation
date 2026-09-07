@@ -1,6 +1,6 @@
 # Codex 三场景本地验证回传 — 2026-09-07
 
-最新补充：[实际 native worker、完整 builder 前端、搬运审计与 GPU 后 Stop](CODEX_THREE_SCENE_CLOSEOUT_FOLLOWUP_20260908.md)；前轮：[PushT GPU 完整链、PickPlace 固定回归、Jimu 深度恢复](CODEX_THREE_SCENE_NOMOTION_20260907.md)、[PickPlace 多物体与 PushT 实际 GPU 回传](CODEX_PICKPLACE_PUSHT_LOCAL_20260907.md)、[Jimu 相机 RRTrack 与 PickPlace 退让回传](CODEX_JIMU_RRTRACK_AND_CLEARANCE_20260907.md)。下文为历史轮次，勿将其旧计数当作最新结果。
+最新补充：[原生输入与 IK 碰撞修复、PushT 快慢 GPU 复测](CODEX_THREE_SCENE_NATIVE_GAPS_20260908.md)；前轮：[实际 native worker、完整 builder 前端、搬运审计与 GPU 后 Stop](CODEX_THREE_SCENE_CLOSEOUT_FOLLOWUP_20260908.md)、[PushT GPU 完整链、PickPlace 固定回归、Jimu 深度恢复](CODEX_THREE_SCENE_NOMOTION_20260907.md)、[PickPlace 多物体与 PushT 实际 GPU 回传](CODEX_PICKPLACE_PUSHT_LOCAL_20260907.md)、[Jimu 相机 RRTrack 与 PickPlace 退让回传](CODEX_JIMU_RRTRACK_AND_CLEARANCE_20260907.md)。下文为历史轮次，勿将其旧计数当作最新结果。
 
 按结果模板填写。**NEEDS_REVIEW：软件与本机迁移完成，严格 GPU/物理任务验收未完成。没有连接机器人、没有机械臂或夹爪运动。**
 

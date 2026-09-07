@@ -76,6 +76,33 @@ def install_start_check_restoration(planner_class):
     planner_class._build_motion_gen = build
 
 
+def jimu_collision_details(portable, planner, q):
+    """Reuse reviewed native read-only geometry/cache queries, not ablations.
+
+    The primitive query may resize its scratch buffer. It does not alter world
+    objects, collision spheres, masks, costs or the planner's valid/invalid result.
+    """
+    result={'diagnosed_q':np.asarray(q,dtype=float).tolist()}
+    helpers={
+        'robot_world_obstacle_contacts':'_jimu_robot_world_obstacle_contacts',
+        'robot_internal_cube_contacts':'_jimu_robot_internal_cube_contacts',
+        'curobo_raw_world_collision':'_jimu_curobo_raw_world_collision_snapshot',
+    }
+    for key,name in helpers.items():
+        helper=getattr(portable,name,None)
+        try:
+            if not callable(helper):raise RuntimeError('Reviewed read-only helper unavailable: '+name)
+            # No disabled-links list is supplied: report ALL link contacts.
+            result[key]=helper(planner,q)
+        except Exception as exc:
+            result[key]={'error':f'{type(exc).__name__}: {exc}'}
+    def has_error(value):
+        return (bool(value.get('error')) if isinstance(value,dict) else
+                any(has_error(item) for item in value) if isinstance(value,list) else False)
+    result['geometry_detail_recorded']=all(not has_error(result[key]) for key in helpers)
+    return result
+
+
 def install_read_only_jimu_diagnostics(portable, emit):
     """Replace diagnostic-only collision ablations, never a planning result.
 
@@ -97,6 +124,11 @@ def install_read_only_jimu_diagnostics(portable, emit):
                     'diagnostic_mode': 'read_only_current_collision_state'}
         with portable.direct._CUROBO_GPU_LOCK:
             valid, status = planner.check_start_state(q)
+            before=scene_evidence(planner)
+            details=jimu_collision_details(portable,planner,q)
+            after=scene_evidence(planner)
+            if any(before[key]!=after[key] for key in ('scene_fingerprint','disabled_links','disabled_objects')):
+                raise RuntimeError('Read-only Jimu diagnostic changed collision state')
             row = {'valid': bool(valid), 'status': str(status),
                    'diagnostic_mode': 'read_only_current_collision_state',
                    'world_obstacle_names': [obj.name for obj in planner._world.objects],
@@ -108,11 +140,107 @@ def install_read_only_jimu_diagnostics(portable, emit):
                        'active': bool(planner.attached_object_active),
                        'count': int(planner.get_attached_sphere_count())},
                    'candidate_label': str(candidates[0].get('label', '')),
-                   **scene_evidence(planner)}
+                   'diagnosed_q_role':('goal' if str(candidates[0].get('label','')).endswith('_goal') else 'start'),
+                   **details,**after}
         emit({'event': 'jimu_read_only_collision_diagnostic', 'step_id': label, **row})
         return row
 
     portable._jimu_start_collision_diagnosis = diagnose
+
+
+def install_jimu_grasp_ik_contact(direct, emit):
+    """Use approved finger contact for ONLY the original grasp-contact IK batch.
+
+    The verified native function refreshes grasp_contact immediately before its
+    grasp batch; the token is consumed once. Pregrasp, paired hover/release and
+    transport queries do not inherit it. No arm/payload/self geometry is masked.
+    """
+    local=threading.local()
+    original_refresh=direct._refresh_curobo_world
+    original_batch=direct._profile_fast_chain_solve_batch_start_goal_ik
+
+    @functools.wraps(original_refresh)
+    def refresh(planner,demo,args,**kwargs):
+        local.pending=None
+        result=original_refresh(planner,demo,args,**kwargs)
+        if kwargs.get('label')=='winner_chain_ik_preselect_grasp_contact':
+            local.pending=(id(planner),id(args))
+        return result
+
+    @functools.wraps(original_batch)
+    def batch(args,planner,*pos,**kwargs):
+        pending=getattr(local,'pending',None);local.pending=None
+        if pending!=(id(planner),id(args)):
+            return original_batch(args,planner,*pos,**kwargs)
+        if bool(getattr(args,'execute_real',False)):
+            raise WorldOnlyContactUnsupported('simulation_only_grasp_ik_contact')
+        with direct._CUROBO_GPU_LOCK:
+            with world_only_links(planner,FINGER_LINKS,allowed_disabled_objects={'active_target_object'}) as evidence:
+                emit({'event':'grasp_contact_ik_filter_enter','step_id':'winner_chain_ik_preselect_grasp_contact',
+                      'seeds_or_candidates_changed':False,**evidence})
+                try:return original_batch(args,planner,*pos,**kwargs)
+                finally:emit({'event':'grasp_contact_ik_filter_exit',**evidence})
+
+    direct._refresh_curobo_world=refresh
+    direct._profile_fast_chain_solve_batch_start_goal_ik=batch
+
+
+def guard_jimu_near_ik(portable, emit):
+    """A small pose residual cannot override the native IK collision failure.
+
+    Preserve original near-IK thresholds and candidate generation. Validate only
+    the original fallback's proposed promotion against the CURRENT cuRobo world,
+    under the same audited contact scope. Never mutate a rejected native result.
+    """
+    local=threading.local()
+    original_accept=portable._jimu_maybe_accept_near_ik_result
+    original_install=portable._install_jimu_near_ik_fallback
+
+    @functools.wraps(original_accept)
+    def accept(result,*args,**kwargs):
+        if result is None or bool(getattr(result,'success',False)):
+            return original_accept(result,*args,**kwargs)
+        proposal=copy.copy(result)
+        proposal.debug=copy.deepcopy(getattr(result,'debug',None))
+        proposal=original_accept(proposal,*args,**kwargs)
+        if not bool(getattr(proposal,'success',False)):
+            return result
+        planner=getattr(local,'planner',None)
+        reason='native_ik_collision_state_unavailable';valid=False
+        if (planner is not None and planner.collision_enabled and planner.config.self_collision_check
+                and not planner._disabled_collision_links):
+            valid,status=planner.check_start_state(proposal.goal_joint)
+            reason=str(status)
+        row={'event':'jimu_near_ik_collision_checked','accepted':bool(valid),
+             'native_success_before':False,'legacy_near_promotion':True,'status':reason,
+             'original_result_preserved_on_rejection':not bool(valid)}
+        if not valid and planner is not None:
+            row.update(scene_evidence(planner))
+            row['diagnostic']=jimu_collision_details(portable,planner,proposal.goal_joint)
+        emit(row)
+        return proposal if valid else result
+
+    portable._jimu_maybe_accept_near_ik_result=accept
+
+    @functools.wraps(original_install)
+    def install(*args,**kwargs):
+        original_install(*args,**kwargs)
+        if getattr(portable,'_ORIGINAL_CUROBO_SOLVE_IK',None) is None:return
+        cls=portable.direct.curobo_wrapper.RM75CuRoboPlanner
+        for name in ('solve_ik','solve_batch_start_goal_ik','_solve_batch_start_goal_ik_cuda_graph_once'):
+            method=getattr(cls,name)
+            if getattr(method,'_rm75_near_ik_context',False):continue
+            def wrap(original):
+                @functools.wraps(original)
+                def query(self,*call_args,**call_kwargs):
+                    with portable.direct._CUROBO_GPU_LOCK:
+                        previous=getattr(local,'planner',None);local.planner=self
+                        try:return original(self,*call_args,**call_kwargs)
+                        finally:local.planner=previous
+                query._rm75_near_ik_context=True
+                return query
+            setattr(cls,name,wrap(method))
+    portable._install_jimu_near_ik_fallback=install
 
 
 def install_transport_contact(direct, planner_class, emit):
@@ -205,11 +333,16 @@ def install_transport_contact(direct, planner_class, emit):
             raise failure(planner, kwargs.get('label'), 'simulation_only_policy')
         label=str(kwargs.get('label',''))
         free_loaded=(is_transport(label) or 'joint_start_' in label or 'post_grasp_lift' in label)
-        if free_loaded:
+        ik_preselect=label.startswith('winner_chain_ik_preselect')
+        if free_loaded or ik_preselect:
             if not getattr(args, 'curobo_table_collision', True):
                 raise failure(planner, kwargs.get('label'), 'transport_table_check_disabled')
+            if ik_preselect and kwargs.get('include_table') is False:
+                emit({'event':'ik_preselect_table_restored','step_id':label,
+                      'reason':'candidate_goal_must_not_collide_with_table',
+                      'seeds_or_candidates_changed':False})
             kwargs['include_table'] = True
-            if planner.attached_object_active:
+            if free_loaded and planner.attached_object_active:
                 source=direct._current_source_object_name(args)
                 requested=set(kwargs.get('exclude_object_names') or ())
                 restored=requested-{source}
