@@ -2,69 +2,136 @@
 
 Branch: `chatgpt/three-scene-software-closeout`
 
+Reviewed Codex commit: `14ca79921d1b231b2f55ccc730f4fec86283e444`.
+
 ## Review conclusion
 
-Codex stopped at the correct boundary. The previous remote delivery had two concrete software defects: the workcell frontend entry HTML was missing and the migration command documented in the handoff did not match the shipped CLI. Both defects are now fixed on this branch.
+This Codex push is useful and should be retained. It restored the audited PickPlace/Jimu working snapshot, repaired the three-scene browser frontend, reached `73 passed` for `tests/three_scene` and `395 passed` for the full CPU suite, and correctly stopped before any real robot motion.
 
-Codex also found behavior-changing dirty edits in the historical `lerobot-realman` working directory. Because PickPlace and magnetic Jimu are already-completed user workflows, those edits must not be silently discarded. Conversely, the entire dirty/untracked tree must not be copied into the new repository.
+It is **not** a three-real-demo completion yet. The remaining blockers are concrete:
 
-The migration contract is therefore:
+1. PickPlace native sim path still exits by timeout / segmentation fault and therefore has no valid migrated planning regression result.
+2. Jimu native compatibility path can finish the four-wall program, but the old implementation contains a broad gripper/world collision-relaxation retry. That run cannot satisfy the strict acceptance gate.
+3. PushT has CPU/browser and limited cuRobo2 initialization/FK coverage, but no qualified pusher/contact/table/tracking profile, so no complete short-push planning chain has been run.
+4. The fixed migration root was too broad and copied unrelated LeRobot/PPO/policy trees. This paper explicitly excludes PPO. Reviewer commits now narrow future migration with `DENIED_PREFIXES`. The already-generated snapshot is intentionally kept manifest-consistent for the moment and must be regenerated locally before the next acceptance run.
 
-```text
-fixed committed source 7aaff9d
-  + read-only dependency-closure audit
-  + explicit SHA256-addressed approved dirty overlay
-  + rerun software/GPU/simulation validation
+## Mandatory next step A — regenerate a minimal snapshot
+
+Do this in the **new `rm75-manipulation` repository only**. Do not modify or clean the old `/home/zhangzhao/Desktop/lerobot` checkout.
+
+After pulling the latest reviewer head, remove the generated snapshot in the new repo and regenerate it from the same fixed source + audited overlay:
+
+```bash
+rm -rf rm75_app/_vendor/working_snapshot
+
+PYTHONPATH=. python tools/migrate_working_sources.py \
+  --source-repo /home/zhangzhao/Desktop/lerobot \
+  --target-repo . \
+  --source-ref 7aaff9da22486b7d25557b3795dd258f9b65f10d
+
+PYTHONPATH=. python tools/apply_audited_worktree_overlay.py \
+  --source-repo /home/zhangzhao/Desktop/lerobot \
+  --target-repo . \
+  --manifest configs/workcell/approved_worktree_overlay_20260907.json
+
+PYTHONPATH=. python tools/migrate_working_sources.py --target-repo . --verify-only
 ```
 
-## Source files to audit first
-
-These paths are priority candidates, not automatic approvals:
+The regenerated snapshot must contain **no** paths under:
 
 ```text
-pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py
-pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place_sam6d.py
-pick_jiaobang/rm75_jiaobang_pick_real_with_foundationpose.py
-pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo.py
-pick_jiaobang/curobo_rm75_planner.py
-Beta_demo-codex-v0.9/curobo_rm75_planner.py
-Beta_demo-codex-v0.9/jimu_sam6d_pose_provider.py
-Beta_demo-codex-v0.9/rm75_jimu_four_wall_direct_sam6d.py
-Beta_demo-codex-v0.9/rm75_jimu_four_wall_portable.py
-Beta_demo-codex-v0.9/rm75_jimu_triangle_roof_apriltag_portable.py
-lerobot/common/robots/realman_lerobot/realman_arm.py
-FoundationPose/run_demo_scale.py
+lerobot-sim2real/lerobot_sim2real/rl/
+lerobot/common/policies/
+lerobot/common/optim/
+src/lerobot/common/policies/
+src/lerobot/common/optim/
 ```
 
-Trace imports, dynamic module loads, configured paths and actual launch commands from those files. A dirty file should enter the approved overlay only when the audit can state what final validated behavior it preserves and why the fixed baseline is insufficient.
+If regeneration exposes a missing import, add the smallest explicit dependency needed by the real PickPlace/Jimu import chain. Do not restore an entire RL/policy tree.
 
-Untracked directories/assets such as `jimu_builder_frontend/`, `jimu_tasks/`, plate assets or `Demo_Triangle/` are not approved by name. Include individual files only if the dependency closure proves the migrated runtime needs them.
+Then rerun:
 
-## Next Codex sequence
+```bash
+PYTHONPATH=. python -m compileall -q rm75_app tools tests/three_scene
+PYTHONPATH=. python -m pytest -q tests/three_scene
+PYTHONPATH=. python -m pytest -q tests
+```
 
-1. Pull the branch and record exact HEAD.
-2. Run `compileall` and `pytest -q tests/three_scene`; all frontend routes must return a real page rather than 404.
-3. Perform the old-repository read-only dependency audit. Do not reset, clean, checkout, stash or modify it.
-4. Build `runtime_data/three_scene/approved_worktree_overlay.json` with exact source-head, status SHA256, file SHA256 and one reason per approved file.
-5. Install the fixed `7aaff9d` snapshot with `tools/migrate_working_sources.py`.
-6. Apply the approved overlay with `tools/apply_audited_worktree_overlay.py` if and only if the manifest contains audited files.
-7. Re-verify and compile the vendored snapshot. Run non-motion original PickPlace/Jimu import/help/preview smoke tests and verify dynamic dependencies are present.
-8. Run PickPlace/Jimu migrated GPU/simulation regression and PushT CPU/GPU checks according to the main handoff.
-9. Do not start physical motion in this pass. No-motion hardware preflight may be recorded if the operator and machine are available.
-10. Write `docs/CODEX_THREE_SCENE_RESULTS_20260907.md`, preserving every failure and `NOT_RUN`, then push.
+## Mandatory next step B — PickPlace segfault diagnosis, no algorithm redesign
 
-## Acceptance for this pass
+Do not treat the staged old `.so` files as a validated runtime. The observed sequence `JIT timeout -> copied extension .so -> exit 139` is compatible with an extension/cache/ABI mismatch and is not evidence that the PickPlace algorithm is broken.
 
-This pass is complete when:
+Run one clean extension build using the same Python/Torch/CUDA environment as the native PickPlace process, with a fresh cache outside the repository. Prefer a one-time longer compile timeout rather than copying opaque old build products:
 
-- branch software compiles;
-- `tests/three_scene` is green;
-- all three frontend routes render;
-- source audit and dependency closure are recorded;
-- fixed snapshot and any overlay are content-addressed and reproducible;
-- old repository status is byte-for-byte unchanged before/after migration;
-- migrated PickPlace and magnetic entrypoints can be loaded/run in non-motion smoke mode without missing local dependencies;
-- PushT CPU and available GPU no-motion planning checks are reported;
-- no claim of physical task success is made without a real outcome observation.
+```bash
+rm -rf /tmp/rm75_native_curobo_clean
+mkdir -p /tmp/rm75_native_curobo_clean
+export TORCH_EXTENSIONS_DIR=/tmp/rm75_native_curobo_clean
+```
 
-Do not trade correctness for a green report by reducing candidate sets, disabling collision/self-collision/freshness checks, loosening success definitions, or silently falling back to a different task implementation.
+Then execute the same fixed-scene PickPlace command with `execute-real` absent and allow enough time for the first extension build. Record:
+
+- exact Python, Torch, CUDA and cuRobo source path;
+- extension build log;
+- first native stack trace / signal if it still crashes;
+- whether the crash occurs before planner creation, during planner warmup, or during the first actual planning call.
+
+Do **not** reduce grasp candidates, disable collision, loosen tolerances, change `lazy_place`, or enable reverse/extra fallbacks to make this pass. Production defaults remain `lazy_place + primary_only`.
+
+## Mandatory next step C — Jimu strict-contact gate
+
+Keep the old working behavior for compatibility, but do not count a run that calls the broad world-collision relaxation branch as a strict success.
+
+Instrument the final-contact retry so every use records:
+
+```text
+step/piece id
+current scene fingerprint
+permitted contact target/support
+links whose collision state changes
+world objects present at that moment
+whether the relaxed branch was actually required
+```
+
+For the paper acceptance path, the allowed exception must be target-local: contact with the intended magnetic target/support may be permitted for the final capture corridor, while table, unrelated pieces, robot self-collision, and all other world obstacles remain active. If the current cuRobo1 interface cannot express this pair-local exception safely, return a typed `strict_contact_not_supported` result and keep the old broad-relaxation path compatibility-only. Do not silently label it strict.
+
+Run four-wall first, then triangle-roof. A prerequisite/step failure blocks dependent steps. `command_success` and `verified_task_success` remain separate.
+
+## Mandatory next step D — PushT qualification before motion
+
+Do not invent pusher dimensions or transforms. Keep `integration_qualified=false` until the actual tool/workcell values are measured or confirmed.
+
+Before any real movement, populate and validate at least:
+
+```text
+push_tcp_z_m
+pusher/tool orientation or T_tcp_pusher
+permitted contact links
+pusher collision geometry qualification
+workspace/table bounds
+target T geometry dimensions
+tracking source + T_base_camera
+T_marker_object if a tag is used
+Cartesian speed_mps limits
+```
+
+Then run a GPU no-motion complete-chain test that plans **pre-contact -> contact -> short push -> retract before execution** and audits every waypoint. Only after that passes should the real-motion ladder start.
+
+## What not to do
+
+- Do not mix PPO/RL code into this paper repository or claim it as part of PushT.
+- Do not delete/reset/clean the old `lerobot-realman` worktree.
+- Do not count CPU PushT surrogate as physics/real validation.
+- Do not count native process exit 0 as object-level task success.
+- Do not count Jimu broad collision relaxation as a strict planning success.
+- Do not proceed to full real robot motion while PickPlace native, Jimu strict contact, or PushT qualification remains unresolved.
+
+## Required next report
+
+Write the next results to:
+
+```text
+docs/CODEX_THREE_SCENE_RESULTS_20260907_R2.md
+```
+
+It must state the exact tested commit, regenerated snapshot file count, proof that denied RL/policy prefixes are absent, CPU test totals, PickPlace native diagnosis/result, Jimu strict-contact result, PushT qualified/unqualified fields, and every unrun hardware item as `NOT_RUN`.
