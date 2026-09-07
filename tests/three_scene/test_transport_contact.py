@@ -7,6 +7,44 @@ from rm75_app.workcell.contact_audit import StrictContactNotSupported
 from rm75_app.workcell.transport_contact import payload_contact_config, is_transport, install_transport_contact
 
 
+@pytest.mark.parametrize('valid', [False, True])
+def test_jimu_diagnostic_retains_current_world_payload_and_collision_result(valid):
+    from rm75_app.workcell.transport_contact import install_read_only_jimu_diagnostics
+    planner, direct, _, rows, _, _, close, _ = native_fixture()
+    calls=[]
+    def check(q):
+        calls.append(q.tolist())
+        return valid, 'VALID' if valid else 'WORLD_COLLISION'
+    planner.check_start_state=check
+    def forbidden(*a, **kw):
+        raise AssertionError('Diagnostic must not perform ablations or change collision state')
+    planner.clear_world=forbidden
+    planner.set_world_obstacles_enabled=forbidden
+    direct._set_world_collision_for_links=forbidden
+    portable=NS(direct=direct,_jimu_start_collision_diagnosis=forbidden)
+    world=planner._world
+    try:
+        install_read_only_jimu_diagnostics(portable,rows.append)
+        result=portable._jimu_start_collision_diagnosis(planner,NS(),
+            [{'start_q':[0]*7}], 'joint_transport_hover', ['attached_object','left_pad'])
+        assert result['valid'] is valid and result['valid_after_removing']==[]
+        assert result['world_obstacle_names']==['virtual_table_plane']
+        assert result['attached_sphere_summary']=={'active':True,'count':6}
+        assert planner._world is world and planner.attached_object_active
+        assert not planner._disabled_collision_links and len(calls)==1
+        assert rows[-1]['event']=='jimu_read_only_collision_diagnostic'
+    finally:close()
+
+
+def test_jimu_read_only_diagnostic_does_not_suppress_native_failure():
+    from rm75_app.workcell.transport_contact import install_read_only_jimu_diagnostics
+    def fail(q):raise RuntimeError('native check failure')
+    portable=NS(direct=NS(_CUROBO_GPU_LOCK=threading.RLock()),_jimu_start_collision_diagnosis=lambda *a:None)
+    install_read_only_jimu_diagnostics(portable,lambda row:None)
+    with pytest.raises(RuntimeError,match='native check failure'):
+        portable._jimu_start_collision_diagnosis(NS(check_start_state=fail),NS(),[{'start_q':[0]*7}],'transport',[])
+
+
 def test_payload_pairs_are_local_and_do_not_change_geometry_or_robot_adjacency():
     raw = {'robot_cfg': {'kinematics': {'collision_link_names': ['base_link', 'link_1', 'attached_object', 'left_pad'],
         'collision_spheres': 'unchanged.yml', 'self_collision_ignore': {
@@ -57,6 +95,7 @@ def native_fixture():
                 _refresh_curobo_world=lambda *a, **kw: calls.append(kw),
                 _current_source_object_name=lambda args: 'right_wall',
                 _build_virtual_table_cuboid=lambda args: {'name': 'virtual_table_plane'})
+    direct._single_obstacle_start_collision_relief=lambda planner,*args,**kwargs:'unrelated_holder'
     def evaluate(*a, **kw):
         calls.append(kw)
         return [{'q_path': ['start', 'middle', 'end']}]
@@ -65,6 +104,16 @@ def native_fixture():
     close = install_transport_contact(direct, Planner, rows.append)
     args = NS(execute_real=False, curobo_table_collision=True)
     return planner, direct, args, rows, calls, checked, close, world
+
+
+def test_original_relief_cannot_remove_an_unrelated_holder_from_the_lift_or_transport_world():
+    planner,direct,_,rows,_,_,close,_=native_fixture()
+    try:
+        assert direct._single_obstacle_start_collision_relief(planner,[0]*7,already_excluded={'right_wall'}) is None
+        assert rows[-1]['event']=='contact_obstacle_relief_refused'
+        assert rows[-1]['obstacle']=='unrelated_holder'
+        assert planner._disabled_world_obstacles=={'active_target_object'}
+    finally:close()
 
 
 def test_transport_checks_every_sample_with_table_and_no_exemption():
@@ -79,6 +128,20 @@ def test_transport_checks_every_sample_with_table_and_no_exemption():
         assert planner.solve_batch_start_goal_ik(use_cuda_graph_batch=True)['use_cuda_graph_batch'] is False
     finally:
         close()
+
+
+def test_container_exclusion_is_restored_for_loaded_lift_and_transport():
+    planner,direct,args,rows,calls,checked,close,_=native_fixture()
+    try:
+        direct._refresh_curobo_world(planner,None,args,label='joint_start_tcp_up_lift_world',
+            exclude_object_names={'right_wall','unrelated_holder'})
+        assert calls[-1]['exclude_object_names']=={'right_wall'} and calls[-1]['include_table'] is True
+        direct._evaluate_curobo_pose_candidates_multi_start(planner,None,args,[],label='transport_to_hover',
+            exclude_object_names={'right_wall','unrelated_holder'})
+        assert calls[-2]['exclude_object_names']=={'right_wall'}
+        assert any(row.get('restored_objects')==['unrelated_holder'] for row in rows)
+        assert checked==['start','middle','end']
+    finally:close()
 
 
 @pytest.mark.parametrize('problem', ['payload', 'self', 'world', 'table', 'real', 'other_obstacle'])

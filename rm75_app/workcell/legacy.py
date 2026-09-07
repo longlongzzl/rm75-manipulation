@@ -57,6 +57,22 @@ def original_parser(module, task):
     return builder()
 
 
+def native_contact_policy(spec,profile):
+    """Only a trusted SIM profile can select the audited contact compatibility.
+
+    Real workers always keep the strict rejection boundary; simulation evidence
+    and permissions must never silently qualify a hardware contact exception.
+    """
+    default='strict' if spec['task']=='magnetic' else 'original'
+    policy=profile.get(spec['task'],{}).get('simulation_contact_policy',default)
+    if policy not in ('original','strict','transport_world_checked_compatibility'):
+        raise ValueError('Unknown trusted native simulation contact policy')
+    if spec['mode']=='real':return 'strict'
+    if spec['task']=='magnetic' and policy=='original':
+        raise ValueError('Broad native magnetic collision masks are compatibility-audit only')
+    return policy
+
+
 def build_native_argv(module,spec,profile,run_dir,root):
     parser=original_parser(module,spec['task'])
     actions=parser._option_string_actions
@@ -78,6 +94,8 @@ def build_native_argv(module,spec,profile,run_dir,root):
     if any(arg.split('=')[0] in forbidden for arg in machine_args):
         raise ValueError('Machine native_args must not override task identity/real mode')
     options.extend(machine_args)
+    if native_contact_policy(spec,profile)=='transport_world_checked_compatibility':
+        add('--no-fast-chain-cuda-graph-ik')
     params=spec['parameters']
     add('--auto-execute')
     if spec['task']=='pickplace':
@@ -167,33 +185,51 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
     os.environ['RM75_WORKCELL_INPUT_DIR']=str(run_dir.resolve())
     adapters = contextlib.ExitStack()
     try:
-        if spec['task'] == 'pickplace':
-            from .pickplace_curobo_only import source_adapter
-            adapters.enter_context(source_adapter(root))
+        from .pickplace_curobo_only import source_adapter
+        adapters.enter_context(source_adapter(root))
         sys.argv=[str(root/ENTRYPOINTS[spec['task']])]
         os.chdir(root)
         module=import_working_entry(root,spec['task'])
-        if spec['task'] == 'pickplace':
-            from .pickplace_curobo_only import install
-            install(module.direct)
-            events.emit('pickplace_backend_selected',planner='curobo',mplib_fallback=False)
+        direct=getattr(module,'direct',None) or module.portable.direct
+        if spec['task']=='magnetic':
+            from .pickplace_curobo_only import install_jimu_binding
+            install_jimu_binding(module.portable)
+        from .pickplace_curobo_only import install
+        clearance_audits=install(direct)
+        events.emit('native_backend_selected',task=spec['task'],planner='curobo',mplib_fallback=False)
         argv=build_native_argv(module,spec,profile,run_dir,root)
         atomic_json(run_dir/'native_command.json',{'entrypoint':ENTRYPOINTS[spec['task']],
              'argv':argv,'source_commit':provenance['source_commit'],'mode':spec['mode']})
         results=install_progress_hooks(module,stop,events)
         from .contact_audit import install_contact_audit, StrictContactNotSupported
-        if spec['task'] == 'magnetic':
-            direct = getattr(module, 'direct', None) or module.portable.direct
+        policy=native_contact_policy(spec,profile)
+        if policy=='transport_world_checked_compatibility':
+            from curobo_rm75_planner import RM75CuRoboPlanner
+            from .transport_contact import install_transport_contact
+            adapters.callback(install_transport_contact(direct,RM75CuRoboPlanner,
+                lambda row:events.emit('contact_audit',evidence=row)))
+            if spec['task']=='magnetic':
+                from .transport_contact import install_read_only_jimu_diagnostics
+                install_read_only_jimu_diagnostics(module.portable,
+                    lambda row:events.emit('contact_audit',evidence=row))
+        elif policy=='strict':
             install_contact_audit(direct, lambda row: events.emit('contact_audit', evidence=row))
+        events.emit('native_contact_policy_selected',policy=policy,mode=spec['mode'],
+                    hardware_contact_qualified=False)
         sys.argv=[str(root/ENTRYPOINTS[spec['task']]),*argv]
+        from .native_outcome import NativeOutcomeCapture
+        captured=NativeOutcomeCapture(sys.stdout)
+        expected_cycles=(len(validate_design(spec['parameters']['design']).ordered_roles)
+                         if spec['task']=='magnetic' else 1)
         stop.check()
         try:
-            return_value=module.main()
+            with contextlib.redirect_stdout(captured):
+                return_value=module.main()
         except StrictContactNotSupported as exc:
             return {'command_success': False, 'task_success': None,
                     'verification': exc.code, 'status': exc.code,
                     'contact_evidence': exc.evidence,
-                    'episode_command_results': results}
+                    'episode_command_results': results,**captured.report(expected_cycles)}
         except SystemExit as exc:
             if exc.code not in (None,0):
                 raise RuntimeError(f'Working engine exit {exc.code}') from exc
@@ -201,8 +237,12 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
         if type(return_value) is int and return_value!=0:
             raise RuntimeError(f'Working engine returned {return_value}')
         stop.check()
-        return {'command_success':True,'task_success':None,'verification':'not_observed',
+        outcome=captured.report(expected_cycles)
+        return {'command_success':outcome['native_full_chain_passed'],
+                'task_success':None,'verification':'not_observed',**outcome,
                 'source_commit':provenance['source_commit'],'episode_command_results':results,
+                'contact_policy':policy,'clearance_path_audits':clearance_audits,
+                'loaded_mplib_modules':[n for n in sys.modules if n=='mplib' or n.startswith('mplib.')],
                 'original_algorithms_preserved':True,
                 'note':'Normal process return is not proof of a real grasp or magnetic connection'}
     finally:

@@ -13,6 +13,30 @@ def test_source_transform_removes_external_import_and_constructor():
     assert 'mplib.CuroboDemoPlanner(self)' in text
 
 
+def test_original_mesh_tilde_paths_use_existing_snapshot_bytes_only(tmp_path):
+    path=tmp_path/'pick_jiaobang/meshs/plate.glb'
+    path.parent.mkdir(parents=True);path.write_bytes(b'original mesh bytes')
+    source="asset='~/Desktop/lerobot/pick_jiaobang/meshs/plate.glb'\nscale=0.1199\nother='~/Desktop/unrelated/file'"
+    tree=transform_source(source,'object_specs.py',snapshot_root=tmp_path)
+    scope={};exec(compile(tree,'object_specs.py','exec'),scope)
+    assert scope['asset']==str(path) and scope['scale']==0.1199
+    assert scope['other']=='~/Desktop/unrelated/file'
+    assert path.read_bytes()==b'original mesh bytes'
+    with pytest.raises(FileNotFoundError,match='Missing vendored object asset'):
+        transform_source("asset='~/Desktop/lerobot/pick_jiaobang/meshs/missing.glb'",'object_specs.py',snapshot_root=tmp_path)
+
+
+def test_all_24_original_object_mesh_paths_exist_in_snapshot():
+    from pathlib import Path
+    root=Path(__file__).resolve().parents[2]/'rm75_app/_vendor/working_snapshot'
+    path=root/'pick_jiaobang/object_specs.py';source=path.read_text()
+    before={n.value for n in ast.walk(ast.parse(source)) if isinstance(n,ast.Constant)
+            and isinstance(n.value,str) and n.value.startswith('~/Desktop/lerobot/pick_jiaobang/meshs/')}
+    assert len(before)==24
+    tree=transform_source(source,str(path),snapshot_root=root)
+    assert not any(isinstance(n,ast.Constant) and n.value in before for n in ast.walk(tree))
+
+
 def test_loader_restores_after_exception(tmp_path):
     from importlib.machinery import SourceFileLoader
     original=SourceFileLoader.get_code
@@ -21,6 +45,30 @@ def test_loader_restores_after_exception(tmp_path):
             assert SourceFileLoader.get_code is not original
             raise ValueError()
     assert SourceFileLoader.get_code is original
+
+
+def test_external_mplib_import_is_fail_closed_and_guard_is_restored(tmp_path):
+    import sys
+    import importlib
+    before=sys.meta_path[:]
+    with source_adapter(tmp_path):
+        with pytest.raises(CuroboOnlyUnsupported,match='external MPLib import forbidden'):
+            importlib.import_module('mplib')
+    assert sys.meta_path==before and 'mplib' not in sys.modules
+
+
+def test_jimu_legacy_empty_collision_shim_is_replaced_with_real_curobo_boundary():
+    from rm75_app.workcell.pickplace_curobo_only import install_jimu_binding
+    def obsolete(*a):raise AssertionError('External MPLib bookkeeping must never run')
+    portable=NS(_JimuNoopMplibPlanner=obsolete,_install_jimu_no_mplib_collision_detection=obsolete,
+                _restore_jimu_no_mplib_collision_detection=obsolete)
+    install_jimu_binding(portable)
+    portable._install_jimu_no_mplib_collision_detection(NS())
+    portable._restore_jimu_no_mplib_collision_detection()
+    planner=portable._JimuNoopMplibPlanner(NS(robot=object()))
+    assert isinstance(planner,CuroboDemoPlanner)
+    with pytest.raises(CuroboOnlyUnsupported,match='world has not been bound'):
+        planner.check_for_self_collision([0]*7)
 
 
 @pytest.mark.parametrize('status', [None,'WORLD_COLLISION','SELF_COLLISION','UNKNOWN'])
@@ -89,3 +137,23 @@ def test_sim_reward_geometry_is_converted_without_changing_values():
     value=step_sim(demo,[0.]*9)
     assert torch.is_tensor(value)
     np.testing.assert_allclose(value.numpy(),[[.1,.2,.3]])
+
+
+@pytest.mark.parametrize('helper',['_print_transport_motiongen_failure_diagnostics','print_failure_diagnostics'])
+def test_print_only_failure_diagnostics_do_not_abort_original_retry(helper):
+    from rm75_app.workcell.pickplace_curobo_only import isolate_print_only_diagnostics
+    def unavailable(*args,**kwargs):raise CuroboOnlyUnsupported('attached collision model missing')
+    base=NS(print_failure_diagnostics=unavailable)
+    direct=NS(targeted=NS(base=base),_print_transport_motiongen_failure_diagnostics=unavailable)
+    isolate_print_only_diagnostics(direct)
+    assert getattr(base if helper=='print_failure_diagnostics' else direct,helper)() is None
+    assert direct._curobo_diagnostic_rejections[0]['collision_state_qualified'] is False
+    with pytest.raises(CuroboOnlyUnsupported):unavailable()
+
+
+def test_print_diagnostic_does_not_swallow_other_native_exceptions():
+    from rm75_app.workcell.pickplace_curobo_only import isolate_print_only_diagnostics
+    def failed():raise RuntimeError('unexpected native failure')
+    direct=NS(targeted=NS(base=NS(print_failure_diagnostics=failed)))
+    isolate_print_only_diagnostics(direct)
+    with pytest.raises(RuntimeError):direct.targeted.base.print_failure_diagnostics()

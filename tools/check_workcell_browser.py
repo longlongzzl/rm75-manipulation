@@ -54,6 +54,30 @@ def main():
                 assert exported==design,'Builder round-trip changed original/unknown fields'
                 report['checks'].append({'task':'magnetic','full_builder_roundtrip':'passed',
                     'pieces':len(design['pieces']),'movable':count,'source':str(args.design)})
+                points=page.evaluate('''()=>{const project=magneticProjection(design.pieces);
+                    return design.pieces.flatMap(magneticVertices).map(project);}''')
+                assert all(29.99<=x<=770.01 and 47.99<=y<=416.01 for x,y in points),'Full structure clipped by canvas'
+                report['checks'].append({'task':'magnetic','full_structure_fits_canvas':'passed',
+                    'projected_vertices':len(points)})
+                piece=next(p for p in design['pieces'] if not p.get('locked',False))
+                key=piece.get('role') or piece['id']
+                page.select_option('#piece-select',key)
+                page.fill('#piece-x',str(piece['center'][0]+.001));page.click('#apply-piece')
+                with page.expect_download() as pending:
+                    page.click('#export-design')
+                edited=json.loads(Path(pending.value.path()).read_text())
+                changed=next(p for p in edited['pieces'] if (p.get('role') or p['id'])==key)
+                assert abs(changed['center'][0]-piece['center'][0]-.001)<1e-9
+                assert changed['center'][1:]==piece['center'][1:]
+                assert all(changed[axis]==piece[axis] for axis in ('u','n','v'))
+                assert edited['_codex_roundtrip_unknown']==design['_codex_roundtrip_unknown']
+                assert [p for p in edited['pieces'] if (p.get('role') or p['id'])!=key]==[p for p in design['pieces'] if (p.get('role') or p['id'])!=key]
+                report['checks'].append({'task':'magnetic','edited_translation_roundtrip':'passed',
+                    'unchanged_other_pieces':len(design['pieces'])-1})
+                # Preview the original complete design, not the edited variant.
+                page.locator('#design-file').set_input_files({'name':'restored_builder.json',
+                    'mimeType':'application/json','buffer':json.dumps(design).encode()})
+                expect(page.locator('#piece-count')).to_contain_text(f'{count} / 12')
             page.click('#preview')
             expect(page.locator('#result')).to_contain_text('builder_y_up_columns_u_n_v')
             report['checks'].append({'task':'magnetic','preview':'passed'})

@@ -10,7 +10,9 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 import functools
 from importlib.machinery import SourceFileLoader
+from importlib.abc import MetaPathFinder
 from pathlib import Path
+import sys
 from types import SimpleNamespace
 
 
@@ -120,9 +122,20 @@ class CuroboDemoPlanner:
     IK = plan_qpos_to_pose
 
 
-def transform_source(source, filename):
+def transform_source(source, filename, *, snapshot_root=None):
     """Only remove dependency/init plumbing, never candidate or solver logic."""
     class Rewrite(ast.NodeTransformer):
+        def visit_Constant(self,node):
+            # Fixed migration rewrote absolute paths, but these 24 original
+            # mesh assets use a literal tilde prefix. Their vendored bytes were
+            # audited equal; resolve only this exact known dependency subtree.
+            prefix='~/Desktop/lerobot/pick_jiaobang/meshs/'
+            if snapshot_root is not None and isinstance(node.value,str) and node.value.startswith(prefix):
+                target=Path(snapshot_root)/'pick_jiaobang/meshs'/node.value[len(prefix):]
+                if not target.is_file():raise FileNotFoundError('Missing vendored object asset: '+str(target))
+                node.value=str(target.resolve())
+            return node
+
         def visit_FunctionDef(self, node):
             self.generic_visit(node)
             if node.name == 'step_and_render':
@@ -166,19 +179,43 @@ def source_adapter(root):
         'rm75_jiaobang_pick_move_v10_perpendicular_to_object.py',
         'rm75_jiaobang_pick_real_with_foundationpose.py',
         'rm75_jiaobang_pick_place_targeted.py',
-        'rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py')}
+        'rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py','object_specs.py')}
     original = SourceFileLoader.get_code
+    class NoMplib(MetaPathFinder):
+        def find_spec(self, fullname, path=None, target=None):
+            if fullname=='mplib' or fullname.startswith('mplib.'):
+                raise CuroboOnlyUnsupported('external MPLib import forbidden: '+fullname)
+    if any(name=='mplib' or name.startswith('mplib.') for name in sys.modules):
+        raise CuroboOnlyUnsupported('MPLib already loaded before isolated native adapter')
+    guard=NoMplib()
     def get_code(loader, fullname):
         path = Path(loader.path).resolve()
         if path in targets:
             # Avoid reusing a pyc that still imports/constructs MPLib.
-            return compile(transform_source(path.read_text(),str(path)),str(path),'exec')
+            return compile(transform_source(path.read_text(),str(path),snapshot_root=root),str(path),'exec')
         return original(loader,fullname)
     SourceFileLoader.get_code = get_code
+    sys.meta_path.insert(0,guard)
     try:
         yield
     finally:
         SourceFileLoader.get_code = original
+        sys.meta_path.remove(guard)
+
+
+def install_jimu_binding(portable):
+    """Keep native demo setup but replace its always-clear diagnostic planner.
+
+    The four source adapters already supply data-only FCL records. Therefore
+    Jimu's import-and-monkeypatch of external MPLib is obsolete; no global
+    MPLib module is created, and every collision query uses the bound cuRobo.
+    """
+    for name in ('_JimuNoopMplibPlanner','_install_jimu_no_mplib_collision_detection',
+                 '_restore_jimu_no_mplib_collision_detection'):
+        if not hasattr(portable,name):raise RuntimeError('Missing reviewed Jimu boundary: '+name)
+    portable._JimuNoopMplibPlanner=CuroboDemoPlanner
+    portable._install_jimu_no_mplib_collision_detection=lambda args=None:None
+    portable._restore_jimu_no_mplib_collision_detection=lambda:None
 
 
 def install(direct):
@@ -186,6 +223,7 @@ def install(direct):
     from curobo_rm75_planner import RM75CuRoboPlanner
     install_start_check_restoration(RM75CuRoboPlanner)
     preserve_diagnostic_world_state(RM75CuRoboPlanner,direct._CUROBO_GPU_LOCK)
+    isolate_print_only_diagnostics(direct)
     serialize_return_planning(direct)
     from .pickplace_release_contact import install_release_contact
     install_release_contact(direct)
@@ -221,6 +259,30 @@ def install(direct):
                                  released_source=direct._current_source_object_name)
     direct._install_dry_run_motion_window_wrappers=install_wrappers
     return clearance_audits
+
+
+def isolate_print_only_diagnostics(direct):
+    """An unavailable failure printout must not abort original source retries.
+
+    Only two void PRINT helpers are wrapped. Planner queries and execution
+    guards still raise CuroboOnlyUnsupported, never reporting false clear space.
+    """
+    records=[];direct._curobo_diagnostic_rejections=records
+    for owner,name in ((direct,'_print_transport_motiongen_failure_diagnostics'),
+                       (direct.targeted.base,'print_failure_diagnostics')):
+        original=getattr(owner,name,None)
+        if not callable(original):continue
+        def wrap(function,name):
+            @functools.wraps(function)
+            def diagnostic(*args,**kwargs):
+                try:return function(*args,**kwargs)
+                except CuroboOnlyUnsupported as exc:
+                    row={'function':name,'error':str(exc),'collision_state_qualified':False}
+                    records.append(row)
+                    print(f'[curobo diagnostic unavailable] {row}')
+                    return None
+            return diagnostic
+        setattr(owner,name,wrap(original,name))
 
 
 def serialize_return_planning(direct):

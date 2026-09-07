@@ -57,10 +57,19 @@ function rotatePiece(){try{const p=design.pieces.find(p=>key(p)===selected);if(p
 function loadDesign(value){if(value.schema!=='jimu_builder_scene_v1'||!Array.isArray(value.pieces)||!value.pieces.length)throw new Error('需要原始 jimu_builder_scene_v1 JSON');for(const p of value.pieces){for(const a of ['center','u','n','v'])if(!Array.isArray(p[a])||p[a].length!==3||!p[a].every(Number.isFinite))throw new Error('无效的积木坐标或轴');}
  design=value;selected=key(design.pieces[0]);fillPieces();}
 function dims(type){return type==='half_square'?[.037,.0065,.074]:type==='triangle'?[.074,.0065,.135]:[.074,.0065,.074];}
-function drawMagnetic(){const canvas=$('magnetic-canvas'),ctx=canvas.getContext('2d');ctx.clearRect(0,0,800,440);const proj=p=>[400+(p[0]-p[2]) *1500,365-p[1]*1500+(p[0]+p[2])*350];
+function magneticVertices(p){const [w,th,h]=dims(p.type),local=p.type==='triangle'?[[-w/2,-h/2],[w/2,-h/2],[0,h/2]]:[[-w/2,-h/2],[w/2,-h/2],[w/2,h/2],[-w/2,h/2]];
+ return local.map(([x,z])=>p.center.map((v,i)=>v+p.u[i]*x+p.v[i]*z));}
+function magneticProjection(pieces,width=800,height=440){
+ const raw=p=>[p[0]-p[2],-p[1]+(p[0]+p[2])*350/1500];
+ const points=pieces.flatMap(magneticVertices).concat([[-.15,0,-.15],[-.15,0,.15],[.15,0,-.15],[.15,0,.15]]).map(raw);
+ const low=[0,1].map(i=>Math.min(...points.map(p=>p[i]))),high=[0,1].map(i=>Math.max(...points.map(p=>p[i])));
+ const scale=Math.min((width-60)/Math.max(high[0]-low[0],1e-6),(height-72)/Math.max(high[1]-low[1],1e-6));
+ return p=>{const q=raw(p);return [width/2+(q[0]-(low[0]+high[0])/2)*scale,
+  48+(height-72)/2+(q[1]-(low[1]+high[1])/2)*scale];};}
+function drawMagnetic(){const canvas=$('magnetic-canvas'),ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);const proj=magneticProjection(design.pieces,canvas.width,canvas.height);
  ctx.strokeStyle='#e0e8e4';ctx.lineWidth=1;for(let i=-5;i<=5;i++){let a=proj([i*.03,0,-.15]),b=proj([i*.03,0,.15]);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();a=proj([-.15,0,i*.03]);b=proj([.15,0,i*.03]);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();}
- for(const p of [...design.pieces].sort((a,b)=>a.center[1]-b.center[1])){const [w,th,h]=dims(p.type);const local=p.type==='triangle'?[[-w/2,-h/2],[w/2,-h/2],[0,h/2]]:[[-w/2,-h/2],[w/2,-h/2],[w/2,h/2],[-w/2,h/2]];
- const points=local.map(([x,z])=>proj(p.center.map((v,i)=>v+p.u[i]*x+p.v[i]*z)));ctx.beginPath();points.forEach((q,i)=>i?ctx.lineTo(...q):ctx.moveTo(...q));ctx.closePath();ctx.fillStyle=p.locked?'#c6d5d0':key(p)===selected?'#38887b':'#e6b777';ctx.fill();ctx.strokeStyle='#294c48';ctx.lineWidth=1.5;ctx.stroke();ctx.fillStyle='#263f42';ctx.font='12px system-ui';const at=proj(p.center);ctx.fillText(key(p),at[0]+8,at[1]-8);}
+ for(const p of [...design.pieces].sort((a,b)=>a.center[1]-b.center[1])){
+ const points=magneticVertices(p).map(proj);ctx.beginPath();points.forEach((q,i)=>i?ctx.lineTo(...q):ctx.moveTo(...q));ctx.closePath();ctx.fillStyle=p.locked?'#c6d5d0':key(p)===selected?'#38887b':'#e6b777';ctx.fill();ctx.strokeStyle='#294c48';ctx.lineWidth=1.5;ctx.stroke();ctx.fillStyle='#263f42';ctx.font='12px system-ui';const at=proj(p.center),label=key(p),labelWidth=ctx.measureText(label).width;ctx.fillText(label,Math.max(18,Math.min(at[0]+8,canvas.width-18-labelWidth)),Math.max(40,at[1]-8));}
  ctx.fillStyle='#687f79';ctx.font='12px system-ui';ctx.fillText('Builder 坐标 · Y ↑ · 米 · 目标投影（非物理仿真）',18,24);}
 function model(){return Object.assign({workspace:[.15,.65,-.3,.3],bar_width_m:.1,bar_height_m:.03,stem_width_m:.03,stem_height_m:.07,obstacles:[]},info?.pusht_model||{});}
 function drawPush(){const ctx=$('pusht-canvas').getContext('2d'),m=model(),w=m.workspace;ctx.clearRect(0,0,800,440);const proj=p=>[45+(p[0]-w[0])/(w[1]-w[0])*710,405-(p[1]-w[2])/(w[3]-w[2])*365];ctx.strokeStyle='#d3dfd9';ctx.strokeRect(45,40,710,365);

@@ -6,6 +6,7 @@ World exceptions never remove shared robot spheres or disable self checks.
 import copy
 import functools
 import threading
+import numpy as np
 from .contact_audit import StrictContactNotSupported, scene_evidence
 from .world_only_contact import FINGER_LINKS, world_only_links, WorldOnlyContactUnsupported
 
@@ -75,6 +76,45 @@ def install_start_check_restoration(planner_class):
     planner_class._build_motion_gen = build
 
 
+def install_read_only_jimu_diagnostics(portable, emit):
+    """Replace diagnostic-only collision ablations, never a planning result.
+
+    Reviewed native consumers only print/store this dictionary. The old helper
+    clears the world and removes payload/link geometry, and its BaseException
+    escape can leave the world empty. Query the unchanged current state instead.
+    No 'valid after removal' claim is fabricated; planning/retry code is untouched.
+    """
+    original = portable._jimu_start_collision_diagnosis
+
+    @functools.wraps(original)
+    def diagnose(planner, args, candidates, label, disabled_world_collision_links):
+        candidates = list(candidates or ())
+        if planner is None or not candidates or candidates[0].get('start_q') is None:
+            return None
+        q = np.asarray(candidates[0]['start_q'], dtype=np.float32).reshape(-1)[:7]
+        if q.size != 7 or not np.isfinite(q).all():
+            return {'valid': False, 'status': 'INVALID_DIAGNOSTIC_JOINTS',
+                    'diagnostic_mode': 'read_only_current_collision_state'}
+        with portable.direct._CUROBO_GPU_LOCK:
+            valid, status = planner.check_start_state(q)
+            row = {'valid': bool(valid), 'status': str(status),
+                   'diagnostic_mode': 'read_only_current_collision_state',
+                   'world_obstacle_names': [obj.name for obj in planner._world.objects],
+                   'valid_after_removing': [], 'ablation': [], 'group_ablation': [],
+                   'empty_world_diag': {'not_run': 'world_must_remain_present'},
+                   'attached_disabled_diag': {'not_run': 'payload_must_remain_present'},
+                   'link_ablation': [], 'requested_disabled_links': list(disabled_world_collision_links or ()),
+                   'attached_sphere_summary': {
+                       'active': bool(planner.attached_object_active),
+                       'count': int(planner.get_attached_sphere_count())},
+                   'candidate_label': str(candidates[0].get('label', '')),
+                   **scene_evidence(planner)}
+        emit({'event': 'jimu_read_only_collision_diagnostic', 'step_id': label, **row})
+        return row
+
+    portable._jimu_start_collision_diagnosis = diagnose
+
+
 def install_transport_contact(direct, planner_class, emit):
     """Explicit no-motion runner only; do not install in a real worker."""
     install_payload_pairs(planner_class)
@@ -88,6 +128,19 @@ def install_transport_contact(direct, planner_class, emit):
         return original_batch_ik(self, *args, **kwargs)
     planner_class.solve_batch_start_goal_ik = eager_ik
     direct._transport_attached_contact_disabled_links = lambda planner, base_links=None: []
+    original_relief=getattr(direct,'_single_obstacle_start_collision_relief',None)
+    if callable(original_relief):
+        @functools.wraps(original_relief)
+        def no_world_object_relief(planner,*args,**kwargs):
+            obstacle=original_relief(planner,*args,**kwargs)
+            if obstacle:
+                emit({'event':'contact_obstacle_relief_refused','obstacle':obstacle,
+                      'reason':'keep_non_source_obstacle_in_world',**scene_evidence(planner)})
+            # Native caller continues its SAME lift/retreat/candidate ladder,
+            # with the unrelated obstacle present. No candidate is fabricated
+            # or removed; an unsafe whole-object exclusion is never attempted.
+            return None
+        direct._single_obstacle_start_collision_relief=no_world_object_relief
     original_refresh = direct._refresh_curobo_world
     active = {}
     excluded_sources = {}
@@ -150,10 +203,20 @@ def install_transport_contact(direct, planner_class, emit):
     def refresh(planner, demo, args, **kwargs):
         if bool(getattr(args, 'execute_real', False)):
             raise failure(planner, kwargs.get('label'), 'simulation_only_policy')
-        if is_transport(kwargs.get('label')):
+        label=str(kwargs.get('label',''))
+        free_loaded=(is_transport(label) or 'joint_start_' in label or 'post_grasp_lift' in label)
+        if free_loaded:
             if not getattr(args, 'curobo_table_collision', True):
                 raise failure(planner, kwargs.get('label'), 'transport_table_check_disabled')
             kwargs['include_table'] = True
+            if planner.attached_object_active:
+                source=direct._current_source_object_name(args)
+                requested=set(kwargs.get('exclude_object_names') or ())
+                restored=requested-{source}
+                if restored:
+                    emit({'event':'loaded_world_exclusions_restored','step_id':label,
+                          'restored_objects':sorted(restored),'attached_source':source})
+                kwargs['exclude_object_names']=requested & {source}
         with direct._CUROBO_GPU_LOCK:
             excluded_sources.pop(id(planner), None)
             result = original_refresh(planner, demo, args, **kwargs)
@@ -173,9 +236,12 @@ def install_transport_contact(direct, planner_class, emit):
                 raise failure(planner, label, 'simulation_only_policy')
             source = direct._current_source_object_name(args)
             allowed_excludes = {source}
-            if set(kwargs.get('exclude_object_names') or []) - allowed_excludes:
-                raise failure(planner, label, 'transport_unrelated_world_exclusion')
-            kwargs = {**kwargs, 'disabled_world_collision_links': [], 'include_table': True}
+            requested=set(kwargs.get('exclude_object_names') or [])
+            if requested-allowed_excludes:
+                emit({'event':'loaded_world_exclusions_restored','step_id':label,
+                      'restored_objects':sorted(requested-allowed_excludes),'attached_source':source})
+            kwargs = {**kwargs, 'disabled_world_collision_links': [], 'include_table': True,
+                      'exclude_object_names':requested & allowed_excludes}
             with direct._CUROBO_GPU_LOCK:
                 if not planner.collision_enabled or not planner.config.self_collision_check:
                     raise failure(planner, label, 'transport_collision_checks_disabled')
