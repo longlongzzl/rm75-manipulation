@@ -21,7 +21,10 @@ def main():
     parser.add_argument("--scene", choices=("four-wall", "triangle-roof"), required=True)
     parser.add_argument("--extensions", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--compatibility-audit", action="store_true")
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument("--compatibility-audit", action="store_true")
+    modes.add_argument('--tray-final-descent-compatibility', action='store_true',
+                       help='Simulation only; left/right fingers vs world ONLY in final vertical tray descent')
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -51,9 +54,11 @@ def main():
     def emit(row):
         with lock, (output / "contact.jsonl").open("a") as stream:
             stream.write(json.dumps(row, sort_keys=True) + "\n")
-    install_contact_audit(direct, emit, strict=not args.compatibility_audit)
+    install_contact_audit(direct, emit, strict=not args.compatibility_audit,
+                          tray_final_descent=args.tray_final_descent_compatibility)
     report = {"scene": args.scene, "argv": argv, "source_commit": provenance["source_commit"],
-              "strict": not args.compatibility_audit, "execute_real": False,
+              "strict": not (args.compatibility_audit or args.tray_final_descent_compatibility),
+              'tray_final_descent_compatibility': args.tray_final_descent_compatibility, "execute_real": False,
               "command_success": False, "verified_task_success": None}
     try:
         result = module.main()
