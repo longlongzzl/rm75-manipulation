@@ -18,7 +18,17 @@ def test_committed_source_export_preserves_dirty_worktree_and_hashes(tmp_path):
     with pytest.raises(RuntimeError):verify_snapshot(root)
     with pytest.raises(FileExistsError):export_snapshot(src,tmp_path/'new',ref=ref,expected_blobs={})
 def test_migration_filters():
-    assert selected('Beta_demo-codex-v0.9/magnetic_snap.py');assert selected('Beta_demo-codex-v0.9/jimu_portable_repro/assets/plate.glb');assert not selected('pick_jiaobang/weights/model.pth');assert not selected('pick_jiaobang/failure_renders/image.png');assert not selected('../pick_jiaobang/unsafe.py');assert not selected('pick_jiaobang/a.woff2')
+    assert selected('Beta_demo-codex-v0.9/magnetic_snap.py')
+    assert selected('Beta_demo-codex-v0.9/jimu_portable_repro/assets/plate.glb')
+    assert selected('lerobot-sim2real/lerobot_sim2real/config/real_robot.py')
+    assert selected('lerobot/common/robots/realman_lerobot/realman_arm.py')
+    assert not selected('lerobot-sim2real/lerobot_sim2real/rl/ppo_rgb.py')
+    assert not selected('lerobot/common/policies/act/modeling_act.py')
+    assert not selected('lerobot/common/optim/optimizers.py')
+    assert not selected('pick_jiaobang/weights/model.pth')
+    assert not selected('pick_jiaobang/failure_renders/image.png')
+    assert not selected('../pick_jiaobang/unsafe.py')
+    assert not selected('pick_jiaobang/a.woff2')
 def test_task_integration_preserves_new_curobo_default():
     original='modes=("curobo2", "rrtrack", "openworld-geometry", "tabletop-refine"),\ndefault_mode="curobo2"\n        return command_for_mode(normalized.mode, normalized.args, python=python)';result=transform('rm75_app/tasks/pickplace.py',original);assert 'default_mode="curobo2"' in result and 'working-real' in result and 'task="pickplace"' in result
 def parser():
