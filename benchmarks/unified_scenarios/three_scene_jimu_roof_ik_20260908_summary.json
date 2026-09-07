@@ -905,9 +905,7 @@
           6
         ]
       },
-      "roof_ik_diagnostics": [
-    
-      ]
+      "roof_ik_diagnostics": []
     },
     {
       "run": "standard_roof_control_v2",
