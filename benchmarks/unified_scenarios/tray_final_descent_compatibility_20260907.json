@@ -1,0 +1,3417 @@
+{
+  "schema": "rm75.tray_final_descent_compatibility/v1",
+  "tested_source_commit": "8c58973031d30790cbd014b58f876989e25ff6a6",
+  "source_sha256": {
+    "rm75_app/workcell/contact_audit.py": "6beabbdf71df3d0979b0c3840b1d469790e9f669c0c89855f95f54867364a5be",
+    "rm75_app/workcell/world_only_contact.py": "451ae58dae831792a91c4eeb3be8ea3068cca76cf48a7c2026dbd80405c2f2d7",
+    "tools/run_native_contact_audit.py": "c5fed20435856f89d89b4c0984aa10498d2fd4d74411078a439855f0dd243638",
+    "tools/check_native_world_only_contact.py": "34fb5238c4392b4650af22062d1e90db2825d6c0189c440627c11d1e90f5d227",
+    "tests/three_scene/test_world_only_contact.py": "740583721f2e1ddcf7c90894952d80e32ccda71c629cf9e17e65eae539fe823b"
+  },
+  "authorization": "simulation only; left/right fingers vs world only in final tray descent; other links/self collision/other phases remain enabled",
+  "cpu": {
+    "three_scene_passed": 95,
+    "full_passed": 417,
+    "failed": 0,
+    "skipped": 0
+  },
+  "gpu_cost_attempts": [
+    {
+      "exit_code": 1,
+      "reason": "diagnostic omitted formal YAML; embedded free-space config rejects world update"
+    },
+    {
+      "exit_code": 0,
+      "result": {
+        "before": {
+          "arm_world": [
+            [
+              221.0
+            ]
+          ],
+          "finger_world": [
+            [
+              221.0
+            ]
+          ],
+          "self_overlap": [
+            [
+              251.0
+            ]
+          ]
+        },
+        "during": {
+          "arm_world": [
+            [
+              221.0
+            ]
+          ],
+          "finger_world": [
+            [
+              0.0
+            ]
+          ],
+          "self_overlap": [
+            [
+              251.0
+            ]
+          ]
+        },
+        "evidence": {
+          "links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "self_collision_input_modified": false,
+          "world_cost_instances": 53,
+          "world_filter_calls": 2
+        },
+        "full_chain_validated": false,
+        "kind": "synthetic_gpu_cost_only",
+        "motion": false,
+        "restored_finger_world": [
+          [
+            221.0
+          ]
+        ],
+        "status": "PASS"
+      }
+    }
+  ],
+  "four_wall": {
+    "exit_code": 42,
+    "result": {
+      "argv": [
+        "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/rm75_jimu_four_wall_portable.py",
+        "--render-mode",
+        "none",
+        "--jimu-build-layers",
+        "first",
+        "--auto-execute",
+        "--curobo-torch-extensions-dir",
+        "/tmp/rm75_native_curobo_clean",
+        "--camera-extrinsic-opencv-path",
+        "/home/zhangzhao/Desktop/rm75-manipulation/assets/calibration/camera_extrinsic_opencv.npy"
+      ],
+      "command_success": false,
+      "evidence": {
+        "changed_links": [],
+        "disabled_links": [],
+        "disabled_objects": [
+          "active_target_object"
+        ],
+        "enabled": false,
+        "event": "native_contact_audit",
+        "mode": "tray_final_descent_compatibility",
+        "pair_local_supported": false,
+        "permitted_contact_support": null,
+        "permitted_contact_target": "right_wall",
+        "piece_id": "right_wall",
+        "reason": "link_world_toggle",
+        "relaxed_branch_required": null,
+        "requested_links": [
+          "gripper_Left_Support_Link",
+          "gripper_Right_Support_Link"
+        ],
+        "requirement_evidence": "not_established",
+        "scene_fingerprint": "838ec31493c4a61f108580b8d3e9c6cd2395af3844e5f18dea17910193ef22ee",
+        "step_id": "winner_chain_jimu_parallel_grasp_place_paired_relation_ik",
+        "verified_task_success": null,
+        "world_objects": [
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_back_wall",
+            "pose": [
+              -0.16890642046928406,
+              -0.31289422512054443,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor",
+            "pose": [
+              -0.19091269373893738,
+              0.1070590615272522,
+              0.004250002093613148,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_back_support",
+            "pose": [
+              -0.19091269373893738,
+              0.03305903077125549,
+              0.004250000696629286,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_front_support",
+            "pose": [
+              -0.19091270864009857,
+              0.1810590624809265,
+              0.004250003024935722,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_left_support",
+            "pose": [
+              -0.2649127244949341,
+              0.1070590615272522,
+              0.004250000696629286,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_right_support",
+            "pose": [
+              -0.11691270768642426,
+              0.1070590615272522,
+              0.004250003024935722,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_front_wall",
+            "pose": [
+              -0.09390643984079361,
+              -0.31289419531822205,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_left_wall",
+            "pose": [
+              -0.13140642642974854,
+              -0.31289422512054443,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.029999999329447746,
+              1.2000000476837158,
+              0.800000011920929
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_virtual_side_wall",
+            "pose": [
+              -6.812060693306421e-09,
+              0.6150000691413879,
+              0.4010000228881836,
+              0.7071067690849304,
+              1.303851515643828e-08,
+              1.1102230246251565e-16,
+              -0.7071067690849304
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              1.2000000476837158,
+              1.2000000476837158,
+              0.029999999329447746
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_virtual_top_wall",
+            "pose": [
+              -2.7353378229122427e-08,
+              -0.3000001013278961,
+              1.5149999856948853,
+              0.7071067690849304,
+              1.303851515643828e-08,
+              1.1102230246251565e-16,
+              -0.7071067690849304
+            ],
+            "radius": null,
+            "scale": null
+          }
+        ],
+        "world_signature": [
+          [
+            [
+              "scene_obstacle_back_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.168906,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_floor",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_back_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.333059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_front_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.481059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_left_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.264913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_right_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.116913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_front_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.093906,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_left_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.131406,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_virtual_side_wall",
+              [
+                0.03,
+                1.2,
+                0.8
+              ],
+              [
+                -0.915,
+                0.0,
+                0.401,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_virtual_top_wall",
+              [
+                1.2,
+                1.2,
+                0.03
+              ],
+              [
+                0.0,
+                0.0,
+                1.515,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          ],
+          []
+        ]
+      },
+      "execute_real": false,
+      "scene": "four-wall",
+      "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+      "status": "strict_contact_not_supported",
+      "strict": false,
+      "tray_final_descent_compatibility": true,
+      "verified_task_success": null
+    },
+    "contact": [
+      {
+        "changed_links": [],
+        "disabled_links": [],
+        "disabled_objects": [],
+        "enabled": false,
+        "event": "native_contact_audit",
+        "mode": "tray_final_descent_compatibility",
+        "pair_local_supported": false,
+        "permitted_contact_support": null,
+        "permitted_contact_target": "right_wall",
+        "piece_id": "right_wall",
+        "reason": "link_world_toggle",
+        "relaxed_branch_required": null,
+        "requested_links": [],
+        "requirement_evidence": "not_established",
+        "scene_fingerprint": "2b8e5ee4783c50547905c92b2b1b7ffd4569be65053541ca959824649a8c2c43",
+        "step_id": "winner_chain_ik_preselect_grasp",
+        "verified_task_success": null,
+        "world_objects": [
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_back_wall",
+            "pose": [
+              -0.16890642046928406,
+              -0.31289422512054443,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor",
+            "pose": [
+              -0.19091269373893738,
+              0.1070590615272522,
+              0.004250002093613148,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_back_support",
+            "pose": [
+              -0.19091269373893738,
+              0.03305903077125549,
+              0.004250000696629286,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_front_support",
+            "pose": [
+              -0.19091270864009857,
+              0.1810590624809265,
+              0.004250003024935722,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_left_support",
+            "pose": [
+              -0.2649127244949341,
+              0.1070590615272522,
+              0.004250000696629286,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_right_support",
+            "pose": [
+              -0.11691270768642426,
+              0.1070590615272522,
+              0.004250003024935722,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_front_wall",
+            "pose": [
+              -0.09390643984079361,
+              -0.31289419531822205,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_left_wall",
+            "pose": [
+              -0.13140642642974854,
+              -0.31289422512054443,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.029999999329447746,
+              1.2000000476837158,
+              0.800000011920929
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_virtual_side_wall",
+            "pose": [
+              -6.812060693306421e-09,
+              0.6150000691413879,
+              0.4010000228881836,
+              0.7071067690849304,
+              1.303851515643828e-08,
+              1.1102230246251565e-16,
+              -0.7071067690849304
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              1.2000000476837158,
+              1.2000000476837158,
+              0.029999999329447746
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_virtual_top_wall",
+            "pose": [
+              -2.7353378229122427e-08,
+              -0.3000001013278961,
+              1.5149999856948853,
+              0.7071067690849304,
+              1.303851515643828e-08,
+              1.1102230246251565e-16,
+              -0.7071067690849304
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": null,
+            "file_path": "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6p5x74.glb",
+            "name": "active_target_object",
+            "pose": [
+              -0.20640642940998077,
+              -0.31289419531822205,
+              0.050000015646219254,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "world_signature": [
+          [
+            [
+              "scene_obstacle_back_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.168906,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_floor",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_back_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.333059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_front_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.481059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_left_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.264913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_right_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.116913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_front_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.093906,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_left_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.131406,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_virtual_side_wall",
+              [
+                0.03,
+                1.2,
+                0.8
+              ],
+              [
+                -0.915,
+                0.0,
+                0.401,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_virtual_top_wall",
+              [
+                1.2,
+                1.2,
+                0.03
+              ],
+              [
+                0.0,
+                0.0,
+                1.515,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          ],
+          [
+            [
+              "active_target_object",
+              "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6p5x74.glb",
+              [
+                1.0,
+                1.0,
+                1.0
+              ],
+              [
+                0.012894,
+                -0.206406,
+                0.05,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "changed_links": [],
+        "disabled_links": [],
+        "disabled_objects": [],
+        "enabled": false,
+        "event": "native_contact_toggle_applied",
+        "mode": "tray_final_descent_compatibility",
+        "pair_local_supported": false,
+        "permitted_contact_support": null,
+        "permitted_contact_target": "right_wall",
+        "piece_id": "right_wall",
+        "reason": "link_world_toggle",
+        "relaxed_branch_required": null,
+        "requested_links": [],
+        "requirement_evidence": "not_established",
+        "scene_after": {
+          "disabled_links": [],
+          "disabled_objects": [],
+          "scene_fingerprint": "2b8e5ee4783c50547905c92b2b1b7ffd4569be65053541ca959824649a8c2c43",
+          "world_objects": [
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_back_wall",
+              "pose": [
+                -0.16890642046928406,
+                -0.31289422512054443,
+                0.05100001394748688,
+                0.7071068286895752,
+                -4.340570125549448e-09,
+                -3.077037291632223e-09,
+                -0.7071067094802856
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_floor",
+              "pose": [
+                -0.19091269373893738,
+                0.1070590615272522,
+                0.004250002093613148,
+                0.7071067690849304,
+                0.7071067690849304,
+                3.035923512584304e-08,
+                5.393446400603352e-08
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_floor_back_support",
+              "pose": [
+                -0.19091269373893738,
+                0.03305903077125549,
+                0.004250000696629286,
+                0.7071067690849304,
+                0.7071067690849304,
+                3.035923512584304e-08,
+                5.393446400603352e-08
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_floor_front_support",
+              "pose": [
+                -0.19091270864009857,
+                0.1810590624809265,
+                0.004250003024935722,
+                0.7071067690849304,
+                0.7071067690849304,
+                3.035923512584304e-08,
+                5.393446400603352e-08
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_floor_left_support",
+              "pose": [
+                -0.2649127244949341,
+                0.1070590615272522,
+                0.004250000696629286,
+                0.7071067690849304,
+                0.7071067690849304,
+                3.035923512584304e-08,
+                5.393446400603352e-08
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_floor_right_support",
+              "pose": [
+                -0.11691270768642426,
+                0.1070590615272522,
+                0.004250003024935722,
+                0.7071067690849304,
+                0.7071067690849304,
+                3.035923512584304e-08,
+                5.393446400603352e-08
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_front_wall",
+              "pose": [
+                -0.09390643984079361,
+                -0.31289419531822205,
+                0.05100001394748688,
+                0.7071068286895752,
+                -4.340570125549448e-09,
+                -3.077037291632223e-09,
+                -0.7071067094802856
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_left_wall",
+              "pose": [
+                -0.13140642642974854,
+                -0.31289422512054443,
+                0.05100001394748688,
+                0.7071068286895752,
+                -4.340570125549448e-09,
+                -3.077037291632223e-09,
+                -0.7071067094802856
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.029999999329447746,
+                1.2000000476837158,
+                0.800000011920929
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_virtual_side_wall",
+              "pose": [
+                -6.812060693306421e-09,
+                0.6150000691413879,
+                0.4010000228881836,
+                0.7071067690849304,
+                1.303851515643828e-08,
+                1.1102230246251565e-16,
+                -0.7071067690849304
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                1.2000000476837158,
+                1.2000000476837158,
+                0.029999999329447746
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_virtual_top_wall",
+              "pose": [
+                -2.7353378229122427e-08,
+                -0.3000001013278961,
+                1.5149999856948853,
+                0.7071067690849304,
+                1.303851515643828e-08,
+                1.1102230246251565e-16,
+                -0.7071067690849304
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": null,
+              "file_path": "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6p5x74.glb",
+              "name": "active_target_object",
+              "pose": [
+                -0.20640642940998077,
+                -0.31289419531822205,
+                0.050000015646219254,
+                0.7071068286895752,
+                -4.340570125549448e-09,
+                -3.077037291632223e-09,
+                -0.7071067094802856
+              ],
+              "radius": null,
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          ],
+          "world_signature": [
+            [
+              [
+                "scene_obstacle_back_wall",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  0.012894,
+                  -0.168906,
+                  0.051,
+                  1.0,
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ],
+              [
+                "scene_obstacle_floor",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  -0.407059,
+                  -0.190913,
+                  0.00425,
+                  0.5,
+                  0.5,
+                  0.5,
+                  0.5
+                ]
+              ],
+              [
+                "scene_obstacle_floor_back_support",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  -0.333059,
+                  -0.190913,
+                  0.00425,
+                  0.5,
+                  0.5,
+                  0.5,
+                  0.5
+                ]
+              ],
+              [
+                "scene_obstacle_floor_front_support",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  -0.481059,
+                  -0.190913,
+                  0.00425,
+                  0.5,
+                  0.5,
+                  0.5,
+                  0.5
+                ]
+              ],
+              [
+                "scene_obstacle_floor_left_support",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  -0.407059,
+                  -0.264913,
+                  0.00425,
+                  0.5,
+                  0.5,
+                  0.5,
+                  0.5
+                ]
+              ],
+              [
+                "scene_obstacle_floor_right_support",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  -0.407059,
+                  -0.116913,
+                  0.00425,
+                  0.5,
+                  0.5,
+                  0.5,
+                  0.5
+                ]
+              ],
+              [
+                "scene_obstacle_front_wall",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  0.012894,
+                  -0.093906,
+                  0.051,
+                  1.0,
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ],
+              [
+                "scene_obstacle_left_wall",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  0.012894,
+                  -0.131406,
+                  0.051,
+                  1.0,
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ],
+              [
+                "scene_obstacle_virtual_side_wall",
+                [
+                  0.03,
+                  1.2,
+                  0.8
+                ],
+                [
+                  -0.915,
+                  0.0,
+                  0.401,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              ],
+              [
+                "scene_obstacle_virtual_top_wall",
+                [
+                  1.2,
+                  1.2,
+                  0.03
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.515,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              ]
+            ],
+            [
+              [
+                "active_target_object",
+                "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6p5x74.glb",
+                [
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                [
+                  0.012894,
+                  -0.206406,
+                  0.05,
+                  1.0,
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ]
+            ]
+          ]
+        },
+        "scene_fingerprint": "2b8e5ee4783c50547905c92b2b1b7ffd4569be65053541ca959824649a8c2c43",
+        "step_id": "winner_chain_ik_preselect_grasp",
+        "verified_task_success": null,
+        "world_objects": [
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_back_wall",
+            "pose": [
+              -0.16890642046928406,
+              -0.31289422512054443,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor",
+            "pose": [
+              -0.19091269373893738,
+              0.1070590615272522,
+              0.004250002093613148,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_back_support",
+            "pose": [
+              -0.19091269373893738,
+              0.03305903077125549,
+              0.004250000696629286,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_front_support",
+            "pose": [
+              -0.19091270864009857,
+              0.1810590624809265,
+              0.004250003024935722,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_left_support",
+            "pose": [
+              -0.2649127244949341,
+              0.1070590615272522,
+              0.004250000696629286,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_right_support",
+            "pose": [
+              -0.11691270768642426,
+              0.1070590615272522,
+              0.004250003024935722,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_front_wall",
+            "pose": [
+              -0.09390643984079361,
+              -0.31289419531822205,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_left_wall",
+            "pose": [
+              -0.13140642642974854,
+              -0.31289422512054443,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.029999999329447746,
+              1.2000000476837158,
+              0.800000011920929
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_virtual_side_wall",
+            "pose": [
+              -6.812060693306421e-09,
+              0.6150000691413879,
+              0.4010000228881836,
+              0.7071067690849304,
+              1.303851515643828e-08,
+              1.1102230246251565e-16,
+              -0.7071067690849304
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              1.2000000476837158,
+              1.2000000476837158,
+              0.029999999329447746
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_virtual_top_wall",
+            "pose": [
+              -2.7353378229122427e-08,
+              -0.3000001013278961,
+              1.5149999856948853,
+              0.7071067690849304,
+              1.303851515643828e-08,
+              1.1102230246251565e-16,
+              -0.7071067690849304
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": null,
+            "file_path": "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6p5x74.glb",
+            "name": "active_target_object",
+            "pose": [
+              -0.20640642940998077,
+              -0.31289419531822205,
+              0.050000015646219254,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "world_signature": [
+          [
+            [
+              "scene_obstacle_back_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.168906,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_floor",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_back_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.333059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_front_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.481059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_left_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.264913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_right_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.116913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_front_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.093906,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_left_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.131406,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_virtual_side_wall",
+              [
+                0.03,
+                1.2,
+                0.8
+              ],
+              [
+                -0.915,
+                0.0,
+                0.401,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_virtual_top_wall",
+              [
+                1.2,
+                1.2,
+                0.03
+              ],
+              [
+                0.0,
+                0.0,
+                1.515,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          ],
+          [
+            [
+              "active_target_object",
+              "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6p5x74.glb",
+              [
+                1.0,
+                1.0,
+                1.0
+              ],
+              [
+                0.012894,
+                -0.206406,
+                0.05,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "changed_links": [],
+        "disabled_links": [],
+        "disabled_objects": [
+          "active_target_object"
+        ],
+        "enabled": true,
+        "event": "native_contact_audit",
+        "mode": "tray_final_descent_compatibility",
+        "pair_local_supported": false,
+        "permitted_contact_support": null,
+        "permitted_contact_target": "right_wall",
+        "piece_id": "right_wall",
+        "reason": "link_world_toggle",
+        "relaxed_branch_required": null,
+        "requested_links": [],
+        "requirement_evidence": "not_established",
+        "scene_fingerprint": "838ec31493c4a61f108580b8d3e9c6cd2395af3844e5f18dea17910193ef22ee",
+        "step_id": "winner_chain_ik_preselect_grasp",
+        "verified_task_success": null,
+        "world_objects": [
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_back_wall",
+            "pose": [
+              -0.16890642046928406,
+              -0.31289422512054443,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor",
+            "pose": [
+              -0.19091269373893738,
+              0.1070590615272522,
+              0.004250002093613148,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_back_support",
+            "pose": [
+              -0.19091269373893738,
+              0.03305903077125549,
+              0.004250000696629286,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_front_support",
+            "pose": [
+              -0.19091270864009857,
+              0.1810590624809265,
+              0.004250003024935722,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_left_support",
+            "pose": [
+              -0.2649127244949341,
+              0.1070590615272522,
+              0.004250000696629286,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_right_support",
+            "pose": [
+              -0.11691270768642426,
+              0.1070590615272522,
+              0.004250003024935722,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_front_wall",
+            "pose": [
+              -0.09390643984079361,
+              -0.31289419531822205,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_left_wall",
+            "pose": [
+              -0.13140642642974854,
+              -0.31289422512054443,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.029999999329447746,
+              1.2000000476837158,
+              0.800000011920929
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_virtual_side_wall",
+            "pose": [
+              -6.812060693306421e-09,
+              0.6150000691413879,
+              0.4010000228881836,
+              0.7071067690849304,
+              1.303851515643828e-08,
+              1.1102230246251565e-16,
+              -0.7071067690849304
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              1.2000000476837158,
+              1.2000000476837158,
+              0.029999999329447746
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_virtual_top_wall",
+            "pose": [
+              -2.7353378229122427e-08,
+              -0.3000001013278961,
+              1.5149999856948853,
+              0.7071067690849304,
+              1.303851515643828e-08,
+              1.1102230246251565e-16,
+              -0.7071067690849304
+            ],
+            "radius": null,
+            "scale": null
+          }
+        ],
+        "world_signature": [
+          [
+            [
+              "scene_obstacle_back_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.168906,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_floor",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_back_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.333059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_front_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.481059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_left_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.264913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_right_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.116913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_front_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.093906,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_left_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.131406,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_virtual_side_wall",
+              [
+                0.03,
+                1.2,
+                0.8
+              ],
+              [
+                -0.915,
+                0.0,
+                0.401,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_virtual_top_wall",
+              [
+                1.2,
+                1.2,
+                0.03
+              ],
+              [
+                0.0,
+                0.0,
+                1.515,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          ],
+          []
+        ]
+      },
+      {
+        "changed_links": [],
+        "disabled_links": [],
+        "disabled_objects": [
+          "active_target_object"
+        ],
+        "enabled": true,
+        "event": "native_contact_toggle_applied",
+        "mode": "tray_final_descent_compatibility",
+        "pair_local_supported": false,
+        "permitted_contact_support": null,
+        "permitted_contact_target": "right_wall",
+        "piece_id": "right_wall",
+        "reason": "link_world_toggle",
+        "relaxed_branch_required": null,
+        "requested_links": [],
+        "requirement_evidence": "not_established",
+        "scene_after": {
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ],
+          "scene_fingerprint": "838ec31493c4a61f108580b8d3e9c6cd2395af3844e5f18dea17910193ef22ee",
+          "world_objects": [
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_back_wall",
+              "pose": [
+                -0.16890642046928406,
+                -0.31289422512054443,
+                0.05100001394748688,
+                0.7071068286895752,
+                -4.340570125549448e-09,
+                -3.077037291632223e-09,
+                -0.7071067094802856
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_floor",
+              "pose": [
+                -0.19091269373893738,
+                0.1070590615272522,
+                0.004250002093613148,
+                0.7071067690849304,
+                0.7071067690849304,
+                3.035923512584304e-08,
+                5.393446400603352e-08
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_floor_back_support",
+              "pose": [
+                -0.19091269373893738,
+                0.03305903077125549,
+                0.004250000696629286,
+                0.7071067690849304,
+                0.7071067690849304,
+                3.035923512584304e-08,
+                5.393446400603352e-08
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_floor_front_support",
+              "pose": [
+                -0.19091270864009857,
+                0.1810590624809265,
+                0.004250003024935722,
+                0.7071067690849304,
+                0.7071067690849304,
+                3.035923512584304e-08,
+                5.393446400603352e-08
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_floor_left_support",
+              "pose": [
+                -0.2649127244949341,
+                0.1070590615272522,
+                0.004250000696629286,
+                0.7071067690849304,
+                0.7071067690849304,
+                3.035923512584304e-08,
+                5.393446400603352e-08
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_floor_right_support",
+              "pose": [
+                -0.11691270768642426,
+                0.1070590615272522,
+                0.004250003024935722,
+                0.7071067690849304,
+                0.7071067690849304,
+                3.035923512584304e-08,
+                5.393446400603352e-08
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_front_wall",
+              "pose": [
+                -0.09390643984079361,
+                -0.31289419531822205,
+                0.05100001394748688,
+                0.7071068286895752,
+                -4.340570125549448e-09,
+                -3.077037291632223e-09,
+                -0.7071067094802856
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.066600002348423,
+                0.005849999841302633,
+                0.066600002348423
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_left_wall",
+              "pose": [
+                -0.13140642642974854,
+                -0.31289422512054443,
+                0.05100001394748688,
+                0.7071068286895752,
+                -4.340570125549448e-09,
+                -3.077037291632223e-09,
+                -0.7071067094802856
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                0.029999999329447746,
+                1.2000000476837158,
+                0.800000011920929
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_virtual_side_wall",
+              "pose": [
+                -6.812060693306421e-09,
+                0.6150000691413879,
+                0.4010000228881836,
+                0.7071067690849304,
+                1.303851515643828e-08,
+                1.1102230246251565e-16,
+                -0.7071067690849304
+              ],
+              "radius": null,
+              "scale": null
+            },
+            {
+              "dims": [
+                1.2000000476837158,
+                1.2000000476837158,
+                0.029999999329447746
+              ],
+              "file_path": null,
+              "name": "scene_obstacle_virtual_top_wall",
+              "pose": [
+                -2.7353378229122427e-08,
+                -0.3000001013278961,
+                1.5149999856948853,
+                0.7071067690849304,
+                1.303851515643828e-08,
+                1.1102230246251565e-16,
+                -0.7071067690849304
+              ],
+              "radius": null,
+              "scale": null
+            }
+          ],
+          "world_signature": [
+            [
+              [
+                "scene_obstacle_back_wall",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  0.012894,
+                  -0.168906,
+                  0.051,
+                  1.0,
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ],
+              [
+                "scene_obstacle_floor",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  -0.407059,
+                  -0.190913,
+                  0.00425,
+                  0.5,
+                  0.5,
+                  0.5,
+                  0.5
+                ]
+              ],
+              [
+                "scene_obstacle_floor_back_support",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  -0.333059,
+                  -0.190913,
+                  0.00425,
+                  0.5,
+                  0.5,
+                  0.5,
+                  0.5
+                ]
+              ],
+              [
+                "scene_obstacle_floor_front_support",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  -0.481059,
+                  -0.190913,
+                  0.00425,
+                  0.5,
+                  0.5,
+                  0.5,
+                  0.5
+                ]
+              ],
+              [
+                "scene_obstacle_floor_left_support",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  -0.407059,
+                  -0.264913,
+                  0.00425,
+                  0.5,
+                  0.5,
+                  0.5,
+                  0.5
+                ]
+              ],
+              [
+                "scene_obstacle_floor_right_support",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  -0.407059,
+                  -0.116913,
+                  0.00425,
+                  0.5,
+                  0.5,
+                  0.5,
+                  0.5
+                ]
+              ],
+              [
+                "scene_obstacle_front_wall",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  0.012894,
+                  -0.093906,
+                  0.051,
+                  1.0,
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ],
+              [
+                "scene_obstacle_left_wall",
+                [
+                  0.0666,
+                  0.00585,
+                  0.0666
+                ],
+                [
+                  0.012894,
+                  -0.131406,
+                  0.051,
+                  1.0,
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ],
+              [
+                "scene_obstacle_virtual_side_wall",
+                [
+                  0.03,
+                  1.2,
+                  0.8
+                ],
+                [
+                  -0.915,
+                  0.0,
+                  0.401,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              ],
+              [
+                "scene_obstacle_virtual_top_wall",
+                [
+                  1.2,
+                  1.2,
+                  0.03
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.515,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              ]
+            ],
+            []
+          ]
+        },
+        "scene_fingerprint": "838ec31493c4a61f108580b8d3e9c6cd2395af3844e5f18dea17910193ef22ee",
+        "step_id": "winner_chain_ik_preselect_grasp",
+        "verified_task_success": null,
+        "world_objects": [
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_back_wall",
+            "pose": [
+              -0.16890642046928406,
+              -0.31289422512054443,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor",
+            "pose": [
+              -0.19091269373893738,
+              0.1070590615272522,
+              0.004250002093613148,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_back_support",
+            "pose": [
+              -0.19091269373893738,
+              0.03305903077125549,
+              0.004250000696629286,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_front_support",
+            "pose": [
+              -0.19091270864009857,
+              0.1810590624809265,
+              0.004250003024935722,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_left_support",
+            "pose": [
+              -0.2649127244949341,
+              0.1070590615272522,
+              0.004250000696629286,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_right_support",
+            "pose": [
+              -0.11691270768642426,
+              0.1070590615272522,
+              0.004250003024935722,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_front_wall",
+            "pose": [
+              -0.09390643984079361,
+              -0.31289419531822205,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_left_wall",
+            "pose": [
+              -0.13140642642974854,
+              -0.31289422512054443,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.029999999329447746,
+              1.2000000476837158,
+              0.800000011920929
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_virtual_side_wall",
+            "pose": [
+              -6.812060693306421e-09,
+              0.6150000691413879,
+              0.4010000228881836,
+              0.7071067690849304,
+              1.303851515643828e-08,
+              1.1102230246251565e-16,
+              -0.7071067690849304
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              1.2000000476837158,
+              1.2000000476837158,
+              0.029999999329447746
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_virtual_top_wall",
+            "pose": [
+              -2.7353378229122427e-08,
+              -0.3000001013278961,
+              1.5149999856948853,
+              0.7071067690849304,
+              1.303851515643828e-08,
+              1.1102230246251565e-16,
+              -0.7071067690849304
+            ],
+            "radius": null,
+            "scale": null
+          }
+        ],
+        "world_signature": [
+          [
+            [
+              "scene_obstacle_back_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.168906,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_floor",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_back_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.333059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_front_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.481059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_left_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.264913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_right_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.116913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_front_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.093906,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_left_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.131406,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_virtual_side_wall",
+              [
+                0.03,
+                1.2,
+                0.8
+              ],
+              [
+                -0.915,
+                0.0,
+                0.401,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_virtual_top_wall",
+              [
+                1.2,
+                1.2,
+                0.03
+              ],
+              [
+                0.0,
+                0.0,
+                1.515,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          ],
+          []
+        ]
+      },
+      {
+        "changed_links": [],
+        "disabled_links": [],
+        "disabled_objects": [
+          "active_target_object"
+        ],
+        "enabled": false,
+        "event": "native_contact_audit",
+        "mode": "tray_final_descent_compatibility",
+        "pair_local_supported": false,
+        "permitted_contact_support": null,
+        "permitted_contact_target": "right_wall",
+        "piece_id": "right_wall",
+        "reason": "link_world_toggle",
+        "relaxed_branch_required": null,
+        "requested_links": [
+          "gripper_Left_Support_Link",
+          "gripper_Right_Support_Link"
+        ],
+        "requirement_evidence": "not_established",
+        "scene_fingerprint": "838ec31493c4a61f108580b8d3e9c6cd2395af3844e5f18dea17910193ef22ee",
+        "step_id": "winner_chain_jimu_parallel_grasp_place_paired_relation_ik",
+        "verified_task_success": null,
+        "world_objects": [
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_back_wall",
+            "pose": [
+              -0.16890642046928406,
+              -0.31289422512054443,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor",
+            "pose": [
+              -0.19091269373893738,
+              0.1070590615272522,
+              0.004250002093613148,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_back_support",
+            "pose": [
+              -0.19091269373893738,
+              0.03305903077125549,
+              0.004250000696629286,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_front_support",
+            "pose": [
+              -0.19091270864009857,
+              0.1810590624809265,
+              0.004250003024935722,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_left_support",
+            "pose": [
+              -0.2649127244949341,
+              0.1070590615272522,
+              0.004250000696629286,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_floor_right_support",
+            "pose": [
+              -0.11691270768642426,
+              0.1070590615272522,
+              0.004250003024935722,
+              0.7071067690849304,
+              0.7071067690849304,
+              3.035923512584304e-08,
+              5.393446400603352e-08
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_front_wall",
+            "pose": [
+              -0.09390643984079361,
+              -0.31289419531822205,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.066600002348423,
+              0.005849999841302633,
+              0.066600002348423
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_left_wall",
+            "pose": [
+              -0.13140642642974854,
+              -0.31289422512054443,
+              0.05100001394748688,
+              0.7071068286895752,
+              -4.340570125549448e-09,
+              -3.077037291632223e-09,
+              -0.7071067094802856
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              0.029999999329447746,
+              1.2000000476837158,
+              0.800000011920929
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_virtual_side_wall",
+            "pose": [
+              -6.812060693306421e-09,
+              0.6150000691413879,
+              0.4010000228881836,
+              0.7071067690849304,
+              1.303851515643828e-08,
+              1.1102230246251565e-16,
+              -0.7071067690849304
+            ],
+            "radius": null,
+            "scale": null
+          },
+          {
+            "dims": [
+              1.2000000476837158,
+              1.2000000476837158,
+              0.029999999329447746
+            ],
+            "file_path": null,
+            "name": "scene_obstacle_virtual_top_wall",
+            "pose": [
+              -2.7353378229122427e-08,
+              -0.3000001013278961,
+              1.5149999856948853,
+              0.7071067690849304,
+              1.303851515643828e-08,
+              1.1102230246251565e-16,
+              -0.7071067690849304
+            ],
+            "radius": null,
+            "scale": null
+          }
+        ],
+        "world_signature": [
+          [
+            [
+              "scene_obstacle_back_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.168906,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_floor",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_back_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.333059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_front_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.481059,
+                -0.190913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_left_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.264913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_floor_right_support",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                -0.407059,
+                -0.116913,
+                0.00425,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ]
+            ],
+            [
+              "scene_obstacle_front_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.093906,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_left_wall",
+              [
+                0.0666,
+                0.00585,
+                0.0666
+              ],
+              [
+                0.012894,
+                -0.131406,
+                0.051,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_virtual_side_wall",
+              [
+                0.03,
+                1.2,
+                0.8
+              ],
+              [
+                -0.915,
+                0.0,
+                0.401,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            [
+              "scene_obstacle_virtual_top_wall",
+              [
+                1.2,
+                1.2,
+                0.03
+              ],
+              [
+                0.0,
+                0.0,
+                1.515,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          ],
+          []
+        ]
+      }
+    ]
+  },
+  "triangle_roof": "NOT_RUN: four-wall prerequisite blocked",
+  "hardware_motion": false,
+  "hardware_items": "NOT_RUN",
+  "old_status_sha256": "7a7759758ac9b3ed67e54374cdcb10f9837bb3c5507c79bae41348deacb60658",
+  "raw_logs": {
+    "three_scene_tray_descent_gpu_cost_v2.log": {
+      "sha256": "0dd7cdd187e4d00e888c1768e5a6b831825b0080dabbc4213f2d875d2d351867",
+      "text": "Warp DeprecationWarning: The symbol `warp.torch.device_from_torch` will soon be removed from the public API. Use `warp.device_from_torch` instead.\n{\"status\": \"PASS\", \"kind\": \"synthetic_gpu_cost_only\", \"motion\": false, \"before\": {\"finger_world\": [[221.0]], \"arm_world\": [[221.0]], \"self_overlap\": [[251.0]]}, \"during\": {\"finger_world\": [[0.0]], \"arm_world\": [[221.0]], \"self_overlap\": [[251.0]]}, \"restored_finger_world\": [[221.0]], \"evidence\": {\"world_filter_calls\": 2, \"world_cost_instances\": 53, \"links\": [\"gripper_Left_1_Link\", \"gripper_Left_2_Link\", \"gripper_Left_Support_Link\", \"gripper_Right_1_Link\", \"gripper_Right_2_Link\", \"gripper_Right_Support_Link\", \"left_pad\", \"right_pad\"], \"self_collision_input_modified\": false}, \"full_chain_validated\": false}\n"
+    },
+    "three_scene_tray_descent_tests.log": {
+      "sha256": "e89a2d5ac918f9f1beffceb8e706cc0f9d92da55123db06d8caea80b9c893dc3",
+      "text": "........................................................................ [ 75%]\n.......................                                                  [100%]\n95 passed in 7.59s\n"
+    },
+    "three_scene_tray_descent_compile.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    "three_scene_tray_descent_full.log": {
+      "sha256": "1218057fac4d54b5dbe29a4d6547efd43d1be3d79f208e1bfd3d89e615a827fc",
+      "text": "........................................................................ [ 17%]\n........................................................................ [ 34%]\n........................................................................ [ 51%]\n........................................................................ [ 69%]\n........................................................................ [ 86%]\n.........................................................                [100%]\n417 passed in 27.23s\n"
+    },
+    "three_scene_tray_descent_four_wall.log": {
+      "sha256": "91d577491e134a435c1da81f3e771261a6c5000e944104634a5c10af79141c7c",
+      "text": "/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/sapien/__init__.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\n[jimu gripper] using Jimu dry-run motion executor; skipped direct dry-run wrapper so grasp partial-open state is preserved\n[jimu config] portable ManiSkill task registered: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/maniskill_env/mani_skill/envs/tasks/digital_twins/so101_arm_with_two_cameras/pick_jiaobang.py\n[jimu config] portable RM75 asset: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/maniskill_env/mani_skill/assets/robots/RM75_gripper/RM75-B/urdf/RM75-B.urdf\n[jimu config] mesh_file=/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb\n[jimu config] sim_asset_file=/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6p5x74.glb\n[jimu config] localization=assembly, base_anchor=jimu_base_assembly, tray_anchor=jimu_liaoban\n[jimu config] assembly_assets=base=/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/jimu_base_assembly_5plates.glb, tray=/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/jimu_liaoban_new/jimu_liaoban_new.obj, sam6d_loaded_tray=/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/jimu_liaoban_new/jimu_liaoban_new_loaded_14plates.glb, tray_scale=0.01000, slot_layout=7x2, render_tray=True, render_slot_plates=True, save_preview=True\n[jimu config] apriltag_world_offsets_m=base=(0.0000, 0.0000), tray=(0.0000, 0.0000)\n[jimu config] logical_plate_extents_mm=[74.0, 6.5, 74.0] (use_mesh_extents=False)\n[jimu config] tray_bounds_mm=[[0.0, 0.0, -5.0], [242.5, 230.0, 20.0]], slot_x_mm=[14.75, 52.25, 89.75, 127.25, 164.75, 202.25, 239.75], slot_y_mm=[40.0, 190.0]\n[jimu config] scene_source=/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/scenes/jimu_assembly_anchors_default_sam6d.json\n[jimu config][warn] using bundled synthetic fixed tray/base scene; for the physical new tray use --jimu-apriltag-anchor-localization\n[jimu config] maniskill_env=portable, extra_root=/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/maniskill_env/mani_skill\n[jimu config] rm75_assets=urdf=/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/maniskill_env/mani_skill/assets/robots/RM75_gripper/RM75-B/urdf/RM75-B.urdf, srdf=/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/maniskill_env/mani_skill/assets/robots/RM75_gripper/RM75-B/urdf/RM75-B.permissive.srdf, curobo_urdf=/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/maniskill_env/mani_skill/assets/robots/RM75_gripper/RM75-B/urdf/RM75-B.planning.tiny.urdf\n[jimu config] cad_to_sim_local_rpy_deg=[0.0, 0.0, 0.0]\n[jimu config] snap_low_profile_objects_flat_on_table=False\n[jimu config] build_layers=first, scene_roles=['floor', 'right_wall', 'back_wall', 'left_wall', 'front_wall', 'floor_right_support', 'floor_back_support', 'floor_left_support', 'floor_front_support'], tracked_roles=['floor', 'floor_right_support', 'floor_back_support', 'floor_left_support', 'floor_front_support'], cycle_roles=['right_wall', 'back_wall', 'left_wall', 'front_wall'], repeat_count=4, enforce_layer_order=True\n[jimu config] fast_chain_flow=ik_batch_intersection, slots=16, seeds=32, cuda_graph=True, fixed_batch=16, top_pairs=16, legacy_fallback=False, pregrasp_motiongen=False, pregrasp_lazy=True, pregrasp_initial=1, pregrasp_max=8, pregrasp_target_winners=1\n[jimu config] transport_q_goal_prefilter=True, trials=1, timeout=2.00, trajopt_seeds=1\n[jimu config] joint_search_validate_final_contact=True\n[jimu config] empty_grasp_check_after_lift=False\n[jimu config] constrained_short_segments=pose_metric_first=True, short_tol=0.0080m, final_contact_tol=0.0080m, locked_axis_tol=0.0080m, mode=constrained, free_short_motiongen=False, grasp_free_motiongen=False, post_place_free_only=False, direct_return_after_place=False, skip_post_place_clearance=False, return_prelift=True/True, force_post_place_replan=False\n[jimu config] jimu place rules use vertical_place auto-classification, vertical_place_hover_height_m=0.080, final_contact_clearance_m=0.000, first_layer_bottom_clearance_m=0.0060, first_layer_outward_margin_m=0.0010, start_collision_lift_m=0.100, virtual_top_wall_z=1.500\n[jimu config] final-contact fallbacks=True, low_z=[0.02]m, side_high_offset=0.020m, min_target_z=0.000m, rank_penalty=100.0, generic_post_retreat=16 candidates\n[jimu config] canonical_frames=True, snap_cardinal=True, place_symmetry_enabled=False, place_symmetry_deg=[0.0, 90.0, 180.0, -90.0], parallel_grasp_place=True, parallel_sources_per_grasp=1, parallel_snap_yaw_90=False, tilt_sym_bias=0.75, return_pair_weight=1.00\n[jimu config] attached_payload_grid=5x5, radius=8.0mm, span_scale=1.00, dim_scale=1.00\n[jimu config] post_place_gripper=partial_enabled=True, partial_fraction=0.70, partial_value=0.637, full_open_after_clearance=False\n[jimu config] pregrasp_gripper=partial_enabled=True, fraction=0.79, real_value=0.719, sim_value=0.580, skip_physics_sync=True\n[jimu config] dry_run_motion_render=True, scale=0.25, min_s=0.25, max_s=1.50, fps=18.0, rgb_window_scale=0.00, roof_return_linear_fallback=True\n[jimu config] near_ik_fallback=True, pos_threshold=0.0001m, rot_threshold=0.001rad\n[jimu config] linear_joint_transport_fallback=False, step=0.035rad, check_start_state=True\n[jimu config] return_to_start=prelift_min=0.080m, prelift_extra=0.025m, prelift_max=0.120m, retry=False, retry_attempts=4, retry_trajopt=8, retry_graph=False, staged_real=True\n[jimu config] legacy_mplib_demo_planner_disabled=True\n[curobo] set TORCH_EXTENSIONS_DIR=/tmp/rm75_native_curobo_clean\n[jimu config] cuRobo near-IK fallback enabled: pos<=0.0001m, rot<=0.001rad\nUsing bridge script: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_move_with_foundationpose.py\nUsing planner script: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_move_v10_perpendicular_to_object.py\nUsing camera extrinsic from: /home/zhangzhao/Desktop/rm75-manipulation/assets/calibration/camera_extrinsic_opencv.npy\n[single_scene] scene lifecycle: create once, then switch active object actors in-place\nRepeat mode: 4 cycle(s)\nTarget selection order: cycle\nPlanned cycle sequence: ['right_wall', 'back_wall', 'left_wall', 'front_wall']\nTargeted place rules:\n- back_second_wall: primitive=jimu_relative_pose, target=back_wall, hover_height=0.08, release_retreat_height=0.08, slots=[]\n- back_wall: primitive=jimu_relative_pose, target=floor, hover_height=0.08, release_retreat_height=0.08, slots=[]\n- bi: primitive=insert_vertical, target=bitong, hover_height=0.15, release_retreat_height=0.15, slots=[]\n- carriot: primitive=place_on_slots, target=desk, hover_height=0.08, release_retreat_height=0.1, slots=['slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'slot_6']\n- front_second_wall: primitive=jimu_relative_pose, target=front_wall, hover_height=0.08, release_retreat_height=0.08, slots=[]\n- front_wall: primitive=jimu_relative_pose, target=floor, hover_height=0.08, release_retreat_height=0.08, slots=[]\n- gluestick: primitive=place_on_slots, target=desk, hover_height=0.12, release_retreat_height=0.12, slots=['slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'slot_6']\n- hongshupian: primitive=place_on_slots, target=desk, hover_height=0.12, release_retreat_height=0.12, slots=['slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'slot_6']\n- left_second_wall: primitive=jimu_relative_pose, target=left_wall, hover_height=0.08, release_retreat_height=0.08, slots=[]\n- left_wall: primitive=jimu_relative_pose, target=floor, hover_height=0.08, release_retreat_height=0.08, slots=[]\n- lvmukuai: primitive=place_on_slots, target=desk, hover_height=0.08, release_retreat_height=0.1, slots=['slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'slot_6']\n- red_triangle_back: primitive=roof_assembly, target=red_bricks_cube, hover_height=0.06, release_retreat_height=0.08, slots=[]\n- red_triangle_front: primitive=roof_assembly, target=red_bricks_cube, hover_height=0.06, release_retreat_height=0.08, slots=[]\n- red_triangle_left: primitive=roof_assembly, target=red_bricks_cube, hover_height=0.06, release_retreat_height=0.08, slots=[]\n- red_triangle_right: primitive=roof_assembly, target=red_bricks_cube, hover_height=0.06, release_retreat_height=0.08, slots=[]\n- right_second_wall: primitive=jimu_relative_pose, target=right_wall, hover_height=0.08, release_retreat_height=0.08, slots=[]\n- right_wall: primitive=jimu_relative_pose, target=floor, hover_height=0.08, release_retreat_height=0.08, slots=[]\n- shuazi: primitive=place_on_slots, target=desk, hover_height=0.08, release_retreat_height=0.1, slots=['slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'slot_6']\n- tennis: primitive=place_on_slots, target=desk, hover_height=0.1, release_retreat_height=0.1, slots=['slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'slot_6']\nWarp DeprecationWarning: The symbol `warp.torch.device_from_torch` will soon be removed from the public API. Use `warp.device_from_torch` instead.\n[prefetch] warmed shared cuRobo planner namespace=next_cycle_prefetch in 3958.2ms\n[jimu-order] holding second layer until first layer is complete: pending_first_layer=['right_wall', 'back_wall', 'left_wall', 'front_wall'], candidates=['right_wall', 'back_wall', 'left_wall', 'front_wall'], selected=right_wall\n\n[cycle 1] target pool: ['right_wall', 'back_wall', 'left_wall', 'front_wall']\n[cycle 1] selected target object: right_wall\n[cycle 1] remaining build targets after selected: ['back_wall', 'left_wall', 'front_wall']\n\n[cycle 1] using object spec: right_wall\n[cycle 1] mesh file: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb\n[cycle 1] simulation asset file: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6p5x74.glb\n[cycle 1] simulation asset scale: 1.0\n[cycle 1] GroundingDINO target: small square plastic building block.\n[cycle 1] targeted place: jimu_relative_pose -> floor\n[cycle 1] selected obstacles: ['floor', 'floor_right_support', 'floor_back_support', 'floor_left_support', 'floor_front_support', 'back_wall', 'left_wall', 'front_wall']\n\n================ cycle 1 ================\n[jimu config] disabled legacy mplib demo planner; cuRobo remains the motion planner\n[jimu config] disabled legacy mplib FCL collision objects for scene obstacles\n[sam6d grasp] using fixed SAM6D scene result: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/scenes/jimu_assembly_anchors_default_sam6d.json\n[jimu-sam6d] table-locked assembly anchor Z: floor 0.0040->0.0033, tray -0.0015->0.0050\n[jimu-sam6d] derived Jimu scene from assembly anchors: base=jimu_base_assembly tray=jimu_liaoban roles=['back_second_wall', 'back_wall', 'floor', 'floor_back_support', 'floor_front_support', 'floor_left_support', 'floor_right_support', 'front_second_wall', 'front_wall', 'jimu_spare_slot_09', 'jimu_spare_slot_10', 'jimu_spare_slot_11', 'jimu_spare_slot_12', 'jimu_spare_slot_13', 'jimu_spare_slot_14', 'left_second_wall', 'left_wall', 'right_second_wall', 'right_wall']\n[jimu-sam6d] role assignment:\n  floor <- result_index=0 sam3_instance=0 score=1.000 base_t=[-0.19089999794960022, 0.1071000024676323, 0.0031999999191612005] axis_dot_base_z(x,y,z)=[0.0, 1.0, 0.0]\n  floor_right_support <- result_index=0 sam3_instance=0 score=1.000 base_t=[-0.1168999969959259, 0.1071000024676323, 0.0031999999191612005] axis_dot_base_z(x,y,z)=[0.0, 1.0, 0.0]\n  floor_left_support <- result_index=0 sam3_instance=0 score=1.000 base_t=[-0.26489999890327454, 0.1071000024676323, 0.0031999999191612005] axis_dot_base_z(x,y,z)=[0.0, 1.0, 0.0]\n  floor_back_support <- result_index=0 sam3_instance=0 score=1.000 base_t=[-0.19089999794960022, 0.03310000151395798, 0.0031999999191612005] axis_dot_base_z(x,y,z)=[0.0, 1.0, 0.0]\n  floor_front_support <- result_index=0 sam3_instance=0 score=1.000 base_t=[-0.19089999794960022, 0.181099995970726, 0.0031999999191612005] axis_dot_base_z(x,y,z)=[0.0, 1.0, 0.0]\n  right_wall <- result_index=1 sam3_instance=0 score=1.000 base_t=[-0.20640000700950623, -0.31290000677108765, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  back_wall <- result_index=1 sam3_instance=0 score=1.000 base_t=[-0.1688999980688095, -0.31290000677108765, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  left_wall <- result_index=1 sam3_instance=0 score=1.000 base_t=[-0.131400004029274, -0.31290000677108765, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  front_wall <- result_index=1 sam3_instance=0 score=1.000 base_t=[-0.09390000253915787, -0.31290000677108765, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  jimu_spare_slot_09 <- result_index=1 sam3_instance=0 score=1.000 base_t=[-0.05640000104904175, -0.31290000677108765, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  jimu_spare_slot_10 <- result_index=1 sam3_instance=0 score=1.000 base_t=[-0.01889999955892563, -0.31290000677108765, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  jimu_spare_slot_11 <- result_index=1 sam3_instance=0 score=1.000 base_t=[0.01860000006854534, -0.31290000677108765, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  jimu_spare_slot_12 <- result_index=1 sam3_instance=0 score=1.000 base_t=[-0.20640000700950623, -0.16290000081062317, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  right_second_wall <- result_index=1 sam3_instance=0 score=1.000 base_t=[-0.1688999980688095, -0.16290000081062317, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  back_second_wall <- result_index=1 sam3_instance=0 score=1.000 base_t=[-0.131400004029274, -0.16290000081062317, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  left_second_wall <- result_index=1 sam3_instance=0 score=1.000 base_t=[-0.09390000253915787, -0.16290000081062317, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  front_second_wall <- result_index=1 sam3_instance=0 score=1.000 base_t=[-0.05640000104904175, -0.16290000081062317, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  jimu_spare_slot_13 <- result_index=1 sam3_instance=0 score=1.000 base_t=[-0.01889999955892563, -0.16290000081062317, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n  jimu_spare_slot_14 <- result_index=1 sam3_instance=0 score=1.000 base_t=[0.01860000006854534, -0.16290000081062317, 0.05000000074505806] axis_dot_base_z(x,y,z)=[0.0, 0.0, 1.0]\n[jimu-sam6d] using target right_wall: camera translation=[-0.08992499858140945, 0.22391700744628906, 0.5339140295982361]\n[foundationpose diag] target raw T_cam_obj p=[-0.08992499858140945, 0.22391700744628906, 0.5339140295982361], q=[0.46956899762153625, 0.7292960286140442, 0.41672998666763306, -0.27197200059890747]\n[foundationpose diag] target direct mapped p=[0.13105300068855286, -0.2628979980945587, 0.8114060163497925], q=[0.45011699199676514, -0.23177999258041382, -0.8498250246047974, -0.14652599394321442]\n[foundationpose diag] target inverse mapped p=[0.012893999926745892, -0.20640599727630615, 0.05000000074505806], q=[1.0, -0.0, -0.0, 0.0]\n[foundationpose diag] target current convention=inverse, current-vs-direct translation_gap=0.7726 m, rotation_gap=126.50 deg\nMapped sim object translation: [0.012893999926745892, -0.20640599727630615, 0.05000000074505806]\nSim URDF     : /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/maniskill_env/mani_skill/assets/robots/RM75_gripper/RM75-B/urdf/RM75-B.urdf\nPlanning URDF: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/maniskill_env/mani_skill/assets/robots/RM75_gripper/RM75-B/urdf/RM75-B.planning.tiny.urdf\nSRDF         : /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/jimu_portable_repro/maniskill_env/mani_skill/assets/robots/RM75_gripper/RM75-B/urdf/RM75-B.permissive.srdf\n\u001b[33;1m2026-09-07 19:14:49,659 - mani_skill  - WARNING - No initial pose set for actor builder of grasp_pose_visual, setting to default pose q=[1,0,0,0], p=[0,0,0]. Not setting reasonable initial poses may slow down simulation, see https://github.com/haosulab/ManiSkill/issues/421.\u001b[0m\n[scene obstacle] applied floor: world translation=[-0.4070590138435364, -0.19091300666332245, 0.0032500000670552254], planner_collision=yes, box_scale=0.900 (global=0.900, object=1.000, non_fixed=1.000, placed=1.000), box_size=[0.066600002348423, 0.005849999841302633, 0.066600002348423], sim_collision=box\n[scene obstacle] applied floor_right_support: world translation=[-0.4070590138435364, -0.11691299825906754, 0.0032500000670552254], planner_collision=yes, box_scale=0.900 (global=0.900, object=1.000, non_fixed=1.000, placed=1.000), box_size=[0.066600002348423, 0.005849999841302633, 0.066600002348423], sim_collision=box\n[scene obstacle] applied floor_back_support: world translation=[-0.33305901288986206, -0.19091300666332245, 0.0032500000670552254], planner_collision=yes, box_scale=0.900 (global=0.900, object=1.000, non_fixed=1.000, placed=1.000), box_size=[0.066600002348423, 0.005849999841302633, 0.066600002348423], sim_collision=box\n[scene obstacle] applied floor_left_support: world translation=[-0.4070590138435364, -0.26491299271583557, 0.0032500000670552254], planner_collision=yes, box_scale=0.900 (global=0.900, object=1.000, non_fixed=1.000, placed=1.000), box_size=[0.066600002348423, 0.005849999841302633, 0.066600002348423], sim_collision=box\n[scene obstacle] applied floor_front_support: world translation=[-0.4810590147972107, -0.19091300666332245, 0.0032500000670552254], planner_collision=yes, box_scale=0.900 (global=0.900, object=1.000, non_fixed=1.000, placed=1.000), box_size=[0.066600002348423, 0.005849999841302633, 0.066600002348423], sim_collision=box\n[safety] raised mapped object by 0.0010 m so its lowest point stays above the table (min z 0.0130 -> 0.0140)\n[scene obstacle] applied back_wall: world translation=[0.012893999926745892, -0.16890600323677063, 0.050999999046325684], planner_collision=yes, box_scale=0.900 (global=0.900, object=1.000, non_fixed=1.000, placed=1.000), box_size=[0.066600002348423, 0.005849999841302633, 0.066600002348423], sim_collision=box\n[safety] raised mapped object by 0.0010 m so its lowest point stays above the table (min z 0.0130 -> 0.0140)\n[scene obstacle] applied left_wall: world translation=[0.012893999926745892, -0.1314059942960739, 0.050999999046325684], planner_collision=yes, box_scale=0.900 (global=0.900, object=1.000, non_fixed=1.000, placed=1.000), box_size=[0.066600002348423, 0.005849999841302633, 0.066600002348423], sim_collision=box\n[safety] raised mapped object by 0.0010 m so its lowest point stays above the table (min z 0.0130 -> 0.0140)\n[scene obstacle] applied front_wall: world translation=[0.012893999926745892, -0.09390600025653839, 0.050999999046325684], planner_collision=yes, box_scale=0.900 (global=0.900, object=1.000, non_fixed=1.000, placed=1.000), box_size=[0.066600002348423, 0.005849999841302633, 0.066600002348423], sim_collision=box\n[planner wall] applied virtual_side_wall: front_face_x=-0.900, center=[-0.9150000214576721, 0.0, 0.4000000059604645], box_size=[0.029999999329447746, 1.2000000476837158, 0.800000011920929], planner_collision=yes\n[planner wall] applied virtual_top_wall: bottom_z=1.500, center=[0.0, 0.0, 1.5149999856948853], box_size=[1.2000000476837158, 1.2000000476837158, 0.029999999329447746], planner_collision=yes\n[safety] raised scene obstacle floor by 0.0010 m so its lowest point stays above the table (bottom z 0.0000 -> 0.0010)\n[safety] raised scene obstacle floor_right_support by 0.0010 m so its lowest point stays above the table (bottom z 0.0000 -> 0.0010)\n[safety] raised scene obstacle floor_back_support by 0.0010 m so its lowest point stays above the table (bottom z 0.0000 -> 0.0010)\n[safety] raised scene obstacle floor_left_support by 0.0010 m so its lowest point stays above the table (bottom z 0.0000 -> 0.0010)\n[safety] raised scene obstacle floor_front_support by 0.0010 m so its lowest point stays above the table (bottom z -0.0000 -> 0.0010)\n[safety] raised scene obstacle virtual_side_wall by 0.0010 m so its lowest point stays above the table (bottom z 0.0000 -> 0.0010)\nScene obstacles registered: 10\n[jimu visual] rendered tray visual-only actor: p=[0.05290000140666962, -0.22120000422000885, 0.004999999888241291]\n[jimu visual] rendered tray slot plate visual-only actors: 13\n[inspect] saved failure render image: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/failure_renders/20260907_191449_right_wall_jimu_scene_preview.png\n[jimu visual] saved scene preview image: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/failure_renders/20260907_191449_right_wall_jimu_scene_preview.png\n[jimu visual] saved multi-view scene preview image: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/failure_renders/20260907_191450_right_wall_jimu_scene_preview_views.png\n[jimu place] right_wall: first-layer target anchored to table-level bottom, target_xyz=[-0.4070590138435364, -0.14966300129890442, 0.0494999997317791], axis_yaw_deg=[0.0, 90.0, None]\n[target_ghost] rendered current target pose for right_wall: mode=mesh, variant=default, p=[-0.40709999203681946, -0.14970000088214874, 0.0494999997317791], alpha=0.55\n[single_scene] active=right_wall, scene obstacle(s)=['back_wall', 'floor', 'floor_back_support', 'floor_front_support', 'floor_left_support', 'floor_right_support', 'front_wall', 'left_wall']\n[single_scene] switched active object to right_wall without recreating env\n[jimu place] right_wall: first-layer target anchored to table-level bottom, target_xyz=[-0.4070590138435364, -0.14966300129890442, 0.0494999997317791], axis_yaw_deg=[0.0, 90.0, None]\n[target_ghost] rendered current target pose for right_wall: mode=mesh, variant=default, p=[-0.40709999203681946, -0.14970000088214874, 0.0494999997317791], alpha=0.55\n\n[episode] planning from FoundationPose-initialized object pose\n\n[dry-run] --execute-real was not provided, so motions will only be planned and previewed\n\n[move to grasp with two-step approach]\n[jimu tilt] using current TCP->block line for grasp tilt sign; pivot_offset=3.5mm\n[direct_grasp] built 16 grasp candidate(s) from 16 pose variant(s) x 1 axis shift(s) x 1 z lift(s); grasp_mode=object_normal, tilt=15, non_tilt=1\n[direct_grasp] tilt variant labels: ['grasp_tilt_60deg', 'grasp_tilt_45deg', 'grasp_tilt_32deg', 'grasp_tilt_24deg', 'grasp_tilt_16deg', 'grasp_tilt_8deg', 'grasp_tilt_4deg', 'grasp_tilt_4deg']\n[jimu tilt] preserved signed tilt labels for right_wall: changed=15, preview=['grasp_direct_grasp_tilt_away_robot_60deg', 'grasp_direct_grasp_tilt_away_robot_45deg', 'grasp_direct_grasp_tilt_away_robot_32deg', 'grasp_direct_grasp_tilt_away_robot_24deg', 'grasp_direct_grasp_tilt_away_robot_16deg', 'grasp_direct_grasp_tilt_away_robot_8deg', 'grasp_direct_grasp_tilt_away_robot_4deg', 'grasp_direct_grasp_tilt_toward_robot_4deg']\n\n[poses]\nobject p: [ 0.012894 -0.206406  0.05    ] object q: [ 1. -0. -0.  0.]\n[direct_grasp] vertical long-axis placement: increasing pregrasp winners 1->5 so downstream final-approach can test deeper axis biases\n[direct_grasp] integrated fast-chain: first planning only 1/5 pregrasp winner(s); pair-first IK preselect will choose the actual top pair\nCreating new Mesh cache: 1\nCreating new Mesh cache: 1\n[curobo] created CUDA graph batch IK solver: batch=16, seeds=32\nObstacle not found in world model: None\nNoneType: None\n[curobo] winner_chain_ik_preselect_grasp_contact: disabled stale world obstacle(s) via enable_obstacle: ['active_target_object']\n[curobo] winner_chain_ik_preselect_grasp_contact: forced disabled stale active_target_object\n[winner_chain] rebuilt fast-chain CUDA graph IK solver for contact graph after removing the active object from the collision world\n[curobo] created CUDA graph batch IK solver: batch=16, seeds=32\n[jimu place] right_wall: first-layer target anchored to table-level bottom, target_xyz=[-0.4070590138435364, -0.14966300129890442, 0.0494999997317791], axis_yaw_deg=[0.0, 90.0, None]\n[place_state] category=long_axis, mode=vertical_place, release lift disabled\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[place_state] built 3 transport hover candidate(s) (pad-level filter would keep 6/6, but retaining tilted variants too; max_pad_tilt=0.25)\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_-0.0, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_+180.0_target_sym_yaw_z_+180, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] right_wall: first-layer target anchored to table-level bottom, target_xyz=[-0.4070590138435364, -0.14966300129890442, 0.0494999997317791], axis_yaw_deg=[0.0, 90.0, None]\n[place_state] category=long_axis, mode=vertical_place, release lift disabled\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[place_state] built 3 transport hover candidate(s) (pad-level filter would keep 6/6, but retaining tilted variants too; max_pad_tilt=0.25)\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_-0.0, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_+180.0_target_sym_yaw_z_+180, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] right_wall: first-layer target anchored to table-level bottom, target_xyz=[-0.4070590138435364, -0.14966300129890442, 0.0494999997317791], axis_yaw_deg=[0.0, 90.0, None]\n[place_state] category=long_axis, mode=vertical_place, release lift disabled\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[place_state] built 3 transport hover candidate(s) (pad-level filter would keep 6/6, but retaining tilted variants too; max_pad_tilt=0.25)\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_-0.0, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_+180.0_target_sym_yaw_z_+180, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] right_wall: first-layer target anchored to table-level bottom, target_xyz=[-0.4070590138435364, -0.14966300129890442, 0.0494999997317791], axis_yaw_deg=[0.0, 90.0, None]\n[place_state] category=long_axis, mode=vertical_place, release lift disabled\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[place_state] built 3 transport hover candidate(s) (pad-level filter would keep 6/6, but retaining tilted variants too; max_pad_tilt=0.25)\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_-0.0, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_+180.0_target_sym_yaw_z_+180, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] right_wall: first-layer target anchored to table-level bottom, target_xyz=[-0.4070590138435364, -0.14966300129890442, 0.0494999997317791], axis_yaw_deg=[0.0, 90.0, None]\n[place_state] category=long_axis, mode=vertical_place, release lift disabled\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[place_state] built 3 transport hover candidate(s) (pad-level filter would keep 6/6, but retaining tilted variants too; max_pad_tilt=0.25)\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_-0.0, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_+180.0_target_sym_yaw_z_+180, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] right_wall: first-layer target anchored to table-level bottom, target_xyz=[-0.4070590138435364, -0.14966300129890442, 0.0494999997317791], axis_yaw_deg=[0.0, 90.0, None]\n[place_state] category=long_axis, mode=vertical_place, release lift disabled\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[place_state] built 3 transport hover candidate(s) (pad-level filter would keep 6/6, but retaining tilted variants too; max_pad_tilt=0.25)\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_-0.0, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_+180.0_target_sym_yaw_z_+180, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] right_wall: first-layer target anchored to table-level bottom, target_xyz=[-0.4070590138435364, -0.14966300129890442, 0.0494999997317791], axis_yaw_deg=[0.0, 90.0, None]\n[place_state] category=long_axis, mode=vertical_place, release lift disabled\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[place_state] built 3 transport hover candidate(s) (pad-level filter would keep 6/6, but retaining tilted variants too; max_pad_tilt=0.25)\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_-0.0, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_+180.0_target_sym_yaw_z_+180, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] right_wall: first-layer target anchored to table-level bottom, target_xyz=[-0.4070590138435364, -0.14966300129890442, 0.0494999997317791], axis_yaw_deg=[0.0, 90.0, None]\n[place_state] category=long_axis, mode=vertical_place, release lift disabled\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[place_state] built 3 transport hover candidate(s) (pad-level filter would keep 6/6, but retaining tilted variants too; max_pad_tilt=0.25)\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_-0.0, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_+180.0_target_sym_yaw_z_+180, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] right_wall: first-layer target anchored to table-level bottom, target_xyz=[-0.4070590138435364, -0.14966300129890442, 0.0494999997317791], axis_yaw_deg=[0.0, 90.0, None]\n[place_state] category=long_axis, mode=vertical_place, release lift disabled\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[jimu-lift] build_hover_pose: using world-Z hover for right_wall (0.080m)\n[place_state] built 3 transport hover candidate(s) (pad-level filter would keep 6/6, but retaining tilted variants too; max_pad_tilt=0.25)\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_-0.0, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[jimu place] added final-contact fallback hover(s) for right_wall: target_z=0.049m, base=transport_hover_parallel_grasp_z_yaw_+180.0_target_sym_yaw_z_+180, extra=3, low_z=[0.020]m, side_high=0.080m, side=0.020m\n[winner_chain] right_wall jimu parallel-grasp place IK: 72 relation-place candidate(s); exact grasp/T_tcp_obj matching; vertical targets use local-Z symmetry; flat targets use local-Y 0/90/180/270 TCP yaw\n{\"argv\": [\"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/Beta_demo-codex-v0.9/rm75_jimu_four_wall_portable.py\", \"--render-mode\", \"none\", \"--jimu-build-layers\", \"first\", \"--auto-execute\", \"--curobo-torch-extensions-dir\", \"/tmp/rm75_native_curobo_clean\", \"--camera-extrinsic-opencv-path\", \"/home/zhangzhao/Desktop/rm75-manipulation/assets/calibration/camera_extrinsic_opencv.npy\"], \"command_success\": false, \"evidence\": {\"changed_links\": [], \"disabled_links\": [], \"disabled_objects\": [\"active_target_object\"], \"enabled\": false, \"event\": \"native_contact_audit\", \"mode\": \"tray_final_descent_compatibility\", \"pair_local_supported\": false, \"permitted_contact_support\": null, \"permitted_contact_target\": \"right_wall\", \"piece_id\": \"right_wall\", \"reason\": \"link_world_toggle\", \"relaxed_branch_required\": null, \"requested_links\": [\"gripper_Left_Support_Link\", \"gripper_Right_Support_Link\"], \"requirement_evidence\": \"not_established\", \"scene_fingerprint\": \"838ec31493c4a61f108580b8d3e9c6cd2395af3844e5f18dea17910193ef22ee\", \"step_id\": \"winner_chain_jimu_parallel_grasp_place_paired_relation_ik\", \"verified_task_success\": null, \"world_objects\": [{\"dims\": [0.066600002348423, 0.005849999841302633, 0.066600002348423], \"file_path\": null, \"name\": \"scene_obstacle_back_wall\", \"pose\": [-0.16890642046928406, -0.31289422512054443, 0.05100001394748688, 0.7071068286895752, -4.340570125549448e-09, -3.077037291632223e-09, -0.7071067094802856], \"radius\": null, \"scale\": null}, {\"dims\": [0.066600002348423, 0.005849999841302633, 0.066600002348423], \"file_path\": null, \"name\": \"scene_obstacle_floor\", \"pose\": [-0.19091269373893738, 0.1070590615272522, 0.004250002093613148, 0.7071067690849304, 0.7071067690849304, 3.035923512584304e-08, 5.393446400603352e-08], \"radius\": null, \"scale\": null}, {\"dims\": [0.066600002348423, 0.005849999841302633, 0.066600002348423], \"file_path\": null, \"name\": \"scene_obstacle_floor_back_support\", \"pose\": [-0.19091269373893738, 0.03305903077125549, 0.004250000696629286, 0.7071067690849304, 0.7071067690849304, 3.035923512584304e-08, 5.393446400603352e-08], \"radius\": null, \"scale\": null}, {\"dims\": [0.066600002348423, 0.005849999841302633, 0.066600002348423], \"file_path\": null, \"name\": \"scene_obstacle_floor_front_support\", \"pose\": [-0.19091270864009857, 0.1810590624809265, 0.004250003024935722, 0.7071067690849304, 0.7071067690849304, 3.035923512584304e-08, 5.393446400603352e-08], \"radius\": null, \"scale\": null}, {\"dims\": [0.066600002348423, 0.005849999841302633, 0.066600002348423], \"file_path\": null, \"name\": \"scene_obstacle_floor_left_support\", \"pose\": [-0.2649127244949341, 0.1070590615272522, 0.004250000696629286, 0.7071067690849304, 0.7071067690849304, 3.035923512584304e-08, 5.393446400603352e-08], \"radius\": null, \"scale\": null}, {\"dims\": [0.066600002348423, 0.005849999841302633, 0.066600002348423], \"file_path\": null, \"name\": \"scene_obstacle_floor_right_support\", \"pose\": [-0.11691270768642426, 0.1070590615272522, 0.004250003024935722, 0.7071067690849304, 0.7071067690849304, 3.035923512584304e-08, 5.393446400603352e-08], \"radius\": null, \"scale\": null}, {\"dims\": [0.066600002348423, 0.005849999841302633, 0.066600002348423], \"file_path\": null, \"name\": \"scene_obstacle_front_wall\", \"pose\": [-0.09390643984079361, -0.31289419531822205, 0.05100001394748688, 0.7071068286895752, -4.340570125549448e-09, -3.077037291632223e-09, -0.7071067094802856], \"radius\": null, \"scale\": null}, {\"dims\": [0.066600002348423, 0.005849999841302633, 0.066600002348423], \"file_path\": null, \"name\": \"scene_obstacle_left_wall\", \"pose\": [-0.13140642642974854, -0.31289422512054443, 0.05100001394748688, 0.7071068286895752, -4.340570125549448e-09, -3.077037291632223e-09, -0.7071067094802856], \"radius\": null, \"scale\": null}, {\"dims\": [0.029999999329447746, 1.2000000476837158, 0.800000011920929], \"file_path\": null, \"name\": \"scene_obstacle_virtual_side_wall\", \"pose\": [-6.812060693306421e-09, 0.6150000691413879, 0.4010000228881836, 0.7071067690849304, 1.303851515643828e-08, 1.1102230246251565e-16, -0.7071067690849304], \"radius\": null, \"scale\": null}, {\"dims\": [1.2000000476837158, 1.2000000476837158, 0.029999999329447746], \"file_path\": null, \"name\": \"scene_obstacle_virtual_top_wall\", \"pose\": [-2.7353378229122427e-08, -0.3000001013278961, 1.5149999856948853, 0.7071067690849304, 1.303851515643828e-08, 1.1102230246251565e-16, -0.7071067690849304], \"radius\": null, \"scale\": null}], \"world_signature\": [[[\"scene_obstacle_back_wall\", [0.0666, 0.00585, 0.0666], [0.012894, -0.168906, 0.051, 1.0, -0.0, -0.0, 0.0]], [\"scene_obstacle_floor\", [0.0666, 0.00585, 0.0666], [-0.407059, -0.190913, 0.00425, 0.5, 0.5, 0.5, 0.5]], [\"scene_obstacle_floor_back_support\", [0.0666, 0.00585, 0.0666], [-0.333059, -0.190913, 0.00425, 0.5, 0.5, 0.5, 0.5]], [\"scene_obstacle_floor_front_support\", [0.0666, 0.00585, 0.0666], [-0.481059, -0.190913, 0.00425, 0.5, 0.5, 0.5, 0.5]], [\"scene_obstacle_floor_left_support\", [0.0666, 0.00585, 0.0666], [-0.407059, -0.264913, 0.00425, 0.5, 0.5, 0.5, 0.5]], [\"scene_obstacle_floor_right_support\", [0.0666, 0.00585, 0.0666], [-0.407059, -0.116913, 0.00425, 0.5, 0.5, 0.5, 0.5]], [\"scene_obstacle_front_wall\", [0.0666, 0.00585, 0.0666], [0.012894, -0.093906, 0.051, 1.0, -0.0, -0.0, 0.0]], [\"scene_obstacle_left_wall\", [0.0666, 0.00585, 0.0666], [0.012894, -0.131406, 0.051, 1.0, -0.0, -0.0, 0.0]], [\"scene_obstacle_virtual_side_wall\", [0.03, 1.2, 0.8], [-0.915, 0.0, 0.401, 1.0, 0.0, 0.0, 0.0]], [\"scene_obstacle_virtual_top_wall\", [1.2, 1.2, 0.03], [0.0, 0.0, 1.515, 1.0, 0.0, 0.0, 0.0]]], []]}, \"execute_real\": false, \"scene\": \"four-wall\", \"source_commit\": \"7aaff9da22486b7d25557b3795dd258f9b65f10d\", \"status\": \"strict_contact_not_supported\", \"strict\": false, \"tray_final_descent_compatibility\": true, \"verified_task_success\": null}\n\n[planning_profile] summary\n[planning_profile] jsonl: planning_profile_logs/20260907_191447_prefetch_pid1433270.jsonl\n[planning_profile] object | stage | n | ok | total_ms | avg_ms | max_ms | bar\n[planning_profile] __prefetch__ | next_cycle_prefetch_planner_warmup |  1 |  1 |   3958.2 |  3958.2 |  3958.2 | ################################\n[planning_profile] right_wall   | winner_chain_ik_preselect    |  1 |  0 |   3132.9 |  3132.9 |  3132.9 | #########################\n[planning_profile] right_wall   | scene_capture                |  1 |  1 |   2364.6 |  2364.6 |  2364.6 | ###################\n[planning_profile] right_wall   | build_grasp_candidates       |  1 |  1 |     24.6 |    24.6 |    24.6 | #\n[planning_profile] right_wall   | next_cycle_prefetch_consume  |  1 |  0 |      0.0 |     0.0 |     0.0 | #\n[planning_profile] right_wall   | episode_cycle_start          |  1 |  1 |      0.0 |     0.0 |     0.0 | #\n"
+    },
+    "three_scene_tray_descent_gpu_cost.log": {
+      "sha256": "4a24bed86e640504706df13c239a0f09ff31b1d70d77f277c43128e757124a70",
+      "text": "Warp DeprecationWarning: The symbol `warp.torch.device_from_torch` will soon be removed from the public API. Use `warp.device_from_torch` instead.\nTraceback (most recent call last):\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/tools/check_native_world_only_contact.py\", line 64, in <module>\n    main()\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/tools/check_native_world_only_contact.py\", line 26, in main\n    planner.set_world_from_cuboids([{'name': 'synthetic_table', 'pose': [0, 0, 0, 1, 0, 0, 0], 'dims': [0.2, 0.2, 0.2]}])\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/curobo_rm75_planner.py\", line 1468, in set_world_from_cuboids\n    self.set_world_from_obstacles(cuboids=cuboids, meshes=())\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/curobo_rm75_planner.py\", line 1477, in set_world_from_obstacles\n    raise RuntimeError(\nRuntimeError: This planner is running with an embedded free-space RM75 config. World collision updates need a formal robot config with collision_spheres.\n"
+    }
+  }
+}

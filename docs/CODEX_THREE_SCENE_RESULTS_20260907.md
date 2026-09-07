@@ -223,3 +223,7 @@ Reduced-speed free-space、isolated gripper、one PickPlace atom、multi-object 
 - Open questions for ChatGPT/user: 请先审阅原接触放宽分支的严格验收策略，并提供/确认 PushT 实际标定 profile。不能因旧程序显示 success 就开启真机。原 PickPlace 崩溃需单独环境诊断，不以重新设计算法替代。
 
 本轮停止在软件/无实际运动证据回传；不将以上部分完成夸大为三条真机 demo 全部收尾。
+
+## 后续用户授权的 Jimu 接触策略补充
+
+以上为原轮次历史结果，不覆盖。用户随后确认“其他接触阶段保留、搬运完整计算碰撞、夹指与被抓物体成对豁免”；最新实现与 CPU/GPU 仿真证据见 [搬运碰撞策略回传](CODEX_TRANSPORT_CONTACT_POLICY_20260907.md)。本补充仍不包含真实运动或独立物理成功验收。
