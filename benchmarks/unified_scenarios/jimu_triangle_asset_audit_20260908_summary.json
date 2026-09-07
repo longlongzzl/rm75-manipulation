@@ -1,0 +1,234 @@
+{
+  "audit_source_sha256": "350428d9a2b422601a9b84115558b5539fdbbda9012dd9d3f5ce85b3f0acd1c3",
+  "camera_captured": false,
+  "candidates": [
+    {
+      "bytes": 1493004,
+      "classification": "candidate_final_fix",
+      "listed_in_existing_approved_overlay": false,
+      "old_git_tracked": false,
+      "path": "Demo_Triangle/red_triangle_74x135x6p5.glb",
+      "present_in_snapshot": false,
+      "sha256": "fac68dee16a4f8d5b17d7de0f4007ac2445472c70d338c46dbb98908e38f4175"
+    },
+    {
+      "bytes": 8146,
+      "classification": "candidate_final_fix",
+      "listed_in_existing_approved_overlay": false,
+      "old_git_tracked": false,
+      "path": "Demo_Triangle/red_triangle_74x135x6p5.glb.coacd.ply",
+      "present_in_snapshot": false,
+      "sha256": "f6d655ec58ef7db661241935c6d7f9ee3d0ac35c6807e0d2d1b57f9772582a12"
+    }
+  ],
+  "compared_asset_selection_equivalent": false,
+  "cpu_geometry_only": true,
+  "environments": {
+    "old_worktree": {
+      "builder_roofs": [
+        {
+          "design_parent_child_height_m": 0.10450000315904617,
+          "mesh_tip_dot_builder_up": 1,
+          "necessary_geometry_only": true,
+          "nominal_bbox_edge_gap_before_layer_extra_m": 0,
+          "nominal_bbox_edge_gap_with_original_layer_extra_m": 0.004,
+          "original_layer_extra_m": 0.004,
+          "parent_relative_closure_max_abs": 0,
+          "parent_role": "right_second_wall",
+          "role": "right_roof_triangle",
+          "task_success": null
+        },
+        {
+          "design_parent_child_height_m": 0.10450000315904617,
+          "mesh_tip_dot_builder_up": 1,
+          "necessary_geometry_only": true,
+          "nominal_bbox_edge_gap_before_layer_extra_m": 0,
+          "nominal_bbox_edge_gap_with_original_layer_extra_m": 0.004,
+          "original_layer_extra_m": 0.004,
+          "parent_relative_closure_max_abs": 0,
+          "parent_role": "back_second_wall",
+          "role": "back_roof_triangle",
+          "task_success": null
+        },
+        {
+          "design_parent_child_height_m": 0.10450000315904617,
+          "mesh_tip_dot_builder_up": 1,
+          "necessary_geometry_only": true,
+          "nominal_bbox_edge_gap_before_layer_extra_m": 0,
+          "nominal_bbox_edge_gap_with_original_layer_extra_m": 0.004,
+          "original_layer_extra_m": 0.004,
+          "parent_relative_closure_max_abs": 0,
+          "parent_role": "left_second_wall",
+          "role": "left_roof_triangle",
+          "task_success": null
+        },
+        {
+          "design_parent_child_height_m": 0.10450000315904617,
+          "mesh_tip_dot_builder_up": 1,
+          "necessary_geometry_only": true,
+          "nominal_bbox_edge_gap_before_layer_extra_m": 0,
+          "nominal_bbox_edge_gap_with_original_layer_extra_m": 0.004,
+          "original_layer_extra_m": 0.004,
+          "parent_relative_closure_max_abs": 0,
+          "parent_role": "front_second_wall",
+          "role": "front_roof_triangle",
+          "task_success": null
+        }
+      ],
+      "mesh": {
+        "mesh_tip_local_z_sign": 1,
+        "native_extents_m": [
+          0.07400000095367432,
+          0.006500000134110451,
+          0.13500000536441803
+        ],
+        "native_sim_scale": 1,
+        "native_spec_uses_primary": true,
+        "native_standard_tip_dot_parent_up": 1,
+        "native_tip_needs_local_y_flip": false,
+        "physical_geometry_qualified": false,
+        "scene_node_transforms_identity": true,
+        "selected_bytes": 1493004,
+        "selected_relative_path": "Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "selected_sha256": "fac68dee16a4f8d5b17d7de0f4007ac2445472c70d338c46dbb98908e38f4175"
+      }
+    },
+    "snapshot": {
+      "builder_roofs": [
+        {
+          "design_parent_child_height_m": 0.10450000315904617,
+          "mesh_tip_dot_builder_up": -1,
+          "necessary_geometry_only": true,
+          "nominal_bbox_edge_gap_before_layer_extra_m": 0.007500000298023224,
+          "nominal_bbox_edge_gap_with_original_layer_extra_m": 0.011500000298023224,
+          "original_layer_extra_m": 0.004,
+          "parent_relative_closure_max_abs": 0,
+          "parent_role": "right_second_wall",
+          "role": "right_roof_triangle",
+          "task_success": null
+        },
+        {
+          "design_parent_child_height_m": 0.10450000315904617,
+          "mesh_tip_dot_builder_up": -1,
+          "necessary_geometry_only": true,
+          "nominal_bbox_edge_gap_before_layer_extra_m": 0.007500000298023224,
+          "nominal_bbox_edge_gap_with_original_layer_extra_m": 0.011500000298023224,
+          "original_layer_extra_m": 0.004,
+          "parent_relative_closure_max_abs": 0,
+          "parent_role": "back_second_wall",
+          "role": "back_roof_triangle",
+          "task_success": null
+        },
+        {
+          "design_parent_child_height_m": 0.10450000315904617,
+          "mesh_tip_dot_builder_up": -1,
+          "necessary_geometry_only": true,
+          "nominal_bbox_edge_gap_before_layer_extra_m": 0.007500000298023224,
+          "nominal_bbox_edge_gap_with_original_layer_extra_m": 0.011500000298023224,
+          "original_layer_extra_m": 0.004,
+          "parent_relative_closure_max_abs": 0,
+          "parent_role": "left_second_wall",
+          "role": "left_roof_triangle",
+          "task_success": null
+        },
+        {
+          "design_parent_child_height_m": 0.10450000315904617,
+          "mesh_tip_dot_builder_up": -1,
+          "necessary_geometry_only": true,
+          "nominal_bbox_edge_gap_before_layer_extra_m": 0.007500000298023224,
+          "nominal_bbox_edge_gap_with_original_layer_extra_m": 0.011500000298023224,
+          "original_layer_extra_m": 0.004,
+          "parent_relative_closure_max_abs": 0,
+          "parent_role": "front_second_wall",
+          "role": "front_roof_triangle",
+          "task_success": null
+        }
+      ],
+      "mesh": {
+        "mesh_tip_local_z_sign": -1,
+        "native_extents_m": [
+          0.06492974609136581,
+          0.00872111041098833,
+          0.12000000476837158
+        ],
+        "native_sim_scale": 0.11989977631193408,
+        "native_spec_uses_primary": false,
+        "native_standard_tip_dot_parent_up": 1,
+        "native_tip_needs_local_y_flip": true,
+        "physical_geometry_qualified": false,
+        "scene_node_transforms_identity": true,
+        "selected_bytes": 1465152,
+        "selected_relative_path": "pick_jiaobang/meshs/red_triangle.glb",
+        "selected_sha256": "036a35b236bb46d621108b2329570a75247f9261fe151730908606c846414c2c"
+      }
+    }
+  },
+  "execute_real": false,
+  "gpu_rerun": false,
+  "hardware_connected": false,
+  "migration_performed": false,
+  "native_entry_sha256": "c6c29a9adf6815e52426f81e496705d43e525d2628a26165dd3ecff8bb1c578b",
+  "notes": [
+    "No mesh, collider, builder pose, solver, or native runtime was changed.",
+    "Standard tip-up correction is distinct from direct builder-axis placement.",
+    "Bounding-box edge gaps are not magnetic capture or physical contact qualification.",
+    "Cache source MD5 matching alone does not certify all SAPIEN decomposition parameters.",
+    "Optional asset omission changes a native branch despite a manifest-consistent snapshot.",
+    "Asset inclusion needs explicit approval and subsequent full GPU regression."
+  ],
+  "old_entry_matches_verified_snapshot": true,
+  "old_status_sha256_after": "15fd1ac40352579a761b4134244c2a74158dd723b2b146c6a39ccf458fe20968",
+  "old_status_sha256_before": "15fd1ac40352579a761b4134244c2a74158dd723b2b146c6a39ccf458fe20968",
+  "old_worktree_and_task_unchanged": true,
+  "original_collision_cache": {
+    "cache_source_md5_matches": true,
+    "extents_m": [
+      0.0759558156132698,
+      0.00897500105202198,
+      0.136849507689476
+    ],
+    "full_native_cache_reuse_verified": false,
+    "physical_geometry_qualified": false,
+    "regenerated": false,
+    "source_mesh_md5": "83ddd8be05e9be9461cec12a2a54cee0"
+  },
+  "original_task_hashes": {
+    "builder": "6478bafdf016817e7d118269da9199e6d4fe8c06570cbedfdfb03c1127ca6884",
+    "fixed_scene": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+    "manifest": "811be89115ec9982ac425f799dedc0d08ab55ada996c42d0e524a54550a3ab2d"
+  },
+  "original_wall_asset_sha256": "74a6cafb5938e7d6f041dd184c3793d0d71e675819ec94553d3a003bb26e93d7",
+  "original_wall_height_m": 0.07400000095367432,
+  "schema": "rm75.jimu_triangle_asset_audit/v1",
+  "snapshot_manifest_sha256": "a2d8e30ce17f6d241282c09043df8e69c8ac16723c3311ee82c57419817df9b3",
+  "snapshot_verified_file_count": 807,
+  "task_success": null,
+  "tested_base_commit": "ae56031b2f15f5f8abf4f2b2d94a880c6b670392",
+  "cpu_checks": {
+    "compileall": {
+      "passed": true,
+      "scope": [
+        "rm75_app",
+        "tools",
+        "tests"
+      ]
+    },
+    "focused_tests": {
+      "passed": 19,
+      "elapsed_s": 0.84
+    },
+    "three_scene_tests": {
+      "passed": 475,
+      "warnings": 1,
+      "elapsed_s": 16.19,
+      "log_sha256": "4f69d88f629221f5fc2ab48d139f0219e7f9accc8a2b23afdf4b9eeb1ba9a7d3"
+    },
+    "full_tests": {
+      "passed": 797,
+      "warnings": 1,
+      "elapsed_s": 32.51,
+      "log_sha256": "8f934521d3e4e4d86df361d09f7023b214787f206b3100f8a839edfe7ac23a51"
+    },
+    "test_source_sha256": "0f7a4ba4ce2aca8b3dd046006e93cd877372a94055d7b4274c798fd2d979c2c2"
+  }
+}

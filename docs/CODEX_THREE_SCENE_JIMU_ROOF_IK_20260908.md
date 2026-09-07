@@ -1,5 +1,7 @@
 # Jimu 完整任务屋顶 IK / 原目标几何证据 — 2026-09-08
 
+后续更正/补充：[三角资产依赖审计](CODEX_THREE_SCENE_TRIANGLE_ASSET_AUDIT_20260908.md) 已确认原优先模型漏迁，当前回退模型尺寸及尖端方向不同。本文 GPU 数据保留，但不能据此认证与旧目录模型行为等价；恢复资产后的 GPU 尚待逐文件批准及复跑。
+
 **NEEDS_REVIEW：三条非真机链仍未全部完成，完整 Jimu 任务的四个屋顶尚未修成通过。** 本轮把失败定位到已记录原释放目标的夹爪底座/墙体几何冲突；没有修改旧算法、抓放目标、候选、seeds、成功阈值或碰撞规则，没有机械臂/夹爪运动、SDK 或相机连接。
 
 按 [回传模板](CODEX_THREE_SCENE_RESULTS_TEMPLATE.md) 记录。机器摘要：[roof IK summary](../benchmarks/unified_scenarios/three_scene_jimu_roof_ik_20260908_summary.json)。原始目标、关节解、世界坐标、轨迹和运行日志只留本地 `runtime_data/three_scene/jimu_roof_ik_20260908/`、对应 workcell job 及新 snapshot 的 ignored 运行目录。

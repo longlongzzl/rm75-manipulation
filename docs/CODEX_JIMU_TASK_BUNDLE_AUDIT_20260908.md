@@ -1,5 +1,7 @@
 # 原 Jimu 任务三文件闭包只读审计 — 2026-09-08
 
+后续发现：任务 JSON 闭包之外，已审阅入口还有两项会改变模型分支的原资产依赖漏迁。见 [三角资产逐文件审计](CODEX_THREE_SCENE_TRIANGLE_ASSET_AUDIT_20260908.md)；尚未批准或迁移，不能将本三文件审计当成整个运行依赖闭包已完成。
+
 分类结论：以下三项为 `candidate_final_fix`（运行配置/固定数据，不是算法源码）。**未纳入 approved overlay 或 snapshot，也未复制进 Git。** 只读原文件进行本地 SIM 重放；迁移仍待明确审核，不擅自决定纳入/丢弃。
 
 原目录：`/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_tasks/tag1_standard_three_layer/`。
