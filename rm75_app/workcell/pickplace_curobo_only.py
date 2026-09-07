@@ -184,10 +184,13 @@ def install(direct):
     from .transport_contact import install_start_check_restoration
     from curobo_rm75_planner import RM75CuRoboPlanner
     install_start_check_restoration(RM75CuRoboPlanner)
+    preserve_diagnostic_world_state(RM75CuRoboPlanner,direct._CUROBO_GPU_LOCK)
     original_refresh = direct._refresh_curobo_world
     @functools.wraps(original_refresh)
     def refresh(planner, demo, args, **kwargs):
         with direct._CUROBO_GPU_LOCK:
+            from .pickplace_gripper_state import update_from_demo
+            update_from_demo(planner,demo,args)
             result = original_refresh(planner,demo,args,**kwargs)
             if isinstance(demo.planner,CuroboDemoPlanner):
                 demo.planner.native = planner
@@ -203,3 +206,40 @@ def install(direct):
         parsed.return_to_start_mplib_fallback = False
         return parsed
     direct.parse_args = parse
+    clearance_audits=[]
+    original_wrappers=direct._install_dry_run_motion_window_wrappers
+    @functools.wraps(original_wrappers)
+    def install_wrappers():
+        original_wrappers()
+        # Install OUTSIDE native wrappers, including their early dry-run branch.
+        from .pickplace_clearance_audit import install_execution_guards
+        install_execution_guards(direct.targeted.base,direct._CUROBO_GPU_LOCK,clearance_audits)
+    direct._install_dry_run_motion_window_wrappers=install_wrappers
+    return clearance_audits
+
+
+def preserve_diagnostic_world_state(planner_class, lock):
+    """Native obstacle ablation must not enable an initially disabled cache."""
+    original=planner_class.diagnose_start_state_world_collision
+    @functools.wraps(original)
+    def diagnose(planner,*args,**kwargs):
+        with lock:
+            before=set(planner._disabled_world_obstacles)
+            setter=planner.set_world_obstacles_enabled
+            had_override='set_world_obstacles_enabled' in vars(planner)
+            previous_override=vars(planner).get('set_world_obstacles_enabled')
+            def scoped_set(names,*,enabled):
+                if not enabled:return setter(names,enabled=False)
+                restore_disabled=[name for name in names if name in before]
+                restore_enabled=[name for name in names if name not in before]
+                return (setter(restore_disabled,enabled=False) if restore_disabled else []) + (
+                    setter(restore_enabled,enabled=True) if restore_enabled else [])
+            planner.set_world_obstacles_enabled=scoped_set
+            try:return original(planner,*args,**kwargs)
+            finally:
+                if had_override:planner.set_world_obstacles_enabled=previous_override
+                else:del planner.set_world_obstacles_enabled
+                current=set(planner._disabled_world_obstacles)
+                if current-before:setter(sorted(current-before),enabled=True)
+                if before-current:setter(sorted(before-current),enabled=False)
+    planner_class.diagnose_start_state_world_collision=diagnose

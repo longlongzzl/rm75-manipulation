@@ -1,0 +1,3188 @@
+{
+    "schema": "rm75.jimu_rrtrack_validation/v1",
+    "date": "2026-09-07",
+    "robot_connected": false,
+    "execute_real": false,
+    "apriltag_used": false,
+    "camera_serial": "342522073637",
+    "mesh_dims_m": [
+        0.074,
+        0.0065,
+        0.074
+    ],
+    "hardware_accuracy_qualified": false,
+    "all_12_real_objects_qualified": false,
+    "ground_truth_available": false,
+    "coordinate_frame": "camera; no base transform or physical pose accuracy qualification",
+    "prompt_trials": {
+        "ok": true,
+        "frame_count": 5,
+        "results": [
+            {
+                "ok": false,
+                "frame_id": "prompt_0",
+                "frame_index": 0,
+                "rgb_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/three_scene/jimu_rrtrack_live_20260907/initialization/20260907_210221_orange_jimu_plate_pid1500846/rgb.png",
+                "output_dir": "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_0",
+                "error": "RuntimeError('SAM3 returned no masks')",
+                "load_elapsed_ms": 18306.466698000007,
+                "image_elapsed_ms": 898.3726269999579
+            },
+            {
+                "ok": true,
+                "id": "prompt_1",
+                "object_name": null,
+                "mode": "text",
+                "prompt": "orange square plastic panel.",
+                "box": null,
+                "select_box": [
+                    0,
+                    0,
+                    640,
+                    480
+                ],
+                "mask_path": "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_1/sam3_mask.png",
+                "overlay_path": "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_1/sam3_overlay.png",
+                "mask_pixels": 3137,
+                "mask_bbox": [
+                    344,
+                    393,
+                    432,
+                    455
+                ],
+                "selected_index": 0,
+                "candidate_rank": 1,
+                "selected": {
+                    "model_score": 0.97265625,
+                    "coverage": 0.01021484375,
+                    "mask_in_box": 1,
+                    "bbox_iou": 0.018055879740192418,
+                    "area": 3138,
+                    "rank": 2.507530641292154,
+                    "box": [
+                        343.7879638671875,
+                        392.1844482421875,
+                        432.26483154296875,
+                        454.87615966796875
+                    ]
+                },
+                "candidate_count": 1,
+                "infer_elapsed_ms": 43.31661400004805,
+                "frame_id": "prompt_1",
+                "frame_index": 1,
+                "rgb_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/three_scene/jimu_rrtrack_live_20260907/initialization/20260907_210221_orange_jimu_plate_pid1500846/rgb.png",
+                "image_elapsed_ms": 177.1571550000317,
+                "load_elapsed_ms": 18306.466698000007
+            },
+            {
+                "ok": true,
+                "id": "prompt_2",
+                "object_name": null,
+                "mode": "text",
+                "prompt": "square plastic panel.",
+                "box": null,
+                "select_box": [
+                    0,
+                    0,
+                    640,
+                    480
+                ],
+                "mask_path": "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_2/sam3_mask.png",
+                "overlay_path": "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_2/sam3_overlay.png",
+                "mask_pixels": 3148,
+                "mask_bbox": [
+                    344,
+                    393,
+                    432,
+                    455
+                ],
+                "selected_index": 1,
+                "candidate_rank": 1,
+                "selected": {
+                    "model_score": 0.9296875,
+                    "coverage": 0.010250651041666666,
+                    "mask_in_box": 1,
+                    "bbox_iou": 0.017921149192843586,
+                    "area": 3149,
+                    "rank": 2.4645257214376084,
+                    "box": [
+                        344.0140075683594,
+                        392.28997802734375,
+                        432.0525817871094,
+                        454.82366943359375
+                    ]
+                },
+                "candidate_count": 2,
+                "infer_elapsed_ms": 44.19610200000079,
+                "frame_id": "prompt_2",
+                "frame_index": 2,
+                "rgb_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/three_scene/jimu_rrtrack_live_20260907/initialization/20260907_210221_orange_jimu_plate_pid1500846/rgb.png",
+                "image_elapsed_ms": 177.03701499999625,
+                "load_elapsed_ms": 18306.466698000007
+            },
+            {
+                "ok": false,
+                "frame_id": "prompt_3",
+                "frame_index": 3,
+                "rgb_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/three_scene/jimu_rrtrack_live_20260907/initialization/20260907_210221_orange_jimu_plate_pid1500846/rgb.png",
+                "output_dir": "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_3",
+                "error": "RuntimeError('SAM3 returned no masks')",
+                "load_elapsed_ms": 18306.466698000007,
+                "image_elapsed_ms": 178.33859600000324
+            },
+            {
+                "ok": true,
+                "id": "prompt_4",
+                "object_name": null,
+                "mode": "text",
+                "prompt": "orange object.",
+                "box": null,
+                "select_box": [
+                    0,
+                    0,
+                    640,
+                    480
+                ],
+                "mask_path": "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_4/sam3_mask.png",
+                "overlay_path": "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_4/sam3_overlay.png",
+                "mask_pixels": 3139,
+                "mask_bbox": [
+                    344,
+                    393,
+                    432,
+                    455
+                ],
+                "selected_index": 1,
+                "candidate_rank": 1,
+                "selected": {
+                    "model_score": 0.71484375,
+                    "coverage": 0.010221354166666667,
+                    "mask_in_box": 1,
+                    "bbox_iou": 0.017987638892227552,
+                    "area": 3140,
+                    "rank": 2.2496765694471152,
+                    "box": [
+                        343.95135498046875,
+                        392.23382568359375,
+                        432.10052490234375,
+                        454.9207763671875
+                    ]
+                },
+                "candidate_count": 2,
+                "infer_elapsed_ms": 44.58159700004671,
+                "frame_id": "prompt_4",
+                "frame_index": 4,
+                "rgb_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/three_scene/jimu_rrtrack_live_20260907/initialization/20260907_210221_orange_jimu_plate_pid1500846/rgb.png",
+                "image_elapsed_ms": 176.80215400002908,
+                "load_elapsed_ms": 18306.466698000007
+            }
+        ],
+        "load_elapsed_ms": 18306.466698000007,
+        "total_image_elapsed_ms": 1607.7075470000182,
+        "total_prompt_infer_elapsed_ms": 132.09431300009555
+    },
+    "initialization": {
+        "object_name": "orange_jimu_plate",
+        "prompt": "orange square plastic panel.",
+        "run_dir": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/three_scene/jimu_rrtrack_live_20260907/replay_init_v4/20260907_211902_orange_jimu_plate_pid10773",
+        "sam3_instance_index": 0,
+        "score": 0.8701171875,
+        "mask_source": "sam3_text_score_0.973_cov_0.010_inbox_1.000_ms_298.1",
+        "mask_elapsed_ms": 22019.78632700002,
+        "mask_pixels": 3137,
+        "depth_repair": {
+            "applied": false,
+            "reason": "enough_valid_depth",
+            "mask_pixels": 3137,
+            "valid_count": 2861,
+            "valid_ratio": 0.9120178514504304
+        },
+        "detection_box_xyxy": [
+            344,
+            393,
+            432,
+            455
+        ],
+        "pem_elapsed_ms": 10966.901441999995,
+        "T_cam_obj_raw_pem": [
+            [
+                0.8300159573554993,
+                0.004851341247558594,
+                0.5577183961868286,
+                0.06887366622686386
+            ],
+            [
+                -0.2739664316177368,
+                -0.8674626350402832,
+                0.4152713418006897,
+                0.20956794917583466
+            ],
+            [
+                0.4858153760433197,
+                -0.49747779965400696,
+                -0.7186787128448486,
+                0.720456063747406
+            ],
+            [
+                0,
+                0,
+                0,
+                1
+            ]
+        ],
+        "translation_m_raw_pem": [
+            0.06887366622686386,
+            0.20956794917583466,
+            0.720456063747406
+        ],
+        "T_cam_obj": [
+            [
+                0.8300159573554993,
+                0.004851341247558594,
+                0.5577183961868286,
+                0.06887366622686386
+            ],
+            [
+                -0.2739664316177368,
+                -0.8674626350402832,
+                0.4152713418006897,
+                0.20956794917583466
+            ],
+            [
+                0.4858153760433197,
+                -0.49747779965400696,
+                -0.7186787128448486,
+                0.720456063747406
+            ],
+            [
+                0,
+                0,
+                0,
+                1
+            ]
+        ],
+        "translation_m": [
+            0.06887366622686386,
+            0.20956794917583466,
+            0.720456063747406
+        ],
+        "pem_refine": {
+            "enabled": false,
+            "generic_enabled": false,
+            "tennis_sphere_enabled": false,
+            "object_name": "orange_jimu_plate",
+            "applied": false,
+            "reason": "disabled",
+            "elapsed_ms": 0,
+            "raw_metrics": {
+                "ok": true,
+                "mask_bbox": [
+                    344,
+                    393,
+                    432,
+                    455
+                ],
+                "mask_center": [
+                    388,
+                    424
+                ],
+                "mask_size": [
+                    88,
+                    62
+                ],
+                "projected_bbox": [
+                    343.891302106778,
+                    390.25554812516566,
+                    431.76075811336005,
+                    458.9916532856318
+                ],
+                "projected_center": [
+                    387.82603011006904,
+                    424.62360070539876
+                ],
+                "projected_size": [
+                    87.86945600658203,
+                    68.73610516046614
+                ],
+                "center_delta_px": [
+                    -0.17396988993095874,
+                    0.6236007053987578
+                ],
+                "center_error_px": 0.6474128222211993,
+                "bbox_iou": 0.8986779867353071,
+                "size_delta_px": [
+                    -0.13054399341797307,
+                    6.736105160466138
+                ],
+                "visible_depth_m": 0.7096745114689679,
+                "depth_error_m": -0.002325500928798241
+            },
+            "refined_metrics": {
+                "ok": true,
+                "mask_bbox": [
+                    344,
+                    393,
+                    432,
+                    455
+                ],
+                "mask_center": [
+                    388,
+                    424
+                ],
+                "mask_size": [
+                    88,
+                    62
+                ],
+                "projected_bbox": [
+                    343.891302106778,
+                    390.25554812516566,
+                    431.76075811336005,
+                    458.9916532856318
+                ],
+                "projected_center": [
+                    387.82603011006904,
+                    424.62360070539876
+                ],
+                "projected_size": [
+                    87.86945600658203,
+                    68.73610516046614
+                ],
+                "center_delta_px": [
+                    -0.17396988993095874,
+                    0.6236007053987578
+                ],
+                "center_error_px": 0.6474128222211993,
+                "bbox_iou": 0.8986779867353071,
+                "size_delta_px": [
+                    -0.13054399341797307,
+                    6.736105160466138
+                ],
+                "visible_depth_m": 0.7096745114689679,
+                "depth_error_m": -0.002325500928798241
+            },
+            "raw_translation_m": [
+                0.06887366622686386,
+                0.20956794917583466,
+                0.720456063747406
+            ],
+            "refined_translation_m": [
+                0.06887366622686386,
+                0.20956794917583466,
+                0.720456063747406
+            ],
+            "translation_delta_m": [
+                0,
+                0,
+                0
+            ],
+            "depth_reference": {
+                "ok": true,
+                "median": 0.7170000076293945,
+                "p25": 0.7039999961853027,
+                "p40": 0.7120000123977661,
+                "valid_count": 2861
+            }
+        },
+        "pem_detection": {
+            "scene_id": 0,
+            "image_id": 0,
+            "category_id": 1,
+            "bbox": [
+                344,
+                393,
+                88,
+                62
+            ],
+            "score": 0.8701171875,
+            "time": 0,
+            "label": "sam3_text",
+            "segmentation": {
+                "counts": [
+                    165533,
+                    6,
+                    473,
+                    9,
+                    471,
+                    9,
+                    470,
+                    11,
+                    469,
+                    12,
+                    468,
+                    13,
+                    466,
+                    15,
+                    465,
+                    16,
+                    463,
+                    18,
+                    462,
+                    19,
+                    460,
+                    21,
+                    459,
+                    22,
+                    457,
+                    24,
+                    456,
+                    25,
+                    455,
+                    26,
+                    453,
+                    29,
+                    451,
+                    30,
+                    449,
+                    32,
+                    448,
+                    34,
+                    446,
+                    35,
+                    444,
+                    36,
+                    444,
+                    37,
+                    442,
+                    40,
+                    440,
+                    40,
+                    439,
+                    42,
+                    438,
+                    42,
+                    437,
+                    44,
+                    436,
+                    45,
+                    435,
+                    46,
+                    433,
+                    49,
+                    431,
+                    50,
+                    429,
+                    52,
+                    428,
+                    54,
+                    425,
+                    55,
+                    425,
+                    56,
+                    423,
+                    58,
+                    422,
+                    58,
+                    422,
+                    58,
+                    421,
+                    59,
+                    421,
+                    58,
+                    421,
+                    59,
+                    421,
+                    59,
+                    420,
+                    59,
+                    421,
+                    59,
+                    421,
+                    58,
+                    421,
+                    58,
+                    422,
+                    58,
+                    422,
+                    57,
+                    423,
+                    57,
+                    423,
+                    56,
+                    424,
+                    55,
+                    426,
+                    54,
+                    427,
+                    53,
+                    427,
+                    52,
+                    429,
+                    51,
+                    430,
+                    49,
+                    432,
+                    48,
+                    433,
+                    47,
+                    434,
+                    45,
+                    436,
+                    44,
+                    437,
+                    43,
+                    438,
+                    41,
+                    440,
+                    40,
+                    440,
+                    39,
+                    442,
+                    38,
+                    443,
+                    36,
+                    445,
+                    35,
+                    446,
+                    33,
+                    448,
+                    32,
+                    449,
+                    30,
+                    451,
+                    29,
+                    452,
+                    27,
+                    454,
+                    25,
+                    455,
+                    25,
+                    456,
+                    24,
+                    457,
+                    22,
+                    459,
+                    21,
+                    460,
+                    19,
+                    462,
+                    17,
+                    464,
+                    16,
+                    465,
+                    15,
+                    466,
+                    14,
+                    467,
+                    12,
+                    468,
+                    12,
+                    469,
+                    10,
+                    471,
+                    9,
+                    472,
+                    7,
+                    475,
+                    3,
+                    99890
+                ],
+                "size": [
+                    480,
+                    640
+                ]
+            },
+            "object_name": "orange_jimu_plate",
+            "sam3_instance_index": 0,
+            "R": [
+                [
+                    0.8300159573554993,
+                    0.004851341247558594,
+                    0.5577183961868286
+                ],
+                [
+                    -0.2739664316177368,
+                    -0.8674626350402832,
+                    0.4152713418006897
+                ],
+                [
+                    0.4858153760433197,
+                    -0.49747779965400696,
+                    -0.7186787128448486
+                ]
+            ],
+            "t": [
+                68.87366485595703,
+                209.5679473876953,
+                720.4560546875
+            ]
+        },
+        "detection_ism": {
+            "scene_id": 0,
+            "image_id": 0,
+            "category_id": 1,
+            "bbox": [
+                344,
+                393,
+                88,
+                62
+            ],
+            "score": 1,
+            "time": 0,
+            "label": "sam3_text",
+            "segmentation": {
+                "counts": [
+                    165533,
+                    6,
+                    473,
+                    9,
+                    471,
+                    9,
+                    470,
+                    11,
+                    469,
+                    12,
+                    468,
+                    13,
+                    466,
+                    15,
+                    465,
+                    16,
+                    463,
+                    18,
+                    462,
+                    19,
+                    460,
+                    21,
+                    459,
+                    22,
+                    457,
+                    24,
+                    456,
+                    25,
+                    455,
+                    26,
+                    453,
+                    29,
+                    451,
+                    30,
+                    449,
+                    32,
+                    448,
+                    34,
+                    446,
+                    35,
+                    444,
+                    36,
+                    444,
+                    37,
+                    442,
+                    40,
+                    440,
+                    40,
+                    439,
+                    42,
+                    438,
+                    42,
+                    437,
+                    44,
+                    436,
+                    45,
+                    435,
+                    46,
+                    433,
+                    49,
+                    431,
+                    50,
+                    429,
+                    52,
+                    428,
+                    54,
+                    425,
+                    55,
+                    425,
+                    56,
+                    423,
+                    58,
+                    422,
+                    58,
+                    422,
+                    58,
+                    421,
+                    59,
+                    421,
+                    58,
+                    421,
+                    59,
+                    421,
+                    59,
+                    420,
+                    59,
+                    421,
+                    59,
+                    421,
+                    58,
+                    421,
+                    58,
+                    422,
+                    58,
+                    422,
+                    57,
+                    423,
+                    57,
+                    423,
+                    56,
+                    424,
+                    55,
+                    426,
+                    54,
+                    427,
+                    53,
+                    427,
+                    52,
+                    429,
+                    51,
+                    430,
+                    49,
+                    432,
+                    48,
+                    433,
+                    47,
+                    434,
+                    45,
+                    436,
+                    44,
+                    437,
+                    43,
+                    438,
+                    41,
+                    440,
+                    40,
+                    440,
+                    39,
+                    442,
+                    38,
+                    443,
+                    36,
+                    445,
+                    35,
+                    446,
+                    33,
+                    448,
+                    32,
+                    449,
+                    30,
+                    451,
+                    29,
+                    452,
+                    27,
+                    454,
+                    25,
+                    455,
+                    25,
+                    456,
+                    24,
+                    457,
+                    22,
+                    459,
+                    21,
+                    460,
+                    19,
+                    462,
+                    17,
+                    464,
+                    16,
+                    465,
+                    15,
+                    466,
+                    14,
+                    467,
+                    12,
+                    468,
+                    12,
+                    469,
+                    10,
+                    471,
+                    9,
+                    472,
+                    7,
+                    475,
+                    3,
+                    99890
+                ],
+                "size": [
+                    480,
+                    640
+                ]
+            },
+            "object_name": "orange_jimu_plate",
+            "sam3_instance_index": 0
+        }
+    },
+    "trajectory_including_initialization": [
+        {
+            "frame_index": 0,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8300159573554993,
+                    0.004851341247558594,
+                    0.5577183961868286,
+                    0.06887366622686386
+                ],
+                [
+                    -0.2739664316177368,
+                    -0.8674626350402832,
+                    0.4152713418006897,
+                    0.20956794917583466
+                ],
+                [
+                    0.4858153760433197,
+                    -0.49747779965400696,
+                    -0.7186787128448486,
+                    0.720456063747406
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9936244819891616,
+                "support": 0.9321172248803827,
+                "entropy": 0.12285299812042134,
+                "mask_area": 3137,
+                "rendered_area": 3344,
+                "intersection_area": 3117
+            },
+            "accepted": true,
+            "event": "initialized",
+            "memory_updates": [
+                "long",
+                "online_bank"
+            ],
+            "recovery_source": null,
+            "metadata": {}
+        },
+        {
+            "frame_index": 1,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8431326150894165,
+                    0.01409436296671629,
+                    0.5375208258628845,
+                    0.06942954659461975
+                ],
+                [
+                    -0.2195717990398407,
+                    -0.9034872651100159,
+                    0.36810094118118286,
+                    0.20685426890850067
+                ],
+                [
+                    0.49083220958709717,
+                    -0.42838215827941895,
+                    -0.7586647868156433,
+                    0.7209784388542175
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9526192859526192,
+                "support": 0.9239482200647249,
+                "entropy": 0.18081869281453047,
+                "mask_area": 2997,
+                "rendered_area": 3090,
+                "intersection_area": 2855
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [
+                "long",
+                "short"
+            ],
+            "recovery_source": null,
+            "metadata": {}
+        },
+        {
+            "frame_index": 2,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8372035622596741,
+                    0.023889020085334778,
+                    0.5463691353797913,
+                    0.06808549910783768
+                ],
+                [
+                    -0.15384246408939362,
+                    -0.9484152793884277,
+                    0.2772007882595062,
+                    0.21376439929008484
+                ],
+                [
+                    0.5248078107833862,
+                    -0.3161281645298004,
+                    -0.7903414964675903,
+                    0.7168558239936829
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.8372562205783457,
+                "support": 0.870325061167424,
+                "entropy": 0.18298985929620543,
+                "mask_area": 2974,
+                "rendered_area": 2861,
+                "intersection_area": 2490
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [
+                "short"
+            ],
+            "recovery_source": null,
+            "metadata": {}
+        },
+        {
+            "frame_index": 3,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8372398614883423,
+                    0.012220030650496483,
+                    0.5466989278793335,
+                    0.06936204433441162
+                ],
+                [
+                    -0.20732945203781128,
+                    -0.9180128574371338,
+                    0.33803313970565796,
+                    0.21032774448394775
+                ],
+                [
+                    0.5060082077980042,
+                    -0.3963615298271179,
+                    -0.766063392162323,
+                    0.7319432497024536
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9276139410187667,
+                "support": 0.9440654843110505,
+                "entropy": 0.17882769932769632,
+                "mask_area": 2984,
+                "rendered_area": 2932,
+                "intersection_area": 2768
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [
+                "short"
+            ],
+            "recovery_source": null,
+            "metadata": {}
+        },
+        {
+            "frame_index": 4,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8427141308784485,
+                    -0.0002825377741828561,
+                    0.5383610129356384,
+                    0.06970943510532379
+                ],
+                [
+                    -0.2200835943222046,
+                    -0.9128032922744751,
+                    0.34402450919151306,
+                    0.21015015244483948
+                ],
+                [
+                    0.49132126569747925,
+                    -0.4083986282348633,
+                    -0.7692943811416626,
+                    0.7340301871299744
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9212837837837838,
+                "support": 0.9215951334910443,
+                "entropy": 0.1806807252879036,
+                "mask_area": 2960,
+                "rendered_area": 2959,
+                "intersection_area": 2727
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [
+                "short"
+            ],
+            "recovery_source": null,
+            "metadata": {}
+        },
+        {
+            "frame_index": 5,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8446465134620667,
+                    -0.00901687890291214,
+                    0.5352482199668884,
+                    0.06989244371652603
+                ],
+                [
+                    -0.22687533497810364,
+                    -0.9116525053977966,
+                    0.34266141057014465,
+                    0.2098240703344345
+                ],
+                [
+                    0.4848714768886566,
+                    -0.4108622372150421,
+                    -0.7720697522163391,
+                    0.7326046228408813
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9216887980932925,
+                "support": 0.915454852891444,
+                "entropy": 0.18071003606954722,
+                "mask_area": 2937,
+                "rendered_area": 2957,
+                "intersection_area": 2707
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [
+                "short"
+            ],
+            "recovery_source": null,
+            "metadata": {}
+        },
+        {
+            "frame_index": 6,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8425150513648987,
+                    -0.001239451696164906,
+                    0.5386709570884705,
+                    0.06982618570327759
+                ],
+                [
+                    -0.22128348052501678,
+                    -0.91252201795578,
+                    0.3440009653568268,
+                    0.21010425686836243
+                ],
+                [
+                    0.49112364649772644,
+                    -0.4090248942375183,
+                    -0.7690878510475159,
+                    0.7324928045272827
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9373306233062331,
+                "support": 0.9204923486360612,
+                "entropy": 0.18221462449527667,
+                "mask_area": 2952,
+                "rendered_area": 3006,
+                "intersection_area": 2767
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [
+                "short"
+            ],
+            "recovery_source": null,
+            "metadata": {}
+        },
+        {
+            "frame_index": 7,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8408067226409912,
+                    -0.00010078747436637059,
+                    0.5413349270820618,
+                    0.0702609196305275
+                ],
+                [
+                    -0.2194177210330963,
+                    -0.9142351746559143,
+                    0.34063097834587097,
+                    0.2101413905620575
+                ],
+                [
+                    0.494873970746994,
+                    -0.40518325567245483,
+                    -0.7687172293663025,
+                    0.7333374619483948
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9154882154882155,
+                "support": 0.9195130199526547,
+                "entropy": 0.18401989855256226,
+                "mask_area": 2970,
+                "rendered_area": 2957,
+                "intersection_area": 2719
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [
+                "short"
+            ],
+            "recovery_source": null,
+            "metadata": {}
+        },
+        {
+            "frame_index": 8,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8482532501220703,
+                    -0.006808394566178322,
+                    0.5295466780662537,
+                    0.06933672726154327
+                ],
+                [
+                    -0.22068776190280914,
+                    -0.9135068655014038,
+                    0.34176263213157654,
+                    0.21010960638523102
+                ],
+                [
+                    0.48141855001449585,
+                    -0.4067656397819519,
+                    -0.776387631893158,
+                    0.7330933809280396
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9282103134479271,
+                "support": 0.9232316459939658,
+                "entropy": 0.1847951655812995,
+                "mask_area": 2967,
+                "rendered_area": 2983,
+                "intersection_area": 2754
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        423.5
+                    ],
+                    "median_depth_m": 0.7160000205039978,
+                    "translation_m": [
+                        0.0688005462284073,
+                        0.2093676300846401,
+                        0.7160000205039978
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 9,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8419461250305176,
+                    -0.004493093583732843,
+                    0.5395423173904419,
+                    0.07029489427804947
+                ],
+                [
+                    -0.22077204287052155,
+                    -0.9152953624725342,
+                    0.33688798546791077,
+                    0.2100142240524292
+                ],
+                [
+                    0.49232789874076843,
+                    -0.4027573764324188,
+                    -0.7716214060783386,
+                    0.7330533862113953
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9177620492079541,
+                "support": 0.9208657423063916,
+                "entropy": 0.18476256102572025,
+                "mask_area": 2967,
+                "rendered_area": 2957,
+                "intersection_area": 2723
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        423.5
+                    ],
+                    "median_depth_m": 0.7170000076293945,
+                    "translation_m": [
+                        0.06889663513689677,
+                        0.20966003920274612,
+                        0.7170000076293945
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 10,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8417923450469971,
+                    -0.0055799526162445545,
+                    0.539772093296051,
+                    0.0694076269865036
+                ],
+                [
+                    -0.22053302824497223,
+                    -0.9162442684173584,
+                    0.3344561457633972,
+                    0.21021726727485657
+                ],
+                [
+                    0.4926978349685669,
+                    -0.4005802273750305,
+                    -0.7725180983543396,
+                    0.7335733771324158
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9183260209247385,
+                "support": 0.936016511867905,
+                "entropy": 0.18423590022580166,
+                "mask_area": 2963,
+                "rendered_area": 2907,
+                "intersection_area": 2721
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        424
+                    ],
+                    "median_depth_m": 0.7160000205039978,
+                    "translation_m": [
+                        0.0688005462284073,
+                        0.20995984467663945,
+                        0.7160000205039978
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 11,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8457275629043579,
+                    -0.009787903167307377,
+                    0.5335246324539185,
+                    0.06946522742509842
+                ],
+                [
+                    -0.2268943339586258,
+                    -0.9115418195724487,
+                    0.3429427444934845,
+                    0.21018818020820618
+                ],
+                [
+                    0.4829743206501007,
+                    -0.41108986735343933,
+                    -0.7731370329856873,
+                    0.7339689135551453
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9154597507578309,
+                "support": 0.9191748393642205,
+                "entropy": 0.18534996586699198,
+                "mask_area": 2969,
+                "rendered_area": 2957,
+                "intersection_area": 2718
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        424
+                    ],
+                    "median_depth_m": 0.7150000333786011,
+                    "translation_m": [
+                        0.06870445731991782,
+                        0.20966660845385393,
+                        0.7150000333786011
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 12,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8441142439842224,
+                    -0.005075281020253897,
+                    0.5361388921737671,
+                    0.0697283074259758
+                ],
+                [
+                    -0.2227155566215515,
+                    -0.9129226207733154,
+                    0.34200793504714966,
+                    0.21005745232105255
+                ],
+                [
+                    0.4877184331417084,
+                    -0.4081002473831177,
+                    -0.7717413902282715,
+                    0.7331433892250061
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9097643097643098,
+                "support": 0.9196732471068755,
+                "entropy": 0.1850382612579464,
+                "mask_area": 2970,
+                "rendered_area": 2938,
+                "intersection_area": 2702
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        424
+                    ],
+                    "median_depth_m": 0.7160000205039978,
+                    "translation_m": [
+                        0.0688005462284073,
+                        0.20995984467663945,
+                        0.7160000205039978
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 13,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.845687747001648,
+                    -0.004010926466435194,
+                    0.5336623787879944,
+                    0.06917942315340042
+                ],
+                [
+                    -0.2193063497543335,
+                    -0.9142509698867798,
+                    0.34066009521484375,
+                    0.2100265920162201
+                ],
+                [
+                    0.48653581738471985,
+                    -0.405127614736557,
+                    -0.7740505933761597,
+                    0.732226550579071
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9293718166383701,
+                "support": 0.9312691391629806,
+                "entropy": 0.18416397996686343,
+                "mask_area": 2945,
+                "rendered_area": 2939,
+                "intersection_area": 2737
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        424
+                    ],
+                    "median_depth_m": 0.7150000333786011,
+                    "translation_m": [
+                        0.06870445731991782,
+                        0.20966660845385393,
+                        0.7150000333786011
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 14,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8517111539840698,
+                    -0.01634109392762184,
+                    0.5237560868263245,
+                    0.06956053525209427
+                ],
+                [
+                    -0.22780372202396393,
+                    -0.9116688966751099,
+                    0.3420010209083557,
+                    0.21018384397029877
+                ],
+                [
+                    0.47190427780151367,
+                    -0.41059964895248413,
+                    -0.7802013158798218,
+                    0.7331441640853882
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9135719108710331,
+                "support": 0.9235494880546075,
+                "entropy": 0.18398126030562237,
+                "mask_area": 2962,
+                "rendered_area": 2930,
+                "intersection_area": 2706
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        424
+                    ],
+                    "median_depth_m": 0.7160000205039978,
+                    "translation_m": [
+                        0.0688005462284073,
+                        0.20995984467663945,
+                        0.7160000205039978
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 15,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8476371169090271,
+                    -0.007407939527183771,
+                    0.5305241346359253,
+                    0.0696927160024643
+                ],
+                [
+                    -0.22092093527317047,
+                    -0.9140297770500183,
+                    0.34020981192588806,
+                    0.21018119156360626
+                ],
+                [
+                    0.4823954701423645,
+                    -0.4055783450603485,
+                    -0.7764023542404175,
+                    0.7334376573562622
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9138627187079408,
+                "support": 0.920677966101695,
+                "entropy": 0.18371700901791096,
+                "mask_area": 2972,
+                "rendered_area": 2950,
+                "intersection_area": 2716
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        423.5
+                    ],
+                    "median_depth_m": 0.7150000333786011,
+                    "translation_m": [
+                        0.06870445731991782,
+                        0.20907522096653408,
+                        0.7150000333786011
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 16,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8480445146560669,
+                    -0.015111935324966908,
+                    0.5297088623046875,
+                    0.06988680362701416
+                ],
+                [
+                    -0.2326120287179947,
+                    -0.9087599515914917,
+                    0.3464771807193756,
+                    0.21035289764404297
+                ],
+                [
+                    0.4761430621147156,
+                    -0.4170446991920471,
+                    -0.7741842269897461,
+                    0.7340424060821533
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9324507807196198,
+                "support": 0.9141430948419301,
+                "entropy": 0.18364781222690502,
+                "mask_area": 2946,
+                "rendered_area": 3005,
+                "intersection_area": 2747
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [
+                "online_bank"
+            ],
+            "recovery_source": null,
+            "metadata": {}
+        },
+        {
+            "frame_index": 17,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8477263450622559,
+                    -0.010836734436452389,
+                    0.5303224921226501,
+                    0.06985609978437424
+                ],
+                [
+                    -0.22469393908977509,
+                    -0.912994384765625,
+                    0.34051910042762756,
+                    0.2101806402206421
+                ],
+                [
+                    0.48049211502075195,
+                    -0.4078272581100464,
+                    -0.7764045000076294,
+                    0.7341305017471313
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9142082061715836,
+                "support": 0.9138983050847458,
+                "entropy": 0.18501733334997877,
+                "mask_area": 2949,
+                "rendered_area": 2950,
+                "intersection_area": 2696
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        424
+                    ],
+                    "median_depth_m": 0.7160000205039978,
+                    "translation_m": [
+                        0.0688005462284073,
+                        0.20995984467663945,
+                        0.7160000205039978
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 18,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8504382371902466,
+                    -0.008818303234875202,
+                    0.5260003805160522,
+                    0.07016558945178986
+                ],
+                [
+                    -0.22346074879169464,
+                    -0.911229133605957,
+                    0.34601467847824097,
+                    0.21050986647605896
+                ],
+                [
+                    0.47625648975372314,
+                    -0.41180455684661865,
+                    -0.7769147157669067,
+                    0.7343361377716064
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9220384745190685,
+                "support": 0.918010752688172,
+                "entropy": 0.18447699354299468,
+                "mask_area": 2963,
+                "rendered_area": 2976,
+                "intersection_area": 2732
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        424
+                    ],
+                    "median_depth_m": 0.7170000076293945,
+                    "translation_m": [
+                        0.06889663513689677,
+                        0.21025308089942496,
+                        0.7170000076293945
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 19,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8491958379745483,
+                    -0.010749321430921555,
+                    0.5279679894447327,
+                    0.06965851038694382
+                ],
+                [
+                    -0.2238338142633438,
+                    -0.9128642678260803,
+                    0.3414333164691925,
+                    0.21008160710334778
+                ],
+                [
+                    0.47829383611679077,
+                    -0.4081208407878876,
+                    -0.7776066660881042,
+                    0.7328505516052246
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9137756820478276,
+                "support": 0.9196610169491526,
+                "entropy": 0.18409441352002187,
+                "mask_area": 2969,
+                "rendered_area": 2950,
+                "intersection_area": 2713
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        423.5
+                    ],
+                    "median_depth_m": 0.7160000205039978,
+                    "translation_m": [
+                        0.0688005462284073,
+                        0.2093676300846401,
+                        0.7160000205039978
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 20,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.847188413143158,
+                    -0.012618890963494778,
+                    0.5311421155929565,
+                    0.06954999268054962
+                ],
+                [
+                    -0.22559817135334015,
+                    -0.9136595726013184,
+                    0.33812904357910156,
+                    0.21012020111083984
+                ],
+                [
+                    0.4810170829296112,
+                    -0.4062836468219757,
+                    -0.7768886089324951,
+                    0.7340553998947144
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9183050847457627,
+                "support": 0.9161312140683124,
+                "entropy": 0.18541740733730014,
+                "mask_area": 2950,
+                "rendered_area": 2957,
+                "intersection_area": 2709
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        424
+                    ],
+                    "median_depth_m": 0.7170000076293945,
+                    "translation_m": [
+                        0.06889663513689677,
+                        0.21025308089942496,
+                        0.7170000076293945
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 21,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8492680191993713,
+                    -0.012062454596161842,
+                    0.5278235077857971,
+                    0.06997571140527725
+                ],
+                [
+                    -0.2271760106086731,
+                    -0.9108045697212219,
+                    0.3447110056877136,
+                    0.21028703451156616
+                ],
+                [
+                    0.47658678889274597,
+                    -0.4126608669757843,
+                    -0.7762575745582581,
+                    0.7335273027420044
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9320421338769963,
+                "support": 0.9128119800332779,
+                "entropy": 0.18544126515438744,
+                "mask_area": 2943,
+                "rendered_area": 3005,
+                "intersection_area": 2743
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        388,
+                        424
+                    ],
+                    "median_depth_m": 0.7160000205039978,
+                    "translation_m": [
+                        0.06939263970320121,
+                        0.20995984467663945,
+                        0.7160000205039978
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 22,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8518652319908142,
+                    -0.016232285648584366,
+                    0.5235089063644409,
+                    0.06971441954374313
+                ],
+                [
+                    -0.2299366444349289,
+                    -0.9096403121948242,
+                    0.3459526598453522,
+                    0.21037538349628448
+                ],
+                [
+                    0.47058990597724915,
+                    -0.41507887840270996,
+                    -0.7786234021186829,
+                    0.7349256277084351
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9131319986426875,
+                "support": 0.9184300341296928,
+                "entropy": 0.18632503448449644,
+                "mask_area": 2947,
+                "rendered_area": 2930,
+                "intersection_area": 2691
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        424
+                    ],
+                    "median_depth_m": 0.7150000333786011,
+                    "translation_m": [
+                        0.06870445731991782,
+                        0.20966660845385393,
+                        0.7150000333786011
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 23,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.846802830696106,
+                    -0.00923208799213171,
+                    0.5318262577056885,
+                    0.06975290924310684
+                ],
+                [
+                    -0.22757315635681152,
+                    -0.9100045561790466,
+                    0.3465571403503418,
+                    0.21015183627605438
+                ],
+                [
+                    0.48076552152633667,
+                    -0.41449490189552307,
+                    -0.7726954817771912,
+                    0.7340248823165894
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9134257693608386,
+                "support": 0.915593220338983,
+                "entropy": 0.18344187796470465,
+                "mask_area": 2957,
+                "rendered_area": 2950,
+                "intersection_area": 2701
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        424
+                    ],
+                    "median_depth_m": 0.7160000205039978,
+                    "translation_m": [
+                        0.0688005462284073,
+                        0.20995984467663945,
+                        0.7160000205039978
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 24,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8469471335411072,
+                    -0.011330385692417622,
+                    0.5315558314323425,
+                    0.06968311220407486
+                ],
+                [
+                    -0.2283601313829422,
+                    -0.9106094837188721,
+                    0.34444403648376465,
+                    0.21041902899742126
+                ],
+                [
+                    0.48013773560523987,
+                    -0.41311198472976685,
+                    -0.7738255262374878,
+                    0.7333073616027832
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9348710990502035,
+                "support": 0.9131875414181577,
+                "entropy": 0.18626989181128825,
+                "mask_area": 2948,
+                "rendered_area": 3018,
+                "intersection_area": 2756
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [
+                "long"
+            ],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        424
+                    ],
+                    "median_depth_m": 0.7160000205039978,
+                    "translation_m": [
+                        0.0688005462284073,
+                        0.20995984467663945,
+                        0.7160000205039978
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 25,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8467606902122498,
+                    -0.011073414236307144,
+                    0.5318582653999329,
+                    0.07008569687604904
+                ],
+                [
+                    -0.2276693433523178,
+                    -0.911139965057373,
+                    0.34349727630615234,
+                    0.210317924618721
+                ],
+                [
+                    0.4807942807674408,
+                    -0.41194769740104675,
+                    -0.774038553237915,
+                    0.7337503433227539
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9391686380533965,
+                "support": 0.9223365416528377,
+                "entropy": 0.18458552139525602,
+                "mask_area": 2959,
+                "rendered_area": 3013,
+                "intersection_area": 2779
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {}
+        },
+        {
+            "frame_index": 26,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8427141308784485,
+                    -0.005614291410893202,
+                    0.5383316874504089,
+                    0.06900713592767715
+                ],
+                [
+                    -0.2210923284292221,
+                    -0.9153406023979187,
+                    0.33655548095703125,
+                    0.2105923444032669
+                ],
+                [
+                    0.4908679723739624,
+                    -0.4026408791542053,
+                    -0.7726116180419922,
+                    0.7335221171379089
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.941156462585034,
+                "support": 0.9357456881974975,
+                "entropy": 0.18490352923292935,
+                "mask_area": 2940,
+                "rendered_area": 2957,
+                "intersection_area": 2767
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        423
+                    ],
+                    "median_depth_m": 0.7160000205039978,
+                    "translation_m": [
+                        0.0688005462284073,
+                        0.20877541549264067,
+                        0.7160000205039978
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 27,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8495178818702698,
+                    -0.009356132708489895,
+                    0.5274765491485596,
+                    0.06992019712924957
+                ],
+                [
+                    -0.22651197016239166,
+                    -0.9094610214233398,
+                    0.3486728370189667,
+                    0.2101309597492218
+                ],
+                [
+                    0.476457804441452,
+                    -0.4156833589076996,
+                    -0.7747225761413574,
+                    0.7324293851852417
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9470468431771895,
+                "support": 0.9198813056379822,
+                "entropy": 0.18548769219122366,
+                "mask_area": 2946,
+                "rendered_area": 3033,
+                "intersection_area": 2790
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        423
+                    ],
+                    "median_depth_m": 0.7170000076293945,
+                    "translation_m": [
+                        0.06889663513689677,
+                        0.2090669975060672,
+                        0.7170000076293945
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 28,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8453612327575684,
+                    -0.010568546131253242,
+                    0.5340903401374817,
+                    0.06956210732460022
+                ],
+                [
+                    -0.22523874044418335,
+                    -0.9136369824409485,
+                    0.3384297788143158,
+                    0.21047455072402954
+                ],
+                [
+                    0.48438864946365356,
+                    -0.40639302134513855,
+                    -0.7747335433959961,
+                    0.7341389060020447
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9259634888438134,
+                "support": 0.9262766317213392,
+                "entropy": 0.18403347511177764,
+                "mask_area": 2958,
+                "rendered_area": 2957,
+                "intersection_area": 2739
+            },
+            "accepted": true,
+            "event": "tracked",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {}
+        },
+        {
+            "frame_index": 29,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8478686213493347,
+                    -0.012171797454357147,
+                    0.5300665497779846,
+                    0.0691952258348465
+                ],
+                [
+                    -0.22756408154964447,
+                    -0.9113259315490723,
+                    0.34307342767715454,
+                    0.2103007435798645
+                ],
+                [
+                    0.47888824343681335,
+                    -0.4115051031112671,
+                    -0.7754542827606201,
+                    0.733799934387207
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.92920054200542,
+                "support": 0.9276293540750761,
+                "entropy": 0.1843203887966158,
+                "mask_area": 2952,
+                "rendered_area": 2957,
+                "intersection_area": 2743
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        423
+                    ],
+                    "median_depth_m": 0.7170000076293945,
+                    "translation_m": [
+                        0.06889663513689677,
+                        0.2090669975060672,
+                        0.7170000076293945
+                    ]
+                }
+            }
+        },
+        {
+            "frame_index": 30,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8470300436019897,
+                    -0.008422842249274254,
+                    0.5314784049987793,
+                    0.06942231953144073
+                ],
+                [
+                    -0.22372984886169434,
+                    -0.912640392780304,
+                    0.34209978580474854,
+                    0.21030640602111816
+                ],
+                [
+                    0.4821677803993225,
+                    -0.4086760878562927,
+                    -0.7749179005622864,
+                    0.7334793210029602
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9269282814614344,
+                "support": 0.9266148123097734,
+                "entropy": 0.18544466667374748,
+                "mask_area": 2956,
+                "rendered_area": 2957,
+                "intersection_area": 2740
+            },
+            "accepted": true,
+            "event": "snap_corrected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "snap": {
+                    "reason": "ok",
+                    "bbox_center_px": [
+                        387.5,
+                        423.5
+                    ],
+                    "median_depth_m": 0.7170000076293945,
+                    "translation_m": [
+                        0.06889663513689677,
+                        0.20966003920274612,
+                        0.7170000076293945
+                    ]
+                }
+            }
+        }
+    ],
+    "statistics_excluding_initialization": {
+        "frames": 30,
+        "accepted": 30,
+        "events": {
+            "tracked": 13,
+            "snap_corrected": 17
+        },
+        "states": {
+            "tracking": 30
+        },
+        "translation_std_mm": [
+            0.4205490127416369,
+            0.9063737035906644,
+            3.7210908820390745
+        ],
+        "translation_range_mm": [
+            2.209395170211792,
+            6.9101303815841675,
+            18.069803714752197
+        ],
+        "max_translation_from_initialization_mm": 14.516442317041546,
+        "normal_angle_from_initialization_deg": [
+            4.497735571508903,
+            11.450247625353082,
+            6.4947635316120085,
+            5.737341103675469,
+            5.630342772727225,
+            5.701167690309773,
+            5.938212987711109,
+            5.869767233958346,
+            6.106661363522742,
+            6.2478791870786745,
+            5.622462315448269,
+            5.776283808516436,
+            5.956432218821311,
+            5.718391937000376,
+            5.947662517370855,
+            5.307580515796842,
+            5.833783859143743,
+            5.5701701520468525,
+            5.814811011023157,
+            5.945199573625904,
+            5.545344621825368,
+            5.441970531803827,
+            5.405957544303275,
+            5.51040522334977,
+            5.580243980160292,
+            6.1196548073356904,
+            5.333015000376191,
+            5.920386884654975,
+            5.61793950364193,
+            5.761802678204807
+        ],
+        "precision_min": 0.8372562205783457,
+        "precision_max": 0.9526192859526192
+    },
+    "reference_static_mask_depth_valid_counts": [
+        21,
+        872,
+        2845,
+        2838,
+        2848,
+        2844,
+        2841,
+        2849,
+        2828,
+        2847,
+        2845,
+        2836,
+        2851,
+        2862,
+        2823,
+        2852,
+        2848,
+        2871,
+        2836,
+        2853,
+        2854,
+        2852,
+        2828,
+        2862,
+        2858,
+        2830,
+        2857,
+        2852,
+        2856,
+        2862
+    ],
+    "source_hashes": {
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/full_tests_v3.log": "f35d410030fa4f47f3fc119ce23f0f67a23c8a9cf2f72c94ea3ddf0f2f24e090",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/three_scene_tests.log": "3c94ac6cd3d0627235090428c43c92966a1c2e7cbe53668b8ed468276fbfa0ea",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/full_tests_material_fix.log": "139bd9c482b069976d5c0632547eee580b3a6e3b5f653d51d5d9beed01b8c1e6",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/tracking_v1.log": "934a1d4c78dfea7422f5c3392c476609730ce9a1e5e4607d438c5ae3f6371b27",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/three_scene_v3.log": "18366303490e2a4c5bb32e515ede99895dd0d06e165b4f71934326cfba185c2b",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/capture.log": "4bf478fa09776aaafbbaf76bc076c212586ee0f689c437cfba5b40989171257a",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/compile_material_fix.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/three_scene_tests_final.log": "23af8b13a1f46ba5d3e185a1b19283be9c79b665945365fd21db3ac5c6ab1aea",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/pickplace_clearance_v4.log": "15f34b115e465f7b86ff3235446ac90ee5e9c97314e9159a7c77e053999d7ab3",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/full_tests.log": "185717e1c31526648710136ee060f38a9f17bf5186e4731c3a15754ddcea3bed",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/init_v4.log": "0a18ca76f43fa24a7d35f6bec8190d4571775fb9922ffc4251268e31a2fe007b",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/full_tests_final.log": "9e3aa2450d8a52517b0620c449d78ce80329daa842f7beff22755d270942a529",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/init_v3.log": "b274a3f13121a437e4768b31d733b4d967966f42fd981984c046c6465a9a5e43",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/pusht_gate.log": "ae00a65f95e3652d206e5e4081b9618edc8ee817b4356f29f5415223b883690a",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/compile_final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/compile_v3.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompts.log": "1a8c2df1857f44484b9b3f15edfdc10cacb4e8a4858f42993080ff650dbe731d",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/tracking_v3.log": "8dd071379e83991503b86eb51149c4f34c323f0b36ee915632be6f78590c57bd",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/tracking_v2.log": "fb78a2b34fee62c48ece50eb2aedd0ac8f24b69c2bfe098bbd747c3df4a18970",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/dtype_probe.log": "dc91d5ffe89ec54fe1f380436d887b4e40df903ef09cf18fdde1b3d0700e6abc",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials.json": "4bd87c6b4c690668414fae754e331fc9503a4eb27108ef4ad2de2f354500f9f5",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/pusht_qualification.json/result.json": "7a5881fab219e969020916d46050282646a11843a6b881afb516ad62202234a7",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/sam3_batch_frames_result.json": "d8bc5e421f6f07768f5baeec32f3e2d947c4d5cf4ee683fb731c1dda2deb0183",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/capture.jsonl": "71f714e57b10527f29413dd7c16921cb00f509281d3a0df3d1fe46e02cbcb911",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/camera.json": "4a3338cb53e1a6b1ee2cded64c0bb51f4f2d83d9253390097f9b3cb58b2e29cb",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/replay_init_v3/20260907_211520_orange_jimu_plate_pid7221/camera.json": "6671c30ec92314bba0690cdea6148147c3b7977eacaf5a987a829ba37e6973f0",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/replay_init_v3/20260907_211520_orange_jimu_plate_pid7221/run_args.json": "5d114106609a46b7f3980428f540a3a2065804f6c4045f12e463b3a4ab420d8c",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_4/sam3_result.json": "92dc08a82049ce5216fcb24b49cc80c625273c1ed7c40b19fc2836510dfbb157",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_0/sam3_result.json": "d632c39114fbd92007e701e2f96d45e4d9a6a2412766b05cbb054cd4389afa19",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_2/sam3_result.json": "ff7ebb4553f4c2ea30e3cae34fa796b47fbb44efcf27fa0c615f5bf651713c30",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_1/sam3_result.json": "1cf44540f54796052fd9ba3768037476259690ebf9747c9da0712ec8a7dfa8b1",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/prompt_trials/prompt_3/sam3_result.json": "e64a016b8fa28a94b23c2ff1502bcbed283cc1a5e75e11a25594d4e69c329663",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/tracking_v3/20260907_213123_rrtrack/latest_pose.json": "9aae89a8a57b82d284dae7509c3fc452ae51cb664866c8844bef7a38c8bec26f",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/tracking_v3/20260907_213123_rrtrack/scene_registry.json": "2094321ed6fd85b300e9ba44e887824bfac5b60805873f51deec495d6a49fb0b",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/tracking_v3/20260907_213123_rrtrack/run_config.json": "32a2bf9bec11ebebf62b0d6c6fb3476e71451f59b053b53296cae75cb85b3b02",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/tracking_v3/20260907_213123_rrtrack/trajectory.jsonl": "e8e594bd59aec8276d7bce61a3e244de65abe319d6f780bd36f3e2192a3c9119",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/initialization/20260907_210221_orange_jimu_plate_pid1500846/camera.json": "6671c30ec92314bba0690cdea6148147c3b7977eacaf5a987a829ba37e6973f0",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/initialization/20260907_210221_orange_jimu_plate_pid1500846/run_args.json": "57a2aad7eb0e98f2f385e6810150c2bb8417380a2c4c9ec68233bc9342ae29c3",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/tracking_v2/20260907_212750_rrtrack/latest_pose.json": "8c307b78afec847dec23ef2f1cbf1f88e0df670dc130388b50ad3227569ac81c",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/tracking_v2/20260907_212750_rrtrack/scene_registry.json": "2094321ed6fd85b300e9ba44e887824bfac5b60805873f51deec495d6a49fb0b",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/tracking_v2/20260907_212750_rrtrack/run_config.json": "286488315c1bef45922bb44f713622bc0c360389c39f685c5ff0fbb90593bb2c",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/tracking_v2/20260907_212750_rrtrack/trajectory.jsonl": "bbce5d15a2b30ffa187659be3a7d931edd6622599e2672867b2adbb52315b691",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/replay_init_v4/20260907_211902_orange_jimu_plate_pid10773/sam6d_pose_result.json": "8294bbf3ab1a5b51ce4f206e445171ca4ca72fa248c694048ab6b753dec7cf86",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/replay_init_v4/20260907_211902_orange_jimu_plate_pid10773/camera.json": "6671c30ec92314bba0690cdea6148147c3b7977eacaf5a987a829ba37e6973f0",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/replay_init_v4/20260907_211902_orange_jimu_plate_pid10773/groundingdino_result.json": "47823f407b5f413c9805c08db87c007cc354a4e28a1019e2848fde929a0a11d0",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/replay_init_v4/20260907_211902_orange_jimu_plate_pid10773/run_args.json": "1a4908dec32f150218989f3ad12384cd206413946334659a9f02c8a413dd11d6",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/replay_init_v4/20260907_211902_orange_jimu_plate_pid10773/sam6d_results/detection_pem.json": "e920cb9f54f71b6a524c19d7a49d0144063a1b5983a1e21a6a337aa956bed6b8",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/replay_init_v4/20260907_211902_orange_jimu_plate_pid10773/sam6d_results/detection_ism.json": "a38c0f82f428240e6909317a9a34ef0c80d43bdf8b48cb4b1be5750b3dcbb883",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/replay_init_v4/20260907_211902_orange_jimu_plate_pid10773/sam3_mask/sam3_result.json": "3184e5dcc8de68e729684d2508fe2dcad79066861ee0512d1dce4712ad0df399",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000000.npy": "fc5605c5307069435e2728d726af7119ef57aeea6f8ec1a67598e12518986c05",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000029.npy": "7627b61f7aad16e246ac07d94191b7ed36d1469ab3e7eb6f54e967802e41ddfc",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000027.npy": "503c99bda44cb2e21877d08f29a674c8f4e47489301cf9ac3b5e99152d300fc8",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000024.npy": "bf9c33d68b1f894780bf03f9e7e1c5d5eb08f43a055759d28c461d8863ba9f2f",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000012.npy": "b8898347af8ea61020e90d4becc32d48a42b978609fe6698cace13fa9e510c04",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000006.npy": "5eac70be59790fd46f779aa569bff4c0afab357235e42f19e75b95ad23d18bb6",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000021.npy": "70d20c0539ed3124239e45f0d81b3f8b26fe6fee9b93e7fa8f0a6be461aaef60",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000025.npy": "57eff906e4e6b0af94c6994724314b594ec9218b14f75b4c3a6b6b0f06809222",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000002.npy": "c95437d0cbeb692c8d89265ac3fa6140850b7ad193d9b0061d6f7a62ac98dfa3",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000028.npy": "ea30531be3d1e164733318543ffd2af81570fcbac7c02002441a5631f7569bfc",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000010.npy": "c100349c921075bd55ada2e2c541d553be21dc57440d2f0f01ecb0ccff703155",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000001.npy": "4bf7803d9cb4100080efa2de3ce252cd2faeac24979a34bb26318ca9e0639fb4",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000015.npy": "980d43fd6c24259e20e3b8564c48a6d05a8f059eb80befddafbdc4c49b3410da",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000019.npy": "6f086311aef16d10ddab01df2103db98f3b169271d2c10a2c724c591a628ad37",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000009.npy": "d22c65e8d5b573f2ea1628608ea430b9df9a07f24c2b14175860e778db390384",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000017.npy": "88b85dd313c4989c331e870ef6783ac9261335c4e5d656929eccbe297cbc8b9b",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000016.npy": "abece2c88a1b28b930cc2c6312e3f98d74e9671da511cc05400cf7f2858bdad7",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000005.npy": "0bebf97291fa72cfcc5aaaf25800d7b234f1b3b3b74a4d39a7977eecf4701355",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000026.npy": "78de706d2bf15f7ad725e316694e5462c75419d0eca053162957c0cc860aa3a6",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000018.npy": "f318e60bcc277f8166cd0e83bf9dd375ab69af7b28256fe5caf8b4b7db1053da",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000022.npy": "4501d7924984dd00bc78338b0c81560f22fa2d30727ccef6e8f8ed86b496392a",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000011.npy": "f58f2a6c08c53e43b2a9c7a4a73fd3bad89cae2797999f7151a6205c7e109222",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000023.npy": "8c83279f01f8834b0a0890298d5bb32b5404a757757432cbc225deec1fd7581e",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000007.npy": "d1af9d3c930d1549616d1370f3b241a854ee7992df94ba065e291cc8a3239f1a",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000013.npy": "6169ddc9412d7c5c0f38f654f0086bd8334d66a9c42685f75bf01023d0410c91",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000020.npy": "e233ad1c3592e41799d0c64b2c616d2853a7fad597b168bb4c5f4dc745a0f7dd",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000008.npy": "6ef2b6597b314be72873bbe788026a10f359bb0032223d07669a9db8cf3d136c",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000003.npy": "06441ac99bd75f2da084156bb22a1158e5e84e317ab443268b2f7bee978e9d7f",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000014.npy": "efb89869b74af9239af4bb636fad6d192d19555a9fc50c30d4e84e57a51f0c9f",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/depth/000004.npy": "c0e094251f4e6d608325c0f3bbab1ea96bc9990a76788ef3a4e88665503eb952",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000023.png": "8f44a859512e0a0564df46c3dae05cde4a5a938508e3e0b6c5807ea71fbb3df1",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000029.png": "508c478ffdf29ba63f08f19af6f0797d9f65b0dd8f5c9205433745b4cdd52746",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000005.png": "7681671597f20079f920d039c22ed6e9fd796c7799517346f9d80d8c469ae496",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000000.png": "fed44dba99465e9598a8499cea63725c030a8a710f872c9a9613101bb1249537",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000014.png": "1bfc17d9e30332090ebd9a4d47665606011e9ff4b89f8778c50fc47241e89645",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000001.png": "e2837f4615b34af114802b7c3cf59b42d7c89a532e3e14e8fb890c8c5d599370",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000002.png": "890eee72495eca294849b67656445064cfb41724f0af9a968611c0a048cb709e",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000017.png": "2f19e878e736014449b138c35294e479b32f087ac5c3425ead97835374022a2e",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000009.png": "2d4021a2c7aacee5ac009729a90061f682b712af8a67b118bc4982824ce9368c",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000012.png": "3cc5100fe3fc6e3fa040848f78a7bfa1fc46db3b1c012524719878b1fbd97882",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000028.png": "50bc8e6c8de34340fd14e4aec2cd46752b7ad93abb3ad6d6f05d293858ceda47",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000006.png": "53c14fea93f6930aada8bb01f639331cf96871649e81c06bc3493c4f3543fd83",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000010.png": "081c0086b4ef83b2e0f82fd80838296300793cd43dcb48db182ad632e6740f68",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000008.png": "f2bda5985c151c0854d5f6891ecd436797facaf7ebaeb2482b56f2c984b5ace2",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000018.png": "e7be452a306863561c5bf675dfc4a9f3452bffb9c8f2ba2eaa0c1ad5d9c4b16f",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000024.png": "3f4002479bd3c2fc4e3ec0fcb97524a9ef50fc779c026b0e213ce44a25d77bb9",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000011.png": "3b637dd44641fa0f5406c7011bf89fe86684543ebceb45bb41f78969a448aa6a",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000015.png": "b2721f8fc6eeab6fd0b00ed8e6bb6561aa9c7426316173cba35c86b5b8a758ab",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000019.png": "a30a19ff245b814e832700f82c37f9c3ab3b7625a6fc31eee35a4f2c42e84433",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000020.png": "c1b4a312deb0e68e83762701ef8e5af269fdcde6aa7fb646d803c2b5048aa778",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000007.png": "0262756e46f2a1746bcec6b3ec4dad6025017e9bf01d54ae10a1f4a8aa83985e",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000003.png": "1347d9d16aad7f629c1be118bb4ba20e89bd90d6ac2fdcef88385d18a33081ab",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000022.png": "3ef1b03aa2b22600146d2e78e3cd2c08b346eae4fa5c8661b97583535ba3e89e",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000027.png": "0f0cd2d826d6468eb5f56f7c7f6d0a14b00dd9cbec2298b3dfaa4a98e1d1c4ac",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000004.png": "fb42ba3ebb4122a5f949c0161156817589fb1000f0f1106b936c2eb13c1c8c03",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000016.png": "0eb1765abf574b4ae02dc1c1e6b316c501e97d26b969b985dcaad8e1f3bf7a32",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000025.png": "e64fa93b43f2e500d2385abc8610573683e13fab051923a4f1eea7a403a10f51",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000026.png": "38aaf22e36e1d9847ae38beccc88c68065d0cf192e4295f875da0ec8257ce654",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000021.png": "768433e6595f99433cd464c51a0101a962081b4c51044dce0f11e6e65bf848b5",
+        "runtime_data/three_scene/jimu_rrtrack_live_20260907/sequence_after_reboot/rgb/000013.png": "a92145bec10302104de6b75d3a57e5a579696b83b28ce7de6aa13669e6e8d013"
+    },
+    "tests": {
+        "three_scene": 179,
+        "full": 501,
+        "failures": 0,
+        "warnings": 1,
+        "compile": "PASS"
+    },
+    "pusht_gate": {
+        "execute_real": false,
+        "gpu_chain_planned": false,
+        "hardware_connected": false,
+        "missing_run_inputs": [
+            "observation",
+            "joints",
+            "goal"
+        ],
+        "qualification": {
+            "errors": [
+                {
+                    "error": "push_tcp_z_m must be a number",
+                    "field": "pusht.motion.push_tcp_z_m"
+                },
+                {
+                    "error": "object_centroid_z_m must be a number",
+                    "field": "pusht.motion.object_centroid_z_m"
+                },
+                {
+                    "error": "object_height_m must be a number",
+                    "field": "pusht.motion.object_height_m"
+                },
+                {
+                    "error": "tool_quaternion_wxyz: expected 4 finite numbers",
+                    "field": "pusht.motion.tool_quaternion_wxyz"
+                },
+                {
+                    "error": "missing",
+                    "field": "pusht.motion.pusher_contact_links"
+                },
+                {
+                    "error": "missing",
+                    "field": "pusht.motion.static_collision_objects"
+                },
+                {
+                    "error": "unqualified",
+                    "field": "pusht.motion.tool_collision_geometry_verified"
+                },
+                {
+                    "error": "T_base_camera: expected finite 4x4 matrix",
+                    "field": "pusht.observer.T_base_camera"
+                },
+                {
+                    "error": "T_marker_object: expected finite 4x4 matrix",
+                    "field": "pusht.observer.T_marker_object"
+                },
+                {
+                    "error": "marker_size_m must be a number",
+                    "field": "pusht.observer.marker_size_m"
+                }
+            ],
+            "hardware_reviewed": false,
+            "integration_qualified": false,
+            "motion_authorized": false,
+            "planning_inputs_complete": false
+        },
+        "status": "qualification_incomplete",
+        "verified_task_success": null
+    },
+    "prior_failure_log_tails": {
+        "init_v3.log": "Running as unit: rm75-jimu-init-v3.scope; invocation ID: 2fe8b5422097416983b23a79275b0d1c\nTraceback (most recent call last):\n  File \"/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/runpy.py\", line 196, in _run_module_as_main\n    return _run_code(code, main_globals, None,\n  File \"/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/runpy.py\", line 86, in _run_code\n    exec(code, run_globals)\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/perception/sam6d_pose_provider.py\", line 3700, in <module>\n    main()\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/perception/sam6d_pose_provider.py\", line 3591, in main\n    _run_single_object_pose(single_args, frame, sam6d_root, run_dir, detector_cache=detector_cache)\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/perception/sam6d_pose_provider.py\", line 2650, in _run_single_object_pose\n    mask, mask_source = make_detection_mask(frame, box_for_mask, args, prompt=prompt, run_dir=run_dir, rgb_path=rgb_path)\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/perception/sam6d_pose_provider.py\", line 1132, in make_detection_mask\n    return make_sam3_mask(frame, box_xyxy, args, prompt=prompt, run_dir=run_dir, rgb_path=rgb_path)\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/perception/sam6d_pose_provider.py\", line 1046, in make_sam3_mask\n    raise RuntimeError(f\"SAM3 mask subprocess failed with code {proc.returncode}: {tail}\")\nRuntimeError: SAM3 mask subprocess failed with code 1: /home/zhangzhao/PycharmProjects/sam3/sam3/model_builder.py:8: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\n/home/zhangzhao/anaconda3/envs/sam3/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers\n  warnings.warn(f\"Importing from {__name__} is deprecated, please import via timm.layers\", FutureWarning)\nTraceback (most recent call last):\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/perception/sam3_mask_provider.py\", line 483, in <module>\n    main()\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/perception/sam3_mask_provider.py\", line 463, in main\n    candidates = _run_one_item(processor, base_state, rgb, args, item, output_dir)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/perception/sam3_mask_provider.py\", line 206, in _run_one_item\n    candidates = _rank_masks(masks, boxes, scores, select_box, int(args.min_mask_area))\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/perception/sam3_mask_provider.py\", line 90, in _rank_masks\n    raise RuntimeError(\"SAM3 returned no masks\")\nRuntimeError: SAM3 returned no masks\n",
+        "tracking_v1.log": "Running as unit: rm75-jimu-track-v1.scope; invocation ID: 8422e379f78544c78b41e689e8690f52\n/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/runtime/rrtrack_pose_tracking.py:165: DeprecationWarning: `Scene.dump(concatenate=True)` DEPRECATED FOR REMOVAL APRIL 2025: replace with `Scene.to_geometry()`\n  mesh = loaded.copy() if isinstance(loaded, trimesh.Trimesh) else loaded.dump(concatenate=True)\nWarp 1.12.0 initialized:\n   CUDA Toolkit 12.9, Driver 13.0\n   Devices:\n     \"cpu\"      : \"x86_64\"\n     \"cuda:0\"   : \"NVIDIA GeForce RTX 5060 Ti\" (8 GiB, sm_120, mempool enabled)\n   Kernel cache:\n     /home/zhangzhao/.cache/warp/1.12.0\nTraceback (most recent call last):\n  File \"/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/runpy.py\", line 196, in _run_module_as_main\n    return _run_code(code, main_globals, None,\n  File \"/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/runpy.py\", line 86, in _run_code\n    exec(code, run_globals)\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/runtime/rrtrack_pose_tracking.py\", line 477, in <module>\n    raise SystemExit(main())\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/runtime/rrtrack_pose_tracking.py\", line 381, in main\n    pose_refiner = FoundationPoseRefiner(\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/perception/rrtrack/foundationpose_adapter.py\", line 63, in __init__\n    self.estimator = estimater.FoundationPose(\n  File \"/home/zhangzhao/PycharmProjects/FoundationPose/estimater.py\", line 26, in __init__\n    self.reset_object(model_pts, model_normals, symmetry_tfs=symmetry_tfs, mesh=mesh)\n  File \"/home/zhangzhao/PycharmProjects/FoundationPose/estimater.py\", line 49, in reset_object\n    self.mesh_ori = mesh.copy()\n  File \"/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/trimesh/base.py\", line 3201, in copy\n    copied.visual = self.visual.copy()\n  File \"/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/trimesh/visual/color.py\", line 161, in copy\n    self.face_colors  # noqa\n  File \"/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/trimesh/visual/color.py\", line 180, in face_colors\n    return self._get_colors(name=\"face\")\n  File \"/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/trimesh/visual/color.py\", line 334, in _get_colors\n    colors = vertex_to_face_color(\n  File \"/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/trimesh/visual/color.py\", line 826, in vertex_to_face_color\n    face_colors = vertex_colors[faces].mean(axis=1)\nIndexError: index 4 is out of bounds for axis 0 with size 4\n",
+        "dtype_probe.log": "_init__()] Using pretrained model from /home/zhangzhao/PycharmProjects/FoundationPose/learning/training/../../weights/2024-01-11-20-02-45/model_best.pth\n[__init__()] init done\n[__init__()] welcome\n[__init__()] self.cfg: \n lr: 0.0001\nc_in: 6\nzfar: .inf\ndebug: null\nw_rot: 0.1\nn_view: 1\nrun_id: null\nuse_BN: true\nrot_rep: axis_angle\nckpt_dir: /home/zhangzhao/PycharmProjects/FoundationPose/learning/training/../../weights/2023-10-28-18-33-37/model_best.pth\nexp_name: 2023-10-28-18-33-37\nsave_dir: /tmp/2023-10-28-18-33-37/\nloss_type: l2\noptimizer: adam\ntrans_rep: tracknet\nbatch_size: 64\ncrop_ratio: 1.2\nuse_normal: false\nBN_momentum: 0.1\nmax_num_key: null\nwarmup_step: -1\ninput_resize:\n- 160\n- 160\nmax_step_val: 1000\nnormal_uint8: false\nvis_interval: 1000\nweight_decay: 0\nn_max_objects: null\nnormalize_xyz: true\nclip_grad_norm: 'Infinity'\nrot_normalizer: 0.3490658503988659\ntrans_normalizer:\n- 0.019999999552965164\n- 0.019999999552965164\n- 0.05000000074505806\nmax_step_per_epoch: 25000\nval_epoch_interval: 10\nn_dataloader_workers: 60\nenable_amp: true\nuse_mask: false\n\n[__init__()] self.h5_file:\n[__init__()] Using pretrained model from /home/zhangzhao/PycharmProjects/FoundationPose/learning/training/../../weights/2023-10-28-18-33-37/model_best.pth\n[__init__()] init done\nDIAMETER <class 'numpy.float64'> 0.10485347053880018\n[track_one()] Welcome\nModule Utils 0b33452 load on device 'cuda:0' took 4.10 ms  (cached)\n[track_one()] depth processing done\n/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/torch/__init__.py:1240: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at /pytorch/torch/csrc/tensor/python_tensor.cpp:434.)\n  _C._set_default_tensor_type(t)\n[predict()] ob_in_cams:(1, 4, 4)\n[predict()] self.cfg.use_normal:False\n[predict()] trans_normalizer:[0.019999999552965164, 0.019999999552965164, 0.05000000074505806], rot_normalizer:0.3490658503988659\n[predict()] making cropped data\n[make_crop_data_batch()] Welcome make_crop_data_batch\nTraceback (most recent call last):\n  File \"<stdin>\", line 10, in <module>\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/perception/rrtrack/foundationpose_adapter.py\", line 94, in refine\n    pose = self.estimator.track_one(\n  File \"/home/zhangzhao/PycharmProjects/FoundationPose/estimater.py\", line 263, in track_one\n    pose, vis = self.refiner.predict(mesh=self.mesh, mesh_tensors=self.mesh_tensors, rgb=rgb, depth=depth, K=K, ob_in_cams=self.pose_last.reshape(1,4,4).data.cpu().numpy(), normal_map=None, xyz_map=xyz_map, mesh_diameter=self.diameter, glctx=self.glctx, iteration=iteration, get_vis=self.debug>=2)\n  File \"/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/torch/utils/_contextlib.py\", line 116, in decorate_context\n    return func(*args, **kwargs)\n  File \"/home/zhangzhao/PycharmProjects/FoundationPose/learning/training/predict_pose_refine.py\", line 184, in predict\n    pose_data = make_crop_data_batch(self.cfg.input_resize, B_in_cams, mesh_centered, rgb_tensor, depth_tensor, K, crop_ratio=crop_ratio, normal_map=normal_map, xyz_map=xyz_map_tensor, cfg=self.cfg, glctx=glctx, mesh_tensors=mesh_tensors, dataset=self.dataset, mesh_diameter=mesh_diameter)\n  File \"/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/torch/utils/_contextlib.py\", line 116, in decorate_context\n    return func(*args, **kwargs)\n  File \"/home/zhangzhao/PycharmProjects/FoundationPose/learning/training/predict_pose_refine.py\", line 31, in make_crop_data_batch\n    tf_to_crops = compute_crop_window_tf_batch(pts=mesh.vertices, H=H, W=W, poses=ob_in_cams, K=K, crop_ratio=crop_ratio, out_size=(render_size[1], render_size[0]), method=method, mesh_diameter=mesh_diameter)\n  File \"/home/zhangzhao/PycharmProjects/FoundationPose/Utils.py\", line 611, in compute_crop_window_tf_batch\n    projected = (K@pts.reshape(-1,3).T).T\nRuntimeError: expected mat1 and mat2 to have the same dtype, but got: float != double\nNORMALIZED_DIAMETER <class 'float'> 0.10485347053880018\n[track_one()] Welcome\n[track_one()] depth processing done\n[predict()] ob_in_cams:(1, 4, 4)\n[predict()] self.cfg.use_normal:False\n[predict()] trans_normalizer:[0.019999999552965164, 0.019999999552965164, 0.05000000074505806], rot_normalizer:0.3490658503988659\n[predict()] making cropped data\n[make_crop_data_batch()] Welcome make_crop_data_batch\n[make_crop_data_batch()] make tf_to_crops done\n[make_crop_data_batch()] render done\n[make_crop_data_batch()] warp done\n[make_crop_data_batch()] pose batch data done\n[predict()] forward start\n/home/zhangzhao/PycharmProjects/FoundationPose/learning/training/predict_pose_refine.py:190: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.\n  with torch.cuda.amp.autocast(enabled=self.amp):\n[predict()] forward done\n[predict()] making cropped data\n[make_crop_data_batch()] Welcome make_crop_data_batch\n[make_crop_data_batch()] make tf_to_crops done\n[make_crop_data_batch()] render done\n[make_crop_data_batch()] warp done\n[make_crop_data_batch()] pose batch data done\n[predict()] forward start\n[predict()] forward done\n[track_one()] pose done\nAFTER [[ 0.83788669  0.00642246  0.54580617  0.07040641]\n [-0.22807302 -0.90434039  0.36076373  0.21032012]\n [ 0.49591252 -0.42676267 -0.75626993  0.73200762]\n [ 0.          0.          0.          1.        ]]\n"
+    },
+    "failure_sequence_v2": [
+        {
+            "frame_index": 0,
+            "state": "tracking",
+            "T_cam_obj": [
+                [
+                    0.8300159573554993,
+                    0.004851341247558594,
+                    0.5577183961868286,
+                    0.06887366622686386
+                ],
+                [
+                    -0.2739664316177368,
+                    -0.8674626350402832,
+                    0.4152713418006897,
+                    0.20956794917583466
+                ],
+                [
+                    0.4858153760433197,
+                    -0.49747779965400696,
+                    -0.7186787128448486,
+                    0.720456063747406
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0.9936244819891616,
+                "support": 0.9321172248803827,
+                "entropy": 0.12285299812042134,
+                "mask_area": 3137,
+                "rendered_area": 3344,
+                "intersection_area": 3117
+            },
+            "accepted": true,
+            "event": "initialized",
+            "memory_updates": [
+                "long",
+                "online_bank"
+            ],
+            "recovery_source": null,
+            "metadata": {}
+        },
+        {
+            "frame_index": 1,
+            "state": "lost",
+            "T_cam_obj": [
+                [
+                    0.8300159573554993,
+                    0.004851341247558594,
+                    0.5577183961868286,
+                    0.06887366622686386
+                ],
+                [
+                    -0.2739664316177368,
+                    -0.8674626350402832,
+                    0.4152713418006897,
+                    0.20956794917583466
+                ],
+                [
+                    0.4858153760433197,
+                    -0.49747779965400696,
+                    -0.7186787128448486,
+                    0.720456063747406
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0,
+                "support": 0,
+                "entropy": 1,
+                "mask_area": 2997,
+                "rendered_area": 0,
+                "intersection_area": 0
+            },
+            "accepted": false,
+            "event": "local_refiner_error:RuntimeError",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "error": "expected mat1 and mat2 to have the same dtype, but got: float != double"
+            }
+        },
+        {
+            "frame_index": 2,
+            "state": "lost",
+            "T_cam_obj": [
+                [
+                    0.8300159573554993,
+                    0.004851341247558594,
+                    0.5577183961868286,
+                    0.06887366622686386
+                ],
+                [
+                    -0.2739664316177368,
+                    -0.8674626350402832,
+                    0.4152713418006897,
+                    0.20956794917583466
+                ],
+                [
+                    0.4858153760433197,
+                    -0.49747779965400696,
+                    -0.7186787128448486,
+                    0.720456063747406
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0,
+                "support": 0,
+                "entropy": 1,
+                "mask_area": 2996,
+                "rendered_area": 0,
+                "intersection_area": 0
+            },
+            "accepted": false,
+            "event": "recovery_rejected",
+            "memory_updates": [],
+            "recovery_source": "retrieval_deferred",
+            "metadata": {
+                "retrieved": [
+                    {
+                        "source": "offline",
+                        "index": 77,
+                        "similarity": 0.34235918521881104
+                    },
+                    {
+                        "source": "offline",
+                        "index": 75,
+                        "similarity": 0.33347466588020325
+                    },
+                    {
+                        "source": "offline",
+                        "index": 6,
+                        "similarity": 0.33323943614959717
+                    },
+                    {
+                        "source": "online",
+                        "index": 0,
+                        "similarity": 0.9721026420593262
+                    }
+                ],
+                "timing_ms": {
+                    "descriptor": 10.460910000006152
+                },
+                "candidate_batch_refine_error": "expected mat1 and mat2 to have the same dtype, but got: float != double",
+                "retrieval_failure_streak": 1,
+                "mask_candidate_count": 1,
+                "propagated_mask_candidates": 1,
+                "sam3_mask_candidates": 0
+            }
+        },
+        {
+            "frame_index": 3,
+            "state": "lost",
+            "T_cam_obj": [
+                [
+                    0.8300159573554993,
+                    0.004851341247558594,
+                    0.5577183961868286,
+                    0.06887366622686386
+                ],
+                [
+                    -0.2739664316177368,
+                    -0.8674626350402832,
+                    0.4152713418006897,
+                    0.20956794917583466
+                ],
+                [
+                    0.4858153760433197,
+                    -0.49747779965400696,
+                    -0.7186787128448486,
+                    0.720456063747406
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0,
+                "support": 0,
+                "entropy": 1,
+                "mask_area": 3012,
+                "rendered_area": 0,
+                "intersection_area": 0
+            },
+            "accepted": false,
+            "event": "recovery_rejected",
+            "memory_updates": [],
+            "recovery_source": "retrieval_deferred",
+            "metadata": {
+                "retrieved": [
+                    {
+                        "source": "offline",
+                        "index": 77,
+                        "similarity": 0.3470646142959595
+                    },
+                    {
+                        "source": "offline",
+                        "index": 75,
+                        "similarity": 0.3399420380592346
+                    },
+                    {
+                        "source": "offline",
+                        "index": 6,
+                        "similarity": 0.3383956551551819
+                    },
+                    {
+                        "source": "online",
+                        "index": 0,
+                        "similarity": 0.9652684926986694
+                    }
+                ],
+                "timing_ms": {
+                    "descriptor": 9.689197000056993
+                },
+                "candidate_batch_refine_error": "expected mat1 and mat2 to have the same dtype, but got: float != double",
+                "retrieval_failure_streak": 2,
+                "mask_candidate_count": 1,
+                "propagated_mask_candidates": 1,
+                "sam3_mask_candidates": 0
+            }
+        },
+        {
+            "frame_index": 4,
+            "state": "lost",
+            "T_cam_obj": [
+                [
+                    0.8300159573554993,
+                    0.004851341247558594,
+                    0.5577183961868286,
+                    0.06887366622686386
+                ],
+                [
+                    -0.2739664316177368,
+                    -0.8674626350402832,
+                    0.4152713418006897,
+                    0.20956794917583466
+                ],
+                [
+                    0.4858153760433197,
+                    -0.49747779965400696,
+                    -0.7186787128448486,
+                    0.720456063747406
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0,
+                "support": 0,
+                "entropy": 1,
+                "mask_area": 2998,
+                "rendered_area": 0,
+                "intersection_area": 0
+            },
+            "accepted": false,
+            "event": "recovery_rejected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "retrieved": [
+                    {
+                        "source": "offline",
+                        "index": 77,
+                        "similarity": 0.34813177585601807
+                    },
+                    {
+                        "source": "offline",
+                        "index": 75,
+                        "similarity": 0.3415977358818054
+                    },
+                    {
+                        "source": "offline",
+                        "index": 6,
+                        "similarity": 0.33994728326797485
+                    },
+                    {
+                        "source": "online",
+                        "index": 0,
+                        "similarity": 0.9680825471878052
+                    }
+                ],
+                "timing_ms": {
+                    "descriptor": 9.489652000070237
+                },
+                "candidate_batch_refine_error": "expected mat1 and mat2 to have the same dtype, but got: float != double",
+                "retrieval_failure_streak": 3,
+                "global_register_error": "expected mat1 and mat2 to have the same dtype, but got: float != double",
+                "mask_candidate_count": 1,
+                "propagated_mask_candidates": 1,
+                "sam3_mask_candidates": 0
+            }
+        },
+        {
+            "frame_index": 5,
+            "state": "lost",
+            "T_cam_obj": [
+                [
+                    0.8300159573554993,
+                    0.004851341247558594,
+                    0.5577183961868286,
+                    0.06887366622686386
+                ],
+                [
+                    -0.2739664316177368,
+                    -0.8674626350402832,
+                    0.4152713418006897,
+                    0.20956794917583466
+                ],
+                [
+                    0.4858153760433197,
+                    -0.49747779965400696,
+                    -0.7186787128448486,
+                    0.720456063747406
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0,
+                "support": 0,
+                "entropy": 1,
+                "mask_area": 2986,
+                "rendered_area": 0,
+                "intersection_area": 0
+            },
+            "accepted": false,
+            "event": "recovery_rejected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "retrieved": [
+                    {
+                        "source": "offline",
+                        "index": 77,
+                        "similarity": 0.3490310311317444
+                    },
+                    {
+                        "source": "offline",
+                        "index": 75,
+                        "similarity": 0.3427698016166687
+                    },
+                    {
+                        "source": "offline",
+                        "index": 6,
+                        "similarity": 0.3408498167991638
+                    },
+                    {
+                        "source": "online",
+                        "index": 0,
+                        "similarity": 0.9623302221298218
+                    }
+                ],
+                "timing_ms": {
+                    "descriptor": 87.38999700005934
+                },
+                "candidate_batch_refine_error": "expected mat1 and mat2 to have the same dtype, but got: float != double",
+                "retrieval_failure_streak": 4,
+                "global_register_error": "expected mat1 and mat2 to have the same dtype, but got: float != double",
+                "mask_candidate_count": 1,
+                "propagated_mask_candidates": 1,
+                "sam3_mask_candidates": 0,
+                "relocalizer_error": "SAM3 recovery failed: (*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/PycharmProjects/sam3/sam3/model/vitdet.py\", line 985, in forward\n    x = blk(x)\n        ^^^^^^\n  File \"/home/zhangzhao/anaconda3/envs/sam3/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n    return self._call_impl(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/anaconda3/envs/sam3/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1787, in _call_impl\n    return forward_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/PycharmProjects/sam3/sam3/model/vitdet.py\", line 732, in forward\n    x = self.ls1(self.attn(x))\n                 ^^^^^^^^^^^^\n  File \"/home/zhangzhao/anaconda3/envs/sam3/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n    return self._call_impl(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/anaconda3/envs/sam3/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1787, in _call_impl\n    return forward_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/PycharmProjects/sam3/sam3/model/vitdet.py\", line 592, in forward\n    q, k = self._apply_rope(q, k)\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/PycharmProjects/sam3/sam3/model/vitdet.py\", line 571, in _apply_rope\n    return apply_rotary_enc(q, k, freqs_cis=self.freqs_cis)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/PycharmProjects/sam3/sam3/model/vitdet.py\", line 127, in apply_rotary_enc\n    freqs_cis = reshape_for_broadcast(freqs_cis, xq_)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/PycharmProjects/sam3/sam3/model/vitdet.py\", line 110, in reshape_for_broadcast\n    assert freqs_cis.shape == (x.shape[-2], x.shape[-1])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+            }
+        },
+        {
+            "frame_index": 6,
+            "state": "lost",
+            "T_cam_obj": [
+                [
+                    0.8300159573554993,
+                    0.004851341247558594,
+                    0.5577183961868286,
+                    0.06887366622686386
+                ],
+                [
+                    -0.2739664316177368,
+                    -0.8674626350402832,
+                    0.4152713418006897,
+                    0.20956794917583466
+                ],
+                [
+                    0.4858153760433197,
+                    -0.49747779965400696,
+                    -0.7186787128448486,
+                    0.720456063747406
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            ],
+            "agreement": {
+                "precision": 0,
+                "support": 0,
+                "entropy": 1,
+                "mask_area": 2990,
+                "rendered_area": 0,
+                "intersection_area": 0
+            },
+            "accepted": false,
+            "event": "recovery_rejected",
+            "memory_updates": [],
+            "recovery_source": null,
+            "metadata": {
+                "retrieved": [
+                    {
+                        "source": "offline",
+                        "index": 77,
+                        "similarity": 0.3459140360355377
+                    },
+                    {
+                        "source": "offline",
+                        "index": 75,
+                        "similarity": 0.33905452489852905
+                    },
+                    {
+                        "source": "offline",
+                        "index": 6,
+                        "similarity": 0.3375263214111328
+                    },
+                    {
+                        "source": "online",
+                        "index": 0,
+                        "similarity": 0.9625495076179504
+                    }
+                ],
+                "timing_ms": {
+                    "descriptor": 11.96089299992309
+                },
+                "candidate_batch_refine_error": "expected mat1 and mat2 to have the same dtype, but got: float != double",
+                "retrieval_failure_streak": 5,
+                "global_register_error": "expected mat1 and mat2 to have the same dtype, but got: float != double",
+                "mask_candidate_count": 1,
+                "propagated_mask_candidates": 1,
+                "sam3_mask_candidates": 0,
+                "relocalizer_error": "SAM3 recovery failed: (*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/PycharmProjects/sam3/sam3/model/vitdet.py\", line 985, in forward\n    x = blk(x)\n        ^^^^^^\n  File \"/home/zhangzhao/anaconda3/envs/sam3/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n    return self._call_impl(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/anaconda3/envs/sam3/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1787, in _call_impl\n    return forward_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/PycharmProjects/sam3/sam3/model/vitdet.py\", line 732, in forward\n    x = self.ls1(self.attn(x))\n                 ^^^^^^^^^^^^\n  File \"/home/zhangzhao/anaconda3/envs/sam3/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n    return self._call_impl(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/anaconda3/envs/sam3/lib/python3.12/site-packages/torch/nn/modules/module.py\", line 1787, in _call_impl\n    return forward_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/PycharmProjects/sam3/sam3/model/vitdet.py\", line 592, in forward\n    q, k = self._apply_rope(q, k)\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/PycharmProjects/sam3/sam3/model/vitdet.py\", line 571, in _apply_rope\n    return apply_rotary_enc(q, k, freqs_cis=self.freqs_cis)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/PycharmProjects/sam3/sam3/model/vitdet.py\", line 127, in apply_rotary_enc\n    freqs_cis = reshape_for_broadcast(freqs_cis, xq_)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhangzhao/PycharmProjects/sam3/sam3/model/vitdet.py\", line 110, in reshape_for_broadcast\n    assert freqs_cis.shape == (x.shape[-2], x.shape[-1])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+            }
+        }
+    ]
+}

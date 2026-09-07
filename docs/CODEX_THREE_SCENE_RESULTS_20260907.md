@@ -1,5 +1,7 @@
 # Codex 三场景本地验证回传 — 2026-09-07
 
+最新补充：[Jimu 实机相机 RRTrack 与 PickPlace 退让回传](CODEX_JIMU_RRTRACK_AND_CLEARANCE_20260907.md)。下文为历史轮次，勿将其旧计数当作最新结果。
+
 按结果模板填写。**NEEDS_REVIEW：软件与本机迁移完成，严格 GPU/物理任务验收未完成。没有连接机器人、没有机械臂或夹爪运动。**
 
 首轮 71 项 CPU 测试通过，但实际浏览器发现 JS 截断；修复后最终 three_scene 73 passed，全量 395 passed。原工作版本已实际迁入仓库，不是 sibling 链接。四墙原程序报告 4/4 cycle 成功，但使用了基线自带的碰撞放宽；不能以此宣布严格碰撞门通过。屋顶程序发现同类分支后停止。PickPlace native 运行仍有环境级失败。PushT CPU 与 GPU 初始化/FK 已跑，完整短推因未标定 profile 未运行。

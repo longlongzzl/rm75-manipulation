@@ -1,0 +1,282 @@
+Running as unit: rm75-pickplace-clearance-v4.scope; invocation ID: 291a83f017f34c22a0d0d502c9d68f03
+/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/sapien/__init__.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+[curobo] set TORCH_EXTENSIONS_DIR=/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/curobo_native_extensions
+Using bridge script: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_move_with_foundationpose.py
+Using planner script: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_move_v10_perpendicular_to_object.py
+Using camera extrinsic from: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/lerobot-sim2real/results/realman/realman_home/base_camera/camera_extrinsic_opencv.npy
+[single_scene] scene lifecycle: create once, then switch active object actors in-place
+Repeat mode: 1 cycle(s)
+Target selection order: risk_aware
+Initial target object: gluestick
+Targeted place rules:
+- bi: primitive=insert_vertical, target=bitong, hover_height=0.15, release_retreat_height=0.15, slots=[]
+- carriot: primitive=place_on_slots, target=desk, hover_height=0.08, release_retreat_height=0.1, slots=['slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'slot_6']
+- gluestick: primitive=place_on_slots, target=desk, hover_height=0.12, release_retreat_height=0.12, slots=['slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'slot_6']
+- hongshupian: primitive=place_on_slots, target=desk, hover_height=0.12, release_retreat_height=0.12, slots=['slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'slot_6']
+- lvmukuai: primitive=place_on_slots, target=desk, hover_height=0.08, release_retreat_height=0.1, slots=['slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'slot_6']
+- red_triangle_back: primitive=roof_assembly, target=red_bricks_cube, hover_height=0.06, release_retreat_height=0.08, slots=[]
+- red_triangle_front: primitive=roof_assembly, target=red_bricks_cube, hover_height=0.06, release_retreat_height=0.08, slots=[]
+- red_triangle_left: primitive=roof_assembly, target=red_bricks_cube, hover_height=0.06, release_retreat_height=0.08, slots=[]
+- red_triangle_right: primitive=roof_assembly, target=red_bricks_cube, hover_height=0.06, release_retreat_height=0.08, slots=[]
+- shuazi: primitive=place_on_slots, target=desk, hover_height=0.08, release_retreat_height=0.1, slots=['slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'slot_6']
+- tennis: primitive=place_on_slots, target=desk, hover_height=0.1, release_retreat_height=0.1, slots=['slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'slot_6']
+kinematics_fused_cu not found, JIT compiling...
+geom_cu binary not found, jit compiling...
+lbfgs_step_cu not found, JIT compiling...
+line_search_cu not found, JIT compiling...
+tensor_step_cu not found, jit compiling...
+Warp DeprecationWarning: The symbol `warp.torch.device_from_torch` will soon be removed from the public API. Use `warp.device_from_torch` instead.
+[prefetch] warmed shared cuRobo planner namespace=next_cycle_prefetch in 198342.6ms
+
+[cycle 1] target pool: ['gluestick']
+[cycle 1] selected target object: gluestick
+[cycle 1] selected target is the final remaining build target
+
+[cycle 1] using object spec: gluestick
+[cycle 1] mesh file: /home/zhangzhao/Desktop/lerobot/pick_jiaobang/meshs/gluestick.glb
+[cycle 1] simulation asset file: /home/zhangzhao/Desktop/lerobot/pick_jiaobang/meshs/gluestick_sim.glb
+[cycle 1] simulation asset scale: 1.0000000000000002
+[cycle 1] GroundingDINO target: a small glue stick.
+[cycle 1] targeted place: place_on_slots -> desk
+[cycle 1] selected obstacles: ['desk']
+
+================ cycle 1 ================
+[foundationpose] skipped; using fixed scene file: /home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/test_scenes/gluestick_desk_regression.json
+[foundationpose] using fixed target world pose: [-0.030455000698566437, 0.028150999918580055, 0.01601400040090084]
+[sim physics] applied object profile: gluestick static_friction=2.2 dynamic_friction=1.8 restitution=0.0 linear_damping=0.12 angular_damping=6.0
+Sim URDF     : /home/zhangzhao/.maniskill/data/robots/RM75_gripper/RM75-B/urdf/RM75-B.urdf
+Planning URDF: /home/zhangzhao/.maniskill/data/robots/RM75_gripper/RM75-B/urdf/RM75-B.planning.tiny.urdf
+SRDF         : /home/zhangzhao/.maniskill/data/robots/RM75_gripper/RM75-B/urdf/RM75-B.permissive.srdf
+[33;1m2026-09-07 21:35:47,328 - mani_skill  - WARNING - No initial pose set for actor builder of grasp_pose_visual, setting to default pose q=[1,0,0,0], p=[0,0,0]. Not setting reasonable initial poses may slow down simulation, see https://github.com/haosulab/ManiSkill/issues/421.[0m
+[safety] snapped active object flat to the table (min_extent=0.0300 m, rotation=0.0 deg, dz=+0.0000 m)
+[scene obstacle] desk: using cached world pose override for continuous multi-cycle placement
+[scene obstacle] applied desk: world translation=[-0.28692400455474854, 0.23448200523853302, 0.05819400027394295], planner_collision=yes, box_scale=0.990 (global=0.900, object=1.100, non_fixed=1.000, placed=1.000), box_size=[0.42570000886917114, 0.0989999994635582, 0.23759999871253967], sim_collision=box
+[planner wall] applied virtual_side_wall: front_face_x=-0.900, center=[-0.9150000214576721, 0.0, 0.4000000059604645], box_size=[0.029999999329447746, 1.2000000476837158, 0.800000011920929], planner_collision=yes
+[planner wall] applied virtual_top_wall: bottom_z=0.800, center=[0.0, 0.0, 0.8149999976158142], box_size=[1.2000000476837158, 1.2000000476837158, 0.029999999329447746], planner_collision=yes
+[safety] raised scene obstacle virtual_side_wall by 0.0010 m so its lowest point stays above the table (bottom z 0.0000 -> 0.0010)
+Scene obstacles registered: 3
+[target_ghost] rendered current target pose for gluestick: mode=mesh, variant=face_robot, p=[-0.4262999892234802, 0.31049999594688416, 0.15459999442100525], alpha=0.55
+[sim physics] applied object profile: gluestick static_friction=2.2 dynamic_friction=1.8 restitution=0.0 linear_damping=0.12 angular_damping=6.0
+[single_scene] active=gluestick, scene obstacle(s)=['desk']
+[single_scene] switched active object to gluestick without recreating env
+[target_ghost] rendered current target pose for gluestick: mode=mesh, variant=face_robot, p=[-0.4262999892234802, 0.31049999594688416, 0.15459999442100525], alpha=0.55
+
+[episode] planning from FoundationPose-initialized object pose
+
+[dry-run] --execute-real was not provided, so motions will only be planned and previewed
+
+[move to grasp with two-step approach]
+[direct_grasp] built 13 grasp candidate(s) from 13 pose variant(s) (rule-paired bias variants); grasp_mode=long_axis_adaptive, tilt=8, non_tilt=5
+[direct_grasp] vertical top-bias axis remap: target_long_axis_dot_up=1.000; top_bias shifts use +object-long-axis in the current grasp frame
+[direct_grasp] place-rule grasp bias variants: top_bias_center_vertical[axis=0.000, rule_axis=0.000, tilt=0.0, tilt_shift=0.000, z_lift=0.000]/dir=toward_robot, top_bias_pos2_vertical[axis=0.002, rule_axis=-0.002, tilt=0.0, tilt_shift=0.000, z_lift=0.000]/dir=toward_robot, top_bias_pos6_vertical[axis=0.006, rule_axis=-0.006, tilt=0.0, tilt_shift=0.000, z_lift=0.000]/dir=toward_robot, top_bias_pos10_vertical[axis=0.010, rule_axis=-0.010, tilt=0.0, tilt_shift=0.000, z_lift=0.000]/dir=toward_robot, top_bias_pos14_vertical[axis=0.014, rule_axis=-0.014, tilt=0.0, tilt_shift=0.000, z_lift=0.000]/dir=toward_robot, top_bias_pos14_tilt15_away[axis=0.014, rule_axis=-0.014, tilt=15.0, tilt_shift=0.000, z_lift=0.000]/dir=away_robot, top_bias_pos10_tilt15_away[axis=0.010, rule_axis=-0.010, tilt=15.0, tilt_shift=0.000, z_lift=0.000]/dir=away_robot, top_bias_pos6_tilt15_away[axis=0.006, rule_axis=-0.006, tilt=15.0, tilt_shift=0.000, z_lift=0.000]/dir=away_robot, top_bias_pos2_tilt15_away[axis=0.002, rule_axis=-0.002, tilt=15.0, tilt_shift=0.000, z_lift=0.000]/dir=away_robot, top_bias_pos14_tilt25_away[axis=0.014, rule_axis=-0.014, tilt=25.0, tilt_shift=0.000, z_lift=0.000]/dir=away_robot, top_bias_pos10_tilt25_away[axis=0.010, rule_axis=-0.010, tilt=25.0, tilt_shift=0.000, z_lift=0.000]/dir=away_robot, top_bias_pos6_tilt25_away[axis=0.006, rule_axis=-0.006, tilt=25.0, tilt_shift=0.000, z_lift=0.000]/dir=away_robot, top_bias_pos2_tilt25_away[axis=0.002, rule_axis=-0.002, tilt=25.0, tilt_shift=0.000, z_lift=0.000]/dir=away_robot
+[direct_grasp] tilt variant labels: ['top_bias_pos14_tilt15_away', 'top_bias_pos10_tilt15_away', 'top_bias_pos6_tilt15_away', 'top_bias_pos2_tilt15_away', 'top_bias_pos14_tilt25_away', 'top_bias_pos10_tilt25_away', 'top_bias_pos6_tilt25_away', 'top_bias_pos2_tilt25_away']
+
+[poses]
+object p: [-0.030455  0.028151  0.016014] object q: [ 0.292406  0.643816 -0.292406  0.643816]
+[direct_grasp] vertical long-axis placement: increasing pregrasp winners 1->5 so downstream final-approach can test deeper axis biases
+[direct_grasp] integrated fast-chain: first planning only 1/5 pregrasp winner(s); pair-first IK preselect will choose the actual top pair
+Creating new Mesh cache: 1
+Creating new Mesh cache: 1
+[curobo] created CUDA graph batch IK solver: batch=16, seeds=32
+Obstacle not found in world model: None
+NoneType: None
+[curobo] winner_chain_ik_preselect_grasp_contact: disabled stale world obstacle(s) via enable_obstacle: ['active_target_object']
+[curobo] winner_chain_ik_preselect_grasp_contact: forced disabled stale active_target_object
+[winner_chain] rebuilt fast-chain CUDA graph IK solver for contact graph after removing the active object from the collision world
+[curobo] created CUDA graph batch IK solver: batch=16, seeds=32
+[curobo] grasp_direct_top_bias_center_vertical_winner_chain_grasp_approach strict linear validation passed: waypoints=11, distance=0.0700m, worst_line_err=0.0026m, worst_rot_err=0.09deg at waypoint=5
+[curobo] grasp_direct_top_bias_pos2_vertical_axis_2mm_winner_chain_grasp_approach strict linear validation passed: waypoints=11, distance=0.0700m, worst_line_err=0.0027m, worst_rot_err=0.15deg at waypoint=5
+[curobo] grasp_direct_top_bias_pos6_vertical_axis_6mm_winner_chain_grasp_approach strict linear validation passed: waypoints=10, distance=0.0700m, worst_line_err=0.0033m, worst_rot_err=0.36deg at waypoint=5
+[curobo] grasp_direct_top_bias_pos10_vertical_axis_10mm_winner_chain_grasp_approach strict linear validation passed: waypoints=11, distance=0.0700m, worst_line_err=0.0027m, worst_rot_err=0.14deg at waypoint=6
+[curobo] grasp_direct_top_bias_pos14_vertical_axis_14mm_winner_chain_grasp_approach strict linear validation passed: waypoints=11, distance=0.0700m, worst_line_err=0.0027m, worst_rot_err=0.10deg at waypoint=5
+[curobo] grasp_direct_top_bias_pos2_tilt15_away_axis_2mm_winner_chain_grasp_approach strict linear validation passed: waypoints=11, distance=0.0700m, worst_line_err=0.0051m, worst_rot_err=0.67deg at waypoint=5
+[curobo] grasp_direct_top_bias_pos2_tilt25_away_axis_2mm_winner_chain_grasp_approach strict linear validation passed: waypoints=11, distance=0.0700m, worst_line_err=0.0084m, worst_rot_err=1.23deg at waypoint=5
+[curobo] grasp_direct_top_bias_pos6_tilt15_away_axis_6mm_winner_chain_grasp_approach strict linear validation passed: waypoints=11, distance=0.0700m, worst_line_err=0.0055m, worst_rot_err=0.74deg at waypoint=5
+[curobo] grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_winner_chain_grasp_approach strict linear validation passed: waypoints=11, distance=0.0700m, worst_line_err=0.0090m, worst_rot_err=1.35deg at waypoint=5
+[curobo] grasp_direct_top_bias_pos10_tilt15_away_axis_10mm_winner_chain_grasp_approach strict linear validation passed: waypoints=11, distance=0.0700m, worst_line_err=0.0053m, worst_rot_err=0.72deg at waypoint=5
+[curobo] grasp_direct_top_bias_pos10_tilt25_away_axis_10mm_winner_chain_grasp_approach strict linear validation passed: waypoints=11, distance=0.0700m, worst_line_err=0.0086m, worst_rot_err=1.29deg at waypoint=5
+[curobo] grasp_direct_top_bias_pos14_tilt15_away_axis_14mm_winner_chain_grasp_approach strict linear validation passed: waypoints=11, distance=0.0700m, worst_line_err=0.0060m, worst_rot_err=0.84deg at waypoint=5
+[curobo] grasp_direct_top_bias_pos14_tilt25_away_axis_14mm_winner_chain_grasp_approach strict linear validation passed: waypoints=13, distance=0.0700m, worst_line_err=0.0069m, worst_rot_err=0.95deg at waypoint=6
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[curobo] winner_chain_paired_relation_ik temporarily disabled world collision for links: ['gripper_Left_Support_Link', 'gripper_Right_Support_Link']
+[curobo] winner_chain_paired_relation_ik re-enabled world collision for links: ['gripper_Left_Support_Link', 'gripper_Right_Support_Link']
+[winner_chain] paired relation IK accepted 4/13 full relation(s)
+[fast_chain_ui] fast-chain gluestick；pregrasp图 13/13: top_bias_center_vertical, top_bias_pos2_vertical_axis_2mm, top_bias_pos6_vertical_axis_6mm, top_bias_pos10_vertical_axis_10mm, top_bias_pos14_vertical_axis_14mm, top_bias_pos2_tilt15_away_axis_2mm, top_bias_pos2_tilt25_away_axis_2mm, top_bias_pos6_tilt15_away_axis_6mm, top_bias_pos6_tilt25_away_axis_6mm, top_bias_pos10_tilt15_away_axis_10mm, top_bias_pos10_tilt25_away_axis_10mm, top_bias_pos14_tilt15_away_axis_14mm, top_bias_pos14_tilt25_away_axis_14mm；grasp图 13/13: top_bias_center_vertical, top_bias_pos2_vertical_axis_2mm, top_bias_pos6_vertical_axis_6mm, top_bias_pos10_vertical_axis_10mm, top_bias_pos14_vertical_axis_14mm, top_bias_pos2_tilt15_away_axis_2mm, top_bias_pos2_tilt25_away_axis_2mm, top_bias_pos6_tilt15_away_axis_6mm, top_bias_pos6_tilt25_away_axis_6mm, top_bias_pos10_tilt15_away_axis_10mm, top_bias_pos10_tilt25_away_axis_10mm, top_bias_pos14_tilt15_away_axis_14mm, top_bias_pos14_tilt25_away_axis_14mm；hover图 6/13: top_bias_pos2_tilt15_away_axis_2mm, top_bias_pos2_tilt25_away_axis_2mm, top_bias_pos6_tilt25_away_axis_6mm, top_bias_pos10_tilt25_away_axis_10mm, top_bias_pos14_tilt15_away_axis_14mm, top_bias_pos14_tilt25_away_axis_14mm；release图 4/13: top_bias_pos2_tilt25_away_axis_2mm, top_bias_pos6_tilt25_away_axis_6mm, top_bias_pos10_tilt25_away_axis_10mm, top_bias_pos14_tilt25_away_axis_14mm；四图交集 4/13: top_bias_pos2_tilt25_away_axis_2mm, top_bias_pos6_tilt25_away_axis_6mm, top_bias_pos10_tilt25_away_axis_10mm, top_bias_pos14_tilt25_away_axis_14mm；最终链路 top_bias_pos10_tilt25_away_axis_10mm, top_bias_pos6_tilt25_away_axis_6mm, top_bias_pos14_tilt25_away_axis_14mm；状态 已选中完整链路
+[winner_chain] IK preselected grasp-place pair: grasp=grasp_direct_top_bias_pos10_tilt25_away_axis_10mm place=transport_hover_face_robot slot=slot_1 score=7.707; top_pairs=3, top_grasps=3
+[winner_chain] top pair fallback order: [('grasp_direct_top_bias_pos10_tilt25_away_axis_10mm', ['transport_hover_face_robot']), ('grasp_direct_top_bias_pos6_tilt25_away_axis_6mm', ['transport_hover_face_robot']), ('grasp_direct_top_bias_pos14_tilt25_away_axis_14mm', ['transport_hover_face_robot'])]
+[winner_chain] transport MotionGen restricted to IK-preselected top pair(s) first='grasp_direct_top_bias_pos10_tilt25_away_axis_10mm', count=3; candidate-stage grasp MotionGen is skipped
+[grasp] using 3 IK-preselected pregrasp/grasp pair(s); final approach will be planned once for the selected transport pair
+[grasp] explicit two-step grasp pregrasp succeeded for 3 candidate(s)
+[joint_search] vertical long-axis placement: increasing downstream grasp expansion 2->5 so final-approach can test deeper axis biases
+[joint_search] vertical long-axis placement: trying vertical grasp relations first (order=['grasp_direct_top_bias_pos6_tilt25_away_axis_6mm', 'grasp_direct_top_bias_pos10_tilt25_away_axis_10mm', 'grasp_direct_top_bias_pos14_tilt25_away_axis_14mm'])
+[joint_search] grasp winners for chain evaluation: 3 (tilted=3): ['grasp_direct_top_bias_pos6_tilt25_away_axis_6mm', 'grasp_direct_top_bias_pos10_tilt25_away_axis_10mm', 'grasp_direct_top_bias_pos14_tilt25_away_axis_14mm']
+[joint_search] evaluating downstream place feasibility for grasp_direct_top_bias_pos6_tilt25_away_axis_6mm (grasp_score=7.907)
+[joint_search] grasp_direct_top_bias_pos6_tilt25_away_axis_6mm: using IK q_grasp for candidate transport; grasp final-approach MotionGen is deferred until after transport selection
+[planner] targeted_place raw target box size: [0.03 0.11 0.03] (asset=gluestick_sim.glb, scale=1.000000)
+[planner] targeted_place attached box size: [0.03 0.11 0.03] (scale=1.000)
+[curobo] attaching object box for joint_search_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm: original_dims=[30.0, 110.0, 30.0]mm, scaled_dims=[30.0, 110.0, 30.0]mm, scale_xy=1.00, scale_z=1.00
+[curobo] attached long-axis object [0.029999999329447746, 0.10999999940395355, 0.029999999329447746] to link=attached_object with 6/6 manual spheres, enabled_spheres=6, manual_sphere_radius=14.4mm, covered_length=118.4mm/110.0mm, radius_scale=0.48, length_scale=1.00, world_object_z_offset=2.0mm, object_world_p=[0.028200000524520874, -0.2694999873638153, 0.01600000075995922]
+[curobo] joint_search_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm attached sphere bottom after attach: z=0.0036m, virtual_table_top=-0.0100m, min_clearance=0.0030m, world_z_offset=0.0020m
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[joint_search] grasp_direct_top_bias_pos6_tilt25_away_axis_6mm: using 1 IK-preselected place candidate(s) for winner-chain fast pass
+[joint_search] grasp_direct_top_bias_pos6_tilt25_away_axis_6mm: legacy primary transport fallback is disabled for fast-chain testing
+[joint_search] grasp_direct_top_bias_pos6_tilt25_away_axis_6mm fast_ik winner-chain mode: 1 IK-ranked pair(s) will be tried sequentially; first full transport+release chain wins
+[joint_search] transport-hover pair candidate count for grasp_direct_top_bias_pos6_tilt25_away_axis_6mm (fast_ik): 1, needed_winners=1, transport_max_winners=1
+[joint_search] grasp_direct_top_bias_pos6_tilt25_away_axis_6mm fast_ik: pair-first chain will run constrained straight lift before the single transport MotionGen
+[joint_search] grasp_direct_top_bias_pos6_tilt25_away_axis_6mm fast_ik: skipped contact-state transport profile entry; the only transport MotionGen will run after lift
+[curobo] joint_start_tcp_up_lift_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_world: disabled stale world obstacle(s) via enable_obstacle: ['active_target_object']
+[curobo] joint_start_tcp_up_lift_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_world: forced disabled stale active_target_object
+[curobo] joint_start_tcp_up_lift_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_world world: excluded scene obstacle(s): ['gluestick']
+[curobo] joint_start_tcp_up_lift_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik temporarily disabled world collision for links: ['attached_object', 'gripper_Left_1_Link', 'gripper_Left_2_Link', 'gripper_Left_Support_Link', 'gripper_Right_1_Link', 'gripper_Right_2_Link', 'gripper_Right_Support_Link', 'gripper_base_link', 'left_pad', 'right_pad']
+[joint_search] joint_start_tcp_up_lift_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik: trying cuRobo constrained TCP-up lift (axis=2, axis_world_z=0.906, distance=0.088m, world_z_gain=0.080m)
+[curobo] joint_start_tcp_up_lift_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_straight_ik endpoint IK for straight primitive success=True
+[curobo] joint_start_tcp_up_lift_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_straight_ik_endpoint_ik strict linear validation passed: waypoints=14, distance=0.0883m, worst_line_err=0.0135m, worst_rot_err=2.08deg at waypoint=6
+[curobo] joint_start_tcp_up_lift_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik using endpoint-IK straight primitive (14 waypoint(s))
+[curobo] joint_start_tcp_up_lift_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik re-enabled world collision for links: ['attached_object', 'gripper_Left_1_Link', 'gripper_Left_2_Link', 'gripper_Left_Support_Link', 'gripper_Right_1_Link', 'gripper_Right_2_Link', 'gripper_Right_Support_Link', 'gripper_base_link', 'left_pad', 'right_pad']
+[joint_search] retrying transport-hover after TCP-up straight lift for grasp_direct_top_bias_pos6_tilt25_away_axis_6mm (fast_ik)
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift: forced world cache refresh after attached lift
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift: disabled stale world obstacle(s) via enable_obstacle: ['active_target_object']
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift: forced disabled stale active_target_object
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift world: excluded scene obstacle(s): ['gluestick']
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift IK prefilter kept 1/1 start-goal pair(s); reused_prefilter=1; statuses:  (strict=1, soft=0, soft_thresholds: pos<=0.0100 rot<=0.2500)
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift evaluating 1 start-goal pair(s) in 1 batch chunk(s) of size <= 64
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift_trajopt: forced world cache refresh after attached lift
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift_trajopt: disabled stale world obstacle(s) via enable_obstacle: ['active_target_object']
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift_trajopt: forced disabled stale active_target_object
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift_trajopt world: excluded scene obstacle(s): ['gluestick']
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift temporarily disabled world collision for links: ['gripper_Left_1_Link', 'gripper_Left_2_Link', 'gripper_Left_Support_Link', 'gripper_Right_1_Link', 'gripper_Right_2_Link', 'gripper_Right_Support_Link', 'gripper_base_link', 'left_pad', 'right_pad']
+[curobo] transport_hover_face_robot realized tcp: pos_err=0.0000 m, rot_err=0.00 deg
+[curobo] transport_hover_face_robot_release_precheck temporarily disabled world collision for links: ['attached_object']
+[curobo] transport_hover_face_robot_release_precheck_cached_q strict linear validation failed at waypoint 1/90: progress=-0.0196m, outside_segment=0.0196m, last_progress=0.0000m
+[curobo] transport_hover_face_robot_release_precheck_endpoint_ik strict linear validation passed: waypoints=5, distance=0.0400m, worst_line_err=0.0018m, worst_rot_err=0.48deg at waypoint=4
+[curobo] transport_hover_face_robot_release_precheck re-enabled world collision for links: ['attached_object']
+[curobo] transport_hover_face_robot prefilter-q-goal success: score=4.142, selection_penalty=0.000, place_pref_penalty=0.000, clearance_penalty=0.000, total_motion=3.499 rad, joint7_total=0.041 rad, joint7_excursion=0.041 rad, waypoints=62, realized_pos_err=0.0000 m, realized_rot_err=0.00 deg
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift prefilter-q-goal joint-space trial: 1 winner(s) from 1 trial(s)
+[curobo] joint_transport_hover_pairs_grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_fast_ik_after_lift re-enabled world collision for links: ['gripper_Left_1_Link', 'gripper_Left_2_Link', 'gripper_Left_Support_Link', 'gripper_Right_1_Link', 'gripper_Right_2_Link', 'gripper_Right_Support_Link', 'gripper_base_link', 'left_pad', 'right_pad']
+[joint_search] feasible transport-hover chain: grasp=grasp_direct_top_bias_pos6_tilt25_away_axis_6mm, hover=transport_hover_face_robot, total_score=17.183, waypoints=75
+[curobo] detached object from link=attached_object
+[joint_search] selected chain: grasp=grasp_direct_top_bias_pos6_tilt25_away_axis_6mm, pre_place=transport_hover_face_robot, total_score=17.183
+[curobo] grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_final_approach: disabled stale world obstacle(s) via enable_obstacle: ['active_target_object', 'virtual_table_plane']
+[curobo] grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_final_approach: forced disabled stale active_target_object
+[curobo] grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_final_approach_pair_first_ik strict linear validation passed: waypoints=11, distance=0.0700m, worst_line_err=0.0090m, worst_rot_err=1.35deg at waypoint=5
+[two_step_grasp] grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_final_approach: using pair-first IK q_grasp for the constrained final approach, preserving transport start consistency
+Object already in warp cache, using existing instance for: active_target_object
+Object already in warp cache, using existing instance for: active_target_object
+[curobo] grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_final_approach: disabled stale world obstacle(s) via enable_obstacle: ['virtual_table_plane']
+[two_step_grasp] using deferred constrained final approach for grasp_direct_top_bias_pos6_tilt25_away_axis_6mm: pregrasp=37 + approach=11 waypoints, distance=70.0mm
+
+[planned grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_pregrasp_to_final]
+target p: [-0.034947  0.024189  0.016   ]
+target q: [ 0.076059 -0.91403  -0.34308  -0.202635]
+planned arm q: [ 1.428098 -0.136372 -0.333771 -2.302684  0.754522 -0.683571  2.410644]
+[dry-run] skipped real execution for grasp_direct_top_bias_pos6_tilt25_away_axis_6mm_pregrasp_to_final
+
+[close gripper]
+[dry-run] skipped real gripper close
+[sim gripper] closed preview after 8 steps, pad gap=0.0413 m
+[planner] targeted_place raw target box size: [0.03 0.11 0.03] (asset=gluestick_sim.glb, scale=1.000000)
+[planner] targeted_place attached box size: [0.03 0.11 0.03] (scale=1.000)
+[direct_pre_place] stabilized attached sim state from grasp-time TCP<->object transform
+[curobo] attaching object box for transport: original_dims=[30.0, 110.0, 30.0]mm, scaled_dims=[30.0, 110.0, 30.0]mm, scale_xy=1.00, scale_z=1.00
+[curobo] attached long-axis object [0.029999999329447746, 0.10999999940395355, 0.029999999329447746] to link=attached_object with 6/6 manual spheres, enabled_spheres=6, manual_sphere_radius=14.4mm, covered_length=118.4mm/110.0mm, radius_scale=0.48, length_scale=1.00, world_object_z_offset=2.0mm, object_world_p=[0.028200000524520874, -0.2694999873638153, 0.01600000075995922]
+[curobo] transport attached sphere bottom after attach: z=0.0036m, virtual_table_top=-0.0100m, min_clearance=0.0030m, world_z_offset=0.0020m
+[post_grasp_lift] skipped independent lift; joint_search transport chain already starts at the executed grasp state (start_delta=0.0000 <= tol=0.1200)
+[post_grasp_lift] deferred independent lift; the reused transport chain starts with the validated lift (waypoints=14)
+
+[move to targeted place]
+[planner] targeted_place raw target box size: [0.03 0.11 0.03] (asset=gluestick_sim.glb, scale=1.000000)
+[planner] targeted_place attached box size: [0.03 0.11 0.03] (scale=1.000)
+[place] joint_search selected a grasp-place pair after IK screening and attached-payload transport planning
+[place_state] category=long_axis, mode=vertical_place, release lift disabled
+[place_state] built 24 transport hover candidate(s) (pad-level filter would keep 48/48, but retaining tilted variants too; max_pad_tilt=0.25)
+[place] reusing joint_search transport path (start_delta=0.0000 <= tol=0.1200, waypoints=75)
+[curobo] transport_hover_face_robot_final_contact temporarily disabled world collision for links: ['attached_object', 'gripper_Left_Support_Link', 'gripper_Right_Support_Link']
+[curobo] transport_hover_face_robot_final_contact_cached_q_release strict linear validation passed: waypoints=5, distance=0.0400m, worst_line_err=0.0018m, worst_rot_err=0.48deg at waypoint=4
+[place_state] transport_hover_face_robot_final_contact: using pair-first cached q_release as the straight final-contact primitive (5 waypoint(s))
+[curobo] transport_hover_face_robot_final_contact re-enabled world collision for links: ['attached_object', 'gripper_Left_Support_Link', 'gripper_Right_Support_Link']
+[curobo] transport_hover_face_robot_final_contact strict linear validation passed: waypoints=5, distance=0.0400m, worst_line_err=0.0018m, worst_rot_err=0.48deg at waypoint=4
+[place_state] final_contact success: mode=vertical_place, label=transport_hover_face_robot_final_contact, total_motion=4.381 rad, waypoints=79
+[place] source=gluestick, primitive=place_on_slots, mode=vertical_place, target=desk, slot=slot_1, variant=face_robot, tcp_verticality=0.396
+[place] target object_axes_world_z: x=-0.030, y=1.000, z=0.008 (abs: x=0.030, y=1.000, z=0.008)
+[place] hover p: [-0.411673  0.316127  0.197303] q: [ 0.538859 -0.15807   0.820226  0.108963]
+[place] release p: [-0.426444  0.310452  0.160566] q: [ 0.538859 -0.15807   0.820226  0.108963]
+
+[planned transport_hover_face_robot_final_contact_hover_to_release]
+target p: [-0.426444  0.310452  0.160566]
+target q: [ 0.538859 -0.15807   0.820226  0.108963]
+planned arm q: [ 1.21753   1.408268  2.074884 -0.149142 -0.068266 -2.234     2.84807 ]
+[dry-run] skipped real execution for transport_hover_face_robot_final_contact_hover_to_release
+[direct_pre_place] synchronized active object to attached release pose before opening gripper
+
+[open gripper at place]
+[dry-run] skipped real gripper open at the targeted place
+[sim gripper] opened preview after 8 steps, pad gap=0.1001 m
+[curobo] detached object from link=attached_object
+[curobo gripper] synced 1 kinematics configs; released=True; locks={'gripper_Left_1_Joint': 0.01152242161333561, 'gripper_Left_Support_Joint': 0.011038082651793957, 'gripper_Left_2_Joint': 0.011703903786838055, 'gripper_Right_1_Joint': 0.012302213348448277, 'gripper_Right_Support_Joint': 0.01181491743773222, 'gripper_Right_2_Joint': 0.012482687830924988}
+[curobo] post_place_clearance_reverse_audit: disabled stale world obstacle(s) via enable_obstacle: ['active_target_object']
+[curobo] post_place_clearance_reverse_audit: forced disabled stale active_target_object
+[place] post_place_clearance reusing reversed final-contact path (5 waypoint(s))
+[planner] auto-executing post_place_clearance without separate preview/confirmation
+[dry-run] skipped real execution for post_place_clearance
+[place] post_place_clearance final q: [1.2101099491119385, 1.3262100219726562, 1.9998500347137451, -0.1889200061559677, -0.0752200037240982, -2.226720094680786, 2.7361199855804443]
+[place settle] simulated 60 step(s) after release to let the object settle
+[place settle] remembered released object pose at world translation=[-0.42478299140930176, 0.30976200103759766, 0.15987899899482727]
+[place] completed targeted place and clearance; skipping return_to_cycle_start (final_target)
+[cycle 1] final sim arm q after place cycle: [1.2101099491119385, 1.3262100219726562, 1.9998400211334229, -0.18890999257564545, -0.0752200037240982, -2.226720094680786, 2.736140012741089]
+
+cycle 1 success = True
+[scene cache] kept placed object gluestick in the cached scene at world translation=[-0.42478299140930176, 0.30976200103759766, 0.15987899899482727]
+
+final success = True
+{"argv": ["/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py", "--object-name", "gluestick", "--skip-foundationpose", "--fixed-scene-pose-file", "pick_jiaobang/test_scenes/gluestick_desk_regression.json", "--render-mode", "none", "--auto-execute", "--curobo-torch-extensions-dir", "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/curobo_native_extensions"], "execute_real": false, "command_success": true, "verified_task_success": null, "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d", "planner": "curobo_only", "clearance_path_audits": [], "native_return": null, "status": "native_return_unverified", "loaded_mplib_modules": []}
+
+[planning_profile] summary
+[planning_profile] jsonl: planning_profile_logs/20260907_213545_prefetch_pid20503.jsonl
+[planning_profile] object | stage | n | ok | total_ms | avg_ms | max_ms | bar
+[planning_profile] __prefetch__ | next_cycle_prefetch_planner_warmup |  1 |  1 | 198342.6 | 198342.6 | 198342.6 | ################################
+[planning_profile] gluestick    | joint_search_transport_hover |  1 |  1 |   3201.7 |  3201.7 |  3201.7 | #
+[planning_profile] gluestick    | winner_chain_ik_preselect    |  1 |  1 |   2492.5 |  2492.5 |  2492.5 | #
+[planning_profile] gluestick    | scene_capture                |  1 |  1 |   1923.2 |  1923.2 |  1923.2 | #
+[planning_profile] gluestick    | joint_search_start_lift      |  1 |  1 |    677.6 |   677.6 |   677.6 | #
+[planning_profile] gluestick    | gripper_close                |  1 |  1 |     29.8 |    29.8 |    29.8 | #
+[planning_profile] gluestick    | post_place_clearance         |  1 |  1 |     29.1 |    29.1 |    29.1 | #
+[planning_profile] gluestick    | place_open_gripper           |  1 |  1 |     19.6 |    19.6 |    19.6 | #
+[planning_profile] gluestick    | final_contact                |  1 |  1 |     11.9 |    11.9 |    11.9 | #
+[planning_profile] gluestick    | two_step_final_approach      |  1 |  1 |     10.4 |    10.4 |    10.4 | #
+[planning_profile] gluestick    | build_grasp_candidates       |  1 |  1 |      7.6 |     7.6 |     7.6 | #
+[planning_profile] gluestick    | joint_search_build_candidates |  1 |  1 |      7.2 |     7.2 |     7.2 | #
+[planning_profile] gluestick    | transport_attach             |  2 |  2 |      5.3 |     2.6 |     3.5 | #
+[planning_profile] gluestick    | place_hover_release_execute  |  1 |  1 |      0.7 |     0.7 |     0.7 | #
+[planning_profile] gluestick    | post_place_clearance_execute |  1 |  1 |      0.4 |     0.4 |     0.4 | #
+[planning_profile] gluestick    | post_grasp_lift              |  1 |  1 |      0.1 |     0.1 |     0.1 | #
+[planning_profile] gluestick    | placed_pose_prediction_compare |  1 |  1 |      0.0 |     0.0 |     0.0 | #
+[planning_profile] gluestick    | next_cycle_prefetch_start    |  1 |  0 |      0.0 |     0.0 |     0.0 | #
+[planning_profile] gluestick    | next_cycle_prefetch_consume  |  1 |  0 |      0.0 |     0.0 |     0.0 | #
+[planning_profile] gluestick    | episode_cycle_start          |  1 |  1 |      0.0 |     0.0 |     0.0 | #

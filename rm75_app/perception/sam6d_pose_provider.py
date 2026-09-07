@@ -3473,7 +3473,7 @@ def sam3_text_prompt_variants(object_name: str, prompt: str) -> list[str]:
     return out
 
 
-def validate_object_name_args(object_names: list[str]):
+def validate_object_name_args(object_names: list[str], *, mesh_file: str | None = None):
     known = set(list_object_spec_names())
     bad_names = []
     option_like = []
@@ -3490,7 +3490,9 @@ def validate_object_name_args(object_names: list[str]):
             f"{option_like}. Did you miss a space before an option? "
             "Example: ... tennis --mask-mode sam3_text"
         )
-    if bad_names:
+    # The single-object resolver explicitly supports custom CADs. Keep typo
+    # rejection for named/batch assets while allowing that documented path.
+    if bad_names and not (len(object_names) == 1 and mesh_file):
         raise ValueError(
             "unknown object name(s): "
             f"{bad_names}. If this was a mask mode, use '--mask-mode sam3_text' "
@@ -3527,7 +3529,7 @@ def main():
     object_names = list(args.object_names or ([] if args.object_name is None else [args.object_name]))
     if not object_names:
         raise ValueError("provide --object-name for one object or --object-names for multiple objects")
-    validate_object_name_args(object_names)
+    validate_object_name_args(object_names, mesh_file=args.mesh_file)
     if args.bbox is not None and len(object_names) > 1:
         raise ValueError("--bbox is single-object only; omit it when using --object-names")
 

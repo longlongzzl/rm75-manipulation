@@ -35,7 +35,17 @@ def foundationpose_compatible_mesh(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
             material=trimesh.visual.material.SimpleMaterial(image=image),
         )
         return compatible
-    compatible.visual = visual.to_color()
+    if visual.uv is None:
+        # A uniform untextured PBR GLB has no UV rows. Some trimesh versions
+        # return a single RGBA vector from to_color(), which later gets indexed
+        # as four vertices by mesh.copy(). Expand the actual material color;
+        # preserve vertices/faces and never substitute a different CAD.
+        compatible.visual = trimesh.visual.ColorVisuals(
+            mesh=compatible,
+            vertex_colors=np.tile(np.asarray(material.main_color), (len(compatible.vertices), 1)),
+        )
+    else:
+        compatible.visual = visual.to_color()
     return compatible
 
 
@@ -68,6 +78,10 @@ class FoundationPoseRefiner:
             debug_dir=str(Path(debug_dir).expanduser()),
             glctx=glctx,
         )
+        # Native crop code constructs a torch tensor from this scalar. A NumPy
+        # float64 promotes crop offsets to double against float32 camera/poses.
+        # A Python float preserves the value and the backend's default float32.
+        self.estimator.diameter = float(self.estimator.diameter)
         self.refine_iterations = int(refine_iterations)
         self.register_iterations = int(register_iterations)
 

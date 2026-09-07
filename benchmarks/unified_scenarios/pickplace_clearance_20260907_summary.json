@@ -1,0 +1,1775 @@
+{
+    "schema": "rm75.pickplace_clearance_validation/v1",
+    "cases": {
+        "goal_pickplace_clearance_audit_v1": {
+            "result": {
+                "argv": [
+                    "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py",
+                    "--object-name",
+                    "gluestick",
+                    "--skip-foundationpose",
+                    "--fixed-scene-pose-file",
+                    "pick_jiaobang/test_scenes/gluestick_desk_regression.json",
+                    "--render-mode",
+                    "none",
+                    "--auto-execute",
+                    "--curobo-torch-extensions-dir",
+                    "/tmp/rm75_native_curobo_clean"
+                ],
+                "command_success": true,
+                "execute_real": false,
+                "loaded_mplib_modules": [],
+                "native_return": null,
+                "planner": "curobo_only",
+                "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+                "status": "native_return_unverified",
+                "verified_task_success": null
+            },
+            "clearance": [
+                {
+                    "event": "native_diagnostic_state",
+                    "before_disabled": [
+                        "active_target_object"
+                    ],
+                    "after_disabled": [
+                        "active_target_object"
+                    ],
+                    "result": {
+                        "valid": true,
+                        "status": null,
+                        "world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "active_target_object"
+                        ],
+                        "checker_obstacle_names": [
+                            "active_target_object",
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall"
+                        ],
+                        "ablation": []
+                    }
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "place_open_gripper",
+                    "data": {
+                        "gripper_pos": 0,
+                        "real_exec": false,
+                        "sim_min_steps": 8,
+                        "success": true,
+                        "status": "DRY_RUN"
+                    }
+                },
+                {
+                    "event": "native_diagnostic_state",
+                    "before_disabled": [
+                        "active_target_object"
+                    ],
+                    "after_disabled": [],
+                    "result": {
+                        "valid": false,
+                        "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+                        "world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane",
+                            "active_target_object"
+                        ],
+                        "checker_obstacle_names": [
+                            "active_target_object",
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane"
+                        ],
+                        "ablation": [
+                            {
+                                "removed": "scene_obstacle_desk",
+                                "disabled": [
+                                    "scene_obstacle_desk"
+                                ],
+                                "valid": false,
+                                "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION"
+                            },
+                            {
+                                "removed": "scene_obstacle_virtual_side_wall",
+                                "disabled": [
+                                    "scene_obstacle_virtual_side_wall"
+                                ],
+                                "valid": false,
+                                "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION"
+                            },
+                            {
+                                "removed": "scene_obstacle_virtual_top_wall",
+                                "disabled": [
+                                    "scene_obstacle_virtual_top_wall"
+                                ],
+                                "valid": false,
+                                "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION"
+                            },
+                            {
+                                "removed": "scene_obstacle_gluestick",
+                                "disabled": [
+                                    "scene_obstacle_gluestick"
+                                ],
+                                "valid": true,
+                                "status": null
+                            },
+                            {
+                                "removed": "virtual_table_plane",
+                                "disabled": [
+                                    "virtual_table_plane"
+                                ],
+                                "valid": false,
+                                "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION"
+                            },
+                            {
+                                "removed": "active_target_object",
+                                "disabled": [
+                                    "active_target_object"
+                                ],
+                                "valid": false,
+                                "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "event": "clearance_start",
+                    "label": "post_place_clearance_replan_after_reverse_collision",
+                    "q": [
+                        1.2175298929214478,
+                        1.4082682132720947,
+                        2.0748841762542725,
+                        -0.14914250373840332,
+                        -0.06826607137918472,
+                        -2.2339999675750732,
+                        2.8480703830718994
+                    ],
+                    "valid": false,
+                    "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+                    "spheres": [
+                        [
+                            0,
+                            0,
+                            0.11999999731779099,
+                            0.07249999791383743
+                        ],
+                        [
+                            0.018764954060316086,
+                            -0.006919285282492638,
+                            0.24050000309944153,
+                            0.07249999791383743
+                        ],
+                        [
+                            0.013656174764037132,
+                            0.037035319954156876,
+                            0.24697253108024597,
+                            0.0625
+                        ],
+                        [
+                            0.040968526154756546,
+                            0.11110596358776093,
+                            0.25991761684417725,
+                            0.0625
+                        ],
+                        [
+                            0.07254864275455475,
+                            0.19675007462501526,
+                            0.2748853266239166,
+                            0.057500001043081284
+                        ],
+                        [
+                            0.09839712828397751,
+                            0.24724778532981873,
+                            0.29190292954444885,
+                            0.05249999836087227
+                        ],
+                        [
+                            0.1311546266078949,
+                            0.31485942006111145,
+                            0.294272243976593,
+                            0.05249999836087227
+                        ],
+                        [
+                            0.18128469586372375,
+                            0.42488256096839905,
+                            0.29169681668281555,
+                            0.04749999940395355
+                        ],
+                        [
+                            0.19902315735816956,
+                            0.3883186876773834,
+                            0.28473782539367676,
+                            0.04749999940395355
+                        ],
+                        [
+                            0.2239503115415573,
+                            0.32913511991500854,
+                            0.25688210129737854,
+                            0.04450000077486038
+                        ],
+                        [
+                            0.2656141519546509,
+                            0.23021414875984192,
+                            0.21032297611236572,
+                            0.03750000149011612
+                        ],
+                        [
+                            0.2516128420829773,
+                            0.16947190463542938,
+                            0.18788635730743408,
+                            0.020500000566244125
+                        ],
+                        [
+                            0.2777431011199951,
+                            0.12322602421045303,
+                            0.16508597135543823,
+                            0.017500000074505806
+                        ],
+                        [
+                            0.27067244052886963,
+                            0.16064727306365967,
+                            0.1813480406999588,
+                            0.020500000566244125
+                        ],
+                        [
+                            0.31899940967559814,
+                            0.19744834303855896,
+                            0.18874810636043549,
+                            0.020500000566244125
+                        ],
+                        [
+                            0.333805114030838,
+                            0.14650103449821472,
+                            0.16580241918563843,
+                            0.017500000074505806
+                        ],
+                        [
+                            0.31194043159484863,
+                            0.17778025567531586,
+                            0.18187573552131653,
+                            0.020500000566244125
+                        ],
+                        [
+                            0.2940336763858795,
+                            0.10515626519918442,
+                            0.1552319973707199,
+                            0.008500000461935997
+                        ],
+                        [
+                            0.3353195786476135,
+                            0.12229690700769424,
+                            0.15575923025608063,
+                            0.008500000461935997
+                        ],
+                        [
+                            0.31012672185897827,
+                            0.12452934682369232,
+                            0.16058018803596497,
+                            -100
+                        ],
+                        [
+                            0.31012672185897827,
+                            0.12452934682369232,
+                            0.16058018803596497,
+                            -100
+                        ],
+                        [
+                            0.31012672185897827,
+                            0.12452934682369232,
+                            0.16058018803596497,
+                            -100
+                        ],
+                        [
+                            0.31012672185897827,
+                            0.12452934682369232,
+                            0.16058018803596497,
+                            -100
+                        ],
+                        [
+                            0.31012672185897827,
+                            0.12452934682369232,
+                            0.16058018803596497,
+                            -100
+                        ],
+                        [
+                            0.31012672185897827,
+                            0.12452934682369232,
+                            0.16058018803596497,
+                            -100
+                        ]
+                    ],
+                    "sphere_links": [
+                        "base_link",
+                        "link_1",
+                        "link_2",
+                        "link_2",
+                        "link_3",
+                        "link_4",
+                        "link_4",
+                        "link_5",
+                        "link_6",
+                        "link_6",
+                        "gripper_base_link",
+                        "gripper_Left_1_Link",
+                        "gripper_Left_Support_Link",
+                        "gripper_Left_2_Link",
+                        "gripper_Right_1_Link",
+                        "gripper_Right_Support_Link",
+                        "gripper_Right_2_Link",
+                        "left_pad",
+                        "right_pad",
+                        "attached_object",
+                        "attached_object",
+                        "attached_object",
+                        "attached_object",
+                        "attached_object",
+                        "attached_object"
+                    ],
+                    "box_contacts": [
+                        {
+                            "link": "gripper_Left_Support_Link",
+                            "obstacle": "scene_obstacle_gluestick",
+                            "sphere_index": 12,
+                            "overlap_m": 0.0022551335309880377,
+                            "enabled": true
+                        },
+                        {
+                            "link": "gripper_Right_Support_Link",
+                            "obstacle": "scene_obstacle_gluestick",
+                            "sphere_index": 15,
+                            "overlap_m": 0.004441049201602949,
+                            "enabled": true
+                        },
+                        {
+                            "link": "left_pad",
+                            "obstacle": "scene_obstacle_gluestick",
+                            "sphere_index": 17,
+                            "overlap_m": 0.0014545233578634083,
+                            "enabled": true
+                        },
+                        {
+                            "link": "right_pad",
+                            "obstacle": "scene_obstacle_gluestick",
+                            "sphere_index": 18,
+                            "overlap_m": 0.0032411408536101027,
+                            "enabled": true
+                        }
+                    ],
+                    "world_objects": [
+                        {
+                            "name": "scene_obstacle_desk",
+                            "pose": [
+                                0.2344820201396942,
+                                -0.013076186180114746,
+                                0.05819367617368698,
+                                0.5213567614555359,
+                                0.5025807619094849,
+                                0.49316880106925964,
+                                0.4820624887943268
+                            ],
+                            "dims": [
+                                0.42570000886917114,
+                                0.0989999994635582,
+                                0.23760001361370087
+                            ],
+                            "radius": null,
+                            "file_path": null,
+                            "scale": null
+                        },
+                        {
+                            "name": "scene_obstacle_virtual_side_wall",
+                            "pose": [
+                                -6.297493371221208e-08,
+                                0.6150000095367432,
+                                0.4009999632835388,
+                                0.7071068286895752,
+                                -2.0489098417897367e-08,
+                                1.1102230246251565e-16,
+                                -0.7071067094802856
+                            ],
+                            "dims": [
+                                0.029999999329447746,
+                                1.2000000476837158,
+                                0.800000011920929
+                            ],
+                            "radius": null,
+                            "file_path": null,
+                            "scale": null
+                        },
+                        {
+                            "name": "scene_obstacle_virtual_top_wall",
+                            "pose": [
+                                5.809762981812128e-08,
+                                -0.30000001192092896,
+                                0.8149999976158142,
+                                0.7071068286895752,
+                                -2.0489098417897367e-08,
+                                1.1102230246251565e-16,
+                                -0.7071067094802856
+                            ],
+                            "dims": [
+                                1.2000000476837158,
+                                1.2000000476837158,
+                                0.029999999329447746
+                            ],
+                            "radius": null,
+                            "file_path": null,
+                            "scale": null
+                        },
+                        {
+                            "name": "scene_obstacle_gluestick",
+                            "pose": [
+                                0.31053510308265686,
+                                0.12630093097686768,
+                                0.1545780599117279,
+                                0.40508511662483215,
+                                0.3843552768230438,
+                                0.5899779200553894,
+                                0.5831836462020874
+                            ],
+                            "dims": [
+                                0.03240000084042549,
+                                0.11880000680685043,
+                                0.03240000084042549
+                            ],
+                            "radius": null,
+                            "file_path": null,
+                            "scale": null
+                        },
+                        {
+                            "name": "virtual_table_plane",
+                            "pose": [
+                                3.3902704643651305e-08,
+                                -0.30000004172325134,
+                                -0.020000005140900612,
+                                0.7071068286895752,
+                                -2.0489098417897367e-08,
+                                1.1102230246251565e-16,
+                                -0.7071067094802856
+                            ],
+                            "dims": [
+                                1.2000000476837158,
+                                1.2000000476837158,
+                                0.019999999552965164
+                            ],
+                            "radius": null,
+                            "file_path": null,
+                            "scale": null
+                        }
+                    ],
+                    "world_signature": [
+                        [
+                            [
+                                "scene_obstacle_desk",
+                                [
+                                    0.4257,
+                                    0.099,
+                                    0.2376
+                                ],
+                                [
+                                    -0.286924,
+                                    0.234482,
+                                    0.058194,
+                                    0.027785,
+                                    0.006655,
+                                    0.704101,
+                                    0.709525
+                                ]
+                            ],
+                            [
+                                "scene_obstacle_gluestick",
+                                [
+                                    0.0324,
+                                    0.1188,
+                                    0.0324
+                                ],
+                                [
+                                    -0.426301,
+                                    0.310535,
+                                    0.154578,
+                                    0.125935,
+                                    0.145397,
+                                    -0.688958,
+                                    -0.698812
+                                ]
+                            ],
+                            [
+                                "scene_obstacle_virtual_side_wall",
+                                [
+                                    0.03,
+                                    1.2,
+                                    0.8
+                                ],
+                                [
+                                    -0.915,
+                                    0,
+                                    0.401,
+                                    1,
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            ],
+                            [
+                                "scene_obstacle_virtual_top_wall",
+                                [
+                                    1.2,
+                                    1.2,
+                                    0.03
+                                ],
+                                [
+                                    0,
+                                    0,
+                                    0.815,
+                                    1,
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            ],
+                            [
+                                "virtual_table_plane",
+                                [
+                                    1.2,
+                                    1.2,
+                                    0.02
+                                ],
+                                [
+                                    0,
+                                    0,
+                                    -0.02,
+                                    1,
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            ]
+                        ],
+                        []
+                    ],
+                    "disabled_links": [],
+                    "disabled_objects": [
+                        "active_target_object"
+                    ],
+                    "scene_fingerprint": "b5d8c6b594dba671415a64f55ad1df429e8f4508b345ba13e33adae638d705c9"
+                },
+                {
+                    "event": "clearance_segment_result",
+                    "label": "post_place_clearance_replan_after_reverse_collision",
+                    "path_points": 0
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "post_place_clearance",
+                    "data": {
+                        "max_attempts": 2,
+                        "num_ik_seeds": 64,
+                        "num_trajopt_seeds": 1,
+                        "enable_graph": false,
+                        "retreat_candidate_count": 1,
+                        "reverse_endpoint_world_valid": false,
+                        "reverse_endpoint_world_status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+                        "reverse_endpoint_world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane",
+                            "active_target_object"
+                        ],
+                        "status": "PLAN_FAIL",
+                        "success": false,
+                        "path_waypoints": 0,
+                        "world_changed": false,
+                        "cache_hit": true
+                    }
+                }
+            ],
+            "pre_reboot_tmp_log_available": false
+        },
+        "goal_pickplace_clearance_audit_v2": {
+            "result": {
+                "argv": [
+                    "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py",
+                    "--object-name",
+                    "gluestick",
+                    "--skip-foundationpose",
+                    "--fixed-scene-pose-file",
+                    "pick_jiaobang/test_scenes/gluestick_desk_regression.json",
+                    "--render-mode",
+                    "none",
+                    "--auto-execute",
+                    "--curobo-torch-extensions-dir",
+                    "/tmp/rm75_native_curobo_clean"
+                ],
+                "command_success": true,
+                "execute_real": false,
+                "loaded_mplib_modules": [],
+                "native_return": null,
+                "planner": "curobo_only",
+                "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+                "status": "native_return_unverified",
+                "verified_task_success": null
+            },
+            "clearance": [
+                {
+                    "event": "native_diagnostic_state",
+                    "before_disabled": [
+                        "active_target_object"
+                    ],
+                    "after_disabled": [
+                        "active_target_object"
+                    ],
+                    "result": {
+                        "valid": true,
+                        "status": null,
+                        "world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "active_target_object"
+                        ],
+                        "checker_obstacle_names": [
+                            "active_target_object",
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall"
+                        ],
+                        "ablation": []
+                    }
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "place_open_gripper",
+                    "data": {
+                        "gripper_pos": 0,
+                        "real_exec": false,
+                        "sim_min_steps": 8,
+                        "success": true,
+                        "status": "DRY_RUN"
+                    }
+                },
+                {
+                    "event": "native_diagnostic_state",
+                    "before_disabled": [
+                        "active_target_object"
+                    ],
+                    "after_disabled": [
+                        "active_target_object"
+                    ],
+                    "result": {
+                        "valid": false,
+                        "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+                        "world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane",
+                            "active_target_object"
+                        ],
+                        "checker_obstacle_names": [
+                            "active_target_object",
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane"
+                        ],
+                        "ablation": [
+                            {
+                                "removed": "scene_obstacle_desk",
+                                "disabled": [
+                                    "scene_obstacle_desk"
+                                ],
+                                "valid": false,
+                                "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION"
+                            },
+                            {
+                                "removed": "scene_obstacle_virtual_side_wall",
+                                "disabled": [
+                                    "scene_obstacle_virtual_side_wall"
+                                ],
+                                "valid": false,
+                                "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION"
+                            },
+                            {
+                                "removed": "scene_obstacle_virtual_top_wall",
+                                "disabled": [
+                                    "scene_obstacle_virtual_top_wall"
+                                ],
+                                "valid": false,
+                                "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION"
+                            },
+                            {
+                                "removed": "scene_obstacle_gluestick",
+                                "disabled": [
+                                    "scene_obstacle_gluestick"
+                                ],
+                                "valid": true,
+                                "status": null
+                            },
+                            {
+                                "removed": "virtual_table_plane",
+                                "disabled": [
+                                    "virtual_table_plane"
+                                ],
+                                "valid": false,
+                                "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION"
+                            },
+                            {
+                                "removed": "active_target_object",
+                                "disabled": [
+                                    "active_target_object"
+                                ],
+                                "valid": false,
+                                "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "event": "clearance_start",
+                    "label": "post_place_clearance_replan_after_reverse_collision",
+                    "q": [
+                        1.2175298929214478,
+                        1.4082682132720947,
+                        2.0748841762542725,
+                        -0.14914250373840332,
+                        -0.06826607137918472,
+                        -2.2339999675750732,
+                        2.8480703830718994
+                    ],
+                    "valid": false,
+                    "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+                    "spheres": [
+                        [
+                            0,
+                            0,
+                            0.11999999731779099,
+                            0.07249999791383743
+                        ],
+                        [
+                            0.018764954060316086,
+                            -0.006919285282492638,
+                            0.24050000309944153,
+                            0.07249999791383743
+                        ],
+                        [
+                            0.013656174764037132,
+                            0.037035319954156876,
+                            0.24697253108024597,
+                            0.0625
+                        ],
+                        [
+                            0.040968526154756546,
+                            0.11110596358776093,
+                            0.25991761684417725,
+                            0.0625
+                        ],
+                        [
+                            0.07254864275455475,
+                            0.19675007462501526,
+                            0.2748853266239166,
+                            0.057500001043081284
+                        ],
+                        [
+                            0.09839712828397751,
+                            0.24724778532981873,
+                            0.29190292954444885,
+                            0.05249999836087227
+                        ],
+                        [
+                            0.1311546266078949,
+                            0.31485942006111145,
+                            0.294272243976593,
+                            0.05249999836087227
+                        ],
+                        [
+                            0.18128469586372375,
+                            0.42488256096839905,
+                            0.29169681668281555,
+                            0.04749999940395355
+                        ],
+                        [
+                            0.19902315735816956,
+                            0.3883186876773834,
+                            0.28473782539367676,
+                            0.04749999940395355
+                        ],
+                        [
+                            0.2239503115415573,
+                            0.32913511991500854,
+                            0.25688210129737854,
+                            0.04450000077486038
+                        ],
+                        [
+                            0.2656141519546509,
+                            0.23021414875984192,
+                            0.21032297611236572,
+                            0.03750000149011612
+                        ],
+                        [
+                            0.2516128420829773,
+                            0.16947190463542938,
+                            0.18788635730743408,
+                            0.020500000566244125
+                        ],
+                        [
+                            0.2777431011199951,
+                            0.12322602421045303,
+                            0.16508597135543823,
+                            0.017500000074505806
+                        ],
+                        [
+                            0.27067244052886963,
+                            0.16064727306365967,
+                            0.1813480406999588,
+                            0.020500000566244125
+                        ],
+                        [
+                            0.31899940967559814,
+                            0.19744834303855896,
+                            0.18874810636043549,
+                            0.020500000566244125
+                        ],
+                        [
+                            0.333805114030838,
+                            0.14650103449821472,
+                            0.16580241918563843,
+                            0.017500000074505806
+                        ],
+                        [
+                            0.31194043159484863,
+                            0.17778025567531586,
+                            0.18187573552131653,
+                            0.020500000566244125
+                        ],
+                        [
+                            0.2940336763858795,
+                            0.10515626519918442,
+                            0.1552319973707199,
+                            0.008500000461935997
+                        ],
+                        [
+                            0.3353195786476135,
+                            0.12229690700769424,
+                            0.15575923025608063,
+                            0.008500000461935997
+                        ],
+                        [
+                            0.31012672185897827,
+                            0.12452934682369232,
+                            0.16058018803596497,
+                            -100
+                        ],
+                        [
+                            0.31012672185897827,
+                            0.12452934682369232,
+                            0.16058018803596497,
+                            -100
+                        ],
+                        [
+                            0.31012672185897827,
+                            0.12452934682369232,
+                            0.16058018803596497,
+                            -100
+                        ],
+                        [
+                            0.31012672185897827,
+                            0.12452934682369232,
+                            0.16058018803596497,
+                            -100
+                        ],
+                        [
+                            0.31012672185897827,
+                            0.12452934682369232,
+                            0.16058018803596497,
+                            -100
+                        ],
+                        [
+                            0.31012672185897827,
+                            0.12452934682369232,
+                            0.16058018803596497,
+                            -100
+                        ]
+                    ],
+                    "sphere_links": [
+                        "base_link",
+                        "link_1",
+                        "link_2",
+                        "link_2",
+                        "link_3",
+                        "link_4",
+                        "link_4",
+                        "link_5",
+                        "link_6",
+                        "link_6",
+                        "gripper_base_link",
+                        "gripper_Left_1_Link",
+                        "gripper_Left_Support_Link",
+                        "gripper_Left_2_Link",
+                        "gripper_Right_1_Link",
+                        "gripper_Right_Support_Link",
+                        "gripper_Right_2_Link",
+                        "left_pad",
+                        "right_pad",
+                        "attached_object",
+                        "attached_object",
+                        "attached_object",
+                        "attached_object",
+                        "attached_object",
+                        "attached_object"
+                    ],
+                    "sim_joint_names": [
+                        "joint_1",
+                        "joint_2",
+                        "joint_3",
+                        "joint_4",
+                        "joint_5",
+                        "joint_6",
+                        "joint_7",
+                        "gripper_Left_1_Joint",
+                        "gripper_Left_2_Joint",
+                        "gripper_Right_1_Joint",
+                        "gripper_Right_2_Joint",
+                        "gripper_Left_Support_Joint",
+                        "gripper_Right_Support_Joint"
+                    ],
+                    "sim_qpos": [
+                        [
+                            1.2175298929214478,
+                            1.4082682132720947,
+                            2.0748841762542725,
+                            -0.14914250373840332,
+                            -0.06826607137918472,
+                            -2.2339999675750732,
+                            2.8480703830718994,
+                            0.01152242161333561,
+                            0.011703903786838055,
+                            0.012302213348448277,
+                            0.012482687830924988,
+                            0.011038082651793957,
+                            0.01181491743773222
+                        ]
+                    ],
+                    "planner_lock_joints": {
+                        "gripper_Left_1_Joint": 0.6,
+                        "gripper_Left_Support_Joint": 0.6,
+                        "gripper_Left_2_Joint": 0.6,
+                        "gripper_Right_1_Joint": 0.6,
+                        "gripper_Right_Support_Joint": 0.6,
+                        "gripper_Right_2_Joint": 0.6
+                    },
+                    "box_contacts": [
+                        {
+                            "link": "gripper_Left_Support_Link",
+                            "obstacle": "scene_obstacle_gluestick",
+                            "sphere_index": 12,
+                            "overlap_m": 0.0022551335309880377,
+                            "enabled": true
+                        },
+                        {
+                            "link": "gripper_Right_Support_Link",
+                            "obstacle": "scene_obstacle_gluestick",
+                            "sphere_index": 15,
+                            "overlap_m": 0.004441049201602949,
+                            "enabled": true
+                        },
+                        {
+                            "link": "left_pad",
+                            "obstacle": "scene_obstacle_gluestick",
+                            "sphere_index": 17,
+                            "overlap_m": 0.0014545233578634083,
+                            "enabled": true
+                        },
+                        {
+                            "link": "right_pad",
+                            "obstacle": "scene_obstacle_gluestick",
+                            "sphere_index": 18,
+                            "overlap_m": 0.0032411408536101027,
+                            "enabled": true
+                        }
+                    ],
+                    "world_objects": [
+                        {
+                            "name": "scene_obstacle_desk",
+                            "pose": [
+                                0.2344820201396942,
+                                -0.013076186180114746,
+                                0.05819367617368698,
+                                0.5213567614555359,
+                                0.5025807619094849,
+                                0.49316880106925964,
+                                0.4820624887943268
+                            ],
+                            "dims": [
+                                0.42570000886917114,
+                                0.0989999994635582,
+                                0.23760001361370087
+                            ],
+                            "radius": null,
+                            "file_path": null,
+                            "scale": null
+                        },
+                        {
+                            "name": "scene_obstacle_virtual_side_wall",
+                            "pose": [
+                                -6.297493371221208e-08,
+                                0.6150000095367432,
+                                0.4009999632835388,
+                                0.7071068286895752,
+                                -2.0489098417897367e-08,
+                                1.1102230246251565e-16,
+                                -0.7071067094802856
+                            ],
+                            "dims": [
+                                0.029999999329447746,
+                                1.2000000476837158,
+                                0.800000011920929
+                            ],
+                            "radius": null,
+                            "file_path": null,
+                            "scale": null
+                        },
+                        {
+                            "name": "scene_obstacle_virtual_top_wall",
+                            "pose": [
+                                5.809762981812128e-08,
+                                -0.30000001192092896,
+                                0.8149999976158142,
+                                0.7071068286895752,
+                                -2.0489098417897367e-08,
+                                1.1102230246251565e-16,
+                                -0.7071067094802856
+                            ],
+                            "dims": [
+                                1.2000000476837158,
+                                1.2000000476837158,
+                                0.029999999329447746
+                            ],
+                            "radius": null,
+                            "file_path": null,
+                            "scale": null
+                        },
+                        {
+                            "name": "scene_obstacle_gluestick",
+                            "pose": [
+                                0.31053510308265686,
+                                0.12630093097686768,
+                                0.1545780599117279,
+                                0.40508511662483215,
+                                0.3843552768230438,
+                                0.5899779200553894,
+                                0.5831836462020874
+                            ],
+                            "dims": [
+                                0.03240000084042549,
+                                0.11880000680685043,
+                                0.03240000084042549
+                            ],
+                            "radius": null,
+                            "file_path": null,
+                            "scale": null
+                        },
+                        {
+                            "name": "virtual_table_plane",
+                            "pose": [
+                                3.3902704643651305e-08,
+                                -0.30000004172325134,
+                                -0.020000005140900612,
+                                0.7071068286895752,
+                                -2.0489098417897367e-08,
+                                1.1102230246251565e-16,
+                                -0.7071067094802856
+                            ],
+                            "dims": [
+                                1.2000000476837158,
+                                1.2000000476837158,
+                                0.019999999552965164
+                            ],
+                            "radius": null,
+                            "file_path": null,
+                            "scale": null
+                        }
+                    ],
+                    "world_signature": [
+                        [
+                            [
+                                "scene_obstacle_desk",
+                                [
+                                    0.4257,
+                                    0.099,
+                                    0.2376
+                                ],
+                                [
+                                    -0.286924,
+                                    0.234482,
+                                    0.058194,
+                                    0.027785,
+                                    0.006655,
+                                    0.704101,
+                                    0.709525
+                                ]
+                            ],
+                            [
+                                "scene_obstacle_gluestick",
+                                [
+                                    0.0324,
+                                    0.1188,
+                                    0.0324
+                                ],
+                                [
+                                    -0.426301,
+                                    0.310535,
+                                    0.154578,
+                                    0.125935,
+                                    0.145397,
+                                    -0.688958,
+                                    -0.698812
+                                ]
+                            ],
+                            [
+                                "scene_obstacle_virtual_side_wall",
+                                [
+                                    0.03,
+                                    1.2,
+                                    0.8
+                                ],
+                                [
+                                    -0.915,
+                                    0,
+                                    0.401,
+                                    1,
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            ],
+                            [
+                                "scene_obstacle_virtual_top_wall",
+                                [
+                                    1.2,
+                                    1.2,
+                                    0.03
+                                ],
+                                [
+                                    0,
+                                    0,
+                                    0.815,
+                                    1,
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            ],
+                            [
+                                "virtual_table_plane",
+                                [
+                                    1.2,
+                                    1.2,
+                                    0.02
+                                ],
+                                [
+                                    0,
+                                    0,
+                                    -0.02,
+                                    1,
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            ]
+                        ],
+                        []
+                    ],
+                    "disabled_links": [],
+                    "disabled_objects": [
+                        "active_target_object"
+                    ],
+                    "scene_fingerprint": "b5d8c6b594dba671415a64f55ad1df429e8f4508b345ba13e33adae638d705c9"
+                },
+                {
+                    "event": "clearance_segment_result",
+                    "label": "post_place_clearance_replan_after_reverse_collision",
+                    "path_points": 0
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "post_place_clearance",
+                    "data": {
+                        "max_attempts": 2,
+                        "num_ik_seeds": 64,
+                        "num_trajopt_seeds": 1,
+                        "enable_graph": false,
+                        "retreat_candidate_count": 1,
+                        "reverse_endpoint_world_valid": false,
+                        "reverse_endpoint_world_status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+                        "reverse_endpoint_world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane",
+                            "active_target_object"
+                        ],
+                        "status": "PLAN_FAIL",
+                        "success": false,
+                        "path_waypoints": 0,
+                        "world_changed": false,
+                        "cache_hit": true
+                    }
+                }
+            ],
+            "pre_reboot_tmp_log_available": false
+        },
+        "goal_pickplace_clearance_sync_v1": {
+            "result": {
+                "argv": [
+                    "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py",
+                    "--object-name",
+                    "gluestick",
+                    "--skip-foundationpose",
+                    "--fixed-scene-pose-file",
+                    "pick_jiaobang/test_scenes/gluestick_desk_regression.json",
+                    "--render-mode",
+                    "none",
+                    "--auto-execute",
+                    "--curobo-torch-extensions-dir",
+                    "/tmp/rm75_native_curobo_clean"
+                ],
+                "command_success": false,
+                "error": "CuroboOnlyUnsupported: locked-joint update changed sphere topology/radii",
+                "execute_real": false,
+                "loaded_mplib_modules": [],
+                "planner": "curobo_only",
+                "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+                "status": "failed",
+                "traceback": "Traceback (most recent call last):\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/tools/run_native_pickplace.py\", line 47, in main\n    value=module.main()\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py\", line 22768, in main\n    _run_single_scene_main(_profiled_create_demo)\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py\", line 22331, in _run_single_scene_main\n    ok = run_targeted_place_episode_curobo_direct(\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py\", line 19777, in run_targeted_place_episode_curobo_direct\n    _refresh_curobo_world(\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/workcell/pickplace_curobo_only.py\", line 193, in refresh\n    update_from_demo(planner,demo,args)\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/workcell/pickplace_gripper_state.py\", line 51, in update_from_demo\n    raise CuroboOnlyUnsupported('locked-joint update changed sphere topology/radii')\nrm75_app.workcell.pickplace_curobo_only.CuroboOnlyUnsupported: locked-joint update changed sphere topology/radii\n",
+                "verified_task_success": null
+            },
+            "clearance": [
+                {
+                    "event": "native_diagnostic_state",
+                    "before_disabled": [
+                        "active_target_object"
+                    ],
+                    "after_disabled": [
+                        "active_target_object"
+                    ],
+                    "result": {
+                        "valid": true,
+                        "status": null,
+                        "world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "active_target_object"
+                        ],
+                        "checker_obstacle_names": [
+                            "active_target_object",
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall"
+                        ],
+                        "ablation": []
+                    }
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "place_open_gripper",
+                    "data": {
+                        "gripper_pos": 0,
+                        "real_exec": false,
+                        "sim_min_steps": 8,
+                        "success": true,
+                        "status": "DRY_RUN"
+                    }
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "post_place_clearance",
+                    "data": {
+                        "max_attempts": 2,
+                        "num_ik_seeds": 64,
+                        "num_trajopt_seeds": 1,
+                        "enable_graph": false,
+                        "retreat_candidate_count": 1
+                    }
+                }
+            ],
+            "pre_reboot_tmp_log_available": false
+        },
+        "goal_pickplace_clearance_sync_v2": {
+            "result": {
+                "argv": [
+                    "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py",
+                    "--object-name",
+                    "gluestick",
+                    "--skip-foundationpose",
+                    "--fixed-scene-pose-file",
+                    "pick_jiaobang/test_scenes/gluestick_desk_regression.json",
+                    "--render-mode",
+                    "none",
+                    "--auto-execute",
+                    "--curobo-torch-extensions-dir",
+                    "/tmp/rm75_native_curobo_clean"
+                ],
+                "command_success": false,
+                "error": "CuroboOnlyUnsupported: locked-joint update changed sphere topology/radii: old=[0.07249999791383743, 0.07249999791383743, 0.0625, 0.0625, 0.057500001043081284, 0.05249999836087227, 0.05249999836087227, 0.04749999940395355, 0.04749999940395355, 0.04450000077486038, 0.03750000149011612, 0.020500000566244125, 0.017500000074505806, 0.020500000566244125, 0.020500000566244125, 0.017500000074505806, 0.020500000566244125, 0.008500000461935997, 0.008500000461935997, -100.0, -100.0, -100.0, -100.0, -100.0, -100.0] new=[0.07249999791383743, 0.07249999791383743, 0.0625, 0.0625, 0.057500001043081284, 0.05249999836087227, 0.05249999836087227, 0.04749999940395355, 0.04749999940395355, 0.04450000077486038, 0.03750000149011612, 0.020500000566244125, 0.017500000074505806, 0.020500000566244125, 0.020500000566244125, 0.017500000074505806, 0.020500000566244125, 0.008500000461935997, 0.008500000461935997, -9.9975004196167, -9.9975004196167, -9.9975004196167, -9.9975004196167, -9.9975004196167, -9.9975004196167]",
+                "execute_real": false,
+                "loaded_mplib_modules": [],
+                "planner": "curobo_only",
+                "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+                "status": "failed",
+                "traceback": "Traceback (most recent call last):\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/tools/run_native_pickplace.py\", line 47, in main\n    value=module.main()\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py\", line 22768, in main\n    _run_single_scene_main(_profiled_create_demo)\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py\", line 22331, in _run_single_scene_main\n    ok = run_targeted_place_episode_curobo_direct(\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py\", line 19777, in run_targeted_place_episode_curobo_direct\n    _refresh_curobo_world(\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/workcell/pickplace_curobo_only.py\", line 193, in refresh\n    update_from_demo(planner,demo,args)\n  File \"/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/workcell/pickplace_gripper_state.py\", line 51, in update_from_demo\n    raise CuroboOnlyUnsupported('locked-joint update changed sphere topology/radii: '\nrm75_app.workcell.pickplace_curobo_only.CuroboOnlyUnsupported: locked-joint update changed sphere topology/radii: old=[0.07249999791383743, 0.07249999791383743, 0.0625, 0.0625, 0.057500001043081284, 0.05249999836087227, 0.05249999836087227, 0.04749999940395355, 0.04749999940395355, 0.04450000077486038, 0.03750000149011612, 0.020500000566244125, 0.017500000074505806, 0.020500000566244125, 0.020500000566244125, 0.017500000074505806, 0.020500000566244125, 0.008500000461935997, 0.008500000461935997, -100.0, -100.0, -100.0, -100.0, -100.0, -100.0] new=[0.07249999791383743, 0.07249999791383743, 0.0625, 0.0625, 0.057500001043081284, 0.05249999836087227, 0.05249999836087227, 0.04749999940395355, 0.04749999940395355, 0.04450000077486038, 0.03750000149011612, 0.020500000566244125, 0.017500000074505806, 0.020500000566244125, 0.020500000566244125, 0.017500000074505806, 0.020500000566244125, 0.008500000461935997, 0.008500000461935997, -9.9975004196167, -9.9975004196167, -9.9975004196167, -9.9975004196167, -9.9975004196167, -9.9975004196167]\n",
+                "verified_task_success": null
+            },
+            "clearance": [
+                {
+                    "event": "native_diagnostic_state",
+                    "before_disabled": [
+                        "active_target_object"
+                    ],
+                    "after_disabled": [
+                        "active_target_object"
+                    ],
+                    "result": {
+                        "valid": true,
+                        "status": null,
+                        "world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "active_target_object"
+                        ],
+                        "checker_obstacle_names": [
+                            "active_target_object",
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall"
+                        ],
+                        "ablation": []
+                    }
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "place_open_gripper",
+                    "data": {
+                        "gripper_pos": 0,
+                        "real_exec": false,
+                        "sim_min_steps": 8,
+                        "success": true,
+                        "status": "DRY_RUN"
+                    }
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "post_place_clearance",
+                    "data": {
+                        "max_attempts": 2,
+                        "num_ik_seeds": 64,
+                        "num_trajopt_seeds": 1,
+                        "enable_graph": false,
+                        "retreat_candidate_count": 1
+                    }
+                }
+            ],
+            "pre_reboot_tmp_log_available": false
+        },
+        "goal_pickplace_clearance_sync_v3": {
+            "result": {
+                "argv": [
+                    "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py",
+                    "--object-name",
+                    "gluestick",
+                    "--skip-foundationpose",
+                    "--fixed-scene-pose-file",
+                    "pick_jiaobang/test_scenes/gluestick_desk_regression.json",
+                    "--render-mode",
+                    "none",
+                    "--auto-execute",
+                    "--curobo-torch-extensions-dir",
+                    "/tmp/rm75_native_curobo_clean"
+                ],
+                "command_success": true,
+                "execute_real": false,
+                "loaded_mplib_modules": [],
+                "native_return": null,
+                "planner": "curobo_only",
+                "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+                "status": "native_return_unverified",
+                "verified_task_success": null
+            },
+            "clearance": [
+                {
+                    "event": "native_diagnostic_state",
+                    "before_disabled": [
+                        "active_target_object"
+                    ],
+                    "after_disabled": [
+                        "active_target_object"
+                    ],
+                    "result": {
+                        "valid": true,
+                        "status": null,
+                        "world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "active_target_object"
+                        ],
+                        "checker_obstacle_names": [
+                            "active_target_object",
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall"
+                        ],
+                        "ablation": []
+                    }
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "place_open_gripper",
+                    "data": {
+                        "gripper_pos": 0,
+                        "real_exec": false,
+                        "sim_min_steps": 8,
+                        "success": true,
+                        "status": "DRY_RUN"
+                    }
+                },
+                {
+                    "event": "native_diagnostic_state",
+                    "before_disabled": [
+                        "active_target_object"
+                    ],
+                    "after_disabled": [
+                        "active_target_object"
+                    ],
+                    "result": {
+                        "valid": true,
+                        "status": null,
+                        "world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane",
+                            "active_target_object"
+                        ],
+                        "checker_obstacle_names": [
+                            "active_target_object",
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane"
+                        ],
+                        "ablation": []
+                    }
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "post_place_clearance",
+                    "data": {
+                        "max_attempts": 2,
+                        "num_ik_seeds": 64,
+                        "num_trajopt_seeds": 1,
+                        "enable_graph": false,
+                        "retreat_candidate_count": 1,
+                        "reverse_endpoint_world_valid": true,
+                        "reverse_endpoint_world_status": "None",
+                        "reverse_endpoint_world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane",
+                            "active_target_object"
+                        ],
+                        "success": true,
+                        "status": "REUSED_FINAL_CONTACT_REVERSE",
+                        "path_waypoints": 5,
+                        "world_changed": false,
+                        "cache_hit": true
+                    }
+                }
+            ],
+            "pre_reboot_tmp_log_available": false
+        },
+        "goal_pickplace_clearance_sync_v4": {
+            "result": {
+                "argv": [
+                    "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py",
+                    "--object-name",
+                    "gluestick",
+                    "--skip-foundationpose",
+                    "--fixed-scene-pose-file",
+                    "pick_jiaobang/test_scenes/gluestick_desk_regression.json",
+                    "--render-mode",
+                    "none",
+                    "--auto-execute",
+                    "--curobo-torch-extensions-dir",
+                    "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/curobo_native_extensions"
+                ],
+                "clearance_path_audits": [],
+                "command_success": true,
+                "execute_real": false,
+                "loaded_mplib_modules": [],
+                "native_return": null,
+                "planner": "curobo_only",
+                "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+                "status": "native_return_unverified",
+                "verified_task_success": null
+            },
+            "clearance": [
+                {
+                    "event": "native_diagnostic_state",
+                    "before_disabled": [
+                        "active_target_object"
+                    ],
+                    "after_disabled": [
+                        "active_target_object"
+                    ],
+                    "result": {
+                        "valid": true,
+                        "status": null,
+                        "world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "active_target_object"
+                        ],
+                        "checker_obstacle_names": [
+                            "active_target_object",
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall"
+                        ],
+                        "ablation": []
+                    }
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "place_open_gripper",
+                    "data": {
+                        "gripper_pos": 0,
+                        "real_exec": false,
+                        "sim_min_steps": 8,
+                        "success": true,
+                        "status": "DRY_RUN"
+                    }
+                },
+                {
+                    "event": "native_diagnostic_state",
+                    "before_disabled": [
+                        "active_target_object"
+                    ],
+                    "after_disabled": [
+                        "active_target_object"
+                    ],
+                    "result": {
+                        "valid": true,
+                        "status": null,
+                        "world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane",
+                            "active_target_object"
+                        ],
+                        "checker_obstacle_names": [
+                            "active_target_object",
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane"
+                        ],
+                        "ablation": []
+                    }
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "post_place_clearance",
+                    "data": {
+                        "max_attempts": 2,
+                        "num_ik_seeds": 64,
+                        "num_trajopt_seeds": 1,
+                        "enable_graph": false,
+                        "retreat_candidate_count": 1,
+                        "reverse_endpoint_world_valid": true,
+                        "reverse_endpoint_world_status": "None",
+                        "reverse_endpoint_world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane",
+                            "active_target_object"
+                        ],
+                        "success": true,
+                        "status": "REUSED_FINAL_CONTACT_REVERSE",
+                        "path_waypoints": 5,
+                        "world_changed": false,
+                        "cache_hit": true
+                    }
+                }
+            ],
+            "pre_reboot_tmp_log_available": false
+        },
+        "goal_pickplace_clearance_sync_v5": {
+            "result": {
+                "argv": [
+                    "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py",
+                    "--object-name",
+                    "gluestick",
+                    "--skip-foundationpose",
+                    "--fixed-scene-pose-file",
+                    "pick_jiaobang/test_scenes/gluestick_desk_regression.json",
+                    "--render-mode",
+                    "none",
+                    "--auto-execute",
+                    "--curobo-torch-extensions-dir",
+                    "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/curobo_native_extensions"
+                ],
+                "clearance_path_audits": [
+                    {
+                        "all_valid": true,
+                        "samples": 5,
+                        "stage": "post_place_clearance",
+                        "world_exempt_links": []
+                    }
+                ],
+                "command_success": true,
+                "execute_real": false,
+                "loaded_mplib_modules": [],
+                "native_return": null,
+                "planner": "curobo_only",
+                "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+                "status": "native_return_unverified",
+                "verified_task_success": null
+            },
+            "clearance": [
+                {
+                    "event": "native_diagnostic_state",
+                    "before_disabled": [
+                        "active_target_object"
+                    ],
+                    "after_disabled": [
+                        "active_target_object"
+                    ],
+                    "result": {
+                        "valid": true,
+                        "status": null,
+                        "world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "active_target_object"
+                        ],
+                        "checker_obstacle_names": [
+                            "active_target_object",
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall"
+                        ],
+                        "ablation": []
+                    }
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "place_open_gripper",
+                    "data": {
+                        "gripper_pos": 0,
+                        "real_exec": false,
+                        "sim_min_steps": 8,
+                        "success": true,
+                        "status": "DRY_RUN"
+                    }
+                },
+                {
+                    "event": "native_diagnostic_state",
+                    "before_disabled": [
+                        "active_target_object"
+                    ],
+                    "after_disabled": [
+                        "active_target_object"
+                    ],
+                    "result": {
+                        "valid": true,
+                        "status": null,
+                        "world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane",
+                            "active_target_object"
+                        ],
+                        "checker_obstacle_names": [
+                            "active_target_object",
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane"
+                        ],
+                        "ablation": []
+                    }
+                },
+                {
+                    "event": "clearance_profile",
+                    "stage": "post_place_clearance",
+                    "data": {
+                        "max_attempts": 2,
+                        "num_ik_seeds": 64,
+                        "num_trajopt_seeds": 1,
+                        "enable_graph": false,
+                        "retreat_candidate_count": 1,
+                        "reverse_endpoint_world_valid": true,
+                        "reverse_endpoint_world_status": "None",
+                        "reverse_endpoint_world_obstacle_names": [
+                            "scene_obstacle_desk",
+                            "scene_obstacle_virtual_side_wall",
+                            "scene_obstacle_virtual_top_wall",
+                            "scene_obstacle_gluestick",
+                            "virtual_table_plane",
+                            "active_target_object"
+                        ],
+                        "success": true,
+                        "status": "REUSED_FINAL_CONTACT_REVERSE",
+                        "path_waypoints": 5,
+                        "world_changed": false,
+                        "cache_hit": true
+                    }
+                }
+            ],
+            "pre_reboot_tmp_log_available": false
+        }
+    },
+    "execute_real": false,
+    "verified_task_success": null,
+    "final_audit": [
+        {
+            "all_valid": true,
+            "samples": 5,
+            "stage": "post_place_clearance",
+            "world_exempt_links": []
+        }
+    ],
+    "raw_log_files": [
+        "benchmarks/unified_scenarios/pickplace_clearance_v4_20260907.log",
+        "benchmarks/unified_scenarios/pickplace_clearance_v5_20260907.log"
+    ]
+}

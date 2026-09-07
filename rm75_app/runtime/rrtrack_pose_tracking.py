@@ -118,6 +118,14 @@ def _run_sam6d_initialization(args: argparse.Namespace) -> Path:
     ]
     if args.camera_serial:
         cmd += ["--camera-serial", args.camera_serial]
+    # Custom CADs must describe the same object during initialization and
+    # tracking; previously these options only reached the tracker mesh loader.
+    if args.mesh_file:
+        cmd += ["--mesh-file", str(Path(args.mesh_file).expanduser().resolve())]
+    if args.mesh_scale is not None:
+        cmd += ["--mesh-scale", str(args.mesh_scale)]
+    if args.prompt:
+        cmd += ["--prompt", args.prompt]
     if args.scene_object_names:
         normalized = [normalize_object_name(name) for name in args.scene_object_names]
         if len(set(normalized)) < len(normalized):
@@ -298,6 +306,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--active-instance-index", type=int, default=0)
     parser.add_argument("--mesh-file")
     parser.add_argument("--mesh-scale", type=float)
+    parser.add_argument("--prompt", help="SAM3 initialization/recovery description for custom CADs")
     parser.add_argument("--init-result-json", help="Existing SAM6D result; omitted means live SAM3+SAM6D initialization")
     parser.add_argument("--sequence-dir", help="Offline rgb/depth sequence; omitted means live RealSense")
     parser.add_argument("--camera-json")
@@ -325,7 +334,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--sam3-checkpoint", default=DEFAULT_SAM3_CHECKPOINT)
     parser.add_argument("--sam3-recovery-device", default="cuda")
     parser.add_argument("--sam3-recovery-confidence", type=float, default=0.30)
-    parser.add_argument("--sam3-recovery-resolution", type=int, default=640)
+    parser.add_argument("--sam3-recovery-resolution", type=int, default=1008)
     parser.add_argument("--sam3-recovery-max-candidates", type=int, default=3)
     parser.add_argument("--sam3-recovery-timeout", type=float, default=180.0)
     parser.add_argument("--rrtrack-config", help="JSON overrides for RRTrackConfig thresholds and state policy")
@@ -389,7 +398,8 @@ def main(argv: list[str] | None = None) -> int:
     relocalizer = None
     if not args.disable_sam3_recovery:
         spec = get_object_spec(args.object_name)
-        prompt = spec.grounding_prompt if spec is not None else args.object_name
+        prompt = (args.prompt or initialization_result.get("prompt") or
+                  (spec.grounding_prompt if spec is not None else args.object_name))
         relocalizer = SAM3TextRelocalizer(
             prompt=prompt,
             output_root=Path(args.output_root).expanduser() / "sam3_recovery" / time.strftime("%Y%m%d_%H%M%S"),
