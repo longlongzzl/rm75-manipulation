@@ -1,6 +1,8 @@
 # Codex 三场景本地验证回传 — 2026-09-07
 
-2026-09-08 最新续报：[PickPlace 抬升失败现场与三次 GPU 回归](CODEX_THREE_SCENE_PICKPLACE_LIFT_20260908.md)：全量 704 passed / three_scene 382 passed；单胶棒 1/1，两次原七物体均 native 4/7、final=False。胶棒/薯片罐原抬升目标与底座模型重叠约 7.82/28.97 mm，未增加豁免。三条非真机链尚未全部关闭。
+2026-09-08 最新续报：[Jimu 独立返回执行门与四次 GPU 回归](CODEX_THREE_SCENE_INDEPENDENT_RETURN_20260908.md)：全量 722 passed / three_scene 400 passed；修复原独立 pose-return 标签绕过 gate，返回不豁免。一次验证工具失败保留；四墙 4/4、默认屋顶 12/12、完整任务仍 8/12。独立返回 GPU 复放 4 正例/2 负例通过，不算额外自然完整链。
+
+2026-09-08 续报：[PickPlace 抬升失败现场与三次 GPU 回归](CODEX_THREE_SCENE_PICKPLACE_LIFT_20260908.md)：全量 704 passed / three_scene 382 passed；单胶棒 1/1，两次原七物体均 native 4/7、final=False。胶棒/薯片罐原抬升目标与底座模型重叠约 7.82/28.97 mm，未增加豁免。三条非真机链尚未全部关闭。
 
 2026-09-08 续报：[PushT 下降失败的工具几何证据](CODEX_THREE_SCENE_PUSHT_ENVELOPE_20260908.md)：全量 685 passed / three_scene 363 passed；四项原姿态 GPU 包络诊断完整，两个失败点分别与首次夹爪—T 接触 10/16、11/16 对应。不是新增四条完整链通过，真实工具/接触映射仍待确认。
 

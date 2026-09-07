@@ -15,6 +15,7 @@ from .jimu_return_diagnostics import _state
 from .pickplace_curobo_only import CuroboOnlyUnsupported
 from .pickplace_release_contact import assert_full_state
 from .world_only_contact import FINGER_LINKS, world_only_links
+from .jimu_execution_stages import guarded_stage, stage_kind
 
 
 def _path(value):
@@ -69,8 +70,7 @@ class NativePathParts:
         return path[:size],path[size-1:]
 
 
-def audit_parts(planner,clearance,return_path,source):
-    """Keep the original pair-local release policy, with no new depth tolerance."""
+def _qualified_world(planner,source):
     assert_full_state(planner)
     state=_state(planner)
     if not state['world_constraint_enabled'] or not state['self_constraint_enabled']:
@@ -80,7 +80,29 @@ def audit_parts(planner,clearance,return_path,source):
         raise CuroboOnlyUnsupported('Jimu release table collider missing')
     targets=[obj for obj in objects if source and obj.name=='scene_obstacle_'+source]
     if len(targets)!=1:raise CuroboOnlyUnsupported('Jimu released source identity missing/ambiguous')
-    target=targets[0];dense=_dense(_path(clearance));invalid=[]
+    return targets[0]
+
+
+def audit_return(planner,path,source,actual_start):
+    """Independent return: full current world and self, including its entry edge."""
+    _qualified_world(planner,source)
+    path=_path(path);start=np.asarray(actual_start,dtype=float)
+    if start.shape!=(7,) or not np.isfinite(start).all():
+        raise CuroboOnlyUnsupported('Jimu return actual start unavailable')
+    connector=not np.array_equal(start,path[0])
+    if connector:path=np.vstack((start,path))
+    dense=_dense(path)
+    for index,joints in enumerate(dense):
+        valid,status=planner.check_start_state(joints)
+        if not valid:raise CuroboOnlyUnsupported(f'Jimu return full-world collision at {index}: {status}')
+    return dict(clearance_samples=0,return_samples=len(dense),release_contact_samples=0,
+        permitted_contact_target=None,permitted_links=[],return_world_exempt_links=[],
+        self_collision_input_modified=False,world_filter_calls=0,entry_connector_audited=connector)
+
+
+def audit_parts(planner,clearance,return_path,source):
+    """Keep the original pair-local release policy, with no new depth tolerance."""
+    target=_qualified_world(planner,source);dense=_dense(_path(clearance));invalid=[]
     for index,joints in enumerate(dense):
         valid,status=planner.check_start_state(joints)
         if not valid:invalid.append((index,joints))
@@ -124,10 +146,11 @@ def install_release_execution_guard(portable,emit):
     def execute(*args,**kwargs):
         bound=signature.bind(*args,**kwargs);bound.apply_defaults();values=bound.arguments
         label=str(values['label']);options=values['args']
-        if (not label.startswith('post_place_clearance') or values['real_exec'] is not None
+        if (not guarded_stage(label) or values['real_exec'] is not None
                 or getattr(options,'execute_real',False) or getattr(options,'_planning_prefetch_capture_only',False)):
             return original(*args,**kwargs)
-        row=dict(event='jimu_release_execution_audit',step_id=label,execution_guard=True,
+        kind=stage_kind(label)
+        row=dict(event='jimu_release_execution_audit',step_id=label,stage_kind=kind,execution_entry='pose',execution_guard=True,
                  passed=False,physical_success=None)
         with direct._CUROBO_GPU_LOCK:
             planner=getattr(values['demo'].planner,'native',None);before=None
@@ -143,13 +166,17 @@ def install_release_execution_guard(portable,emit):
                         or not np.isfinite(q).all() or not set(locks)<=set(names)
                         or any(locks[name]!=float(q[names.index(name)]) for name in locks)):
                     raise CuroboOnlyUnsupported('Jimu execution gate requires synchronized gripper model')
-                if label=='post_place_clearance_return_to_cycle_start':
-                    clearance,returning=parts.split(values['q_path'])
-                elif label=='post_place_clearance':clearance,returning=_path(values['q_path']),None
-                else:raise CuroboOnlyUnsupported('unknown Jimu clearance execution stage')
                 source=direct._current_source_object_name(options)
+                if kind=='return_only':
+                    evidence=audit_return(planner,values['q_path'],source,demo.current_arm_qpos())
+                elif kind=='release_then_return':
+                    clearance,returning=parts.split(values['q_path'])
+                    evidence=audit_parts(planner,clearance,returning,source)
+                elif kind=='release_only':
+                    evidence=audit_parts(planner,_path(values['q_path']),None,source)
+                else:raise CuroboOnlyUnsupported('unknown Jimu release/return execution stage')
                 row.update(source=source,scene_fingerprint=before['scene_fingerprint'],
-                           **audit_parts(planner,clearance,returning,source),passed=True)
+                           **evidence,passed=True)
             except BaseException as exc:
                 row.update(error_type=type(exc).__name__,error=str(exc))
                 if isinstance(exc,Exception):

@@ -1,0 +1,1519 @@
+{
+  "camera_captured": false,
+  "checks": {
+    "compileall.log": {
+      "last_line": null,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "full_tests.log": {
+      "last_line": "722 passed, 1 warning in 31.96s",
+      "sha256": "6e98d98d129710dc3176f7193032a6e416d6302d1a6b99c03cda2022b7cc1205"
+    },
+    "snapshot_verify.log": {
+      "last_line": null,
+      "sha256": "3472d89d935f55f6f774f1a285a4ace826aff6f0d0e197bd24180789338e21e5"
+    },
+    "three_scene_tests.log": {
+      "last_line": "400 passed, 1 warning in 15.38s",
+      "sha256": "7bf9c33775e557784e2578e5fe79b3370ca1dfdcd6af750737b959bcae6dadc4"
+    }
+  },
+  "execute_real": false,
+  "hardware_connected": false,
+  "notes": [
+    "Four original GPU/SIM runs: the first four-wall run failed in the validation probe; the corrected four-wall and default triangle runs passed; the complete original task still finished 8/12 with final false.",
+    "Natural task execution used fused release_then_return stages. Standalone return labels were exercised through the production gate using the exact GPU-planned return part and an injected SIM start at a non-motion sink, not as new natural full chains.",
+    "Completed replay groups contain two positive cases and one injected GPU-colliding-configuration rejection each. No actual executor was invoked by a replay. Original paths, world and collision state were preserved.",
+    "Return-only guards check the actual-start connector and whole return with no world/contact exemption. The original return prelift retains release-only finger/released-target rules; its distinct native branch was CPU-tested, not observed in these GPU task runs.",
+    "All original task candidates, seeds, thresholds, target geometry, retries and solver choices are unchanged. These runs are not controlled warm performance benchmarks.",
+    "Old task files and documented start remain read-only, unaudited-for-migration additions are not silently copied into the approved overlay.",
+    "No camera capture, SDK connection, physical arm/gripper motion or push/upload. Raw trajectories, geometry and complete logs remain local."
+  ],
+  "physical_success": null,
+  "raw_artifacts_local_only": true,
+  "runs": [
+    {
+      "run": "four_wall_probe_v1",
+      "result_sha256": "da1bf8a0406ae621033c4b04587a94099aeb234e4da74f944934f76951308559",
+      "stdout_sha256": "03d41aecd46aee8df341af07e1f45bbecff7a5b2a3936146fe956b9fa66866d9",
+      "events_sha256": "300fe77fd31a905ad504425f214111558381a06a1d5060fecde0bbc6e6fbba21",
+      "elapsed_s": 36.01012667100076,
+      "expected_cycles": 4,
+      "command_success": false,
+      "completed": null,
+      "worker_status": null,
+      "native_cycles": [],
+      "native_completed_cycles": [],
+      "native_final_success": null,
+      "native_full_chain_passed": null,
+      "error_type": "AttributeError",
+      "loaded_mplib_modules": [],
+      "original_task_bundle_sha256": null,
+      "original_task_bundle_read_only": null,
+      "original_task_bundle_unchanged": null,
+      "documented_start_source_unchanged": null,
+      "documented_start_comparison": null,
+      "transport_samples": 88,
+      "transport_audits": [
+        {
+          "payload_spheres": 6,
+          "samples": 49,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift_seq_01",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 39,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift_seq_01",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_all_world_links_checked": true,
+      "event_counts": {
+        "contact_world_filter_enter": 10,
+        "contact_world_filter_restored": 10,
+        "grasp_contact_ik_filter_enter": 2,
+        "grasp_contact_ik_filter_exit": 2,
+        "ik_preselect_table_restored": 4,
+        "jimu_independent_return_gate_probe": 1,
+        "jimu_near_ik_collision_checked": 29,
+        "jimu_release_execution_observation": 1,
+        "transport_full_world_audit": 2
+      },
+      "near_ik_promotions": {
+        "rejected": 29
+      },
+      "jimu_release_execution_audits": [],
+      "independent_return_gate_probes": [
+        {
+          "actual_execute_calls": 0,
+          "cases": [
+            {
+              "actual_execute_calls": 0,
+              "case": "return_to_cycle_start",
+              "error_type": null,
+              "execution_audit": {
+                "clearance_samples": 0,
+                "error_type": null,
+                "execution_entry": "pose",
+                "execution_guard": true,
+                "passed": true,
+                "permitted_contact_target": null,
+                "permitted_links": [],
+                "release_contact_samples": 0,
+                "return_samples": 158,
+                "return_world_exempt_links": [],
+                "self_collision_input_modified": false,
+                "stage_kind": "return_only",
+                "state_unchanged": true,
+                "world_filter_calls": 0
+              },
+              "expected_rejected": false,
+              "label": "return_to_cycle_start",
+              "non_motion_sink_calls": 1,
+              "passed": true,
+              "rejected": false
+            },
+            {
+              "actual_execute_calls": 0,
+              "case": "post_place_direct_return_to_cycle_start",
+              "error_type": null,
+              "execution_audit": {
+                "clearance_samples": 0,
+                "error_type": null,
+                "execution_entry": "pose",
+                "execution_guard": true,
+                "passed": true,
+                "permitted_contact_target": null,
+                "permitted_links": [],
+                "release_contact_samples": 0,
+                "return_samples": 158,
+                "return_world_exempt_links": [],
+                "self_collision_input_modified": false,
+                "stage_kind": "return_only",
+                "state_unchanged": true,
+                "world_filter_calls": 0
+              },
+              "expected_rejected": false,
+              "label": "post_place_direct_return_to_cycle_start",
+              "non_motion_sink_calls": 1,
+              "passed": true,
+              "rejected": false
+            }
+          ],
+          "error_type": "AttributeError",
+          "fresh_planner_chain": false,
+          "injected_sim_start": true,
+          "negative_native_status": null,
+          "negative_state_queries": 0,
+          "passed": false,
+          "physical_success": null,
+          "reused_gpu_planned_return": true,
+          "state_unchanged": true
+        }
+      ]
+    },
+    {
+      "run": "four_wall_probe_v2",
+      "result_sha256": "1307e196d8c365e6b42225062ce60ee757f0bc0d57a6c06cc898dbbfaa81e905",
+      "stdout_sha256": "054d58b52d21155317dfeb7a6ba4819b0698868c7577dd0998089141ab0034fa",
+      "events_sha256": "34e4251e6eea048f6b2e73e7a258b3f646d2236b7bfc8db98c41474c8b12f1cf",
+      "elapsed_s": 58.27473308900153,
+      "expected_cycles": 4,
+      "command_success": true,
+      "completed": null,
+      "worker_status": null,
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        },
+        {
+          "cycle": 2,
+          "success": true
+        },
+        {
+          "cycle": 3,
+          "success": true
+        },
+        {
+          "cycle": 4,
+          "success": true
+        }
+      ],
+      "native_completed_cycles": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "native_final_success": true,
+      "native_full_chain_passed": null,
+      "error_type": "",
+      "loaded_mplib_modules": [],
+      "original_task_bundle_sha256": null,
+      "original_task_bundle_read_only": null,
+      "original_task_bundle_unchanged": null,
+      "documented_start_source_unchanged": null,
+      "documented_start_comparison": null,
+      "transport_samples": 177,
+      "transport_audits": [
+        {
+          "payload_spheres": 6,
+          "samples": 49,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift_seq_01",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 39,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift_seq_01",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 44,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift_seq_01",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 45,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift_seq_01",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_all_world_links_checked": true,
+      "event_counts": {
+        "contact_world_filter_enter": 20,
+        "contact_world_filter_restored": 20,
+        "grasp_contact_ik_filter_enter": 4,
+        "grasp_contact_ik_filter_exit": 4,
+        "ik_preselect_table_restored": 8,
+        "jimu_independent_return_gate_probe": 1,
+        "jimu_near_ik_collision_checked": 51,
+        "jimu_release_execution_audit": 4,
+        "jimu_release_execution_observation": 4,
+        "transport_full_world_audit": 4
+      },
+      "near_ik_promotions": {
+        "rejected": 51
+      },
+      "jimu_release_execution_audits": [
+        {
+          "clearance_samples": 60,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_right_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 158,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "right_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 60,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_back_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 116,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "back_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 49,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_left_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 177,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "left_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 49,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_front_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 168,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "front_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        }
+      ],
+      "independent_return_gate_probes": [
+        {
+          "actual_execute_calls": 0,
+          "cases": [
+            {
+              "actual_execute_calls": 0,
+              "case": "return_to_cycle_start",
+              "error_type": null,
+              "execution_audit": {
+                "clearance_samples": 0,
+                "error_type": null,
+                "execution_entry": "pose",
+                "execution_guard": true,
+                "passed": true,
+                "permitted_contact_target": null,
+                "permitted_links": [],
+                "release_contact_samples": 0,
+                "return_samples": 158,
+                "return_world_exempt_links": [],
+                "self_collision_input_modified": false,
+                "stage_kind": "return_only",
+                "state_unchanged": true,
+                "world_filter_calls": 0
+              },
+              "expected_rejected": false,
+              "label": "return_to_cycle_start",
+              "non_motion_sink_calls": 1,
+              "passed": true,
+              "rejected": false
+            },
+            {
+              "actual_execute_calls": 0,
+              "case": "post_place_direct_return_to_cycle_start",
+              "error_type": null,
+              "execution_audit": {
+                "clearance_samples": 0,
+                "error_type": null,
+                "execution_entry": "pose",
+                "execution_guard": true,
+                "passed": true,
+                "permitted_contact_target": null,
+                "permitted_links": [],
+                "release_contact_samples": 0,
+                "return_samples": 158,
+                "return_world_exempt_links": [],
+                "self_collision_input_modified": false,
+                "stage_kind": "return_only",
+                "state_unchanged": true,
+                "world_filter_calls": 0
+              },
+              "expected_rejected": false,
+              "label": "post_place_direct_return_to_cycle_start",
+              "non_motion_sink_calls": 1,
+              "passed": true,
+              "rejected": false
+            },
+            {
+              "actual_execute_calls": 0,
+              "case": "injected_colliding_configuration",
+              "error_type": "CuroboOnlyUnsupported",
+              "execution_audit": {
+                "clearance_samples": null,
+                "error_type": "CuroboOnlyUnsupported",
+                "execution_entry": "pose",
+                "execution_guard": true,
+                "passed": false,
+                "permitted_contact_target": null,
+                "permitted_links": null,
+                "release_contact_samples": null,
+                "return_samples": null,
+                "return_world_exempt_links": null,
+                "self_collision_input_modified": null,
+                "stage_kind": "return_only",
+                "state_unchanged": true,
+                "world_filter_calls": null
+              },
+              "expected_rejected": true,
+              "label": "return_to_cycle_start",
+              "non_motion_sink_calls": 0,
+              "passed": true,
+              "rejected": true
+            }
+          ],
+          "error_type": null,
+          "fresh_planner_chain": false,
+          "injected_sim_start": true,
+          "negative_native_status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+          "negative_state_queries": 5,
+          "passed": true,
+          "physical_success": null,
+          "reused_gpu_planned_return": true,
+          "state_unchanged": true
+        }
+      ]
+    },
+    {
+      "run": "original_bundle_v1",
+      "result_sha256": "9b85385c600fe71559afabe5481d8bc394e4afaf92e6ab32a8f9c5bce85c4016",
+      "stdout_sha256": "4d7430a9453859869b95875d9f6cad84de686af55f53e12a2371517a2495ad08",
+      "events_sha256": "e7e5b255f10e4196e3bf7083af8134f087b742cf277d4d042dcee78748082fb3",
+      "elapsed_s": 227.0423454089978,
+      "expected_cycles": 12,
+      "command_success": null,
+      "completed": false,
+      "worker_status": "failed",
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        },
+        {
+          "cycle": 2,
+          "success": true
+        },
+        {
+          "cycle": 3,
+          "success": true
+        },
+        {
+          "cycle": 4,
+          "success": true
+        },
+        {
+          "cycle": 5,
+          "success": true
+        },
+        {
+          "cycle": 6,
+          "success": true
+        },
+        {
+          "cycle": 7,
+          "success": true
+        },
+        {
+          "cycle": 8,
+          "success": true
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        }
+      ],
+      "native_completed_cycles": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "native_final_success": false,
+      "native_full_chain_passed": false,
+      "error_type": null,
+      "loaded_mplib_modules": [],
+      "original_task_bundle_sha256": {
+        "builder": "6478bafdf016817e7d118269da9199e6d4fe8c06570cbedfdfb03c1127ca6884",
+        "fixed_scene": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+        "manifest": "811be89115ec9982ac425f799dedc0d08ab55ada996c42d0e524a54550a3ab2d"
+      },
+      "original_task_bundle_read_only": true,
+      "original_task_bundle_unchanged": true,
+      "documented_start_source_unchanged": true,
+      "documented_start_comparison": {
+        "read_only": true,
+        "source_name": "JIMU_BUILDER_JSON_EXECUTION.md",
+        "source_sha256": "2be34886644608584353ce7d6f7190af516ff4e6c71425fa8bd6a761eb78f94c"
+      },
+      "transport_samples": 401,
+      "transport_audits": [
+        {
+          "payload_spheres": 6,
+          "samples": 41,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 51,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 41,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 41,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 42,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 73,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 43,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 69,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_all_world_links_checked": true,
+      "event_counts": {
+        "contact_world_filter_enter": 53,
+        "contact_world_filter_restored": 53,
+        "grasp_contact_ik_filter_enter": 21,
+        "grasp_contact_ik_filter_exit": 21,
+        "ik_preselect_table_restored": 42,
+        "jimu_near_ik_collision_checked": 1427,
+        "jimu_release_execution_audit": 8,
+        "jimu_release_execution_observation": 8,
+        "transport_full_world_audit": 8
+      },
+      "near_ik_promotions": {
+        "rejected": 1427
+      },
+      "jimu_release_execution_audits": [
+        {
+          "clearance_samples": 47,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_right_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 2,
+          "return_samples": 167,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "right_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 2
+        },
+        {
+          "clearance_samples": 47,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_back_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 183,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "back_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 55,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_left_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 189,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "left_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 54,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_front_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 339,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "front_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 62,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_right_second_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 164,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "right_second_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 61,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_back_second_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 91,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "back_second_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 59,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_left_second_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 186,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "left_second_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 60,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_front_second_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 105,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "front_second_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        }
+      ],
+      "independent_return_gate_probes": []
+    },
+    {
+      "run": "triangle_roof_probe_v1",
+      "result_sha256": "e6b7fc21e12a2f9ac2902eb5e269e90ac55d8647e456dd9007a01ec455b3945d",
+      "stdout_sha256": "f7ec6fcb0dacdbd1a95084ba63a63d5211b30990ceb3569300f244f20e8a498b",
+      "events_sha256": "d607698e42443315549d509c44d62375e381cdf1ea939e7f4a97a9d7c2c109ee",
+      "elapsed_s": 276.3199526699973,
+      "expected_cycles": 12,
+      "command_success": true,
+      "completed": null,
+      "worker_status": null,
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        },
+        {
+          "cycle": 2,
+          "success": true
+        },
+        {
+          "cycle": 3,
+          "success": true
+        },
+        {
+          "cycle": 4,
+          "success": true
+        },
+        {
+          "cycle": 5,
+          "success": true
+        },
+        {
+          "cycle": 6,
+          "success": true
+        },
+        {
+          "cycle": 7,
+          "success": true
+        },
+        {
+          "cycle": 8,
+          "success": true
+        },
+        {
+          "cycle": 9,
+          "success": true
+        },
+        {
+          "cycle": 10,
+          "success": true
+        },
+        {
+          "cycle": 11,
+          "success": true
+        },
+        {
+          "cycle": 12,
+          "success": true
+        }
+      ],
+      "native_completed_cycles": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "native_final_success": true,
+      "native_full_chain_passed": null,
+      "error_type": "",
+      "loaded_mplib_modules": [],
+      "original_task_bundle_sha256": null,
+      "original_task_bundle_read_only": null,
+      "original_task_bundle_unchanged": null,
+      "documented_start_source_unchanged": null,
+      "documented_start_comparison": null,
+      "transport_samples": 740,
+      "transport_audits": [
+        {
+          "payload_spheres": 6,
+          "samples": 57,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_16deg_fast_ik_after_lift_seq_01",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 43,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_8deg_fast_ik_after_lift_seq_01",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 45,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift_seq_01",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 45,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift_seq_01",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 39,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_4deg_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 46,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_4deg_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 37,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 38,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 72,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_16deg_prez__fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 50,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_16deg_prez__fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 39,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_16deg_prez__fast_ik_after_lift_seq_01",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 47,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_prez_00_120mm_fast_ik_after_lift_seq_01",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 50,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_prez_00_120mm_fast_ik_after_lift_seq_02",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 46,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_8deg_prez_0_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 44,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_4deg_prez_0_fast_ik_after_lift",
+          "world_exempt_links": []
+        },
+        {
+          "payload_spheres": 6,
+          "samples": 42,
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_12deg_prez__fast_ik_after_lift",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_all_world_links_checked": true,
+      "event_counts": {
+        "contact_world_filter_enter": 75,
+        "contact_world_filter_restored": 75,
+        "grasp_contact_ik_filter_enter": 12,
+        "grasp_contact_ik_filter_exit": 12,
+        "ik_preselect_table_restored": 24,
+        "jimu_independent_return_gate_probe": 1,
+        "jimu_near_ik_collision_checked": 262,
+        "jimu_release_execution_audit": 12,
+        "jimu_release_execution_observation": 12,
+        "jimu_return_query_diagnostic": 1,
+        "transport_full_world_audit": 16
+      },
+      "near_ik_promotions": {
+        "rejected": 262
+      },
+      "jimu_release_execution_audits": [
+        {
+          "clearance_samples": 56,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_right_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 234,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "right_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 58,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_back_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 198,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "back_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 48,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_left_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 131,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "left_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 47,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_front_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 155,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "front_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 58,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_front_second_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 160,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "front_second_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 61,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_left_second_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 187,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "left_second_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 58,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_right_second_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 181,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "right_second_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 59,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_back_second_wall",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 147,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "back_second_wall",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 55,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_front_roof_triangle",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 250,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "front_roof_triangle",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 72,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_right_roof_triangle",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 211,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "right_roof_triangle",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 47,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_back_roof_triangle",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 99,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "back_roof_triangle",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        },
+        {
+          "clearance_samples": 62,
+          "entry_connector_audited": null,
+          "error_type": null,
+          "execution_entry": "pose",
+          "execution_guard": true,
+          "passed": true,
+          "permitted_contact_target": "scene_obstacle_left_roof_triangle",
+          "permitted_links": [
+            "gripper_Left_1_Link",
+            "gripper_Left_2_Link",
+            "gripper_Left_Support_Link",
+            "gripper_Right_1_Link",
+            "gripper_Right_2_Link",
+            "gripper_Right_Support_Link",
+            "left_pad",
+            "right_pad"
+          ],
+          "release_contact_samples": 0,
+          "return_samples": 165,
+          "return_world_exempt_links": [],
+          "self_collision_input_modified": false,
+          "source": "left_roof_triangle",
+          "stage_kind": "release_then_return",
+          "state_unchanged": true,
+          "step_id": "post_place_clearance_return_to_cycle_start",
+          "world_filter_calls": 0
+        }
+      ],
+      "independent_return_gate_probes": [
+        {
+          "actual_execute_calls": 0,
+          "cases": [
+            {
+              "actual_execute_calls": 0,
+              "case": "return_to_cycle_start",
+              "error_type": null,
+              "execution_audit": {
+                "clearance_samples": 0,
+                "error_type": null,
+                "execution_entry": "pose",
+                "execution_guard": true,
+                "passed": true,
+                "permitted_contact_target": null,
+                "permitted_links": [],
+                "release_contact_samples": 0,
+                "return_samples": 234,
+                "return_world_exempt_links": [],
+                "self_collision_input_modified": false,
+                "stage_kind": "return_only",
+                "state_unchanged": true,
+                "world_filter_calls": 0
+              },
+              "expected_rejected": false,
+              "label": "return_to_cycle_start",
+              "non_motion_sink_calls": 1,
+              "passed": true,
+              "rejected": false
+            },
+            {
+              "actual_execute_calls": 0,
+              "case": "post_place_direct_return_to_cycle_start",
+              "error_type": null,
+              "execution_audit": {
+                "clearance_samples": 0,
+                "error_type": null,
+                "execution_entry": "pose",
+                "execution_guard": true,
+                "passed": true,
+                "permitted_contact_target": null,
+                "permitted_links": [],
+                "release_contact_samples": 0,
+                "return_samples": 234,
+                "return_world_exempt_links": [],
+                "self_collision_input_modified": false,
+                "stage_kind": "return_only",
+                "state_unchanged": true,
+                "world_filter_calls": 0
+              },
+              "expected_rejected": false,
+              "label": "post_place_direct_return_to_cycle_start",
+              "non_motion_sink_calls": 1,
+              "passed": true,
+              "rejected": false
+            },
+            {
+              "actual_execute_calls": 0,
+              "case": "injected_colliding_configuration",
+              "error_type": "CuroboOnlyUnsupported",
+              "execution_audit": {
+                "clearance_samples": null,
+                "error_type": "CuroboOnlyUnsupported",
+                "execution_entry": "pose",
+                "execution_guard": true,
+                "passed": false,
+                "permitted_contact_target": null,
+                "permitted_links": null,
+                "release_contact_samples": null,
+                "return_samples": null,
+                "return_world_exempt_links": null,
+                "self_collision_input_modified": null,
+                "stage_kind": "return_only",
+                "state_unchanged": true,
+                "world_filter_calls": null
+              },
+              "expected_rejected": true,
+              "label": "return_to_cycle_start",
+              "non_motion_sink_calls": 0,
+              "passed": true,
+              "rejected": true
+            }
+          ],
+          "error_type": null,
+          "fresh_planner_chain": false,
+          "injected_sim_start": true,
+          "negative_native_status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+          "negative_state_queries": 5,
+          "passed": true,
+          "physical_success": null,
+          "reused_gpu_planned_return": true,
+          "state_unchanged": true
+        }
+      ]
+    }
+  ],
+  "schema": "rm75.jimu_independent_return/v1",
+  "source_sha256": {
+    "rm75_app/workcell/jimu_execution_stages.py": "0063533bc95b274165d6a9a7b2f9415b3c39038f015ff682b312327f359cd7d4",
+    "rm75_app/workcell/jimu_release_execution.py": "1c4860bf756e5d078dc3ff551bb28e3073abf4a58be927fa4120cff881dfc06f",
+    "rm75_app/workcell/jimu_return_diagnostics.py": "36a2231bfe09b471ea4e615e3cb0448720627914347c39df57a762786966af48",
+    "rm75_app/workcell/jimu_return_gate_probe.py": "2073e2bf5d59307bef3ab9e59f734301e7adcd9a008f643f2d001fc157feef68",
+    "tests/three_scene/test_jimu_release_execution.py": "586357ad4e2bacdc59aa3b42b7e9cc0d3ae7a4c05f8f77fde8c06e23ff235dbb",
+    "tests/three_scene/test_native_gap_summary.py": "7e16727418a58570ad24eedbaa08fa6d2184d51cc217d9104c40abc1e31fe1b4",
+    "tools/run_native_contact_audit.py": "0e5d2804e3b8e7df1cbe54080d17583eb8ee39bd3804fa0326f931e67d8581cc",
+    "tools/summarize_native_gaps.py": "e85d9d61207fea6a9f173b5cd4913ed54a3aef082a00ebb102962bfdf3428396"
+  },
+  "tested_base_commit": "4a46c6f37266faa79b41321bf702f3c117774ba4",
+  "snapshot_verified_files": 807,
+  "old_worktree_status_sha256_before_after": "15fd1ac40352579a761b4134244c2a74158dd723b2b146c6a39ccf458fe20968",
+  "final_runtime_source_hashes_apply_to": [
+    "four_wall_probe_v2",
+    "triangle_roof_probe_v1",
+    "original_bundle_v1"
+  ],
+  "earlier_run_limitations": {
+    "four_wall_probe_v1": "Before the probe joint-limit field-path correction. Two positive return gate replays completed; the requested collision negative was not reached; no native cycle completed. This failed run is retained."
+  }
+}

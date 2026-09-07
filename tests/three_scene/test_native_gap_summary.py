@@ -104,3 +104,21 @@ def test_jimu_execution_gate_failure_is_distinct_from_observation_and_exports_no
     assert audit['execution_guard'] and not audit['passed'] and audit['state_unchanged']
     assert audit['return_world_exempt_links']==[]
     assert all(key not in json.dumps(audit) for key in ('private','q_path'))
+
+
+def test_independent_return_probe_partial_failure_and_injected_start_are_explicit(tmp_path):
+    path=tmp_path/'contact.jsonl'
+    path.write_text(json.dumps({'event':'jimu_independent_return_gate_probe','passed':False,
+        'state_unchanged':True,'error_type':'AttributeError','error':'private path',
+        'injected_sim_start':True,'reused_gpu_planned_return':True,'actual_execute_calls':0,
+        'cases':[{'case':'return_to_cycle_start','passed':True,'non_motion_sink_calls':1,
+            'execution_audit':{'passed':True,'stage_kind':'return_only','permitted_links':[],
+                'return_samples':100,'q_path':[[1]*7]}}]}))
+    row=event_summary(path,bare=True)
+    assert row['jimu_release_execution_audits']==[]
+    probe=row['independent_return_gate_probes'][0]
+    assert not probe['passed'] and probe['error_type']=='AttributeError'
+    assert probe['injected_sim_start'] and probe['actual_execute_calls']==0
+    assert len(probe['cases'])==1 and probe['cases'][0]['passed']
+    assert probe['cases'][0]['execution_audit']['return_samples']==100
+    assert all(key not in json.dumps(probe) for key in ('private','q_path'))

@@ -41,6 +41,8 @@ def main():
     parser.add_argument("--scene", choices=("four-wall", "triangle-roof"), required=True)
     parser.add_argument("--extensions", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument('--probe-independent-return',action='store_true',
+        help='No-motion GPU probe: reuse first native fused return at the standalone execution gate')
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument("--compatibility-audit", action="store_true")
     modes.add_argument('--tray-final-descent-compatibility', action='store_true',
@@ -48,6 +50,8 @@ def main():
     modes.add_argument('--transport-world-checked-compatibility', action='store_true',
                        help='Keep legacy contact stages world-only; fully check loaded transport')
     args = parser.parse_args()
+    if args.probe_independent_return and not args.transport_world_checked_compatibility:
+        parser.error('Independent return probe requires the checked-transport SIM policy')
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     extensions = args.extensions.resolve()
@@ -96,11 +100,16 @@ def main():
                 install_return_diagnostics(portable,emit)
                 from rm75_app.workcell.jimu_release_execution import install_release_execution_guard
                 install_release_execution_guard(portable,emit)
+                if args.probe_independent_return:
+                    from rm75_app.workcell.jimu_return_gate_probe import install_return_gate_probe
+                    report['independent_return_gate_probes']=install_return_gate_probe(portable,emit)
                 install_release_execution_observer(portable,emit,synchronize=True)
             else:
                 install_contact_audit(direct,emit,strict=not args.compatibility_audit,
                     tray_final_descent=args.tray_final_descent_compatibility)
             with contextlib.redirect_stdout(captured):result=module.main()
+            if args.probe_independent_return and not report.get('independent_return_gate_probes'):
+                raise RuntimeError('Requested independent return probe was not observed')
             report.update(status='native_return_unverified',native_return=result,
                           command_success=result in (None,0) and
                           captured.report(report['expected_cycles'])['native_full_chain_passed'])

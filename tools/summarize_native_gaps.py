@@ -53,6 +53,7 @@ def lift_ik_summary(row):
 
 def event_summary(path,*,bare=False):
     counts=Counter();near=Counter();pairs={};audits=[];first=None;first_return=None;release_observations=[];release_audits=[];filters=set()
+    return_probes=[]
     with path.open() as stream:
         for line in stream:
             row=json.loads(line)
@@ -60,6 +61,18 @@ def event_summary(path,*,bare=False):
                 if row.get('kind')!='contact_audit':continue
                 row=row['evidence']
             event=row['event'];counts[event]+=1
+            if event=='jimu_independent_return_gate_probe':
+                probe={key:row.get(key) for key in ('passed','state_unchanged','error_type','negative_native_status',
+                    'negative_state_queries','reused_gpu_planned_return','injected_sim_start','actual_execute_calls',
+                    'fresh_planner_chain','physical_success')}
+                probe['cases']=[{**{key:item.get(key) for key in ('case','label','passed','rejected','expected_rejected',
+                    'non_motion_sink_calls','actual_execute_calls','error_type')},
+                    'execution_audit':{key:(item.get('execution_audit') or {}).get(key) for key in
+                        ('stage_kind','execution_entry','execution_guard','passed','state_unchanged','return_samples',
+                         'clearance_samples','release_contact_samples','permitted_contact_target','permitted_links',
+                         'return_world_exempt_links','self_collision_input_modified','world_filter_calls','error_type')}}
+                    for item in row.get('cases',[])]
+                return_probes.append(probe)
             if event=='transport_full_world_audit' and row.get('samples',0)>0:
                 audits.append({key:row.get(key) for key in
                     ('samples','payload_spheres','world_exempt_links','step_id')})
@@ -85,7 +98,7 @@ def event_summary(path,*,bare=False):
                     'negative_pairs':negative_pairs(detail)} for name,detail in row.get('endpoints',{}).items()}
             if event=='jimu_release_execution_observation':
                 observation={key:row.get(key) for key in
-                    ('step_id','source','diagnostic_only','execution_guard','diagnostic_complete','state_unchanged',
+                    ('step_id','source','stage_kind','diagnostic_only','execution_guard','diagnostic_complete','state_unchanged',
                      'released','attached','table_present','max_gripper_model_error_rad','path_points','audited_samples',
                      'invalid_samples','native_all_valid','disabled_links','disabled_objects',
                      'world_constraint_enabled','self_constraint_enabled','model_sync_requested')}
@@ -95,7 +108,7 @@ def event_summary(path,*,bare=False):
                 release_observations.append(observation)
             if event=='jimu_release_execution_audit':
                 release_audits.append({key:row.get(key) for key in
-                    ('step_id','source','execution_guard','passed','state_unchanged','clearance_samples',
+                    ('step_id','source','stage_kind','execution_entry','entry_connector_audited','execution_guard','passed','state_unchanged','clearance_samples',
                      'return_samples','release_contact_samples','permitted_contact_target','permitted_links',
                      'return_world_exempt_links','self_collision_input_modified','world_filter_calls','error_type')})
     return {'event_counts':dict(counts),'near_ik_promotions':dict(near),
@@ -103,6 +116,7 @@ def event_summary(path,*,bare=False):
         'first_read_only_diagnostic':first,'first_return_query_diagnostic':first_return,
         'release_execution_observations':release_observations,
         'jimu_release_execution_audits':release_audits,
+        'independent_return_gate_probes':return_probes,
         'grasp_contact_ik_links':sorted(filters),
         'transport_audits':audits,'transport_samples':sum(row['samples'] for row in audits),
         'transport_all_world_links_checked':bool(audits) and all(row['world_exempt_links']==[] for row in audits)}

@@ -5,6 +5,7 @@ import inspect
 import numpy as np
 from .contact_audit import _plain, scene_evidence
 from .transport_contact import jimu_collision_details
+from .jimu_execution_stages import guarded_stage, stage_kind
 
 
 def _state(planner):
@@ -98,11 +99,11 @@ def install_release_execution_observer(portable, emit, *, synchronize=False):
     def execute(*args,**kwargs):
         bound=signature.bind(*args,**kwargs);bound.apply_defaults();values=bound.arguments
         label=str(values['label']);options=values['args']
-        if (not label.startswith('post_place_clearance') or values['real_exec'] is not None
+        if (not guarded_stage(label) or values['real_exec'] is not None
                 or getattr(options,'execute_real',False) or getattr(options,'_planning_prefetch_capture_only',False)):
             return original(*args,**kwargs)
         demo=values['demo'];planner=getattr(demo.planner,'native',None)
-        row=dict(event='jimu_release_execution_observation',step_id=label,
+        row=dict(event='jimu_release_execution_observation',step_id=label,stage_kind=stage_kind(label),
                  diagnostic_only=True,execution_guard=False,physical_success=None)
         with direct._CUROBO_GPU_LOCK:
             if planner is None:
