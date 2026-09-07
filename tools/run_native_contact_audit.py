@@ -43,6 +43,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument('--probe-independent-return',action='store_true',
         help='No-motion GPU probe: reuse first native fused return at the standalone execution gate')
+    parser.add_argument('--audit-roof-ik',action='store_true')
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument("--compatibility-audit", action="store_true")
     modes.add_argument('--tray-final-descent-compatibility', action='store_true',
@@ -50,8 +51,8 @@ def main():
     modes.add_argument('--transport-world-checked-compatibility', action='store_true',
                        help='Keep legacy contact stages world-only; fully check loaded transport')
     args = parser.parse_args()
-    if args.probe_independent_return and not args.transport_world_checked_compatibility:
-        parser.error('Independent return probe requires the checked-transport SIM policy')
+    if (args.probe_independent_return or args.audit_roof_ik) and not args.transport_world_checked_compatibility:
+        parser.error('SIM diagnostics require the checked-transport policy')
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     extensions = args.extensions.resolve()
@@ -94,6 +95,9 @@ def main():
                     install_read_only_jimu_diagnostics,guard_jimu_near_ik,install_jimu_grasp_ik_contact)
                 cleanup=install_transport_contact(direct,RM75CuRoboPlanner,emit)
                 install_read_only_jimu_diagnostics(portable,emit)
+                if args.audit_roof_ik:
+                    from rm75_app.workcell.jimu_roof_ik_diagnostics import install_roof_ik_diagnostics
+                    report['roof_ik_diagnostics']=install_roof_ik_diagnostics(direct,emit)
                 install_jimu_grasp_ik_contact(direct,emit)
                 guard_jimu_near_ik(portable,emit)
                 from rm75_app.workcell.jimu_return_diagnostics import install_return_diagnostics,install_release_execution_observer
@@ -132,9 +136,15 @@ def main():
             report['transport_path_audits']=[{k:row.get(k) for k in
                 ('step_id','samples','payload_spheres','world_exempt_links','scene_fingerprint')}
                 for row in rows if row.get('event')=='transport_full_world_audit']
+            if args.audit_roof_ik:
+                from rm75_app.workcell.jimu_roof_ik_diagnostics import roof_audit_status
+                report['roof_ik_audit']=roof_audit_status(report.get('roof_ik_diagnostics',[]),
+                    [side+'_roof_triangle' for side in ('right','back','left','front')])
+            report['validation_success']=bool(report['command_success'] and
+                (not args.audit_roof_ik or report['roof_ik_audit']['passed']))
             atomic_json(output/'result.json',report)
     print(json.dumps(report, sort_keys=True))
-    return 0 if report["command_success"] else 42
+    return 0 if report['validation_success'] else 42
 
 
 if __name__ == "__main__":

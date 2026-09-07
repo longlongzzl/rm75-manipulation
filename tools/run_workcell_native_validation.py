@@ -72,6 +72,8 @@ def main():
     parser.add_argument('--task-dir',type=Path,help='Read-only original Jimu manifest + builder + frozen poses, without migration')
     parser.add_argument('--jimu-start-command-doc',type=Path,
         help='Separate SIM comparison: read seven start angles from original command documentation')
+    parser.add_argument('--audit-roof-ik',action='store_true',
+        help='Opt-in read-only first roof IK batch per original phase/source; no extra solve')
     inputs=parser.add_mutually_exclusive_group()
     inputs.add_argument('--fixed-sam6d',type=Path)
     inputs.add_argument('--fixed-world',type=Path,help='Original T_world_obj scene; PickPlace SIM direct entry only')
@@ -87,6 +89,7 @@ def main():
         help='Cancel after observing the actual Jimu post-release execution boundary')
     parser.add_argument('--timeout-s',type=float,default=600.)
     args=parser.parse_args()
+    if args.audit_roof_ik and args.task!='magnetic':parser.error('Roof IK diagnostics are Jimu SIM only')
     root=ROOT/'rm75_app/_vendor/working_snapshot';verify_snapshot(root)
     bundle=None;bundle_hashes=None
     if args.task_dir:
@@ -111,6 +114,7 @@ def main():
     output=args.output.resolve();output.mkdir(parents=True,exist_ok=False)
     profile=read_json(ROOT/'examples/workcell/machine.example.json')
     section=profile[args.task]
+    if args.audit_roof_ik:section['audit_roof_ik']=True
     section.update(python=str(Path(sys.executable).resolve()),render_mode='none',fixed_scene=str(fixed),
         fixed_scene_format='native_world' if args.fixed_world else 'sam6d',
         simulation_contact_policy='transport_world_checked_compatibility')
@@ -192,6 +196,20 @@ def main():
                 ==documented_start['source_sha256'])
         report['completed']=bool(report.get('command_completed') and report.get('native_full_chain_passed')
             and report.get('original_task_bundle_unchanged',True) and report.get('documented_start_source_unchanged',True))
+        if args.audit_roof_ik:
+            from rm75_app.workcell.jimu_roof_ik_diagnostics import roof_audit_status
+            events=ROOT/'runtime_data/workcell/jobs'/job/'events.jsonl' if job else None
+            diagnostic_rows=[]
+            if events is not None and events.is_file():
+                for line in events.read_text().splitlines():
+                    event=json.loads(line)
+                    if (event.get('kind')=='contact_audit' and
+                            event.get('evidence',{}).get('event')=='jimu_roof_ik_batch_diagnostic'):
+                        diagnostic_rows.append(event['evidence'])
+            expected_roofs=[role for role in validate_design(params['design']).ordered_roles
+                            if 'roof_triangle' in role]
+            report['roof_ik_audit']=roof_audit_status(diagnostic_rows,expected_roofs)
+            report['completed']=bool(report['completed'] and report['roof_ik_audit']['passed'])
         atomic_json(output/'result.json',report)
     print(json.dumps({k:report.get(k) for k in ('job_id','completed','stopped_for_validation','elapsed_s','error')}))
     return 0 if report['completed'] or (report['stopped_for_validation'] and

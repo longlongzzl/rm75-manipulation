@@ -1,0 +1,1099 @@
+{
+  "schema": "rm75.jimu_roof_ik_closeout/v1",
+  "status": "NEEDS_REVIEW",
+  "tested_base_commit": "5fab0ba2a73eefd741ff3af1ad9e16ab500f5a5f",
+  "execute_real": false,
+  "hardware_connected": false,
+  "camera_captured": false,
+  "physical_success": null,
+  "raw_artifacts_local_only": true,
+  "pushed": false,
+  "all_three_nonhardware_chains_complete": false,
+  "report": "docs/CODEX_THREE_SCENE_JIMU_ROOF_IK_20260908.md",
+  "prior_pickplace_pusht_evidence": "benchmarks/unified_scenarios/pickplace_pusht_followup_20260908_summary.json",
+  "checks": {
+    "compileall.log": {
+      "last_line": null,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "full_tests.log": {
+      "last_line": "778 passed, 1 warning in 32.71s",
+      "sha256": "f256a9ca4953845727da92018b790685d6d1a64193e85a8c3e05a24ffd2ef8ec"
+    },
+    "snapshot_verify.log": {
+      "last_line": null,
+      "sha256": "3472d89d935f55f6f774f1a285a4ace826aff6f0d0e197bd24180789338e21e5"
+    },
+    "three_scene_tests.log": {
+      "last_line": "456 passed, 1 warning in 20.12s",
+      "sha256": "f21fcc87b3809b110f3ce0e3eb4845bf856dd88faf596f1ccb6bd30314ad46bd"
+    }
+  },
+  "snapshot_verification": {
+    "passed": true,
+    "files": 807,
+    "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+    "approved_overlay_files": 12,
+    "dependency_qualified": false,
+    "runtime_qualified": false
+  },
+  "old_worktree_status_sha256_before": "15fd1ac40352579a761b4134244c2a74158dd723b2b146c6a39ccf458fe20968",
+  "old_worktree_status_sha256_after": "15fd1ac40352579a761b4134244c2a74158dd723b2b146c6a39ccf458fe20968",
+  "source_sha256": {
+    "rm75_app/workcell/jimu_roof_ik_diagnostics.py": "79fa634c6728e270fabbc47ddde836d6a578cfa7ac6b935a2291bd38b07262b1",
+    "rm75_app/workcell/legacy.py": "44ae807fd1a7ba233304335967ab18c0d24a1257200b64dd2421f2caf684a570",
+    "tests/three_scene/test_jimu_roof_ik_diagnostics.py": "7ca6ebbdf41845eb4cfff699fdd4d909ce7afde15a54bd65766ba51e1c9f4d2d",
+    "tests/three_scene/test_jimu_roof_ik_summary.py": "e5439ae8d04ba63c6bede63ef08b9789a971347ac68361746e1f7e0b6f0b9cfa",
+    "tools/run_native_contact_audit.py": "96d83a12910a1b9e65c3f1d526ebbcc8165fbf25dcb68f59a1fefd41ddf02a7e",
+    "tools/run_workcell_native_validation.py": "b27ee7c84b25ecd87e64c2723128900e50a432eafaa928009bd15e7b805ac820",
+    "tools/summarize_native_gaps.py": "c7227ea67fd681cb9cc05620aec6e5a179e93abe9f30db9c0d154921a5f66002"
+  },
+  "runtime_versions": {
+    "v1_foreground_only_no_nominal": {
+      "rm75_app/workcell/jimu_roof_ik_diagnostics.py": "baddd65b1b959be0c994ce87990ea2b0c7255ec212c2fdd940edaf7d51f8a869",
+      "rm75_app/workcell/legacy.py": "44ae807fd1a7ba233304335967ab18c0d24a1257200b64dd2421f2caf684a570",
+      "tools/run_workcell_native_validation.py": "55217893893b7f9ff31325543797eb6e0f0e622cca0e8728a71abe90e1d83025",
+      "tools/run_native_contact_audit.py": "6dc3c9ac8e3a498a87ff6dc8c024c50cc8791fff7af65a7219de52de795774b5"
+    },
+    "v2_foreground_only_with_nominal": {
+      "rm75_app/workcell/jimu_roof_ik_diagnostics.py": "2db361c232a2c67f9edd0d00305662966fb765f788484b42599c31e922be61e6",
+      "rm75_app/workcell/legacy.py": "44ae807fd1a7ba233304335967ab18c0d24a1257200b64dd2421f2caf684a570",
+      "tools/run_workcell_native_validation.py": "55217893893b7f9ff31325543797eb6e0f0e622cca0e8728a71abe90e1d83025",
+      "tools/run_native_contact_audit.py": "6dc3c9ac8e3a498a87ff6dc8c024c50cc8791fff7af65a7219de52de795774b5"
+    },
+    "v3_prefetch_and_foreground_with_completeness_gate": {
+      "rm75_app/workcell/jimu_roof_ik_diagnostics.py": "79fa634c6728e270fabbc47ddde836d6a578cfa7ac6b935a2291bd38b07262b1",
+      "rm75_app/workcell/legacy.py": "44ae807fd1a7ba233304335967ab18c0d24a1257200b64dd2421f2caf684a570",
+      "tools/run_workcell_native_validation.py": "b27ee7c84b25ecd87e64c2723128900e50a432eafaa928009bd15e7b805ac820",
+      "tools/run_native_contact_audit.py": "96d83a12910a1b9e65c3f1d526ebbcc8165fbf25dcb68f59a1fefd41ddf02a7e"
+    }
+  },
+  "notes": [
+    "All five runs are terminal native SIM/GPU runs; there was no robot SDK, gripper, or camera access.",
+    "The three original full-bundle runs failed at 8/12. Both standard-control native tasks passed 12/12; control v1 has zero diagnostic batches and is NOT_OBSERVED, not audit PASS.",
+    "Diagnostics observe the first native query per source/phase/scope, preserving original arguments, query count, candidates, seeds, results, retries, thresholds, and contact policy.",
+    "Final observer budgets foreground and prefetch separately. Diagnostic completeness is distinct from native task completion.",
+    "Nominal checks place original rigid gripper-base spheres at exact original EE goals and test analytic sphere/box overlap. They are a necessary condition only, not native GPU distance queries for every goal or physical geometry qualification.",
+    "Original failed configuration validity checks use native GPU; their full configuration data, raw goals, worlds, trajectories, logs, and images remain local only.",
+    "The standard scene and original bundle have different original inputs and grasp/place bindings; their comparison is not a single-variable causal ablation.",
+    "Paired relation IK world exemption events contain only left/right support links. Transport world exemption lists remain empty; approved payload/finger-only self exclusions are retained.",
+    "The recorded single-return-row batches show no debug/nearest error mismatch. The possible multi-seed fallback mismatch demonstrated in CPU tests is not established as this failure's cause.",
+    "No task poses, object roles, collision geometry, thresholds, candidates, seeds, algorithm, legacy source, or snapshot-managed files were changed to obtain successes.",
+    "No upload was attempted; previously denied parent commit data are not repackaged or pushed."
+  ],
+  "totals": {
+    "runs": 5,
+    "native_full_success_runs": 2,
+    "diagnostic_batches": 47,
+    "captured_goals": 6206,
+    "release_return_execution_audits": 48,
+    "clearance_samples": 2699,
+    "return_samples": 8502,
+    "transport_samples": 2693
+  },
+  "runs": [
+    {
+      "run": "original_bundle_v1",
+      "task": "magnetic",
+      "elapsed_s": 229.31381222199707,
+      "result_sha256": "d5a0e9995347c4ccd16dc7435ed63b941061150911efa8e342beac89efe1c41b",
+      "events_sha256": "e4dc88c0b7464558dcc4a6a3218bce826d4a4718f4019a1597d7e5bc37b8c64e",
+      "stdout_sha256": "42a783ccb40b44a164f73360cf0111f9fdc4ed6a9eb45885e4c540e6f6039cfb",
+      "expected_cycles": 12,
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        },
+        {
+          "cycle": 2,
+          "success": true
+        },
+        {
+          "cycle": 3,
+          "success": true
+        },
+        {
+          "cycle": 4,
+          "success": true
+        },
+        {
+          "cycle": 5,
+          "success": true
+        },
+        {
+          "cycle": 6,
+          "success": true
+        },
+        {
+          "cycle": 7,
+          "success": true
+        },
+        {
+          "cycle": 8,
+          "success": true
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        }
+      ],
+      "native_completed_cycles": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "native_final_success": false,
+      "native_full_chain_passed": false,
+      "command_completed": false,
+      "completed": false,
+      "worker_status": "failed",
+      "stopped_for_validation": false,
+      "timeout": null,
+      "clearance_failures": [],
+      "loaded_mplib_modules": [],
+      "original_task_bundle_read_only": true,
+      "original_task_bundle_sha256": {
+        "builder": "6478bafdf016817e7d118269da9199e6d4fe8c06570cbedfdfb03c1127ca6884",
+        "fixed_scene": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+        "manifest": "811be89115ec9982ac425f799dedc0d08ab55ada996c42d0e524a54550a3ab2d"
+      },
+      "original_task_bundle_unchanged": true,
+      "fixed_input_sha256": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+      "fixed_scene_format": "sam6d",
+      "documented_start_comparison": {
+        "read_only": true,
+        "source_name": "JIMU_BUILDER_JSON_EXECUTION.md",
+        "source_sha256": "2be34886644608584353ce7d6f7190af516ff4e6c71425fa8bd6a761eb78f94c"
+      },
+      "documented_start_source_unchanged": true,
+      "paired_relation_ik_world_exempt_links": [
+        "gripper_Left_Support_Link",
+        "gripper_Right_Support_Link"
+      ],
+      "grasp_contact_ik_links": [
+        "gripper_Left_1_Link",
+        "gripper_Left_2_Link",
+        "gripper_Left_Support_Link",
+        "gripper_Right_1_Link",
+        "gripper_Right_2_Link",
+        "gripper_Right_Support_Link",
+        "left_pad",
+        "right_pad"
+      ],
+      "near_ik_promotions": {
+        "rejected": 1427
+      },
+      "near_ik_negative_pair_count": 111,
+      "runtime_version": "v1_foreground_only_no_nominal",
+      "process_exit_code": 42,
+      "audit_qualification": "PARTIAL_SCOPE_LEGACY_OBSERVER",
+      "roof_diagnostic_totals": {
+        "observed_batches": 8,
+        "foreground_batches": 8,
+        "prefetch_batches": 0,
+        "captured_goal_count": 1444,
+        "all_observed_complete": true,
+        "all_observed_state_unchanged": true,
+        "error_comparison_available_count": 1444,
+        "debug_nearest_error_mismatch_count": 0,
+        "debug_passes_but_nearest_fails_original_thresholds_count": 0
+      },
+      "release_return_execution_audits": {
+        "count": 8,
+        "passed_count": 8,
+        "state_unchanged": true,
+        "execution_guard": true,
+        "clearance_samples": 446,
+        "release_contact_samples": 2,
+        "return_samples": 1427,
+        "return_world_exempt_links": [],
+        "self_collision_input_modified": false,
+        "permitted_links": [
+          "gripper_Left_1_Link",
+          "gripper_Left_2_Link",
+          "gripper_Left_Support_Link",
+          "gripper_Right_1_Link",
+          "gripper_Right_2_Link",
+          "gripper_Right_Support_Link",
+          "left_pad",
+          "right_pad"
+        ],
+        "stage_kinds": [
+          "release_then_return"
+        ],
+        "contact_target_names": [
+          "scene_obstacle_back_second_wall",
+          "scene_obstacle_back_wall",
+          "scene_obstacle_front_second_wall",
+          "scene_obstacle_front_wall",
+          "scene_obstacle_left_second_wall",
+          "scene_obstacle_left_wall",
+          "scene_obstacle_right_second_wall",
+          "scene_obstacle_right_wall"
+        ]
+      },
+      "transport_audits": {
+        "count": 8,
+        "samples": 403,
+        "all_world_links_checked": true,
+        "world_exempt_links": [],
+        "attached_payload_sphere_counts": [
+          6
+        ]
+      },
+      "roof_ik_diagnostics": [
+        {"source":"right_roof_triangle","phase":"grasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":14,"raw_success_rows":14,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":3,"max":0.012475037015974522,"min":0.005488198716193438},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"right_roof_triangle","phase":"paired_place","prefetch":false,"goal_count":384,"captured_goal_count":384,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":384},"error_comparison_available_count":384,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":384,"max":0.012027427554130554,"min":0.000014483617633231916},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"back_roof_triangle","phase":"grasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":12,"raw_success_rows":12,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":5,"max":0.009446215815842152,"min":0.000008184501893993001},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"back_roof_triangle","phase":"paired_place","prefetch":false,"goal_count":352,"captured_goal_count":352,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":352},"error_comparison_available_count":352,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":352,"max":0.015752384439110756,"min":0.00002329165545233991},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"left_roof_triangle","phase":"grasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":12,"raw_success_rows":12,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":5,"max":0.011384638026356697,"min":0.000008184501893993001},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"left_roof_triangle","phase":"paired_place","prefetch":false,"goal_count":352,"captured_goal_count":352,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":352},"error_comparison_available_count":352,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":352,"max":0.012671642936766148,"min":0.000028869513698737137},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"front_roof_triangle","phase":"grasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":13,"raw_success_rows":13,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":4,"max":0.010518948547542095,"min":0.006608640309423208},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"front_roof_triangle","phase":"paired_place","prefetch":false,"goal_count":288,"captured_goal_count":288,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":288},"error_comparison_available_count":288,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":288,"max":0.014477953314781189,"min":0.000012334068742347881},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null}
+      ]
+    },
+    {
+      "run": "original_bundle_v2",
+      "task": "magnetic",
+      "elapsed_s": 240.52276733100007,
+      "result_sha256": "f115320454fd5fa154c18838bd43898f6d1619ee7bc875c913e5823f897c4dbf",
+      "events_sha256": "1bfc6e15f1c32a3a9b566bcf3ac8a6359398cfb43549769ecd52639d3310dfb9",
+      "stdout_sha256": "990e43ee94bed31ab6199ebbb082f182c797be9b542dbac40eede8d9cff931fa",
+      "expected_cycles": 12,
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        },
+        {
+          "cycle": 2,
+          "success": true
+        },
+        {
+          "cycle": 3,
+          "success": true
+        },
+        {
+          "cycle": 4,
+          "success": true
+        },
+        {
+          "cycle": 5,
+          "success": true
+        },
+        {
+          "cycle": 6,
+          "success": true
+        },
+        {
+          "cycle": 7,
+          "success": true
+        },
+        {
+          "cycle": 8,
+          "success": true
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        }
+      ],
+      "native_completed_cycles": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "native_final_success": false,
+      "native_full_chain_passed": false,
+      "command_completed": false,
+      "completed": false,
+      "worker_status": "failed",
+      "stopped_for_validation": false,
+      "timeout": null,
+      "clearance_failures": [],
+      "loaded_mplib_modules": [],
+      "original_task_bundle_read_only": true,
+      "original_task_bundle_sha256": {
+        "builder": "6478bafdf016817e7d118269da9199e6d4fe8c06570cbedfdfb03c1127ca6884",
+        "fixed_scene": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+        "manifest": "811be89115ec9982ac425f799dedc0d08ab55ada996c42d0e524a54550a3ab2d"
+      },
+      "original_task_bundle_unchanged": true,
+      "fixed_input_sha256": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+      "fixed_scene_format": "sam6d",
+      "documented_start_comparison": {
+        "read_only": true,
+        "source_name": "JIMU_BUILDER_JSON_EXECUTION.md",
+        "source_sha256": "2be34886644608584353ce7d6f7190af516ff4e6c71425fa8bd6a761eb78f94c"
+      },
+      "documented_start_source_unchanged": true,
+      "paired_relation_ik_world_exempt_links": [
+        "gripper_Left_Support_Link",
+        "gripper_Right_Support_Link"
+      ],
+      "grasp_contact_ik_links": [
+        "gripper_Left_1_Link",
+        "gripper_Left_2_Link",
+        "gripper_Left_Support_Link",
+        "gripper_Right_1_Link",
+        "gripper_Right_2_Link",
+        "gripper_Right_Support_Link",
+        "left_pad",
+        "right_pad"
+      ],
+      "near_ik_promotions": {
+        "rejected": 1427
+      },
+      "near_ik_negative_pair_count": 111,
+      "runtime_version": "v2_foreground_only_with_nominal",
+      "process_exit_code": 42,
+      "audit_qualification": "PARTIAL_SCOPE_LEGACY_OBSERVER",
+      "worker_builder_full_json_equals_original": true,
+      "roof_diagnostic_totals": {
+        "observed_batches": 12,
+        "foreground_batches": 12,
+        "prefetch_batches": 0,
+        "captured_goal_count": 1512,
+        "all_observed_complete": true,
+        "all_observed_state_unchanged": true,
+        "error_comparison_available_count": 1512,
+        "debug_nearest_error_mismatch_count": 0,
+        "debug_passes_but_nearest_fails_original_thresholds_count": 0
+      },
+      "release_return_execution_audits": {
+        "count": 8,
+        "passed_count": 8,
+        "state_unchanged": true,
+        "execution_guard": true,
+        "clearance_samples": 446,
+        "release_contact_samples": 2,
+        "return_samples": 1418,
+        "return_world_exempt_links": [],
+        "self_collision_input_modified": false,
+        "permitted_links": [
+          "gripper_Left_1_Link",
+          "gripper_Left_2_Link",
+          "gripper_Left_Support_Link",
+          "gripper_Right_1_Link",
+          "gripper_Right_2_Link",
+          "gripper_Right_Support_Link",
+          "left_pad",
+          "right_pad"
+        ],
+        "stage_kinds": [
+          "release_then_return"
+        ],
+        "contact_target_names": [
+          "scene_obstacle_back_second_wall",
+          "scene_obstacle_back_wall",
+          "scene_obstacle_front_second_wall",
+          "scene_obstacle_front_wall",
+          "scene_obstacle_left_second_wall",
+          "scene_obstacle_left_wall",
+          "scene_obstacle_right_second_wall",
+          "scene_obstacle_right_wall"
+        ]
+      },
+      "transport_audits": {
+        "count": 8,
+        "samples": 401,
+        "all_world_links_checked": true,
+        "world_exempt_links": [],
+        "attached_payload_sphere_counts": [
+          6
+        ]
+      },
+      "roof_ik_diagnostics": [
+        {"source":"right_roof_triangle","phase":"pregrasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":14,"raw_success_rows":14,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":3,"max":0.01446003932505846,"min":0.000007628375897184014},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"right_roof_triangle","phase":"grasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":14,"raw_success_rows":14,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":3,"max":0.012475037015974522,"min":0.005488198716193438},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"right_roof_triangle","phase":"paired_place","prefetch":false,"goal_count":384,"captured_goal_count":384,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":384},"error_comparison_available_count":384,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":384,"max":0.012027427554130554,"min":0.000014483617633231916},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[{"enabled":true,"goal_count":154,"link":"gripper_base_link","max_overlap_m":0.03275147696749333,"obstacle":"scene_obstacle_back_second_wall"},{"enabled":true,"goal_count":72,"link":"gripper_base_link","max_overlap_m":0.004862144038114281,"obstacle":"scene_obstacle_back_wall"},{"enabled":true,"goal_count":154,"link":"gripper_base_link","max_overlap_m":0.03462786700827153,"obstacle":"scene_obstacle_front_second_wall"},{"enabled":true,"goal_count":72,"link":"gripper_base_link","max_overlap_m":0.005081947952356114,"obstacle":"scene_obstacle_front_wall"},{"enabled":true,"goal_count":356,"link":"gripper_base_link","max_overlap_m":0.04033896974881635,"obstacle":"scene_obstacle_right_second_wall"},{"enabled":true,"goal_count":192,"link":"gripper_base_link","max_overlap_m":0.009340271359270687,"obstacle":"scene_obstacle_right_wall"}],"geometric_necessary_condition_only":true,"goal_count":384,"goals_with_enabled_box_overlap":364,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_back_roof_triangle","scene_obstacle_front_roof_triangle","scene_obstacle_left_roof_triangle"],"paired_candidates":{"count":192,"either_goal_with_enabled_box_overlap":192,"hover_with_enabled_box_overlap":172,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":192},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":4.348514059948627e-8,"sphere_count":1}},
+        {"source":"back_roof_triangle","phase":"pregrasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":14,"raw_success_rows":14,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":3,"max":0.016175521537661552,"min":0.000005533384864975233},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"back_roof_triangle","phase":"grasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":12,"raw_success_rows":12,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":5,"max":0.009446215815842152,"min":0.000008184501893993001},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"back_roof_triangle","phase":"paired_place","prefetch":false,"goal_count":352,"captured_goal_count":352,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":352},"error_comparison_available_count":352,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":352,"max":0.015752384439110756,"min":0.00002329165545233991},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[{"enabled":true,"goal_count":332,"link":"gripper_base_link","max_overlap_m":0.040401326672287435,"obstacle":"scene_obstacle_back_second_wall"},{"enabled":true,"goal_count":160,"link":"gripper_base_link","max_overlap_m":0.00934028259883285,"obstacle":"scene_obstacle_back_wall"},{"enabled":true,"goal_count":140,"link":"gripper_base_link","max_overlap_m":0.033287048738768005,"obstacle":"scene_obstacle_left_second_wall"},{"enabled":true,"goal_count":56,"link":"gripper_base_link","max_overlap_m":0.005196001215918955,"obstacle":"scene_obstacle_left_wall"},{"enabled":true,"goal_count":140,"link":"gripper_base_link","max_overlap_m":0.03431294602550979,"obstacle":"scene_obstacle_right_second_wall"},{"enabled":true,"goal_count":56,"link":"gripper_base_link","max_overlap_m":0.005321223599069169,"obstacle":"scene_obstacle_right_wall"}],"geometric_necessary_condition_only":true,"goal_count":352,"goals_with_enabled_box_overlap":336,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_front_roof_triangle","scene_obstacle_left_roof_triangle","scene_obstacle_right_roof_triangle"],"paired_candidates":{"count":176,"either_goal_with_enabled_box_overlap":176,"hover_with_enabled_box_overlap":160,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":176},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":4.410820263200943e-8,"sphere_count":1}},
+        {"source":"left_roof_triangle","phase":"pregrasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":14,"raw_success_rows":14,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":3,"max":0.016175521537661552,"min":0.000012152415365562774},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"left_roof_triangle","phase":"grasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":12,"raw_success_rows":12,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":5,"max":0.011384638026356697,"min":0.000008184501893993001},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"left_roof_triangle","phase":"paired_place","prefetch":false,"goal_count":352,"captured_goal_count":352,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":352},"error_comparison_available_count":352,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":352,"max":0.012671642936766148,"min":0.000028869513698737137},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[{"enabled":true,"goal_count":140,"link":"gripper_base_link","max_overlap_m":0.03431294442072156,"obstacle":"scene_obstacle_back_second_wall"},{"enabled":true,"goal_count":56,"link":"gripper_base_link","max_overlap_m":0.005321215193738821,"obstacle":"scene_obstacle_back_wall"},{"enabled":true,"goal_count":140,"link":"gripper_base_link","max_overlap_m":0.03328705043113115,"obstacle":"scene_obstacle_front_second_wall"},{"enabled":true,"goal_count":56,"link":"gripper_base_link","max_overlap_m":0.005195989665432846,"obstacle":"scene_obstacle_front_wall"},{"enabled":true,"goal_count":332,"link":"gripper_base_link","max_overlap_m":0.04040133021512462,"obstacle":"scene_obstacle_left_second_wall"},{"enabled":true,"goal_count":160,"link":"gripper_base_link","max_overlap_m":0.00934027508758705,"obstacle":"scene_obstacle_left_wall"}],"geometric_necessary_condition_only":true,"goal_count":352,"goals_with_enabled_box_overlap":336,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_back_roof_triangle","scene_obstacle_front_roof_triangle","scene_obstacle_right_roof_triangle"],"paired_candidates":{"count":176,"either_goal_with_enabled_box_overlap":176,"hover_with_enabled_box_overlap":160,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":176},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":2.9374491838929373e-8,"sphere_count":1}},
+        {"source":"front_roof_triangle","phase":"pregrasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":10,"raw_success_rows":10,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":7,"max":0.009386878460645676,"min":0.006288609001785517},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"front_roof_triangle","phase":"grasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":13,"raw_success_rows":13,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":4,"max":0.010518948547542095,"min":0.006608640309423208},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"front_roof_triangle","phase":"paired_place","prefetch":false,"goal_count":288,"captured_goal_count":288,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":288},"error_comparison_available_count":288,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":288,"max":0.014477953314781189,"min":0.000012334068742347881},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[{"enabled":true,"goal_count":256,"link":"gripper_base_link","max_overlap_m":0.04012965484336804,"obstacle":"scene_obstacle_front_second_wall"},{"enabled":true,"goal_count":128,"link":"gripper_base_link","max_overlap_m":0.009340278871801791,"obstacle":"scene_obstacle_front_wall"},{"enabled":true,"goal_count":112,"link":"gripper_base_link","max_overlap_m":0.034627843001267436,"obstacle":"scene_obstacle_left_second_wall"},{"enabled":true,"goal_count":40,"link":"gripper_base_link","max_overlap_m":0.005081959581471819,"obstacle":"scene_obstacle_left_wall"},{"enabled":true,"goal_count":112,"link":"gripper_base_link","max_overlap_m":0.031835232802645205,"obstacle":"scene_obstacle_right_second_wall"},{"enabled":true,"goal_count":40,"link":"gripper_base_link","max_overlap_m":0.004716315132388009,"obstacle":"scene_obstacle_right_wall"}],"geometric_necessary_condition_only":true,"goal_count":288,"goals_with_enabled_box_overlap":260,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_back_roof_triangle","scene_obstacle_left_roof_triangle","scene_obstacle_right_roof_triangle"],"paired_candidates":{"count":144,"either_goal_with_enabled_box_overlap":144,"hover_with_enabled_box_overlap":116,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":144},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":4.401686565236318e-8,"sphere_count":1}}
+      ]
+    },
+    {
+      "run": "original_bundle_v3",
+      "task": "magnetic",
+      "elapsed_s": 228.91567779099933,
+      "result_sha256": "7c1f008405e8ed76f7f71f0d39c3d9a622b74c8cf24e95ecf9a5377431856b1f",
+      "events_sha256": "ce186918fd9b2a592e864c6ba21286b8234ad7bae3ccee1ac4402e8cffcecdf2",
+      "stdout_sha256": "adb9355fd6fd2ac2c5aa5e23a139d388a33ead2e109fa80476e67390f1e32879",
+      "expected_cycles": 12,
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        },
+        {
+          "cycle": 2,
+          "success": true
+        },
+        {
+          "cycle": 3,
+          "success": true
+        },
+        {
+          "cycle": 4,
+          "success": true
+        },
+        {
+          "cycle": 5,
+          "success": true
+        },
+        {
+          "cycle": 6,
+          "success": true
+        },
+        {
+          "cycle": 7,
+          "success": true
+        },
+        {
+          "cycle": 8,
+          "success": true
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        },
+        {
+          "cycle": 9,
+          "success": false
+        }
+      ],
+      "native_completed_cycles": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "native_final_success": false,
+      "native_full_chain_passed": false,
+      "command_completed": false,
+      "completed": false,
+      "worker_status": "failed",
+      "stopped_for_validation": false,
+      "timeout": null,
+      "clearance_failures": [],
+      "loaded_mplib_modules": [],
+      "original_task_bundle_read_only": true,
+      "original_task_bundle_sha256": {
+        "builder": "6478bafdf016817e7d118269da9199e6d4fe8c06570cbedfdfb03c1127ca6884",
+        "fixed_scene": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+        "manifest": "811be89115ec9982ac425f799dedc0d08ab55ada996c42d0e524a54550a3ab2d"
+      },
+      "original_task_bundle_unchanged": true,
+      "fixed_input_sha256": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+      "fixed_scene_format": "sam6d",
+      "documented_start_comparison": {
+        "read_only": true,
+        "source_name": "JIMU_BUILDER_JSON_EXECUTION.md",
+        "source_sha256": "2be34886644608584353ce7d6f7190af516ff4e6c71425fa8bd6a761eb78f94c"
+      },
+      "documented_start_source_unchanged": true,
+      "paired_relation_ik_world_exempt_links": [
+        "gripper_Left_Support_Link",
+        "gripper_Right_Support_Link"
+      ],
+      "grasp_contact_ik_links": [
+        "gripper_Left_1_Link",
+        "gripper_Left_2_Link",
+        "gripper_Left_Support_Link",
+        "gripper_Right_1_Link",
+        "gripper_Right_2_Link",
+        "gripper_Right_Support_Link",
+        "left_pad",
+        "right_pad"
+      ],
+      "near_ik_promotions": {
+        "rejected": 1427
+      },
+      "near_ik_negative_pair_count": 111,
+      "roof_ik_audit": {
+        "expected_sources": [
+          "back_roof_triangle",
+          "front_roof_triangle",
+          "left_roof_triangle",
+          "right_roof_triangle"
+        ],
+        "foreground_batches": 12,
+        "missing_scopes": [],
+        "observed_batches": 15,
+        "observed_batches_complete": true,
+        "passed": true,
+        "prefetch_batches": 3
+      },
+      "runtime_version": "v3_prefetch_and_foreground_with_completeness_gate",
+      "process_exit_code": 42,
+      "audit_qualification": "PASS",
+      "worker_builder_full_json_equals_original": true,
+      "roof_diagnostic_totals": {
+        "observed_batches": 15,
+        "foreground_batches": 12,
+        "prefetch_batches": 3,
+        "captured_goal_count": 1930,
+        "all_observed_complete": true,
+        "all_observed_state_unchanged": true,
+        "error_comparison_available_count": 1930,
+        "debug_nearest_error_mismatch_count": 0,
+        "debug_passes_but_nearest_fails_original_thresholds_count": 0
+      },
+      "release_return_execution_audits": {
+        "count": 8,
+        "passed_count": 8,
+        "state_unchanged": true,
+        "execution_guard": true,
+        "clearance_samples": 445,
+        "release_contact_samples": 2,
+        "return_samples": 1425,
+        "return_world_exempt_links": [],
+        "self_collision_input_modified": false,
+        "permitted_links": [
+          "gripper_Left_1_Link",
+          "gripper_Left_2_Link",
+          "gripper_Left_Support_Link",
+          "gripper_Right_1_Link",
+          "gripper_Right_2_Link",
+          "gripper_Right_Support_Link",
+          "left_pad",
+          "right_pad"
+        ],
+        "stage_kinds": [
+          "release_then_return"
+        ],
+        "contact_target_names": [
+          "scene_obstacle_back_second_wall",
+          "scene_obstacle_back_wall",
+          "scene_obstacle_front_second_wall",
+          "scene_obstacle_front_wall",
+          "scene_obstacle_left_second_wall",
+          "scene_obstacle_left_wall",
+          "scene_obstacle_right_second_wall",
+          "scene_obstacle_right_wall"
+        ]
+      },
+      "transport_audits": {
+        "count": 8,
+        "samples": 403,
+        "all_world_links_checked": true,
+        "world_exempt_links": [],
+        "attached_payload_sphere_counts": [
+          6
+        ]
+      },
+      "roof_ik_diagnostics": [
+        {"source":"right_roof_triangle","phase":"pregrasp","prefetch":true,"goal_count":17,"captured_goal_count":17,"native_success_count":14,"raw_success_rows":14,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":3,"max":0.013997286558151245,"min":0.000008634860932943411},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"right_roof_triangle","phase":"grasp","prefetch":true,"goal_count":17,"captured_goal_count":17,"native_success_count":14,"raw_success_rows":14,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":3,"max":0.010818510316312313,"min":0.005379181820899248},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"right_roof_triangle","phase":"paired_place","prefetch":true,"goal_count":384,"captured_goal_count":384,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":384},"error_comparison_available_count":384,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":384,"max":0.012585344724357128,"min":0.00002874883466574829},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[{"enabled":true,"goal_count":154,"link":"gripper_base_link","max_overlap_m":0.03275147696749333,"obstacle":"scene_obstacle_back_second_wall"},{"enabled":true,"goal_count":72,"link":"gripper_base_link","max_overlap_m":0.004862144038114281,"obstacle":"scene_obstacle_back_wall"},{"enabled":true,"goal_count":154,"link":"gripper_base_link","max_overlap_m":0.03462786700827153,"obstacle":"scene_obstacle_front_second_wall"},{"enabled":true,"goal_count":72,"link":"gripper_base_link","max_overlap_m":0.005081947952356114,"obstacle":"scene_obstacle_front_wall"},{"enabled":true,"goal_count":356,"link":"gripper_base_link","max_overlap_m":0.04033896974881635,"obstacle":"scene_obstacle_right_second_wall"},{"enabled":true,"goal_count":192,"link":"gripper_base_link","max_overlap_m":0.009340271359270687,"obstacle":"scene_obstacle_right_wall"}],"geometric_necessary_condition_only":true,"goal_count":384,"goals_with_enabled_box_overlap":364,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_back_roof_triangle","scene_obstacle_front_roof_triangle","scene_obstacle_left_roof_triangle"],"paired_candidates":{"count":192,"either_goal_with_enabled_box_overlap":192,"hover_with_enabled_box_overlap":172,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":192},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":1.4251401151715739e-8,"sphere_count":1}},
+        {"source":"right_roof_triangle","phase":"pregrasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":14,"raw_success_rows":14,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":3,"max":0.01446003932505846,"min":0.000007628375897184014},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"right_roof_triangle","phase":"grasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":14,"raw_success_rows":14,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":3,"max":0.012475037015974522,"min":0.005488198716193438},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"right_roof_triangle","phase":"paired_place","prefetch":false,"goal_count":384,"captured_goal_count":384,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":384},"error_comparison_available_count":384,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":384,"max":0.012027427554130554,"min":0.000014483617633231916},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[{"enabled":true,"goal_count":154,"link":"gripper_base_link","max_overlap_m":0.03275147696749333,"obstacle":"scene_obstacle_back_second_wall"},{"enabled":true,"goal_count":72,"link":"gripper_base_link","max_overlap_m":0.004862144038114281,"obstacle":"scene_obstacle_back_wall"},{"enabled":true,"goal_count":154,"link":"gripper_base_link","max_overlap_m":0.03462786700827153,"obstacle":"scene_obstacle_front_second_wall"},{"enabled":true,"goal_count":72,"link":"gripper_base_link","max_overlap_m":0.005081947952356114,"obstacle":"scene_obstacle_front_wall"},{"enabled":true,"goal_count":356,"link":"gripper_base_link","max_overlap_m":0.04033896974881635,"obstacle":"scene_obstacle_right_second_wall"},{"enabled":true,"goal_count":192,"link":"gripper_base_link","max_overlap_m":0.009340271359270687,"obstacle":"scene_obstacle_right_wall"}],"geometric_necessary_condition_only":true,"goal_count":384,"goals_with_enabled_box_overlap":364,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_back_roof_triangle","scene_obstacle_front_roof_triangle","scene_obstacle_left_roof_triangle"],"paired_candidates":{"count":192,"either_goal_with_enabled_box_overlap":192,"hover_with_enabled_box_overlap":172,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":192},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":4.348514059948627e-8,"sphere_count":1}},
+        {"source":"back_roof_triangle","phase":"pregrasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":14,"raw_success_rows":14,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":3,"max":0.016175521537661552,"min":0.000005533384864975233},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"back_roof_triangle","phase":"grasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":12,"raw_success_rows":12,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":5,"max":0.009446215815842152,"min":0.000008184501893993001},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"back_roof_triangle","phase":"paired_place","prefetch":false,"goal_count":352,"captured_goal_count":352,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":352},"error_comparison_available_count":352,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":352,"max":0.015752384439110756,"min":0.00002329165545233991},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[{"enabled":true,"goal_count":332,"link":"gripper_base_link","max_overlap_m":0.040401326672287435,"obstacle":"scene_obstacle_back_second_wall"},{"enabled":true,"goal_count":160,"link":"gripper_base_link","max_overlap_m":0.00934028259883285,"obstacle":"scene_obstacle_back_wall"},{"enabled":true,"goal_count":140,"link":"gripper_base_link","max_overlap_m":0.033287048738768005,"obstacle":"scene_obstacle_left_second_wall"},{"enabled":true,"goal_count":56,"link":"gripper_base_link","max_overlap_m":0.005196001215918955,"obstacle":"scene_obstacle_left_wall"},{"enabled":true,"goal_count":140,"link":"gripper_base_link","max_overlap_m":0.03431294602550979,"obstacle":"scene_obstacle_right_second_wall"},{"enabled":true,"goal_count":56,"link":"gripper_base_link","max_overlap_m":0.005321223599069169,"obstacle":"scene_obstacle_right_wall"}],"geometric_necessary_condition_only":true,"goal_count":352,"goals_with_enabled_box_overlap":336,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_front_roof_triangle","scene_obstacle_left_roof_triangle","scene_obstacle_right_roof_triangle"],"paired_candidates":{"count":176,"either_goal_with_enabled_box_overlap":176,"hover_with_enabled_box_overlap":160,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":176},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":4.410820263200943e-8,"sphere_count":1}},
+        {"source":"left_roof_triangle","phase":"pregrasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":14,"raw_success_rows":14,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":3,"max":0.016175521537661552,"min":0.000012152415365562774},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"left_roof_triangle","phase":"grasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":12,"raw_success_rows":12,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":5,"max":0.011384638026356697,"min":0.000008184501893993001},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"left_roof_triangle","phase":"paired_place","prefetch":false,"goal_count":352,"captured_goal_count":352,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":352},"error_comparison_available_count":352,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":352,"max":0.012671642936766148,"min":0.000028869513698737137},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[{"enabled":true,"goal_count":140,"link":"gripper_base_link","max_overlap_m":0.03431294442072156,"obstacle":"scene_obstacle_back_second_wall"},{"enabled":true,"goal_count":56,"link":"gripper_base_link","max_overlap_m":0.005321215193738821,"obstacle":"scene_obstacle_back_wall"},{"enabled":true,"goal_count":140,"link":"gripper_base_link","max_overlap_m":0.03328705043113115,"obstacle":"scene_obstacle_front_second_wall"},{"enabled":true,"goal_count":56,"link":"gripper_base_link","max_overlap_m":0.005195989665432846,"obstacle":"scene_obstacle_front_wall"},{"enabled":true,"goal_count":332,"link":"gripper_base_link","max_overlap_m":0.04040133021512462,"obstacle":"scene_obstacle_left_second_wall"},{"enabled":true,"goal_count":160,"link":"gripper_base_link","max_overlap_m":0.00934027508758705,"obstacle":"scene_obstacle_left_wall"}],"geometric_necessary_condition_only":true,"goal_count":352,"goals_with_enabled_box_overlap":336,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_back_roof_triangle","scene_obstacle_front_roof_triangle","scene_obstacle_right_roof_triangle"],"paired_candidates":{"count":176,"either_goal_with_enabled_box_overlap":176,"hover_with_enabled_box_overlap":160,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":176},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":2.9374491838929373e-8,"sphere_count":1}},
+        {"source":"front_roof_triangle","phase":"pregrasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":10,"raw_success_rows":10,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":7,"max":0.009386878460645676,"min":0.006288609001785517},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"front_roof_triangle","phase":"grasp","prefetch":false,"goal_count":17,"captured_goal_count":17,"native_success_count":13,"raw_success_rows":13,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":4,"max":0.010518948547542095,"min":0.006608640309423208},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"front_roof_triangle","phase":"paired_place","prefetch":false,"goal_count":288,"captured_goal_count":288,"native_success_count":0,"raw_success_rows":0,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":288},"error_comparison_available_count":288,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":288,"max":0.014477953314781189,"min":0.000012334068742347881},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[{"enabled":true,"goal_count":256,"link":"gripper_base_link","max_overlap_m":0.04012965484336804,"obstacle":"scene_obstacle_front_second_wall"},{"enabled":true,"goal_count":128,"link":"gripper_base_link","max_overlap_m":0.009340278871801791,"obstacle":"scene_obstacle_front_wall"},{"enabled":true,"goal_count":112,"link":"gripper_base_link","max_overlap_m":0.034627843001267436,"obstacle":"scene_obstacle_left_second_wall"},{"enabled":true,"goal_count":40,"link":"gripper_base_link","max_overlap_m":0.005081959581471819,"obstacle":"scene_obstacle_left_wall"},{"enabled":true,"goal_count":112,"link":"gripper_base_link","max_overlap_m":0.031835232802645205,"obstacle":"scene_obstacle_right_second_wall"},{"enabled":true,"goal_count":40,"link":"gripper_base_link","max_overlap_m":0.004716315132388009,"obstacle":"scene_obstacle_right_wall"}],"geometric_necessary_condition_only":true,"goal_count":288,"goals_with_enabled_box_overlap":260,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_back_roof_triangle","scene_obstacle_left_roof_triangle","scene_obstacle_right_roof_triangle"],"paired_candidates":{"count":144,"either_goal_with_enabled_box_overlap":144,"hover_with_enabled_box_overlap":116,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":144},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":4.401686565236318e-8,"sphere_count":1}}
+      ]
+    },
+    {
+      "run": "standard_roof_control_v1",
+      "scene": "triangle-roof",
+      "elapsed_s": 283.0236725229988,
+      "result_sha256": "bc72949814c204bad579d3a4da1209e0b8fefa69658374494264262581adf0fb",
+      "events_sha256": "af512576c6efff4776791bfbc30a9f67b76ad73a662c5834335d306b6fe68003",
+      "stdout_sha256": "272385972392706276f5f874a01b2aabd1dd05cf147d72aabec7f04959447722",
+      "expected_cycles": 12,
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        },
+        {
+          "cycle": 2,
+          "success": true
+        },
+        {
+          "cycle": 3,
+          "success": true
+        },
+        {
+          "cycle": 4,
+          "success": true
+        },
+        {
+          "cycle": 5,
+          "success": true
+        },
+        {
+          "cycle": 6,
+          "success": true
+        },
+        {
+          "cycle": 7,
+          "success": true
+        },
+        {
+          "cycle": 8,
+          "success": true
+        },
+        {
+          "cycle": 9,
+          "success": true
+        },
+        {
+          "cycle": 10,
+          "success": true
+        },
+        {
+          "cycle": 11,
+          "success": true
+        },
+        {
+          "cycle": 12,
+          "success": true
+        }
+      ],
+      "native_completed_cycles": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "native_final_success": true,
+      "command_success": true,
+      "clearance_failures": [],
+      "policy_rejections": [],
+      "loaded_mplib_modules": [],
+      "paired_relation_ik_world_exempt_links": [
+        "gripper_Left_Support_Link",
+        "gripper_Right_Support_Link"
+      ],
+      "grasp_contact_ik_links": [
+        "gripper_Left_1_Link",
+        "gripper_Left_2_Link",
+        "gripper_Left_Support_Link",
+        "gripper_Right_1_Link",
+        "gripper_Right_2_Link",
+        "gripper_Right_Support_Link",
+        "left_pad",
+        "right_pad"
+      ],
+      "near_ik_promotions": {
+        "rejected": 267
+      },
+      "near_ik_negative_pair_count": 50,
+      "runtime_version": "v2_foreground_only_with_nominal",
+      "process_exit_code": 0,
+      "audit_qualification": "NOT_OBSERVED",
+      "roof_diagnostic_totals": {
+        "observed_batches": 0,
+        "foreground_batches": 0,
+        "prefetch_batches": 0,
+        "captured_goal_count": 0,
+        "all_observed_complete": null,
+        "all_observed_state_unchanged": null,
+        "error_comparison_available_count": 0,
+        "debug_nearest_error_mismatch_count": 0,
+        "debug_passes_but_nearest_fails_original_thresholds_count": 0
+      },
+      "release_return_execution_audits": {
+        "count": 12,
+        "passed_count": 12,
+        "state_unchanged": true,
+        "execution_guard": true,
+        "clearance_samples": 680,
+        "release_contact_samples": 0,
+        "return_samples": 2115,
+        "return_world_exempt_links": [],
+        "self_collision_input_modified": false,
+        "permitted_links": [
+          "gripper_Left_1_Link",
+          "gripper_Left_2_Link",
+          "gripper_Left_Support_Link",
+          "gripper_Right_1_Link",
+          "gripper_Right_2_Link",
+          "gripper_Right_Support_Link",
+          "left_pad",
+          "right_pad"
+        ],
+        "stage_kinds": [
+          "release_then_return"
+        ],
+        "contact_target_names": [
+          "scene_obstacle_back_roof_triangle",
+          "scene_obstacle_back_second_wall",
+          "scene_obstacle_back_wall",
+          "scene_obstacle_front_roof_triangle",
+          "scene_obstacle_front_second_wall",
+          "scene_obstacle_front_wall",
+          "scene_obstacle_left_roof_triangle",
+          "scene_obstacle_left_second_wall",
+          "scene_obstacle_left_wall",
+          "scene_obstacle_right_roof_triangle",
+          "scene_obstacle_right_second_wall",
+          "scene_obstacle_right_wall"
+        ]
+      },
+      "transport_audits": {
+        "count": 16,
+        "samples": 741,
+        "all_world_links_checked": true,
+        "world_exempt_links": [],
+        "attached_payload_sphere_counts": [
+          6
+        ]
+      },
+      "roof_ik_diagnostics": [
+    
+      ]
+    },
+    {
+      "run": "standard_roof_control_v2",
+      "scene": "triangle-roof",
+      "elapsed_s": 280.53670021299695,
+      "result_sha256": "bba611083e29ada8ec0fe078d2bb734488b3e53496fa562ce61cee985ccbb091",
+      "events_sha256": "2a17d1194d98346bcfa075c291a96d8453a3a40112a19d061c5a712efaa2d473",
+      "stdout_sha256": "e8404d52a3892c2a59cbde05acfb21397428331b655e863f7d9416bacb50613c",
+      "expected_cycles": 12,
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        },
+        {
+          "cycle": 2,
+          "success": true
+        },
+        {
+          "cycle": 3,
+          "success": true
+        },
+        {
+          "cycle": 4,
+          "success": true
+        },
+        {
+          "cycle": 5,
+          "success": true
+        },
+        {
+          "cycle": 6,
+          "success": true
+        },
+        {
+          "cycle": 7,
+          "success": true
+        },
+        {
+          "cycle": 8,
+          "success": true
+        },
+        {
+          "cycle": 9,
+          "success": true
+        },
+        {
+          "cycle": 10,
+          "success": true
+        },
+        {
+          "cycle": 11,
+          "success": true
+        },
+        {
+          "cycle": 12,
+          "success": true
+        }
+      ],
+      "native_completed_cycles": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "native_final_success": true,
+      "command_success": true,
+      "validation_success": true,
+      "clearance_failures": [],
+      "policy_rejections": [],
+      "loaded_mplib_modules": [],
+      "paired_relation_ik_world_exempt_links": [
+        "gripper_Left_Support_Link",
+        "gripper_Right_Support_Link"
+      ],
+      "grasp_contact_ik_links": [
+        "gripper_Left_1_Link",
+        "gripper_Left_2_Link",
+        "gripper_Left_Support_Link",
+        "gripper_Right_1_Link",
+        "gripper_Right_2_Link",
+        "gripper_Right_Support_Link",
+        "left_pad",
+        "right_pad"
+      ],
+      "near_ik_promotions": {
+        "rejected": 267
+      },
+      "near_ik_negative_pair_count": 50,
+      "roof_ik_audit": {
+        "expected_sources": [
+          "back_roof_triangle",
+          "front_roof_triangle",
+          "left_roof_triangle",
+          "right_roof_triangle"
+        ],
+        "foreground_batches": 0,
+        "missing_scopes": [],
+        "observed_batches": 12,
+        "observed_batches_complete": true,
+        "passed": true,
+        "prefetch_batches": 12
+      },
+      "runtime_version": "v3_prefetch_and_foreground_with_completeness_gate",
+      "process_exit_code": 0,
+      "audit_qualification": "PASS",
+      "roof_diagnostic_totals": {
+        "observed_batches": 12,
+        "foreground_batches": 0,
+        "prefetch_batches": 12,
+        "captured_goal_count": 1320,
+        "all_observed_complete": true,
+        "all_observed_state_unchanged": true,
+        "error_comparison_available_count": 1320,
+        "debug_nearest_error_mismatch_count": 0,
+        "debug_passes_but_nearest_fails_original_thresholds_count": 0
+      },
+      "release_return_execution_audits": {
+        "count": 12,
+        "passed_count": 12,
+        "state_unchanged": true,
+        "execution_guard": true,
+        "clearance_samples": 682,
+        "release_contact_samples": 0,
+        "return_samples": 2117,
+        "return_world_exempt_links": [],
+        "self_collision_input_modified": false,
+        "permitted_links": [
+          "gripper_Left_1_Link",
+          "gripper_Left_2_Link",
+          "gripper_Left_Support_Link",
+          "gripper_Right_1_Link",
+          "gripper_Right_2_Link",
+          "gripper_Right_Support_Link",
+          "left_pad",
+          "right_pad"
+        ],
+        "stage_kinds": [
+          "release_then_return"
+        ],
+        "contact_target_names": [
+          "scene_obstacle_back_roof_triangle",
+          "scene_obstacle_back_second_wall",
+          "scene_obstacle_back_wall",
+          "scene_obstacle_front_roof_triangle",
+          "scene_obstacle_front_second_wall",
+          "scene_obstacle_front_wall",
+          "scene_obstacle_left_roof_triangle",
+          "scene_obstacle_left_second_wall",
+          "scene_obstacle_left_wall",
+          "scene_obstacle_right_roof_triangle",
+          "scene_obstacle_right_second_wall",
+          "scene_obstacle_right_wall"
+        ]
+      },
+      "transport_audits": {
+        "count": 16,
+        "samples": 745,
+        "all_world_links_checked": true,
+        "world_exempt_links": [],
+        "attached_payload_sphere_counts": [
+          6
+        ]
+      },
+      "roof_ik_diagnostics": [
+        {"source":"front_roof_triangle","phase":"pregrasp","prefetch":true,"goal_count":17,"captured_goal_count":17,"native_success_count":13,"raw_success_rows":13,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":4,"max":0.013375886715948582,"min":0.00001468967275286559},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"front_roof_triangle","phase":"grasp","prefetch":true,"goal_count":17,"captured_goal_count":17,"native_success_count":11,"raw_success_rows":11,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":6,"max":0.013279803097248077,"min":0.000008028183401620481},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"front_roof_triangle","phase":"paired_place","prefetch":true,"goal_count":320,"captured_goal_count":320,"native_success_count":200,"raw_success_rows":200,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":320},"error_comparison_available_count":320,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":120,"max":0.013359473086893559,"min":0.005420793779194355},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[],"geometric_necessary_condition_only":true,"goal_count":320,"goals_with_enabled_box_overlap":0,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_back_roof_triangle","scene_obstacle_left_roof_triangle","scene_obstacle_right_roof_triangle"],"paired_candidates":{"count":160,"either_goal_with_enabled_box_overlap":0,"hover_with_enabled_box_overlap":0,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":0},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":3.652780275967213e-8,"sphere_count":1}},
+        {"source":"right_roof_triangle","phase":"pregrasp","prefetch":true,"goal_count":17,"captured_goal_count":17,"native_success_count":10,"raw_success_rows":10,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":7,"max":0.011482436209917068,"min":0.00480877049267292},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"right_roof_triangle","phase":"grasp","prefetch":true,"goal_count":17,"captured_goal_count":17,"native_success_count":12,"raw_success_rows":12,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":5,"max":0.01028522476553917,"min":0.006556984502822161},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"right_roof_triangle","phase":"paired_place","prefetch":true,"goal_count":288,"captured_goal_count":288,"native_success_count":180,"raw_success_rows":180,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":288},"error_comparison_available_count":288,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":108,"max":0.015816006809473038,"min":0.00001460185922042001},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[],"geometric_necessary_condition_only":true,"goal_count":288,"goals_with_enabled_box_overlap":0,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_back_roof_triangle","scene_obstacle_front_roof_triangle","scene_obstacle_left_roof_triangle"],"paired_candidates":{"count":144,"either_goal_with_enabled_box_overlap":0,"hover_with_enabled_box_overlap":0,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":0},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":3.1311007897549814e-8,"sphere_count":1}},
+        {"source":"back_roof_triangle","phase":"pregrasp","prefetch":true,"goal_count":17,"captured_goal_count":17,"native_success_count":10,"raw_success_rows":10,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":7,"max":0.010247163474559784,"min":0.007146830204874277},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"back_roof_triangle","phase":"grasp","prefetch":true,"goal_count":17,"captured_goal_count":17,"native_success_count":12,"raw_success_rows":12,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":5,"max":0.009461128152906895,"min":0.007608444895595312},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"back_roof_triangle","phase":"paired_place","prefetch":true,"goal_count":288,"captured_goal_count":288,"native_success_count":174,"raw_success_rows":174,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":288},"error_comparison_available_count":288,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":114,"max":0.01687408797442913,"min":0.000014383707821252756},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[],"geometric_necessary_condition_only":true,"goal_count":288,"goals_with_enabled_box_overlap":0,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_front_roof_triangle","scene_obstacle_left_roof_triangle","scene_obstacle_right_roof_triangle"],"paired_candidates":{"count":144,"either_goal_with_enabled_box_overlap":0,"hover_with_enabled_box_overlap":0,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":0},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":3.771540248165284e-8,"sphere_count":1}},
+        {"source":"left_roof_triangle","phase":"pregrasp","prefetch":true,"goal_count":17,"captured_goal_count":17,"native_success_count":10,"raw_success_rows":10,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":7,"max":0.01159792859107256,"min":0.00676695303991437},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"left_roof_triangle","phase":"grasp","prefetch":true,"goal_count":17,"captured_goal_count":17,"native_success_count":12,"raw_success_rows":12,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":17},"error_comparison_available_count":17,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":5,"max":0.010669110342860222,"min":0.00806355569511652},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":null},
+        {"source":"left_roof_triangle","phase":"paired_place","prefetch":true,"goal_count":288,"captured_goal_count":288,"native_success_count":154,"raw_success_rows":154,"diagnostic_complete":true,"diagnostic_error_type":"","state_unchanged":true,"attached":false,"payload_spheres":0,"requested_num_seeds":32,"returned_seed_count_histogram":{"1":288},"error_comparison_available_count":288,"debug_nearest_error_mismatch_count":0,"debug_passes_but_nearest_fails_original_thresholds_count":0,"failed_nearest_position_error_m":{"count":134,"max":0.01361924409866333,"min":0.000014282491065387148},"collision_model_sha256":"325df814ee2b9d1e82b8f76ea1c20b7e932c83b33bca54bcb25dbc266ebbf275","original_near_position_threshold":0.0001,"original_near_rotation_threshold":0.001,"nominal_gripper_base_boxes":{"contact_pairs":[],"geometric_necessary_condition_only":true,"goal_count":288,"goals_with_enabled_box_overlap":0,"link":"gripper_base_link","non_box_objects_not_analytically_audited":["scene_obstacle_back_roof_triangle","scene_obstacle_front_roof_triangle","scene_obstacle_right_roof_triangle"],"paired_candidates":{"count":144,"either_goal_with_enabled_box_overlap":0,"hover_with_enabled_box_overlap":0,"native_goal_order":"hover_then_release","release_with_enabled_box_overlap":0},"physical_geometry_qualified":false,"rigid_comparison_max_delta_m":4.576476560214093e-8,"sphere_count":1}}
+      ]
+    }
+  ]
+}

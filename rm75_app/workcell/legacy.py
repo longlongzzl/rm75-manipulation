@@ -239,6 +239,11 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
                                                 install_jimu_grasp_ik_contact)
                 install_read_only_jimu_diagnostics(module.portable,
                     lambda row:events.emit('contact_audit',evidence=row))
+                if profile.get('magnetic',{}).get('audit_roof_ik') is True:
+                    if spec['mode']!='sim':raise ValueError('Roof IK diagnostics are SIM only')
+                    from .jimu_roof_ik_diagnostics import install_roof_ik_diagnostics
+                    install_roof_ik_diagnostics(direct,
+                        lambda row:events.emit('contact_audit',evidence=row))
                 install_jimu_grasp_ik_contact(direct,
                     lambda row:events.emit('contact_audit',evidence=row))
                 guard_jimu_near_ik(module.portable,

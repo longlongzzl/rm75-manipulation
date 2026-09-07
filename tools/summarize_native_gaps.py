@@ -4,6 +4,7 @@ import argparse
 from collections import Counter
 import hashlib
 import json
+import math
 from pathlib import Path
 import subprocess
 import sys
@@ -51,9 +52,99 @@ def lift_ik_summary(row):
     return result
 
 
+def roof_ik_summary(row):
+    """Keep same-seed scalar errors and contact pairs, never raw q/poses/worlds."""
+    result={key:row.get(key) for key in ('source','phase','step_id','prefetch',
+        'diagnostic_only','execution_guard','requested_num_seeds','goal_count',
+        'native_success_count','original_near_position_threshold','original_near_rotation_threshold',
+        'diagnostic_complete','state_unchanged','attached','payload_spheres','collision_model_sha256')}
+    result['diagnostic_error_type']=str(row.get('diagnostic_error','')).split(':',1)[0]
+    summaries=[];mismatches=0;unsafe_threshold_pairs=0
+    def finite(value):return isinstance(value,(int,float)) and math.isfinite(value)
+    for goal in row.get('goals',[]):
+        seeds=goal['seeds'];index=goal['legacy_nearest_seed_index'];seed=seeds[index]
+        debug=(goal.get('debug_position_error_m'),goal.get('debug_rotation_error_native'))
+        errors=(seed.get('position_error_m'),seed.get('rotation_error_native'))
+        available=all(finite(v) for v in (*debug,*errors))
+        mismatch=available and any(not math.isclose(a,b,rel_tol=1e-6,abs_tol=1e-9)
+                                   for a,b in zip(debug,errors))
+        thresholds=(row.get('original_near_position_threshold'),row.get('original_near_rotation_threshold'))
+        unsafe=bool(available and all(finite(v) for v in thresholds)
+            and all(a<=t for a,t in zip(debug,thresholds))
+            and any(a>t for a,t in zip(errors,thresholds)))
+        mismatches+=int(mismatch);unsafe_threshold_pairs+=int(unsafe)
+        summaries.append(dict(goal_index=goal['goal_index'],native_success=goal['native_success'],
+            native_status=goal['native_status'],returned_seed_count=len(seeds),
+            raw_success_rows=sum(s['native_success'] is True for s in seeds),
+            legacy_nearest_seed_index=index,nearest_seed_finite=seed['finite'],
+            nearest_position_error_m=errors[0],nearest_rotation_error_native=errors[1],
+            debug_position_error_m=debug[0],debug_rotation_error_native=debug[1],
+            comparison_available=available,debug_nearest_error_mismatch=bool(mismatch),
+            debug_passes_but_nearest_fails_original_thresholds=unsafe))
+    result['captured_goal_count']=len(summaries)
+    result['error_comparison_available_count']=sum(s['comparison_available'] for s in summaries)
+    result['returned_seed_count_histogram']=dict(Counter(str(s['returned_seed_count']) for s in summaries))
+    result['raw_success_rows']=sum(s['raw_success_rows'] for s in summaries)
+    result['debug_nearest_error_mismatch_count']=mismatches
+    result['debug_passes_but_nearest_fails_original_thresholds_count']=unsafe_threshold_pairs
+    examples=[];selected={d['goal_index'] for d in row.get('configuration_details',[])}
+    if summaries:selected.add(summaries[0]['goal_index'])
+    for item in summaries:
+        if item['goal_index'] in selected or item['debug_nearest_error_mismatch']:
+            examples.append(item)
+        if len(examples)>=8:break
+    result['goals']=examples
+    result['goal_examples_only']=True
+    errors=[s['nearest_position_error_m'] for s in summaries
+            if not s['native_success'] and finite(s['nearest_position_error_m'])]
+    result['failed_nearest_position_error_m']={'count':len(errors),
+        'min':min(errors) if errors else None,'max':max(errors) if errors else None}
+    result['configuration_details']=[]
+    for raw in row.get('configuration_details',[]):
+        detail={key:raw.get(key) for key in ('goal_index','seed_index','valid','native_status',
+            'independently_measured_position_error_m','non_box_objects_not_analytically_audited')}
+        detail['box_contacts']=[{key:item.get(key) for key in ('link','obstacle','overlap_m','enabled')}
+                                for item in raw.get('box_contacts',[])]
+        detail['self_link_pairs']=[{key:item.get(key) for key in ('link_a','link_b','overlap','count')}
+                                   for item in raw.get('self_collision',{}).get('link_pairs',[])]
+        detail['self_diagnostic_is_native_conditional']=True
+        result['configuration_details'].append(detail)
+    nominal=row.get('nominal_gripper_base_boxes')
+    result['nominal_gripper_base_boxes']=None
+    if nominal is not None:
+        aggregate={}
+        for goal in nominal['goals']:
+            for contact in goal['box_contacts']:
+                key=(contact['link'],contact['obstacle'],contact['enabled'])
+                item=aggregate.setdefault(key,{'goal_indices':set(),'max_overlap_m':0.})
+                item['goal_indices'].add(goal['goal_index'])
+                item['max_overlap_m']=max(item['max_overlap_m'],contact['overlap_m'])
+        result['nominal_gripper_base_boxes']={**{key:nominal.get(key) for key in
+            ('link','sphere_count','rigid_comparison_max_delta_m','geometric_necessary_condition_only',
+             'physical_geometry_qualified','non_box_objects_not_analytically_audited')},
+            'goal_count':len(nominal['goals']),
+            'goals_with_enabled_box_overlap':sum(g['enabled_box_overlap'] for g in nominal['goals']),
+            'contact_pairs':[dict(link=key[0],obstacle=key[1],enabled=key[2],
+                goal_count=len(value['goal_indices']),max_overlap_m=value['max_overlap_m'])
+                for key,value in sorted(aggregate.items())]}
+        goals=nominal['goals'];count=len(goals)
+        if (row.get('phase')=='paired_place' and count and count%2==0
+                and count==len(row.get('goals',[]))
+                and [g['goal_index'] for g in goals]==list(range(count))):
+            # Verified native call site: q_grasps+q_grasps, hover_poses+release_poses.
+            half=count//2;hover=[g['enabled_box_overlap'] for g in goals[:half]]
+            release=[g['enabled_box_overlap'] for g in goals[half:]]
+            result['nominal_gripper_base_boxes']['paired_candidates']={
+                'count':half,'native_goal_order':'hover_then_release',
+                'hover_with_enabled_box_overlap':sum(hover),
+                'release_with_enabled_box_overlap':sum(release),
+                'either_goal_with_enabled_box_overlap':sum(h or r for h,r in zip(hover,release))}
+    return result
+
+
 def event_summary(path,*,bare=False):
     counts=Counter();near=Counter();pairs={};audits=[];first=None;first_return=None;release_observations=[];release_audits=[];filters=set()
-    return_probes=[]
+    return_probes=[];roof_ik=[];paired_filters=set()
     with path.open() as stream:
         for line in stream:
             row=json.loads(line)
@@ -61,6 +152,9 @@ def event_summary(path,*,bare=False):
                 if row.get('kind')!='contact_audit':continue
                 row=row['evidence']
             event=row['event'];counts[event]+=1
+            if event=='jimu_roof_ik_batch_diagnostic':roof_ik.append(roof_ik_summary(row))
+            if event=='contact_world_filter_enter' and 'paired_relation_ik' in row.get('step_id',''):
+                paired_filters.update(row.get('links',[]))
             if event=='jimu_independent_return_gate_probe':
                 probe={key:row.get(key) for key in ('passed','state_unchanged','error_type','negative_native_status',
                     'negative_state_queries','reused_gpu_planned_return','injected_sim_start','actual_execute_calls',
@@ -117,6 +211,8 @@ def event_summary(path,*,bare=False):
         'release_execution_observations':release_observations,
         'jimu_release_execution_audits':release_audits,
         'independent_return_gate_probes':return_probes,
+        'roof_ik_diagnostics':roof_ik,
+        'paired_relation_ik_world_exempt_links':sorted(paired_filters),
         'grasp_contact_ik_links':sorted(filters),
         'transport_audits':audits,'transport_samples':sum(row['samples'] for row in audits),
         'transport_all_world_links_checked':bool(audits) and all(row['world_exempt_links']==[] for row in audits)}
@@ -153,6 +249,8 @@ def main():
         'runs':[],'checks':{},'prior_pusht_evidence':'three_scene_nomotion_followup_20260907_summary.json'}
     for path in sorted(root.glob('*/result.json')):
         raw=json.loads(path.read_text());row={'run':path.parent.name,'result_sha256':sha(path)}
+        if 'roof_ik_audit' in raw:row['roof_ik_audit']=raw['roof_ik_audit']
+        if 'validation_success' in raw:row['validation_success']=raw['validation_success']
         if raw.get('job_id'):
             fields=('task','completed','command_completed','timeout','elapsed_s','stopped_for_validation','expected_cycles','native_cycles',
                     'native_completed_cycles','native_final_success','native_full_chain_passed','clearance_failures')
