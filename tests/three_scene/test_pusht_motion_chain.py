@@ -49,6 +49,9 @@ def fixture(failure=None):
             path=np.linspace(request.current.positions,end,3)
             if failure=='corridor' and self.stage=='push': path[1,1]+=.02
             return NS(best=lambda cs:NS(trajectory=NS(positions=path)))
+        def plan_linear_candidates(self,request,**kwargs):
+            trace.append(('linear',request.candidates[0].candidate_id,kwargs))
+            return self.plan_candidates(request)
     class Observer:
         def observe(self,after):
             trace.append(('observe',))
@@ -99,3 +102,25 @@ def test_speed_changes_prepared_time_and_cartesian_bound():
     assert sum(ts[-1] for _,_,ts in slow.stages)>sum(ts[-1] for _,_,ts in fast.stages)
     for _,path,ts in slow.stages:
         assert np.max(np.linalg.norm(np.diff(path[:,:3],axis=0),axis=1)/np.diff(ts))<=.005+1e-9
+
+
+def test_axis_moves_use_native_lines_without_link_or_world_exemptions():
+    e,p,o,t,b=fixture();e.plan_push(p,o)
+    rows=[r for r in t if r[0]=='linear']
+    assert [r[2]['axis'] for r in rows]==['z','x','x','z']
+    assert all(r[2]=={'axis':axis,'project_distance_to_goal':False,'non_terminal_scale':1.0}
+               for r,axis in zip(rows,['z','x','x','z']))
+
+
+def test_time_resampled_path_also_requires_cartesian_corridor(monkeypatch):
+    import rm75_app.pusht.motion as motion
+    original=motion.time_parameterize
+    e,p,o,t,b=fixture()
+    def bend(*args,**kwargs):
+        path,ts=original(*args,**kwargs)
+        if b.stage=='descend': path[len(path)//2,1]+=.02
+        return path,ts
+    monkeypatch.setattr(motion,'time_parameterize',bend)
+    with pytest.raises(RuntimeError,match='non_cartesian_contact_path:descend'):
+        e.execute_push(p,o)
+    assert not any(r[0]=='execute' for r in t)

@@ -2616,6 +2616,7 @@ class Curobo2Backend:
         ignore_object_name: str | None = None,
         disable_collision_links: tuple[str, ...] | None = None,
         allow_start_contact_escape: bool = False,
+        non_terminal_scale: float | None = None,
     ) -> BatchPlanningResult:
         """Plan one independent collision-checked Cartesian line segment.
 
@@ -2644,12 +2645,16 @@ class Curobo2Backend:
                     ignore_object_name=ignore_object_name,
                     disable_collision_links=disable_collision_links,
                     allow_start_contact_escape=allow_start_contact_escape,
+                    non_terminal_scale=non_terminal_scale,
                 )
                 plans.extend(result.plans)
                 total_time += float(result.total_time)
             return BatchPlanningResult(tuple(plans), backend=self.name, total_time=total_time)
         if axis not in {"x", "y", "z"}:
             raise ValueError(f"unsupported linear axis {axis!r}")
+        scale = self.config.grasp_linear_non_terminal_scale if non_terminal_scale is None else float(non_terminal_scale)
+        if not np.isfinite(scale) or scale <= 0:
+            raise ValueError('linear non-terminal scale must be finite and positive')
         if request.scene is not self._scene:
             self.update_scene(request.scene)
         planner = self._ensure_planner()
@@ -2688,7 +2693,7 @@ class Curobo2Backend:
                     self._set_obstacle_enabled(name, False)
             criterion = modules["ToolPoseCriteria"].linear_motion(
                 axis=axis,
-                non_terminal_scale=self.config.grasp_linear_non_terminal_scale,
+                non_terminal_scale=scale,
                 project_distance_to_goal=project_distance_to_goal,
             )
             planner.update_tool_pose_criteria({request.tool_frame: criterion})

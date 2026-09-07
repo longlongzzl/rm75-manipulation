@@ -28,7 +28,9 @@ def update_from_demo(planner,demo,args):
         desired={name:float(q[names.index(name)]) for name in desired}
     if desired==current:return
     if planner.attached_object_active or planner._disabled_collision_links:
-        raise CuroboOnlyUnsupported('cannot replace active attachment or masked robot model')
+        raise CuroboOnlyUnsupported('cannot replace active attachment or masked robot model: '
+            f'attached={planner.attached_object_active}, '
+            f'disabled_links={sorted(planner._disabled_collision_links)}')
     updated=copy.deepcopy(raw)
     updated.get('robot_cfg',updated)['kinematics']['lock_joints']=desired
     rebuilt=planner.mods['RobotConfig'].from_dict(updated,tensor_args=planner.tensor_args)

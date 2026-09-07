@@ -71,6 +71,25 @@ class CuroboPushExecutor:
             if forbidden:
                 raise RuntimeError(f'PushT collision audit rejected path: {forbidden[:3]}')
 
+    def _audit_tcp(self,path,start_pose,xyz,*,straight,stage):
+        delta=np.asarray(xyz)-start_pose.position
+        worst_gap=0.;worst_angle=0.
+        for joints in path:
+            actual=self._fk(joints)
+            angle=rotation_error(quaternion_matrix(actual.quaternion_wxyz),quaternion_matrix(self.orientation))
+            if straight:
+                t=np.clip(np.dot(actual.position-start_pose.position,delta)/max(np.dot(delta,delta),1e-12),0,1)
+                gap=float(np.linalg.norm(actual.position-(start_pose.position+t*delta)))
+                worst_gap=max(worst_gap,gap);worst_angle=max(worst_angle,angle)
+        if straight and (worst_gap>self.corridor or worst_angle>self.orientation_tolerance):
+            raise RuntimeError(f'non_cartesian_contact_path:{stage}: max_gap_m={worst_gap:.8f}, max_angle_rad={worst_angle:.8f}')
+        final=self._fk(path[-1])
+        if (np.linalg.norm(final.position-xyz)>self.corridor or
+            rotation_error(quaternion_matrix(final.quaternion_wxyz),quaternion_matrix(self.orientation))>self.orientation_tolerance):
+            raise RuntimeError(f'endpoint_error:{stage}')
+        return dict(max_corridor_error_m=worst_gap if straight else None,
+                    max_orientation_error_rad=worst_angle if straight else None)
+
     def plan_push(self,push,obs):
         """Plan and audit all five stages without issuing any arm command.
 
@@ -102,7 +121,19 @@ class CuroboPushExecutor:
                 if contact_allowed:
                     for name in snapshots:
                         self.backend._set_obstacle_enabled(name,False)
-                planned=self.backend.plan_candidates(request).best((candidate,))
+                # A soft free-space TCP preference is not a Cartesian line.
+                # Reuse the native line primitive for world-axis moves.
+                # Other directions retain generic search plus the same strict
+                # corridor audit; never snap/rotate the requested push vector.
+                axis='z' if stage in ('descend','retreat') else None
+                if stage in ('contact','push'):
+                    if abs(direction[1])<1e-10: axis='x'
+                    elif abs(direction[0])<1e-10: axis='y'
+                if axis is not None:
+                    planned=self.backend.plan_linear_candidates(request,axis=axis,
+                        project_distance_to_goal=False,non_terminal_scale=1.0).best((candidate,))
+                else:
+                    planned=self.backend.plan_candidates(request).best((candidate,))
             finally:
                 for name,enabled in snapshots.items():
                     self.backend._set_obstacle_enabled(name,enabled)
@@ -111,21 +142,13 @@ class CuroboPushExecutor:
             path=planned.trajectory.positions
             if abs(path[0]-q).max()>.05:
                 raise RuntimeError(f'Planner returned discontinuity at {stage}')
-            start_pose=self._fk(q);delta=np.asarray(xyz)-start_pose.position
-            for joints in path:
-                actual=self._fk(joints)
-                if straight:
-                    t=np.clip(np.dot(actual.position-start_pose.position,delta)/max(np.dot(delta,delta),1e-12),0,1)
-                    gap=np.linalg.norm(actual.position-(start_pose.position+t*delta))
-                    if gap>self.corridor or rotation_error(quaternion_matrix(actual.quaternion_wxyz),quaternion_matrix(self.orientation))>self.orientation_tolerance:
-                        raise RuntimeError(f'non_cartesian_contact_path:{stage}')
-            final=self._fk(path[-1])
-            if np.linalg.norm(final.position-xyz)>self.corridor:
-                raise RuntimeError(f'endpoint_error:{stage}')
+            start_pose=self._fk(q)
+            self._audit_tcp(path,start_pose,xyz,straight=straight,stage=stage)
             timed,ts=time_parameterize(path,lambda joints:self._fk(joints).position,
                  speed_mps=push.speed_mps,hz=self.arm.hz,
                  joint_speed_rad_s=self.profile.get('joint_speed_rad_s',.25),
                  joint_accel_rad_s2=self.profile.get('joint_accel_rad_s2',.5))
+            metrics=self._audit_tcp(timed,start_pose,xyz,straight=straight,stage=stage)
             self._audit(timed,contact=contact_allowed)
             if stage in ('push','retreat'):
                 # Conservative sampled swept-target ensemble: the pusher may
@@ -139,6 +162,8 @@ class CuroboPushExecutor:
                             self._audit(timed,contact=True)
                 finally:
                     self.backend.update_scene(scene)
+            self.events.emit('push_stage_audited',stage=stage,samples=len(timed),
+                             duration_s=float(ts[-1]),**metrics)
             prepared.append((stage,timed,ts));q=path[-1]
         self.events.emit('push_chain_planned',stages=[s for s,_,_ in prepared],
                          samples=sum(len(p) for _,p,_ in prepared),speed_mps=push.speed_mps)

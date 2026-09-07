@@ -37,7 +37,11 @@ def validate_clearance_path(planner,path):
     if (not planner.collision_enabled or not planner.config.self_collision_check or
         planner._disabled_collision_links or planner.attached_object_active or
         set(planner._disabled_world_obstacles)-{'active_target_object'}):
-        raise CuroboOnlyUnsupported('unqualified post-release collision state')
+        raise CuroboOnlyUnsupported('unqualified post-release collision state: '
+            f'world={planner.collision_enabled}, self={planner.config.self_collision_check}, '
+            f'attached={planner.attached_object_active}, '
+            f'disabled_links={sorted(planner._disabled_collision_links)}, '
+            f'disabled_world={sorted(planner._disabled_world_obstacles)}')
     if path is None or len(path)<2:raise CuroboOnlyUnsupported('missing clearance path')
     for index,q in enumerate(path):
         valid,status=planner.check_start_state(q)

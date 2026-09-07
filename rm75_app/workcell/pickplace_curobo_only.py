@@ -5,6 +5,7 @@ reproducible. Remove the second planner/FCL dependency, retain scene bookkeeping
 and route collision queries to the *actual* cuRobo world. Never fake clear checks.
 """
 import ast
+import copy
 from contextlib import contextmanager
 from dataclasses import dataclass
 import functools
@@ -185,6 +186,7 @@ def install(direct):
     from curobo_rm75_planner import RM75CuRoboPlanner
     install_start_check_restoration(RM75CuRoboPlanner)
     preserve_diagnostic_world_state(RM75CuRoboPlanner,direct._CUROBO_GPU_LOCK)
+    serialize_return_planning(direct)
     original_refresh = direct._refresh_curobo_world
     @functools.wraps(original_refresh)
     def refresh(planner, demo, args, **kwargs):
@@ -216,6 +218,64 @@ def install(direct):
         install_execution_guards(direct.targeted.base,direct._CUROBO_GPU_LOCK,clearance_audits)
     direct._install_dry_run_motion_window_wrappers=install_wrappers
     return clearance_audits
+
+
+def serialize_return_planning(direct):
+    """Keep temporary return-preplan masks inside the existing GPU RLock.
+
+    The old worker shares its planner with foreground release/clearance. Locking
+    only solve_ik left the disable/restore scope observable by geometry refresh.
+    Do not lock worker creation or consumption (the latter may join the worker).
+    Native try/finally still owns mask restoration; no collision policy changes.
+    """
+    for name in ('_plan_return_to_start_joint_curobo',
+                 '_plan_return_to_start_prelift_rescue_curobo'):
+        original = getattr(direct, name)
+        def wrap(function):
+            @functools.wraps(function)
+            def transaction(*args, **kwargs):
+                with direct._CUROBO_GPU_LOCK:
+                    planner = args[0] if args else kwargs.get('planner')
+                    if planner is None:
+                        return function(*args, **kwargs)
+                    with preserve_planner_world(planner):
+                        return function(*args, **kwargs)
+            return transaction
+        setattr(direct, name, wrap(original))
+
+
+@contextmanager
+def preserve_planner_world(planner):
+    """Restore the foreground world after a shared return-planning transaction.
+
+    Called under the GPU RLock. WorldConfig contains CPU obstacle descriptions;
+    the native supported update_world APIs rebind every solver/cache owner.
+    """
+    world = copy.deepcopy(planner._world)
+    disabled = set(planner._disabled_world_obstacles)
+    fields = ('_persistent_world_signature', '_last_world_changed',
+              '_last_world_cache_hit', '_last_world_cache_forced_refresh')
+    previous = {name: copy.deepcopy(getattr(planner, name))
+                for name in fields if hasattr(planner, name)}
+    try:
+        yield
+    finally:
+        planner.motion_gen.update_world(world)
+        planner.ik_solver.update_world(world)
+        planner._world = world
+        planner._update_cuda_graph_batch_ik_world(world)
+        names = set(planner.world_collision_checker_obstacle_names())
+        present = {item.name for item in world.objects}
+        # Cached rows absent from the restored scene must remain disabled.
+        enable = present - disabled
+        disable = (names - present) | disabled
+        planner.set_world_obstacles_enabled(sorted(enable), enabled=True)
+        planner.set_world_obstacles_enabled(sorted(disable), enabled=False)
+        for name in fields:
+            if name in previous:
+                setattr(planner, name, previous[name])
+            elif hasattr(planner, name):
+                delattr(planner, name)
 
 
 def preserve_diagnostic_world_state(planner_class, lock):
