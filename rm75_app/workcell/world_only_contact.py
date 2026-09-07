@@ -22,11 +22,21 @@ class WorldOnlyContactUnsupported(BaseException):
 @contextmanager
 def world_only_fingers(planner):
     """Clone ONLY the world cost/constraint input; self collision sees originals."""
+    with world_only_links(planner, FINGER_LINKS) as evidence:
+        yield evidence
+
+
+@contextmanager
+def world_only_links(planner, links, *, allowed_disabled_objects=()):
+    """Explicit legacy contact-stage selection, never arm-wide/self filtering."""
+    links = frozenset(links)
+    if not links or not links <= FINGER_LINKS | {'gripper_base_link', 'attached_object'}:
+        raise WorldOnlyContactUnsupported('unapproved_contact_links')
     if getattr(planner, '_cuda_graph_batch_ik_solvers', {}):
         raise WorldOnlyContactUnsupported('cached_cuda_graph_ik_present')
     if getattr(planner, '_disabled_collision_links', set()):
         raise WorldOnlyContactUnsupported('preexisting_disabled_link_spheres')
-    if getattr(planner, '_disabled_world_obstacles', set()):
+    if set(getattr(planner, '_disabled_world_obstacles', set())) - set(allowed_disabled_objects):
         raise WorldOnlyContactUnsupported('preexisting_disabled_world_objects')
     bindings = {}
     for owner in (planner.motion_gen, planner.ik_solver):
@@ -36,7 +46,7 @@ def world_only_fingers(planner):
             config = rollout.kinematics.kinematics_config
             mapping = config.link_sphere_idx_map
             names = config.link_name_to_idx_map
-            indices = sorted({i for name in FINGER_LINKS if name in names
+            indices = sorted({i for name in links if name in names
                               for i, link_id in enumerate(mapping.tolist()) if link_id == names[name]})
             if not indices:
                 raise WorldOnlyContactUnsupported('finger_sphere_mapping_missing')
@@ -55,7 +65,7 @@ def world_only_fingers(planner):
     if not bindings:
         raise WorldOnlyContactUnsupported('world_costs_missing')
     calls = {'world_filter_calls': 0, 'world_cost_instances': len(bindings),
-             'links': sorted(FINGER_LINKS), 'self_collision_input_modified': False}
+             'links': sorted(links), 'self_collision_input_modified': False}
     restored = []
     thread_id = threading.get_ident()
     try:

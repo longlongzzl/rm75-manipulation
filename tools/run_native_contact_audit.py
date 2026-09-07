@@ -25,6 +25,8 @@ def main():
     modes.add_argument("--compatibility-audit", action="store_true")
     modes.add_argument('--tray-final-descent-compatibility', action='store_true',
                        help='Simulation only; left/right fingers vs world ONLY in final vertical tray descent')
+    modes.add_argument('--transport-world-checked-compatibility', action='store_true',
+                       help='Keep legacy contact stages world-only; fully check loaded transport')
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -40,6 +42,8 @@ def main():
     if args.scene == "triangle-roof":
         argv += ["--jimu-second-layer-triangle-profile", "--no-jimu-demo-triangle-apriltag",
                  "--sam6d-fixed-scene-result-file", "Beta_demo-codex-v0.9/jimu_portable_repro/scenes/jimu_assembly_anchors_default_sam6d.json"]
+    if args.transport_world_checked_compatibility:
+        argv += ['--no-fast-chain-cuda-graph-ik']
     os.environ["LEROBOT_ROOT"] = str(root)
     sys.argv = argv
     os.chdir(root)
@@ -54,10 +58,17 @@ def main():
     def emit(row):
         with lock, (output / "contact.jsonl").open("a") as stream:
             stream.write(json.dumps(row, sort_keys=True) + "\n")
-    install_contact_audit(direct, emit, strict=not args.compatibility_audit,
-                          tray_final_descent=args.tray_final_descent_compatibility)
+    cleanup = lambda: None
+    if args.transport_world_checked_compatibility:
+        from curobo_rm75_planner import RM75CuRoboPlanner
+        from rm75_app.workcell.transport_contact import install_transport_contact
+        cleanup = install_transport_contact(direct, RM75CuRoboPlanner, emit)
+    else:
+        install_contact_audit(direct, emit, strict=not args.compatibility_audit,
+                              tray_final_descent=args.tray_final_descent_compatibility)
     report = {"scene": args.scene, "argv": argv, "source_commit": provenance["source_commit"],
-              "strict": not (args.compatibility_audit or args.tray_final_descent_compatibility),
+              "strict": not (args.compatibility_audit or args.tray_final_descent_compatibility or args.transport_world_checked_compatibility),
+              'transport_world_checked_compatibility': args.transport_world_checked_compatibility,
               'tray_final_descent_compatibility': args.tray_final_descent_compatibility, "execute_real": False,
               "command_success": False, "verified_task_success": None}
     try:
@@ -67,7 +78,10 @@ def main():
     except StrictContactNotSupported as exc:
         report.update(status=exc.code, evidence=exc.evidence)
     finally:
-        atomic_json(output / "result.json", report)
+        try:
+            cleanup()
+        finally:
+            atomic_json(output / "result.json", report)
     print(json.dumps(report, sort_keys=True))
     return 0 if report["command_success"] else 42
 
