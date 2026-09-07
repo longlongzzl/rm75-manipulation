@@ -26,7 +26,7 @@ def negative_pairs(detail):
 
 
 def event_summary(path,*,bare=False):
-    counts=Counter();near=Counter();pairs={};audits=[];first=None;first_return=None;release_observations=[];filters=set()
+    counts=Counter();near=Counter();pairs={};audits=[];first=None;first_return=None;release_observations=[];release_audits=[];filters=set()
     with path.open() as stream:
         for line in stream:
             row=json.loads(line)
@@ -67,10 +67,16 @@ def event_summary(path,*,bare=False):
                     ('index','status','geometry_detail_recorded')},'negative_pairs':negative_pairs(item)}
                     for item in row.get('first_invalid',[])]
                 release_observations.append(observation)
+            if event=='jimu_release_execution_audit':
+                release_audits.append({key:row.get(key) for key in
+                    ('step_id','source','execution_guard','passed','state_unchanged','clearance_samples',
+                     'return_samples','release_contact_samples','permitted_contact_target','permitted_links',
+                     'return_world_exempt_links','self_collision_input_modified','world_filter_calls','error_type')})
     return {'event_counts':dict(counts),'near_ik_promotions':dict(near),
         'near_ik_negative_pairs':sorted(pairs.values(),key=lambda row:row['clearance_m']),
         'first_read_only_diagnostic':first,'first_return_query_diagnostic':first_return,
         'release_execution_observations':release_observations,
+        'jimu_release_execution_audits':release_audits,
         'grasp_contact_ik_links':sorted(filters),
         'transport_audits':audits,'transport_samples':sum(row['samples'] for row in audits),
         'transport_all_world_links_checked':bool(audits) and all(row['world_exempt_links']==[] for row in audits)}

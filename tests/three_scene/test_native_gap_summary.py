@@ -91,3 +91,16 @@ def test_release_invalid_evidence_exports_pairs_not_q_or_geometry(tmp_path):
     assert row['model_sync_requested'] and row['first_invalid'][0]['negative_pairs']==[
         {'robot_link':'pad','obstacle':'placed','clearance_m':-.001}]
     assert all(key not in json.dumps(row) for key in ('diagnosed_q','sphere_center'))
+
+
+def test_jimu_execution_gate_failure_is_distinct_from_observation_and_exports_no_raw_error(tmp_path):
+    path=tmp_path/'contact.jsonl'
+    path.write_text(json.dumps({'event':'jimu_release_execution_audit','execution_guard':True,
+        'passed':False,'state_unchanged':True,'error_type':'CuroboOnlyUnsupported',
+        'error':'private path','q_path':[[1]*7],'return_world_exempt_links':[]}))
+    row=event_summary(path,bare=True)
+    assert row['release_execution_observations']==[]
+    audit=row['jimu_release_execution_audits'][0]
+    assert audit['execution_guard'] and not audit['passed'] and audit['state_unchanged']
+    assert audit['return_world_exempt_links']==[]
+    assert all(key not in json.dumps(audit) for key in ('private','q_path'))

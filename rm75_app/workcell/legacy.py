@@ -246,6 +246,9 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
                 from .jimu_return_diagnostics import install_return_diagnostics,install_release_execution_observer
                 install_return_diagnostics(module.portable,
                     lambda row:events.emit('contact_audit',evidence=row))
+                from .jimu_release_execution import install_release_execution_guard
+                install_release_execution_guard(module.portable,
+                    lambda row:events.emit('contact_audit',evidence=row))
                 install_release_execution_observer(module.portable,
                     lambda row:events.emit('contact_audit',evidence=row),synchronize=True)
         elif policy=='strict':
@@ -281,6 +284,7 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
                 'contact_policy':policy,'clearance_path_audits':clearance_audits,
                 'clearance_selection_audits':getattr(direct,'_clearance_selection_audits',[]),
                 'independent_clearance_execution_audit_observed':bool(clearance_audits),
+                'jimu_release_execution_audits':getattr(direct,'_jimu_release_execution_audits',[]),
                 'loaded_mplib_modules':[n for n in sys.modules if n=='mplib' or n.startswith('mplib.')],
                 'original_algorithms_preserved':True,
                 'note':'Normal process return is not proof of a real grasp or magnetic connection'}

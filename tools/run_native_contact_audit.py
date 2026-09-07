@@ -94,6 +94,8 @@ def main():
                 guard_jimu_near_ik(portable,emit)
                 from rm75_app.workcell.jimu_return_diagnostics import install_return_diagnostics,install_release_execution_observer
                 install_return_diagnostics(portable,emit)
+                from rm75_app.workcell.jimu_release_execution import install_release_execution_guard
+                install_release_execution_guard(portable,emit)
                 install_release_execution_observer(portable,emit,synchronize=True)
             else:
                 install_contact_audit(direct,emit,strict=not args.compatibility_audit,
@@ -117,6 +119,7 @@ def main():
             # Portable Jimu replaces the direct dry-run installer. Native
             # release/return markers are NOT an independent execution audit.
             report['independent_clearance_execution_audit_observed']=bool(report.get('clearance_path_audits'))
+            report['jimu_release_execution_audits']=getattr(direct,'_jimu_release_execution_audits',[])
             report['transport_path_audits']=[{k:row.get(k) for k in
                 ('step_id','samples','payload_spheres','world_exempt_links','scene_fingerprint')}
                 for row in rows if row.get('event')=='transport_full_world_audit']

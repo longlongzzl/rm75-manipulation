@@ -1,5 +1,7 @@
 # Codex 三场景本地验证回传 — 2026-09-07
 
+2026-09-08 最新续报：[Jimu 分段释放执行门与三次 GPU 回归](CODEX_THREE_SCENE_RELEASE_GATE_20260908.md)：全量 676 passed / three_scene 354 passed；四墙 4/4、默认屋顶 12/12、完整 builder 8/12；24 次释放/返回分段 gate 通过，返回无豁免。三条非真机链尚未全部关闭。
+
 2026-09-08 最新续报：[Jimu 返回终点、释放模型同步及六次 GPU 诊断/回归](CODEX_THREE_SCENE_RETURN_STATE_20260908.md)：全量 652 passed / three_scene 330 passed；完整原任务仍 8/12、final=False，三条非真机链未全部关闭。以下链接和正文保留为历史结果。
 
 最新补充：[释放路径检查、原 Jimu 三文件闭包、PushT 六次 GPU 与执行前门禁](CODEX_THREE_SCENE_RELEASE_CACHE_20260908.md)；前轮：[原生输入与 IK 碰撞修复、PushT 快慢 GPU 复测](CODEX_THREE_SCENE_NATIVE_GAPS_20260908.md)、[实际 native worker、完整 builder 前端、搬运审计与 GPU 后 Stop](CODEX_THREE_SCENE_CLOSEOUT_FOLLOWUP_20260908.md)、[PushT GPU 完整链、PickPlace 固定回归、Jimu 深度恢复](CODEX_THREE_SCENE_NOMOTION_20260907.md)、[PickPlace 多物体与 PushT 实际 GPU 回传](CODEX_PICKPLACE_PUSHT_LOCAL_20260907.md)、[Jimu 相机 RRTrack 与 PickPlace 退让回传](CODEX_JIMU_RRTRACK_AND_CLEARANCE_20260907.md)。下文为历史轮次，勿将其旧计数当作最新结果。
