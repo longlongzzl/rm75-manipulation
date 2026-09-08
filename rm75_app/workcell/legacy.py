@@ -160,6 +160,10 @@ def build_native_argv(module,spec,profile,run_dir,root,*,frozen_contract=None):
                 # Retain all names across same-cycle source retries.
                 add('--tracked-scene-object-names',list(contract['names']))
             else:add('--sam6d-fixed-scene-result-file',str(fixed))
+    if profile.get(spec['task'],{}).get('record_sim_video') is True:
+        from .sim_failure_video import require_sim
+        require_sim(spec,profile)
+        add('--dry-run-motion-window-scale',1.0)
     add('--render-mode',profile.get(spec['task'],{}).get('render_mode','human'),required=False)
     parsed=parser.parse_args(options)
     if bool(getattr(parsed,'execute_real',False)) != (mode=='real'):
@@ -288,6 +292,12 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
             adapters.callback(install_focused(direct,RM75CuRoboPlanner,
                 lambda row:events.emit('contact_audit',evidence=row),
                 requested_source=spec['parameters']['object_name']))
+        if profile.get(spec['task'],{}).get('record_sim_video') is True:
+            from .sim_failure_video import install as install_video, require_sim
+            require_sim(spec,profile)
+            adapters.callback(install_video(direct,run_dir/'sim_video',
+                requested_source=spec['parameters']['object_name'] if spec['task']=='pickplace' else None,
+                portable=module.portable if spec['task']=='magnetic' else None))
         sys.argv=[str(root/entrypoint),*argv]
         from .native_outcome import NativeOutcomeCapture
         captured=NativeOutcomeCapture(sys.stdout)

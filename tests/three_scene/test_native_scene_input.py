@@ -53,3 +53,26 @@ def test_browser_cannot_choose_native_entry_or_input_format(profile):
     for key in ('fixed_scene_format','entrypoint'):
         with pytest.raises(ValueError):validate_spec({'task':'pickplace','mode':'sim',
             'parameters':{'object_name':'gluestick',key:'native_world'}},profile)
+
+
+def test_recording_only_adds_original_sim_timing_option(tmp_path):
+    pose=[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
+    scene=tmp_path/'frozen.json'
+    scene.write_text(json.dumps({'objects':{name:{'T_world_obj':pose} for name in ('tennis','desk','bi')}}))
+    def parser():
+        p=argparse.ArgumentParser()
+        p.add_argument('--auto-execute',action='store_true')
+        p.add_argument('--skip-foundationpose',action='store_true')
+        p.add_argument('--object-name');p.add_argument('--fixed-scene-pose-file')
+        p.add_argument('--tracked-scene-object-names',nargs='*')
+        p.add_argument('--dry-run-motion-window-scale',type=float,default=0.)
+        return p
+    spec={'task':'pickplace','mode':'sim','parameters':{'object_name':'tennis'}}
+    profile={'pickplace':{'fixed_scene_format':'native_world','fixed_scene':str(scene)}}
+    module=NS(build_arg_parser=parser)
+    original=build_native_argv(module,spec,profile,tmp_path,tmp_path)
+    profile['pickplace']['record_sim_video']=True
+    recorded=build_native_argv(module,spec,profile,tmp_path,tmp_path)
+    assert recorded==original+['--dry-run-motion-window-scale','1.0']
+    assert parser().parse_args(recorded).tracked_scene_object_names==['bi','desk','tennis']
+    assert '--execute-real' not in recorded

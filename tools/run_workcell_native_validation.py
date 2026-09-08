@@ -76,6 +76,8 @@ def main():
         help='Opt-in read-only first roof IK batch per original phase/source; no extra solve')
     parser.add_argument('--audit-current-table-failures',action='store_true',
         help='Read-only failed lift / already-generated tennis reverse path; no new solve or selection')
+    parser.add_argument('--record-sim-video',action='store_true',
+        help='Record original SIM motion windows at scale 1; adds render time, never real-time qualification')
     inputs=parser.add_mutually_exclusive_group()
     inputs.add_argument('--fixed-sam6d',type=Path)
     inputs.add_argument('--fixed-world',type=Path,help='Original T_world_obj scene; PickPlace SIM direct entry only')
@@ -123,6 +125,7 @@ def main():
     section=profile[args.task]
     if args.audit_roof_ik:section['audit_roof_ik']=True
     if args.audit_current_table_failures:section['audit_current_table_failures']=True
+    if args.record_sim_video:section['record_sim_video']=True
     section.update(python=str(Path(sys.executable).resolve()),render_mode='none',fixed_scene=str(fixed),
         fixed_scene_format='native_world' if args.fixed_world else 'sam6d',
         simulation_contact_policy='transport_world_checked_compatibility')
@@ -168,7 +171,9 @@ def main():
             diagnostic=next((row.get('evidence',{}) for row in state.get('events',[])
                 if row.get('kind')=='contact_audit' and row.get('evidence',{}).get('event')=='jimu_read_only_collision_diagnostic'
                 and row['evidence'].get('geometry_detail_recorded')),None)
-            if args.stop_after_collision_diagnostic and diagnostic:
+            video_sealed=(not args.record_sim_video or
+                (service.root/'jobs'/job/'sim_video/recording.json').is_file())
+            if args.stop_after_collision_diagnostic and diagnostic and video_sealed:
                 report['diagnostic_trigger']={k:diagnostic.get(k) for k in ('step_id','status','scene_fingerprint')}
                 report['stop_result']=service.cancel(job);report['stopped_for_validation']=True;break
             return_diag=next((row.get('evidence',{}) for row in state.get('events',[])

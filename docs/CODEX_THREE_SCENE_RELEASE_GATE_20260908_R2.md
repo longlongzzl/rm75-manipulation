@@ -1,5 +1,7 @@
 # Three-scene release gate — 2026-09-08 R2
 
+第 0–11 节保留 `d9f2190` 的原 R2 验收结果；用户随后澄清需要的是**仿真失败录像而非桌面相机视频**，纠正后的独立录像工作见第 12 节，不回填或改写原实验分母。
+
 **NEEDS_REVIEW：本轮无机械臂/夹爪运动，三条 demo 尚未完成验收。** 按 [本轮审阅要求](CHATGPT_REVIEW_CODEX_PUSH_20260908.md) 顺序完成干净 HEAD 离线基线、精确资产恢复、Jimu 三个 GPU 控制实验，再做三个 current-table 请求的有限诊断。没有降低碰撞检查、减少候选/seeds、放宽成功条件或重新设计规划算法。
 
 结果摘要：[机器可读证据及哈希](../benchmarks/unified_scenarios/three_scene_release_gate_20260908_r2_summary.json)。本轮唯一新增结果 MD 为本文；原始轨迹、关节数组、设备标识、图像/视频和大日志仅留本地。
@@ -278,3 +280,79 @@ SDK connection/preflight、关节反馈/顺序/单位、真实 Stop API、夹爪
 2. Gluestick 邻近刷子 collider 与 hongshupian payload/base 是否有可提供的真实尺寸/标定证据；没有之前不缩模型。
 3. Tennis 已有 reverse 不满足单调性、fresh 失败；若继续，需要单独审阅安全的后续路径方案，不能把容差放宽作为修复。
 4. PushT 最终使用闭合夹爪还是专用推头，以及对应测量/观察 profile；多实例 Jimu 测试需在 D435 视野中放至少 4 块同类片并安排一次临时遮挡。
+
+## 12. 用户澄清后的仿真失败录像（非新的发布验收）
+
+先前保存桌面视频是对用户意思的误解，不能帮助检查上述仿真失败。本节从 `d9f21906e4b5b528c32b492c8053d32d53fca8fd` + 新的显式录制开关出发，交付 PickPlace/Jimu native SIM 画面，以及 PushT 已保存 GPU 工具碰撞证据的离线可视化。三者表示方式不同，不能统称完整执行轨迹。**没有再次采集真实相机，没有机械臂/夹爪或 SDK 操作。**
+
+### 实际交付视频
+
+视频根目录（V）：`runtime_data/three_scene/sim_failure_video_20260908/`，仅本地保存，不上传 Git。
+
+| 视频 | 已核验规格 | 重点位置 | 真实含义 |
+| --- | --- | --- | --- |
+| `V/tennis_failure.mp4` | H.264，1024×600，10 fps，224 帧，22.4 s | 18.4–22.4 s | current-table Tennis 原 SIM 的放置与释放后退让拒绝；原 motion-window 之外有端点跳转，不是完整物理连续录像 |
+| `V/jimu_failure.mp4` | H.264，1024×600，10 fps，906 帧，90.6 s | 84.6–90.6 s；最后 4 s 为静态候选 | 原 builder 已接受路径的运动学回放，以及 front_wall 搬运起点被拒时的候选静态检查 |
+| `V/pusht_failure.mp4` | H.264，1280×600，10 fps，248 帧，24.8 s | 8–12 s：baseline；20.8–24.8 s：rotated_orthogonal | 两个历史 synthetic 失败案例的原碰撞球与名义 TCP 采样可视化；不是已通过 IK 的机械臂轨迹 |
+
+三片均通过 ffprobe 与整片 `ffmpeg -v error -i <video> -f null -` 解码验证；人工查看了 Tennis 18/20 s、Jimu 30/89 s，以及 PushT 两个首次碰撞采样的关键帧。Tennis/Jimu 保留全景与 active-object 近景；PushT 保留斜视和侧面细节。字幕来自对应原始证据，不是肉眼测量。
+
+- Tennis：仍为 worker FAIL / `frozen_world_validation_failed`。实际原退让检查在样本 1 的接触深度由 `0.004987516 m` 加深到 `0.005123030 m`，即约 **0.135514 mm**。被拒退让没有执行；视频末尾显示最后接受的 SIM 状态，不能从 native `final=True` 推导任务成功。
+- Jimu：到第 4 件 `front_wall`，原 after-lift transport 起点为 `INVALID_START_STATE_WORLD_COLLISION`。首个只读 native 非零 link 是 `gripper_Right_Support_Link`，cost 约 5.511379，**不是米**；确切 mesh 障碍配对仍未证实。记录诊断后受控取消，不继续完整 builder，也不把 3 个成功 cycle marker 写成 3/3 验收。
+- Jimu 最后 4 秒是**静态被拒机器人姿态**：来自原 `diagnosed_q`，只临时设置虚拟 articulation 的 qpos 用于渲染；没有路径插值/物理步进/solver/执行调用，随后恢复原 qpos/qvel。场景物体保持当时 SIM 位姿，**没有伪造目标已经被抓住后的物体姿态**。此视图仅供看姿态/邻接关系，不能认证精确碰撞配对或 payload 动态。
+- GPU 计算等待被省略；固定 10 fps 和原路径播放（部分被放慢）不是 wall-clock、实时跟踪、碰撞连续性或物理时序资格化。
+
+### 录制尝试全部保留
+
+| 本地 run | Worker / 运行时长 | 录像结果 |
+| --- | --- | --- |
+| `tennis_v1` | FAIL，41.066 s；请求源仍失败 | 224 帧，完整录制元数据，无录制错误；只录 requested tennis，不录 fallback/后台预取 |
+| `jimu_first_failure_v1` | 诊断后取消，81.468 s；2 个成功 cycle marker | 第一版只截到阶段状态，85 帧/8.5 s；取消前未完成 recorder 元数据封装，不作为连续失败过程交付 |
+| `jimu_first_failure_v2` | 诊断后取消，130.737 s；3 个成功 marker | 866 帧/86.6 s；补录原安全门已接受的路径，失败候选未显示，保留本地 |
+| `jimu_first_failure_v3` | 诊断后取消，132.937 s；3 个成功 marker | 最终 906 帧/90.6 s，完整元数据、无录制错误；额外 40 帧静态被拒姿态，作为交付版本 |
+
+三个 Jimu 运行均是预先声明的**首次诊断限次录制**，不是完整 12 件任务的新通过/失败矩阵；录像播放时序也不同于 R2 benchmark。原任务三文件和 start 文档前后 unchanged=true。原 7/12 发布阻塞以及所有中间失败保留。
+
+本节没有重跑 gluestick/hongshupian 或 PushT GPU 规划。前两者的原始失败证据仍在第 5 节；PushT 继续停在真实工具 profile 缺失，下面只是回放已经存在的失败几何证据，不是新增完整链验收。
+
+### PushT 补录：原碰撞证据，不补造失败轨迹
+
+用户追问 PushT 为什么没有视频后补齐。此前按审阅停止 synthetic 调参、没有新的 PushT 运行，不能成为遗漏已有失败证据可视化的理由。但原失败 result 没有保存完整关节路径，不能生成假冒的整臂运动。
+
+- 输入为 `runtime_data/three_scene/pickplace_pusht_followup_20260908/gpu_{baseline,rotated_orthogonal}/input.json`、同目录原 `result.json`，以及 `runtime_data/three_scene/pusht_envelope_20260908/envelope_v1/{baseline,rotated_orthogonal}.json`。来源和历史 GPU 查询边界见 [工具包络诊断](CODEX_THREE_SCENE_PUSHT_ENVELOPE_20260908.md)。
+- `tools/render_pusht_failure_video.py` 核对原 input SHA、case/motion/config/push、no-hardware/未认证标志、原 GPU 诊断完整性和失败采样。使用原 `_scene` 构造全部 cuboid，再用原球体半径/偏置逐样本复算 sphere-box contacts，要求与已保存 GPU/CPU 一致证据完全匹配。
+- SAPIEN 只渲染原 **38 个夹爪碰撞球**、T 两个 cuboid 和原桌面。没有 arm mesh/关节解，不能据图认证 arm/self/IK；没有 physics step、求解器调用、真实设备或新 GPU 规划。没有更改 gap、接触点、姿态、半径、世界物体或允许接触阶段。
+- 每个原名义 TCP 采样显示 0.8 s，首个失败点停留 4 s，之后停止；不插值/外推，也不把离散采样称作实时轨迹。片中持续标注 `HISTORICAL SYNTHETIC FIXTURE`、`NOT an IK / executed robot trajectory`、`hardware profile NOT qualified`；蓝球为原碰撞模型，红球为该点与原世界实际重叠的球。
+- baseline 首次 overlap **10/16**：`gripper_Right_Support_Link / right_pad` ↔ `pusht_target_0`，最大 **4.800047 mm**；rotated_orthogonal 首次 **11/16**：`gripper_Left_Support_Link` ↔ 同一目标 collider，最大 **3.049097 mm**。各自与原 GPU `cartesian_ik_failed` 采样编号相符，不代表真实夹爪已经发生接触。
+- 保留所有渲染尝试：baseline v1 在相机姿态类型接口处报错，未生成 MP4；baseline v2 / rotated_orthogonal v1 完整但顶视被底座球遮挡，改用侧面相机后交付 baseline v3（120 帧）与 rotated_orthogonal v2（128 帧），合并为上述 24.8 s 视频。只是渲染视角修正，没有重算/修改 fixture，失败结果和历史规划分母不变。
+
+复现方式：对上述每个 case 调用 `python tools/render_pusht_failure_video.py --input <原 input.json> --envelope <原 envelope.json> --result <原 result.json> --output <新的本地目录>`，使用 foundationpose310/SAPIEN，9G/512M 内存限制、OMP_NUM_THREADS=2，串行运行。输出目录必须不存在；不覆盖原始证据。
+
+### 实现、复跑与验证
+
+- `tools/run_workcell_native_validation.py --record-sim-video` 是显式选择，默认关闭；只允许 frozen PickPlace/Jimu SIM。原 argv 仅增 `--dry-run-motion-window-scale 1.0`；候选、seeds、成功条件、world/self/payload、原任务几何和真机权限不变。
+- 使用第 5/6 节的相同 frozen 输入和 GPU 内存限制，分别追加 `--record-sim-video`；Jimu 追加 `--stop-after-collision-diagnostic`，输出为表中独立目录。最后两次 Jimu 在录制元数据封装后才执行已声明的 SIM 取消，避免把半封装文件当成成片。
+- `sim_failure_video.py` 捕获原 direct motion-window 帧；Jimu 保留其独立原执行入口，在原安全门返回成功且原终点匹配时，使用同一 native player 做已接受路径的运动学渲染，恢复原终点。不是新的轨迹规划或第二次物理测试，片中标为 `accepted-path replay`。
+- 静态被拒配置检查不调用会同步 planner/attachments 的 native helper，只设置并恢复虚拟 articulation；从未执行被拒路径。没有隐藏世界碰撞体、缩小几何或更改任何碰撞规则来让片子好看。
+- 默认不录制、SIM-only/固定输入拒绝、排除预取/替代源、原返回值/失败不变、只有原成功路径可回放、静态 qpos/qvel 恢复均有单测。
+- 补 PushT 后最终 `compileall` PASS；完整 `tests/three_scene` **602 passed，17.62 s**；完整 `tests` **924 passed，36.55 s**，1 条原 trimesh warning。新增 14 项 PushT 视频契约测试覆盖原几何/输入不变、禁止 live/硬件/未验证证据、拒绝不匹配碰撞/失败编号、停止于首次失败且不补造轨迹。较早的 907/909/910 项测试日志保留；首次新增单测因 fixture 的 tuple/JSON list 比较不一致为 1 failed/13 passed，修正测试序列化后 14 passed，未放宽实际输入检查。
+- snapshot verify **809 项 PASS**。本轮对旧仓库执行的操作是只读；再次 status 审计 SHA 为 `50c216317a3a41b8eeb023f0a1911d552a2b6ba412ee2489c348f3000e1cc2f5`，与第 1 节原 R2 的 `15fd1a…` 不同，不能声称本节前后全仓状态相同。当前发现旧 gripper 模型目录下 `docs/asserts/001.png / 002.png / 003.png` 为 untracked（文件 mtime 均为 2026-01-31）；仅去除该目录的 status 记录也不能恢复旧 hash。本节未重做全量 dirty diff，不猜测变化来源、不擅自纳入/丢弃/清理；原 Jimu task/start 文档逐次 unchanged 标志仍为 true，已批准 snapshot 字节不变。
+- 新增/修改范围：录制模块、legacy 的 opt-in 接入、native validation CLI/已声明取消的封装等待、PushT 独立离线渲染工具、对应测试及本文。视频/截图/逐帧元数据/raw stdout 不纳入提交。
+
+### 可追溯哈希
+
+| 本地证据 | SHA256 |
+| --- | --- |
+| 交付 Tennis MP4 | `83e98cb0c386b06522f8924188f47b20f43aa860ce501c9ff6f9a6dcc029c2e2` |
+| Tennis 本次 result JSON | `b02fd940227d22fdfcb84cd037179fdfbf26810b38d4d28340f0e22784f865ee` |
+| Tennis 原录制 metadata JSON | `d9e388f7702b4a0e910ae4b8f65bbccbb77a3fa7d4312bfc10bd35325548c193` |
+| 交付 Jimu MP4 | `8621397e6c2a42a5d1d5527df0368ff6d33af583767189591451a7299b64ce37` |
+| Jimu v3 result JSON | `6a1c6eb441ad240e3371143dfa0c5631195b82bdba5ab99a89c5c45f5f7e1608` |
+| Jimu v3 原录制 metadata JSON | `7003131df4f4bebc254d41b1bc739fd40800047663cb89502957c756f8cc679e` |
+| 交付 PushT MP4 | `3e07e1e7ff57d9a6c2b7758cdde8b65e9473b2f435f4e25167fe7608e85ef780` |
+| PushT baseline v3 metadata | `69c1483116a6df135d3939aaef4984387799b5ff755d79065a4767618180984c` |
+| PushT rotated_orthogonal v2 metadata | `980890f3486628a590837cf371ebcc423e07f66851294525b397be7fb148fab1` |
+| 最终 full tests log | `c43b5276096b3b5ce3bfd8363e90f4d2b2856892dba9bd686b825ece671c1656` |
+| 最终 three_scene log | `e9f41aa162107bfd5e5e247666628b3ee135541759730e72cf25b739110533d1` |
+
+录制工具与本节说明随本分支提交并 push；提交 SHA 在交付消息给出。等用户查看这三条链的失败证据再讨论下一步，**不自动放宽碰撞或进入真机运动**。
