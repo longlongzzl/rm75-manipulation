@@ -1,0 +1,600 @@
+{
+  "assets": [
+    {
+      "current_scales": [
+        0.13794992113145285,
+        0.13794992113145285
+      ],
+      "nonpath_spec_fields_equal": true,
+      "object": "bi",
+      "original_scales": [
+        0.13794992113145285,
+        0.13794992113145285
+      ],
+      "paths": [
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/pen.glb",
+          "current_sha256": "717a9c1d415794bcd17d06d8d21592ad023282ede3bf1cc68673f292dcc80652",
+          "kind": "mesh_file",
+          "old_relative_path": "pick_jiaobang/meshs/pen.glb",
+          "old_sha256": "717a9c1d415794bcd17d06d8d21592ad023282ede3bf1cc68673f292dcc80652"
+        },
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/pen.glb",
+          "current_sha256": "717a9c1d415794bcd17d06d8d21592ad023282ede3bf1cc68673f292dcc80652",
+          "kind": "sim_asset_file",
+          "old_relative_path": "pick_jiaobang/meshs/pen.glb",
+          "old_sha256": "717a9c1d415794bcd17d06d8d21592ad023282ede3bf1cc68673f292dcc80652"
+        }
+      ],
+      "scales_equal": true
+    },
+    {
+      "current_scales": [
+        0.09494588084791672,
+        0.09494584133019865
+      ],
+      "nonpath_spec_fields_equal": true,
+      "object": "bitong",
+      "original_scales": [
+        0.09494588084791672,
+        0.09494584133019865
+      ],
+      "paths": [
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/holder_85x95.glb",
+          "current_sha256": "c62151d11a1c0031b2913222d5c8218db57a494d27f5db35204593a9bc7a2d7f",
+          "kind": "mesh_file",
+          "old_relative_path": "pick_jiaobang/meshs/holder_85x95.glb",
+          "old_sha256": "c62151d11a1c0031b2913222d5c8218db57a494d27f5db35204593a9bc7a2d7f"
+        },
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/holder_sim_85x95.glb",
+          "current_sha256": "d41e0b4c671dda71598096c10a645f2c2c97e97312d830dd5bceed872e4cd2d0",
+          "kind": "sim_asset_file",
+          "old_relative_path": "pick_jiaobang/meshs/holder_sim_85x95.glb",
+          "old_sha256": "d41e0b4c671dda71598096c10a645f2c2c97e97312d830dd5bceed872e4cd2d0"
+        }
+      ],
+      "scales_equal": true
+    },
+    {
+      "current_scales": [
+        0.2101038420831295,
+        0.9999999999999999
+      ],
+      "nonpath_spec_fields_equal": true,
+      "object": "carriot",
+      "original_scales": [
+        0.2101038420831295,
+        0.9999999999999999
+      ],
+      "paths": [
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/carriot.glb",
+          "current_sha256": "9530b5da1c16c73a9d5f4e8f29cbe6f8900d94540292df25b516229aad7b9a65",
+          "kind": "mesh_file",
+          "old_relative_path": "pick_jiaobang/meshs/carriot.glb",
+          "old_sha256": "9530b5da1c16c73a9d5f4e8f29cbe6f8900d94540292df25b516229aad7b9a65"
+        },
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/carriot_sim.glb",
+          "current_sha256": "c97f909b565f43206e12f3780f27c3d0f7c8f757c43a30fafcf1e2d7541148f0",
+          "kind": "sim_asset_file",
+          "old_relative_path": "pick_jiaobang/meshs/carriot_sim.glb",
+          "old_sha256": "c97f909b565f43206e12f3780f27c3d0f7c8f757c43a30fafcf1e2d7541148f0"
+        }
+      ],
+      "scales_equal": true
+    },
+    {
+      "current_scales": [
+        0.429799641192331,
+        1
+      ],
+      "nonpath_spec_fields_equal": true,
+      "object": "desk",
+      "original_scales": [
+        0.429799641192331,
+        1
+      ],
+      "paths": [
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/desk.glb",
+          "current_sha256": "857cb2acfd5aa5a504723a760bfe293290158e3a524c38ce31148cd37ce79b6e",
+          "kind": "mesh_file",
+          "old_relative_path": "pick_jiaobang/meshs/desk.glb",
+          "old_sha256": "857cb2acfd5aa5a504723a760bfe293290158e3a524c38ce31148cd37ce79b6e"
+        },
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/desk_sim.glb",
+          "current_sha256": "27f055f1165d1a5b2df8168e0bdfdff7017430153bf85cbbfa5c99c3e4c4620b",
+          "kind": "sim_asset_file",
+          "old_relative_path": "pick_jiaobang/meshs/desk_sim.glb",
+          "old_sha256": "27f055f1165d1a5b2df8168e0bdfdff7017430153bf85cbbfa5c99c3e4c4620b"
+        }
+      ],
+      "scales_equal": true
+    },
+    {
+      "current_scales": [
+        0.11000683886605127,
+        1.0000000000000002
+      ],
+      "nonpath_spec_fields_equal": true,
+      "object": "gluestick",
+      "original_scales": [
+        0.11000683886605127,
+        1.0000000000000002
+      ],
+      "paths": [
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/gluestick.glb",
+          "current_sha256": "f399210d01a5bf91eb059ea2a20cbff0d112ff1c52fca9fec9c7b8698e1bb19f",
+          "kind": "mesh_file",
+          "old_relative_path": "pick_jiaobang/meshs/gluestick.glb",
+          "old_sha256": "f399210d01a5bf91eb059ea2a20cbff0d112ff1c52fca9fec9c7b8698e1bb19f"
+        },
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/gluestick_sim.glb",
+          "current_sha256": "d13f564601e6b9b1f7c4619bb7d75a6a7013fc7dde05281e8b04ec50078d1bc8",
+          "kind": "sim_asset_file",
+          "old_relative_path": "pick_jiaobang/meshs/gluestick_sim.glb",
+          "old_sha256": "d13f564601e6b9b1f7c4619bb7d75a6a7013fc7dde05281e8b04ec50078d1bc8"
+        }
+      ],
+      "scales_equal": true
+    },
+    {
+      "current_scales": [
+        0.1498806294816057,
+        0.1498806294816057
+      ],
+      "nonpath_spec_fields_equal": true,
+      "object": "hongshupian",
+      "original_scales": [
+        0.1498806294816057,
+        0.1498806294816057
+      ],
+      "paths": [
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/hongshupian.glb",
+          "current_sha256": "695f93e28f0a6611410a13de961bb4a0bd3ddaabcf74811d0fbfcfece9dc4754",
+          "kind": "mesh_file",
+          "old_relative_path": "pick_jiaobang/meshs/hongshupian.glb",
+          "old_sha256": "695f93e28f0a6611410a13de961bb4a0bd3ddaabcf74811d0fbfcfece9dc4754"
+        },
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/hongshupian.glb",
+          "current_sha256": "695f93e28f0a6611410a13de961bb4a0bd3ddaabcf74811d0fbfcfece9dc4754",
+          "kind": "sim_asset_file",
+          "old_relative_path": "pick_jiaobang/meshs/hongshupian.glb",
+          "old_sha256": "695f93e28f0a6611410a13de961bb4a0bd3ddaabcf74811d0fbfcfece9dc4754"
+        }
+      ],
+      "scales_equal": true
+    },
+    {
+      "current_scales": [
+        0.06002345345909304,
+        0.06002345345909304
+      ],
+      "nonpath_spec_fields_equal": true,
+      "object": "lvmukuai",
+      "original_scales": [
+        0.06002345345909304,
+        0.06002345345909304
+      ],
+      "paths": [
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/lvmukuai.glb",
+          "current_sha256": "d5a86f3123e3ff6e99e8d019431cc2580647d94484607092d1759973e61d7258",
+          "kind": "mesh_file",
+          "old_relative_path": "pick_jiaobang/meshs/lvmukuai.glb",
+          "old_sha256": "d5a86f3123e3ff6e99e8d019431cc2580647d94484607092d1759973e61d7258"
+        },
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/lvmukuai.glb",
+          "current_sha256": "d5a86f3123e3ff6e99e8d019431cc2580647d94484607092d1759973e61d7258",
+          "kind": "sim_asset_file",
+          "old_relative_path": "pick_jiaobang/meshs/lvmukuai.glb",
+          "old_sha256": "d5a86f3123e3ff6e99e8d019431cc2580647d94484607092d1759973e61d7258"
+        }
+      ],
+      "scales_equal": true
+    },
+    {
+      "current_scales": [
+        0.10568840840016398,
+        0.10568840840016398
+      ],
+      "nonpath_spec_fields_equal": true,
+      "object": "shuazi",
+      "original_scales": [
+        0.10568840840016398,
+        0.10568840840016398
+      ],
+      "paths": [
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/shuazi.glb",
+          "current_sha256": "520e8353da429cd1005433b6eb86efed50b76e0419619639f84025b9667129c5",
+          "kind": "mesh_file",
+          "old_relative_path": "pick_jiaobang/meshs/shuazi.glb",
+          "old_sha256": "520e8353da429cd1005433b6eb86efed50b76e0419619639f84025b9667129c5"
+        },
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/shuazi.glb",
+          "current_sha256": "520e8353da429cd1005433b6eb86efed50b76e0419619639f84025b9667129c5",
+          "kind": "sim_asset_file",
+          "old_relative_path": "pick_jiaobang/meshs/shuazi.glb",
+          "old_sha256": "520e8353da429cd1005433b6eb86efed50b76e0419619639f84025b9667129c5"
+        }
+      ],
+      "scales_equal": true
+    },
+    {
+      "current_scales": [
+        0.07000374486214005,
+        1
+      ],
+      "nonpath_spec_fields_equal": true,
+      "object": "tennis",
+      "original_scales": [
+        0.07000374486214005,
+        1
+      ],
+      "paths": [
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/tennis.glb",
+          "current_sha256": "10b61d7a44d507694d6e374fd63d03f5d50e7209d72047d4673e5fed37a5a0d2",
+          "kind": "mesh_file",
+          "old_relative_path": "pick_jiaobang/meshs/tennis.glb",
+          "old_sha256": "10b61d7a44d507694d6e374fd63d03f5d50e7209d72047d4673e5fed37a5a0d2"
+        },
+        {
+          "bytes_equal": true,
+          "current_relative_path": "pick_jiaobang/meshs/tennis_sim.glb",
+          "current_sha256": "45fcba2474d2386d8990fcf97fa97f24f7f7e5297f817be4dee0b15f6a7fafb2",
+          "kind": "sim_asset_file",
+          "old_relative_path": "pick_jiaobang/meshs/tennis_sim.glb",
+          "old_sha256": "45fcba2474d2386d8990fcf97fa97f24f7f7e5297f817be4dee0b15f6a7fafb2"
+        }
+      ],
+      "scales_equal": true
+    }
+  ],
+  "audit_source_sha256": "0df9369c021aae5f8bbb4d9cc41f0df75677baca177219d173ede1561b04e702",
+  "base_self_buffer_m": 0.04,
+  "buffer_provenance_fixed_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+  "camera_captured": false,
+  "collision_config_sha256": "5588367d1319a2a442a87d214f88c6567963a4641e69d114da00c51220b9b939",
+  "collision_policy_source_sha256": "a09f843d43a96e3a66b18e5114696889639c16837bb37dba1cb1ffd4aae1f023",
+  "execute_real": false,
+  "fixed_source_buffers_equal": true,
+  "hardware_connected": false,
+  "migration_performed": false,
+  "new_gpu_run": false,
+  "notes": [
+    "No model, target, candidate, seed, sphere, buffer, or ignore pair was changed.",
+    "Margin decomposition is derived from saved GPU overlap and unchanged configuration, not a new validity query.",
+    "Gap without LINK self buffers still includes any sphere inflation already in the native sphere model.",
+    "Positive sphere gap is not clearance from physical meshes or permission to move; original failures remain failures.",
+    "Only object data equivalence is asserted for scenes with relocated base_scene_file provenance.",
+    "This audit does not establish the complete dynamic dependency closure, task success, or hardware qualification.",
+    "Historical single-object native runs initially loaded only desk plus virtual obstacles despite nine objects in the JSON; their passes are not full-frozen-world qualification. See the separate GPU follow-up."
+  ],
+  "object_specs_sha256": "697d8555bd7d4a565b9db48b7799499eaeee9cc88e492584db4c8112adcf620d",
+  "old_status_sha256_after": "15fd1ac40352579a761b4134244c2a74158dd723b2b146c6a39ccf458fe20968",
+  "old_status_sha256_before": "15fd1ac40352579a761b4134244c2a74158dd723b2b146c6a39ccf458fe20968",
+  "original_buffers_preserved": true,
+  "payload_self_buffer_m": 0,
+  "saved_lift_margin_analysis": [
+    {
+      "input_sha256": "673da8b1138223542b86ec6f1b098e739b011feaae987dfb64f0b31a3ee13248",
+      "rows": [
+        {
+          "collision_model_sha256": "4d4a6cad1444bea5ad922880c8b37f80206106621f41dd3872ff6dee49aaf955",
+          "contacts": [
+            {
+              "enforced_overlap_m": 0.007817606604482275,
+              "gap_without_link_self_buffers_m": 0.032182393395517726,
+              "link_self_buffer_sum_m": 0.04,
+              "original_query_remains_failed": true,
+              "sphere_i": 24,
+              "sphere_j": 0,
+              "underlying_spheres_still_overlap": false
+            }
+          ],
+          "new_collision_query": false,
+          "original_native_success": false,
+          "physical_geometry_qualified": false,
+          "recorded_goal_minus_start_fk_xy_norm_m": 0.0000011453923607156064,
+          "recorded_goal_minus_start_fk_z_m": 0.07998526841402054,
+          "safe_to_execute": false,
+          "source": "gluestick",
+          "state_unchanged": true,
+          "step_id": "joint_start_tcp_up_lift_grasp_direct_top_bias_center_vertical_fast_ik_straight_ik"
+        },
+        {
+          "collision_model_sha256": "3d4f59a864273dc09aa86db24a128f20a3b942f7a2ae128b2bdbc21423794e5c",
+          "contacts": [
+            {
+              "enforced_overlap_m": 0.028974598239865007,
+              "gap_without_link_self_buffers_m": 0.011025401760134994,
+              "link_self_buffer_sum_m": 0.04,
+              "original_query_remains_failed": true,
+              "sphere_i": 19,
+              "sphere_j": 0,
+              "underlying_spheres_still_overlap": false
+            },
+            {
+              "enforced_overlap_m": 0.008170718176343489,
+              "gap_without_link_self_buffers_m": 0.03182928182365651,
+              "link_self_buffer_sum_m": 0.04,
+              "original_query_remains_failed": true,
+              "sphere_i": 20,
+              "sphere_j": 0,
+              "underlying_spheres_still_overlap": false
+            }
+          ],
+          "new_collision_query": false,
+          "original_native_success": false,
+          "physical_geometry_qualified": false,
+          "recorded_goal_minus_start_fk_xy_norm_m": 4.53201124839352e-8,
+          "recorded_goal_minus_start_fk_z_m": 0.07999829947948456,
+          "safe_to_execute": false,
+          "source": "hongshupian",
+          "state_unchanged": true,
+          "step_id": "joint_start_tcp_up_lift_grasp_direct_top_bias_pos2_vertical_axis_2mm_fast_ik_straight_ik"
+        }
+      ]
+    },
+    {
+      "input_sha256": "8243c1fae95ac2a91e2d3141f49e6c2119a0e82d79a9f4f238a6c563b69cc239",
+      "rows": [
+        {
+          "collision_model_sha256": "e7425e55a9710a3bcbb57622aaa0ab008af02f3dd42c4dc0fb883b7a68284461",
+          "contacts": [
+            {
+              "enforced_overlap_m": 0.010607734556773371,
+              "gap_without_link_self_buffers_m": 0.02939226544322663,
+              "link_self_buffer_sum_m": 0.04,
+              "original_query_remains_failed": true,
+              "sphere_i": 19,
+              "sphere_j": 0,
+              "underlying_spheres_still_overlap": false
+            },
+            {
+              "enforced_overlap_m": 0.0010520239424871292,
+              "gap_without_link_self_buffers_m": 0.03894797605751287,
+              "link_self_buffer_sum_m": 0.04,
+              "original_query_remains_failed": true,
+              "sphere_i": 20,
+              "sphere_j": 0,
+              "underlying_spheres_still_overlap": false
+            }
+          ],
+          "new_collision_query": false,
+          "original_native_success": false,
+          "physical_geometry_qualified": false,
+          "recorded_goal_minus_start_fk_xy_norm_m": 6.77511409152105e-7,
+          "recorded_goal_minus_start_fk_z_m": 0.07998728007078171,
+          "safe_to_execute": false,
+          "source": "gluestick",
+          "state_unchanged": true,
+          "step_id": "joint_start_tcp_up_lift_grasp_direct_top_bias_pos14_vertical_axis_14mm_fast_ik_straight_ik"
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "bytes_equal": true,
+      "case": "legacy_gluestick",
+      "changed_generated_metadata_keys": [],
+      "changed_object_names": [],
+      "changed_top_level_keys": [],
+      "current_sha256": "c50649e011f1f11674912c21a75eded51213bd7fe22c052947888d575a6dab0f",
+      "json_equal": true,
+      "object_count_new": 9,
+      "object_count_old": 9,
+      "objects_equal": true,
+      "old_sha256": "c50649e011f1f11674912c21a75eded51213bd7fe22c052947888d575a6dab0f",
+      "provenance_path_only_difference": false,
+      "requested_objects": [
+        "gluestick"
+      ]
+    },
+    {
+      "bytes_equal": true,
+      "case": "current_table_all",
+      "changed_generated_metadata_keys": [],
+      "changed_object_names": [],
+      "changed_top_level_keys": [],
+      "current_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "json_equal": true,
+      "object_count_new": 9,
+      "object_count_old": 9,
+      "objects_equal": true,
+      "old_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "provenance_path_only_difference": false,
+      "requested_objects": [
+        "lvmukuai",
+        "carriot",
+        "shuazi",
+        "hongshupian",
+        "gluestick",
+        "bi",
+        "tennis"
+      ]
+    },
+    {
+      "bytes_equal": false,
+      "case": "gluestick_jitter_00",
+      "changed_generated_metadata_keys": [
+        "base_scene_file"
+      ],
+      "changed_object_names": [],
+      "changed_top_level_keys": [
+        "generated_metadata"
+      ],
+      "current_sha256": "170e200cab8f9ba977c0617f1db4f43cca1420784512388e2d2695dea525bafb",
+      "json_equal": false,
+      "object_count_new": 9,
+      "object_count_old": 9,
+      "objects_equal": true,
+      "old_sha256": "a3ba4c4b9e6f8f09303b198df8090daa3f8dfafdcb18fde845bae68de412e9d7",
+      "provenance_path_only_difference": true,
+      "requested_objects": [
+        "gluestick"
+      ]
+    },
+    {
+      "bytes_equal": false,
+      "case": "gluestick_yaw_00",
+      "changed_generated_metadata_keys": [
+        "base_scene_file"
+      ],
+      "changed_object_names": [],
+      "changed_top_level_keys": [
+        "generated_metadata"
+      ],
+      "current_sha256": "2b8bc34e174e7cb03a449c52fb18ee7a1ce67d1a7a9c1afa41a3013530202c44",
+      "json_equal": false,
+      "object_count_new": 9,
+      "object_count_old": 9,
+      "objects_equal": true,
+      "old_sha256": "0c27f5fd195010153c3da2be2dcce89bf6c08fc6cd075cc60544e78772ce1732",
+      "provenance_path_only_difference": true,
+      "requested_objects": [
+        "gluestick"
+      ]
+    },
+    {
+      "bytes_equal": false,
+      "case": "gluestick_swap_00",
+      "changed_generated_metadata_keys": [
+        "base_scene_file"
+      ],
+      "changed_object_names": [],
+      "changed_top_level_keys": [
+        "generated_metadata"
+      ],
+      "current_sha256": "890c036a9010a0000744156e3dcaad881d729c704875317e3e3fd86a94e4f842",
+      "json_equal": false,
+      "object_count_new": 9,
+      "object_count_old": 9,
+      "objects_equal": true,
+      "old_sha256": "c5c3bff8d6fc44c61d8ffe5f8a0707c5be33dd9612c1881b23f1789b6d2e0c80",
+      "provenance_path_only_difference": true,
+      "requested_objects": [
+        "gluestick"
+      ]
+    }
+  ],
+  "schema": "rm75.pickplace_relocation_audit/v1",
+  "snapshot_verified_files": 807,
+  "task_success": null,
+  "tested_base_commit": "3dce41977c73f360dc7ca30fc74c2319829e9a93",
+  "cpu_checks": {
+    "audit_phase": {
+      "three_scene": {
+        "passed": 497,
+        "warning_count": 1,
+        "elapsed_s": 16.22,
+        "log_sha256": "e1b8af21d3b0b1b16f5a65044fe6ce692ba4b04cf0952f3f3497f2d27ead2c43"
+      },
+      "full": {
+        "passed": 819,
+        "warning_count": 1,
+        "elapsed_s": 32.67,
+        "log_sha256": "72d6b70c58d1f497f1693ceb183fb011afbd63b288cc8aacc65c30365e168494"
+      },
+      "new_audit_tests": 22,
+      "compileall": "PASS"
+    }
+  },
+  "browser_frontend": {
+    "status": "NOT_RUN",
+    "get_for_url_error": "No browser is available",
+    "bootstrap_recovery_browsers_list": [],
+    "standalone_browser_fallback_used": false
+  },
+  "historical_native_initial_world_scope": [
+    {
+      "case": "legacy_gluestick",
+      "log_sha256": "aeffd48a69911edbd0d13b339f5c8540362bf1620eac993200968930efc77965",
+      "frozen_input_object_count": 9,
+      "first_active_source": "gluestick",
+      "observed_initial_non_source_names": [
+        "desk"
+      ],
+      "all_input_objects_cannot_be_inferred_from_world_exempt_links": true
+    },
+    {
+      "case": "gluestick_jitter_00",
+      "log_sha256": "3961d29b153fa6466e8b3ba5f4e63b07c9371163bc42fd15a0c027ea6f52e869",
+      "frozen_input_object_count": 9,
+      "first_active_source": "gluestick",
+      "observed_initial_non_source_names": [
+        "desk"
+      ],
+      "all_input_objects_cannot_be_inferred_from_world_exempt_links": true
+    },
+    {
+      "case": "gluestick_yaw_00",
+      "log_sha256": "5f240e200247432fb9cd924b20029cfcf7dc1a20833f3ac0d2b29f50751acfa1",
+      "frozen_input_object_count": 9,
+      "first_active_source": "gluestick",
+      "observed_initial_non_source_names": [
+        "desk"
+      ],
+      "all_input_objects_cannot_be_inferred_from_world_exempt_links": true
+    },
+    {
+      "case": "gluestick_swap_00",
+      "log_sha256": "1bec6b059c72a56f5a81a4445bd6d18a1f67446e221e4d136691443477657a87",
+      "frozen_input_object_count": 9,
+      "first_active_source": "gluestick",
+      "observed_initial_non_source_names": [
+        "desk"
+      ],
+      "all_input_objects_cannot_be_inferred_from_world_exempt_links": true
+    },
+    {
+      "case": "current_table_all",
+      "log_sha256": "47d379f7b8be67d8f088872fa42df118d46bdb3ca37303e2d35cbadc0a0cbe00",
+      "frozen_input_object_count": 9,
+      "first_active_source": "bi",
+      "observed_initial_non_source_names": [
+        "lvmukuai",
+        "carriot",
+        "shuazi",
+        "hongshupian",
+        "gluestick",
+        "tennis",
+        "bitong",
+        "desk"
+      ],
+      "all_input_objects_cannot_be_inferred_from_world_exempt_links": true
+    }
+  ],
+  "full_frozen_world_gpu_followup": "full_frozen_world_20260908_summary.json"
+}

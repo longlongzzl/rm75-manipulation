@@ -1,5 +1,7 @@
 # 三场景续报：PickPlace 抬升失败现场证据 — 2026-09-08
 
+后续范围澄清：[完整冻结世界与原余量审计](CODEX_THREE_SCENE_PICKPLACE_AUDIT_20260908.md)。下文 payload/base overlap 包含原 `base_link` 40 mm self-collision buffer，不等同于实物网格相交；底座不是夹爪底座。原失败不撤销、buffer 不缩小。旧单胶棒通过仅覆盖当时加载的桌面世界，新的完整九物体世界结果另见该续报。
+
 **NEEDS_REVIEW；三条非真机链尚未全部关闭，Jimu 不是只差真机。** 本轮完成 3 次原 PickPlace cuRobo GPU/SIM 运行：单胶棒正例通过；两次原七物体均为 native 4/7、final=False。确认两个物体的首个失败抬升目标与现有底座碰撞模型冲突，不修改目标、几何或豁免来通过。
 
 按 [回传模板](CODEX_THREE_SCENE_RESULTS_TEMPLATE.md) 填写。机器摘要：[pickplace lift summary](../benchmarks/unified_scenarios/three_scene_pickplace_lift_20260908_summary.json)。逐返回解、完整日志和轨迹仅保留本地 `runtime_data/three_scene/pickplace_lift_20260908/`。

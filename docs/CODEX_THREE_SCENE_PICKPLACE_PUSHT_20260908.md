@@ -1,5 +1,7 @@
 # PickPlace / PushT 无运动验证续报 — 2026-09-08
 
+后续范围澄清：[完整冻结世界 / 新 PushT GPU 续报](CODEX_THREE_SCENE_PICKPLACE_AUDIT_20260908.md)。下文四个单胶棒运行虽读取九物体 JSON，起始实际仅加载 desk 及虚拟障碍；`world_exempt_links=[]` 不证明所有输入物体都在碰撞世界。原 2/5 保留，不外推为九物体完整世界通过。payload/base overlap 的原 40 mm self-buffer 分解亦见该续报，不改原失败或容差。
+
 **NEEDS_REVIEW：本轮可运行的固定输入验证已结束，但三条链尚未全部完成，Jimu 也不是只差真机。** 未修改生产规划算法、候选、seeds、碰撞几何或成功阈值；没有连接机器人 SDK、相机，没有机械臂或夹爪运动。
 
 机器摘要：[本轮结果](../benchmarks/unified_scenarios/pickplace_pusht_followup_20260908_summary.json)。原始日志、逐点轨迹、IK 返回解与失败渲染只留本地 `runtime_data/three_scene/pickplace_pusht_followup_20260908/` 及新 snapshot 的 ignored 运行目录。

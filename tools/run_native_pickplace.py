@@ -28,13 +28,27 @@ FIXED_CASES = {
 }
 
 
-def build_native_argv(case,extensions,*,transport_world_checked=False):
+def frozen_scene_names(case):
+    scene, sources = FIXED_CASES[case]
+    objects = json.loads((ROOT / scene).read_text())['objects']
+    if not isinstance(objects, dict) or not objects or not set(sources) <= set(objects):
+        raise ValueError('invalid fixed scene object registry')
+    return tuple(sorted(objects))
+
+
+def build_native_argv(case,extensions,*,transport_world_checked=False,full_frozen_world=False):
     path=ROOT/'rm75_app/_vendor/working_snapshot/pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py'
     scene,names=FIXED_CASES[case]
     argv=[str(path),'--object-name',names[0],'--skip-foundationpose',
         '--fixed-scene-pose-file',str(ROOT/scene),'--render-mode','none','--auto-execute',
         '--curobo-torch-extensions-dir',str(Path(extensions).resolve())]
     if len(names)>1:argv+=['--cycle-object-names',*names]
+    if full_frozen_world:
+        # Track ALL names across same-cycle retries. Native fixed-scene loading
+        # and _single_scene_sync_obstacles discard the CURRENT active source.
+        # Excluding the initial source here loses it when the retry switches.
+        tracked=list(frozen_scene_names(case))
+        argv+=['--tracked-scene-object-names',*tracked]
     if transport_world_checked:
         # The existing world-only adapter cannot scope captured CUDA graphs.
         # Keep all original IK seeds/candidates, changing execution mode only.
@@ -48,22 +62,31 @@ def main():
     parser.add_argument('--extensions',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--audit-clearance',action='store_true')
+    parser.add_argument('--full-frozen-world',action='store_true',
+        help='Retain every frozen scene object via original CLI; audit effective world coverage')
     parser.add_argument('--audit-lift-ik',action='store_true',
         help='Read-only first failed still-attached lift IK per source; original solver results unchanged')
     parser.add_argument('--transport-world-checked',action='store_true',
         help='SIM only: reuse audited native contact compatibility, fully checking loaded transport')
     parser.add_argument('--case',choices=tuple(FIXED_CASES),default='legacy_gluestick')
     args=parser.parse_args()
+    if args.full_frozen_world and not args.transport_world_checked:
+        parser.error('--full-frozen-world requires --transport-world-checked')
     output=args.output.resolve();output.mkdir(parents=True,exist_ok=True)
+    if any(output.iterdir()):
+        parser.error('--output must be empty; previous evidence is never overwritten or appended')
     root=ROOT/'rm75_app/_vendor/working_snapshot'
     provenance=verify_snapshot(root)
     path=root/'pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py'
     _,names=FIXED_CASES[args.case]
-    argv=build_native_argv(args.case,args.extensions,transport_world_checked=args.transport_world_checked)
+    argv=build_native_argv(args.case,args.extensions,transport_world_checked=args.transport_world_checked,
+                           full_frozen_world=args.full_frozen_world)
     report={'argv':argv,'execute_real':False,'command_success':False,'verified_task_success':None,
             'source_commit':provenance['source_commit'],'planner':'curobo_only',
             'case':args.case,'expected_cycles':len(names),
-            'transport_world_checked_requested':args.transport_world_checked}
+            'transport_world_checked_requested':args.transport_world_checked,
+            'full_frozen_world_requested':args.full_frozen_world}
+    coverage_rows=[];source_outcomes=[]
     contact_rows=[];cleanup=lambda:None
     captured=NativeOutcomeCapture(sys.stdout)
     sys.argv=argv;os.chdir(root);os.environ['LEROBOT_ROOT']=str(root)
@@ -74,6 +97,14 @@ def main():
             module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module
             spec.loader.exec_module(module)
             report['clearance_path_audits']=install(module)
+            if args.full_frozen_world:
+                from rm75_app.workcell.pickplace_world_coverage import install as install_coverage
+                def emit_coverage(row):
+                    coverage_rows.append(row)
+                    with (output/'world_coverage.jsonl').open('a') as stream:
+                        stream.write(json.dumps(row,allow_nan=False)+'\n')
+                # Inner refresh observes the transport adapter's effective args.
+                install_coverage(module,frozen_scene_names(args.case),emit_coverage,source_outcomes.append)
             if args.audit_lift_ik:
                 from rm75_app.workcell.pickplace_lift_diagnostics import install_lift_diagnostics
                 def emit_lift(row):
@@ -120,6 +151,19 @@ def main():
             report['strict_clearance_success']=(report['command_success'] and
                 not captured.clearance_failures and
                 len(report.get('clearance_path_audits',[]))==len(names))
+            if args.full_frozen_world:
+                from rm75_app.workcell.pickplace_world_coverage import full_chain_observed,requested_sources_completed
+                report['native_source_outcomes']=source_outcomes
+                report['frozen_world_coverage']={
+                    'frozen_names':list(frozen_scene_names(args.case)),
+                    'refresh_count':len(coverage_rows),
+                    'transport_refresh_count':sum(row['transport_scope'] for row in coverage_rows),
+                    'rejections':[row for row in coverage_rows if not row['complete']],
+                    'all_sources_transport_observed':full_chain_observed(coverage_rows,names),
+                    'requested_sources_completed':requested_sources_completed(source_outcomes,names)}
+                report['strict_clearance_success']=(report['strict_clearance_success'] and
+                    report['frozen_world_coverage']['all_sources_transport_observed'] and
+                    report['frozen_world_coverage']['requested_sources_completed'])
             report['loaded_mplib_modules']=[n for n in sys.modules if n=='mplib' or n.startswith('mplib.')]
             report['elapsed_s']=time.monotonic()-started
             atomic_json(output/'result.json',report)

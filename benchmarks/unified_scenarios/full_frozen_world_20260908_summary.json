@@ -1,0 +1,1907 @@
+{
+  "schema": "rm75.full_frozen_world_followup/v1",
+  "tested_base_commit": "3dce41977c73f360dc7ca30fc74c2319829e9a93",
+  "execute_real": false,
+  "hardware_connected": false,
+  "camera_captured": false,
+  "raw_artifacts_local_only": true,
+  "verified_physical_success": null,
+  "compileall": "PASS",
+  "cpu_checks": {
+    "v1": {
+      "three_scene_tests": {
+        "summary": "517 passed, 1 warning in 17.40s",
+        "sha256": "40933bfea438371b178d93e900f9af61525ac42145f7f298b15ff2c2abb79414"
+      },
+      "full_tests": {
+        "summary": "839 passed, 1 warning in 37.22s",
+        "sha256": "900fcba3c574f26ed7785f885a663f3fd5afbee5cab32619e162cbc1d9193ae0"
+      }
+    },
+    "v2": {
+      "three_scene_tests": {
+        "summary": "528 passed, 1 warning in 16.45s",
+        "sha256": "9fb461d7fa04396403e312ffe104c3d037285df32712cc8d09787ea58392cd04"
+      },
+      "full_tests": {
+        "summary": "850 passed, 1 warning in 33.90s",
+        "sha256": "12a3d174044d42bbd758e691c2e01309bb52e63a3d35812162cdf549f8e66465"
+      }
+    },
+    "final_v3": {
+      "three_scene_tests": {
+        "summary": "532 passed, 1 warning in 16.82s",
+        "sha256": "74114bd33c7aeccb73aad7448d9aa34e6e4b0a1ba8b9b13ba2cf86e11bc32bec"
+      },
+      "full_tests": {
+        "summary": "854 passed, 1 warning in 34.24s",
+        "sha256": "2dbcc79f3c597de854d6015d5d4a0192b83124e114d43128f3da784cd49bc5b3"
+      }
+    }
+  },
+  "final_source_sha256": {
+    "tools/run_native_pickplace.py": "1a99d05a5f9be635d1d765d91110b79bed53776c6190dfddd1a760b63a029610",
+    "rm75_app/workcell/pickplace_world_coverage.py": "513564f6d5a174e0ac54fb76fbaa24ed3c26f71d319f8eb7006dbe6198aa18d9",
+    "tests/three_scene/test_pickplace_world_coverage.py": "893e0285a3c08e67a5f975dd46e10c95071a80e5ff1215519459a26072c52724",
+    "tests/three_scene/test_native_pickplace_fixed_cases.py": "0ca32f27405a503ecfb1214f5ebfb13728aa0899ff1f80001f7065882b9d3568",
+    "tools/audit_pickplace_relocation.py": "0df9369c021aae5f8bbb4d9cc41f0df75677baca177219d173ede1561b04e702",
+    "tests/three_scene/test_pickplace_relocation_audit.py": "0cf9e98109e1e76eee2905ce25e57f6b9076b63960147b657400ca0f298a4b44",
+    "tools/run_pusht_gpu_validation.py": "eeb8a1e0b4c76bfc3b310cc9cdfb8aa96b30d9f58c8b44ec634b93caf1a08f5a",
+    "tools/summarize_no_motion_matrix.py": "e53bbda10951b79f556b99b7d51f31307ed572b5ec9af1f386abc6c9eb52398b",
+    "rm75_app/workcell/transport_contact.py": "a09f843d43a96e3a66b18e5114696889639c16837bb37dba1cb1ffd4aae1f023",
+    "rm75_app/workcell/world_only_contact.py": "fdfcba610b8efbabfac93a3cc52e2362dd5b1141630c48f8bf32d5b8b6a8260b",
+    "rm75_app/pusht/motion.py": "81e824b91f52d0a7b4668b43a8dd17758559e499bf5015f9982e9a683009f866",
+    "rm75_app/planning/backends/curobo2.py": "59cbf0ea2f3e858bd8c97ac0b5c01e919cd96df0b5f9068671fab13c7ab39e7a"
+  },
+  "snapshot": {
+    "files": 807,
+    "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+    "dependency_completeness_verified": false,
+    "runtime_gpu_verified": false
+  },
+  "pickplace_phases": {
+    "v1_noncycle_tracking": {
+      "runs": [
+        {
+          "run": "pickplace_legacy_gluestick",
+          "case": "legacy_gluestick",
+          "elapsed_s": 13.474285760996281,
+          "kind": "pickplace_native",
+          "expected_cycles": 1,
+          "command_success": true,
+          "native_final_success": true,
+          "native_completed_cycles": [
+            1
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 1,
+          "cycle_successes": 1,
+          "clearance_warning_count": 0,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 5,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 62,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "876d050073e67683e4189e23d56dccd7b3f9f4b7d4c3fa8ab968564cfa3df534"
+            }
+          ],
+          "diagnostic_rejection_count": 0,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": true,
+          "result_sha256": "8844a21f7a083fd46827943001363fcba6a733e1e882e07940e39b4e74157292",
+          "log_sha256": "69d1d1cc67838d4bca57c84356e1ea3d3b77dffd6dda89cc6b341dead20a962c",
+          "input_sha256": "c50649e011f1f11674912c21a75eded51213bd7fe22c052947888d575a6dab0f",
+          "native_source_outcomes": null,
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 9,
+            "transport_refresh_count": 3,
+            "loaded_refresh_count": 4,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": false,
+            "foreground_refresh_count": null,
+            "foreground_transport_refresh_count": null,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": true,
+            "requested_sources_completed": null,
+            "world_coverage_sha256": "5a9eebfb5be6871fe390c901f184c997bc6d63237f152253b9ed92587bb95d8b"
+          },
+          "error_type": null
+        },
+        {
+          "run": "pickplace_current_table_all",
+          "case": "current_table_all",
+          "elapsed_s": 86.53677020099713,
+          "kind": "pickplace_native",
+          "expected_cycles": 7,
+          "command_success": false,
+          "native_final_success": false,
+          "native_completed_cycles": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 9,
+          "cycle_successes": 4,
+          "clearance_warning_count": 2,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 5,
+              "all_valid": true,
+              "world_exempt_links": []
+            },
+            {
+              "stage": "post_place_clearance",
+              "samples": 12,
+              "all_valid": true,
+              "world_exempt_links": []
+            },
+            {
+              "stage": "post_place_clearance",
+              "samples": 14,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 51,
+              "candidate_paths": 1,
+              "payload_spheres": 5,
+              "world_exempt_links": [],
+              "scene_fingerprint": "d22c43e1e681d83345362b67365e3d75438e2cdab65899707e55fb84b96f38d1"
+            },
+            {
+              "samples": 51,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "93bb99ef4cc5ec3bb438c57cbf69452ef8f1a69917d403c1a2e0ab6514d743ed"
+            },
+            {
+              "samples": 64,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "7589ae59d2649358451798c483aacfa67f73d362be061f7ea48542ac49cb2059"
+            },
+            {
+              "samples": 53,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "db44021a26fb3dece21e74846b1a5d733a28b063866da8170f48b43797133755"
+            },
+            {
+              "samples": 91,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "9bf59a5f7eeb553117b9e309cbe7d02afdf00caf285ee64ddab56da264f73ab5"
+            },
+            {
+              "samples": 78,
+              "candidate_paths": 1,
+              "payload_spheres": 1,
+              "world_exempt_links": [],
+              "scene_fingerprint": "7ae8d0850502c430dcfce9a82a0035e4d1cc1d2556c6fb3b0a2cd20d91fd23b7"
+            }
+          ],
+          "diagnostic_rejection_count": 5,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": false,
+          "result_sha256": "de239c2dfda40835737e5ba72bd94124657d0d2169784df66ea81ab5a5936470",
+          "log_sha256": "32acefc156161687a16ec7c2d555a5f01a0df3a8d84785ad962fc66d21e4bec9",
+          "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+          "native_source_outcomes": null,
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 129,
+            "transport_refresh_count": 18,
+            "loaded_refresh_count": 66,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": false,
+            "foreground_refresh_count": null,
+            "foreground_transport_refresh_count": null,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": false,
+            "requested_sources_completed": null,
+            "world_coverage_sha256": "2625c1a16fff57933c10d832513c50cbb25eed36ed501a6a88550e12be7b37c4"
+          },
+          "error_type": "RuntimeError"
+        },
+        {
+          "run": "pickplace_gluestick_jitter_00",
+          "case": "gluestick_jitter_00",
+          "elapsed_s": 14.29466660500475,
+          "kind": "pickplace_native",
+          "expected_cycles": 1,
+          "command_success": true,
+          "native_final_success": true,
+          "native_completed_cycles": [
+            1
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 1,
+          "cycle_successes": 1,
+          "clearance_warning_count": 0,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 6,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 63,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "b8163624c6f1dbd6f1854f2dd282c328b03cfc6d1cd1373fde1030d0237caeae"
+            }
+          ],
+          "diagnostic_rejection_count": 0,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": true,
+          "result_sha256": "f778a0019dbd600c8ca6695887c309bdf0921b31fb0f7de9322a57b9387aacf2",
+          "log_sha256": "90ea7b913af504d0f863f5393402024cec3c9afb28f261e6ffaa389dd5843889",
+          "input_sha256": "170e200cab8f9ba977c0617f1db4f43cca1420784512388e2d2695dea525bafb",
+          "native_source_outcomes": null,
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 9,
+            "transport_refresh_count": 3,
+            "loaded_refresh_count": 4,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": false,
+            "foreground_refresh_count": null,
+            "foreground_transport_refresh_count": null,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": true,
+            "requested_sources_completed": null,
+            "world_coverage_sha256": "c714d307077b358f2116bb71d4d957e79d3f8671b5bb122cfe06cebe1aba823f"
+          },
+          "error_type": null
+        },
+        {
+          "run": "pickplace_gluestick_yaw_00",
+          "case": "gluestick_yaw_00",
+          "elapsed_s": 9.64738549800677,
+          "kind": "pickplace_native",
+          "expected_cycles": 1,
+          "command_success": false,
+          "native_final_success": null,
+          "native_completed_cycles": [],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 1,
+          "cycle_successes": 0,
+          "clearance_warning_count": 0,
+          "clearance_audits": [],
+          "transport_audits": [],
+          "diagnostic_rejection_count": 0,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": false,
+          "result_sha256": "90cc621b931611eeddff7061beff6572fc0d67a17c7bd13254b0d81aaf43de8f",
+          "log_sha256": "7865ab112fe2d7e2f83509186c0693f42a42e9dcfeaffcf937a211e26108f2cf",
+          "input_sha256": "2b8bc34e174e7cb03a449c52fb18ee7a1ce67d1a7a9c1afa41a3013530202c44",
+          "native_source_outcomes": null,
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 3,
+            "transport_refresh_count": 0,
+            "loaded_refresh_count": 0,
+            "loaded_non_source_counts": [],
+            "foreground_scope_recorded": false,
+            "foreground_refresh_count": null,
+            "foreground_transport_refresh_count": null,
+            "rejected_refreshes": [
+              {
+                "source": "bi",
+                "stage": "winner_chain_ik_preselect_grasp",
+                "missing": [
+                  "gluestick"
+                ],
+                "reasons": [
+                  "missing_or_disabled_non_source_objects"
+                ]
+              }
+            ],
+            "all_sources_transport_observed": false,
+            "requested_sources_completed": null,
+            "world_coverage_sha256": "2f065caf5a6e2d33ef3b7b586ebfeabbcc3270ca7bf754db7d96243c2dac4e60"
+          },
+          "error_type": "FrozenWorldIncomplete"
+        },
+        {
+          "run": "pickplace_gluestick_swap_00",
+          "case": "gluestick_swap_00",
+          "elapsed_s": 12.967552980997425,
+          "kind": "pickplace_native",
+          "expected_cycles": 1,
+          "command_success": false,
+          "native_final_success": null,
+          "native_completed_cycles": [],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 1,
+          "cycle_successes": 0,
+          "clearance_warning_count": 0,
+          "clearance_audits": [],
+          "transport_audits": [],
+          "diagnostic_rejection_count": 1,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": false,
+          "result_sha256": "dd0f568ffc8a18ab948c205cc084fdd10f43a3ff704f10ea075e9aff1597ab32",
+          "log_sha256": "c41d94d2d694b8c6ef6232c93e053877cc5ea81942f66743b45af29efa7a3dc1",
+          "input_sha256": "890c036a9010a0000744156e3dcaad881d729c704875317e3e3fd86a94e4f842",
+          "native_source_outcomes": null,
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 6,
+            "transport_refresh_count": 0,
+            "loaded_refresh_count": 3,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": false,
+            "foreground_refresh_count": null,
+            "foreground_transport_refresh_count": null,
+            "rejected_refreshes": [
+              {
+                "source": "bi",
+                "stage": "winner_chain_ik_preselect_grasp",
+                "missing": [
+                  "gluestick"
+                ],
+                "reasons": [
+                  "missing_or_disabled_non_source_objects"
+                ]
+              }
+            ],
+            "all_sources_transport_observed": false,
+            "requested_sources_completed": null,
+            "world_coverage_sha256": "805ea61ec29977ecf6de209a893a9db0999d5c5622a885e927b3af07201699ab"
+          },
+          "error_type": "FrozenWorldIncomplete"
+        }
+      ],
+      "totals": {
+        "pusht_gpu_runs": 0,
+        "pusht_complete_chains": 0,
+        "pusht_validation_passes": 0,
+        "pusht_normal_runs": 0,
+        "pusht_preset_obstacle_runs": 0,
+        "post_plan_obstacle_rejections": 0,
+        "injected_execution_gates": 0,
+        "injected_execution_gate_passes": 0,
+        "execution_calls": 0,
+        "pickplace_runs": 5,
+        "pickplace_strict_clearance_passes": 2
+      }
+    },
+    "v2_all_names_unscoped_episode_observer": {
+      "runs": [
+        {
+          "run": "pickplace_legacy_gluestick",
+          "case": "legacy_gluestick",
+          "elapsed_s": 13.543167732997972,
+          "kind": "pickplace_native",
+          "expected_cycles": 1,
+          "command_success": true,
+          "native_final_success": true,
+          "native_completed_cycles": [
+            1
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 1,
+          "cycle_successes": 1,
+          "clearance_warning_count": 0,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 5,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 62,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "876d050073e67683e4189e23d56dccd7b3f9f4b7d4c3fa8ab968564cfa3df534"
+            }
+          ],
+          "diagnostic_rejection_count": 0,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": true,
+          "result_sha256": "5270ddcd04cbc9ade4bb63388e03417b58f8155629f290e3afc1d505f953fc8c",
+          "log_sha256": "4000267d60c30e2c454571c757d67abe8753aa528a6ec8fa57fbd0a09234f229",
+          "input_sha256": "c50649e011f1f11674912c21a75eded51213bd7fe22c052947888d575a6dab0f",
+          "native_source_outcomes": [
+            {
+              "source": "gluestick",
+              "success": true
+            }
+          ],
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 9,
+            "transport_refresh_count": 3,
+            "loaded_refresh_count": 4,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": false,
+            "foreground_refresh_count": null,
+            "foreground_transport_refresh_count": null,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": true,
+            "requested_sources_completed": true,
+            "world_coverage_sha256": "9c08d8896efa999f33312f78e395f717da08cab46ab91d3e0aa31c218c704ffe"
+          },
+          "error_type": null
+        },
+        {
+          "run": "pickplace_current_table_all",
+          "case": "current_table_all",
+          "elapsed_s": 85.27713555099763,
+          "kind": "pickplace_native",
+          "expected_cycles": 7,
+          "command_success": false,
+          "native_final_success": false,
+          "native_completed_cycles": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 9,
+          "cycle_successes": 5,
+          "clearance_warning_count": 0,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 5,
+              "all_valid": true,
+              "world_exempt_links": []
+            },
+            {
+              "stage": "post_place_clearance",
+              "samples": 12,
+              "all_valid": true,
+              "world_exempt_links": []
+            },
+            {
+              "stage": "post_place_clearance",
+              "samples": 4,
+              "all_valid": true,
+              "world_exempt_links": []
+            },
+            {
+              "stage": "post_place_clearance",
+              "samples": 14,
+              "all_valid": true,
+              "world_exempt_links": []
+            },
+            {
+              "stage": "post_place_clearance",
+              "samples": 6,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 51,
+              "candidate_paths": 1,
+              "payload_spheres": 5,
+              "world_exempt_links": [],
+              "scene_fingerprint": "d22c43e1e681d83345362b67365e3d75438e2cdab65899707e55fb84b96f38d1"
+            },
+            {
+              "samples": 50,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "93bb99ef4cc5ec3bb438c57cbf69452ef8f1a69917d403c1a2e0ab6514d743ed"
+            },
+            {
+              "samples": 64,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "7589ae59d2649358451798c483aacfa67f73d362be061f7ea48542ac49cb2059"
+            },
+            {
+              "samples": 54,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "db44021a26fb3dece21e74846b1a5d733a28b063866da8170f48b43797133755"
+            },
+            {
+              "samples": 90,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "9bf59a5f7eeb553117b9e309cbe7d02afdf00caf285ee64ddab56da264f73ab5"
+            },
+            {
+              "samples": 78,
+              "candidate_paths": 1,
+              "payload_spheres": 1,
+              "world_exempt_links": [],
+              "scene_fingerprint": "7ae8d0850502c430dcfce9a82a0035e4d1cc1d2556c6fb3b0a2cd20d91fd23b7"
+            }
+          ],
+          "diagnostic_rejection_count": 5,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": false,
+          "result_sha256": "de9832f4493c9e7b7291c9a3e1e40340baf7a125a4e0e7c5ecd5ce9072305268",
+          "log_sha256": "3fb60e9e421918fdf6d866c2a0fccdd65a9fcf0ebb29f394693cd0b7cac203db",
+          "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+          "native_source_outcomes": [
+            {
+              "source": "bi",
+              "success": true
+            },
+            {
+              "source": "lvmukuai",
+              "success": true
+            },
+            {
+              "source": "lvmukuai",
+              "success": true
+            },
+            {
+              "source": "shuazi",
+              "success": true
+            },
+            {
+              "source": "shuazi",
+              "success": true
+            },
+            {
+              "source": "gluestick",
+              "success": false
+            },
+            {
+              "source": "gluestick",
+              "success": false
+            },
+            {
+              "source": "carriot",
+              "success": true
+            },
+            {
+              "source": "hongshupian",
+              "success": false
+            },
+            {
+              "source": "hongshupian",
+              "success": false
+            },
+            {
+              "source": "tennis",
+              "success": true
+            },
+            {
+              "source": "gluestick",
+              "success": false
+            },
+            {
+              "source": "gluestick",
+              "success": false
+            },
+            {
+              "source": "hongshupian",
+              "success": false
+            }
+          ],
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 126,
+            "transport_refresh_count": 18,
+            "loaded_refresh_count": 66,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": false,
+            "foreground_refresh_count": null,
+            "foreground_transport_refresh_count": null,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": false,
+            "requested_sources_completed": false,
+            "world_coverage_sha256": "074a4bcc3517b363ea30d33431310a8863fa9789dc83fb6c14c3e1dc8b80f4fc"
+          },
+          "error_type": "RuntimeError"
+        },
+        {
+          "run": "pickplace_gluestick_jitter_00",
+          "case": "gluestick_jitter_00",
+          "elapsed_s": 14.19761350400222,
+          "kind": "pickplace_native",
+          "expected_cycles": 1,
+          "command_success": true,
+          "native_final_success": true,
+          "native_completed_cycles": [
+            1
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 1,
+          "cycle_successes": 1,
+          "clearance_warning_count": 0,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 6,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 63,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "b8163624c6f1dbd6f1854f2dd282c328b03cfc6d1cd1373fde1030d0237caeae"
+            }
+          ],
+          "diagnostic_rejection_count": 0,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": true,
+          "result_sha256": "2f4eee3112ffca7a87d5ad21299aff2c53c70d938a8b3025bfd49fd38c43145f",
+          "log_sha256": "674bd8d5c9d79fcea46278a05d5623d047ff9692405ba9431d38c71c5028eb4b",
+          "input_sha256": "170e200cab8f9ba977c0617f1db4f43cca1420784512388e2d2695dea525bafb",
+          "native_source_outcomes": [
+            {
+              "source": "gluestick",
+              "success": true
+            }
+          ],
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 9,
+            "transport_refresh_count": 3,
+            "loaded_refresh_count": 4,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": false,
+            "foreground_refresh_count": null,
+            "foreground_transport_refresh_count": null,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": true,
+            "requested_sources_completed": true,
+            "world_coverage_sha256": "39f90ef2d1997ed2ab2430ff2959cb32492fcfd74e61b95e77973d441b76f5e0"
+          },
+          "error_type": null
+        },
+        {
+          "run": "pickplace_gluestick_yaw_00",
+          "case": "gluestick_yaw_00",
+          "elapsed_s": 26.2904575950015,
+          "kind": "pickplace_native",
+          "expected_cycles": 1,
+          "command_success": true,
+          "native_final_success": true,
+          "native_completed_cycles": [
+            1
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 2,
+          "cycle_successes": 1,
+          "clearance_warning_count": 0,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 5,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 78,
+              "candidate_paths": 1,
+              "payload_spheres": 5,
+              "world_exempt_links": [],
+              "scene_fingerprint": "e8a71db1f6bd32291aa4aedc691cdc0063c4e5e4da81bb07483d2553ac93d5e5"
+            },
+            {
+              "samples": 61,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "576dc44a4e3c85592f547040b101af4382d5af25951eab16a015988d03e33b31"
+            }
+          ],
+          "diagnostic_rejection_count": 0,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": false,
+          "result_sha256": "a2c10ad678de420a99d9a795b6a0dad9a18e88c73fb99a93fd8baea34a51cc18",
+          "log_sha256": "be1a932751d8c9113a60639169afb36ee7daa992dd8e30794cdc8c4422f533a4",
+          "input_sha256": "2b8bc34e174e7cb03a449c52fb18ee7a1ce67d1a7a9c1afa41a3013530202c44",
+          "native_source_outcomes": [
+            {
+              "source": "gluestick",
+              "success": false
+            },
+            {
+              "source": "bi",
+              "success": true
+            },
+            {
+              "source": "lvmukuai",
+              "success": true
+            }
+          ],
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 24,
+            "transport_refresh_count": 6,
+            "loaded_refresh_count": 9,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": false,
+            "foreground_refresh_count": null,
+            "foreground_transport_refresh_count": null,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": false,
+            "requested_sources_completed": false,
+            "world_coverage_sha256": "31809e711648bfb84826a9515186005b49fbb8f8e6d9195ce9b1ec774e8e9f3e"
+          },
+          "error_type": null
+        },
+        {
+          "run": "pickplace_gluestick_swap_00",
+          "case": "gluestick_swap_00",
+          "elapsed_s": 27.201492018000863,
+          "kind": "pickplace_native",
+          "expected_cycles": 1,
+          "command_success": true,
+          "native_final_success": true,
+          "native_completed_cycles": [
+            1
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 2,
+          "cycle_successes": 1,
+          "clearance_warning_count": 0,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 5,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 71,
+              "candidate_paths": 1,
+              "payload_spheres": 5,
+              "world_exempt_links": [],
+              "scene_fingerprint": "caa5aa284ed2e6b9c2d84f621b3e1236f03367e41144da2e1b21595ba49b945c"
+            },
+            {
+              "samples": 70,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "c676042b53a39ba861e38459c8de5d5f3b7443ec837f790fd5dd34859ecc126d"
+            }
+          ],
+          "diagnostic_rejection_count": 1,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": false,
+          "result_sha256": "572fcb991e40a6e799816007ddb6a4ec3ffcb69a766ee34896052583798fedfe",
+          "log_sha256": "d013e10ef6fe38c0d45f3b681f8390fd6fe8d2d9ab45452c00f4b7e0692253c0",
+          "input_sha256": "890c036a9010a0000744156e3dcaad881d729c704875317e3e3fd86a94e4f842",
+          "native_source_outcomes": [
+            {
+              "source": "gluestick",
+              "success": false
+            },
+            {
+              "source": "bi",
+              "success": true
+            },
+            {
+              "source": "lvmukuai",
+              "success": true
+            }
+          ],
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 26,
+            "transport_refresh_count": 6,
+            "loaded_refresh_count": 11,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": false,
+            "foreground_refresh_count": null,
+            "foreground_transport_refresh_count": null,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": false,
+            "requested_sources_completed": false,
+            "world_coverage_sha256": "70c72f318093882c30321e87b69e2b19814842d4fee57bcd2e5e7a1dff8d151e"
+          },
+          "error_type": null
+        }
+      ],
+      "totals": {
+        "pusht_gpu_runs": 0,
+        "pusht_complete_chains": 0,
+        "pusht_validation_passes": 0,
+        "pusht_normal_runs": 0,
+        "pusht_preset_obstacle_runs": 0,
+        "post_plan_obstacle_rejections": 0,
+        "injected_execution_gates": 0,
+        "injected_execution_gate_passes": 0,
+        "execution_calls": 0,
+        "pickplace_runs": 5,
+        "pickplace_strict_clearance_passes": 2
+      }
+    },
+    "v3_all_names_foreground_observer": {
+      "runs": [
+        {
+          "run": "pickplace_legacy_gluestick",
+          "case": "legacy_gluestick",
+          "elapsed_s": 13.526220823005133,
+          "kind": "pickplace_native",
+          "expected_cycles": 1,
+          "command_success": true,
+          "native_final_success": true,
+          "native_completed_cycles": [
+            1
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 1,
+          "cycle_successes": 1,
+          "clearance_warning_count": 0,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 5,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 62,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "876d050073e67683e4189e23d56dccd7b3f9f4b7d4c3fa8ab968564cfa3df534"
+            }
+          ],
+          "diagnostic_rejection_count": 0,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": true,
+          "result_sha256": "6812dc51e36a8df68c2a0b8707773a58759e9dad9ab793765dc60d7dc6d137d5",
+          "log_sha256": "f1d4025f19b59fdf3e323ef4add34dd84f8ac384b59c340a21951d25f598a37e",
+          "input_sha256": "c50649e011f1f11674912c21a75eded51213bd7fe22c052947888d575a6dab0f",
+          "native_source_outcomes": [
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "gluestick",
+              "success": true
+            }
+          ],
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 9,
+            "transport_refresh_count": 3,
+            "loaded_refresh_count": 4,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": true,
+            "foreground_refresh_count": 9,
+            "foreground_transport_refresh_count": 3,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": true,
+            "requested_sources_completed": true,
+            "world_coverage_sha256": "9df294b3502b94f1d1edde7ee46cd289076940bc966472948e3bea9b301cbaed"
+          },
+          "error_type": null
+        },
+        {
+          "run": "pickplace_current_table_all",
+          "case": "current_table_all",
+          "elapsed_s": 85.69752265799616,
+          "kind": "pickplace_native",
+          "expected_cycles": 7,
+          "command_success": false,
+          "native_final_success": false,
+          "native_completed_cycles": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 9,
+          "cycle_successes": 5,
+          "clearance_warning_count": 0,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 5,
+              "all_valid": true,
+              "world_exempt_links": []
+            },
+            {
+              "stage": "post_place_clearance",
+              "samples": 12,
+              "all_valid": true,
+              "world_exempt_links": []
+            },
+            {
+              "stage": "post_place_clearance",
+              "samples": 4,
+              "all_valid": true,
+              "world_exempt_links": []
+            },
+            {
+              "stage": "post_place_clearance",
+              "samples": 14,
+              "all_valid": true,
+              "world_exempt_links": []
+            },
+            {
+              "stage": "post_place_clearance",
+              "samples": 6,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 51,
+              "candidate_paths": 1,
+              "payload_spheres": 5,
+              "world_exempt_links": [],
+              "scene_fingerprint": "d22c43e1e681d83345362b67365e3d75438e2cdab65899707e55fb84b96f38d1"
+            },
+            {
+              "samples": 50,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "93bb99ef4cc5ec3bb438c57cbf69452ef8f1a69917d403c1a2e0ab6514d743ed"
+            },
+            {
+              "samples": 64,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "7589ae59d2649358451798c483aacfa67f73d362be061f7ea48542ac49cb2059"
+            },
+            {
+              "samples": 54,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "db44021a26fb3dece21e74846b1a5d733a28b063866da8170f48b43797133755"
+            },
+            {
+              "samples": 90,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "9bf59a5f7eeb553117b9e309cbe7d02afdf00caf285ee64ddab56da264f73ab5"
+            },
+            {
+              "samples": 78,
+              "candidate_paths": 1,
+              "payload_spheres": 1,
+              "world_exempt_links": [],
+              "scene_fingerprint": "7ae8d0850502c430dcfce9a82a0035e4d1cc1d2556c6fb3b0a2cd20d91fd23b7"
+            }
+          ],
+          "diagnostic_rejection_count": 5,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": false,
+          "result_sha256": "0c93977561c66d4aed87aa4b29df67806ac9e57ab83b8cc35e6278d4607c0e1b",
+          "log_sha256": "109ab9be10ed6ed8e9b41b4e3d0603a828b3ff705c450ff9da702b61cc4dd416",
+          "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+          "native_source_outcomes": [
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "bi",
+              "success": true
+            },
+            {
+              "foreground": false,
+              "prefetch_capture_only": true,
+              "source": "lvmukuai",
+              "success": true
+            },
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "lvmukuai",
+              "success": true
+            },
+            {
+              "foreground": false,
+              "prefetch_capture_only": true,
+              "source": "shuazi",
+              "success": true
+            },
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "shuazi",
+              "success": true
+            },
+            {
+              "foreground": false,
+              "prefetch_capture_only": true,
+              "source": "gluestick",
+              "success": false
+            },
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "gluestick",
+              "success": false
+            },
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "carriot",
+              "success": true
+            },
+            {
+              "foreground": false,
+              "prefetch_capture_only": true,
+              "source": "hongshupian",
+              "success": false
+            },
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "hongshupian",
+              "success": false
+            },
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "tennis",
+              "success": true
+            },
+            {
+              "foreground": false,
+              "prefetch_capture_only": true,
+              "source": "gluestick",
+              "success": false
+            },
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "gluestick",
+              "success": false
+            },
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "hongshupian",
+              "success": false
+            }
+          ],
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 126,
+            "transport_refresh_count": 18,
+            "loaded_refresh_count": 66,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": true,
+            "foreground_refresh_count": 77,
+            "foreground_transport_refresh_count": 12,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": false,
+            "requested_sources_completed": false,
+            "world_coverage_sha256": "ed7341754e687e93035fc94535287fa63718b0632cd620e65bac3c567758decd"
+          },
+          "error_type": "RuntimeError"
+        },
+        {
+          "run": "pickplace_gluestick_jitter_00",
+          "case": "gluestick_jitter_00",
+          "elapsed_s": 14.11593540800095,
+          "kind": "pickplace_native",
+          "expected_cycles": 1,
+          "command_success": true,
+          "native_final_success": true,
+          "native_completed_cycles": [
+            1
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 1,
+          "cycle_successes": 1,
+          "clearance_warning_count": 0,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 6,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 63,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "b8163624c6f1dbd6f1854f2dd282c328b03cfc6d1cd1373fde1030d0237caeae"
+            }
+          ],
+          "diagnostic_rejection_count": 0,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": true,
+          "result_sha256": "f2aa7784b89f7a538f5d6b481244fd6469f8e312802d5e169a0097fda93d8ae8",
+          "log_sha256": "9c240c1112a3b36dcc95f3d01f0ed45752c2aeb96946eef39d4441c01b94d564",
+          "input_sha256": "170e200cab8f9ba977c0617f1db4f43cca1420784512388e2d2695dea525bafb",
+          "native_source_outcomes": [
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "gluestick",
+              "success": true
+            }
+          ],
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 9,
+            "transport_refresh_count": 3,
+            "loaded_refresh_count": 4,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": true,
+            "foreground_refresh_count": 9,
+            "foreground_transport_refresh_count": 3,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": true,
+            "requested_sources_completed": true,
+            "world_coverage_sha256": "e4f179d01b7ed93f1797b8b18af3eccf5d1f33821853fda8e32e0d234f577604"
+          },
+          "error_type": null
+        },
+        {
+          "run": "pickplace_gluestick_yaw_00",
+          "case": "gluestick_yaw_00",
+          "elapsed_s": 26.079428835000726,
+          "kind": "pickplace_native",
+          "expected_cycles": 1,
+          "command_success": true,
+          "native_final_success": true,
+          "native_completed_cycles": [
+            1
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 2,
+          "cycle_successes": 1,
+          "clearance_warning_count": 0,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 5,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 78,
+              "candidate_paths": 1,
+              "payload_spheres": 5,
+              "world_exempt_links": [],
+              "scene_fingerprint": "e8a71db1f6bd32291aa4aedc691cdc0063c4e5e4da81bb07483d2553ac93d5e5"
+            },
+            {
+              "samples": 61,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "576dc44a4e3c85592f547040b101af4382d5af25951eab16a015988d03e33b31"
+            }
+          ],
+          "diagnostic_rejection_count": 0,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": false,
+          "result_sha256": "eeaca84eb23c7a39da4e672a2912b918d9644e722c0d19f9810452cbba37bd17",
+          "log_sha256": "44ec02ff060f149f76297a2214eed502f807407c37dbc19af06dbb1c5a2c1637",
+          "input_sha256": "2b8bc34e174e7cb03a449c52fb18ee7a1ce67d1a7a9c1afa41a3013530202c44",
+          "native_source_outcomes": [
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "gluestick",
+              "success": false
+            },
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "bi",
+              "success": true
+            },
+            {
+              "foreground": false,
+              "prefetch_capture_only": true,
+              "source": "lvmukuai",
+              "success": true
+            }
+          ],
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 24,
+            "transport_refresh_count": 6,
+            "loaded_refresh_count": 9,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": true,
+            "foreground_refresh_count": 13,
+            "foreground_transport_refresh_count": 3,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": false,
+            "requested_sources_completed": false,
+            "world_coverage_sha256": "b659e0e4919fb232e0538c3f250064d87f53be5c8146a13ec3da83cd2b7dad5e"
+          },
+          "error_type": null
+        },
+        {
+          "run": "pickplace_gluestick_swap_00",
+          "case": "gluestick_swap_00",
+          "elapsed_s": 27.5174696460017,
+          "kind": "pickplace_native",
+          "expected_cycles": 1,
+          "command_success": true,
+          "native_final_success": true,
+          "native_completed_cycles": [
+            1
+          ],
+          "loaded_mplib_modules": [],
+          "cycle_attempts": 2,
+          "cycle_successes": 1,
+          "clearance_warning_count": 0,
+          "clearance_audits": [
+            {
+              "stage": "post_place_clearance",
+              "samples": 5,
+              "all_valid": true,
+              "world_exempt_links": []
+            }
+          ],
+          "transport_audits": [
+            {
+              "samples": 71,
+              "candidate_paths": 1,
+              "payload_spheres": 5,
+              "world_exempt_links": [],
+              "scene_fingerprint": "caa5aa284ed2e6b9c2d84f621b3e1236f03367e41144da2e1b21595ba49b945c"
+            },
+            {
+              "samples": 70,
+              "candidate_paths": 1,
+              "payload_spheres": 6,
+              "world_exempt_links": [],
+              "scene_fingerprint": "c676042b53a39ba861e38459c8de5d5f3b7443ec837f790fd5dd34859ecc126d"
+            }
+          ],
+          "diagnostic_rejection_count": 1,
+          "lift_ik_diagnostics": [],
+          "strict_clearance_success": false,
+          "result_sha256": "ffd35492247dacd7d3849126282ea56bbde2336f394bc433dbc79b0e8788e483",
+          "log_sha256": "d5e13af9fb7d1e0c4407a89430a53b66eea25278923b1d9a05a707ec227aa874",
+          "input_sha256": "890c036a9010a0000744156e3dcaad881d729c704875317e3e3fd86a94e4f842",
+          "native_source_outcomes": [
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "gluestick",
+              "success": false
+            },
+            {
+              "foreground": true,
+              "prefetch_capture_only": false,
+              "source": "bi",
+              "success": true
+            },
+            {
+              "foreground": false,
+              "prefetch_capture_only": true,
+              "source": "lvmukuai",
+              "success": true
+            }
+          ],
+          "world_coverage": {
+            "frozen_object_count": 9,
+            "refresh_count": 26,
+            "transport_refresh_count": 6,
+            "loaded_refresh_count": 11,
+            "loaded_non_source_counts": [
+              8
+            ],
+            "foreground_scope_recorded": true,
+            "foreground_refresh_count": 16,
+            "foreground_transport_refresh_count": 3,
+            "rejected_refreshes": [],
+            "all_sources_transport_observed": false,
+            "requested_sources_completed": false,
+            "world_coverage_sha256": "4cc6c2219fa6ac8c4d25fc39124ba89275c0c2f3cfd1374e63fbd6a33141ffda"
+          },
+          "error_type": null
+        }
+      ],
+      "totals": {
+        "pusht_gpu_runs": 0,
+        "pusht_complete_chains": 0,
+        "pusht_validation_passes": 0,
+        "pusht_normal_runs": 0,
+        "pusht_preset_obstacle_runs": 0,
+        "post_plan_obstacle_rejections": 0,
+        "injected_execution_gates": 0,
+        "injected_execution_gate_passes": 0,
+        "execution_calls": 0,
+        "pickplace_runs": 5,
+        "pickplace_strict_clearance_passes": 2
+      }
+    }
+  },
+  "pusht": {
+    "runs": [
+      {
+        "run": "gpu_orthogonal",
+        "case": "orthogonal_tool",
+        "elapsed_s": 13.298523704994295,
+        "kind": "pusht_gpu",
+        "complete_chain": true,
+        "validation_success": true,
+        "reported_validation_success": true,
+        "hardware_profile_qualified": false,
+        "fixture": "low_table",
+        "requested_speed_mps": 0.015,
+        "stages": [
+          {
+            "stage": "approach",
+            "max_tcp_speed_mps": 0.014035720649461313,
+            "max_joint_speed_rad_s": 0.12869798435496652,
+            "max_joint_accel_rad_s2": 0.49495867278914274,
+            "samples": 1507,
+            "duration_s": 50.19999999999971
+          },
+          {
+            "stage": "descend",
+            "max_tcp_speed_mps": 0.013972079342906805,
+            "max_joint_speed_rad_s": 0.057065923412582556,
+            "max_joint_accel_rad_s2": 0.4609001909262169,
+            "samples": 348,
+            "duration_s": 11.566666666666636
+          },
+          {
+            "stage": "contact",
+            "max_tcp_speed_mps": 0.013222399472069471,
+            "max_joint_speed_rad_s": 0.07325520579702682,
+            "max_joint_accel_rad_s2": 0.48248474883223175,
+            "samples": 43,
+            "duration_s": 1.400000000000001
+          },
+          {
+            "stage": "push",
+            "max_tcp_speed_mps": 0.010208563983576807,
+            "max_joint_speed_rad_s": 0.058381469954937884,
+            "max_joint_accel_rad_s2": 0.47152536995223115,
+            "samples": 69,
+            "duration_s": 2.2666666666666684
+          },
+          {
+            "stage": "retreat",
+            "max_tcp_speed_mps": 0.013909042147362717,
+            "max_joint_speed_rad_s": 0.05905330657530093,
+            "max_joint_accel_rad_s2": 0.441309711072083,
+            "samples": 342,
+            "duration_s": 11.366666666666637
+          }
+        ],
+        "total_samples": 2309,
+        "total_duration_s": 76.79999999999966,
+        "unrelated_obstacle_rejected": true,
+        "execution_gates": [
+          {
+            "case": "stale",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "replayed",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "non_monotonic",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "changed_session",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "low_confidence",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "wrong_frame",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "simulation_source",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "translation_drift",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "yaw_drift",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "joint_drift",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          }
+        ],
+        "error_type": null,
+        "failed_waypoint": null,
+        "failed_stage": null,
+        "result_sha256": "4b6c864395eefaf5102d98b3433eccc2ef679bd85ea400d12799bbdf142c3035",
+        "log_sha256": "1bdf6a49cd9dce90a960cd682f17bfd40ec45d0d9a1afebf78d9b116d9fc8816"
+      },
+      {
+        "run": "gpu_orthogonal_slow",
+        "case": "orthogonal_tool",
+        "elapsed_s": 18.857386440999107,
+        "kind": "pusht_gpu",
+        "complete_chain": true,
+        "validation_success": true,
+        "reported_validation_success": true,
+        "hardware_profile_qualified": false,
+        "fixture": "low_table",
+        "requested_speed_mps": 0.005,
+        "stages": [
+          {
+            "stage": "approach",
+            "max_tcp_speed_mps": 0.004687829777340625,
+            "max_joint_speed_rad_s": 0.06388420265391459,
+            "max_joint_accel_rad_s2": 0.449212980859093,
+            "samples": 3822,
+            "duration_s": 127.366666666662
+          },
+          {
+            "stage": "descend",
+            "max_tcp_speed_mps": 0.004685819490199944,
+            "max_joint_speed_rad_s": 0.02097754925975075,
+            "max_joint_accel_rad_s2": 0.06440986037286006,
+            "samples": 975,
+            "duration_s": 32.466666666667386
+          },
+          {
+            "stage": "contact",
+            "max_tcp_speed_mps": 0.004681349590397906,
+            "max_joint_speed_rad_s": 0.025947487525854834,
+            "max_joint_accel_rad_s2": 0.059765782496002264,
+            "samples": 122,
+            "duration_s": 4.033333333333329
+          },
+          {
+            "stage": "push",
+            "max_tcp_speed_mps": 0.004651864456063469,
+            "max_joint_speed_rad_s": 0.027287618096223473,
+            "max_joint_accel_rad_s2": 0.10494525849935672,
+            "samples": 148,
+            "duration_s": 4.899999999999992
+          },
+          {
+            "stage": "retreat",
+            "max_tcp_speed_mps": 0.004646033844371502,
+            "max_joint_speed_rad_s": 0.02082367171318052,
+            "max_joint_accel_rad_s2": 0.06611994009009999,
+            "samples": 976,
+            "duration_s": 32.50000000000072
+          }
+        ],
+        "total_samples": 6043,
+        "total_duration_s": 201.2666666666634,
+        "unrelated_obstacle_rejected": true,
+        "execution_gates": [
+          {
+            "case": "stale",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "replayed",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "non_monotonic",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "changed_session",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "low_confidence",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "wrong_frame",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "simulation_source",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "translation_drift",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "yaw_drift",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "joint_drift",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          }
+        ],
+        "error_type": null,
+        "failed_waypoint": null,
+        "failed_stage": null,
+        "result_sha256": "dc07297d5f39f4f4bfa8477520a3d46c001f68f7ac38d0c51685d33605377e51",
+        "log_sha256": "141a92add90de90f08394b2ceebb280f25456960cd02d2ba900f94d1712cc683"
+      },
+      {
+        "run": "gpu_baseline",
+        "case": "baseline",
+        "elapsed_s": 9.032237521998468,
+        "kind": "pusht_gpu",
+        "complete_chain": false,
+        "validation_success": false,
+        "reported_validation_success": false,
+        "hardware_profile_qualified": false,
+        "fixture": "low_table",
+        "requested_speed_mps": 0.015,
+        "stages": [],
+        "total_samples": 0,
+        "total_duration_s": 0,
+        "unrelated_obstacle_rejected": null,
+        "execution_gates": [],
+        "error_type": "PushPathRejected",
+        "failed_waypoint": [
+          10,
+          16
+        ],
+        "failed_stage": "descend",
+        "result_sha256": "db410f0cd2aa79ebb79973d01f0b91e32172177bb9cef3e61917d4a92fa7908a",
+        "log_sha256": "7fbbe04558a99533d96776ed0cabfadc15db98778a0c80365aee6afa5b16b036"
+      },
+      {
+        "run": "gpu_rotated_orthogonal",
+        "case": "rotated_orthogonal",
+        "elapsed_s": 9.452293112997722,
+        "kind": "pusht_gpu",
+        "complete_chain": false,
+        "validation_success": false,
+        "reported_validation_success": false,
+        "hardware_profile_qualified": false,
+        "fixture": "low_table",
+        "requested_speed_mps": 0.015,
+        "stages": [],
+        "total_samples": 0,
+        "total_duration_s": 0,
+        "unrelated_obstacle_rejected": null,
+        "execution_gates": [],
+        "error_type": "PushPathRejected",
+        "failed_waypoint": [
+          11,
+          16
+        ],
+        "failed_stage": "descend",
+        "result_sha256": "83e32a67d0ff6232aebce1fab361b086890ee9eec303a7c75f02b45c853bceef",
+        "log_sha256": "b5585684af45ad51d84f83ca873c4c9a023898b119302ead441371e06cd959ed"
+      },
+      {
+        "run": "gpu_yaw_matched_tool",
+        "case": "yaw_matched_tool",
+        "elapsed_s": 12.104374902999552,
+        "kind": "pusht_gpu",
+        "complete_chain": true,
+        "validation_success": true,
+        "reported_validation_success": true,
+        "hardware_profile_qualified": false,
+        "fixture": "low_table",
+        "requested_speed_mps": 0.015,
+        "stages": [
+          {
+            "stage": "approach",
+            "max_tcp_speed_mps": 0.014023798151842015,
+            "max_joint_speed_rad_s": 0.13528501579415145,
+            "max_joint_accel_rad_s2": 0.4907347192316703,
+            "samples": 1383,
+            "duration_s": 46.06666666666661
+          },
+          {
+            "stage": "descend",
+            "max_tcp_speed_mps": 0.013974315288427,
+            "max_joint_speed_rad_s": 0.05636359130690939,
+            "max_joint_accel_rad_s2": 0.4552277163167864,
+            "samples": 343,
+            "duration_s": 11.39999999999997
+          },
+          {
+            "stage": "contact",
+            "max_tcp_speed_mps": 0.012732982060758692,
+            "max_joint_speed_rad_s": 0.05410776242022132,
+            "max_joint_accel_rad_s2": 0.4370082273051031,
+            "samples": 45,
+            "duration_s": 1.466666666666668
+          },
+          {
+            "stage": "push",
+            "max_tcp_speed_mps": 0.01392139898747743,
+            "max_joint_speed_rad_s": 0.06338500553056273,
+            "max_joint_accel_rad_s2": 0.3612141574649263,
+            "samples": 51,
+            "duration_s": 1.6666666666666685
+          },
+          {
+            "stage": "retreat",
+            "max_tcp_speed_mps": 0.013973422363275523,
+            "max_joint_speed_rad_s": 0.05778613967633038,
+            "max_joint_accel_rad_s2": 0.46671710921306947,
+            "samples": 342,
+            "duration_s": 11.366666666666637
+          }
+        ],
+        "total_samples": 2164,
+        "total_duration_s": 71.96666666666655,
+        "unrelated_obstacle_rejected": true,
+        "execution_gates": [
+          {
+            "case": "stale",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "replayed",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "non_monotonic",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "changed_session",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "low_confidence",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "wrong_frame",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "simulation_source",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "translation_drift",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "yaw_drift",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          },
+          {
+            "case": "joint_drift",
+            "passed": true,
+            "execute": 0,
+            "injected_observation": true,
+            "actual_camera_observation": false
+          }
+        ],
+        "error_type": null,
+        "failed_waypoint": null,
+        "failed_stage": null,
+        "result_sha256": "4d3aac80edcd0477520220d31ae7cdf18d9f21719934710c3e2f52201d73f608",
+        "log_sha256": "69832253c6897f3569bff9f4f9dfc6225ccf483c9f8de3d8fb8243da2ffd02df"
+      },
+      {
+        "run": "gpu_orthogonal_neighbor_blocked",
+        "case": "orthogonal_neighbor_blocked",
+        "elapsed_s": 7.0362622139946325,
+        "kind": "pusht_gpu",
+        "complete_chain": false,
+        "validation_success": false,
+        "reported_validation_success": false,
+        "hardware_profile_qualified": false,
+        "fixture": "low_table",
+        "requested_speed_mps": 0.015,
+        "stages": [],
+        "total_samples": 0,
+        "total_duration_s": 0,
+        "unrelated_obstacle_rejected": null,
+        "execution_gates": [],
+        "error_type": "RuntimeError",
+        "failed_waypoint": null,
+        "failed_stage": "approach",
+        "result_sha256": "c4abb4010864d54cb6d45129d7c93f871763c7d23ffc01ccd4e9b47811669640",
+        "log_sha256": "a43eedefed6d796687874bfe0150def1d3b5ce64e4882a10ddb01799073b2bf1"
+      }
+    ],
+    "totals": {
+      "pusht_gpu_runs": 6,
+      "pusht_complete_chains": 3,
+      "pusht_validation_passes": 3,
+      "pusht_normal_runs": 5,
+      "pusht_preset_obstacle_runs": 1,
+      "post_plan_obstacle_rejections": 3,
+      "injected_execution_gates": 30,
+      "injected_execution_gate_passes": 30,
+      "execution_calls": 0,
+      "pickplace_runs": 0,
+      "pickplace_strict_clearance_passes": 0
+    }
+  },
+  "actual_gpu_runs": 21,
+  "final_matrix_totals": {
+    "pusht_gpu_runs": 6,
+    "pusht_complete_chains": 3,
+    "pusht_validation_passes": 3,
+    "pusht_normal_runs": 5,
+    "pusht_preset_obstacle_runs": 1,
+    "post_plan_obstacle_rejections": 3,
+    "injected_execution_gates": 30,
+    "injected_execution_gate_passes": 30,
+    "execution_calls": 0,
+    "pickplace_runs": 5,
+    "pickplace_strict_clearance_passes": 2
+  },
+  "historical_v2_observer_sha256": "815011680fa27f61dabd5c0f752c3c263e41fd2c240319a85ae89902427331ed",
+  "notes": [
+    "All 15 native GPU runs and all 6 PushT GPU runs are retained; v1/v2 are diagnostic versions, not final source qualification.",
+    "V1 excluded initially requested sources from tracked names; same-cycle retry dropped gluestick, and the new gate rejected it.",
+    "V2 uses all nine tracked names; native loaders and scene activation discard only the CURRENT active source. No source algorithm was patched.",
+    "V2 episode observer included background capture-only planning. V3 tags both worlds and outcomes by original capture-only flag and foreground thread.",
+    "Only V3 foreground source-completed and fully observed transport can qualify the requested object; another target success is not substitution.",
+    "Original candidates, seeds, poses, geometry, margins, native retries and success thresholds were not changed.",
+    "Coverage of names is not physical collision-geometry qualification. Contact-stage compatibility remains scoped outside full transport.",
+    "PushT uses unchanged authored low-table fixtures, not measured hardware geometry or pushing physics.",
+    "Real SDK, camera, motion and browser UI validation remain NOT_RUN in this GPU matrix."
+  ]
+}

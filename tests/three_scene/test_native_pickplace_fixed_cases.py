@@ -2,7 +2,7 @@ import io
 import json
 import pytest
 
-from tools.run_native_pickplace import FIXED_CASES, ROOT, NativeOutcomeCapture,build_native_argv
+from tools.run_native_pickplace import FIXED_CASES, ROOT, NativeOutcomeCapture,build_native_argv,frozen_scene_names
 
 
 def test_every_fixed_case_exists_and_contains_every_source():
@@ -45,3 +45,16 @@ def test_transport_validation_preserves_all_native_sources_and_has_no_motion_fla
     assert argv[index+1:index+8]==list(FIXED_CASES['current_table_all'][1])
     assert all(flag not in argv for flag in ('--no-curobo-self-collision','--no-curobo-table-collision',
                                             '--fast-chain-num-ik-seeds'))
+
+
+@pytest.mark.parametrize('case',FIXED_CASES)
+def test_full_world_preserves_original_argv_and_tracks_all_objects_across_retries(tmp_path,case):
+    original=build_native_argv(case,tmp_path,transport_world_checked=True)
+    argv=build_native_argv(case,tmp_path,transport_world_checked=True,full_frozen_world=True)
+    index=argv.index('--tracked-scene-object-names')
+    extras=list(frozen_scene_names(case))
+    assert len(frozen_scene_names(case))==9
+    assert argv[index+1:index+1+len(extras)]==extras
+    assert argv[:index]+argv[index+1+len(extras):]==original
+    assert set(FIXED_CASES[case][1])<=set(extras)
+    assert len(extras)==9
