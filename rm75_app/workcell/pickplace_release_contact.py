@@ -83,7 +83,11 @@ def audit_release_path(planner,path,target):
         for index,joints in enumerate(dense):
             valid,status=planner.check_start_state(joints)
             if not valid:raise ReleasePathRejected(f'release waypoint {index}: {status}')
+    depths=[max((p['overlap_m'] for p in pairs),default=0.) for pairs in contacts]
+    max_increase=max([0., *(b-a for a,b in zip(depths[:-1],depths[1:]))])
     return dict(samples=len(path),audited_samples=len(dense),all_valid=True,world_exempt_links=[],
+        monotonic_contact_nonincreasing=max_increase<=1e-6,
+        max_step_penetration_increase_m=max_increase,
         permitted_contact_target=target.name,permitted_links=sorted(FINGER_LINKS),
         initial_penetration_m=initial_depth,final_penetration_m=max(
             (p['overlap_m'] for p in contacts[-1]),default=0.),

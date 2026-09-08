@@ -40,6 +40,8 @@ def test_finger_target_only_contact_checks_dense_path_and_restores_world():
     assert result['initial_penetration_m']==pytest.approx(.004)
     assert result['final_penetration_m']==0
     assert result['audited_samples']==len(checks)==3
+    assert result['monotonic_contact_nonincreasing'] is True
+    assert result['max_step_penetration_increase_m']==0
     assert result['world_exempt_links']==[]
     assert p._disabled_world_obstacles=={'active_target_object'}
 
@@ -55,6 +57,14 @@ def test_restore_after_native_check_exception():
     p,target,checks=fixture('native_error')
     with pytest.raises(ValueError):audit_release_path(p,[[0],[.02]],target)
     assert p._disabled_world_obstacles=={'active_target_object'}
+
+
+def test_under_initial_bound_is_not_mislabeled_as_monotonic():
+    p,target,_=fixture()
+    report=audit_release_path(p,[[0],[.003],[.001]],target)
+    assert report['all_valid']
+    assert report['monotonic_contact_nonincreasing'] is False
+    assert report['max_step_penetration_increase_m']==pytest.approx(.002)
 
 
 @pytest.mark.parametrize('problem',['not_released','real','wrong_source','mesh'])

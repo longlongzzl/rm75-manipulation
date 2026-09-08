@@ -1,7 +1,8 @@
 {
   "schema": "rm75.audited_worktree_overlay/v1",
   "source_head": "36798efbd12814841607951c9af470b309b34fd3",
-  "source_status_sha256": "7a7759758ac9b3ed67e54374cdcb10f9837bb3c5507c79bae41348deacb60658",
+  "source_status_sha256": "15fd1ac40352579a761b4134244c2a74158dd723b2b146c6a39ccf458fe20968",
+  "additional_asset_approval": "docs/CHATGPT_REVIEW_CODEX_PUSH_20260908.md section 2; exactly the two Demo_Triangle paths and SHA256 values below. Existing twelve approvals unchanged. Current old realman_arm.py has drifted; use only the exact previously approved SHA from the preserved snapshot archive, never the changed old file.",
   "files": [
     {
       "path": "pick_jiaobang/rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py",
@@ -62,6 +63,16 @@
       "path": "Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_half_plate_37x6p5x74.glb.coacd.ply",
       "sha256": "d7dee2f9727703fa3751b2fa488a17a6bf629ca6f7e32b3b96e4f692cc9c204f",
       "reason": "Individually audited untracked dependency: portable DEFAULT_SIM_ASSET_FILE / DEFAULT_HALF_SIM_ASSET_FILE explicitly names these plate meshes; associated COACD collider preserves provided geometry, not regenerated or simplified. Fixed inventory contains none of these."
+    },
+    {
+      "path": "Demo_Triangle/red_triangle_74x135x6p5.glb",
+      "sha256": "fac68dee16a4f8d5b17d7de0f4007ac2445472c70d338c46dbb98908e38f4175",
+      "reason": "Explicitly approved in CHATGPT_REVIEW_CODEX_PUSH_20260908 section 2: exact original optional triangle model selected by the already audited portable entrypoint. Restore 135 mm geometry and original local tip orientation; no algorithm, target, or collision allowance changes."
+    },
+    {
+      "path": "Demo_Triangle/red_triangle_74x135x6p5.glb.coacd.ply",
+      "sha256": "f6d655ec58ef7db661241935c6d7f9ee3d0ac35c6807e0d2d1b57f9772582a12",
+      "reason": "Explicitly approved in CHATGPT_REVIEW_CODEX_PUSH_20260908 section 2: exact original collision cache for the approved 135 mm triangle model; preserve bytes and full original convex geometry without regeneration or shrinkage."
     }
   ]
 }

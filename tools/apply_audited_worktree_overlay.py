@@ -38,6 +38,28 @@ def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def approved_bytes(source: Path, archive: Path | None, path: str, expected: str):
+    """Resolve only approved raw bytes; an archive never authorizes new content.
+
+    An installed file with relocated literals cannot match the original raw SHA
+    and is deliberately rejected. No reverse relocation or permissive fallback.
+    """
+    for label, directory in (("old_worktree", source), ("approved_archive", archive)):
+        if directory is None:
+            continue
+        candidate = directory / path
+        if candidate.is_symlink() or not candidate.resolve().is_relative_to(directory.resolve()):
+            raise ValueError(f"overlay path escapes source or is symlink: {path}")
+        if not candidate.is_file():
+            continue
+        if candidate.stat().st_size > 80_000_000:
+            raise ValueError(f"overlay file too large: {path}")
+        raw = candidate.read_bytes()
+        if _sha256(raw) == expected:
+            return raw, label
+    raise RuntimeError(f"approved raw SHA unavailable; source changed since audit: {path}")
+
+
 def _overlay_selected(path: str) -> bool:
     if selected(path):
         return True
@@ -71,10 +93,15 @@ def main(argv=None) -> int:
     parser.add_argument("--source-repo", type=Path, required=True)
     parser.add_argument("--target-repo", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
+    parser.add_argument("--approved-archive", type=Path,
+        help="Optional preserved snapshot inside target repo; only exact approved raw SHA bytes may be reused")
     args = parser.parse_args(argv)
 
     source = args.source_repo.expanduser().resolve()
     target = args.target_repo.expanduser().resolve()
+    archive = args.approved_archive.expanduser().resolve() if args.approved_archive else None
+    if archive is not None and (not archive.is_relative_to(target) or archive.is_relative_to(source)):
+        raise ValueError("approved archive must be inside target repo and outside old source")
     manifest_path = args.manifest.expanduser().resolve()
     overlay = _load_overlay(manifest_path)
 
@@ -109,6 +136,8 @@ def main(argv=None) -> int:
     source_sizes: dict[str, int] = {}
     relocated_counts: dict[str, int] = {}
     reasons: dict[str, str] = {}
+    byte_sources: dict[str, str] = {}
+    source_hashes: dict[str, str] = {}
 
     for item in overlay["files"]:
         path = str(item.get("path") or "")
@@ -121,25 +150,15 @@ def main(argv=None) -> int:
         if not reason:
             raise ValueError(f"missing audit reason for {path}")
 
-        source_path = (source / path).resolve()
-        try:
-            source_path.relative_to(source)
-        except ValueError as exc:
-            raise ValueError(f"path escapes source repo: {path}") from exc
-        if not source_path.is_file() or source_path.is_symlink():
-            raise ValueError(f"overlay path is not a regular file: {path}")
-        raw = source_path.read_bytes()
-        if len(raw) > 80_000_000:
-            raise ValueError(f"overlay file too large: {path}")
-        actual = _sha256(raw)
-        if actual != expected:
-            raise RuntimeError(f"overlay file changed since audit: {path}")
+        raw, byte_source = approved_bytes(source, archive, path, expected)
 
         output, changes = relocate(raw, path, root)
         approved[path] = output
         source_sizes[path] = len(raw)
         relocated_counts[path] = int(changes)
         reasons[path] = reason
+        byte_sources[path] = byte_source
+        source_hashes[path] = expected
 
     # Recheck before writing anything to the new repository. The old repository
     # must remain byte-for-byte the same status snapshot used by the audit.
@@ -180,6 +199,8 @@ def main(argv=None) -> int:
                 "path": path,
                 "sha256": updated_by_path[path]["installed_sha256"],
                 "reason": reasons[path],
+                "byte_source": byte_sources[path],
+                "source_sha256": source_hashes[path],
             }
             for path in sorted(approved)
         ],

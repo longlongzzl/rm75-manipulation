@@ -279,6 +279,15 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
             install_contact_audit(direct, lambda row: events.emit('contact_audit', evidence=row))
         events.emit('native_contact_policy_selected',policy=policy,mode=spec['mode'],
                     hardware_contact_qualified=False)
+        if profile.get('pickplace',{}).get('audit_current_table_failures') is True:
+            if (spec['task']!='pickplace' or spec['mode']!='sim' or frozen_validation is None
+                    or policy!='transport_world_checked_compatibility'):
+                raise ValueError('Focused current-table diagnostics require checked frozen-world PickPlace SIM')
+            from curobo_rm75_planner import RM75CuRoboPlanner
+            from .pickplace_focused_diagnostics import install as install_focused
+            adapters.callback(install_focused(direct,RM75CuRoboPlanner,
+                lambda row:events.emit('contact_audit',evidence=row),
+                requested_source=spec['parameters']['object_name']))
         sys.argv=[str(root/entrypoint),*argv]
         from .native_outcome import NativeOutcomeCapture
         captured=NativeOutcomeCapture(sys.stdout)

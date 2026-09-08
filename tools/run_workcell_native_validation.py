@@ -74,6 +74,8 @@ def main():
         help='Separate SIM comparison: read seven start angles from original command documentation')
     parser.add_argument('--audit-roof-ik',action='store_true',
         help='Opt-in read-only first roof IK batch per original phase/source; no extra solve')
+    parser.add_argument('--audit-current-table-failures',action='store_true',
+        help='Read-only failed lift / already-generated tennis reverse path; no new solve or selection')
     inputs=parser.add_mutually_exclusive_group()
     inputs.add_argument('--fixed-sam6d',type=Path)
     inputs.add_argument('--fixed-world',type=Path,help='Original T_world_obj scene; PickPlace SIM direct entry only')
@@ -90,6 +92,11 @@ def main():
     parser.add_argument('--timeout-s',type=float,default=600.)
     args=parser.parse_args()
     if args.audit_roof_ik and args.task!='magnetic':parser.error('Roof IK diagnostics are Jimu SIM only')
+    if args.audit_current_table_failures and (args.task!='pickplace'
+            or args.object_name not in ('gluestick','hongshupian','tennis')
+            or args.fixed_world is None
+            or args.fixed_world.resolve()!=ROOT/'assets/test_scenes/current_table.json'):
+        parser.error('Focused diagnostics require one of the three reviewed current-table native-world sources')
     root=ROOT/'rm75_app/_vendor/working_snapshot';verify_snapshot(root)
     bundle=None;bundle_hashes=None
     if args.task_dir:
@@ -115,6 +122,7 @@ def main():
     profile=read_json(ROOT/'examples/workcell/machine.example.json')
     section=profile[args.task]
     if args.audit_roof_ik:section['audit_roof_ik']=True
+    if args.audit_current_table_failures:section['audit_current_table_failures']=True
     section.update(python=str(Path(sys.executable).resolve()),render_mode='none',fixed_scene=str(fixed),
         fixed_scene_format='native_world' if args.fixed_world else 'sam6d',
         simulation_contact_policy='transport_world_checked_compatibility')
