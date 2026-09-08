@@ -1,4 +1,5 @@
 import argparse
+import json
 from types import SimpleNamespace as NS
 import pytest
 from rm75_app.workcell.legacy import native_entrypoint,build_native_argv,working_direct,ENTRYPOINTS,PICKPLACE_WORLD_ENTRY
@@ -30,11 +31,14 @@ def test_unknown_input_format_and_missing_world_input_fail_closed():
 
 
 def test_original_world_cli_does_not_claim_or_invoke_sam6d(tmp_path):
-    scene=tmp_path/'original.json';scene.write_text('{"objects":{}}')
+    pose=[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
+    scene=tmp_path/'original.json';scene.write_text(json.dumps({'objects':{
+        name:{'T_world_obj':pose} for name in ('gluestick','desk','bi')}}))
     def parser():
         p=argparse.ArgumentParser()
         p.add_argument('--auto-execute',action='store_true');p.add_argument('--skip-foundationpose',action='store_true')
         p.add_argument('--object-name');p.add_argument('--fixed-scene-pose-file')
+        p.add_argument('--tracked-scene-object-names',nargs='*')
         return p
     spec={'task':'pickplace','mode':'sim','parameters':{'object_name':'gluestick'}}
     profile={'pickplace':{'fixed_scene_format':'native_world','fixed_scene':str(scene)}}
@@ -42,6 +46,7 @@ def test_original_world_cli_does_not_claim_or_invoke_sam6d(tmp_path):
     argv=build_native_argv(NS(build_arg_parser=parser),spec,profile,tmp_path,tmp_path)
     assert '--fixed-scene-pose-file' in argv and '--skip-foundationpose' in argv
     assert '--execute-real' not in argv and '--sam6d-fixed-scene-result-file' not in argv
+    assert parser().parse_args(argv).tracked_scene_object_names==['bi','desk','gluestick']
 
 
 def test_browser_cannot_choose_native_entry_or_input_format(profile):

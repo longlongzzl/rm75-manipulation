@@ -1,5 +1,7 @@
 # PickPlace 完整冻结世界 / PushT GPU 续报 — 2026-09-08
 
+后续实际入口接线见 [workcell frozen-world 回传](CODEX_THREE_SCENE_WORKCELL_FROZEN_WORLD_20260908.md)：下文本轮 gate 最初只在独立 runner；后续已接入真实 service/worker，并做 11 个独立 GPU 请求和 1 次 GPU 后 Stop。它们不是重复七物体连续任务，前后结果分别保留。
+
 **NEEDS_REVIEW：免运动验证已推进，三条链没有全部关闭，Jimu 仍不是只差真机。** 本轮完成 15 次 PickPlace native GPU/SIM 和 6 次 PushT GPU，共 21 次，全部自然结束。最终五个 PickPlace 场景完整通过 2/5；七物体原生结果 5/7；PushT 完整链 3/6（5 个正常输入中 3 个通过，另 1 个正确拒绝障碍负例）。所有中间失败保留。
 
 机器回传：[GPU 完整矩阵](../benchmarks/unified_scenarios/full_frozen_world_20260908_summary.json)、[迁移与原余量审计](../benchmarks/unified_scenarios/pickplace_relocation_audit_20260908_summary.json)。前者复用 `tools/summarize_no_motion_matrix.py` 的 `summarize_run` / `totals` 重算结果，并核对实际 world coverage JSONL 数量、拒绝项、前台物体绑定；不导出原始轨迹、关节或世界位姿。

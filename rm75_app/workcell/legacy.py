@@ -98,7 +98,7 @@ def native_contact_policy(spec,profile):
     return policy
 
 
-def build_native_argv(module,spec,profile,run_dir,root):
+def build_native_argv(module,spec,profile,run_dir,root,*,frozen_contract=None):
     entrypoint=native_entrypoint(spec,profile)
     parser=original_parser(module,spec['task'])
     actions=parser._option_string_actions
@@ -150,8 +150,15 @@ def build_native_argv(module,spec,profile,run_dir,root):
             if not fixed.is_file():
                 raise FileNotFoundError(f'Missing fixed scene: {fixed}')
             if entrypoint==PICKPLACE_WORLD_ENTRY:
+                from .native_frozen_world import read_contract
+                contract=frozen_contract or read_contract(fixed,params['object_name'])
+                if contract['path']!=fixed.resolve() or contract['source']!=params['object_name']:
+                    raise ValueError('Frozen world contract differs from task input')
                 add('--skip-foundationpose')
                 add('--fixed-scene-pose-file',str(fixed))
+                # Original loader/activation removes only the CURRENT source.
+                # Retain all names across same-cycle source retries.
+                add('--tracked-scene-object-names',list(contract['names']))
             else:add('--sam6d-fixed-scene-result-file',str(fixed))
     add('--render-mode',profile.get(spec['task'],{}).get('render_mode','human'),required=False)
     parsed=parser.parse_args(options)
@@ -223,11 +230,23 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
         from .pickplace_curobo_only import install
         clearance_audits=install(direct)
         events.emit('native_backend_selected',task=spec['task'],planner='curobo',mplib_fallback=False)
-        argv=build_native_argv(module,spec,profile,run_dir,root)
+        frozen_validation=None
+        if entrypoint==PICKPLACE_WORLD_ENTRY:
+            from .native_frozen_world import FrozenWorldValidation,read_contract
+            fixed=Path(profile[spec['task']]['fixed_scene'])
+            if not fixed.is_absolute():fixed=root/fixed
+            frozen_validation=FrozenWorldValidation(
+                read_contract(fixed,spec['parameters']['object_name']),run_dir,events)
+        argv=build_native_argv(module,spec,profile,run_dir,root,
+            frozen_contract=None if frozen_validation is None else frozen_validation.contract)
         atomic_json(run_dir/'native_command.json',{'entrypoint':entrypoint,
              'argv':argv,'source_commit':provenance['source_commit'],'mode':spec['mode']})
         results=install_progress_hooks(module,stop,events)
+        if frozen_validation is not None:
+            # Must be inside transport's refresh wrapper: observe effective args.
+            frozen_validation.install(direct)
         from .contact_audit import install_contact_audit, StrictContactNotSupported
+        from .pickplace_world_coverage import FrozenWorldIncomplete
         policy=native_contact_policy(spec,profile)
         if policy=='transport_world_checked_compatibility':
             from curobo_rm75_planner import RM75CuRoboPlanner
@@ -274,6 +293,12 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
                     'verification': exc.code, 'status': exc.code,
                     'contact_evidence': exc.evidence,
                     'episode_command_results': results,**captured.report(expected_cycles)}
+        except FrozenWorldIncomplete as exc:
+            outcome=captured.report(expected_cycles)
+            failure=frozen_validation.result(outcome,clearance_audits) if frozen_validation else {}
+            return {**outcome,**failure,'command_success':False,'task_success':None,
+                    'status':'frozen_world_incomplete','error':str(exc),
+                    'episode_command_results':results}
         except SystemExit as exc:
             if exc.code not in (None,0):
                 raise RuntimeError(f'Working engine exit {exc.code}') from exc
@@ -282,7 +307,7 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
             raise RuntimeError(f'Working engine returned {return_value}')
         stop.check()
         outcome=captured.report(expected_cycles)
-        return {'command_success':outcome['native_full_chain_passed'],
+        result={'command_success':outcome['native_full_chain_passed'],
                 'task_success':None,'verification':'not_observed',**outcome,
                 'native_entrypoint':entrypoint,'fixed_scene_format':profile.get(spec['task'],{}).get('fixed_scene_format','sam6d'),
                 'source_commit':provenance['source_commit'],'episode_command_results':results,
@@ -293,6 +318,10 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
                 'loaded_mplib_modules':[n for n in sys.modules if n=='mplib' or n.startswith('mplib.')],
                 'original_algorithms_preserved':True,
                 'note':'Normal process return is not proof of a real grasp or magnetic connection'}
+        if frozen_validation is not None:
+            result.update(frozen_validation.result(outcome,clearance_audits))
+            if not result['command_success']:result['status']='frozen_world_validation_failed'
+        return result
     finally:
         adapters.close()
         builtins.input=original_input

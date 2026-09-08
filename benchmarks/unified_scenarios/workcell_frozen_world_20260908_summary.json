@@ -1,0 +1,1134 @@
+{
+  "schema": "rm75.workcell_frozen_world/v1",
+  "tested_base_commit": "bf23c62def82444feb98794808c154753244a46c",
+  "execute_real": false,
+  "hardware_connected": false,
+  "camera_captured": false,
+  "verified_physical_success": null,
+  "actual_pipeline": "WorkcellService -> worker -> original cuRobo1 native SIM",
+  "compileall": "PASS",
+  "raw_artifacts_local_only": true,
+  "runs": [
+    {
+      "run": "legacy_gluestick",
+      "requested_source": "gluestick",
+      "input_scope": "original_gluestick_fixture",
+      "completed": true,
+      "worker_status": "command_completed_unverified",
+      "worker_failure_code": null,
+      "native_final_success": true,
+      "native_full_chain_passed": true,
+      "native_attempts": 1,
+      "source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "gluestick",
+          "success": true
+        }
+      ],
+      "verification": "frozen_world_sim_only",
+      "task_success": null,
+      "elapsed_s": 14.582646957001998,
+      "frozen_input_sha256": "c50649e011f1f11674912c21a75eded51213bd7fe22c052947888d575a6dab0f",
+      "native_full_world_validation": {
+        "all_sources_transport_observed": true,
+        "foreground_refresh_count": 9,
+        "foreground_transport_refresh_count": 3,
+        "frozen_input_sha256": "c50649e011f1f11674912c21a75eded51213bd7fe22c052947888d575a6dab0f",
+        "frozen_names": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis"
+        ],
+        "independent_clearance_passed": true,
+        "input_unchanged": true,
+        "passed": true,
+        "physical_geometry_qualified": false,
+        "refresh_count": 9,
+        "rejected_refreshes": [],
+        "requested_sources": [
+          "gluestick"
+        ],
+        "requested_sources_completed": true,
+        "source_outcomes": [
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "gluestick",
+            "success": true
+          }
+        ]
+      },
+      "clearance_warning_count": 0,
+      "clearance_audits": [
+        {
+          "all_valid": true,
+          "samples": 5,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_audit_calls": 1,
+      "transport_audit_samples": 62,
+      "transport_includes_prefetch": true,
+      "loaded_non_source_counts": [
+        8
+      ],
+      "observed_release_penetration_rejection": null,
+      "local_artifact_sha256": {
+        "runner_result": "c97f4220e0c6193b156e862192594b2e6cb93b5b90f506b498eddc8bc226a623",
+        "machine_profile": "eab4f611a9d0dce7bd36cfa4ea40d2eef870fc3b00668ca5c1ce121297729100",
+        "request": "5cdab599939fb5fe1d1c9ed26e8e6946e0ca3ca857ba24659d84540769ea314c",
+        "runner_stdout": "8745e765f343ee34ad4504f73a14045dad316064a354c7407a3d9ca784b678d8",
+        "worker_result": "a111e23a25d0e2970eef09a4f430654df0debe9d1d325bedc1672ff630afe009",
+        "worker_stdout": "c6d25dc2342d9b96e7b86e78c6941ae6cb5d42643221a924a2219911f53f0871",
+        "worker_events": "ef63887be85f8fbe0f1e6868b64f6b01d9c835f2b52a37fab533324dce9cde2e",
+        "native_command": "7d4e0d5fde5dc1c429080b07537cf321916cdcd8a05a620f4c36b2e6ca19e0b6",
+        "world_coverage": "17097b8d0eb0221b3eb5fe5bf1526e19f4ea4e63de63bbcffb90be65682c59e3"
+      }
+    },
+    {
+      "run": "gluestick_jitter_00",
+      "requested_source": "gluestick",
+      "input_scope": "original_gluestick_fixture",
+      "completed": true,
+      "worker_status": "command_completed_unverified",
+      "worker_failure_code": null,
+      "native_final_success": true,
+      "native_full_chain_passed": true,
+      "native_attempts": 1,
+      "source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "gluestick",
+          "success": true
+        }
+      ],
+      "verification": "frozen_world_sim_only",
+      "task_success": null,
+      "elapsed_s": 15.485326557005465,
+      "frozen_input_sha256": "170e200cab8f9ba977c0617f1db4f43cca1420784512388e2d2695dea525bafb",
+      "native_full_world_validation": {
+        "all_sources_transport_observed": true,
+        "foreground_refresh_count": 9,
+        "foreground_transport_refresh_count": 3,
+        "frozen_input_sha256": "170e200cab8f9ba977c0617f1db4f43cca1420784512388e2d2695dea525bafb",
+        "frozen_names": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis"
+        ],
+        "independent_clearance_passed": true,
+        "input_unchanged": true,
+        "passed": true,
+        "physical_geometry_qualified": false,
+        "refresh_count": 9,
+        "rejected_refreshes": [],
+        "requested_sources": [
+          "gluestick"
+        ],
+        "requested_sources_completed": true,
+        "source_outcomes": [
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "gluestick",
+            "success": true
+          }
+        ]
+      },
+      "clearance_warning_count": 0,
+      "clearance_audits": [
+        {
+          "all_valid": true,
+          "samples": 6,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_audit_calls": 1,
+      "transport_audit_samples": 63,
+      "transport_includes_prefetch": true,
+      "loaded_non_source_counts": [
+        8
+      ],
+      "observed_release_penetration_rejection": null,
+      "local_artifact_sha256": {
+        "runner_result": "0f4b1732ac17ead7e3b5dac392ab8ee1e13915591c65c98c415b32977d93a7e0",
+        "machine_profile": "db978f78b6fef7c8325e2b553200f0dc9014cbfa0e7076d2c7e16b48b2740b59",
+        "request": "5cdab599939fb5fe1d1c9ed26e8e6946e0ca3ca857ba24659d84540769ea314c",
+        "runner_stdout": "e2a581945a456ec6e733f9f2ac1b78beb10921ebd7da031fac2a17573b30511f",
+        "worker_result": "e32c950d5b34309bbb00f67746ef284815c10be0c630c220d69d4067586a4947",
+        "worker_stdout": "7395c16c33638480b44de121e3d2e0156fba7178582f18e2521014edb696a393",
+        "worker_events": "af2d4e246a5ed9b461cb6845b7f25eca22ac74b77cf664635a0b18ae2c0501ce",
+        "native_command": "87ed181856088c7315a7e6960e675b97dee4976226bb0d54590d924f5983fb80",
+        "world_coverage": "dcc551ed0b6da5389a291487aec6f765fb19a1f1e1eb250b0cbaaebb3377706a"
+      }
+    },
+    {
+      "run": "gluestick_yaw_00",
+      "requested_source": "gluestick",
+      "input_scope": "original_gluestick_fixture",
+      "completed": false,
+      "worker_status": "failed",
+      "worker_failure_code": "frozen_world_validation_failed",
+      "native_final_success": true,
+      "native_full_chain_passed": true,
+      "native_attempts": 2,
+      "source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "gluestick",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "bi",
+          "success": true
+        },
+        {
+          "foreground": false,
+          "prefetch_capture_only": true,
+          "source": "lvmukuai",
+          "success": true
+        }
+      ],
+      "verification": "frozen_world_validation_failed",
+      "task_success": null,
+      "elapsed_s": 27.465242058999138,
+      "frozen_input_sha256": "2b8bc34e174e7cb03a449c52fb18ee7a1ce67d1a7a9c1afa41a3013530202c44",
+      "native_full_world_validation": {
+        "all_sources_transport_observed": false,
+        "foreground_refresh_count": 13,
+        "foreground_transport_refresh_count": 3,
+        "frozen_input_sha256": "2b8bc34e174e7cb03a449c52fb18ee7a1ce67d1a7a9c1afa41a3013530202c44",
+        "frozen_names": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis"
+        ],
+        "independent_clearance_passed": true,
+        "input_unchanged": true,
+        "passed": false,
+        "physical_geometry_qualified": false,
+        "refresh_count": 24,
+        "rejected_refreshes": [],
+        "requested_sources": [
+          "gluestick"
+        ],
+        "requested_sources_completed": false,
+        "source_outcomes": [
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "gluestick",
+            "success": false
+          },
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "bi",
+            "success": true
+          },
+          {
+            "foreground": false,
+            "prefetch_capture_only": true,
+            "source": "lvmukuai",
+            "success": true
+          }
+        ]
+      },
+      "clearance_warning_count": 0,
+      "clearance_audits": [
+        {
+          "all_valid": true,
+          "samples": 5,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_audit_calls": 2,
+      "transport_audit_samples": 139,
+      "transport_includes_prefetch": true,
+      "loaded_non_source_counts": [
+        8
+      ],
+      "observed_release_penetration_rejection": null,
+      "local_artifact_sha256": {
+        "runner_result": "2466645e3e3ba54e34f987250f73aee0eca918687c981ce60b7d41c36139d75e",
+        "machine_profile": "2b4a74b06855aa9d8126a7fafe1b4dda48243baa573999f4e993b288c5c4df1d",
+        "request": "5cdab599939fb5fe1d1c9ed26e8e6946e0ca3ca857ba24659d84540769ea314c",
+        "runner_stdout": "9c975e94d7e46f039aca9a977de6c5b459644bc9592543829db1d38e24309943",
+        "worker_result": "8ece68d71d694a3b152c9e06c4f8b52c0ba4e81b117b93103eed7c85d1e7ad17",
+        "worker_stdout": "9853ad660c83f60f8394f62f9e939f54e27ee170c9eb7fc39bf5c0205b0fafa7",
+        "worker_events": "b71e3df6f64de69d53e7b179ede2edbe89f9322cfbf4c302450cb098a5c47c79",
+        "native_command": "152e4b1d3a11e51d1d3327d76898af995f00e5a63969e7bce3378fce2e903620",
+        "world_coverage": "11b92d6e4894745e69e107a50e9d30ec0853ddd13d98e0e9aa7dea42f61564a9"
+      }
+    },
+    {
+      "run": "gluestick_swap_00",
+      "requested_source": "gluestick",
+      "input_scope": "original_gluestick_fixture",
+      "completed": false,
+      "worker_status": "failed",
+      "worker_failure_code": "frozen_world_validation_failed",
+      "native_final_success": true,
+      "native_full_chain_passed": true,
+      "native_attempts": 2,
+      "source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "gluestick",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "bi",
+          "success": true
+        },
+        {
+          "foreground": false,
+          "prefetch_capture_only": true,
+          "source": "lvmukuai",
+          "success": true
+        }
+      ],
+      "verification": "frozen_world_validation_failed",
+      "task_success": null,
+      "elapsed_s": 29.28378356900066,
+      "frozen_input_sha256": "890c036a9010a0000744156e3dcaad881d729c704875317e3e3fd86a94e4f842",
+      "native_full_world_validation": {
+        "all_sources_transport_observed": false,
+        "foreground_refresh_count": 16,
+        "foreground_transport_refresh_count": 3,
+        "frozen_input_sha256": "890c036a9010a0000744156e3dcaad881d729c704875317e3e3fd86a94e4f842",
+        "frozen_names": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis"
+        ],
+        "independent_clearance_passed": true,
+        "input_unchanged": true,
+        "passed": false,
+        "physical_geometry_qualified": false,
+        "refresh_count": 26,
+        "rejected_refreshes": [],
+        "requested_sources": [
+          "gluestick"
+        ],
+        "requested_sources_completed": false,
+        "source_outcomes": [
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "gluestick",
+            "success": false
+          },
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "bi",
+            "success": true
+          },
+          {
+            "foreground": false,
+            "prefetch_capture_only": true,
+            "source": "lvmukuai",
+            "success": true
+          }
+        ]
+      },
+      "clearance_warning_count": 0,
+      "clearance_audits": [
+        {
+          "all_valid": true,
+          "samples": 5,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_audit_calls": 2,
+      "transport_audit_samples": 141,
+      "transport_includes_prefetch": true,
+      "loaded_non_source_counts": [
+        8
+      ],
+      "observed_release_penetration_rejection": null,
+      "local_artifact_sha256": {
+        "runner_result": "5ff9a302adaa9a33cc795b1e94478e51eb64c23fa685c3579af80bd63dec243b",
+        "machine_profile": "8d7ba0f0f39965fde16950a6ebf9dad0a4451f2d5a465770529a21ae6da6da33",
+        "request": "5cdab599939fb5fe1d1c9ed26e8e6946e0ca3ca857ba24659d84540769ea314c",
+        "runner_stdout": "72b4e0a3b2273eca33f936d922d8fa6c3d32cca57db7b883d0a3d783aaffe3e3",
+        "worker_result": "3683ff8b53d1a1be58c8ba59e6478d8b736a8f98a9266d470e02ad7d725938fb",
+        "worker_stdout": "fe0303fe70786bdf495159f36ac4ea17c042f0e701d2d24fdcc01415913c2f90",
+        "worker_events": "027d7a12ead43fe8a4ca35f11b5c7453e9f9a9ac8491a9050794386513fb8370",
+        "native_command": "b16fda52b1d661a8e86c0079a1c089ee5272bfccf514faf7730b9e7568197afe",
+        "world_coverage": "727eaae1399be9785007ec44c9f3f7d9134400024688b93dfa03b840ae677093"
+      }
+    },
+    {
+      "run": "table_lvmukuai",
+      "requested_source": "lvmukuai",
+      "input_scope": "independent_original_table_single_request",
+      "completed": true,
+      "worker_status": "command_completed_unverified",
+      "worker_failure_code": null,
+      "native_final_success": true,
+      "native_full_chain_passed": true,
+      "native_attempts": 1,
+      "source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "lvmukuai",
+          "success": true
+        }
+      ],
+      "verification": "frozen_world_sim_only",
+      "task_success": null,
+      "elapsed_s": 14.379197469002975,
+      "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "native_full_world_validation": {
+        "all_sources_transport_observed": true,
+        "foreground_refresh_count": 9,
+        "foreground_transport_refresh_count": 3,
+        "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+        "frozen_names": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis"
+        ],
+        "independent_clearance_passed": true,
+        "input_unchanged": true,
+        "passed": true,
+        "physical_geometry_qualified": false,
+        "refresh_count": 9,
+        "rejected_refreshes": [],
+        "requested_sources": [
+          "lvmukuai"
+        ],
+        "requested_sources_completed": true,
+        "source_outcomes": [
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "lvmukuai",
+            "success": true
+          }
+        ]
+      },
+      "clearance_warning_count": 0,
+      "clearance_audits": [
+        {
+          "all_valid": true,
+          "samples": 11,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_audit_calls": 1,
+      "transport_audit_samples": 67,
+      "transport_includes_prefetch": true,
+      "loaded_non_source_counts": [
+        8
+      ],
+      "observed_release_penetration_rejection": null,
+      "local_artifact_sha256": {
+        "runner_result": "83100162cfebbbd1cf5073e91adedbd7204d6577f94f6392fc19cd073073f48f",
+        "machine_profile": "0bf4bd8fb1accd9d625043c70b14c7028764e517e98d630f2f29048e8060c9db",
+        "request": "2c237a1e7269c1eff82bd69dd054efab87b7071b39f09416e69fbd4829ed41a0",
+        "runner_stdout": "86890fa0cf8329ce510f1023e894ff94e17e48f3194ada1e6b73c1425f2de7b1",
+        "worker_result": "40584f92c01dc2873ef365bd0aa3e060e752baeecf30a3a5b81e3a039b5803b4",
+        "worker_stdout": "a69955d64ceb4849926287b0eb0be11c13c2432daefdcc589c5e3822fd478c79",
+        "worker_events": "c87289d706534b383ee5e127044388d5c0254c9d57f0eebe8af201ba56c40072",
+        "native_command": "b8e063c3a141d2e53c2cadf70007d789165e955d1189d368d7ea2dc2147c442b",
+        "world_coverage": "7eb3c62f25ee5ea54fda96f63bdda27de73e5ce4f31ebd039a82b05b655b369f"
+      }
+    },
+    {
+      "run": "table_carriot",
+      "requested_source": "carriot",
+      "input_scope": "independent_original_table_single_request",
+      "completed": true,
+      "worker_status": "command_completed_unverified",
+      "worker_failure_code": null,
+      "native_final_success": true,
+      "native_full_chain_passed": true,
+      "native_attempts": 1,
+      "source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "carriot",
+          "success": true
+        }
+      ],
+      "verification": "frozen_world_sim_only",
+      "task_success": null,
+      "elapsed_s": 14.47934825399716,
+      "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "native_full_world_validation": {
+        "all_sources_transport_observed": true,
+        "foreground_refresh_count": 9,
+        "foreground_transport_refresh_count": 3,
+        "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+        "frozen_names": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis"
+        ],
+        "independent_clearance_passed": true,
+        "input_unchanged": true,
+        "passed": true,
+        "physical_geometry_qualified": false,
+        "refresh_count": 9,
+        "rejected_refreshes": [],
+        "requested_sources": [
+          "carriot"
+        ],
+        "requested_sources_completed": true,
+        "source_outcomes": [
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "carriot",
+            "success": true
+          }
+        ]
+      },
+      "clearance_warning_count": 0,
+      "clearance_audits": [
+        {
+          "all_valid": true,
+          "samples": 3,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_audit_calls": 1,
+      "transport_audit_samples": 54,
+      "transport_includes_prefetch": true,
+      "loaded_non_source_counts": [
+        8
+      ],
+      "observed_release_penetration_rejection": null,
+      "local_artifact_sha256": {
+        "runner_result": "2bcaf3dcfa9c513d28353843b389b0d83690e3c94be1833c0e55a955c20b5f15",
+        "machine_profile": "0bf4bd8fb1accd9d625043c70b14c7028764e517e98d630f2f29048e8060c9db",
+        "request": "19ea2a6abc9dfe4508171008967ac96dbbb6995a2135b63b254aff1bb19dd787",
+        "runner_stdout": "7659968dc85bb2cc3c2f35b827137abf959fcd0c0b19448da4edfb347f253cb7",
+        "worker_result": "86b6ddde2066cf54fe6e8a1e5fad0d5be72beaa5d6a31c67565a9311775d1fce",
+        "worker_stdout": "841bf52699b5df7816559b46a4834f689ad8db85ed5df3b5155c02ee39552205",
+        "worker_events": "51bd09a96d01a2ef92904cff2bc55d4e2035c1511ce7fabc6880b7143d78227b",
+        "native_command": "f9239470b65aae308493d1a75b1a69f87ca12c7289f86315f4258ae62f92aafb",
+        "world_coverage": "170b1641173e2330bf9cffcfb3f35f52d387259f1653da534f347f3cf260d745"
+      }
+    },
+    {
+      "run": "table_shuazi",
+      "requested_source": "shuazi",
+      "input_scope": "independent_original_table_single_request",
+      "completed": true,
+      "worker_status": "command_completed_unverified",
+      "worker_failure_code": null,
+      "native_final_success": true,
+      "native_full_chain_passed": true,
+      "native_attempts": 1,
+      "source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "shuazi",
+          "success": true
+        }
+      ],
+      "verification": "frozen_world_sim_only",
+      "task_success": null,
+      "elapsed_s": 15.483667797001544,
+      "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "native_full_world_validation": {
+        "all_sources_transport_observed": true,
+        "foreground_refresh_count": 9,
+        "foreground_transport_refresh_count": 3,
+        "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+        "frozen_names": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis"
+        ],
+        "independent_clearance_passed": true,
+        "input_unchanged": true,
+        "passed": true,
+        "physical_geometry_qualified": false,
+        "refresh_count": 9,
+        "rejected_refreshes": [],
+        "requested_sources": [
+          "shuazi"
+        ],
+        "requested_sources_completed": true,
+        "source_outcomes": [
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "shuazi",
+            "success": true
+          }
+        ]
+      },
+      "clearance_warning_count": 0,
+      "clearance_audits": [
+        {
+          "all_valid": true,
+          "samples": 8,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_audit_calls": 1,
+      "transport_audit_samples": 60,
+      "transport_includes_prefetch": true,
+      "loaded_non_source_counts": [
+        8
+      ],
+      "observed_release_penetration_rejection": null,
+      "local_artifact_sha256": {
+        "runner_result": "3bb82da8c3bc5dbae925a3b5c30c59d4478092e0f788ec0b103a12fafce51026",
+        "machine_profile": "0bf4bd8fb1accd9d625043c70b14c7028764e517e98d630f2f29048e8060c9db",
+        "request": "7ea98cf401d665c68c7482bb5c49ea1278d339216ccc7affd33953e5f653e330",
+        "runner_stdout": "aa8904b16bbebdf555ba746fc33dc4ebe4c22ba44824703ba0dd2046f9267acb",
+        "worker_result": "80d25ba05bbea1d593b684c92cb0ed725e27df81bad4d716e9f40762698980a5",
+        "worker_stdout": "178543e5a7a0da1db77943841ee5e7a514c14f968558b5c871d1e37300c06bc3",
+        "worker_events": "013ebd8862baa3a29867c343bd30d24c5071cc1ea5dfc73149da161068d3330c",
+        "native_command": "c0a4aa77ebd680a27f23f8b952f7f625fc256f4fead61bc415c1ee56b756c894",
+        "world_coverage": "093794f449f1ad8452db2024b8c9630dc811d8f9f4e7d4a0e005129e4862f392"
+      }
+    },
+    {
+      "run": "table_hongshupian",
+      "requested_source": "hongshupian",
+      "input_scope": "independent_original_table_single_request",
+      "completed": false,
+      "worker_status": "failed",
+      "worker_failure_code": "frozen_world_validation_failed",
+      "native_final_success": true,
+      "native_full_chain_passed": true,
+      "native_attempts": 2,
+      "source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "hongshupian",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "bi",
+          "success": true
+        },
+        {
+          "foreground": false,
+          "prefetch_capture_only": true,
+          "source": "lvmukuai",
+          "success": true
+        }
+      ],
+      "verification": "frozen_world_validation_failed",
+      "task_success": null,
+      "elapsed_s": 31.494247209004243,
+      "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "native_full_world_validation": {
+        "all_sources_transport_observed": false,
+        "foreground_refresh_count": 22,
+        "foreground_transport_refresh_count": 3,
+        "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+        "frozen_names": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis"
+        ],
+        "independent_clearance_passed": true,
+        "input_unchanged": true,
+        "passed": false,
+        "physical_geometry_qualified": false,
+        "refresh_count": 32,
+        "rejected_refreshes": [],
+        "requested_sources": [
+          "hongshupian"
+        ],
+        "requested_sources_completed": false,
+        "source_outcomes": [
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "hongshupian",
+            "success": false
+          },
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "bi",
+            "success": true
+          },
+          {
+            "foreground": false,
+            "prefetch_capture_only": true,
+            "source": "lvmukuai",
+            "success": true
+          }
+        ]
+      },
+      "clearance_warning_count": 0,
+      "clearance_audits": [
+        {
+          "all_valid": true,
+          "samples": 6,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_audit_calls": 2,
+      "transport_audit_samples": 105,
+      "transport_includes_prefetch": true,
+      "loaded_non_source_counts": [
+        8
+      ],
+      "observed_release_penetration_rejection": null,
+      "local_artifact_sha256": {
+        "runner_result": "72f8f25a0095d1510f4ec20badfb32781abe4cff19e747f2092e953e517f7e00",
+        "machine_profile": "0bf4bd8fb1accd9d625043c70b14c7028764e517e98d630f2f29048e8060c9db",
+        "request": "b75cacdd13819bfddb01bfff46f18a6e3031cbe86911864b9a65db592cf937aa",
+        "runner_stdout": "542020c6eba46e3adbe2a703569fa36d8f772882a1b2fb792056cadd40eb9888",
+        "worker_result": "72ee48f9571504c7ac4f188a6af14f751d808710796a5bf7c43f6eb61255b7a9",
+        "worker_stdout": "d897e5af740fb732cd5730eeaf4b6f6b7a9ee3bec730d0f33385b552bf01c123",
+        "worker_events": "ea3fed33cfa1ab398eae22f950853bed2fcaa8596564276d6a4b9b8f9d20dcb8",
+        "native_command": "f6198918d313b873d7259a4fb150910c7faf728e39bc51a27fd4b7f30ab494bf",
+        "world_coverage": "f4364697b249efbb58aa9aaa17053edef96c6f068b8178357d80575f5b1e180d"
+      }
+    },
+    {
+      "run": "table_gluestick",
+      "requested_source": "gluestick",
+      "input_scope": "independent_original_table_single_request",
+      "completed": false,
+      "worker_status": "failed",
+      "worker_failure_code": "frozen_world_validation_failed",
+      "native_final_success": true,
+      "native_full_chain_passed": true,
+      "native_attempts": 2,
+      "source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "gluestick",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "bi",
+          "success": true
+        },
+        {
+          "foreground": false,
+          "prefetch_capture_only": true,
+          "source": "lvmukuai",
+          "success": true
+        }
+      ],
+      "verification": "frozen_world_validation_failed",
+      "task_success": null,
+      "elapsed_s": 23.846541866005282,
+      "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "native_full_world_validation": {
+        "all_sources_transport_observed": false,
+        "foreground_refresh_count": 13,
+        "foreground_transport_refresh_count": 3,
+        "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+        "frozen_names": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis"
+        ],
+        "independent_clearance_passed": true,
+        "input_unchanged": true,
+        "passed": false,
+        "physical_geometry_qualified": false,
+        "refresh_count": 23,
+        "rejected_refreshes": [],
+        "requested_sources": [
+          "gluestick"
+        ],
+        "requested_sources_completed": false,
+        "source_outcomes": [
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "gluestick",
+            "success": false
+          },
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "bi",
+            "success": true
+          },
+          {
+            "foreground": false,
+            "prefetch_capture_only": true,
+            "source": "lvmukuai",
+            "success": true
+          }
+        ]
+      },
+      "clearance_warning_count": 0,
+      "clearance_audits": [
+        {
+          "all_valid": true,
+          "samples": 6,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_audit_calls": 2,
+      "transport_audit_samples": 104,
+      "transport_includes_prefetch": true,
+      "loaded_non_source_counts": [
+        8
+      ],
+      "observed_release_penetration_rejection": null,
+      "local_artifact_sha256": {
+        "runner_result": "e771256a0e9621b66f865d08302f4a7d8051e0018cc06cb6779679f4f7a951a2",
+        "machine_profile": "0bf4bd8fb1accd9d625043c70b14c7028764e517e98d630f2f29048e8060c9db",
+        "request": "5cdab599939fb5fe1d1c9ed26e8e6946e0ca3ca857ba24659d84540769ea314c",
+        "runner_stdout": "0655c882d24e3cd082b8388621a04f91889499db61482ca343a55dd35cbc9e43",
+        "worker_result": "778c251f0c6c04bd4ac1457cff9727846311c7c68879c23396d794d8a6faa04e",
+        "worker_stdout": "486bbf66b3c0971cf69f2a9ad64d742091931bdbb22943982556e6f35b0e2854",
+        "worker_events": "6b77ef013416c369298dfb252f0a8c510ea7b80f82a05a9b1610b2210e6c8694",
+        "native_command": "7ebfd3771a47efc5475e4f1201bf5b9d0aab2471fb70ec6ddea9407160faf305",
+        "world_coverage": "3afd9c9f39cf43070ee020ff3b5c9bb684706344a67f993630c6f73bd74d9d33"
+      }
+    },
+    {
+      "run": "table_bi",
+      "requested_source": "bi",
+      "input_scope": "independent_original_table_single_request",
+      "completed": true,
+      "worker_status": "command_completed_unverified",
+      "worker_failure_code": null,
+      "native_final_success": true,
+      "native_full_chain_passed": true,
+      "native_attempts": 1,
+      "source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "bi",
+          "success": true
+        }
+      ],
+      "verification": "frozen_world_sim_only",
+      "task_success": null,
+      "elapsed_s": 15.987327372997242,
+      "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "native_full_world_validation": {
+        "all_sources_transport_observed": true,
+        "foreground_refresh_count": 11,
+        "foreground_transport_refresh_count": 3,
+        "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+        "frozen_names": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis"
+        ],
+        "independent_clearance_passed": true,
+        "input_unchanged": true,
+        "passed": true,
+        "physical_geometry_qualified": false,
+        "refresh_count": 11,
+        "rejected_refreshes": [],
+        "requested_sources": [
+          "bi"
+        ],
+        "requested_sources_completed": true,
+        "source_outcomes": [
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "bi",
+            "success": true
+          }
+        ]
+      },
+      "clearance_warning_count": 0,
+      "clearance_audits": [
+        {
+          "all_valid": true,
+          "samples": 5,
+          "stage": "post_place_clearance",
+          "world_exempt_links": []
+        }
+      ],
+      "transport_audit_calls": 1,
+      "transport_audit_samples": 51,
+      "transport_includes_prefetch": true,
+      "loaded_non_source_counts": [
+        8
+      ],
+      "observed_release_penetration_rejection": null,
+      "local_artifact_sha256": {
+        "runner_result": "95fc184535d423e99dca9cf10abf02c53fae826c30821e2f7004d2b074d63103",
+        "machine_profile": "0bf4bd8fb1accd9d625043c70b14c7028764e517e98d630f2f29048e8060c9db",
+        "request": "42e35665c6e98ffd5747fa5977b4347b938ed1619f97eb7a5d3f45584880688a",
+        "runner_stdout": "aff248c7cdbeb27aa3c0a23724914cf91f405660bc7e5480de00161966842e9f",
+        "worker_result": "730881334f27d56f6140fbf3167dd2afdf55057512b2b573d29cb6e6354ce743",
+        "worker_stdout": "fff6a863483599b8a67cdccede1237918eb710409bc85d50eed3e3d09e42f952",
+        "worker_events": "5910a82c5cf3746458e7784db093ee1198d50dccbbfd47a5dbb58a1d88cc0607",
+        "native_command": "2fa8c716f031bdb1951aeedb5e0afd8a856bad32f38069c595075ed13e7ab6d9",
+        "world_coverage": "6d803e4ffe73b5bb667ec78adfbb4e8e867e44f9d30fa61231552e880487da55"
+      }
+    },
+    {
+      "run": "table_tennis",
+      "requested_source": "tennis",
+      "input_scope": "independent_original_table_single_request",
+      "completed": false,
+      "worker_status": "failed",
+      "worker_failure_code": "frozen_world_validation_failed",
+      "native_final_success": true,
+      "native_full_chain_passed": false,
+      "native_attempts": 1,
+      "source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "tennis",
+          "success": true
+        }
+      ],
+      "verification": "frozen_world_validation_failed",
+      "task_success": null,
+      "elapsed_s": 16.89420490500197,
+      "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "native_full_world_validation": {
+        "all_sources_transport_observed": true,
+        "foreground_refresh_count": 10,
+        "foreground_transport_refresh_count": 3,
+        "frozen_input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+        "frozen_names": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis"
+        ],
+        "independent_clearance_passed": false,
+        "input_unchanged": true,
+        "passed": false,
+        "physical_geometry_qualified": false,
+        "refresh_count": 10,
+        "rejected_refreshes": [],
+        "requested_sources": [
+          "tennis"
+        ],
+        "requested_sources_completed": true,
+        "source_outcomes": [
+          {
+            "foreground": true,
+            "prefetch_capture_only": false,
+            "source": "tennis",
+            "success": true
+          }
+        ]
+      },
+      "clearance_warning_count": 1,
+      "clearance_audits": [],
+      "transport_audit_calls": 1,
+      "transport_audit_samples": 45,
+      "transport_includes_prefetch": true,
+      "loaded_non_source_counts": [
+        8
+      ],
+      "observed_release_penetration_rejection": {
+        "waypoint": 1,
+        "initial_m": 0.004987516,
+        "current_m": 0.00512303,
+        "increase_m": 0.00013551399999999977,
+        "scope": "saved_native_model_not_physical_contact"
+      },
+      "local_artifact_sha256": {
+        "runner_result": "e74b8c34cb0d809c21e42fd9e6dd2a0139459afe30c7cf676bd6bee67bb71883",
+        "machine_profile": "0bf4bd8fb1accd9d625043c70b14c7028764e517e98d630f2f29048e8060c9db",
+        "request": "a3b01f5a9fbb78475a6cd7dbe975ecf4e5d5cecf718f45d274c494ca9698a838",
+        "runner_stdout": "cc302c5f46e3ce240f68811777ee81d6b430ab38124d5880644bf6ef19a8b494",
+        "worker_result": "12a34880d99631d895d886d54b64df1c83dfe75dc0c71b3441343b06c232a6eb",
+        "worker_stdout": "9c1e78f70813bec458f35ef2390f1b5f8e7400058604fabdf69e5f6870fd7c95",
+        "worker_events": "e35350d976810ad5ca75b55686086981d1834c014fd5fd0e4bd550737c9453ec",
+        "native_command": "6afc0881b8a927032e13fad815f04b8c2fa5eb2f859e3222a519462c64e43a6d",
+        "world_coverage": "9e85b7efc82ba1a89b83265c32361958814446e2572c52fd364a7ad55b9f5d28"
+      }
+    }
+  ],
+  "totals": {
+    "gpu_requests": 11,
+    "completed": 6,
+    "failed": 5,
+    "original_gluestick_requests": 4,
+    "original_gluestick_completed": 2,
+    "independent_table_requests": 7,
+    "independent_table_completed": 4,
+    "native_final_true_but_worker_rejected": 5,
+    "source_substitution_rejected": 4,
+    "clearance_rejected": 1,
+    "world_coverage_rejections": 0
+  },
+  "cpu_checks": {
+    "three_scene_tests": {
+      "summary": "556 passed, 1 warning in 16.83s",
+      "sha256": "3373851c8f13eaea21a1600b29dbe4c7c10035a99ba7edc0b57ee64e45aaa843"
+    },
+    "full_tests": {
+      "summary": "878 passed, 1 warning in 33.44s",
+      "sha256": "38e46b7cab838b032e9b77930ef8146a35cc4c36be86f2152489b8009b545702"
+    }
+  },
+  "source_sha256": {
+    "rm75_app/workcell/legacy.py": "987a2dc696a30f2823065fd1a825d8124ee68476cb2cfcce269192d49c4301ef",
+    "rm75_app/workcell/native_frozen_world.py": "79404c0d7b805ca46ea2fa538b7df870d511fe882b4d3c53ddddba31b4e5585b",
+    "rm75_app/workcell/pickplace_world_coverage.py": "513564f6d5a174e0ac54fb76fbaa24ed3c26f71d319f8eb7006dbe6198aa18d9",
+    "rm75_app/workcell/worker.py": "174e6ed763634f3a4acab64693d1303013d65154b9c7fc2db47397860ea070d7",
+    "rm75_app/workcell/service.py": "e2861a0c94353378146da69c0c5845caf1aa51408b7a05e4906de88c6c2d9981",
+    "rm75_app/workcell/transport_contact.py": "a09f843d43a96e3a66b18e5114696889639c16837bb37dba1cb1ffd4aae1f023",
+    "tools/run_workcell_native_validation.py": "b27ee7c84b25ecd87e64c2723128900e50a432eafaa928009bd15e7b805ac820",
+    "tests/three_scene/test_native_frozen_world.py": "461bdc8070e82656aa6569a95f3f76e46978e4bb78b1a5f5255b4e451088d034",
+    "tests/three_scene/test_native_scene_input.py": "e032d1ba63345fd79a590a62a2b22063b112a965c4ac5632689baccf033708f9"
+  },
+  "snapshot": {
+    "files": 807,
+    "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+    "dependency_completeness_verified": false,
+    "runtime_gpu_verified": false
+  },
+  "browser": {
+    "status": "NOT_RUN",
+    "get_for_url_error": "No browser is available",
+    "recovery_browsers_list": [],
+    "unrelated_control_fallback_used": false
+  },
+  "notes": [
+    "Every request starts from its own unchanged original fixed input. Seven table requests are NOT a sequential seven-object task.",
+    "The original native algorithm may retry a different source; a substitute or prefetch success never qualifies the requested source.",
+    "Only fixed native-world SIM is changed. Default SAM6D and real/Jimu source algorithms and contact policy are unchanged.",
+    "World coverage is a names/enabled-state audit of the original collision models, not physical geometry qualification.",
+    "Tennis requested source returned success but its post-release clearance failed and the worker rejected completion.",
+    "PushT GPU and Jimu GPU are not rerun in this matrix. Prior evidence remains separate.",
+    "No source assets migrated and no robot SDK, camera or hardware movement used. No push attempted.",
+    "One additional actual GPU Stop trial cancelled the SIM worker after 61 audited transport samples and before any native cycle/final completion; request latency is not hardware stop latency."
+  ],
+  "total_gpu_runs_including_stop": 12,
+  "stop_validation": {
+    "passed": true,
+    "scope": "actual_service_SIM_process_cancellation_not_hardware_stop",
+    "completed": false,
+    "native_final_success": null,
+    "native_cycles": [],
+    "stop_trigger": {
+      "event": "transport_full_world_audit",
+      "payload_spheres": 6,
+      "samples": 61,
+      "step_id": "joint_transport_hover_pairs_grasp_direct_top_bias_pos2_tilt25_away_axis_2mm_fast_ik_after_lift"
+    },
+    "job_status": "cancelled",
+    "worker_exit_evidence": "worker exited -15 without a final result",
+    "request_return_elapsed_s": 0.0014485600040643476,
+    "elapsed_s": 13.399056749003648,
+    "physical_estop": false,
+    "hardware_stop_qualified": false,
+    "local_artifact_sha256": {
+      "runner_result": "e9fede1b12d8d9324267f488dea02174638a870187e182200ed77377241ed869",
+      "runner_stdout": "824c47e1ba9485d2e6e29c04ebcf08d5f06cf54beeb70482faaf31282f40fba3",
+      "worker_stdout": "a5aa82107ef8755a12bd002700703791bd8956c5d4a768e9a01150945626ebe8",
+      "worker_events": "b73c3c41a161970be1c3eac86d6841754f77dea0869aa7b2d071c2d04f9e186c",
+      "native_command": "7d4e0d5fde5dc1c429080b07537cf321916cdcd8a05a620f4c36b2e6ca19e0b6",
+      "world_coverage": "4e0ecf4d26773fd47a0f70755950715b0d04147c09d3b208229ebcb80a23e4dd"
+    }
+  },
+  "remote_read_only_check": {
+    "method": "git ls-remote --heads origin chatgpt/three-scene-software-closeout",
+    "recorded_origin_commit": "3d2aba1bf375e516e27b353dd0c1387e2327da79",
+    "observed_remote_commit": "3d2aba1bf375e516e27b353dd0c1387e2327da79",
+    "new_remote_commit": false,
+    "push_attempted": false
+  }
+}
