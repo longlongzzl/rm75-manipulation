@@ -1,6 +1,6 @@
 # Three-scene release gate — 2026-09-08 R2
 
-第 0–11 节保留 `d9f2190` 的原 R2 验收结果；用户随后澄清需要的是**仿真失败录像而非桌面相机视频**，纠正后的独立录像工作见第 12 节，不回填或改写原实验分母。
+第 0–11 节保留 `d9f2190` 的原 R2 验收结果；用户随后澄清需要的是**仿真失败录像而非桌面相机视频**，纠正后的独立录像工作见第 12 节（已提交 `4fa22da`）。**最新的抬升高度诊断、Tennis 水平约束和 PushT 闭合夹爪修正见第 13 节**；历史结果不回填或改写。
 
 **NEEDS_REVIEW：本轮无机械臂/夹爪运动，三条 demo 尚未完成验收。** 按 [本轮审阅要求](CHATGPT_REVIEW_CODEX_PUSH_20260908.md) 顺序完成干净 HEAD 离线基线、精确资产恢复、Jimu 三个 GPU 控制实验，再做三个 current-table 请求的有限诊断。没有降低碰撞检查、减少候选/seeds、放宽成功条件或重新设计规划算法。
 
@@ -356,3 +356,111 @@ SDK connection/preflight、关节反馈/顺序/单位、真实 Stop API、夹爪
 | 最终 three_scene log | `e9f41aa162107bfd5e5e247666628b3ee135541759730e72cf25b739110533d1` |
 
 录制工具与本节说明随本分支提交并 push；提交 SHA 在交付消息给出。等用户查看这三条链的失败证据再讨论下一步，**不自动放宽碰撞或进入真机运动**。
+
+## 13. 用户查看失败录像后的几何修正与验证
+
+本节从干净 `4fa22da6b8e3d2eff860b7fca413f03f58f260cd` 出发。用户本次要求：检查 Jimu 是否抬升不够；修正 PickPlace 的 preplace/place 夹爪水平问题；PushT 整个流程统一按闭合夹爪姿态计算位置。以下修改不代表前三节历史发布门已经全部通过。
+
+本节本地根目录（G）：`runtime_data/three_scene/geometry_corrections_20260908/`。随代码提交的有界结果及逐次 SHA 见 [geometry_corrections_20260908_summary.json](../benchmarks/unified_scenarios/geometry_corrections_20260908_summary.json)。原始关节、轨迹、worker 日志、视频仍只留本地。
+
+| 链路 | 本次实际结论 | 尚未完成 |
+| --- | --- | --- |
+| Jimu | 已保存 after-lift 姿态中，原右夹爪球与批准的右三角模型表面重叠约 2.756 mm；支持仍未完全脱离邻物的判断 | 未改抬升高度，未重跑完整 builder；单球高度敏感性不认证整臂/带载路径 |
+| PickPlace Tennis | preplace 与 place 同时强制整个向下 TCP 端面水平，不再回退倾斜候选；两次实际 workcell GPU/SIM 均 FAIL | 原固定放置点的水平候选 IK 未通过；“两指等高可俯仰”与“整个端面水平”的含义待用户确认 |
+| PushT | 完整闭合工具几何映射后，最终 4 个正常姿态及 5 mm/s 对照共 5/5 完成五阶段 GPU 链；邻物负例和执行门仍拒绝 | 属于既有合成场景的无运动软件回归；没有实际工具测量/TCP/观察器/关节反馈资格化 |
+
+### 13.1 Jimu：抬升高度与碰撞配对的只读证据
+
+新工具 `tools/audit_jimu_saved_lift_height.py` 读取第 12 节 v3 已保存的首个 native 非零球诊断，匹配原场景的 `scene_obstacle_right_roof_triangle` 和本仓库已批准的 GLB。工具核对资产路径、SHA、原模型变换，再计算球到实际网格表面的距离，不访问或修改旧仓库，不调用 IK/轨迹执行。
+
+- 被查阶段是原 `joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift`。原 `_lift_pose_world_z` 确实增加 world-Z **100 mm**；日志 `world_delta=[0,0,-0.1]` 是 start−goal，不能误读为向下移动。
+- 原右三角模型高度 **135.000005 mm**，场景最高点 z 为 **148.000032 mm**；原 `gripper_Right_Support_Link` 球半径 **17.5 mm**，球底比该最高点低 **3.301965 mm**。坐标都在同一原规划基座系，不是桌面相对高度。
+- 原球心在网格最高点之上，满足距离符号检查条件；按实际网格表面而非外包围盒计算，间隙为 **−2.755712 mm**。这补充了第 12 节“具体障碍配对未证实”的证据：在原保存模型/姿态下，该球确实仍与右三角模型重叠；不是新的真机接触测量。
+
+| 仅将原球沿 world-Z 平移 | 到原三角网格的球面间隙 |
+| --- | --- |
+| 0 mm | −2.755712 mm |
+| +5 mm | +2.109851 mm |
+| +10 mm | +7.029543 mm |
+| +20 mm | +16.938394 mm |
+
+此表仅回答“这个已保存球是否还不够高”。**没有求新关节解、检查其他球/机械臂/自碰撞/带载物体，也没有验证连续抬升和后续搬运**，不能推出“增加 5 mm 就能安全通过”。没有新增抬升常量、扩大任何免检阶段或把搬运改成免检。原 builder 7/12 发布阻塞仍保留。
+
+证据：`G/jimu_lift_height_v1.json`，SHA256 `d49a988dbed203950a019180d47eac3b66f363e81c68b7673f83dd4b6f7d286d`；批准网格 SHA256 `fac68dee16a4f8d5b17d7de0f4007ac2445472c70d338c46dbb98908e38f4175`。
+
+### 13.2 PickPlace：水平约束已生效，但当前放置点仍失败
+
+历史 Tennis 的原 preplace/place 使用同一倾斜四元数，端面相对水平约 **30°**，两侧夹爪开合轴高低倾斜约 **20.705°**，与用户指出“一侧夹爪低”一致。
+
+`rm75_app/workcell/pickplace_level_release.py` 目前按更严格的解释实现：**整个向下 TCP 端面平行桌面**，同时约束 preplace 和 place/release。仅作用于 Tennis；其他两个 PickPlace 对象、Jimu、插入规则未改。
+
+- 保留原候选生成函数、原位置/姿态、原抓取关系、全部 IK seeds 和世界/自碰撞/带载检查；不旋转抓取附着物，不创造新的放置姿态或增加/减少求解 seed 预算。
+- 对原生成姿态施加用户要求的硬任务约束，不是为了碰撞通过而削减搜索预算。每个原 30 姿态中 **6 个满足整个端面水平**；其余倾斜姿态不再作为失败后的 fallback。数值 `1e-5` 只判断生成姿态的矩阵水平等式，未改变 IK 接受容差。
+- 共保留原 **16 个抓取关系**，展开 **96 个关系×放置组合**。两个原入口及所有相关 pose 字段均受约束，退出时恢复原函数。
+- 返回元数据明确记录新增任务姿态约束，PickPlace 不再笼统声称 `original_algorithms_preserved=true`。v1 的中间旧元数据保留；v2 已修正该标识。
+
+两次都通过真实 `WorkcellService → worker → cuRobo native SIM`，使用完整 `assets/test_scenes/current_table.json`（9 个世界物体）、原 32 seeds、原成功门；不是手写替代 planner：
+
+| 本地 run | wall time | 请求 Tennis 的实际结果 |
+| --- | --- | --- |
+| `G/tennis_level_v1` | 61.496 s | FAIL，exit 42，`frozen_world_validation_failed` |
+| `G/tennis_level_v2` | 57.911 s | FAIL，exit 42，`frozen_world_validation_failed` |
+
+两次原输入均 unchanged=true；pregrasp **16/16**、grasp **16/16**，hover **0/96**、release **0/96**，完整交集 **0/96**。原 fallback `bi` 或后台 `lvmukuai` 成功不计入 Tennis。失败发生在获得可执行请求路径前，录制只产生静态端点，不冒充修好后的 Tennis 运动视频。
+
+v2 额外复用原批次只读 observer：首次 paired-place 的 32 个原 goal 返回值有诊断，没有额外求解。三个观察阶段 complete/state_unchanged 均为 true。示例 goal 0 和 21 的原返回配置 collision_valid=true、未见启用世界/自碰撞，但 FK 位置误差分别 **9.071 mm / 3.581 mm**，旋转误差 **14.144° / 21.480°**；不能把这些 near-IK 提升为成功，也不据此声称全局所有水平姿态均不可达。该诊断只覆盖首次 32 个返回值，不是全部 96 个展开组合。
+
+已向用户澄清“两个夹爪等高但允许前后俯仰”还是“整个端面完全水平”。截至本节提交尚无答复，保持当前严格约束、Tennis FAIL 和待确认状态，**不擅自放开俯仰来得到绿灯**。本次未重跑或宣称修好 gluestick/hongshupian。
+
+### 13.3 PushT：所有阶段统一使用闭合夹爪真实模型偏置
+
+`rm75_app/pusht/closed_gripper.py` 修正原平面推模型的虚拟圆心被直接当作 TCP 的错误。用户已选闭合夹爪，本次因此恢复 GPU 回归；没有调整原合成场景使其变简单，也没有把模型资格化当成实物测量。
+
+1. 从原 cuRobo2 CLOSED 动态夹爪模型 FK 提取全部 **38 个正半径工具碰撞球**，转换到 `gripper_tcp`；额外配置仅用于 FK 刚性检查，没有运动。实测相对 TCP 刚性误差 **2.780888e-8 m**，模型半径/偏置原样保留。
+2. 保持原目标表面接触点、工具四元数、TCP 高度、T/table/邻物几何及原推长。检查所有原接触球与有限 T 几何的匹配，允许接触仅为原 finger/pad，排除掌部和目标顶/底边造成的非平面接触；不是增加 IK seeds 或修改 MPC 参数。
+3. 用实际接触球的偏置/半径换算 TCP 接触点；下降点考虑**整个下降高度内全部工具球**的扫掠，再保留原 10 mm gap，先在目标外围下降，再水平靠近。五阶段 `approach → descend → contact → push → retreat` 均使用同一闭合工具映射，不能只修接触终点而让前段仍按虚拟推头计算。
+4. 原完整场景、全工具低位 footprint 和 ≤1 mm 名义下降/靠近采样先做几何必要条件检查。随后继续原完整机械臂 GPU IK、world/self、无关物体/带载检查、TCP corridor、时间重整和速度/加速度门。名义几何不替代这些全路径审计。
+5. 推动中的目标扫掠使用实际表面施力点，而非虚拟圆心/TCP 中心；原 CPU 平面预测仍只是 surrogate，不是接触物理资格化。
+
+两个原失败案例的 TCP 接触位置相对旧虚拟圆心分别修正 **35.210 mm（baseline）/22.860 mm（rotated_orthogonal）**。相应完整工具扫掠要求的下降后水平靠近距离为 **10.000 mm /22.128 mm**，不是统一手动加大 standoff；两个案例均检查全部 38 个特征，仅 1 个原接触球方案满足名义几何。下降名义全工具/世界最小间隙约 **5.200 mm**（其中包括桌面，不能称为单独 T 间隙）。接触终点是构造的相切等式，没有放宽 native 碰撞容差。
+
+非 SIM 的规划要求 `closed_gripper_verified=true`；任何 `execute_push` 调用都要求该标志，SIM 来源标签不能绕过执行前检查。这里只有模型状态设置，没有实际关闭夹爪命令。资格化清单新增对应缺项；实际夹爪反馈、工具实测、TCP/观察标定仍缺失，`hardware_profile_qualified=false`。
+
+### 13.4 PushT 原场景完整 GPU 回归及保留的失败
+
+串行运行原 `tools/run_pusht_gpu_validation.py`，`--fixture low_table --audit-blocker --audit-execution-gates`；原目标/桌面/姿态/半径/候选/IK seeds 保持不变。四个正常 case、预设邻物负例分别运行 v1/v2/v3，另加最终 baseline 的 5 mm/s 对照，共 **16 次**；每次结果及 SHA 均保存在上述有界 JSON。
+
+| 最终 run（v3） | 完整五阶段链 | wall time |
+| --- | --- | --- |
+| baseline，15 mm/s | PASS | 12.605 s |
+| rotated_orthogonal，15 mm/s | PASS | 13.700 s |
+| orthogonal_tool，15 mm/s | PASS | 13.155 s |
+| yaw_matched_tool，15 mm/s | PASS | 12.611 s |
+| orthogonal_neighbor_blocked | 预期 REJECT：下降前几何发现左支撑 link ↔ blocking_neighbor | 5.674 s |
+| baseline_slow，5 mm/s | PASS | 18.025 s |
+
+- 最终 4 个正常姿态 **4/4**，含慢速重复共 **5/5 正常运行**通过五阶段链及原 timing 门。baseline 15/5 mm/s 的全链计划时长分别 **64.667/184.233 s**，推段 **1.833/4.867 s**；这是轨迹计划时间，不是已执行真机时间。原 joint speed/acceleration 上限仍为 **0.25 rad/s /0.5 rad/s²**。
+- 每个最终正常运行额外加入 GPU blocker 后，完整 native 碰撞审计 **5/5 拒绝**。预设 `orthogonal_neighbor_blocked` 在名义全工具下降前检就已拒绝，未进入完整五阶段求解；**不能把它另算为 GPU 轨迹碰撞拒绝**。
+- 每个正常运行的 10 项原 stale/replay/joint-drift 等执行门注入测试，共 **50/50 正确拒绝**；为到达这些已有门，只在测试副本显式注入 `closed_gripper_verified=true`，结果记录 `injected_closed_gripper_review=true`。sink 禁止所有实际执行，这不是夹爪实测反馈或真实执行成功。
+- 所有中间尝试保留：v1 四个正常 case 中 3 PASS、rotated_orthogonal FAIL。首版按无限前沿平面选单一接触特征过于保守；v2 改为对**全部原球和有限 T**逐一验证，没有改 fixture/姿态/半径，四个正常 case 都 PASS。v3 在最终执行防绕过门更新后重新跑上述全部 case。
+- 16 次中，正常运行总计 **12/13 PASS**，预设邻物负例 **3/3 REJECT**；唯一中间正常失败未删除，不将最后一次全绿替换累计分母。额外的 blocker 审计是正常运行内的负例，不另冒充新 case。
+
+### 13.5 修正后 PushT 视频
+
+交付 `G/pusht_corrected.mp4`：H.264，1280×600，10 fps，416 帧，**41.6 s**；SHA256 `e569b583858090a8e02c2c7fe9010d209e20b8a86daafc3fe9c4a89f72d02756`。已通过 ffprobe 和整片 ffmpeg 解码；检查 baseline 与 rotated_orthogonal 的最终接触关键帧。
+
+- 复用第 12 节原 input/envelope、原 38 球和原完整场景，输入对应 v2 新 GPU 完整链 result；v3 重跑使用相同映射并通过最终门。渲染工具 `--corrected` 要求源哈希/场景/profile/case 对应、GPU complete/validation_success 和 no-hardware 标志，复算映射与保存值匹配后才出片。
+- 内容是**修正后名义 TCP 的外围下降与水平靠近到首次接触**，不是原始关节路径或物理模拟，持续标注 `NOT an IK / executed robot trajectory`、`hardware profile NOT qualified`。停止于首次接触，不在静止的 T 上继续穿透播放，也不伪造 T 被推动。
+- baseline 首次接触停留在 **16–20 s**；rotated_orthogonal 在 **37.6–41.6 s**。这是对应名义几何的可视化；完整五阶段 GPU 资格由独立结果审计提供，不由视频代替。历史失败片保留不覆盖。
+
+### 13.6 本次测试、复现与提交边界
+
+- 干净 `4fa22da` 离线基线：**924 passed**，35.42 s。最终 compileall PASS；完整 `tests/three_scene` **635 passed，18.07 s**；完整 `tests` **957 passed，36.39 s**，均只有原 trimesh warning。较基线新增 33 项测试；snapshot verify **809 项 PASS**。
+- 新测试覆盖水平约束两个原入口/每个端点/禁止倾斜回退/非 Tennis 不变、诊断来源范围、原模型球与 SHA、高度敏感性边界、闭合模型全工具 footprint/有限 T/接触点保持/邻物与桌面拒绝、真实状态执行前门及 SIM 标签绕过拒绝、修正视频源和完成状态校验。原运动链、碰撞、时间和执行门测试未删。
+- 中间失败日志保留：新增单测的 mock/输入维度与目标单项前提不匹配分别修正；首次 full tests 为 **1 failed /951 passed**，原因是 Jimu 测试把实际 GLB 顶点误写为理想化尖顶。随后改用网格实际最高顶点，未改模型或放宽误差，最终全量 957 PASS。不能声称所有中间运行都通过。
+- GPU 进程均使用 `systemd-run --user --scope -p MemoryMax=9G -p MemorySwapMax=512M`、`OMP_NUM_THREADS=2`、`MAX_JOBS=2` 串行运行。PickPlace 沿用 `foundationpose310` 原工作版本环境；PushT 为 `curobo2` 环境。没有安装/升级外部库、改 solver 或调用 mplib。
+- Tennis 复现：`tools/run_workcell_native_validation.py --task pickplace --object-name tennis --fixed-world assets/test_scenes/current_table.json --audit-current-table-failures --record-sim-video --extensions runtime_data/curobo_native_extensions --output <独立目录> --timeout-s 600`。PushT 复现：`tools/run_pusht_gpu_validation.py --case <表中 case> --fixture low_table --audit-blocker --audit-execution-gates --output <独立目录>`；慢速额外 `--speed .005`。使用对应现有 Python 环境与上述资源限制。
+- compile、最终两组 tests、snapshot 日志 SHA 与所有原 result SHA 见本节 JSON；运行、失败和原始证据未覆盖。仅源代码、必要 tests、有界 JSON 和本文入 Git；runtime 图像/视频/日志/轨迹不入 Git。
+- **本次未连接真实相机/RealMan SDK，没有任何机械臂或夹爪命令；未做 frontend/camera/RRTrack identity 新验收；未修改/清理旧仓库，未改 snapshot 字节。** 用户选闭合夹爪不是物理资格化证据，也不是运动授权。
+
+本节代码、测试、摘要和文档完成后提交并 push 到当前分支，提交 SHA 在交付消息给出。Tennis 含义澄清及当前失败保留；Jimu 完整高度修复/三条实物 demo 仍未关闭。本轮到此停止，不自动推进机械臂运动。

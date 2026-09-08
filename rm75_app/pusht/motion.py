@@ -35,6 +35,8 @@ class CuroboPushExecutor:
             raise PermissionError('Verified pusher collision geometry/contact links are required')
         self.corridor=finite(profile.get('corridor_tolerance_m',.003),'corridor_tolerance_m',.0005,.005)
         self.orientation_tolerance=finite(profile.get('orientation_tolerance_rad',.05),'orientation_tolerance_rad',.005,.1)
+        if self.tool_frame != 'gripper_tcp':
+            raise PermissionError('Closed gripper mapping requires the original gripper_tcp frame')
 
     def _scene(self,obs):
         from rm75_app.planning.contracts import PlanningScene,CollisionObject,Pose
@@ -103,14 +105,14 @@ class CuroboPushExecutor:
         if self.names!=tuple(f'joint_{i}' for i in range(1,8)):
             raise ValueError('Unqualified RM75 joint order')
         q=self.arm.read_joints();start_q=q.copy()
-        direction=np.asarray(push.direction);contact=np.asarray(push.contact)
-        entry=contact-direction*self.config.approach_gap_m
-        end=contact+direction*push.length_m
-        points=[('approach',[*entry,self.z+self.hover],False,False),
-                ('descend',[*entry,self.z],True,False),
-                ('contact',[*contact,self.z],True,True),
-                ('push',[*end,self.z],True,True),
-                ('retreat',[*end,self.z+self.hover],True,True)]
+        if obs.source != 'simulation' and self.profile.get('closed_gripper_verified') is not True:
+            raise PermissionError('Actual closed gripper state must be verified before hardware planning')
+        self.backend.set_gripper_collision_state(closed=True)  # Model only, not a gripper command.
+        from .closed_gripper import bind_push
+        geometry=self.backend.closed_gripper_tool_geometry(q)
+        points,binding=bind_push(push,obs,self.config,self.profile,geometry,scene)
+        self.events.emit('push_closed_gripper_binding',**binding)
+        self.last_contact_binding=binding
         prepared=[]
         for stage,xyz,straight,contact_allowed in points:
             self.stop.check();pose=Pose(xyz,self.orientation)
@@ -155,7 +157,10 @@ class CuroboPushExecutor:
                 try:
                     for scale in self.config.friction_scales:
                         for fraction in (.5,1.):
-                            future=predict(obs.pose,replace(push,length_m=push.length_m*fraction),self.config,scale)
+                            # Force acts at the bound object surface, never the surrogate circle/TCP center.
+                            effective=replace(push,contact=tuple(binding['surface_contact_xyz'][:2]),
+                                              length_m=push.length_m*fraction)
+                            future=predict(obs.pose,effective,self.config,scale)
                             self.backend.update_scene(self._scene(replace(obs,pose=tuple(future))))
                             self._audit(timed,contact=True)
                 finally:
@@ -168,6 +173,9 @@ class CuroboPushExecutor:
         return PreparedPush(tuple(prepared),start_q)
 
     def execute_push(self,push,obs):
+        # Observation labels never grant permission to assume a real jaw state.
+        if self.profile.get('closed_gripper_verified') is not True:
+            raise PermissionError('Actual closed gripper state must be verified before execution')
         planned=self.plan_push(push,obs)
         prepared=planned.stages;start_q=planned.start_q
         # Planning may take longer than the image freshness window. Obtain a NEW

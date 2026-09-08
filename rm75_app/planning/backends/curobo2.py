@@ -504,6 +504,11 @@ class Curobo2Backend:
         self._gripper_collision_state = "closed" if closed else "open"
         self._apply_gripper_collision_state()
 
+    def closed_gripper_tool_geometry(self, reference_q):
+        """Read the complete current closed sphere set in gripper_tcp coordinates."""
+        from rm75_app.pusht.closed_gripper import native_tool_geometry
+        return native_tool_geometry(self, reference_q)
+
     def _maybe_install_isolated_graph_seeding(
         self,
         planner: Any,

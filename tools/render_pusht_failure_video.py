@@ -76,11 +76,47 @@ def display_samples(first_collision, total_samples):
     return [(i, 40 if i == first_collision else 8) for i in range(first_collision + 1)]
 
 
-def render(input_path, envelope_path, result_path, output):
+def corrected_evidence(input_bytes, envelope, result):
+    """Same original input/geometry, new GPU-validated binding; nominal video only."""
+    from rm75_app.pusht.closed_gripper import ToolGeometry, bind_push
+    data=json.loads(input_bytes);config,push,observation=fixture_observation(data)
+    if (envelope['summary']['input_sha256']!=hashlib.sha256(input_bytes).hexdigest()
+            or any(envelope['summary'].get(key) is not True for key in
+                   ('diagnostic_complete','cpu_gpu_masks_equal','state_unchanged'))
+            or result.get('complete_chain') is not True or result.get('validation_success') is not True
+            or result.get('error') or any(result.get(key) is not False for key in
+                ('execute_real','hardware_connected','hardware_profile_qualified'))
+            or any(result.get(key)!=data[key] for key in ('case','fixture','motion','config','push'))):
+        raise ValueError('Corrected video requires the original input/geometry and a complete no-hardware GPU result')
+    scene=CuroboPushExecutor(None,None,config,data['motion'],None,None,None)._scene(observation)
+    points,binding=bind_push(push,observation,config,data['motion'],
+        ToolGeometry(envelope['local_tool_spheres'],tuple(envelope['links'])),scene)
+    recorded=[row for row in result['events'] if row.get('event')=='push_closed_gripper_binding']
+    if len(recorded)!=1 or any(not np.allclose(binding[key],recorded[0][key],rtol=0,atol=1e-6)
+            for key in ('tcp_contact_xyz','tcp_descend_xyz','surface_contact_xyz')):
+        raise ValueError('Rendered geometry does not reproduce the saved GPU binding')
+    xyz={name:p for name,p,_,_ in points};poses=[];labels=[]
+    for name,start,end in (('DESCEND',xyz['approach'],xyz['descend']),('APPROACH CONTACT',xyz['descend'],xyz['contact'])):
+        count=max(1,int(np.ceil(np.linalg.norm(end-start)/.005)))
+        for index,p in enumerate(np.linspace(start,end,count+1)):
+            poses.append([*p,*data['motion']['tool_quaternion_wxyz']]);labels.append(f'{name} {index}/{count}')
+    spheres=[place_spheres(envelope['local_tool_spheres'],Pose(row[:3],row[3:])) for row in poses]
+    objects=[NS(name=o.name,dims=o.dimensions,pose=o.pose.as_curobo_list()) for o in scene.objects]
+    contacts=[[p for p in sphere_box_contacts(row,envelope['links'],objects) if p['overlap_m']>1e-9] for row in spheres]
+    if any(contacts):raise ValueError('Corrected nominal contact still overlaps original world')
+    return scene,spheres,contacts,poses,labels
+
+
+def render(input_path, envelope_path, result_path, output, *, corrected=False):
     raw = input_path.read_bytes()
     envelope_raw, result_raw = envelope_path.read_bytes(), result_path.read_bytes()
     envelope, result = json.loads(envelope_raw), json.loads(result_raw)
-    original_scene, spheres, contacts = validate_evidence(raw, envelope, result)
+    if corrected:
+        original_scene,spheres,contacts,poses,labels=corrected_evidence(raw,envelope,result)
+        envelope={**envelope,'nominal_tcp_poses':poses,'summary':dict(envelope['summary'],
+            first_collision_sample=len(poses)-1,nominal_descend_intervals=len(poses)-1)}
+    else:
+        original_scene, spheres, contacts = validate_evidence(raw, envelope, result)
     output.mkdir(parents=True, exist_ok=False)
     import imageio.v2 as imageio
     from PIL import Image, ImageDraw, ImageFont
@@ -123,7 +159,7 @@ def render(input_path, envelope_path, result_path, output):
     small = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 16)
     summary = envelope['summary']
     frame_count, events = 0, []
-    movie = output / 'pusht_failure.mp4'
+    movie = output / ('pusht_corrected.mp4' if corrected else 'pusht_failure.mp4')
     with imageio.get_writer(movie, fps=10, codec='libx264', pixelformat='yuv420p', macro_block_size=8, quality=8) as writer:
         for index, repeat in display_samples(summary['first_collision_sample'], len(spheres)):
             colliding = {pair['sphere_index'] for pair in contacts[index]}
@@ -137,16 +173,21 @@ def render(input_path, envelope_path, result_path, output):
                 pixels = (np.clip(camera.get_picture('Color')[:, :, :3], 0, 1) * 255).astype(np.uint8)
                 canvas.paste(Image.fromarray(pixels), (column * 640, 80))
             draw = ImageDraw.Draw(canvas)
-            draw.text((12, 8), f"PushT {summary['case']} | HISTORICAL SYNTHETIC FIXTURE | hardware profile NOT qualified", font=font, fill='white')
+            title='CORRECTED CLOSED-GRIPPER MAPPING' if corrected else 'HISTORICAL SYNTHETIC FIXTURE'
+            draw.text((12, 8), f"PushT {summary['case']} | {title} | hardware profile NOT qualified", font=font, fill='white')
             draw.text((12, 34), 'GPU collision geometry at nominal TCP samples - NOT an IK / executed robot trajectory', font=font, fill='#ffd36e')
             draw.text((12, 60), 'Oblique view', font=small, fill='white')
             draw.text((652, 60), 'Side detail | Green: T | Blue: gripper spheres | Red: overlap', font=small, fill='white')
             overlap = max((pair['overlap_m'] for pair in contacts[index]), default=0) * 1000
             state = f'FIRST OVERLAP / recorded IK FAIL: max {overlap:.6f} mm' if colliding else 'No tool/world overlap at this nominal sample; arm/self/IK NOT certified'
-            draw.text((12, 504), f"Descend sample {index}/{summary['nominal_descend_intervals']} | {state}", font=font, fill='#ffb39c' if colliding else 'white')
+            status=(f"{labels[index]} | Clear nominal geometry; source GPU five-stage chain PASS"
+                    if corrected else f"Descend sample {index}/{summary['nominal_descend_intervals']} | {state}")
+            draw.text((12, 504), status, font=font, fill='#ffb39c' if colliding else 'white')
             pairs = ', '.join(sorted({pair['link'] + ' <-> ' + pair['obstacle'] for pair in contacts[index]}))
             draw.text((12, 532), pairs or 'Original target/table dimensions, tool orientation, sphere centers and radii are unchanged.', font=small, fill='white')
-            draw.text((12, 562), 'Discrete saved positions, slowed for inspection. Stop at first collision. No physics / new GPU planning / hardware motion.', font=small, fill='#ffd36e')
+            footer=('Nominal mapped samples, NOT joint-path or physics replay. Stop at first contact; no pretend T motion.' if corrected else
+                    'Discrete saved positions, slowed for inspection. Stop at first collision. No physics / new GPU planning / hardware motion.')
+            draw.text((12, 562), footer, font=small, fill='#ffd36e')
             for _ in range(repeat):
                 writer.append_data(np.asarray(canvas))
             events.append({'sample': index, 'first_frame': frame_count, 'frames': repeat})
@@ -161,6 +202,9 @@ def render(input_path, envelope_path, result_path, output):
                     source_sha256={name: hashlib.sha256(value).hexdigest() for name, value in
                                    (('input', raw), ('envelope', envelope_raw), ('result', result_raw))},
                     video_sha256=hashlib.sha256(movie.read_bytes()).hexdigest())
+    if corrected:
+        metadata.update(representation='corrected_nominal_closed_tool_mapping_NOT_joint_path_or_physics',
+                        source_gpu_complete_chain=True,video_ends_at_first_contact=True)
     atomic_json(output / 'recording.json', metadata)
     return metadata
 
@@ -171,8 +215,9 @@ def main():
     parser.add_argument('--envelope', type=Path, required=True)
     parser.add_argument('--result', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--corrected', action='store_true',help='Compare original saved geometry with a new complete GPU binding')
     args = parser.parse_args()
-    print(json.dumps(render(args.input, args.envelope, args.result, args.output)))
+    print(json.dumps(render(args.input, args.envelope, args.result, args.output,corrected=args.corrected)))
 
 
 if __name__ == '__main__':

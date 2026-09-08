@@ -45,6 +45,7 @@ def test_native_endpoint_result_and_cleanup_are_preserved(monkeypatch, real, pre
     original = Planner.diagnose_start_state_world_collision
     seen = []
     monkeypatch.setattr(focused, 'install_lift_diagnostics', lambda *a: None)
+    monkeypatch.setattr(focused, 'install_roof_ik_diagnostics', lambda *a, **kw: None)
     monkeypatch.setattr(focused, 'observe_reverse', lambda *a: seen.append(a))
     direct = NS(_current_source_object_name=lambda args: 'tennis')
     cleanup = focused.install(direct, Planner, lambda r: None, requested_source='tennis')

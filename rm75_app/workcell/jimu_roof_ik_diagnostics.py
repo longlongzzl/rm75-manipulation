@@ -102,7 +102,7 @@ def result_rows(result, goal_index, goal_count, start):
     return rows,nearest
 
 
-def install_roof_ik_diagnostics(direct,emit):
+def install_roof_ik_diagnostics(direct,emit,*,sources=None,event_name='jimu_roof_ik_batch_diagnostic'):
     local=threading.local();records=[];seen=set()
     original_refresh=direct._refresh_curobo_world
     original_toggle=direct._set_world_collision_for_links
@@ -127,7 +127,8 @@ def install_roof_ik_diagnostics(direct,emit):
             # Native starts/goals are sequences; do not consume generators or replace arguments.
             result=original_query(options,planner,starts,goals,num_seeds=num_seeds)
             source=direct._current_source_object_name(options)
-            if 'roof_triangle' not in str(source) or getattr(options,'execute_real',False):return result
+            eligible=(source in sources if sources is not None else 'roof_triangle' in str(source))
+            if not eligible or getattr(options,'execute_real',False):return result
             prefetch=bool(getattr(options,'_planning_prefetch_capture_only',False))
             world=getattr(local,'world',(None,''));paired=getattr(local,'paired',None)
             if paired and paired[0]==id(planner):phase='paired_place';label=paired[1]
@@ -138,7 +139,7 @@ def install_roof_ik_diagnostics(direct,emit):
             key=(source,phase,prefetch)
             if key in seen:return result
             seen.add(key)
-            row=dict(event='jimu_roof_ik_batch_diagnostic',source=source,phase=phase,step_id=label,
+            row=dict(event=event_name,source=source,phase=phase,step_id=label,
                 diagnostic_only=True,execution_guard=False,prefetch=prefetch,requested_num_seeds=num_seeds,
                 goal_count=len(goals),native_success_count=sum(bool(item.success) for item in result),
                 original_near_position_threshold=getattr(options,'jimu_near_ik_position_threshold',1e-4),

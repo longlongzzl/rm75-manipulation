@@ -7,6 +7,7 @@ from .pickplace_curobo_only import CuroboOnlyUnsupported
 from .pickplace_clearance_audit import validate_clearance_path
 from .pickplace_lift_diagnostics import _state, install_lift_diagnostics
 from .pickplace_release_contact import release_target, audit_release_path
+from .jimu_roof_ik_diagnostics import install_roof_ik_diagnostics
 
 
 def install_grasp_diagnostic(direct, emit):
@@ -98,6 +99,9 @@ def install(direct, planner_class, emit, *, requested_source):
     install_lift_diagnostics(direct, emit)
     if requested_source == 'gluestick':
         install_grasp_diagnostic(direct, emit)
+    if requested_source == 'tennis':
+        install_roof_ik_diagnostics(direct, emit, sources={'tennis'},
+                                    event_name='pickplace_level_ik_batch_diagnostic')
     original = planner_class.diagnose_start_state_world_collision
     seen = False
 

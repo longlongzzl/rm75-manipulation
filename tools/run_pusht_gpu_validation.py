@@ -123,6 +123,9 @@ def audit_execution_gates(executor, prepared, push, observation):
         current, error_class, message = cases[name]
         calls = {'plan': 0, 'observe': 0, 'execute': 0}
         test_executor = copy(executor)
+        # Explicit UNIT injection so these tests reach the ten separate motion
+        # preconditions. Not a measured jaw state; the sink refuses ALL writes.
+        test_executor.profile = dict(getattr(executor,'profile',{}),closed_gripper_verified=True)
 
         def prepared_only(*args):
             calls['plan'] += 1
@@ -151,6 +154,7 @@ def audit_execution_gates(executor, prepared, push, observation):
         test_executor.observer = SimpleNamespace(observe=observe)
         test_executor.arm = NoMotionGateArm()
         row = dict(case=name, rejected=False, injected_observation=True,
+                   injected_closed_gripper_review=True,
                    actual_camera_observation=False, reused_gpu_prepared_chain=True)
         try:
             test_executor.execute_push(push, previous)

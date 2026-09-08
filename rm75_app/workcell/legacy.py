@@ -228,6 +228,10 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
         os.chdir(root)
         module=import_working_entry(root,spec['task'],entrypoint=entrypoint)
         direct=working_direct(module)
+        if spec['task']=='pickplace':
+            from .pickplace_level_release import install as install_level_release
+            adapters.callback(install_level_release(direct,
+                lambda row:events.emit('contact_audit',evidence=row)))
         if spec['task']=='magnetic':
             from .pickplace_curobo_only import install_jimu_binding
             install_jimu_binding(module.portable)
@@ -335,7 +339,8 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
                 'independent_clearance_execution_audit_observed':bool(clearance_audits),
                 'jimu_release_execution_audits':getattr(direct,'_jimu_release_execution_audits',[]),
                 'loaded_mplib_modules':[n for n in sys.modules if n=='mplib' or n.startswith('mplib.')],
-                'original_algorithms_preserved':True,
+                'original_algorithms_preserved':spec['task']!='pickplace',
+                'added_task_pose_constraints':['tennis_level_pre_place_and_place'] if spec['task']=='pickplace' else [],
                 'note':'Normal process return is not proof of a real grasp or magnetic connection'}
         if frozen_validation is not None:
             result.update(frozen_validation.result(outcome,clearance_audits))

@@ -13,7 +13,7 @@ from rm75_app.pusht.model import Config, choose_push
 from rm75_app.pusht.motion import CuroboPushExecutor
 from rm75_app.workcell.pickplace_clearance_audit import sphere_box_contacts
 from tools.diagnose_pusht_tool_envelope import fixture_observation, local_spheres, place_spheres
-from tools.render_pusht_failure_video import display_samples, validate_evidence
+from tools.render_pusht_failure_video import display_samples, validate_evidence,corrected_evidence
 
 
 def unit_evidence():
@@ -103,3 +103,33 @@ def test_discrete_replay_stops_at_first_failure_and_only_holds_saved_samples():
     for invalid in (-1, 17, None, True):
         with pytest.raises(ValueError):
             display_samples(invalid, 17)
+
+
+def corrected_unit_evidence():
+    from rm75_app.pusht.closed_gripper import bind_push,ToolGeometry
+    raw,envelope,result=unit_evidence();data=json.loads(raw)
+    cfg,push,obs=fixture_observation(data)
+    scene=CuroboPushExecutor(None,None,cfg,data['motion'],None,None,None)._scene(obs)
+    _,binding=bind_push(push,obs,cfg,data['motion'],
+        ToolGeometry(envelope['local_tool_spheres'],tuple(envelope['links'])),scene)
+    result.update(complete_chain=True,validation_success=True,error=None,
+                  events=[dict(event='push_closed_gripper_binding',**binding)])
+    return raw,envelope,result
+
+
+def test_corrected_video_stops_at_bound_contact_and_preserves_original_geometry():
+    raw,envelope,result=corrected_unit_evidence();before=copy.deepcopy(envelope)
+    scene,spheres,contacts,poses,labels=corrected_evidence(raw,envelope,result)
+    assert envelope==before and not any(contacts) and len(scene.objects)==3
+    np.testing.assert_allclose(poses[-1][:3],result['events'][0]['tcp_contact_xyz'])
+    assert labels[0].startswith('DESCEND') and labels[-1].startswith('APPROACH CONTACT')
+
+
+@pytest.mark.parametrize('change',['failed','hardware','binding','source_geometry'])
+def test_corrected_video_cannot_promote_failed_or_mismatched_result(change):
+    raw,envelope,result=corrected_unit_evidence()
+    if change=='failed':result['validation_success']=False
+    elif change=='hardware':result['hardware_connected']=True
+    elif change=='binding':result['events'][0]['tcp_contact_xyz'][0]+=.01
+    else:envelope['summary']['cpu_gpu_masks_equal']=False
+    with pytest.raises(ValueError):corrected_evidence(raw,envelope,result)

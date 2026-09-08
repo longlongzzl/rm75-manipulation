@@ -23,6 +23,13 @@ def fixture(failure=None):
             self.enabled={'pusht_target_0':True,'pusht_target_1':True}
             self.stage=None
             self.observed_contact_switches=[]
+        def set_gripper_collision_state(self,closed):
+            assert closed is True
+            trace.append(('closed_model',))
+        def closed_gripper_tool_geometry(self,q):
+            from rm75_app.pusht.closed_gripper import ToolGeometry
+            # Cartesian test double only, NOT the native RM75 geometry.
+            return ToolGeometry(np.array([[0.,0.,0.,.005]]),('pusher',))
         def update_scene(self,scene): self.scene=scene
         def _ensure_planner(self):
             return NS(joint_names=[f'joint_{i}' for i in range(1,8)],device_cfg=NS(device='cpu',dtype=torch.float32))
@@ -67,13 +74,15 @@ def fixture(failure=None):
     backend=Backend();arm=Arm()
     motion={'tool_frame':'gripper_tcp','push_tcp_z_m':.1,'hover_clearance_m':.08,
         'tool_quaternion_wxyz':[1,0,0,0],'pusher_contact_links':['pusher'],
-        'tool_collision_geometry_verified':True,'object_centroid_z_m':.1,'object_height_m':.02,
+        'tool_collision_geometry_verified':True,'closed_gripper_verified':True,
+        'object_centroid_z_m':.1,'object_height_m':.02,
         'static_collision_objects':[{'name':'table','kind':'cuboid','position':[.35,0,0],
             'quaternion_wxyz':[1,0,0,0],'dimensions':[.8,.8,.02]}]}
     stop=NS(check=lambda:None);events=NS(emit=lambda *a,**kw:trace.append(('event',a[0])))
     executor=CuroboPushExecutor(backend,arm,Config(),motion,stop,events,Observer())
-    obs=Observation('test',1,time.time(),(.35,0,0),'live_tracker')
-    push=Push((.29,0),(1,0),.012,.015)
+    # Put the actual exposed left crossbar contact at y=0 and x=.30.
+    obs=Observation('test',1,time.time(),(.35,-.02058823529411765,0),'live_tracker')
+    push=Push((.295,0),(1,0),.012,.015)
     return executor,push,obs,trace,backend
 
 
@@ -84,6 +93,22 @@ def test_plan_only_has_complete_chain_and_never_observes_or_executes():
     assert all(b.enabled.values())
     for stage,states in b.observed_contact_switches:
         assert all(states.values()) is (stage in ('approach','descend'))
+
+
+def test_real_source_requires_actual_closed_state_review_before_model_or_motion():
+    executor,push,obs,trace,_=fixture()
+    executor.profile.pop('closed_gripper_verified')
+    with pytest.raises(PermissionError,match='Actual closed'):
+        executor.plan_push(push,obs)
+    assert not any(row[0] in ('execute','closed_model') for row in trace)
+
+
+def test_simulation_label_cannot_bypass_actual_closed_state_execution_gate():
+    executor,push,obs,trace,_=fixture()
+    executor.profile.pop('closed_gripper_verified')
+    with pytest.raises(PermissionError,match='before execution'):
+        executor.execute_push(push,replace(obs,source='simulation'))
+    assert not any(row[0] in ('execute','plan','closed_model') for row in trace)
 
 
 def test_execution_waits_for_entire_audited_chain_and_new_observation():

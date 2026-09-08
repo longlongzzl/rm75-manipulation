@@ -46,7 +46,7 @@ def test_scalar_error_is_not_broadcast_across_seeds():
         diagnostic.result_rows(item,0,1,np.zeros(7))
 
 
-def fixture(monkeypatch):
+def fixture(monkeypatch, **audit_options):
     planner=NS(scope=False,world='old',_extract_pose_components=lambda p:(p[:3],p[3:]))
     item=result([[np.full(7,.1),np.full(7,.2)]],[[.01,.02]])
     items=[item];calls=[];observed=[]
@@ -63,7 +63,7 @@ def fixture(monkeypatch):
         return {'fk':{'position':[0.,0.,0.]},'valid':False,'native_status':'WORLD_COLLISION'}
     monkeypatch.setattr(diagnostic,'_configuration_evidence',details)
     monkeypatch.setattr(diagnostic,'nominal_gripper_base_boxes',lambda *args:{'goals':[]})
-    rows=diagnostic.install_roof_ik_diagnostics(direct,lambda row:None)
+    rows=diagnostic.install_roof_ik_diagnostics(direct,lambda row:None,**audit_options)
     options=NS(object_name='right_roof_triangle',execute_real=False)
     starts=[np.zeros(7)];goals=[[0,0,.1,1,0,0,0]]
     return planner,direct,options,starts,goals,items,calls,rows,observed
@@ -145,6 +145,18 @@ def test_exact_original_grasp_refresh_label_precedes_pregrasp_batch(monkeypatch)
     d._refresh_curobo_world(p,None,options,label='winner_chain_ik_preselect_grasp')
     d._profile_fast_chain_solve_batch_start_goal_ik(options,p,starts,goals,num_seeds=32)
     assert rows[0]['phase']=='pregrasp'
+
+
+def test_explicit_tennis_scope_reuses_original_observer_without_observing_roofs(monkeypatch):
+    p,d,options,starts,goals,items,calls,rows,_=fixture(monkeypatch,
+        sources={'tennis'},event_name='pickplace_level_ik_batch_diagnostic')
+    d._refresh_curobo_world(p,None,options,label='pregrasp')
+    assert d._profile_fast_chain_solve_batch_start_goal_ik(options,p,starts,goals,num_seeds=32) is items
+    assert not rows
+    options.object_name='tennis'
+    assert d._profile_fast_chain_solve_batch_start_goal_ik(options,p,starts,goals,num_seeds=32) is items
+    assert len(calls)==2 and rows[0]['event']=='pickplace_level_ik_batch_diagnostic'
+    assert rows[0]['state_unchanged'] and rows[0]['diagnostic_complete']
 
 
 def test_reviewed_native_paired_query_has_hover_then_release_goal_order():

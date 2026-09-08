@@ -21,6 +21,8 @@ def planning_qualification(profile):
         if not motion.get(key): errors.append({'field':'pusht.motion.'+key,'error':'missing'})
     if motion.get('tool_collision_geometry_verified') is not True:
         errors.append({'field':'pusht.motion.tool_collision_geometry_verified','error':'unqualified'})
+    if motion.get('closed_gripper_verified') is not True:
+        errors.append({'field':'pusht.motion.closed_gripper_verified','error':'actual closed jaw state not verified'})
     if observer.get('kind')=='realsense_apriltag':
         for key in ('T_base_camera','T_marker_object'):
             check('pusht.observer.'+key,lambda key=key:rigid(observer.get(key),key))
