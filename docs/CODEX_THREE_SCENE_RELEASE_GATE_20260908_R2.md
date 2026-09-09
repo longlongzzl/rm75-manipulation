@@ -1,6 +1,6 @@
 # Three-scene release gate — 2026-09-08 R2
 
-第 0–11 节保留 `d9f2190` 的原 R2 验收结果；独立失败录像见第 12 节（`4fa22da`），Tennis 水平约束和 PushT 闭合夹爪修正见第 13 节（`a0704fe`）。**最新的 2026-09-09 Jimu +3 mm 对照、Tennis 失败原因和 PushT 证据边界见第 14 节**；历史结果不回填或改写。
+第 0–11 节保留 `d9f2190` 的原 R2 验收结果；独立失败录像见第 12 节（`4fa22da`），Tennis 水平约束和 PushT 闭合夹爪修正见第 13 节（`a0704fe`），Jimu +3 mm 对照见第 14 节（`e24b294`）。**最新阻塞答复、Tennis 候选/IK 机制及真正的 PushT ManiSkill 接触物理实验见第 15 节**；历史结果不回填或改写。
 
 **NEEDS_REVIEW：本轮无机械臂/夹爪运动，三条 demo 尚未完成验收。** 按 [本轮审阅要求](CHATGPT_REVIEW_CODEX_PUSH_20260908.md) 顺序完成干净 HEAD 离线基线、精确资产恢复、Jimu 三个 GPU 控制实验，再做三个 current-table 请求的有限诊断。没有降低碰撞检查、减少候选/seeds、放宽成功条件或重新设计规划算法。
 
@@ -530,3 +530,81 @@ v2 额外复用原批次只读 observer：首次 paired-place 的 32 个原 goal
 - 提交范围只有 runner、对应单测、本节和一个有界 JSON；旧仓库只读、snapshot 不改、不整体复制 untracked、无外部库改动。本轮没有 camera/SDK/夹爪/机械臂操作，没有 frontend/RRTrack 新验收；所有 GPU 进程已结束。
 
 本节随代码和摘要提交并 push 到原分支，提交 SHA 在交付消息给出。**保留 103 mm 试验、100 mm 默认和全部失败证据；不继续试其他高度、不自动修屋顶免检生命周期、不进入机械臂运动。**
+
+## 15. 2026-09-09：阻塞位置、原 cuRobo1 候选解释、PushT 接触动力学实跑
+
+本轮从干净 `e24b2945a061fd767e65f208b8883e760405a56e` 开始，回应用户三个问题。Jimu/Tennis 本轮为代码及已有证据复核，**没有新的 native/GPU 运行或算法修改**；实现并实际运行的是 PushT 独立工具—T 接触物理实验。未连接机械臂、夹爪、相机或 SDK，旧仓库只读，snapshot 字节不改。
+
+有界结果：[pusht_maniskill_contact_20260909_summary.json](../benchmarks/unified_scenarios/pusht_maniskill_contact_20260909_summary.json)。本地证据根目录（P）：`runtime_data/three_scene/pusht_maniskill_20260909/`。本节不是三条 demo 已完成的声明。
+
+### 15.1 Jimu 现在卡在哪里
+
+不是再次卡在原 `front_wall` 的 100 mm 抬升点：第 14 节的 **103 mm** frozen full-builder 已通过该点及前八块墙，仍为 **8/12**，生产默认仍是 100 mm。
+
+当前首先观测到的是 `right_roof_triangle` 的拟议放置退让后返程起点 `INVALID_START_STATE_WORLD_COLLISION`，阶段为 `pre_release_post_place_clearance_post_plane_main_m_near_up_return_check`，`released=false`。诊断的返程终点 valid、起点 invalid，非零 GPU link 为 `gripper_base_link / gripper_Left_2_Link / gripper_Right_2_Link`；**具体碰撞 mesh 配对未证明，不能断言仍是夹爪碰料盘积木，也不是执行了碰撞路径后才停**。
+
+随后阶段切换/重试残留 disabled world objects：`active_target_object / scene_obstacle_right_roof_triangle / virtual_table_plane`。严格门以 `preexisting_disabled_world_objects` 拒绝，最终 worker 为 `strict_contact_not_supported`。放行这些残留会让桌面/邻物在后续规划中漏检，因此继续保留拒绝。后续应隔离屋顶候选及状态恢复生命周期；本轮未擅自清空免检状态、扩大免检或再试新高度。
+
+### 15.2 Tennis 仍是原 cuRobo1，不是换成 cuRobo2 后没解
+
+实际路径仍是 `WorkcellService → worker → fixed 7aaff9d + approved overlay 的原 native SIM → cuRobo1`，没有 mplib。PushT 的 GPU 路径才来自 cuRobo2。Tennis 当前失败是有限候选和种子预算内没有合格 preplace/place IK，**不是全局无解的证明，也尚未排除姿态构造、坐标变换、种子/参考配置导致的求解问题**。本轮没有与用户记忆中的旧成功日志做同位置、同工具帧、同姿态约束的逐项对照，因此不能直接宣布物理不可达。
+
+候选并不是在整个可达空间连续搜姿态：
+
+1. 抓取：原 sphere 分支生成 **16 个等价 yaw 抓取候选**，该对象原本就关闭轴向平移、额外 z lift 和 grasp tilt 扩展。每个候选对应自己的 TCP—球关系和预筛抓取关节解。
+2. 原放置生成器：围绕固定目标球心，取朝机器人/背离机器人的倾角 **`0, +15, −15, +30, −30°`**，乘以绕 TCP 接近轴的旋转 **`0, −45, +45, −90, +90, 180°`**，最多 **5×6=30** 个姿态组合/抓取关系；它们不是 30 个任意放置点。TCP 位置由原球心及抓取关系的 TCP—球心距离推导，hover 和 release 使用同一姿态与原高度。
+3. 第 13 节按用户要求增加“**整个夹爪端面水平且朝下**”硬约束后，非零倾角候选不再合格，保留 **0° 倾角 × 6 个轴向旋转**。实际展开为 **16×6=96 条抓取—放置关系**，不是 96 个不同位置，也不是 96 个内部 seeds。没有偷换成“仅两指等高、但允许整体俯仰”。本轮没有继续删候选或改变此约束。
+4. 求解顺序：先 pregrasp、grasp IK，再 paired hover/release IK。每个目标带 **32 个内部 seeds**：传入对应抓取关节解作为 1 个显式 seed，同时作为 `retract_config`；cuRobo1 在关节界限内用原 Halton 采样器补另外 **31 个**。每次 batch 按原逻辑 `reset_seed()`，`use_nn_seed=false`，每个目标返回 1 个选中结果。32 是每个 IK 目标的关节优化起点数，不是 TCP 姿态数。首次选每个 grasp 的一个 place 时有 16×2=32 个 hover/release goal，失败后才按原逻辑展开其余关系。
+5. 已保存结果：pregrasp/grasp 各 **16/16**，展开 hover/release 各 **0/96**，四阶段交集 **0/96**；因此尚未进入合格组合的后续完整 MotionGen 路径规划。不能把这个失败归结为已找到 IK 但路径规划失败。
+
+来源：原 `rm75_jiaobang_pick_place_targeted_curobo_direct_pre_place.py` 的 `_tennis_release_tilt_toward_robot_degs`、`_tennis_release_axial_roll_degs`、`_make_sphere_free_release_pose_variants`、`_fast_chain_evaluate_paired_relation_records`，原 `curobo_rm75_planner.py::solve_batch_start_goal_ik`，以及本机 cuRobo1 `ik_solver.py` 的 seed 补齐与 `HaltonGenerator` 初始化；严格水平过滤在 `rm75_app/workcell/pickplace_level_release.py`。
+
+第 14 节的两条近似解 collision-valid=true，但位置/姿态误差仍为 **9.071 mm /14.144°**、**3.581 mm /21.480°**；它们说明不能只看“不碰撞”就采用，也不能说明不存在其它合格解。下一步有价值的是同条件复原旧成功姿态/工具帧/seed 作对照，保持原碰撞和误差门，而非先加容差或断言用户记忆有误。本轮按“解释”请求到此，没有额外改 Tennis solver。
+
+### 15.3 PushT 本次确实 step 了物理，但验证范围必须说清
+
+新增 `tools/run_pusht_maniskill_contact.py`、`rm75_app/pusht/physics_replay.py` 和 `rm75_app/simulation/pusht_contact_env.py`。环境为 **ManiSkill 3.0.0b22 / SAPIEN 3.0.2，PhysX CPU 240 Hz，控制/测量 30 Hz，GPU 离屏渲染 10 fps**。本轮没有新求解 cuRobo GPU 路径，而是复用第 13 节已通过的完整五阶段 GPU timed joint path。
+
+- 沿原关节路径插值后，以原 URDF FK 驱动**一个运动学完整闭合工具刚体**；包含原 gripper/pad/base 全部 **38 个碰撞球**，中心/半径不变。原五阶段、全部关节路点、时间、速度、场景和接触映射不变；前后各加 2 s 自然沉降。没有给工具整体关闭碰撞，没有调用会全局禁用 RM75 自碰撞的旧通用环境帮助函数。
+- T 为**一个动态 compound 刚体**，原横杆/竖杆两盒尺寸、40 mm 厚度、初始位姿和桌面不变。只在 episode 初始化设置 T pose；每个物理步只给工具 `set_kinematic_target`，T 靠重力/接触/摩擦运动，未使用 `predict` 更新 T、未将它附着到工具、未给它编造位移。
+- **这不是整臂关节伺服/全 articulated-arm 动力学仿真**。机械臂本体没有加入此隔离环境，不能从这里重新认证整臂自碰撞、跟踪误差或真实控制；整臂 world/self 碰撞资格仍只引用此前独立 GPU 审计。此边界在开始前已向用户说明，视频也持续标注 `NO arm servo / hardware qualification`。
+- 摩擦系数统一静/动 **0.3/0.3**、恢复系数 0、T 密度 **1000 kg/m³** 为明确未标定的实验假设，不是物理工具 profile 的实测值。所有案例使用相同参数，未试调摩擦、缩球、移动 T/桌面/目标或降低原成功条件来得到通过。
+- 输入、envelope、GPU result 的 case/config/scene/no-hardware 标志和接触映射先校验；本地与原 GPU 配置的 URDF 字节一致，SHA 为 `e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea`。最终两组五阶段 FK 端点位置误差均 ≤ **2.573e−7 m**、姿态误差 ≤ **3.699e−7 rad**，保留原 3 mm /0.05 rad 审计门；跨阶段关节跳变拒绝。没有拿名义 TCP 动画冒充原关节路径回放。
+
+### 15.4 实测结果：能推动，但没有准确推到目标
+
+下表为最终源码实跑，各案例一次；前三次已完成的调试运行作为重复证据单列于 JSON，不增加独立案例覆盖数。位移以开始接触前的沉降后 T 状态为基准；横偏相对于各自推方向，yaw 为实际 T 转角。全部数值来自 PhysX T 状态，不是 CPU surrogate 输出。
+
+| 最终实验 | 沿推方向 / 横向位移 | T 转角 | 最终目标位置误差 | 结论 |
+| --- | --- | --- | --- | --- |
+| `P/baseline_final` | **+9.265 / −2.887 mm** | **−8.408°** | **20.935 mm** | 真正推动；未达目标 |
+| `P/rotated_orthogonal_final` | **+9.205 / −2.852 mm** | **−8.344°** | **20.363 mm** | 真正推动；未达目标 |
+| `P/stationary_final`，原工具保持初始姿态 | **0 /0 mm**（沉降后） | **0°**（沉降后） | **30.000 mm** | 无工具接触、无 T 位移的负对照，不计推任务成功 |
+
+两组运动实验分别仿真 **68.7 /79.7 s**，实际耗时 **18.01 /25.69 s**；静止对照仿真 68.7 s、耗时 18.39 s。原推段指令为 12 mm，目标起初位于 +x 30 mm 外；这是一次短推实验，**没有多步 MPC 重规划闭环**，不能要求或宣称一次 12 mm 推段完成整个任务。原目标容差 **6 mm /0.10 rad** 不变，两次都不满足；`verified_physical_success=null`、hardware flags=false 继续保留。
+
+接触证据（240 Hz 查询）：
+
+- baseline 首次工具—T 非零冲量在 **53.100 s /push**；push 440 个、retreat 119 个接触子步。
+- rotated_orthogonal 首次在 **64.667 s /push**；push 400 个、retreat 185 个接触子步。
+- 两组 settle/approach/descend/contact 阶段均 **0** 个非零工具—T 冲量，工具—桌面/静态障碍冲量均 **0**；静止对照全程工具—T 为 0。这里的 0 表示未观测到非零接触冲量，不声称几何安全裕度任意大。
+- **抬起撤离初段仍存在接触**，没有藏掉这 119/185 个子步；仅说明接触来自 push/retreat 允许阶段，不代表已经完成接触单调退出的整臂验收。
+- 30 Hz 观测未发现 T 翻倒或越出原 workspace：报告的最大倾角为 0（当前状态矩阵数值精度），最大 z 变化约 **3.07e−8 /2.42e−8 m**；不外推成真实材料下绝不会倾覆。
+
+原虚拟圆形 pusher 的准静态 `predict` 与实际推后 T 相比，位置误差 **3.116 /3.062 mm**，yaw 误差 **6.029 /5.965°**。原 surrogate 的非中心推力臂已能给出转向符号，但分布接触、摩擦与实际工具形状没有被充分预测；这是一项模型差异观测，尚不能仅凭两次未标定实验确定真实误差原因或完成标定。**当前主要待办是有真实接触反馈的多步预测/控制验证，不再是把静态 T 在动画里直接移动。** 本轮未替换生产 MPC、未修改实际工具资格清单。
+
+### 15.5 视频、失败分母、测试与复现
+
+录像都是当前 ManiSkill 场景，不是桌面录屏。两个视角同帧显示原完整球形碰撞工具、桌面与真实动态 T，标题标明仿真范围和原轨迹时间。完整片均 H.264、1024×576、10 fps：baseline **687 帧/68.7 s**，rotated **797 帧/79.7 s**，静止 **687 帧/68.7 s**。已完成 ffprobe 与全片 ffmpeg 解码，查看 baseline 接触前 52.5 s /推后 55.5 s 关键帧。
+
+便于用户看偏移的片段：`P/baseline_push_excerpt.mp4`（原片 50–60 s）、`P/rotated_push_excerpt.mp4`（62–72 s），各 **100 帧/10 s**，只截取原录像，不改速度、几何或 T 运动。完整片、短片、结果及源码哈希见 JSON；视频及逐步观测/关节数据留本地，不入 Git。
+
+实际共 **8 次进程尝试**：2 次 bootstrap 失败、6 次物理完成（其中 3 次为最终带完整度量/源码哈希的复跑）。失败保留：`baseline_v1` 使用了当前 ManiSkill 不存在的材质 factory；`baseline_v2` 遇到 `robot_uids='none'` 时 BaseEnv 仍读取 controller 的兼容问题。分别改用现有 `PhysxMaterial` 和无 agent 的原生 scene state 获取，均未修改外部库、碰撞或物理参数。这两次 `physics_stepped=false`，不计入物理验证通过；6 次完成也不意味着 6 个独立推任务成功。
+
+- 改前 compileall PASS，完整 tests **962 passed /35.33 s**。
+- 新增必要单测 **18 passed /0.05 s**：原五阶段/时序保留、无硬件来源门、坏时间/NaN/跳变拒绝、URDF FK、原端点位置/姿态门、T 禁止逐步 teleport、无机械臂 state 接口、位移/角度误差与不放宽目标成功条件。
+- 最终 `python3 -m compileall -q rm75_app tools tests` PASS；完整 `tests/three_scene` **658 passed /20.28 s**；完整 `tests` **980 passed /46.59 s**，保留原 trimesh warning。snapshot **809 项字节校验 PASS**，没有旧仓库写入或 untracked 整体迁移。
+- 最终三次物理运行的三份实现文件 SHA 与提交的当前源码一致；额外度量未改先前已完成运行的物理轨迹，最终位移与前次相同。这是同条件重复，不是随机扰动鲁棒性验收。
+- 复现：用现有 `foundationpose310` Python 运行 `tools/run_pusht_maniskill_contact.py --input runtime_data/three_scene/pickplace_pusht_followup_20260908/gpu_<case>/input.json --envelope runtime_data/three_scene/pusht_envelope_20260908/envelope_v1/<case>.json --result runtime_data/three_scene/geometry_corrections_20260908/pusht_<case>_v3/result.json --output <新的独立目录>`；case 为 baseline /rotated_orthogonal，静止对照复用 baseline 输入并追加 `--stationary-control`。使用 `PYTHONPATH` 指向本仓库、`OMP_NUM_THREADS=2` 和原 9G/512M scope 限制，串行物理运行；无需机器人连接。原大文件输入仅留本地，Git 摘要不能脱离这些输入独立重跑。
+
+本节连同工具、必要 tests 和有界 JSON 提交并 push。**Jimu 屋顶仍失败；Tennis 水平 IK 仍失败；PushT 已有真正接触动力学位移证据，但准确到位、多步闭环、整臂伺服与真实工具/观察资格仍未完成。** 本轮到此，不自动启动真机或重写前两条算法。
