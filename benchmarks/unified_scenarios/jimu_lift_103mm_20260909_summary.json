@@ -1,0 +1,757 @@
+{
+  "schema": "rm75.jimu_lift_comparison/v1",
+  "date": "2026-09-09",
+  "base_commit": "a0704fe8d51a837f14671b0abb74722e7418a631",
+  "execute_real": false,
+  "hardware_connected": false,
+  "camera_captured": false,
+  "verified_physical_success": null,
+  "raw_artifacts_local_only": true,
+  "parameter": {
+    "native_flag": "--joint-search-start-collision-lift-m",
+    "baseline_m": 0.1,
+    "trial_m": 0.103,
+    "delta_m": 0.003,
+    "trial_cli": "--jimu-lift-plus-3mm",
+    "production_default_changed": false,
+    "independent_lift_changed": false,
+    "collision_policy_changed": false,
+    "snapshot_changed": false
+  },
+  "checks": {
+    "baseline_compile": {
+      "passed": true,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline_full": {
+      "passed": true,
+      "sha256": "1b6e7cb03d878b5feb59bcdc60b3b92a59619e281604b8b291dd8d03122e83db",
+      "passed_count": 957
+    },
+    "compile": {
+      "passed": true,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "three_scene": {
+      "passed": true,
+      "sha256": "683bc1cae36b6e530f43799a2ddd5eaf3a64e014bcc9d757630b996e56df58a2",
+      "passed_count": 640
+    },
+    "full_tests": {
+      "passed": true,
+      "sha256": "e47b0a9927fb226c9267ff5f039b90432bf1a6ae863932a6c4ed95a5eb2c9315",
+      "passed_count": 962
+    },
+    "focused": {
+      "passed": true,
+      "sha256": "316dff144480d3c5409a169f48f63aa01e669b719f39ad1359bc50fef2f9b4e8",
+      "passed_count": 24
+    },
+    "snapshot": {
+      "passed": true,
+      "sha256": "4377c27d149c42e2010cd061a35ec4afad143b9d031aacda146279c8759286b0",
+      "files": 809
+    }
+  },
+  "source_sha256": {
+    "tools/run_workcell_native_validation.py": "ad7e17f0ea2755d90c19e2735f0be72c1aabb2cbec60eb9e77eac26c05905f4a",
+    "tests/three_scene/test_workcell_native_validation.py": "eee50780e2a8a1e03bb258a50d96e44a9c32de5341c2732507df3a20ced5075c"
+  },
+  "runs": [
+    {
+      "run": "full_builder_103mm_v1",
+      "scope": "full_builder_until_native_safety_rejection",
+      "lift_m": 0.103,
+      "native_height_observed": true,
+      "completed": false,
+      "stopped_for_validation": false,
+      "elapsed_s": 295.274200912012,
+      "expected_cycles": 12,
+      "native_completed_cycles": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        },
+        {
+          "cycle": 2,
+          "success": true
+        },
+        {
+          "cycle": 3,
+          "success": true
+        },
+        {
+          "cycle": 4,
+          "success": true
+        },
+        {
+          "cycle": 5,
+          "success": true
+        },
+        {
+          "cycle": 6,
+          "success": true
+        },
+        {
+          "cycle": 7,
+          "success": true
+        },
+        {
+          "cycle": 8,
+          "success": true
+        }
+      ],
+      "native_final_success": null,
+      "original_task_bundle_unchanged": true,
+      "documented_start_source_unchanged": true,
+      "failure_code": "strict_contact_not_supported",
+      "worker_status": "failed",
+      "fixed_input_sha256": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+      "original_task_bundle_sha256": {
+        "builder": "6478bafdf016817e7d118269da9199e6d4fe8c06570cbedfdfb03c1127ca6884",
+        "fixed_scene": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+        "manifest": "811be89115ec9982ac425f799dedc0d08ab55ada996c42d0e524a54550a3ab2d"
+      },
+      "start_document_sha256": "2be34886644608584353ce7d6f7190af516ff4e6c71425fa8bd6a761eb78f94c",
+      "result_sha256": "d730b7de73a0f07fabd32ddaa8c320fe56a99264c22f0535525a2cbcea3da37f",
+      "events_sha256": "827e7c8e2505dc531c64b9762e97739815dc6ae59d457f5bd1587a5d14fab894",
+      "stdout_sha256": "40cb71c63738fde5640faa1710ecb015905fda542e6aa81b189afd864f36808b",
+      "machine_sha256": "3416b7bf9e99e382e1df3663b269c59b1021d9063441f3060a6cb2be7d6ef672",
+      "native_completed_sources": [
+        "right_wall",
+        "back_wall",
+        "left_wall",
+        "front_wall",
+        "right_second_wall",
+        "back_second_wall",
+        "left_second_wall",
+        "front_second_wall"
+      ],
+      "transport_audits": [
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "samples": 42,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift",
+          "samples": 50,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "samples": 40,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift",
+          "samples": 44,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "samples": 42,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift",
+          "samples": 73,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "samples": 43,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "samples": 68,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_4deg_prez_0_fast_ik_after_lift",
+          "samples": 46,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_prez_00__fast_ik_after_lift",
+          "samples": 42,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        }
+      ],
+      "release_audits": [
+        {
+          "source": "right_wall",
+          "stage_kind": "release_then_return",
+          "passed": true
+        },
+        {
+          "source": "back_wall",
+          "stage_kind": "release_then_return",
+          "passed": true
+        },
+        {
+          "source": "left_wall",
+          "stage_kind": "release_then_return",
+          "passed": true
+        },
+        {
+          "source": "front_wall",
+          "stage_kind": "release_then_return",
+          "passed": true
+        },
+        {
+          "source": "right_second_wall",
+          "stage_kind": "release_then_return",
+          "passed": true
+        },
+        {
+          "source": "back_second_wall",
+          "stage_kind": "release_then_return",
+          "passed": true
+        },
+        {
+          "source": "left_second_wall",
+          "stage_kind": "release_then_return",
+          "passed": true
+        },
+        {
+          "source": "front_second_wall",
+          "stage_kind": "release_then_return",
+          "passed": true
+        }
+      ],
+      "policy_rejections": [
+        {
+          "step_id": "grasp_direct_prez_00_120mm_final_approach_gripper_world_relaxed",
+          "reason": "preexisting_disabled_world_objects",
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object",
+            "scene_obstacle_right_roof_triangle",
+            "virtual_table_plane"
+          ]
+        },
+        {
+          "step_id": "grasp_direct_grasp_tilt_toward_robot_4deg_prez_00_120mm_final_approach_gripper_world_relaxed",
+          "reason": "preexisting_disabled_world_objects",
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object",
+            "scene_obstacle_right_roof_triangle",
+            "virtual_table_plane"
+          ]
+        }
+      ],
+      "first_start_collision_diagnostic": null,
+      "failed_return_queries": [
+        {
+          "step_id": "pre_release_post_place_clearance_post_plane_main_m_near_up_return_check",
+          "source": "right_roof_triangle",
+          "native_status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+          "released": false,
+          "diagnostic_complete": true,
+          "state_unchanged": true,
+          "disabled_objects": [
+            "active_target_object",
+            "virtual_table_plane"
+          ],
+          "disabled_links": [],
+          "endpoints": {
+            "goal": {
+              "valid": true,
+              "status": "None",
+              "geometry_detail_recorded": true,
+              "nonzero_native_world_links": []
+            },
+            "start": {
+              "valid": false,
+              "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+              "geometry_detail_recorded": true,
+              "nonzero_native_world_links": [
+                "gripper_Left_2_Link",
+                "gripper_Right_2_Link",
+                "gripper_base_link"
+              ]
+            }
+          }
+        }
+      ],
+      "roof_ik_audit": {
+        "expected_sources": [
+          "back_roof_triangle",
+          "front_roof_triangle",
+          "left_roof_triangle",
+          "right_roof_triangle"
+        ],
+        "foreground_batches": 3,
+        "missing_scopes": [
+          {
+            "phase": "grasp",
+            "source": "back_roof_triangle"
+          },
+          {
+            "phase": "paired_place",
+            "source": "back_roof_triangle"
+          },
+          {
+            "phase": "pregrasp",
+            "source": "back_roof_triangle"
+          },
+          {
+            "phase": "grasp",
+            "source": "front_roof_triangle"
+          },
+          {
+            "phase": "paired_place",
+            "source": "front_roof_triangle"
+          },
+          {
+            "phase": "pregrasp",
+            "source": "front_roof_triangle"
+          },
+          {
+            "phase": "grasp",
+            "source": "left_roof_triangle"
+          },
+          {
+            "phase": "paired_place",
+            "source": "left_roof_triangle"
+          },
+          {
+            "phase": "pregrasp",
+            "source": "left_roof_triangle"
+          }
+        ],
+        "observed_batches": 6,
+        "observed_batches_complete": true,
+        "passed": false,
+        "prefetch_batches": 3
+      },
+      "native_video": {
+        "frames": 2724,
+        "fps": 10,
+        "render_complete": true,
+        "frame_cap_reached": false,
+        "errors": [],
+        "mp4_sha256": "7c1a9b847b5c7e3bcefd2240db29ffb7a246ef894012a3c813f7919ca0777336",
+        "metadata_sha256": "bab067ec36a96c4032720d6f57aff6f3c674263380178e66ed774bd8f16023ca"
+      }
+    },
+    {
+      "run": "control_100mm_first_failure_v1",
+      "scope": "stop_after_first_complete_collision_diagnostic",
+      "lift_m": 0.1,
+      "native_height_observed": true,
+      "completed": false,
+      "stopped_for_validation": true,
+      "elapsed_s": 130.59253716899548,
+      "expected_cycles": 12,
+      "native_completed_cycles": [
+        1,
+        2,
+        3
+      ],
+      "native_cycles": [
+        {
+          "cycle": 1,
+          "success": true
+        },
+        {
+          "cycle": 2,
+          "success": true
+        },
+        {
+          "cycle": 3,
+          "success": true
+        }
+      ],
+      "native_final_success": null,
+      "original_task_bundle_unchanged": true,
+      "documented_start_source_unchanged": true,
+      "failure_code": null,
+      "worker_status": "cancelled",
+      "fixed_input_sha256": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+      "original_task_bundle_sha256": {
+        "builder": "6478bafdf016817e7d118269da9199e6d4fe8c06570cbedfdfb03c1127ca6884",
+        "fixed_scene": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+        "manifest": "811be89115ec9982ac425f799dedc0d08ab55ada996c42d0e524a54550a3ab2d"
+      },
+      "start_document_sha256": "2be34886644608584353ce7d6f7190af516ff4e6c71425fa8bd6a761eb78f94c",
+      "result_sha256": "0d8b6e966ddc9768e5c184ad07394384db8d1be695e0dc605c6d2b5645afe711",
+      "events_sha256": "a2ddfc4538b612fc0aec55ee7a210ec7fba4d3536f54b1aac1eaeec85d6f5863",
+      "stdout_sha256": "8c8fb33918dd8b5abdd23ffbe09e2515eaa92ac275000670924d89b13523825d",
+      "machine_sha256": "28a163b2441d05b2acaf0103ef7c0da1a29c87a3c196e2dc1b9938a8dbeeadfe",
+      "native_completed_sources": [
+        "right_wall",
+        "back_wall",
+        "left_wall"
+      ],
+      "transport_audits": [
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "samples": 41,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift",
+          "samples": 51,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift",
+          "samples": 41,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift",
+          "samples": 0,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_8deg_fast_ik_after_lift",
+          "samples": 0,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_4deg_fast_ik_after_lift_seq_01",
+          "samples": 0,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_4deg_fast_ik_after_lift_seq_02",
+          "samples": 0,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift_seq_01",
+          "samples": 0,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_fast_ik_after_lift_seq_02",
+          "samples": 0,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_8deg_fast_ik_after_lift",
+          "samples": 0,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_toward_robot_12deg_fast_ik_after_lift",
+          "samples": 0,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        },
+        {
+          "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift_seq_01",
+          "samples": 0,
+          "payload_spheres": 6,
+          "world_exempt_links": [],
+          "disabled_links": [],
+          "disabled_objects": [
+            "active_target_object"
+          ]
+        }
+      ],
+      "release_audits": [
+        {
+          "source": "right_wall",
+          "stage_kind": "release_then_return",
+          "passed": true
+        },
+        {
+          "source": "back_wall",
+          "stage_kind": "release_then_return",
+          "passed": true
+        },
+        {
+          "source": "left_wall",
+          "stage_kind": "release_then_return",
+          "passed": true
+        }
+      ],
+      "policy_rejections": [],
+      "first_start_collision_diagnostic": {
+        "step_id": "joint_transport_hover_pairs_grasp_direct_grasp_tilt_away_robot_4deg_fast_ik_after_lift",
+        "status": "MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION",
+        "valid": false,
+        "geometry_detail_recorded": true,
+        "nonzero_links": [
+          "gripper_Right_Support_Link"
+        ]
+      },
+      "failed_return_queries": [],
+      "roof_ik_audit": {
+        "expected_sources": [
+          "back_roof_triangle",
+          "front_roof_triangle",
+          "left_roof_triangle",
+          "right_roof_triangle"
+        ],
+        "foreground_batches": 0,
+        "missing_scopes": [
+          {
+            "phase": "grasp",
+            "source": "back_roof_triangle"
+          },
+          {
+            "phase": "paired_place",
+            "source": "back_roof_triangle"
+          },
+          {
+            "phase": "pregrasp",
+            "source": "back_roof_triangle"
+          },
+          {
+            "phase": "grasp",
+            "source": "front_roof_triangle"
+          },
+          {
+            "phase": "paired_place",
+            "source": "front_roof_triangle"
+          },
+          {
+            "phase": "pregrasp",
+            "source": "front_roof_triangle"
+          },
+          {
+            "phase": "grasp",
+            "source": "left_roof_triangle"
+          },
+          {
+            "phase": "paired_place",
+            "source": "left_roof_triangle"
+          },
+          {
+            "phase": "pregrasp",
+            "source": "left_roof_triangle"
+          },
+          {
+            "phase": "grasp",
+            "source": "right_roof_triangle"
+          },
+          {
+            "phase": "paired_place",
+            "source": "right_roof_triangle"
+          },
+          {
+            "phase": "pregrasp",
+            "source": "right_roof_triangle"
+          }
+        ],
+        "observed_batches": 0,
+        "observed_batches_complete": false,
+        "passed": false,
+        "prefetch_batches": 0
+      },
+      "native_video": {
+        "frames": 907,
+        "fps": 10,
+        "render_complete": true,
+        "frame_cap_reached": false,
+        "errors": [],
+        "mp4_sha256": "713fcaf420d6312ae6dbea10c688d5d61540b38038c7da74c20f1cbbb4c2a084",
+        "metadata_sha256": "0506ea73dfbb5a2e03173197038c2185c09eb6a90fc98c34b12e86024e58b900"
+      }
+    }
+  ],
+  "comparison_input_hashes_equal": true,
+  "control_saved_mesh_clearance": {
+    "source_events_sha256": "a2ddfc4538b612fc0aec55ee7a210ec7fba4d3536f54b1aac1eaeec85d6f5863",
+    "mesh_sha256": "fac68dee16a4f8d5b17d7de0f4007ac2445472c70d338c46dbb98908e38f4175",
+    "mesh_height_m": 0.1350000053218166,
+    "mesh_top_z_m": 0.14800003169563108,
+    "observed_zero_translation": {
+      "hypothetical_world_z_translation_m": 0,
+      "link": "gripper_Right_Support_Link",
+      "sphere_bottom_minus_mesh_top_m": -0.0033019650587111093,
+      "sphere_mesh_clearance_m": -0.002755712073576451
+    },
+    "new_gpu_planning_for_mesh_query": false
+  },
+  "tennis_explanation": {
+    "new_gpu_run": false,
+    "source_events_sha256": "b3a62057dc022b8a6de4417061d2a47707c58644d673c5cfaf01b66b527aac24",
+    "previous_result_sha256": "9f4b4452ac07cb84b34b7caf9ab3f2cfcbd536d3585406c1301a88c3eecf9ca4",
+    "goal_count": 32,
+    "requested_num_seeds": 32,
+    "native_success_count": 0,
+    "diagnostic_complete": true,
+    "state_unchanged": true,
+    "constraint": "entire downward TCP plane level at preplace and place",
+    "samples": [
+      {
+        "goal_index": 0,
+        "native_status": "IK_FAIL",
+        "native_collision_valid": true,
+        "position_error_m": 0.00907129364197612,
+        "rotation_error_deg": 14.144057191705464,
+        "self_valid": true,
+        "box_contact_count": 0
+      },
+      {
+        "goal_index": 21,
+        "native_status": "IK_FAIL",
+        "native_collision_valid": true,
+        "position_error_m": 0.003580508397722781,
+        "rotation_error_deg": 21.479713216297476,
+        "self_valid": true,
+        "box_contact_count": 0
+      }
+    ],
+    "globally_unreachable_proven": false,
+    "pending": "User has not clarified whether equal pad heights with pitch allowed is sufficient"
+  },
+  "pusht_explanation": {
+    "new_gpu_run": false,
+    "new_physics_simulation": false,
+    "hardware_execution": false,
+    "previous_summary_sha256": "5e1be03743a145a46cb6ab59bfe727185bb84bed42257512d1532b879dd15139",
+    "final_normal_orientation_gpu_passes": 4,
+    "slow_gpu_passes": 1,
+    "verified_physical_push_success": null,
+    "limitation": "GPU plan_push paths and nominal geometry video do not execute contact dynamics or observe T motion"
+  },
+  "videos": [
+    {
+      "path": "runtime_data/three_scene/jimu_lift_103mm_20260909/jimu_103mm_front_wall.mp4",
+      "sha256": "409c44eef9453e6565dd8453e21401b1d5f826ddcf84e42b5d528c4d31ab8c78",
+      "bytes": 2807202,
+      "frames": 328,
+      "fps": 10,
+      "duration_s": 32.8,
+      "source_frame_start": 829,
+      "source_frame_end_exclusive": 1157,
+      "decode_passed": true,
+      "interpretation": "Native accepted-path SIM replay for completed front_wall; not physical/time qualification"
+    },
+    {
+      "path": "runtime_data/three_scene/jimu_lift_103mm_20260909/jimu_103mm_roof_failure.mp4",
+      "sha256": "ecb935d14835fd550deeedff7548914e5dc96d59eaaf78a5bec982ae50c47280",
+      "bytes": 554710,
+      "frames": 415,
+      "fps": 10,
+      "duration_s": 41.5,
+      "source_frame_start": 2309,
+      "source_frame_end_exclusive": 2724,
+      "decode_passed": true,
+      "interpretation": "Native roof attempt scene states and rejection labels; rejected return path is NOT animated"
+    }
+  ]
+}

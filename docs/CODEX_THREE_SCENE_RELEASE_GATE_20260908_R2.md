@@ -1,6 +1,6 @@
 # Three-scene release gate — 2026-09-08 R2
 
-第 0–11 节保留 `d9f2190` 的原 R2 验收结果；用户随后澄清需要的是**仿真失败录像而非桌面相机视频**，纠正后的独立录像工作见第 12 节（已提交 `4fa22da`）。**最新的抬升高度诊断、Tennis 水平约束和 PushT 闭合夹爪修正见第 13 节**；历史结果不回填或改写。
+第 0–11 节保留 `d9f2190` 的原 R2 验收结果；独立失败录像见第 12 节（`4fa22da`），Tennis 水平约束和 PushT 闭合夹爪修正见第 13 节（`a0704fe`）。**最新的 2026-09-09 Jimu +3 mm 对照、Tennis 失败原因和 PushT 证据边界见第 14 节**；历史结果不回填或改写。
 
 **NEEDS_REVIEW：本轮无机械臂/夹爪运动，三条 demo 尚未完成验收。** 按 [本轮审阅要求](CHATGPT_REVIEW_CODEX_PUSH_20260908.md) 顺序完成干净 HEAD 离线基线、精确资产恢复、Jimu 三个 GPU 控制实验，再做三个 current-table 请求的有限诊断。没有降低碰撞检查、减少候选/seeds、放宽成功条件或重新设计规划算法。
 
@@ -464,3 +464,69 @@ v2 额外复用原批次只读 observer：首次 paired-place 的 32 个原 goal
 - **本次未连接真实相机/RealMan SDK，没有任何机械臂或夹爪命令；未做 frontend/camera/RRTrack identity 新验收；未修改/清理旧仓库，未改 snapshot 字节。** 用户选闭合夹爪不是物理资格化证据，也不是运动授权。
 
 本节代码、测试、摘要和文档完成后提交并 push 到当前分支，提交 SHA 在交付消息给出。Tennis 含义澄清及当前失败保留；Jimu 完整高度修复/三条实物 demo 仍未关闭。本轮到此停止，不自动推进机械臂运动。
+
+## 14. 2026-09-09：Jimu 抬高 3 mm 的真实对照，以及另外两条链的答复
+
+用户本轮要求：把 Jimu 当前抬升再增加 3 mm 试验；解释 Tennis 为什么仍失败；说明 PushT 修改后是否已经能正确推动。起点为干净 `a0704fe8d51a837f14671b0abb74722e7418a631`。本节唯一实现变更是**显式 Jimu SIM 高度试验开关**及其单测；没有继续改 PickPlace/PushT 算法或启动设备。
+
+本地证据根目录（H）：`runtime_data/three_scene/jimu_lift_103mm_20260909/`。入 Git 的有界结果：[jimu_lift_103mm_20260909_summary.json](../benchmarks/unified_scenarios/jimu_lift_103mm_20260909_summary.json)，包含两次 native result / events / stdout / 输入 / 视频 / 测试 SHA，不含原始关节和轨迹。
+
+### 14.1 具体改了哪个高度
+
+- 原失败分支参数为 `--joint-search-start-collision-lift-m`，当前原值 **0.100 m（100 mm）**；本次试验为 **0.103 m（103 mm）**，只增加用户指定的 3 mm。
+- `tools/run_workcell_native_validation.py --jimu-lift-plus-3mm` 仅向既有 native argv 增加上述一个参数。原 main 和 world-Z 直线日志均确认最终生效 `0.103`；不是单球平移估算，也不是修改日志中的显示值。
+- 原独立 post-grasp lift 高度、放置/返程高度、目标、模型、候选/seeds、碰撞规则不变。原已接受 joint-search lift 仍由原代码复用到实际 SIM 搬运链，不另造执行路径。
+- 开关只能用于此 frozen SIM runner 的 Jimu 任务，PickPlace 提前拒绝；不提供任意新高度搜索。默认不带开关时仍为原 100 mm。**试验没有改已批准 snapshot、生产默认或真机 profile**；完整 builder 尚未通过，不能把试验提升为硬件资格化。
+
+### 14.2 两次实际 GPU/SIM 结果
+
+保持原 `tag1_standard_three_layer` manifest / builder / fixed scene 和原文档 SIM start，沿用 cuRobo1 native workcell、严格搬运门和原视频录制机制。执行顺序是先 103 mm 完整 builder，再 100 mm 首失败限次对照，GPU 串行；两次输入 SHA 相同且原任务三文件/start 文档前后均 unchanged=true。
+
+| 运行 | 已完成的原主循环 | 实际终态 |
+| --- | --- | --- |
+| `H/full_builder_103mm_v1`，103 mm | **8/12**：四块一层墙和四块二层墙；包括原失败的 `front_wall` | 295.274 s，worker FAIL / exit 42，屋顶阶段 `strict_contact_not_supported`；没有 final-success marker |
+| `H/control_100mm_first_failure_v1`，原 100 mm | 首次完整碰撞诊断前有 3 个成功 cycle marker | 130.593 s，按预定边界取消；复现 `front_wall` after-lift 搬运起点 `INVALID_START_STATE_WORLD_COLLISION`。**不是完整 12 件对照，也不是 3/3 成功验收** |
+
+100 mm 对照再次给出原 `gripper_Right_Support_Link` 非零碰撞球。用本次保存配置与同一个批准 135 mm 三角网格复算，球面间隙仍为 **−2.755712 mm**。103 mm 运行没有出现这个 front_wall 起点诊断，实际 foreground 第 4 周期成功，且该源的释放/返程执行审计 passed=true。**这组证据支持 3 mm 在该 frozen case 中解除原失败点**；不等于所有料盘误差、相机误差和真机路径均安全。
+
+103 mm 共记录 **10 条完整搬运审计**（包含预取/后续屋顶规划，不冒充 10 次实物成功），每条 40–73 个采样、6 个 payload 球；所有 `world_exempt_links=[]`、`disabled_links=[]`，仅原活动源静态副本 `active_target_object` 被禁用，带载模型继续检查。八个完成源各有独立 `jimu_release_execution_audit passed=true`。原候选、全世界、自碰撞、payload 和返程门未削弱。
+
+与第 6 节历史完整 builder **7/12** 相比，本次为 **8/12**；两份历史/新结果均保留。本轮只做一次 103 mm 完整运行和一次原值限次对照，不能声称统计鲁棒性或把两种覆盖范围混成相同分母。
+
+### 14.3 为什么屋顶仍然停下
+
+- 原 `right_roof_triangle` 的一个 pre-release 候选，拟议退让之后的返程起点为 world collision；只读诊断 complete/state_unchanged=true，返程目标 valid=true、起点 valid=false。原 GPU 非零 link 包括 `gripper_base_link / gripper_Left_2_Link / gripper_Right_2_Link`，尚未在本轮证明具体 mesh 配对；不能笼统说仍是料盘下降碰撞。
+- 此诊断发生在原屋顶规划/预取中（`released=false`），**不是机械臂执行该碰撞返程后的反馈**。日志与前台第 8 周期交错，不应误归因为 `front_second_wall` 失败；该墙的第 8 周期和释放审计均成功。
+- 后续原阶段切换留下 `active_target_object / scene_obstacle_right_roof_triangle / virtual_table_plane` 的 disabled objects，严格门以 `preexisting_disabled_world_objects` 拒绝。事件记录两次（预取及后续重试），最后 worker 失败；没有擅自允许桌面/邻物免检或强行清空状态继续。
+- 只观测到右屋顶 3 个 foreground IK batch，另外三块屋顶未覆盖，roof audit 仍 FAIL。**Jimu 尚不是 12/12，也不只是差真机。** 本轮不扩展为屋顶状态生命周期修复。
+
+### 14.4 Tennis 的失败原因：目前是水平放置 IK，不是抓取失败
+
+本次只复核第 13 节原始已保存批次，没有新的 Tennis GPU 运行或代码修改。抓取前/抓取原先均 16/16 通过；preplace/place 整个端面水平的展开候选为 0/96。首次 paired-place 32 个原 goal 的状态均为 `IK_FAIL`，原 32 seeds 不变。
+
+两个只读复核的原近似解 native collision-valid=true、自碰撞检查有效且无 box contact，但相对所要求的末端位姿仍分别偏 **9.071 mm /14.144°** 和 **3.581 mm /21.480°**。直接原因是**在当前固定放置点、整个端面水平约束和原求解预算下，没有得到同时满足位置/姿态要求的合格关节解**；不是运行崩溃，也不能靠放宽容差采用这些解。
+
+这尚未区分“该位置与姿态组合在全局不可达”和“原求解过程未收敛”，也不证明所有水平放置都不可达。第 13 节对“整个端面水平”还是“两指等高但允许整体俯仰”的澄清仍未收到答复，保持现有严格解释，没有自行松开约束。
+
+### 14.5 PushT：位置/路径修正有效，但还不能说 T 已正确推动
+
+本次只检查原代码与第 13 节结果，**没有新增 PushT GPU、动力学仿真或实物试验**。上轮四个正常姿态及慢速对照的五阶段 GPU 路径均通过，原碰撞负例仍拒绝，说明闭合夹爪模型能够在既有 fixture 中先外围下降、再靠近并规划推段与撤离。
+
+`run_pusht_gpu_validation.py` 实际调用的是 `plan_push`，其 `NoMotionArm.execute` 明确禁止执行；CPU `predict` 是未标定的准静态 surrogate，不是推后观测。修正视频只到首次接触，没有物理步进或 T 实际位姿反馈。因此 `verified_physical_push_success=null`：**不能从“12 mm 推段已规划”推导“已把 T 推了 12 mm”或“已推到目标”**。后续若要证明推动正确，需要接触动力学/实物闭环证据；实际工具与观察 profile 仍未资格化，本轮不越过无运动边界。
+
+### 14.6 本地视频、测试与提交
+
+| 视频 | 规格与含义 |
+| --- | --- |
+| `H/jimu_103mm_front_wall.mp4` | H.264，1024×600，10 fps，328 帧/32.8 s；本次第 4 周期的原 SIM 已接受路径回放，12.4–20.4 s 为搬运/放置片段，30.8 s 起显示 episode return=True |
+| `H/jimu_103mm_roof_failure.mp4` | H.264，1024×600，10 fps，415 帧/41.5 s；原屋顶尝试的场景状态及拒绝标签，**没有动画执行被拒的返程路径**，不能从静态手臂状态认证精确碰撞配对 |
+
+两片从本次原始 2724 帧录像按 metadata 帧号截取，不改变规划/几何；已完成 ffprobe、整片 ffmpeg 解码以及 16 s/39 s 关键帧查看。它们是 SIM 运动学回放/状态记录，不是接触物理或实时执行认证。视频留本地，哈希和原 metadata 哈希见 JSON。
+
+- 改前 compileall PASS，完整 tests **957 passed，35.34 s**。新增五项单测覆盖默认不变、只增加 3 mm、只改一个 native 参数、非 Jimu 拒绝及启动 native/service 前拒绝；相关文件 **24 passed**。
+- 最终 compileall PASS；完整 `tests/three_scene` **640 passed，18.14 s**；完整 `tests` **962 passed，38.27 s**；均保留原 trimesh warning。snapshot verify **809 项 PASS**，`git diff --check` PASS。没有删除失败测试、放宽断言或扩大测试成功条件。
+- GPU 结束后再次通过 snapshot 全量字节校验。收尾临时检查脚本首次把返回的 `files` 清单直接与数字 809 比较而断言失败，改为 `len(files)==809` 后确认通过；没有修改 snapshot、求解器或正式测试来掩盖资产差异。
+- 复现沿用第 6 节完整 builder 命令，追加 `--record-sim-video --jimu-lift-plus-3mm`；100 mm 对照去掉后者，追加 `--stop-after-collision-diagnostic`。独立输出目录见表，`--timeout-s 900`、原 `foundationpose310` 环境、9G/512M 资源限制、OMP_NUM_THREADS=2、MAX_JOBS=2 均相同。
+- 提交范围只有 runner、对应单测、本节和一个有界 JSON；旧仓库只读、snapshot 不改、不整体复制 untracked、无外部库改动。本轮没有 camera/SDK/夹爪/机械臂操作，没有 frontend/RRTrack 新验收；所有 GPU 进程已结束。
+
+本节随代码和摘要提交并 push 到原分支，提交 SHA 在交付消息给出。**保留 103 mm 试验、100 mm 默认和全部失败证据；不继续试其他高度、不自动修屋顶免检生命周期、不进入机械臂运动。**

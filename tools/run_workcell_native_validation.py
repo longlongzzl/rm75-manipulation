@@ -63,6 +63,20 @@ def read_documented_jimu_start(path):
             'joints_deg':list(vectors[0]),'read_only':True}
 
 
+def jimu_lift_trial_args(task, enabled):
+    """User-approved SIM comparison: only the failed joint-search lift +3 mm.
+
+    The pinned native default is 0.100 m. Keep the independent post-grasp lift,
+    return/placement heights, geometry, candidates and collision policy intact.
+    This opt-in runner never updates the production or hardware profile.
+    """
+    if not enabled:
+        return []
+    if task != 'magnetic':
+        raise ValueError('The +3 mm lift trial is Jimu SIM only')
+    return ['--joint-search-start-collision-lift-m', '0.103']
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--task',choices=('pickplace','magnetic'),required=True)
@@ -74,6 +88,8 @@ def main():
         help='Separate SIM comparison: read seven start angles from original command documentation')
     parser.add_argument('--audit-roof-ik',action='store_true',
         help='Opt-in read-only first roof IK batch per original phase/source; no extra solve')
+    parser.add_argument('--jimu-lift-plus-3mm',action='store_true',
+        help='Jimu SIM only: test the original failed joint-search lift at 103 instead of 100 mm')
     parser.add_argument('--audit-current-table-failures',action='store_true',
         help='Read-only failed lift / already-generated tennis reverse path; no new solve or selection')
     parser.add_argument('--record-sim-video',action='store_true',
@@ -93,6 +109,7 @@ def main():
         help='Cancel after observing the actual Jimu post-release execution boundary')
     parser.add_argument('--timeout-s',type=float,default=600.)
     args=parser.parse_args()
+    if args.jimu_lift_plus_3mm and args.task!='magnetic':parser.error('The +3 mm lift trial is Jimu SIM only')
     if args.audit_roof_ik and args.task!='magnetic':parser.error('Roof IK diagnostics are Jimu SIM only')
     if args.audit_current_table_failures and (args.task!='pickplace'
             or args.object_name not in ('gluestick','hongshupian','tennis')
@@ -131,6 +148,7 @@ def main():
         simulation_contact_policy='transport_world_checked_compatibility')
     section['native_args']=['--curobo-torch-extensions-dir',str(args.extensions.resolve()),
         '--camera-extrinsic-opencv-path',str(ROOT/'assets/calibration/camera_extrinsic_opencv.npy')]
+    section['native_args']+=jimu_lift_trial_args(args.task,args.jimu_lift_plus_3mm)
     if args.task=='magnetic':
         section['native_args']+=['--jimu-build-layers','two','--jimu-second-layer-triangle-profile',
                                  '--no-jimu-demo-triangle-apriltag']
@@ -146,6 +164,7 @@ def main():
     report=dict(task=args.task,mode='sim',execute_real=False,hardware_connected=False,
         verified_task_success=None,fixed_input_sha256=hashlib.sha256(fixed.read_bytes()).hexdigest(),
         stopped_for_validation=False,completed=False)
+    report['jimu_joint_search_lift_trial_m']=.103 if args.jimu_lift_plus_3mm else None
     report['original_task_bundle_sha256']=bundle_hashes
     report['original_task_bundle_read_only']=bool(bundle)
     report['documented_start_comparison']=documented_start

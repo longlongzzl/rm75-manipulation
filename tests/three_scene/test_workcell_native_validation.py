@@ -1,6 +1,6 @@
 import hashlib
 import json
-from tools.run_workcell_native_validation import native_outcomes,read_original_task_bundle,read_documented_jimu_start
+from tools.run_workcell_native_validation import native_outcomes,read_original_task_bundle,read_documented_jimu_start,jimu_lift_trial_args
 import pytest
 
 
@@ -83,3 +83,30 @@ def test_documented_start_reads_only_angles_without_other_command_flags(tmp_path
 def test_missing_ambiguous_or_non_numeric_documented_start_fails_closed(tmp_path,body):
     path=tmp_path/'original.md';path.write_text(body)
     with pytest.raises(ValueError):read_documented_jimu_start(path)
+
+
+@pytest.mark.parametrize('task',['pickplace','magnetic'])
+def test_default_runner_does_not_change_any_native_lift(task):
+    assert jimu_lift_trial_args(task,False)==[]
+
+
+def test_jimu_trial_changes_only_failed_lift_by_exactly_three_mm():
+    argv=jimu_lift_trial_args('magnetic',True)
+    assert argv==['--joint-search-start-collision-lift-m','0.103']
+    assert float(argv[1])-.100==pytest.approx(.003)
+    # No override of independent lift, collision/seed/geometry or execution flags.
+    assert len(argv)==2
+
+
+def test_lift_trial_cannot_modify_pickplace():
+    with pytest.raises(ValueError,match='Jimu SIM only'):
+        jimu_lift_trial_args('pickplace',True)
+
+
+def test_lift_cli_rejects_other_tasks_before_starting_service(monkeypatch,tmp_path):
+    import tools.run_workcell_native_validation as runner
+    monkeypatch.setattr(runner.sys,'argv',['runner','--task','pickplace','--jimu-lift-plus-3mm',
+        '--output',str(tmp_path/'unused'),'--extensions',str(tmp_path)])
+    monkeypatch.setattr(runner,'verify_snapshot',lambda *args:pytest.fail('Should reject before loading native code'))
+    with pytest.raises(SystemExit) as exc:runner.main()
+    assert exc.value.code==2 and not (tmp_path/'unused').exists()
