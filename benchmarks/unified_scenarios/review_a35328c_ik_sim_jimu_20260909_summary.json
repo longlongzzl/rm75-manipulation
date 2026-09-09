@@ -1,0 +1,1992 @@
+{
+  "schema": "rm75.review_a35328c.v1",
+  "base_commit": "15f1fbf2b3ed9b44aae0fbcfe16afa561e69506b",
+  "hardware_connected": false,
+  "hardware_qualified": false,
+  "raw_evidence_root": "runtime_data/three_scene/review_a35328c_20260909",
+  "native_trials": [
+    {
+      "trial": "jimu_phase_transaction_v1",
+      "result_sha256": "d3f401c20730c8bf83f2195e3ba37168780751bd621e1bd164f1de2379a09c0d",
+      "elapsed_s": 310.9350991419924,
+      "status": "failed",
+      "error": null,
+      "completed": false,
+      "raw_native_completed_cycles_including_fallback": 8,
+      "expected_cycles": 12,
+      "input_sha256": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+      "original_bundle_unchanged": true,
+      "original_bundle_sha256": {
+        "builder": "6478bafdf016817e7d118269da9199e6d4fe8c06570cbedfdfb03c1127ca6884",
+        "fixed_scene": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+        "manifest": "811be89115ec9982ac425f799dedc0d08ab55ada996c42d0e524a54550a3ab2d"
+      },
+      "lift_trial_m": 0.103,
+      "foreground_source_outcomes": [],
+      "adapter_restorations": {
+        "total": 16,
+        "passed": 16
+      },
+      "jimu_release_audits": {
+        "total": 8,
+        "passed": 8
+      },
+      "transport_full_world_audits": 10,
+      "policy_rejections": 2,
+      "tennis_ik_trials": [],
+      "tennis_fk_ik_contracts": [],
+      "tennis_continuation": [],
+      "independent_clearance_audits": 0,
+      "roof_ik_audit": {
+        "expected_sources": [
+          "back_roof_triangle",
+          "front_roof_triangle",
+          "left_roof_triangle",
+          "right_roof_triangle"
+        ],
+        "foreground_batches": 3,
+        "missing_scopes": [
+          {
+            "phase": "grasp",
+            "source": "back_roof_triangle"
+          },
+          {
+            "phase": "paired_place",
+            "source": "back_roof_triangle"
+          },
+          {
+            "phase": "pregrasp",
+            "source": "back_roof_triangle"
+          },
+          {
+            "phase": "grasp",
+            "source": "front_roof_triangle"
+          },
+          {
+            "phase": "paired_place",
+            "source": "front_roof_triangle"
+          },
+          {
+            "phase": "pregrasp",
+            "source": "front_roof_triangle"
+          },
+          {
+            "phase": "grasp",
+            "source": "left_roof_triangle"
+          },
+          {
+            "phase": "paired_place",
+            "source": "left_roof_triangle"
+          },
+          {
+            "phase": "pregrasp",
+            "source": "left_roof_triangle"
+          }
+        ],
+        "observed_batches": 6,
+        "observed_batches_complete": true,
+        "passed": false,
+        "prefetch_batches": 3
+      },
+      "video_sha256": "9874cabc140dc189cf3a58d8c5fea92be191492b63b0eca75f25855ee56eaf5e"
+    },
+    {
+      "trial": "jimu_phase_transaction_v2",
+      "result_sha256": "b995e67a05163a502db184d4394e375f415e81f2f58033d4e583e9a898bd5343",
+      "elapsed_s": 513.1731088729866,
+      "status": "command_completed_unverified",
+      "error": null,
+      "completed": true,
+      "raw_native_completed_cycles_including_fallback": 12,
+      "expected_cycles": 12,
+      "input_sha256": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+      "original_bundle_unchanged": true,
+      "original_bundle_sha256": {
+        "builder": "6478bafdf016817e7d118269da9199e6d4fe8c06570cbedfdfb03c1127ca6884",
+        "fixed_scene": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+        "manifest": "811be89115ec9982ac425f799dedc0d08ab55ada996c42d0e524a54550a3ab2d"
+      },
+      "lift_trial_m": 0.103,
+      "foreground_source_outcomes": [],
+      "adapter_restorations": {
+        "total": 43,
+        "passed": 43
+      },
+      "jimu_release_audits": {
+        "total": 12,
+        "passed": 12
+      },
+      "transport_full_world_audits": 23,
+      "policy_rejections": 0,
+      "tennis_ik_trials": [],
+      "tennis_fk_ik_contracts": [],
+      "tennis_continuation": [],
+      "independent_clearance_audits": 0,
+      "roof_ik_audit": {
+        "expected_sources": [
+          "back_roof_triangle",
+          "front_roof_triangle",
+          "left_roof_triangle",
+          "right_roof_triangle"
+        ],
+        "foreground_batches": 0,
+        "missing_scopes": [],
+        "observed_batches": 12,
+        "observed_batches_complete": true,
+        "passed": true,
+        "prefetch_batches": 12
+      },
+      "video_sha256": "bb3b1fbf9dfce5503d9df2871ebdb7f1be1d207f041635d9145cf34a465f9bdd"
+    },
+    {
+      "trial": "pickplace_brush_first_v1",
+      "result_sha256": "ad3837e04d9408cfa5c7f0576e4127cca318d24c59c4d77cb853167cd8bfee97",
+      "elapsed_s": 252.7715271609777,
+      "status": "failed",
+      "error": null,
+      "completed": false,
+      "raw_native_completed_cycles_including_fallback": 5,
+      "expected_cycles": 7,
+      "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "original_bundle_unchanged": null,
+      "original_bundle_sha256": null,
+      "lift_trial_m": null,
+      "foreground_source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "shuazi",
+          "success": true
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "gluestick",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "bi",
+          "success": true
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "lvmukuai",
+          "success": true
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "carriot",
+          "success": true
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "hongshupian",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "tennis",
+          "success": true
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "gluestick",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "hongshupian",
+          "success": false
+        }
+      ],
+      "requested_sources": [
+        "shuazi",
+        "gluestick",
+        "bi",
+        "lvmukuai",
+        "carriot",
+        "hongshupian",
+        "tennis"
+      ],
+      "requested_source_success_count": 5,
+      "adapter_restorations": {
+        "total": 11,
+        "passed": 11
+      },
+      "jimu_release_audits": {
+        "total": 0,
+        "passed": 0
+      },
+      "transport_full_world_audits": 5,
+      "policy_rejections": 0,
+      "tennis_ik_trials": [],
+      "tennis_fk_ik_contracts": [],
+      "tennis_continuation": [],
+      "independent_clearance_audits": 5,
+      "video_sha256": "86f8f7ac9f036b54d219e11ea7281eda2db5b1010fc161e3af1355463219d298"
+    },
+    {
+      "trial": "pickplace_easy_first_v2",
+      "result_sha256": "0897d6a5ef5dd41ae9424e32c887318ba123f28d434009b56946f1314400ab95",
+      "elapsed_s": 253.37716724199709,
+      "status": "failed",
+      "error": null,
+      "completed": false,
+      "raw_native_completed_cycles_including_fallback": 5,
+      "expected_cycles": 7,
+      "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "original_bundle_unchanged": null,
+      "original_bundle_sha256": null,
+      "lift_trial_m": null,
+      "foreground_source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "shuazi",
+          "success": true
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "bi",
+          "success": true
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "lvmukuai",
+          "success": true
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "carriot",
+          "success": true
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "gluestick",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "hongshupian",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "tennis",
+          "success": true
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "gluestick",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "hongshupian",
+          "success": false
+        }
+      ],
+      "requested_sources": [
+        "shuazi",
+        "bi",
+        "lvmukuai",
+        "carriot",
+        "gluestick",
+        "hongshupian",
+        "tennis"
+      ],
+      "requested_source_success_count": 5,
+      "adapter_restorations": {
+        "total": 11,
+        "passed": 11
+      },
+      "jimu_release_audits": {
+        "total": 0,
+        "passed": 0
+      },
+      "transport_full_world_audits": 5,
+      "policy_rejections": 0,
+      "tennis_ik_trials": [
+        {
+          "strategy": "baseline",
+          "relations": 16,
+          "goal_count": 32,
+          "native_success_count": 32,
+          "solve_wall_s": 0.554649581987178,
+          "state_unchanged": true
+        }
+      ],
+      "tennis_fk_ik_contracts": [
+        {
+          "roundtrips": [
+            {
+              "method": "solve_single",
+              "position_error_m": 0,
+              "so3_error_rad": 2.9802322387695312e-8,
+              "success": true
+            },
+            {
+              "method": "solve_batch",
+              "position_error_m": 0,
+              "so3_error_rad": 2.9802322387695312e-8,
+              "success": true
+            },
+            {
+              "method": "frontend_wrapper",
+              "position_error_m": 0,
+              "so3_error_rad": 2.9802322387695312e-8,
+              "success": true
+            }
+          ],
+          "ee_link": "gripper_tcp",
+          "conversion_matrix_max_error": 6.189006507284489e-8,
+          "state_unchanged": true
+        }
+      ],
+      "tennis_continuation": [],
+      "max_sphere_center_residual_m": 0.000009512626666681485,
+      "independent_clearance_audits": 5,
+      "video_sha256": "0b069e67ca5a751b9e9efff772316fe2118215b1c136bdb38021f6fa3c6a9dd6"
+    },
+    {
+      "trial": "tennis_continuation_v1",
+      "result_sha256": "7d1bbf28188ddd176a24f55c8bd0bd0e39dddbac972e55435263b89cbfca8ef9",
+      "elapsed_s": 37.20342323000659,
+      "status": "failed",
+      "error": null,
+      "completed": false,
+      "raw_native_completed_cycles_including_fallback": 1,
+      "expected_cycles": 1,
+      "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "original_bundle_unchanged": null,
+      "original_bundle_sha256": null,
+      "lift_trial_m": null,
+      "foreground_source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "tennis",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "bi",
+          "success": true
+        }
+      ],
+      "requested_sources": [
+        "tennis"
+      ],
+      "requested_source_success_count": 0,
+      "adapter_restorations": {
+        "total": 2,
+        "passed": 2
+      },
+      "jimu_release_audits": {
+        "total": 0,
+        "passed": 0
+      },
+      "transport_full_world_audits": 2,
+      "policy_rejections": 0,
+      "tennis_ik_trials": [
+        {
+          "strategy": "continuation",
+          "relations": 16,
+          "goal_count": 32,
+          "native_success_count": 0,
+          "solve_wall_s": 1.4768614000058733,
+          "state_unchanged": true
+        },
+        {
+          "strategy": "continuation",
+          "relations": 96,
+          "goal_count": 192,
+          "native_success_count": 0,
+          "solve_wall_s": 1.6274184359936044,
+          "state_unchanged": true
+        }
+      ],
+      "tennis_fk_ik_contracts": [
+        {
+          "roundtrips": [
+            {
+              "method": "solve_single",
+              "position_error_m": 1.4676237269636257e-7,
+              "so3_error_rad": 3.7342202920144023e-7,
+              "success": true
+            },
+            {
+              "method": "solve_batch",
+              "position_error_m": 0,
+              "so3_error_rad": 2.9802322387695312e-8,
+              "success": true
+            },
+            {
+              "method": "frontend_wrapper",
+              "position_error_m": 0,
+              "so3_error_rad": 2.9802322387695312e-8,
+              "success": true
+            }
+          ],
+          "ee_link": "gripper_tcp",
+          "conversion_matrix_max_error": 6.189006507284489e-8,
+          "state_unchanged": true
+        }
+      ],
+      "tennis_continuation": [
+        {
+          "event": "tennis_continuation_seed_search",
+          "final_endpoint_seed_count": 0,
+          "helper_goal_count": 8,
+          "helpers_are_execution_paths": false,
+          "num_seeds_per_goal": 32,
+          "state_unchanged": true,
+          "successful_by_fraction": [
+            0
+          ]
+        },
+        {
+          "event": "tennis_continuation_seed_search",
+          "final_endpoint_seed_count": 0,
+          "helper_goal_count": 48,
+          "helpers_are_execution_paths": false,
+          "num_seeds_per_goal": 32,
+          "state_unchanged": true,
+          "successful_by_fraction": [
+            0
+          ]
+        }
+      ],
+      "max_sphere_center_residual_m": 0.000009512626751078245,
+      "independent_clearance_audits": 1
+    },
+    {
+      "trial": "tennis_contract_baseline_v1",
+      "result_sha256": "8d4eed6409a09ad8fd31b660b0d12e61155af8684ae833873be81fcc55321592",
+      "elapsed_s": 35.28249072798644,
+      "status": "failed",
+      "error": null,
+      "completed": false,
+      "raw_native_completed_cycles_including_fallback": 1,
+      "expected_cycles": 1,
+      "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "original_bundle_unchanged": null,
+      "original_bundle_sha256": null,
+      "lift_trial_m": null,
+      "foreground_source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "tennis",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "bi",
+          "success": true
+        }
+      ],
+      "requested_sources": [
+        "tennis"
+      ],
+      "requested_source_success_count": 0,
+      "adapter_restorations": {
+        "total": 2,
+        "passed": 2
+      },
+      "jimu_release_audits": {
+        "total": 0,
+        "passed": 0
+      },
+      "transport_full_world_audits": 2,
+      "policy_rejections": 0,
+      "tennis_ik_trials": [
+        {
+          "strategy": "baseline",
+          "relations": 16,
+          "goal_count": 32,
+          "native_success_count": 0,
+          "solve_wall_s": 0.7974570890073664,
+          "state_unchanged": true
+        },
+        {
+          "strategy": "baseline",
+          "relations": 96,
+          "goal_count": 192,
+          "native_success_count": 0,
+          "solve_wall_s": 1.0038748029910494,
+          "state_unchanged": true
+        }
+      ],
+      "tennis_fk_ik_contracts": [
+        {
+          "roundtrips": [
+            {
+              "method": "solve_single",
+              "position_error_m": 1.4676237269636257e-7,
+              "so3_error_rad": 3.7342202920144023e-7,
+              "success": true
+            },
+            {
+              "method": "solve_batch",
+              "position_error_m": 0,
+              "so3_error_rad": 2.9802322387695312e-8,
+              "success": true
+            },
+            {
+              "method": "frontend_wrapper",
+              "position_error_m": 0,
+              "so3_error_rad": 2.9802322387695312e-8,
+              "success": true
+            }
+          ],
+          "ee_link": "gripper_tcp",
+          "conversion_matrix_max_error": 6.189006507284489e-8,
+          "state_unchanged": true
+        }
+      ],
+      "tennis_continuation": [],
+      "max_sphere_center_residual_m": 0.000009512626751078245,
+      "independent_clearance_audits": 1
+    },
+    {
+      "trial": "tennis_standard_reference_v1",
+      "result_sha256": "e3f8fa6e723d24a94edc224446a4f43a5c95fab6dbcc963689d4d7424d6b86a4",
+      "elapsed_s": 43.0084441259969,
+      "status": "failed",
+      "error": null,
+      "completed": false,
+      "raw_native_completed_cycles_including_fallback": 1,
+      "expected_cycles": 1,
+      "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "original_bundle_unchanged": null,
+      "original_bundle_sha256": null,
+      "lift_trial_m": null,
+      "foreground_source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "tennis",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "bi",
+          "success": true
+        }
+      ],
+      "requested_sources": [
+        "tennis"
+      ],
+      "requested_source_success_count": 0,
+      "adapter_restorations": {
+        "total": 2,
+        "passed": 2
+      },
+      "jimu_release_audits": {
+        "total": 0,
+        "passed": 0
+      },
+      "transport_full_world_audits": 2,
+      "policy_rejections": 0,
+      "tennis_ik_trials": [
+        {
+          "strategy": "standard-reference",
+          "relations": 16,
+          "goal_count": 32,
+          "native_success_count": 0,
+          "solve_wall_s": 0.9545876620104536,
+          "state_unchanged": true
+        },
+        {
+          "strategy": "standard-reference",
+          "relations": 96,
+          "goal_count": 192,
+          "native_success_count": 0,
+          "solve_wall_s": 1.160394520004047,
+          "state_unchanged": true
+        }
+      ],
+      "tennis_fk_ik_contracts": [
+        {
+          "roundtrips": [
+            {
+              "method": "solve_single",
+              "position_error_m": 1.4676237269636257e-7,
+              "so3_error_rad": 3.7342202920144023e-7,
+              "success": true
+            },
+            {
+              "method": "solve_batch",
+              "position_error_m": 0,
+              "so3_error_rad": 2.9802322387695312e-8,
+              "success": true
+            },
+            {
+              "method": "frontend_wrapper",
+              "position_error_m": 0,
+              "so3_error_rad": 2.9802322387695312e-8,
+              "success": true
+            }
+          ],
+          "ee_link": "gripper_tcp",
+          "conversion_matrix_max_error": 6.189006507284489e-8,
+          "state_unchanged": true
+        }
+      ],
+      "tennis_continuation": [],
+      "max_sphere_center_residual_m": 0.000009512626751078245,
+      "independent_clearance_audits": 1
+    },
+    {
+      "trial": "tennis_yaw_midpoints_v1",
+      "result_sha256": "144c3e4919f856fc9dffd223fffcd276e646f9d25a2915d7e83a0c3af995e5ef",
+      "elapsed_s": 36.587315724988,
+      "status": "failed",
+      "error": null,
+      "completed": false,
+      "raw_native_completed_cycles_including_fallback": 1,
+      "expected_cycles": 1,
+      "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "original_bundle_unchanged": null,
+      "original_bundle_sha256": null,
+      "lift_trial_m": null,
+      "foreground_source_outcomes": [
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "tennis",
+          "success": false
+        },
+        {
+          "foreground": true,
+          "prefetch_capture_only": false,
+          "source": "bi",
+          "success": true
+        }
+      ],
+      "requested_sources": [
+        "tennis"
+      ],
+      "requested_source_success_count": 0,
+      "adapter_restorations": {
+        "total": 2,
+        "passed": 2
+      },
+      "jimu_release_audits": {
+        "total": 0,
+        "passed": 0
+      },
+      "transport_full_world_audits": 2,
+      "policy_rejections": 0,
+      "tennis_ik_trials": [
+        {
+          "strategy": "yaw-midpoints",
+          "relations": 16,
+          "goal_count": 32,
+          "native_success_count": 0,
+          "solve_wall_s": 0.7755910069972742,
+          "state_unchanged": true
+        },
+        {
+          "strategy": "yaw-midpoints",
+          "relations": 192,
+          "goal_count": 384,
+          "native_success_count": 0,
+          "solve_wall_s": 1.373684283986222,
+          "state_unchanged": true
+        }
+      ],
+      "tennis_fk_ik_contracts": [
+        {
+          "roundtrips": [
+            {
+              "method": "solve_single",
+              "position_error_m": 1.4676237269636257e-7,
+              "so3_error_rad": 3.7342202920144023e-7,
+              "success": true
+            },
+            {
+              "method": "solve_batch",
+              "position_error_m": 0,
+              "so3_error_rad": 2.9802322387695312e-8,
+              "success": true
+            },
+            {
+              "method": "frontend_wrapper",
+              "position_error_m": 0,
+              "so3_error_rad": 2.9802322387695312e-8,
+              "success": true
+            }
+          ],
+          "ee_link": "gripper_tcp",
+          "conversion_matrix_max_error": 6.189006507284489e-8,
+          "state_unchanged": true
+        }
+      ],
+      "tennis_continuation": [],
+      "max_sphere_center_residual_m": 0.000009512627541663041,
+      "independent_clearance_audits": 1
+    }
+  ],
+  "physics_trials": [
+    {
+      "trial": "pusht_full_cancel_suite",
+      "result_sha256": "beff2a794334f2ea234d2be5729f7ea6a98e5c76c508b3f03d38b4d3dffc37f9",
+      "elapsed_s": 27.454023772996152,
+      "status": "cancelled",
+      "error": "Operator requested a stop",
+      "backend": "full_arm_physics",
+      "case": "cancel",
+      "expected": "cancel",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 1,
+      "attempted_plans": 1,
+      "executed_pushes": 0,
+      "planning_wall_s": [
+        4.486855406983523
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "56464268f414cd35e13fe6163032dbdec358f8367e98158959e280ff52108ab4",
+      "simulated_time_s": 2.133333333333334,
+      "physics_control_steps": 64,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 0,
+      "self_contact_pairs": {
+        "flange_spacer_8mm / gripper_base_link": {
+          "max_impulse_Ns": 0.002847325522452593,
+          "substeps": 458
+        }
+      },
+      "static_contact_pairs": [],
+      "max_joint_tracking_error_rad": 0.009711119346320629,
+      "max_tcp_tracking_position_m": 0.005598835822136341,
+      "max_tcp_tracking_angle_rad": 0.018461450664393,
+      "last_closed_gripper_joint_error_rad": 0.002080202102661133,
+      "video_frames": 21,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3499999940395355,
+        -0.18000002205371857,
+        -9.707710191264596e-10
+      ],
+      "video_sha256": "5bad4db4161f1f3ec4dca8294ca80ac3266cdea3f4ebf11e2350359f8c250a95",
+      "cancel_result": {
+        "physical_estop": false,
+        "physics_cooperative_stop": true,
+        "requested": true
+      },
+      "cancel_request_wall_s": 0.013817600003676489
+    },
+    {
+      "trial": "pusht_full_closed_final_guard",
+      "result_sha256": "c78cb3f3e805b23becef0be4d35a2636b86775deb46d9c399b9853513bc7158a",
+      "elapsed_s": 22.696127925009932,
+      "status": "failed",
+      "error": "RuntimeError: Physics replanning rejected: RuntimeError: PushT motion planning failed at approach",
+      "backend": "full_arm_physics",
+      "case": "translation",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "original-agent",
+      "closed_gripper_joint_position": 0.91,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 0,
+      "attempted_plans": 1,
+      "executed_pushes": 0,
+      "planning_wall_s": [
+        1.362505652999971
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "5e0cd5654c742fa6ae17c0b020f9612539bc94f299bc7fd1b394a5a215eb3a63",
+        "rm75_app/simulation/pusht_loop_env.py": "dd0a3037cf173e1c1ee1fbb8062b5f1e1d08081ede898554a1aa05b62a3da4b5",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "ba8086f5af3fede568aa320b4a012910afd2694693bcd535db0969da1f7d60ce",
+      "simulated_time_s": 2.033333333333329,
+      "physics_control_steps": 61,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 0,
+      "self_contact_pairs": {
+        "flange_spacer_8mm / gripper_base_link": {
+          "max_impulse_Ns": 0.0008995473035611212,
+          "substeps": 458
+        },
+        "gripper_Left_Support_Link / gripper_Right_Support_Link": {
+          "max_impulse_Ns": 0.02973613701760769,
+          "substeps": 488
+        }
+      },
+      "static_contact_pairs": [],
+      "max_joint_tracking_error_rad": 0.00536799430847168,
+      "max_tcp_tracking_position_m": 0.00022967437854774984,
+      "max_tcp_tracking_angle_rad": 0.005336599493052524,
+      "last_closed_gripper_joint_error_rad": 0.005483746528625488,
+      "nominal_pad_reference_separation_m": 0.010822714988960785,
+      "video_frames": 20,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "drive_source_sha256": "1662f3bafef30536b243db2315205a5beb9678a26ae8907f76772d80733d5cb3",
+      "forbidden_target_contacts": [],
+      "target_contact_audit_scope": "all articulated links against configured pusher_contact_links",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3499999940395355,
+        -0.18000002205371857,
+        -9.707710191264596e-10
+      ],
+      "video_sha256": "136c9c0c042a5be831994b3c6ca5dd082b5be65dfebb21441a9ce828192b3129"
+    },
+    {
+      "trial": "pusht_full_infeasible_suite",
+      "result_sha256": "131dd9966b8b63ccb36fcd8edb7561dd8e60a94af54fbbec64a0f3425a2d0923",
+      "elapsed_s": 23.715297571005067,
+      "status": "failed",
+      "error": "RuntimeError: Physics replanning rejected: PushPathRejected: closed_gripper_mapping_failed: closed_tool_nominal_descend_collision:gripper_Right_Support_Link:frozen_neighbor",
+      "backend": "full_arm_physics",
+      "case": "infeasible",
+      "expected": "reject",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 0,
+      "attempted_plans": 1,
+      "executed_pushes": 0,
+      "planning_wall_s": [
+        0.24828510198858567
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "ee7e65927dc200e811393c8e00f0745a50f08818ccdbb5b8ec945bb5893eef17",
+      "simulated_time_s": 2.033333333333329,
+      "physics_control_steps": 61,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 0,
+      "self_contact_pairs": {
+        "flange_spacer_8mm / gripper_base_link": {
+          "max_impulse_Ns": 0.002847325522452593,
+          "substeps": 436
+        }
+      },
+      "static_contact_pairs": [],
+      "max_joint_tracking_error_rad": 0.009711119346320629,
+      "max_tcp_tracking_position_m": 0.005598835822136341,
+      "max_tcp_tracking_angle_rad": 0.018461450664393,
+      "last_closed_gripper_joint_error_rad": 0.002080202102661133,
+      "video_frames": 20,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3499999940395355,
+        -0.18000002205371857,
+        -9.707710191264596e-10
+      ],
+      "video_sha256": "fbe58292cf7431f032af20a5ef69ac3322634f4bf9c437fdfb1ae8056b77b196"
+    },
+    {
+      "trial": "pusht_full_mixed_suite",
+      "result_sha256": "6142e7e42286cc0e96a8a63cd6fc0a6458f24ff6fcabb9d734c97f2966b289ba",
+      "elapsed_s": 77.31561037999927,
+      "status": "failed",
+      "error": "RuntimeError: Physics forbidden early-target or static-obstacle contact",
+      "backend": "full_arm_physics",
+      "case": "mixed",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 1,
+      "attempted_plans": 1,
+      "executed_pushes": 0,
+      "planning_wall_s": [
+        5.298557906993665
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "24ab6ee28e1e29e4e07b7860ee010e2c20895026973a47e715c841b5e69c50d4",
+      "simulated_time_s": 52.86666666668177,
+      "physics_control_steps": 1586,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 4,
+      "target_contact_substeps": 0,
+      "self_contact_pairs": {
+        "flange_spacer_8mm / gripper_base_link": {
+          "max_impulse_Ns": 0.0035738854203373194,
+          "substeps": 11498
+        }
+      },
+      "static_contact_pairs": [
+        {
+          "impulse_Ns": 0.00017055160424206406,
+          "link": "gripper_Right_Support_Link",
+          "object": "simulation_table",
+          "stage": "contact",
+          "time_s": 52.84583333334842
+        },
+        {
+          "impulse_Ns": 0.00027952634263783693,
+          "link": "gripper_Right_Support_Link",
+          "object": "simulation_table",
+          "stage": "contact",
+          "time_s": 52.85833333334843
+        },
+        {
+          "impulse_Ns": 0.001107339165173471,
+          "link": "gripper_Right_Support_Link",
+          "object": "simulation_table",
+          "stage": "contact",
+          "time_s": 52.8625000000151
+        },
+        {
+          "impulse_Ns": 0.0017442555399611592,
+          "link": "gripper_Right_Support_Link",
+          "object": "simulation_table",
+          "stage": "contact",
+          "time_s": 52.86666666668177
+        }
+      ],
+      "max_joint_tracking_error_rad": 0.019813683243031677,
+      "max_tcp_tracking_position_m": 0.011964917549927411,
+      "max_tcp_tracking_angle_rad": 0.027875213295546753,
+      "last_closed_gripper_joint_error_rad": 0.002080202102661133,
+      "video_frames": 528,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3499999940395355,
+        -0.18000003695487976,
+        8.061894263278191e-9
+      ],
+      "video_sha256": "39378379585a7f0d8a560494cbf1e5e22f3f9fd4b09ce5831bfe7a6239ffd4b9"
+    },
+    {
+      "trial": "pusht_full_neighbor_suite",
+      "result_sha256": "b285d33a42a0938f6a8e7bb4896fa5245782178683b1b5fdce1b888bd29f1d26",
+      "elapsed_s": 198.15440020599635,
+      "status": "failed",
+      "error": "RuntimeError: Physics forbidden early-target or static-obstacle contact",
+      "backend": "full_arm_physics",
+      "case": "neighbor",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 3,
+      "attempted_plans": 3,
+      "executed_pushes": 2,
+      "planning_wall_s": [
+        4.831018155993661,
+        2.8441603829851374,
+        2.971343425975647
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "90d6fdcf03db7326e3398e0c93b6c1285653eb33df8dc849faae057fcd338043",
+      "simulated_time_s": 124.86666666663527,
+      "physics_control_steps": 3746,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 1,
+      "target_contact_substeps": 413,
+      "self_contact_pairs": {
+        "flange_spacer_8mm / gripper_base_link": {
+          "max_impulse_Ns": 0.003609425388276577,
+          "substeps": 27547
+        }
+      },
+      "static_contact_pairs": [
+        {
+          "impulse_Ns": 0.012147498317062855,
+          "link": "gripper_Right_Support_Link",
+          "object": "simulation_table",
+          "stage": "contact",
+          "time_s": 124.86666666663527
+        }
+      ],
+      "max_joint_tracking_error_rad": 0.023749125447100006,
+      "max_tcp_tracking_position_m": 0.011878174981153008,
+      "max_tcp_tracking_angle_rad": 0.027689429423546328,
+      "last_closed_gripper_joint_error_rad": 0.0022239089012145996,
+      "video_frames": 1248,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.356273353099823,
+        -0.18190699815750122,
+        -0.09895037859678268
+      ],
+      "video_sha256": "2bcee1a6baaf28ceb2a851192a08a0a40dde7c2144750db7fb674b107c49d89a"
+    },
+    {
+      "trial": "pusht_full_rotation_suite",
+      "result_sha256": "0753fd093168de737606cfc7941e623edd45840ef5ac6a73c32fd3e2a0c69095",
+      "elapsed_s": 80.6235883019981,
+      "status": "failed",
+      "error": "RuntimeError: Physics forbidden early-target or static-obstacle contact",
+      "backend": "full_arm_physics",
+      "case": "rotation",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 1,
+      "attempted_plans": 1,
+      "executed_pushes": 0,
+      "planning_wall_s": [
+        5.750286524998955
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "7340170860724f47bcb2fad86097e0f806ab195ac6fc0a79d6b16c0ee1af2061",
+      "simulated_time_s": 52.86666666668177,
+      "physics_control_steps": 1586,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 4,
+      "target_contact_substeps": 0,
+      "self_contact_pairs": {
+        "flange_spacer_8mm / gripper_base_link": {
+          "max_impulse_Ns": 0.0035738854203373194,
+          "substeps": 11498
+        }
+      },
+      "static_contact_pairs": [
+        {
+          "impulse_Ns": 0.00017055160424206406,
+          "link": "gripper_Right_Support_Link",
+          "object": "simulation_table",
+          "stage": "contact",
+          "time_s": 52.84583333334842
+        },
+        {
+          "impulse_Ns": 0.00027952634263783693,
+          "link": "gripper_Right_Support_Link",
+          "object": "simulation_table",
+          "stage": "contact",
+          "time_s": 52.85833333334843
+        },
+        {
+          "impulse_Ns": 0.001107339165173471,
+          "link": "gripper_Right_Support_Link",
+          "object": "simulation_table",
+          "stage": "contact",
+          "time_s": 52.8625000000151
+        },
+        {
+          "impulse_Ns": 0.0017442555399611592,
+          "link": "gripper_Right_Support_Link",
+          "object": "simulation_table",
+          "stage": "contact",
+          "time_s": 52.86666666668177
+        }
+      ],
+      "max_joint_tracking_error_rad": 0.019813683243031677,
+      "max_tcp_tracking_position_m": 0.011964917549927411,
+      "max_tcp_tracking_angle_rad": 0.027875213295546753,
+      "last_closed_gripper_joint_error_rad": 0.002080202102661133,
+      "video_frames": 528,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3499999940395355,
+        -0.18000003695487976,
+        8.061894263278191e-9
+      ],
+      "video_sha256": "39378379585a7f0d8a560494cbf1e5e22f3f9fd4b09ce5831bfe7a6239ffd4b9"
+    },
+    {
+      "trial": "pusht_full_translation_closed_limit",
+      "result_sha256": "0b30cf1f70bb3937bae34ba4b9f8c67905d4a65bc3550aa7b707a92ee055f380",
+      "elapsed_s": 21.398062593012583,
+      "status": "failed",
+      "error": "RuntimeError: Physics replanning rejected: RuntimeError: PushT motion planning failed at approach",
+      "backend": "full_arm_physics",
+      "case": "translation",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "original-agent",
+      "closed_gripper_joint_position": 0.91,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 0,
+      "attempted_plans": 1,
+      "executed_pushes": 0,
+      "planning_wall_s": [
+        1.7374921379960142
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "82b4d9d8ce0f60e75ba8c482a1e587f3e255119810c8a24689b17f8f521d23dc",
+        "rm75_app/simulation/pusht_loop_env.py": "48b69214bf1f9f163346eae192201706c679f7c1002ddca9d3be4ce1c22e4cfd",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "6ad2ad08e4ae28ceb3960f52f0fba855b396fbb9f1a3fbe3e7db8801e3e69a1d",
+      "simulated_time_s": 2.033333333333329,
+      "physics_control_steps": 61,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 0,
+      "self_contact_pairs": {
+        "flange_spacer_8mm / gripper_base_link": {
+          "max_impulse_Ns": 0.0008995473035611212,
+          "substeps": 458
+        },
+        "gripper_Left_Support_Link / gripper_Right_Support_Link": {
+          "max_impulse_Ns": 0.02973613701760769,
+          "substeps": 488
+        }
+      },
+      "static_contact_pairs": [],
+      "max_joint_tracking_error_rad": 0.00536799430847168,
+      "max_tcp_tracking_position_m": 0.00022967437854774984,
+      "max_tcp_tracking_angle_rad": 0.005336599493052524,
+      "last_closed_gripper_joint_error_rad": 0.005483746528625488,
+      "nominal_pad_reference_separation_m": 0.010822714988960785,
+      "video_frames": 20,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "drive_source_sha256": "1662f3bafef30536b243db2315205a5beb9678a26ae8907f76772d80733d5cb3",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3499999940395355,
+        -0.18000002205371857,
+        -9.707710191264596e-10
+      ],
+      "video_sha256": "136c9c0c042a5be831994b3c6ca5dd082b5be65dfebb21441a9ce828192b3129"
+    },
+    {
+      "trial": "pusht_full_translation_original_compensation",
+      "result_sha256": "110735f6a1871ad2e0b36999590bdff2cc4a32be9fda20ac20e516df79e3c1b6",
+      "elapsed_s": 232.60358447598992,
+      "status": "failed",
+      "error": "RuntimeError: Physics replanning rejected: PushPathRejected: cartesian_ik_failed:pusht:retreat: waypoint=15/16; ik_variants=13; rejections=[{'rank': 0, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.00629333, max_angle_rad=0.02571608'}, {'rank': 1, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.54335407, max_angle_rad=1.38912791'}, {'rank': 2, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.55049552, max_angle_rad=1.40599918'}]",
+      "backend": "full_arm_physics",
+      "case": "translation",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "original-agent",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 4,
+      "attempted_plans": 5,
+      "executed_pushes": 4,
+      "planning_wall_s": [
+        4.421274672989966,
+        3.22123174398439,
+        2.9691383330209646,
+        2.7490659919858444,
+        3.0703270309895743
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "fdc33365d7ca3c3a74829ddfe07cee35697afcbc83b690edccd703e1e0459d22",
+        "rm75_app/simulation/pusht_loop_env.py": "48b69214bf1f9f163346eae192201706c679f7c1002ddca9d3be4ce1c22e4cfd",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "202e0b867ec5095a0a20ab4aa0092f91598480ab842ff0ed9736dd69ed864e4b",
+      "simulated_time_s": 201.86666666656524,
+      "physics_control_steps": 6056,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 1487,
+      "self_contact_pairs": {
+        "flange_spacer_8mm / gripper_base_link": {
+          "max_impulse_Ns": 0.0034872181713581085,
+          "substeps": 28967
+        }
+      },
+      "static_contact_pairs": [],
+      "max_joint_tracking_error_rad": 0.007354245283811345,
+      "max_tcp_tracking_position_m": 0.0013437321511145922,
+      "max_tcp_tracking_angle_rad": 0.0011260122689991815,
+      "last_closed_gripper_joint_error_rad": 0.0019096136093139648,
+      "video_frames": 2018,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "drive_source_sha256": "1662f3bafef30536b243db2315205a5beb9678a26ae8907f76772d80733d5cb3",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.36751577258110046,
+        -0.1819739043712616,
+        0.003891842905431986
+      ],
+      "video_sha256": "4991603d2f1e317927c8784e786e300a06a368420f36b1e27102013e9a0655b7"
+    },
+    {
+      "trial": "pusht_full_translation_suite",
+      "result_sha256": "7b429735bab0f5b45bc3412a627c43e3a76f6ab46856e837c86de543711945f9",
+      "elapsed_s": 150.39883747100248,
+      "status": "failed",
+      "error": "RuntimeError: Physics forbidden early-target or static-obstacle contact",
+      "backend": "full_arm_physics",
+      "case": "translation",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 3,
+      "attempted_plans": 3,
+      "executed_pushes": 2,
+      "planning_wall_s": [
+        4.915160564996768,
+        2.6171822939941194,
+        3.254358100995887
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "9f1dec2232573fdcf2d9c75a2f59302751edf0d6e524e9f99992f7079a019e82",
+      "simulated_time_s": 124.86666666663527,
+      "physics_control_steps": 3746,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 1,
+      "target_contact_substeps": 413,
+      "self_contact_pairs": {
+        "flange_spacer_8mm / gripper_base_link": {
+          "max_impulse_Ns": 0.003609425388276577,
+          "substeps": 27547
+        }
+      },
+      "static_contact_pairs": [
+        {
+          "impulse_Ns": 0.012147498317062855,
+          "link": "gripper_Right_Support_Link",
+          "object": "simulation_table",
+          "stage": "contact",
+          "time_s": 124.86666666663527
+        }
+      ],
+      "max_joint_tracking_error_rad": 0.023749125447100006,
+      "max_tcp_tracking_position_m": 0.011878174981153008,
+      "max_tcp_tracking_angle_rad": 0.027689429423546328,
+      "last_closed_gripper_joint_error_rad": 0.0022239089012145996,
+      "video_frames": 1248,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.356273353099823,
+        -0.18190699815750122,
+        -0.09895037859678268
+      ],
+      "video_sha256": "41fdff08281fbd0a59b6084531777e6c16064e38a88ba22ed83c6e5baa80e295"
+    },
+    {
+      "trial": "pusht_full_translation_v1",
+      "result_sha256": "ad3ea0e44fd1623a2a1d28318e2f9edd78e7e5fb6a4bbf702cd37e04702905e0",
+      "elapsed_s": 139.53681677099667,
+      "status": "failed",
+      "error": "RuntimeError: Physics forbidden early-target or static-obstacle contact",
+      "backend": "full_arm_physics",
+      "case": "translation",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 3,
+      "attempted_plans": 3,
+      "executed_pushes": 2,
+      "planning_wall_s": [
+        4.689103981014341,
+        2.4833982340060174,
+        2.8302988929790445
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "2b876df6f150cf4934698994f56e1cd1b92359c02fa98edb91ee210c0896a10c",
+        "rm75_app/simulation/pusht_loop_env.py": "bf74456762fcec313adcfb9e303d9cea40aecdf8628b4493f7a69a5156dc81e5",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "1118c698b81449133ff21500c0e77d92cb3e6406aeb43c9c67e8986a1496edef",
+      "simulated_time_s": 124.86666666663527,
+      "physics_control_steps": 3746,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 1,
+      "target_contact_substeps": 413,
+      "max_joint_tracking_error_rad": 0.023749125447100006,
+      "last_closed_gripper_joint_error_rad": 0.0022239089012145996,
+      "video_frames": 1248,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.356273353099823,
+        -0.18190699815750122,
+        -0.09895037859678268
+      ],
+      "video_sha256": "41fdff08281fbd0a59b6084531777e6c16064e38a88ba22ed83c6e5baa80e295"
+    },
+    {
+      "trial": "pusht_tool_cancel_suite",
+      "result_sha256": "0d528ac720151004e0c9346e81ec951545b034c1a65db72947de32586609055d",
+      "elapsed_s": 17.601567534991773,
+      "status": "cancelled",
+      "error": "worker exited -15 without a final result",
+      "backend": "tool_only_physics",
+      "case": "cancel",
+      "expected": "cancel",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": null,
+      "accepted_plans": 0,
+      "attempted_plans": 0,
+      "executed_pushes": 0,
+      "planning_wall_s": [],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": null,
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "video_sha256": "1bf6ccb0d7a9bd66ad0d6d77a27d703b205efd8e715280653205d0f6a303d1e3",
+      "cancel_result": {
+        "physical_estop": false,
+        "requested": true
+      },
+      "cancel_request_wall_s": 0.006794956017984077
+    },
+    {
+      "trial": "pusht_tool_cancel_v2",
+      "result_sha256": "7ac30e1717dedecc60a2ac7ff2edce030fa202132733ec56c2983ecb62153379",
+      "elapsed_s": 23.819135658006417,
+      "status": "cancelled",
+      "error": "Operator requested a stop",
+      "backend": "tool_only_physics",
+      "case": "cancel",
+      "expected": "cancel",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 1,
+      "attempted_plans": 1,
+      "executed_pushes": 0,
+      "planning_wall_s": [
+        4.326258417015197
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "fdc33365d7ca3c3a74829ddfe07cee35697afcbc83b690edccd703e1e0459d22",
+        "rm75_app/simulation/pusht_loop_env.py": "48b69214bf1f9f163346eae192201706c679f7c1002ddca9d3be4ce1c22e4cfd",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "385cdd0b08ebdfc832e77a842d3925ff02a46071cfb246966f8f43e075e3f2ea",
+      "simulated_time_s": 2.400000000000014,
+      "physics_control_steps": 72,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 0,
+      "max_joint_tracking_error_rad": null,
+      "video_frames": 24,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "drive_source_sha256": "1662f3bafef30536b243db2315205a5beb9678a26ae8907f76772d80733d5cb3",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3499999940395355,
+        -0.18000002205371857,
+        -9.707710191264596e-10
+      ],
+      "video_sha256": "e4ab610d8da708c315578ab82619a988374c71e1be9d57a1f829b628cb904826",
+      "cancel_result": {
+        "physical_estop": false,
+        "physics_cooperative_stop": true,
+        "requested": true
+      },
+      "cancel_request_wall_s": 0.004757351998705417
+    },
+    {
+      "trial": "pusht_tool_infeasible_suite",
+      "result_sha256": "75274290ffb662c39bbef3cde2bc23da66e9247f33ae9e21b7acc505b76da669",
+      "elapsed_s": 19.398759307019645,
+      "status": "failed",
+      "error": "RuntimeError: Physics replanning rejected: PushPathRejected: closed_gripper_mapping_failed: closed_tool_nominal_descend_collision:gripper_Right_Support_Link:frozen_neighbor",
+      "backend": "tool_only_physics",
+      "case": "infeasible",
+      "expected": "reject",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 0,
+      "attempted_plans": 1,
+      "executed_pushes": 0,
+      "planning_wall_s": [
+        0.012137693993281573
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "48b6b44a867ada6e9c970c853afb28ad844d936ad1d25d81945650c4f6024783",
+      "simulated_time_s": 2.033333333333329,
+      "physics_control_steps": 61,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 0,
+      "max_joint_tracking_error_rad": null,
+      "video_frames": 20,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3499999940395355,
+        -0.18000002205371857,
+        -9.707710191264596e-10
+      ],
+      "video_sha256": "018b6775909dfe3776fd76b5e698eba0b4646e10615d4646c1e85eb9acf9d328"
+    },
+    {
+      "trial": "pusht_tool_mixed_suite",
+      "result_sha256": "77a3b97665c360a39ed143239556ed4a892dd91d6125af453d0ab0f15d812e8e",
+      "elapsed_s": 48.05813863000367,
+      "status": "failed",
+      "error": "RuntimeError: Physics replanning rejected: PushPathRejected: cartesian_ik_failed:pusht:retreat: waypoint=17/17; ik_variants=13; rejections=[{'rank': 0, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.00442292, max_angle_rad=0.01854183'}, {'rank': 1, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.54244862, max_angle_rad=1.38627327'}, {'rank': 2, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.54944235, max_angle_rad=1.40329205'}]",
+      "backend": "tool_only_physics",
+      "case": "mixed",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 2,
+      "attempted_plans": 3,
+      "executed_pushes": 2,
+      "planning_wall_s": [
+        4.621695189998718,
+        2.5707697750185616,
+        2.868449676025193
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "31f7af3b614a539477e97f8a3fc6630daab4502d88c96a037a33f260c23b4a91",
+      "simulated_time_s": 117.4999999999753,
+      "physics_control_steps": 3525,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 1150,
+      "max_joint_tracking_error_rad": null,
+      "video_frames": 1175,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.36421164870262146,
+        -0.180185005068779,
+        0.0018367335433140397
+      ],
+      "video_sha256": "1f166955569ca675a1cd5e3b71d65c859a126f5b92b8461deef702321cb52f26"
+    },
+    {
+      "trial": "pusht_tool_neighbor_suite",
+      "result_sha256": "a7a6253bd45ccda177f1ff87a61e100a174b557a54cd00f50eacded85573c227",
+      "elapsed_s": 47.95250847900752,
+      "status": "failed",
+      "error": "RuntimeError: Physics replanning rejected: PushPathRejected: cartesian_ik_failed:pusht:retreat: waypoint=16/16; ik_variants=12; rejections=[{'rank': 0, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.00654978, max_angle_rad=0.02705849'}, {'rank': 1, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.54647462, max_angle_rad=1.39512156'}, {'rank': 2, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.54540449, max_angle_rad=1.39200290'}]",
+      "backend": "tool_only_physics",
+      "case": "neighbor",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 2,
+      "attempted_plans": 3,
+      "executed_pushes": 2,
+      "planning_wall_s": [
+        4.6181416169856675,
+        2.947594900993863,
+        2.9255307290004566
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "ab644e9ba36f0c7a855b0a0db1e05b3132bce05d6b8439b80e246b20bccf3e46",
+      "simulated_time_s": 112.33333333331333,
+      "physics_control_steps": 3370,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 1246,
+      "max_joint_tracking_error_rad": null,
+      "video_frames": 1123,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3640575706958771,
+        -0.18192051351070404,
+        0.0011117514222860336
+      ],
+      "video_sha256": "5dba95bb5f01be226e438d2c38f3c34601b5d875469ad224fd1d37429e63ee67"
+    },
+    {
+      "trial": "pusht_tool_rotation_suite",
+      "result_sha256": "5a32be7003d4c57863b4e5b96355859dd6f737e057dbc7b2e5e24c5ad65a734b",
+      "elapsed_s": 38.10030565300258,
+      "status": "succeeded",
+      "error": null,
+      "backend": "tool_only_physics",
+      "case": "rotation",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": true,
+      "accepted_plans": 1,
+      "attempted_plans": 1,
+      "executed_pushes": 1,
+      "planning_wall_s": [
+        6.155371272994671
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "4b778de810c9ff08cc88c0bb141935c1283635c2b448fd8ba2619c766396f266",
+      "simulated_time_s": 74.10000000001477,
+      "physics_control_steps": 2223,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 671,
+      "max_joint_tracking_error_rad": null,
+      "video_frames": 741,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 2,
+      "success_observations": 3,
+      "final_T_pose": [
+        0.354623019695282,
+        -0.17870765924453735,
+        0.14852088689804077
+      ],
+      "video_sha256": "19c8f9e8e9795ed79c9043fb7ac2768e3e7e4151123d11c437d85fa25538b558"
+    },
+    {
+      "trial": "pusht_tool_translation_ik1mm",
+      "result_sha256": "a46112a0319b8b661ada6dad095a0736827386ebcfd76a2fe5edaa53f502605c",
+      "elapsed_s": 47.95310143902316,
+      "status": "failed",
+      "error": "RuntimeError: Physics replanning rejected: PushPathRejected: cartesian_ik_failed:pusht:retreat: waypoint=16/16; ik_variants=12; rejections=[{'rank': 0, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.00654978, max_angle_rad=0.02705849'}, {'rank': 1, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.54647462, max_angle_rad=1.39512156'}, {'rank': 2, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.54540449, max_angle_rad=1.39200290'}]",
+      "backend": "tool_only_physics",
+      "case": "translation",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.001,
+      "task_success": false,
+      "accepted_plans": 2,
+      "attempted_plans": 3,
+      "executed_pushes": 2,
+      "planning_wall_s": [
+        4.415299641987076,
+        2.744438714988064,
+        2.7952039329975378
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "ac8718a336681c9e49fb35e55fde7b351314b85354a4c478ef35c1de8ea121ba",
+      "simulated_time_s": 112.33333333331333,
+      "physics_control_steps": 3370,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 1246,
+      "max_joint_tracking_error_rad": null,
+      "video_frames": 1123,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3640575706958771,
+        -0.18192051351070404,
+        0.0011117514222860336
+      ],
+      "video_sha256": "f9374bc6b78033b51a83691c3c3d9e809a262aef175821684052237d244ac542"
+    },
+    {
+      "trial": "pusht_tool_translation_v1",
+      "result_sha256": "ffc9537bcd9ef6f713012238a97c25126c65a92c2117bcf65e3869a6916e8c53",
+      "elapsed_s": 19.59405498500564,
+      "status": "failed",
+      "error": "TypeError: Object of type float32 is not JSON serializable",
+      "backend": "tool_only_physics",
+      "case": "translation",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 0,
+      "attempted_plans": 0,
+      "executed_pushes": 0,
+      "planning_wall_s": [],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "f5fe5a231700fdbe46e439f8dab481464c4c8c023257488810a39c31ee6eee92",
+        "rm75_app/simulation/pusht_loop_env.py": "bf74456762fcec313adcfb9e303d9cea40aecdf8628b4493f7a69a5156dc81e5",
+        "tools/pusht_physics_planner.py": "7686be2076592e1c247858504fe6aca8580861001942c9af83f519b5c49c8e90"
+      },
+      "summary_sha256": "7231c0043465895f4d114c4912f31a1ba2f7de70379aab3c1f8ac98d1d858cb0",
+      "simulated_time_s": 2.033333333333329,
+      "physics_control_steps": 61,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 0,
+      "max_joint_tracking_error_rad": null,
+      "video_frames": 20,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3499999940395355,
+        -0.18000002205371857,
+        -9.707710191264596e-10
+      ],
+      "video_sha256": "d8fd2c416f5cefa98b2a1c83f82471115176176194669187d1c6260cd57d5aff"
+    },
+    {
+      "trial": "pusht_tool_translation_v2",
+      "result_sha256": "84484de6ae19ce85224e3a7459c9e19ead093b1443e9a87743d54cb25769cbac",
+      "elapsed_s": 48.511053825001,
+      "status": "failed",
+      "error": "RuntimeError: Physics replanning rejected: PushPathRejected: cartesian_ik_failed:pusht:retreat: waypoint=16/16; ik_variants=12; rejections=[{'rank': 0, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.54540449, max_angle_rad=1.39200290'}, {'rank': 1, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.72215751, max_angle_rad=2.31083776'}, {'rank': 2, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.53661449, max_angle_rad=1.74407752'}]",
+      "backend": "tool_only_physics",
+      "case": "translation",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 2,
+      "attempted_plans": 3,
+      "executed_pushes": 2,
+      "planning_wall_s": [
+        4.529604746989207,
+        2.8058153289894108,
+        3.1119280319835525
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "2b876df6f150cf4934698994f56e1cd1b92359c02fa98edb91ee210c0896a10c",
+        "rm75_app/simulation/pusht_loop_env.py": "bf74456762fcec313adcfb9e303d9cea40aecdf8628b4493f7a69a5156dc81e5",
+        "tools/pusht_physics_planner.py": "7686be2076592e1c247858504fe6aca8580861001942c9af83f519b5c49c8e90"
+      },
+      "summary_sha256": "4cfe28423a8b181216da8ff7e21db6509cc913113f45b0a2351a3b4a4ab70ce7",
+      "simulated_time_s": 112.33333333331333,
+      "physics_control_steps": 3370,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 1246,
+      "max_joint_tracking_error_rad": null,
+      "video_frames": 1123,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3640575706958771,
+        -0.18192051351070404,
+        0.0011117514222860336
+      ],
+      "video_sha256": "f9374bc6b78033b51a83691c3c3d9e809a262aef175821684052237d244ac542"
+    },
+    {
+      "trial": "pusht_tool_translation_v3",
+      "result_sha256": "c2d706b67f97206241829a18167c601c70999e65bd3ba6abe200cd1b2e45e7b2",
+      "elapsed_s": 48.76598716300214,
+      "status": "failed",
+      "error": "RuntimeError: Physics replanning rejected: PushPathRejected: cartesian_ik_failed:pusht:retreat: waypoint=16/16; ik_variants=12; rejections=[{'rank': 0, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.00654978, max_angle_rad=0.02705849'}, {'rank': 1, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.54647462, max_angle_rad=1.39512156'}, {'rank': 2, 'reason': 'non_cartesian_contact_path:retreat: max_gap_m=0.54540449, max_angle_rad=1.39200290'}]",
+      "backend": "tool_only_physics",
+      "case": "translation",
+      "expected": "goal",
+      "input_sha256": "68b10ceaa9a2905a727cf5d7af9b630666bdf67c6e5a7d970cd6f86b552dcdcc",
+      "gravity_compensation": "none",
+      "closed_gripper_joint_position": 0.6,
+      "ik_position_tolerance_m": 0.005,
+      "task_success": false,
+      "accepted_plans": 2,
+      "attempted_plans": 3,
+      "executed_pushes": 2,
+      "planning_wall_s": [
+        4.423639927001204,
+        2.776130437006941,
+        2.8153623300022446
+      ],
+      "source_sha256": {
+        "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+        "rm75_app/pusht/physics.py": "1e1d015f9a385b322ed54a1d8bfde4f79ca351c9545fbfad65e5c75202c839ed",
+        "rm75_app/simulation/pusht_loop_env.py": "945ad277eead41f83adfe58a6b0b269ec1f5eff98d295732e6d97db6851c1c17",
+        "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2"
+      },
+      "summary_sha256": "59c6a18f256852736049230b2336b1190cf15cba65c138d9e01e6560dc502460",
+      "simulated_time_s": 112.33333333331333,
+      "physics_control_steps": 3370,
+      "early_target_contact_substeps": 0,
+      "static_obstacle_contact_substeps": 0,
+      "target_contact_substeps": 1246,
+      "max_joint_tracking_error_rad": null,
+      "video_frames": 1123,
+      "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+      "additional_goal_confirmation_events": 0,
+      "success_observations": null,
+      "final_T_pose": [
+        0.3640575706958771,
+        -0.18192051351070404,
+        0.0011117514222860336
+      ],
+      "video_sha256": "f9374bc6b78033b51a83691c3c3d9e809a262aef175821684052237d244ac542"
+    }
+  ],
+  "ui_browser_verified": false,
+  "final_source_sha256": {
+    "rm75_app/planning/backends/curobo2.py": "536f8a33c641164cdc9704acd1998a3c8e29e75cceba12561384874eb154f9cc",
+    "rm75_app/pusht/controller.py": "16a624abddf80096bc0a690515c69460ba8ea77fb5ce4af7b15e962f3b80816f",
+    "rm75_app/pusht/physics.py": "5e0cd5654c742fa6ae17c0b020f9612539bc94f299bc7fd1b394a5a215eb3a63",
+    "rm75_app/pusht/physics_replay.py": "0b9c306efdcf8047dee7b446e405e66fc04be3a860d2c4a7f43af0eac35134e0",
+    "rm75_app/simulation/pusht_contact_env.py": "2cba160d9e5ba03878212be83003d80ab991733663eb49a3b0e27d16db6d29f4",
+    "rm75_app/simulation/pusht_loop_env.py": "dd0a3037cf173e1c1ee1fbb8062b5f1e1d08081ede898554a1aa05b62a3da4b5",
+    "rm75_app/tasks/pusht.py": "15b3f0dd169243a1ae2ee8b272787d7dd5b51969bd63ef103209440af822cd14",
+    "rm75_app/web/static/workcell/app.js": "9ee052b981e2def51d7c28f04d91b33400ae4ad0aed053348a5d632c46ad048d",
+    "rm75_app/workcell/legacy.py": "c1a7673e7771d274a82b039deb3d97a88bd4325a2c4343e783fb19baa6365290",
+    "rm75_app/workcell/native_frozen_world.py": "f47f0ebaf115a2adc792824f6058fb4fc52d16a4278de9dc9b17d9bc7c0431bb",
+    "rm75_app/workcell/phase_state.py": "bf30274f07c5d48368d874bf300c7c0e6e38a692fd34bd2ef26e45e1f4a65e81",
+    "rm75_app/workcell/pickplace_curobo_only.py": "bdf24ef060341ad2f319cbed032be915f6e9629e48207e73cf9e7f2494bb799a",
+    "rm75_app/workcell/pickplace_ik_review.py": "2de8e4b63a514d652af4baa67a56407b41cbfaf69d8924facdc8a7662fa09ca3",
+    "rm75_app/workcell/service.py": "72bf238933b661f0d11849cd4b4eeb3e8af421186565e32aabe1601c4799d3cb",
+    "rm75_app/workcell/sim_failure_video.py": "d58275a7b074551786fe37a2a3833354f1d91e4e429f9769ebd02abcb22fafe9",
+    "rm75_app/workcell/spec.py": "e8f87034ddf06b76459b9d8c2254fcde8f71b797cfa08d41bb3bf8f7557d35c9",
+    "rm75_app/workcell/transport_contact.py": "efb691df6c2b097ff2e6c09aff2b0c2592b3c8ca793c6c01e2c9befd6c49da17",
+    "rm75_app/workcell/worker.py": "b77eb40356725e81693a00212c53ceb7159c1c0032df699816b20f37ff349a62",
+    "tests/three_scene/test_native_frozen_world.py": "66e1f86611846c37fdb9bbeb820abd3654a66b132e2a6358dc6b4789b9f8e17e",
+    "tests/three_scene/test_pickplace_ik_review.py": "381e5a2ed9ec95dd0ccc7c8d61aa821e4aafee8599edfb5cdbb1d80ee2ab0a22",
+    "tests/three_scene/test_pickplace_return_transaction.py": "9b9030a8f252a65fa036f93bcf6be2c82f2f4ae2aa2f6c1a97d557e159508216",
+    "tests/three_scene/test_pusht_periodic_ik.py": "96bbd79373a51e2c2dd33219461c3c1b3c1690838320b9d4490a501cc507f731",
+    "tests/three_scene/test_pusht_physics_loop.py": "5daab142af6777137e2feb3a7cb56a07519b7149c9ec077bbe5d156dc21953c4",
+    "tests/three_scene/test_three_scene_service.py": "2de4dd3d078a19660a08c4d7aa6324d40c147d94d4d23fad1ca0e91de9898e1a",
+    "tests/three_scene/test_transport_contact.py": "10c9f3cbcac6af405cb8e00c8a1e2430d7d5366625b7c413530ca2d5dea77628",
+    "tools/audit_jimu_return_meshes.py": "2b7be9776d4e34ae31822550ace470bb1f8aa44c8df18afaafcb5ff6e14dc4ad",
+    "tools/pusht_physics_planner.py": "f70d0f5864b95ed933b15b30045479d100bc1273d16f9da87e06ae8f4bcb47b2",
+    "tools/run_pusht_physics_validation.py": "4b947e086675d1da0e0d884acd3adef3cdb018287360e5852b8620201422f354",
+    "tools/run_workcell_native_validation.py": "40f56346f5cbd3b4e35c98debe4ce5b923e982cb5a2cb81886f0f527e3f36ce3"
+  },
+  "snapshot": {
+    "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+    "target_reviewed_commit": "263cd7eca41b25cbafd1f365050f022c33285362",
+    "file_count": 809
+  },
+  "tests": {
+    "full": {
+      "passed": 1023,
+      "warnings": 1,
+      "seconds": 35.09,
+      "log": "runtime_data/three_scene/review_a35328c_20260909/full_tests_publish.log",
+      "sha256": "0311b5702178a52cdd4f3b81a1ac228fa6abefbb1e95a642f8f0cdabbeb32a00"
+    },
+    "three_scene": {
+      "passed": 701,
+      "warnings": 1,
+      "seconds": 20.49,
+      "log": "runtime_data/three_scene/review_a35328c_20260909/three_scene_publish.log",
+      "sha256": "c5a32b6d6220db9c78ba163aa6e424672f8ddbe5ef9503adf3f0c716c2e83594"
+    },
+    "compileall": true,
+    "node_check": true,
+    "diff_check": true
+  },
+  "videos": [
+    {
+      "path": "runtime_data/three_scene/review_a35328c_20260909/videos/jimu_four_roofs_success.mp4",
+      "sha256": "f86a9a2cb6019b38bb98a853349f54046a04476eb685851996f4d318ce256555",
+      "metadata": {
+        "programs": [],
+        "streams": [
+          {
+            "width": 1024,
+            "height": 600,
+            "nb_frames": "1166"
+          }
+        ],
+        "format": {
+          "duration": "116.600000",
+          "size": "8802867"
+        }
+      },
+      "full_decode_checked": true
+    },
+    {
+      "path": "runtime_data/three_scene/review_a35328c_20260909/videos/pickplace_tennis_slot4_success.mp4",
+      "sha256": "fb05e5e07be764c5a8a2c920aa077015f49284312baefe3958ea32c0a0966d6b",
+      "metadata": {
+        "programs": [],
+        "streams": [
+          {
+            "width": 1024,
+            "height": 600,
+            "nb_frames": "585"
+          }
+        ],
+        "format": {
+          "duration": "58.500000",
+          "size": "4189110"
+        }
+      },
+      "full_decode_checked": true
+    },
+    {
+      "path": "runtime_data/three_scene/review_a35328c_20260909/videos/pusht_full_arm_first_failure.mp4",
+      "sha256": "61b3a1c609b05dfac872a9179ab531990ec21b60b0fea316199361aa94cf8255",
+      "metadata": {
+        "programs": [],
+        "streams": [
+          {
+            "width": 1024,
+            "height": 560,
+            "nb_frames": "308"
+          }
+        ],
+        "format": {
+          "duration": "30.800000",
+          "size": "572439"
+        }
+      },
+      "full_decode_checked": true
+    }
+  ],
+  "qualification": {
+    "jimu_native_foreground_cycles": {
+      "passed": 12,
+      "total": 12,
+      "lift_m": 0.103,
+      "hardware": false
+    },
+    "pickplace_sequence_attempts": {
+      "fully_completed": 0,
+      "total": 2,
+      "best_distinct_requested_sources": 5,
+      "requested_sources_per_sequence": 7
+    },
+    "pusht_point6_model": {
+      "tool_only_goal_cases": {
+        "passed": 1,
+        "total": 4
+      },
+      "full_arm_goal_cases": {
+        "passed": 0,
+        "total": 4
+      },
+      "negative_cases_after_stop_fix": {
+        "tool_only_passed": 2,
+        "full_arm_passed": 2,
+        "total_per_backend": 2
+      }
+    },
+    "pusht_point91_closed_limit": {
+      "full_chain_passed": 0,
+      "total_attempts": 2
+    },
+    "ui_browser_verified": false
+  },
+  "notes": [
+    "Raw native completed cycles include fallback sources; requested_source_success_count is the requested-source metric.",
+    "Physics goal_confirmation events exclude the first in-goal sample; success_observations is the confirmation-window count.",
+    "Early runs did not freeze every adapter file. final_source_sha256 describes final source, not all historical run source.",
+    "Point6 model trials do not qualify the URDF point91 closed-limit model.",
+    "Tool-only physics aggregates tool geometry into one body and does not prove full-arm per-link contact qualification.",
+    "Final all-link target guard was exercised only by the last closed-limit run; earlier runs must not inherit its scope.",
+    "Native Tennis slot4 endpoints were level, but a transient down-axis deviation of 0.777579 rad was observed inside the motion window."
+  ]
+}

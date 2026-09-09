@@ -172,8 +172,10 @@ def test_ik_screen_keeps_table_before_selecting_transport_goals(label):
         direct._refresh_curobo_world(planner,None,args,label=label,include_table=False,include_active_object=False)
         assert calls[-1]['include_table'] is True
         assert calls[-1]['include_active_object'] is False
-        assert rows[-1]['event']=='ik_preselect_table_restored'
-        assert rows[-1]['seeds_or_candidates_changed'] is False
+        restored=[row for row in rows if row['event']=='ik_preselect_table_restored']
+        assert len(restored)==1
+        assert restored[0]['seeds_or_candidates_changed'] is False
+        assert rows[-1]['phase']=='world_refreshed'
     finally:close()
 
 
@@ -210,6 +212,32 @@ def test_contact_stage_world_copy_restores_and_cannot_leak_into_transport():
     finally:
         close()
     assert world.forward is original
+
+
+@pytest.mark.parametrize('problem',[None,'present_source','present_neighbor','present_table','wrong_source','no_refresh'])
+def test_only_proven_absent_current_source_cache_is_accepted_at_contact(problem):
+    planner,direct,args,rows,_,_,close,_=native_fixture()
+    planner.attached_object_active=False
+    planner.get_attached_sphere_count=lambda:0
+    if problem!='no_refresh':
+        direct._refresh_curobo_world(planner,None,args,label='grasp_final_approach',include_active_object=False)
+    name='scene_obstacle_right_wall'
+    if problem=='wrong_source':name='scene_obstacle_left_wall'
+    if problem=='present_neighbor':name='neighbor'
+    if problem=='present_table':name='virtual_table_plane'
+    if problem in ('present_source','present_neighbor'):
+        planner._world.objects.append(NS(name=name))
+    planner._disabled_world_obstacles.add(name)
+    before=set(planner._disabled_world_obstacles)
+    try:
+        if problem is None:
+            direct._set_world_collision_for_links(planner,['left_pad'],enabled=False,label='grasp_final_approach')
+            direct._set_world_collision_for_links(planner,['left_pad'],enabled=True,label='grasp_final_approach')
+        else:
+            with pytest.raises(StrictContactNotSupported):
+                direct._set_world_collision_for_links(planner,['left_pad'],enabled=False,label='grasp_final_approach')
+        assert planner._disabled_world_obstacles==before
+    finally:close()
 
 
 @pytest.mark.parametrize('raises', [False, True])

@@ -77,6 +77,10 @@ class Recorder:
                 self.writer.append_data(image)
             self.records.append(dict(first_frame=self.frames, frames=count, source=source,
                 label=str(label), host_monotonic_s=time.monotonic()))
+            if source=='tennis':
+                from .transforms import quaternion_matrix
+                rotation=quaternion_matrix(base.flatten_np(demo.tcp.pose.q))
+                self.records[-1]['actual_tcp_down_error_rad']=float(np.arccos(np.clip(-rotation[2,2],-1,1)))
             self.frames += count
             self.last_image = canvas
         except Exception as exc:

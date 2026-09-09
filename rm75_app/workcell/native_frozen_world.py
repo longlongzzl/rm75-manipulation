@@ -7,6 +7,8 @@ import hashlib
 import math
 from pathlib import Path
 import re
+import functools
+import threading
 
 from .io import append_jsonl, loads
 from .pickplace_world_coverage import (
@@ -14,7 +16,7 @@ from .pickplace_world_coverage import (
 )
 
 
-def read_contract(path, source):
+def read_contract(path, source, source_order=None):
     path=Path(path).resolve()
     with path.open('rb') as stream:
         raw=stream.read(8_000_001)
@@ -33,7 +35,11 @@ def read_contract(path, source):
                     type(x) not in (float,int) or not math.isfinite(x) for x in row)
                 for row in pose)):
             raise ValueError('Each native-world object requires a finite 4x4 T_world_obj')
-    return dict(path=path,names=tuple(sorted(objects)),source=source,
+    if source_order is not None and (not isinstance(source_order,list) or len(source_order)<2
+            or len(set(source_order))!=len(source_order) or source_order[0]!=source
+            or any(name not in objects for name in source_order)):
+        raise ValueError('Frozen sequence must start at requested source and contain distinct existing objects')
+    return dict(path=path,names=tuple(sorted(objects)),source=source,source_order=tuple(source_order or [source]),
                 sha256=hashlib.sha256(raw).hexdigest())
 
 
@@ -44,6 +50,7 @@ class FrozenWorldValidation:
         self.events=events
         self.worlds=[]
         self.outcomes=[]
+        self.foreground_demo_ids=set()
 
     def install(self, direct):
         def world(row):
@@ -54,9 +61,22 @@ class FrozenWorldValidation:
             self.outcomes.append(row)
             self.events.emit('frozen_world_source_outcome',evidence=row)
         install(direct,self.contract['names'],world,episode)
+        if len(self.contract.get('source_order',()))>1:
+            original=direct.run_targeted_place_episode_curobo_direct;owner=threading.get_ident()
+            @functools.wraps(original)
+            def sequence_episode(demo,bridge,real_exec,args,*pos,**kwargs):
+                if threading.get_ident()==owner and not getattr(args,'_planning_prefetch_capture_only',False):
+                    self.foreground_demo_ids.add(id(demo))
+                    self.events.emit('frozen_sequence_episode',source=direct._current_source_object_name(args),
+                        same_demo=len(self.foreground_demo_ids)==1)
+                    if len(self.foreground_demo_ids)!=1:
+                        from .pickplace_world_coverage import FrozenWorldIncomplete
+                        raise FrozenWorldIncomplete('Frozen sequence unexpectedly reset its scene')
+                return original(demo,bridge,real_exec,args,*pos,**kwargs)
+            direct.run_targeted_place_episode_curobo_direct=sequence_episode
 
     def result(self, native_outcome, clearance_audits):
-        sources=(self.contract['source'],)
+        sources=self.contract.get('source_order',(self.contract['source'],))
         try:
             unchanged=hashlib.sha256(self.contract['path'].read_bytes()).hexdigest()==self.contract['sha256']
         except OSError:

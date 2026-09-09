@@ -2629,7 +2629,19 @@ class Curobo2Backend:
             return_seeds=int(self.config.coarse_ik_return_seeds))
         positions = result.solution.reshape(-1, len(request.current.names)).detach().cpu().numpy()
         success = result.success.reshape(-1).detach().cpu().numpy().astype(bool)
-        return tuple(JointConfiguration(request.current.names, q) for q in positions[success])
+        successful = positions[success]
+        limits = planner.kinematics.get_joint_limits().position.detach().cpu().numpy()
+        adjusted = _nearest_periodic_joint_positions(
+            successful, request.current.positions, limits[0], limits[1])
+        changed = np.abs(adjusted - successful) > 1e-5
+        # Endpoint equivalence does not establish path safety: the caller still
+        # checks every Cartesian interpolation edge with world/self collisions.
+        self._stage_ik_periodic_audit = dict(
+            successful_rows=len(successful), retained_rows=len(adjusted),
+            wrapped_rows=int(np.count_nonzero(np.any(changed, axis=1))),
+            wrapped_joints=[name for name, flag in zip(request.current.names,
+                np.any(changed, axis=0)) if flag])
+        return tuple(JointConfiguration(request.current.names, q) for q in adjusted)
 
     def plan_linear_candidates(
         self,

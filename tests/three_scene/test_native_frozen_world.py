@@ -39,6 +39,20 @@ def test_contract_preserves_file_bytes_and_all_object_names(tmp_path):
     assert contract['source']=='source' and contract['path']==path
 
 
+@pytest.mark.parametrize('order',[[],['source'],['other','source'],['source','missing'],['source','source']])
+def test_frozen_sequence_rejects_wrong_identity_or_incomplete_order(tmp_path,order):
+    with pytest.raises(ValueError):read_contract(scene_file(tmp_path),'source',order)
+
+
+def test_frozen_sequence_requires_every_requested_source_not_one_success(tmp_path):
+    v=validator(tmp_path)
+    v.contract['source_order']=('source','other')
+    assert not result(v)['command_success']
+    v.outcomes.append(dict(source='other',success=True,foreground=True,prefetch_capture_only=False))
+    v.worlds.append(dict(v.worlds[0],source='other'))
+    assert result(v,clearance=[dict(all_valid=True,samples=5)]*2)['command_success']
+
+
 @pytest.mark.parametrize('objects',[{},[],{'other':{'T_world_obj':POSE}},
     {'source':None},{'source':{'T_world_obj':[[1,2,3,4]]}},
     {'source':{'T_world_obj':[[True,0,0,0]]*4}},

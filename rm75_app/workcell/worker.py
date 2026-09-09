@@ -19,6 +19,9 @@ def run_pusht(spec,profile,stop,events):
     params=spec['parameters'];cfg=dict(profile.get('pusht',{}).get('model',{}))
     cfg.update({key:params[key] for key in ('speed_mps','max_steps')})
     config=Config.from_dict(cfg)
+    if params.get('simulation_backend','surrogate')!='surrogate':
+        from rm75_app.pusht.physics import run as run_physics
+        return run_physics(spec,profile,config,stop,events)
     real=spec['mode']=='real'
     arm=None;backend=None;observer=None
     try:
@@ -83,6 +86,7 @@ def preview(spec,profile):
             return {'command_success':True,'task_success':None,'verification':'preview_only','already_at_goal':True}
         push,prediction=choose_push(p['initial_pose'],p['goal_pose'],model)
         return {'command_success':True,'task_success':None,'verification':'preview_only',
+                'simulation_backend':p.get('simulation_backend','surrogate'),
                 'push':push.as_dict(),'prediction':prediction,'geometry':asdict(model)}
     return {'command_success':True,'task_success':None,'verification':'preview_only',
             'object_name':spec['parameters']['object_name'],'planner':'preserved_working_pickplace',
@@ -134,6 +138,10 @@ def main(argv=None):
                 'error':f'{type(exc).__name__}: {exc}'}
         (run_dir/'traceback.txt').write_text(traceback.format_exc(),encoding='utf-8')
     finally:
+        if spec['task']=='pusht' and spec['mode']!='real':
+            result['simulation_backend']=spec['parameters'].get('simulation_backend','surrogate')
+            result['hardware_connected']=False
+            result['hardware_profile_qualified']=False
         result.update({'finished_at':time.time(),'task':spec['task'],'mode':spec['mode']})
         atomic_json(run_dir/'result.json',result);events.emit('task_finished',result=result)
     return 1 if result['status'] in ('failed','verification_failed') else 0

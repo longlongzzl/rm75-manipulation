@@ -92,12 +92,15 @@ def main():
         help='Jimu SIM only: test the original failed joint-search lift at 103 instead of 100 mm')
     parser.add_argument('--audit-current-table-failures',action='store_true',
         help='Read-only failed lift / already-generated tennis reverse path; no new solve or selection')
+    parser.add_argument('--tennis-ik-review',choices=('baseline','standard-reference','continuation','yaw-midpoints'),
+        help='Explicit Tennis frozen SIM: FK/IK + center contracts and fixed 32-seed reference comparison')
     parser.add_argument('--record-sim-video',action='store_true',
         help='Record original SIM motion windows at scale 1; adds render time, never real-time qualification')
     inputs=parser.add_mutually_exclusive_group()
     inputs.add_argument('--fixed-sam6d',type=Path)
     inputs.add_argument('--fixed-world',type=Path,help='Original T_world_obj scene; PickPlace SIM direct entry only')
     parser.add_argument('--object-name',default='gluestick')
+    parser.add_argument('--cycle-order',nargs='+',help='Explicit original same-scene frozen SIM object order')
     parser.add_argument('--stop-after-native-start',action='store_true')
     parser.add_argument('--stop-after-transport-audit',action='store_true',
         help='Cancel only after the actual GPU transport has passed its complete sampled-path audit')
@@ -109,10 +112,16 @@ def main():
         help='Cancel after observing the actual Jimu post-release execution boundary')
     parser.add_argument('--timeout-s',type=float,default=600.)
     args=parser.parse_args()
+    if args.cycle_order and (args.task!='pickplace' or args.fixed_world is None
+            or args.cycle_order[0]!=args.object_name):
+        parser.error('Cycle order requires native-world PickPlace SIM and first source equal to object-name')
+    if args.tennis_ik_review and (args.task!='pickplace' or 'tennis' not in (args.cycle_order or [args.object_name])
+            or args.fixed_world is None or args.fixed_world.resolve()!=ROOT/'assets/test_scenes/current_table.json'):
+        parser.error('Tennis IK review requires the original current-table Tennis SIM')
     if args.jimu_lift_plus_3mm and args.task!='magnetic':parser.error('The +3 mm lift trial is Jimu SIM only')
     if args.audit_roof_ik and args.task!='magnetic':parser.error('Roof IK diagnostics are Jimu SIM only')
     if args.audit_current_table_failures and (args.task!='pickplace'
-            or args.object_name not in ('gluestick','hongshupian','tennis')
+            or not set(args.cycle_order or [args.object_name]) & {'gluestick','hongshupian','tennis'}
             or args.fixed_world is None
             or args.fixed_world.resolve()!=ROOT/'assets/test_scenes/current_table.json'):
         parser.error('Focused diagnostics require one of the three reviewed current-table native-world sources')
@@ -140,8 +149,10 @@ def main():
     output=args.output.resolve();output.mkdir(parents=True,exist_ok=False)
     profile=read_json(ROOT/'examples/workcell/machine.example.json')
     section=profile[args.task]
+    if args.cycle_order:section['frozen_source_order']=args.cycle_order
     if args.audit_roof_ik:section['audit_roof_ik']=True
     if args.audit_current_table_failures:section['audit_current_table_failures']=True
+    if args.tennis_ik_review:section['tennis_ik_review']=args.tennis_ik_review
     if args.record_sim_video:section['record_sim_video']=True
     section.update(python=str(Path(sys.executable).resolve()),render_mode='none',fixed_scene=str(fixed),
         fixed_scene_format='native_world' if args.fixed_world else 'sam6d',
@@ -157,13 +168,15 @@ def main():
             section['native_args']+=['--jimu-sim-start-joints-deg',*[str(q) for q in documented_start['joints_deg']]]
         params={'design':read_json(args.design)}
     else:params={'object_name':args.object_name}
-    expected_cycles=len(validate_design(params['design']).ordered_roles) if args.task=='magnetic' else 1
+    expected_cycles=len(validate_design(params['design']).ordered_roles) if args.task=='magnetic' else len(args.cycle_order or [args.object_name])
     assert profile['hardware']['hardware_reviewed'] is False and section['integration_qualified'] is False
     atomic_json(output/'machine.json',profile)
     spec={'task':args.task,'mode':'sim','parameters':params};atomic_json(output/'request.json',spec)
     report=dict(task=args.task,mode='sim',execute_real=False,hardware_connected=False,
         verified_task_success=None,fixed_input_sha256=hashlib.sha256(fixed.read_bytes()).hexdigest(),
         stopped_for_validation=False,completed=False)
+    report['adapter_source_sha256']={str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in sorted((ROOT/'rm75_app/workcell').glob('*.py'))}
     report['jimu_joint_search_lift_trial_m']=.103 if args.jimu_lift_plus_3mm else None
     report['original_task_bundle_sha256']=bundle_hashes
     report['original_task_bundle_read_only']=bool(bundle)

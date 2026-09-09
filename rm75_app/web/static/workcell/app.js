@@ -5,6 +5,26 @@ let design={schema:'jimu_builder_scene_v1',pieces:[
  {id:'floor',role:'floor',type:'square',locked:true,center:[0,.00325,0],u:[1,0,0],n:[0,1,0],v:[0,0,1]},
  {id:'right_wall',role:'right_wall',type:'square',locked:false,parentRole:'floor',center:[.037,.0435,0],u:[0,0,1],n:[1,0,0],v:[0,1,0]}]};
 let selected='right_wall', pendingNonce=null;
+const simulationLabels={surrogate:'CPU 接触近似（非物理）',tool_only_physics:'工具—T 接触物理',full_arm_physics:'RM75 整臂关节驱动物理'};
+function addPhysicsSelection(){
+ const label=document.createElement('label');label.textContent='PushT 仿真后端';
+ const select=document.createElement('select');select.id='push-simulation';
+ for(const [value,text] of Object.entries(simulationLabels)){
+  const option=document.createElement('option');option.value=value;option.textContent=text;
+  option.disabled=!info.pusht_simulation_backends?.includes(value);select.appendChild(option);
+ }
+ select.addEventListener('change',()=>{
+  const pose=info.pusht_physics_initial_pose;
+  if(select.value!=='surrogate'&&pose){
+   $('push-x').value=pose[0];$('push-y').value=pose[1];$('push-yaw').value=pose[2]*180/Math.PI;
+   $('goal-x').value=pose[0]+.03;$('goal-y').value=pose[1];$('goal-yaw').value=pose[2]*180/Math.PI;
+  }
+  observed=null;drawPush();
+ });
+ label.appendChild(select);$('pusht-panel').insertBefore(label,$('pusht-canvas'));
+ const notice=$('pusht-panel').querySelector('.notice');
+ notice.textContent='CPU 近似、工具接触物理、RM75 整臂物理分别记录，不互相冒充。物理后端每轮从动态 T 与当前关节状态重新规划；材料未标定，均不代表真机资格。真机仍使用已标定的实时观测与独立许可。';
+}
 function fail(e){$('error').textContent=e.message||String(e);}
 async function api(path,data){
  const response=await fetch('/api/workcell/'+path,{method:data===undefined?'GET':'POST',headers:data===undefined?{}:{'Content-Type':'application/json','X-Workcell-Token':info.csrf},body:data===undefined?undefined:JSON.stringify(data)});
@@ -15,6 +35,7 @@ function number(id){const value=Number($(id).value);if(!Number.isFinite(value))t
 function spec(mode){let parameters;if(task==='pickplace')parameters={object_name:$('object-name').value};
  else if(task==='magnetic')parameters={design:JSON.parse(JSON.stringify(design))};
  else parameters={initial_pose:[number('push-x'),number('push-y'),number('push-yaw')*Math.PI/180],goal_pose:[number('goal-x'),number('goal-y'),number('goal-yaw')*Math.PI/180],speed_mps:number('push-speed'),max_steps:number('push-steps')};
+ if(task==='pusht'&&mode!=='real')parameters.simulation_backend=$('push-simulation')?.value||'surrogate';
  return {task,mode,parameters};}
 function stateButtons(){for(const id of ['preview','simulate','real'])$(id).disabled=!info||busy||!!active||(id==='real'&&(!info?.allow_real||info?.real_latched));$('stop').disabled=!active;}
 async function start(mode){if(active||busy)return;busy=true;stateButtons();$('error').textContent='';try{
@@ -24,7 +45,7 @@ async function start(mode){if(active||busy)return;busy=true;stateButtons();$('er
   token=(await api('arm',{spec:request,confirmation:'我确认现场安全并允许本次真机运行'})).arm_token;
  }
  const result=await api('jobs',{spec:request,arm_token:token});active=result.job_id;observed=null;
- $('run-status').textContent='运行中 · '+mode;$('result').textContent='任务 '+active;$('logs').textContent='等待工作进程…';
+ $('run-status').textContent='运行中 · '+mode+(task==='pusht'&&mode==='sim'?' · '+simulationLabels[request.parameters.simulation_backend]:'');$('result').textContent='任务 '+active;$('logs').textContent='等待工作进程…';
  clearInterval(polling);polling=setInterval(poll,350);await poll();
  }catch(e){fail(e);}finally{busy=false;stateButtons();}}
 async function poll(){if(!active)return;try{const value=await api('jobs/'+active);$('logs').textContent=value.log||'等待日志…';
@@ -104,7 +125,7 @@ stateButtons();
   $('connection').textContent=info.real_latched?'真机待现场复核':info.allow_real?'真机许可已启用 · 仍需单次确认':'默认不连接真机';
   $('migration-state').textContent=info.snapshot_installed?'已安装快照（不代表 GPU / 真机验收通过）':'尚未安装工作快照';
   for(const name of info.pickplace_objects){const option=document.createElement('option');option.value=name;option.textContent=name;$('object-name').appendChild(option);}
-  fillPieces();drawPush();
+  addPhysicsSelection();fillPieces();drawPush();
   if(info.active_job){active=info.active_job;polling=setInterval(poll,350);await poll();}
  }catch(e){fail(e);$('connection').textContent='连接失败 · 不启用真机';}
  finally{stateButtons();}

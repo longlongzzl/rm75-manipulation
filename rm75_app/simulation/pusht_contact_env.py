@@ -68,6 +68,9 @@ class PushTContactEnv(BaseEnv):
             builder.add_box_collision(pose=pose, half_size=size, material=material, density=1000.)
             builder.add_box_visual(pose=pose, half_size=size, material=target_visual)
         self.target = builder.build(name='dynamic_T')
+        self._load_tool(material, tool_visual)
+
+    def _load_tool(self, material, tool_visual):
         transform = self.program.fk(self.program.initial)
         builder = self.scene.create_actor_builder()
         builder.initial_pose = sapien.Pose(transform[:3, 3], mat2quat(transform[:3, :3]))

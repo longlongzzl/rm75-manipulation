@@ -62,6 +62,8 @@ class WorkcellService:
                 'pickplace_objects':self.profile.get('pickplace',{}).get('object_names',
                      ['lvmukuai','carriot','shuazi','gluestick','bi','tennis']),
                 'pusht_model':self.profile.get('pusht',{}).get('model',{}),
+                'pusht_simulation_backends':['surrogate',*self.profile.get('pusht',{}).get('physics',{}).get('enabled_backends',[])],
+                'pusht_physics_initial_pose':self.profile.get('pusht',{}).get('physics',{}).get('initial_pose'),
                 'snapshot_installed':(self.app_root/'rm75_app/_vendor/working_snapshot/MIGRATION_MANIFEST.json').is_file(),
                 'physical_robot_tested_here':False}
 
@@ -101,6 +103,9 @@ class WorkcellService:
             atomic_json(directory/'machine_profile.json',self.profile)
             python=(sys.executable if spec['mode']=='preview' or spec['task']=='pusht' and spec['mode']=='sim'
                     else self.profile.get(spec['task'],{}).get('python',sys.executable))
+            if (spec['task']=='pusht' and spec['mode']=='sim'
+                    and spec['parameters'].get('simulation_backend','surrogate')!='surrogate'):
+                python=self.profile.get('pusht',{}).get('physics',{}).get('simulation_python')
             if not isinstance(python,str) or not Path(python).expanduser().is_file():
                 raise FileNotFoundError(f'Configured Python interpreter is missing: {python}')
             command=[str(python),'-u','-m','rm75_app.workcell.worker','--run-dir',str(directory),
@@ -207,10 +212,24 @@ class WorkcellService:
                         pass
                 atomic_json(self.latch,{'job_id':job_id,'reason':'operator_stopped_real_job','stop':stop_result})
             elif process.poll() is None:
-                try:
-                    os.killpg(process.pid,signal.SIGTERM)
-                except ProcessLookupError:
-                    pass
+                physics=(spec['mode']=='sim' and spec['task']=='pusht' and
+                    spec['parameters'].get('simulation_backend','surrogate')!='surrogate')
+                if physics:
+                    # STOP is checked before each simulated control step and
+                    # while awaiting GPU planning. Let the worker seal video;
+                    # a bounded watchdog still kills an unresponsive group.
+                    def reap():
+                        try:process.wait(timeout=5)
+                        except subprocess.TimeoutExpired:
+                            try:os.killpg(process.pid,signal.SIGKILL)
+                            except ProcessLookupError:pass
+                    threading.Thread(target=reap,daemon=True).start()
+                    stop_result['physics_cooperative_stop']=True
+                else:
+                    try:
+                        os.killpg(process.pid,signal.SIGTERM)
+                    except ProcessLookupError:
+                        pass
             atomic_json(directory/'stop_result.json',stop_result)
             return stop_result
 

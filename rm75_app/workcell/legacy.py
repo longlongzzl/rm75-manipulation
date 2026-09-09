@@ -159,6 +159,10 @@ def build_native_argv(module,spec,profile,run_dir,root,*,frozen_contract=None):
                 # Original loader/activation removes only the CURRENT source.
                 # Retain all names across same-cycle source retries.
                 add('--tracked-scene-object-names',list(contract['names']))
+                if len(contract.get('source_order',()))>1:
+                    add('--cycle-object-names',list(contract['source_order']))
+                    add('--cycle-order-targets')
+                    add('--repeat-count',len(contract['source_order']))
             else:add('--sam6d-fixed-scene-result-file',str(fixed))
     if profile.get(spec['task'],{}).get('record_sim_video') is True:
         from .sim_failure_video import require_sim
@@ -244,7 +248,8 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
             fixed=Path(profile[spec['task']]['fixed_scene'])
             if not fixed.is_absolute():fixed=root/fixed
             frozen_validation=FrozenWorldValidation(
-                read_contract(fixed,spec['parameters']['object_name']),run_dir,events)
+                read_contract(fixed,spec['parameters']['object_name'],
+                    profile['pickplace'].get('frozen_source_order')),run_dir,events)
         argv=build_native_argv(module,spec,profile,run_dir,root,
             frozen_contract=None if frozen_validation is None else frozen_validation.contract)
         atomic_json(run_dir/'native_command.json',{'entrypoint':entrypoint,
@@ -295,18 +300,31 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
             from .pickplace_focused_diagnostics import install as install_focused
             adapters.callback(install_focused(direct,RM75CuRoboPlanner,
                 lambda row:events.emit('contact_audit',evidence=row),
-                requested_source=spec['parameters']['object_name']))
+                requested_source='gluestick' if profile['pickplace'].get('frozen_source_order')
+                    else spec['parameters']['object_name']))
+        if profile.get('pickplace',{}).get('tennis_ik_review'):
+            if (spec['task']!='pickplace' or spec['mode']!='sim' or frozen_validation is None
+                    or 'tennis' not in profile['pickplace'].get('frozen_source_order',[spec['parameters']['object_name']])
+                    or policy!='transport_world_checked_compatibility'):
+                raise ValueError('Tennis IK review requires checked native frozen SIM')
+            from curobo_rm75_planner import RM75CuRoboPlanner
+            from .pickplace_ik_review import install as install_ik_review
+            adapters.callback(install_ik_review(direct,RM75CuRoboPlanner,
+                lambda row:events.emit('contact_audit',evidence=row),
+                strategy=profile['pickplace']['tennis_ik_review']))
         if profile.get(spec['task'],{}).get('record_sim_video') is True:
             from .sim_failure_video import install as install_video, require_sim
             require_sim(spec,profile)
             adapters.callback(install_video(direct,run_dir/'sim_video',
-                requested_source=spec['parameters']['object_name'] if spec['task']=='pickplace' else None,
+                requested_source=(spec['parameters']['object_name'] if spec['task']=='pickplace'
+                    and not profile['pickplace'].get('frozen_source_order') else None),
                 portable=module.portable if spec['task']=='magnetic' else None))
         sys.argv=[str(root/entrypoint),*argv]
         from .native_outcome import NativeOutcomeCapture
         captured=NativeOutcomeCapture(sys.stdout)
         expected_cycles=(len(validate_design(spec['parameters']['design']).ordered_roles)
-                         if spec['task']=='magnetic' else 1)
+                         if spec['task']=='magnetic' else
+                         len(frozen_validation.contract['source_order']) if frozen_validation else 1)
         stop.check()
         try:
             with contextlib.redirect_stdout(captured):

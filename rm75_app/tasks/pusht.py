@@ -12,7 +12,7 @@ class PushTTask(TaskAdapterBase):
         stages=(PipelineStage.TASK_INPUT,PipelineStage.PERCEPTION,PipelineStage.MOTION_PLANNING,
                 PipelineStage.EXECUTION,PipelineStage.VALIDATION),
         status='implemented_unverified_hardware',backend='rm75_app.pusht',
-        notes=('sim is an explicitly labelled CPU surrogate, not a ManiSkill validation.',))
+        notes=('Simulation explicitly distinguishes surrogate, tool-only physics and full-arm physics; none qualifies hardware.',))
     def command(self,request:TaskRequest,*,python='python'):
         request=self.normalize_request(request)
         errors=self.validate_request(request)

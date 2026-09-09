@@ -320,14 +320,14 @@ def serialize_return_planning(direct):
                     planner = args[0] if args else kwargs.get('planner')
                     if planner is None:
                         return function(*args, **kwargs)
-                    with preserve_planner_world(planner):
+                    with preserve_planner_world(planner, label=kwargs.get('label', function.__name__)):
                         return function(*args, **kwargs)
             return transaction
         setattr(direct, name, wrap(original))
 
 
 @contextmanager
-def preserve_planner_world(planner):
+def preserve_planner_world(planner, *, label='return_transaction'):
     """Restore the foreground world after a shared return-planning transaction.
 
     Called under the GPU RLock. WorldConfig contains CPU obstacle descriptions;
@@ -339,9 +339,26 @@ def preserve_planner_world(planner):
               '_last_world_cache_hit', '_last_world_cache_forced_refresh')
     previous = {name: copy.deepcopy(getattr(planner, name))
                 for name in fields if hasattr(planner, name)}
+    from .phase_state import emit as emit_phase
+    participants = list(getattr(planner, '_rm75_phase_participants', {}).values())
+    adapter_states = [(p, copy.deepcopy(p.capture())) for p in participants]
+    emit_phase(planner, 'before', label)
     try:
         yield
     finally:
+        try:
+            emit_phase(planner, 'temporary_world_exit', label)
+        finally:
+            # Evidence IO must never prevent world/metadata restoration.
+            _restore_phase_world(planner, world, disabled, fields, previous, adapter_states)
+        restored = all(p.capture() == state for p,state in adapter_states)
+        emit_phase(planner, 'restored', label, adapter_state_restored=restored)
+        if not restored:
+            raise CuroboOnlyUnsupported('return adapter state restoration failed')
+
+
+def _restore_phase_world(planner, world, disabled, fields, previous, adapter_states):
+    try:
         planner.motion_gen.update_world(world)
         planner.ik_solver.update_world(world)
         planner._world = world
@@ -358,6 +375,9 @@ def preserve_planner_world(planner):
                 setattr(planner, name, previous[name])
             elif hasattr(planner, name):
                 delattr(planner, name)
+    finally:
+        for participant, state in reversed(adapter_states):
+            participant.restore(copy.deepcopy(state))
 
 
 def preserve_diagnostic_world_state(planner_class, lock):

@@ -32,7 +32,7 @@ def validate_spec(value,profile):
                 raise ValueError('Use path-safe original piece ids/roles')
         params['design']=design.payload
     else:
-        if set(params)-{'initial_pose','goal_pose','speed_mps','max_steps'}:
+        if set(params)-{'initial_pose','goal_pose','speed_mps','max_steps','simulation_backend'}:
             raise ValueError('Unsupported PushT parameter; geometry/safety belong in the machine profile')
         target=vector(params.get('goal_pose'),3,'goal_pose').tolist()
         initial=vector(params.get('initial_pose',[.35,0,0]),3,'initial_pose').tolist()
@@ -47,7 +47,14 @@ def validate_spec(value,profile):
         model=Config.from_dict(cfg)
         if not valid_pose(target,model) or mode!='real' and not valid_pose(initial,model):
             raise ValueError('T geometry crosses workspace/no-go objects')
+        simulation=params.get('simulation_backend')
+        if simulation is not None:
+            if mode=='real' or simulation not in ('surrogate','tool_only_physics','full_arm_physics'):
+                raise ValueError('Simulation backend is explicit and never accepted in real mode')
+            if simulation!='surrogate' and simulation not in profile.get('pusht',{}).get('physics',{}).get('enabled_backends',[]):
+                raise ValueError('Requested physics backend is not configured on this server')
         params={'initial_pose':initial,'goal_pose':target,'speed_mps':model.speed_mps,'max_steps':model.max_steps}
+        if simulation is not None:params['simulation_backend']=simulation
     # Reject NaN/duplicate etc even in unused preserved JSON metadata.
     dumps(params)
     return {'task':task,'mode':mode,'parameters':params}

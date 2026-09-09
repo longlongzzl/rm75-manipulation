@@ -14,6 +14,11 @@ from rm75_app.planning.gripper_collision import _rpy_matrix, _axis_angle_matrix
 STAGES = ('approach', 'descend', 'contact', 'push', 'retreat')
 
 
+def forbidden_target_contact(link, stage, allowed):
+    """Physical target contact has the same link scope as the GPU audit."""
+    return link not in allowed or stage not in ('contact','push','retreat','post_settle')
+
+
 class TcpFK:
     """URDF base_link -> gripper_tcp rigid chain, with the original seven joints."""
     def __init__(self, urdf):
@@ -73,13 +78,17 @@ class TimedProgram:
             self.duration += t[-1]; previous = q[-1]
         self.initial = self.rows[0][2][0].copy()
 
-    def sample(self, time_s):
+    def configuration(self, time_s):
         if not np.isfinite(time_s): raise ValueError('Finite replay time required')
         for name, offset, q, times in self.rows:
             if time_s <= offset+times[-1]: break
         t = np.clip(time_s-offset, 0, times[-1])
         point = np.array([np.interp(t, times, q[:, j]) for j in range(7)])
-        return name, self.fk(point)
+        return name, point
+
+    def sample(self, time_s):
+        name,point=self.configuration(time_s)
+        return name,self.fk(point)
 
 
 def audit_endpoints(program, points, rotation, position_tolerance, orientation_tolerance):

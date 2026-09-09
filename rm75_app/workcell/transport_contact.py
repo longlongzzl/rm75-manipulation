@@ -6,6 +6,7 @@ World exceptions never remove shared robot spheres or disable self checks.
 import copy
 import functools
 import threading
+from types import SimpleNamespace
 import numpy as np
 from .contact_audit import StrictContactNotSupported, scene_evidence
 from .world_only_contact import FINGER_LINKS, world_only_links, WorldOnlyContactUnsupported
@@ -272,10 +273,31 @@ def install_transport_contact(direct, planner_class, emit):
     original_refresh = direct._refresh_curobo_world
     active = {}
     excluded_sources = {}
+    # Owned by this adapter and captured by the SAME return transaction.
+    refresh_context = {}
+
+    def participate(planner):
+        from .phase_state import register
+        participants = getattr(planner, '_rm75_phase_participants', {})
+        if 'transport_contact' in participants:
+            return
+        def capture():
+            return {'excluded_source':excluded_sources.get(id(planner)),
+                    'refresh':copy.deepcopy(refresh_context.get(id(planner)))}
+        def restore(state):
+            excluded_sources.pop(id(planner), None)
+            if state['excluded_source'] is not None:
+                excluded_sources[id(planner)] = state['excluded_source']
+            refresh_context.pop(id(planner), None)
+            if state['refresh'] is not None:
+                refresh_context[id(planner)] = copy.deepcopy(state['refresh'])
+        register(planner, 'transport_contact', SimpleNamespace(capture=capture,restore=restore,emit=emit))
 
     def failure(planner, label, reason):
+        from .phase_state import evidence as phase_evidence
         row = {'event': 'transport_policy_rejected', 'step_id': label, 'reason': reason,
-               'verified_task_success': None, **scene_evidence(planner)}
+               'verified_task_success': None, **scene_evidence(planner),
+               'phase_state':phase_evidence(planner)}
         emit(row)
         return StrictContactNotSupported(row)
 
@@ -296,24 +318,33 @@ def install_transport_contact(direct, planner_class, emit):
             return []
         if is_transport(label):
             raise failure(planner, label, 'transport_world_exemption_forbidden')
-        # A table omitted by the original NON-transport scene can leave a
-        # disabled cache entry. This never permits disabling a present table
-        # or omitting a table in transport; the evaluator checks both.
-        allowed = {'active_target_object'}
-        present = {obj.name for obj in planner._world.objects}
-        if 'virtual_table_plane' not in present:
-            allowed.add('virtual_table_plane')
-        source = excluded_sources.get(id(planner))
-        if (source and planner.attached_object_active
-                and planner.get_attached_sphere_count() > 0):
-            # A source-specific mesh cache entry is the same object now
-            # represented by attached spheres, not an unrelated obstacle.
-            # Require explicit exclusion by the most recent world refresh.
-            allowed.update(name for name in (source, 'scene_obstacle_' + source)
-                           if name not in present)
-        manager = world_only_links(planner, links, allowed_disabled_objects=allowed)
         direct._CUROBO_GPU_LOCK.acquire()
         try:
+            # Read both adapter and native state while holding the GPU RLock.
+            allowed = {'active_target_object'}
+            present = {obj.name for obj in planner._world.objects}
+            if 'virtual_table_plane' not in present:
+                allowed.add('virtual_table_plane')
+            source = excluded_sources.get(id(planner))
+            if (source and planner.attached_object_active
+                    and planner.get_attached_sphere_count() > 0):
+                allowed.update(name for name in (source, 'scene_obstacle_' + source)
+                               if name not in present)
+            refreshed = refresh_context.get(id(planner)) or {}
+            # Original grasp-contact refresh intentionally omits the active
+            # source. A cached *source-named* mesh row is not a disabled neighbor.
+            # Require exact current world identity and explicit active exclusion;
+            # never enable/remove rows and never admit a disabled present source.
+            current_source=refreshed.get('source')
+            if (current_source and refreshed.get('include_active_object') is False
+                    and set(refreshed.get('world_names',()))==present):
+                allowed.update(name for name in (current_source,'scene_obstacle_'+current_source)
+                               if name not in present)
+            manager = world_only_links(planner, links, allowed_disabled_objects=allowed)
+            from .phase_state import emit as emit_phase
+            emit_phase(planner, 'contact_candidate_entry', label,
+                allowed_disabled_objects=sorted(allowed),
+                unexpected_disabled=sorted(set(planner._disabled_world_obstacles)-allowed))
             evidence = manager.__enter__()
         except WorldOnlyContactUnsupported as exc:
             direct._CUROBO_GPU_LOCK.release()
@@ -351,11 +382,19 @@ def install_transport_contact(direct, planner_class, emit):
                           'restored_objects':sorted(restored),'attached_source':source})
                 kwargs['exclude_object_names']=requested & {source}
         with direct._CUROBO_GPU_LOCK:
+            participate(planner)
             excluded_sources.pop(id(planner), None)
+            refresh_context.pop(id(planner), None)
             result = original_refresh(planner, demo, args, **kwargs)
             source = direct._current_source_object_name(args)
             if source and source in (kwargs.get('exclude_object_names') or ()):
                 excluded_sources[id(planner)] = source
+            refresh_context[id(planner)]=dict(source=source,
+                include_active_object=kwargs.get('include_active_object'),
+                world_names=sorted(obj.name for obj in planner._world.objects))
+            from .phase_state import emit as emit_phase
+            emit_phase(planner, 'world_refreshed', label, source=source,
+                requested_excluded_sources=sorted(kwargs.get('exclude_object_names') or ()))
             return result
     direct._refresh_curobo_world = refresh
 

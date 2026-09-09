@@ -84,3 +84,51 @@ def test_world_restore_includes_table_cached_rows_all_owners_and_signature(fail)
     assert p._disabled_world_obstacles == {'active_target_object', 'worker_only'}
     assert [name for name, _ in updates] == ['motion', 'ik', 'cached_ik']
     assert all(w.objects[0].name == 'table' for _, w in updates)
+
+
+@pytest.mark.parametrize('failure', [None, ValueError, KeyboardInterrupt, 'evidence_sink'])
+def test_nested_phase_participant_restores_on_success_exception_and_base_exception(failure):
+    from rm75_app.workcell.phase_state import register
+    state={'excluded_source':'right_roof_triangle'};rows=[]
+    p=SimpleNamespace(_world=SimpleNamespace(objects=[SimpleNamespace(name='table')]),
+        _disabled_world_obstacles=set(), motion_gen=SimpleNamespace(update_world=lambda w:None),
+        ik_solver=SimpleNamespace(update_world=lambda w:None),
+        _update_cuda_graph_batch_ik_world=lambda w:None,
+        world_collision_checker_obstacle_names=lambda:['table','stale_source'])
+    def setter(names,*,enabled):
+        if enabled:p._disabled_world_obstacles.difference_update(names)
+        else:p._disabled_world_obstacles.update(names)
+    p.set_world_obstacles_enabled=setter
+    def restore(saved):state.clear();state.update(saved)
+    def emit(row):
+        if failure=='evidence_sink' and row['phase']=='temporary_world_exit':
+            raise KeyboardInterrupt('sink failed')
+        rows.append(row)
+    register(p,'contact',SimpleNamespace(capture=lambda:state.copy(),restore=restore,emit=emit))
+    def run():
+        with preserve_planner_world(p,label='prelift'):
+            state['excluded_source']='temporary'
+            with preserve_planner_world(p,label='return'):
+                state['excluded_source']=None
+                p._disabled_world_obstacles.add('table')
+                if failure and failure!='evidence_sink':raise failure('original failure')
+            assert state=={'excluded_source':'temporary'}
+    if failure:
+        with pytest.raises(KeyboardInterrupt if failure=='evidence_sink' else failure):run()
+    else:run()
+    assert state=={'excluded_source':'right_roof_triangle'}
+    assert p._disabled_world_obstacles=={'stale_source'}
+    assert all(row['adapter_state_restored'] for row in rows if row['phase']=='restored')
+
+
+def test_participants_are_planner_local_and_do_not_enable_required_disabled_object():
+    from rm75_app.workcell.phase_state import register, evidence
+    p=SimpleNamespace(_world=SimpleNamespace(objects=[SimpleNamespace(name='table'),SimpleNamespace(name='neighbor')]),
+        _disabled_world_obstacles={'table','neighbor','stale_source'})
+    other=SimpleNamespace()
+    register(p,'contact',SimpleNamespace(capture=lambda:{'excluded_source':'roof'},restore=lambda s:None,emit=lambda r:None))
+    assert not hasattr(other,'_rm75_phase_participants')
+    row=evidence(p)
+    assert row['required_objects_disabled']==['neighbor','table']
+    assert row['absent_cache_rows_disabled']==['stale_source']
+    assert p._disabled_world_obstacles=={'table','neighbor','stale_source'}
