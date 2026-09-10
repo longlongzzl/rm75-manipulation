@@ -147,6 +147,33 @@ class PhysicsSession:
         self.sequence+=1;pose,_=self.physical_state()
         return Observation(self.session,self.sequence,self.clock(),tuple(float(v) for v in pose),'simulation')
 
+    def disturb(self,pose):
+        """Explicit external-disturbance hook: overwrite the dynamic T pose.
+
+        Only reachable from a disturbance schedule configured in the machine
+        profile for dedicated recovery tests; the controller itself never
+        teleports the target and the plan/execute path is untouched. The moved
+        pose is re-observed as fresh physics ground truth before the next push.
+        """
+        import sapien
+        before,_=self.physical_state()
+        transform=self.base.target.pose.to_transformation_matrix().detach().cpu().numpy().reshape(4,4)
+        moved=np.asarray([float(pose[0]),float(pose[1]),float(transform[2,3])],dtype=float)
+        yaw=float(pose[2])
+        self.base.target.set_pose(sapien.Pose(p=moved,q=[np.cos(yaw/2),0,0,np.sin(yaw/2)]))
+        self.base.target.set_linear_velocity(np.zeros(3))
+        self.base.target.set_angular_velocity(np.zeros(3))
+        after,_=self.physical_state()
+        if not valid_pose(after,self.config):
+            raise ValueError('External disturbance pose leaves the T planar/support workspace')
+        self.report.setdefault('disturbances',[]).append(dict(time_s=self.base.physics_time,
+            before_pose=[float(v) for v in before],after_pose=[float(v) for v in after],
+            kind='external_pose_overwrite_between_pushes'))
+        self.events.emit('external_disturbance_applied',time_s=self.base.physics_time,
+                         before_pose=before.tolist() if hasattr(before,'tolist') else list(before),
+                         after_pose=after.tolist() if hasattr(after,'tolist') else list(after))
+        return True
+
     def contact_direction_mask(self,obs,config):
         from .closed_gripper import ToolGeometry,contact_direction_mask
         from .motion import CuroboPushExecutor
@@ -233,8 +260,17 @@ def run(spec,profile,config,stop,events):
     session=PhysicsSession(spec,profile['pusht'],config,stop,events)
     try:
         session.open()
+        schedule=list(profile['pusht'].get('physics',{}).get('disturbances') or [])
+        session.report['disturbance_schedule']=schedule
+        def disturb(step):
+            for entry in schedule:
+                if int(entry.get('after_pushes',-1))==step:
+                    session.disturb(tuple(entry['pose']))
+                    return True
+            return False
         result=PushTController(session,session,config,stop,events,clock=session.clock,
-            wait=session.advance,verification='physics_pose').run(spec['parameters']['goal_pose'])
+            wait=session.advance,verification='physics_pose',
+            disturb=disturb if schedule else None).run(spec['parameters']['goal_pose'])
         result.update(simulation_backend=session.kind,hardware_connected=False,hardware_profile_qualified=False)
         session.report['task_success']=result['task_success'];return result
     except BaseException as exc:

@@ -75,7 +75,11 @@ def completion_summary(result, requested):
 
 
 def run(spec, profile, app_root, run_dir, stop, events):
-    from . import legacy
+    import importlib
+    # import_module honours a replaced sys.modules entry (test injection),
+    # unlike `from . import legacy` which reads the package attribute bound at
+    # first import time.
+    legacy=importlib.import_module('rm75_app.workcell.legacy')
     original_spec=copy.deepcopy(spec)
     spec,profile=prepare_request(spec,profile,run_dir)
     atomic_json(Path(run_dir)/'effective_task_profile.json',profile)

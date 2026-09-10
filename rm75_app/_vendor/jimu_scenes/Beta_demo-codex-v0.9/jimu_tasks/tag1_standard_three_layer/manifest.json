@@ -1,0 +1,72 @@
+{
+  "schema": "jimu_task_manifest_v1",
+  "name": "tag1_standard_three_layer",
+  "tag_id": 1,
+  "description": "Standard tag1 Jimu build target: base plus two square layers and four triangle roof panels.",
+  "builder_scene_json": "builder_scene.json",
+  "sam6d_fixed_scene_result_file": "fixed_scene_pose_results.json",
+    "apriltag": {
+        "base_id": 1,
+        "base_size_m": 0.052,
+        "base_yaw_deg": 0.0,
+        "tray_id": 0,
+        "tray_size_m": 0.06,
+        "tray_yaw_deg": 90.0
+    },
+  "builder": {
+    "layer_z_extra_m": [
+      0.005,
+      0.004,
+      0.004
+    ],
+    "final_contact_low_hover_height_m": 0.01,
+    "build_layers": [
+      [
+        "right_wall",
+        "back_wall",
+        "left_wall",
+        "front_wall"
+      ],
+      [
+        "right_second_wall",
+        "back_second_wall",
+        "left_second_wall",
+        "front_second_wall"
+      ],
+      [
+        "right_roof_triangle",
+        "back_roof_triangle",
+        "left_roof_triangle",
+        "front_roof_triangle"
+      ]
+    ],
+    "triangle_tray_slot_indices": [
+      4,
+      5,
+      6,
+      12
+    ],
+    "tray_slot_role_order": [
+      "right_wall",
+      "back_wall",
+      "left_wall",
+      "front_wall",
+      "right_roof_triangle",
+      "back_roof_triangle",
+      "left_roof_triangle",
+      "right_second_wall",
+      "back_second_wall",
+      "left_second_wall",
+      "front_second_wall",
+      "jimu_spare_slot_09",
+      "front_roof_triangle",
+      "jimu_spare_slot_10"
+    ]
+  },
+  "notes": [
+    "The fixed scene is useful for cached simulation.",
+    "Tray slots are standardized as triangle slots 4, 5, 6, and 12; all other slots are square slots. Tag1 uses square spare slots 11 and 13. Build layers preserve physical layer order while sorting each layer by tray slot.",
+    "The layer_z_extra_m values add cumulative world-Z clearance to every builder layer for real magnetic attachment tolerance.",
+    "For live localization, add --jimu-apriltag-anchor-localization; command-line args override this manifest."
+  ]
+}

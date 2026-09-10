@@ -1,0 +1,66 @@
+{
+  "schema": "rm75.jimu_scene_import_v1",
+  "source_repo": "/home/zhangzhao/Desktop/lerobot",
+  "source_head": "36798efbd12814841607951c9af470b309b34fd3",
+  "source_status_sha256": "92f5eb5557dd2c6c541473b527391d4d94d54a9e7973f29b5c5d4c384f20bca5",
+  "destination_root": "rm75_app/_vendor/jimu_scenes",
+  "files": [
+    {
+      "source_path": "Beta_demo-codex-v0.9/jimu_tasks/tag1_standard_three_layer/manifest.json",
+      "destination": "Beta_demo-codex-v0.9/jimu_tasks/tag1_standard_three_layer/manifest.json",
+      "source_sha256": "811be89115ec9982ac425f799dedc0d08ab55ada996c42d0e524a54550a3ab2d",
+      "installed_sha256": "811be89115ec9982ac425f799dedc0d08ab55ada996c42d0e524a54550a3ab2d",
+      "reason": "Old 3x3 (3x3_centered_on_positioning_plate) standard three-layer task manifest; tag_id 1, build_layers and AprilTag defaults are only carried by this file.",
+      "relocations": []
+    },
+    {
+      "source_path": "Beta_demo-codex-v0.9/jimu_tasks/tag1_standard_three_layer/builder_scene.json",
+      "destination": "Beta_demo-codex-v0.9/jimu_tasks/tag1_standard_three_layer/builder_scene.json",
+      "source_sha256": "6478bafdf016817e7d118269da9199e6d4fe8c06570cbedfdfb03c1127ca6884",
+      "installed_sha256": "6478bafdf016817e7d118269da9199e6d4fe8c06570cbedfdfb03c1127ca6884",
+      "reason": "Old 3x3 builder scene: 21 pieces (9 locked base + 12 movable), schema jimu_builder_scene_v1, base 3x3_centered_on_positioning_plate.",
+      "relocations": []
+    },
+    {
+      "source_path": "Beta_demo-codex-v0.9/jimu_tasks/tag1_standard_three_layer/fixed_scene_pose_results.json",
+      "destination": "Beta_demo-codex-v0.9/jimu_tasks/tag1_standard_three_layer/fixed_scene_pose_results.json",
+      "source_sha256": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+      "installed_sha256": "c49b1f1663cdd33865dd89bd732be0a6df5e7c9af00b19e5fd1b04531f451e06",
+      "reason": "Old 3x3 frozen SAM6D fixed-scene poses (base assembly, tray, anchor), referenced by the tag1 manifest inside its task directory.",
+      "relocations": []
+    },
+    {
+      "source_path": "Beta_demo-codex-v0.9/jimu_tasks/tag2_arc_base/manifest.json",
+      "destination": "Beta_demo-codex-v0.9/jimu_tasks/tag2_arc_base/manifest.json",
+      "source_sha256": "c7e2c883400456a6cb91121f17b4cf60e61d5bd550dd4a6bab525f0d6bd1b309",
+      "installed_sha256": "48524fb5de9d7deb05a1fa67be37fca4595a37a047ec1c3155591d6fb4cde853",
+      "reason": "Arc base plate task manifest; tag_id 2. The imported copy relocates sam6d_fixed_scene_result_file into the task directory so the bundle is self-contained.",
+      "relocations": [
+        {
+          "kind": "json_text",
+          "from": "../../jimu_exported_scenes/virtual_tag2_builder_scene/full_scene_pose_results_tip_up.json",
+          "to": "full_scene_pose_results_tip_up.json",
+          "reason": "Keep the imported task directory self-contained; the old repository file is never modified."
+        }
+      ]
+    },
+    {
+      "source_path": "Beta_demo-codex-v0.9/jimu_tasks/tag2_arc_base/builder_scene.json",
+      "destination": "Beta_demo-codex-v0.9/jimu_tasks/tag2_arc_base/builder_scene.json",
+      "source_sha256": "965bfb1278c682be6900da8426abd71dfd4289c4bdb2f2278efca6033b273e61",
+      "installed_sha256": "965bfb1278c682be6900da8426abd71dfd4289c4bdb2f2278efca6033b273e61",
+      "reason": "Arc base plate builder scene: 19 pieces (7 locked arc pieces + 12 movable), schema jimu_builder_scene_v1, base arc_base.",
+      "relocations": []
+    },
+    {
+      "source_path": "Beta_demo-codex-v0.9/jimu_exported_scenes/virtual_tag2_builder_scene/full_scene_pose_results_tip_up.json",
+      "destination": "Beta_demo-codex-v0.9/jimu_tasks/tag2_arc_base/full_scene_pose_results_tip_up.json",
+      "source_sha256": "d1eb74e226b6bd48513e9220b2c7ee4aa7ea48a9f4965991d761b28d6d6cc14b",
+      "installed_sha256": "d1eb74e226b6bd48513e9220b2c7ee4aa7ea48a9f4965991d761b28d6d6cc14b",
+      "reason": "Arc base frozen SAM6D fixed-scene poses (tip-up triangle-tray orientation), imported into the tag2 task directory so the bundle is self-contained without touching the old repository.",
+      "relocations": []
+    }
+  ],
+  "old_repository_modified": false,
+  "write_attempted": true
+}

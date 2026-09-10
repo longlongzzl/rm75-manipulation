@@ -1,0 +1,1895 @@
+{
+  "schema": "jimu_builder_scene_v1",
+  "units": "meters",
+  "plate_size_m": 0.074,
+  "base": "3x3_centered_on_positioning_plate",
+  "apriltags": {
+    "schema": "jimu_builder_apriltags_v1",
+    "units": "meters",
+    "builder_frame": "x_right_y_up_z_forward",
+    "description": "AprilTag mount definitions plus optional imported real localization poses.",
+    "mounts": {
+      "base": {
+        "role": "base",
+        "object_name": "jimu_base_assembly",
+        "tag_id": 1,
+        "tag_family": "tag25h9",
+        "tag_black_square_size_m": 0.052,
+        "tag_top_height_from_table_m": 0.0075,
+        "local_frame": "base_positioning_center",
+        "local_pose": {
+          "center_m": [
+            0,
+            0.0075,
+            0
+          ],
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "tray": {
+        "role": "tray",
+        "object_name": "jimu_liaoban",
+        "tag_id": 0,
+        "tag_family": "tag25h9",
+        "tag_black_square_size_m": 0.06,
+        "tag_top_height_from_table_m": 0.005,
+        "local_frame": "tray_center_recess",
+        "local_pose": {
+          "center_m": [
+            0,
+            0.005,
+            0
+          ],
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        }
+      }
+    },
+    "attached_tags": [
+      {
+        "name": "base_tag_1",
+        "mount": "base",
+        "tag_id": 1,
+        "tag_family": "tag25h9",
+        "tag_black_square_size_m": 0.052,
+        "attached_to_role": "base_positioning_center",
+        "attached_to_piece_id": null,
+        "attached_surface": "piece_top",
+        "offset_frame": "piece_local_uv",
+        "local_center_m": [
+          0,
+          0.00325,
+          0
+        ],
+        "local_yaw_deg": 0,
+        "local_axes": {
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        "T_piece_tag": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0.00325
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "T_builder_tag": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0.0065
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+      "texture_mirror_u": false,
+      "texture_mirror_v": false,
+      "pnp_mirror_u": false,
+      "pnp_mirror_v": true
+    }
+    ],
+    "imported_poses": null
+  },
+  "robot": {
+    "schema": "jimu_builder_robot_execution_v1",
+    "backend_entrypoint": "Beta_demo-codex-v0.9/rm75_jimu_triangle_roof_apriltag_portable.py",
+    "builder_scene_arg": "--jimu-builder-scene-json",
+    "coordinate_frame": "builder_frame_x_right_y_up_z_forward",
+    "task_roles": [
+      "right_wall",
+      "back_wall",
+      "left_wall",
+      "front_wall",
+      "right_second_wall",
+      "back_second_wall",
+      "left_second_wall",
+      "front_second_wall",
+      "right_roof_triangle",
+      "back_roof_triangle",
+      "left_roof_triangle",
+      "front_roof_triangle"
+    ],
+    "locked_base_roles": [
+      "base_-1_-1",
+      "base_-1_0",
+      "base_-1_1",
+      "base_0_-1",
+      "base_positioning_center",
+      "base_0_1",
+      "base_1_-1",
+      "base_1_0",
+      "base_1_1"
+    ],
+    "piece_types": {
+      "right_wall": "square",
+      "back_wall": "square",
+      "left_wall": "square",
+      "front_wall": "square",
+      "right_second_wall": "square",
+      "back_second_wall": "square",
+      "left_second_wall": "square",
+      "front_second_wall": "square",
+      "right_roof_triangle": "triangle",
+      "back_roof_triangle": "triangle",
+      "left_roof_triangle": "triangle",
+      "front_roof_triangle": "triangle"
+    },
+    "apriltag_anchor": {
+      "base_tag_id": 1,
+      "base_tag_black_square_size_m": 0.052,
+      "tray_tag_id": 0,
+      "tray_tag_black_square_size_m": 0.06
+    },
+    "recommended_args": [
+      "--jimu-builder-scene-json",
+      "<path-to-this-json>",
+      "--jimu-apriltag-anchor-localization",
+      "--render-mode",
+      "human",
+      "--auto-execute"
+    ]
+  },
+  "pieces": [
+    {
+      "id": "base_-1_-1_1",
+      "role": "base_-1_-1",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": true,
+      "colorRole": "base",
+      "center": [
+        -0.074,
+        0.00325,
+        -0.074
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        1,
+        0
+      ],
+      "v": [
+        0,
+        0,
+        1
+      ],
+      "T_builder_piece": [
+        [
+          1,
+          0,
+          0,
+          -0.074
+        ],
+        [
+          0,
+          1,
+          0,
+          0.00325
+        ],
+        [
+          0,
+          0,
+          1,
+          -0.074
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "base_grid",
+      "parentId": null,
+      "parentRole": null,
+      "parentEdge": null,
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": null,
+      "snapMode": null
+    },
+    {
+      "id": "base_-1_0_2",
+      "role": "base_-1_0",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": true,
+      "colorRole": "base",
+      "center": [
+        -0.074,
+        0.00325,
+        0
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        1,
+        0
+      ],
+      "v": [
+        0,
+        0,
+        1
+      ],
+      "T_builder_piece": [
+        [
+          1,
+          0,
+          0,
+          -0.074
+        ],
+        [
+          0,
+          1,
+          0,
+          0.00325
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "base_grid",
+      "parentId": null,
+      "parentRole": null,
+      "parentEdge": null,
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": null,
+      "snapMode": null
+    },
+    {
+      "id": "base_-1_1_3",
+      "role": "base_-1_1",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": true,
+      "colorRole": "base",
+      "center": [
+        -0.074,
+        0.00325,
+        0.074
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        1,
+        0
+      ],
+      "v": [
+        0,
+        0,
+        1
+      ],
+      "T_builder_piece": [
+        [
+          1,
+          0,
+          0,
+          -0.074
+        ],
+        [
+          0,
+          1,
+          0,
+          0.00325
+        ],
+        [
+          0,
+          0,
+          1,
+          0.074
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "base_grid",
+      "parentId": null,
+      "parentRole": null,
+      "parentEdge": null,
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": null,
+      "snapMode": null
+    },
+    {
+      "id": "base_0_-1_4",
+      "role": "base_0_-1",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": true,
+      "colorRole": "base",
+      "center": [
+        0,
+        0.00325,
+        -0.074
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        1,
+        0
+      ],
+      "v": [
+        0,
+        0,
+        1
+      ],
+      "T_builder_piece": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0.00325
+        ],
+        [
+          0,
+          0,
+          1,
+          -0.074
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "base_grid",
+      "parentId": null,
+      "parentRole": null,
+      "parentEdge": null,
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": null,
+      "snapMode": null
+    },
+    {
+      "id": "base_positioning_center_5",
+      "role": "base_positioning_center",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": true,
+      "colorRole": "base",
+      "center": [
+        0,
+        0.00325,
+        0
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        1,
+        0
+      ],
+      "v": [
+        0,
+        0,
+        1
+      ],
+      "T_builder_piece": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0.00325
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "base_grid",
+      "parentId": null,
+      "parentRole": null,
+      "parentEdge": null,
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": null,
+      "snapMode": null
+    },
+    {
+      "id": "base_0_1_6",
+      "role": "base_0_1",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": true,
+      "colorRole": "base",
+      "center": [
+        0,
+        0.00325,
+        0.074
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        1,
+        0
+      ],
+      "v": [
+        0,
+        0,
+        1
+      ],
+      "T_builder_piece": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0.00325
+        ],
+        [
+          0,
+          0,
+          1,
+          0.074
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "base_grid",
+      "parentId": null,
+      "parentRole": null,
+      "parentEdge": null,
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": null,
+      "snapMode": null
+    },
+    {
+      "id": "base_1_-1_7",
+      "role": "base_1_-1",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": true,
+      "colorRole": "base",
+      "center": [
+        0.074,
+        0.00325,
+        -0.074
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        1,
+        0
+      ],
+      "v": [
+        0,
+        0,
+        1
+      ],
+      "T_builder_piece": [
+        [
+          1,
+          0,
+          0,
+          0.074
+        ],
+        [
+          0,
+          1,
+          0,
+          0.00325
+        ],
+        [
+          0,
+          0,
+          1,
+          -0.074
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "base_grid",
+      "parentId": null,
+      "parentRole": null,
+      "parentEdge": null,
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": null,
+      "snapMode": null
+    },
+    {
+      "id": "base_1_0_8",
+      "role": "base_1_0",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": true,
+      "colorRole": "base",
+      "center": [
+        0.074,
+        0.00325,
+        0
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        1,
+        0
+      ],
+      "v": [
+        0,
+        0,
+        1
+      ],
+      "T_builder_piece": [
+        [
+          1,
+          0,
+          0,
+          0.074
+        ],
+        [
+          0,
+          1,
+          0,
+          0.00325
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "base_grid",
+      "parentId": null,
+      "parentRole": null,
+      "parentEdge": null,
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": null,
+      "snapMode": null
+    },
+    {
+      "id": "base_1_1_9",
+      "role": "base_1_1",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": true,
+      "colorRole": "base",
+      "center": [
+        0.074,
+        0.00325,
+        0.074
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        1,
+        0
+      ],
+      "v": [
+        0,
+        0,
+        1
+      ],
+      "T_builder_piece": [
+        [
+          1,
+          0,
+          0,
+          0.074
+        ],
+        [
+          0,
+          1,
+          0,
+          0.00325
+        ],
+        [
+          0,
+          0,
+          1,
+          0.074
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "base_grid",
+      "parentId": null,
+      "parentRole": null,
+      "parentEdge": null,
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": null,
+      "snapMode": null
+    },
+    {
+      "id": "right_wall_10",
+      "role": "right_wall",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": false,
+      "colorRole": "",
+      "center": [
+        0.037,
+        0.04025,
+        0
+      ],
+      "u": [
+        0,
+        0,
+        1
+      ],
+      "n": [
+        1,
+        0,
+        0
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "T_builder_piece": [
+        [
+          0,
+          1,
+          0,
+          0.037
+        ],
+        [
+          0,
+          0,
+          1,
+          0.04025
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "preset",
+      "parentId": "base_positioning_center_5",
+      "parentRole": "base_positioning_center",
+      "parentEdge": "right",
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": [
+        [
+          0,
+          1,
+          0,
+          0.037
+        ],
+        [
+          0,
+          0,
+          1,
+          0.037
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "snapMode": "up"
+    },
+    {
+      "id": "back_wall_11",
+      "role": "back_wall",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": false,
+      "colorRole": "",
+      "center": [
+        0,
+        0.04025,
+        0.037
+      ],
+      "u": [
+        -1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        0,
+        1
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "T_builder_piece": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.04025
+        ],
+        [
+          0,
+          1,
+          0,
+          0.037
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "preset",
+      "parentId": "base_positioning_center_5",
+      "parentRole": "base_positioning_center",
+      "parentEdge": "top",
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.037
+        ],
+        [
+          0,
+          1,
+          0,
+          0.037
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "snapMode": "up"
+    },
+    {
+      "id": "left_wall_12",
+      "role": "left_wall",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": false,
+      "colorRole": "",
+      "center": [
+        -0.037,
+        0.04025,
+        0
+      ],
+      "u": [
+        0,
+        0,
+        -1
+      ],
+      "n": [
+        -1,
+        0,
+        0
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "T_builder_piece": [
+        [
+          0,
+          -1,
+          0,
+          -0.037
+        ],
+        [
+          0,
+          0,
+          1,
+          0.04025
+        ],
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "preset",
+      "parentId": "base_positioning_center_5",
+      "parentRole": "base_positioning_center",
+      "parentEdge": "left",
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": [
+        [
+          0,
+          -1,
+          0,
+          -0.037
+        ],
+        [
+          0,
+          0,
+          1,
+          0.037
+        ],
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "snapMode": "up"
+    },
+    {
+      "id": "front_wall_13",
+      "role": "front_wall",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": false,
+      "colorRole": "",
+      "center": [
+        0,
+        0.04025,
+        -0.037
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        0,
+        -1
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "T_builder_piece": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.04025
+        ],
+        [
+          0,
+          -1,
+          0,
+          -0.037
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "preset",
+      "parentId": "base_positioning_center_5",
+      "parentRole": "base_positioning_center",
+      "parentEdge": "bottom",
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.037
+        ],
+        [
+          0,
+          -1,
+          0,
+          -0.037
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "snapMode": "up"
+    },
+    {
+      "id": "right_second_wall_14",
+      "role": "right_second_wall",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": false,
+      "colorRole": "",
+      "center": [
+        0.037,
+        0.11425,
+        0
+      ],
+      "u": [
+        0,
+        0,
+        -1
+      ],
+      "n": [
+        -1,
+        0,
+        0
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "T_builder_piece": [
+        [
+          0,
+          -1,
+          0,
+          0.037
+        ],
+        [
+          0,
+          0,
+          1,
+          0.11425
+        ],
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "preset",
+      "parentId": "right_wall_10",
+      "parentRole": "right_wall",
+      "parentEdge": "top",
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          -1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.074
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "snapMode": "flat"
+    },
+    {
+      "id": "back_second_wall_15",
+      "role": "back_second_wall",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": false,
+      "colorRole": "",
+      "center": [
+        0,
+        0.11425,
+        0.037
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        0,
+        -1
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "T_builder_piece": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.11425
+        ],
+        [
+          0,
+          -1,
+          0,
+          0.037
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "preset",
+      "parentId": "back_wall_11",
+      "parentRole": "back_wall",
+      "parentEdge": "top",
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          -1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.074
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "snapMode": "flat"
+    },
+    {
+      "id": "left_second_wall_16",
+      "role": "left_second_wall",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": false,
+      "colorRole": "",
+      "center": [
+        -0.037,
+        0.11425,
+        0
+      ],
+      "u": [
+        0,
+        0,
+        1
+      ],
+      "n": [
+        1,
+        0,
+        0
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "T_builder_piece": [
+        [
+          0,
+          1,
+          0,
+          -0.037
+        ],
+        [
+          0,
+          0,
+          1,
+          0.11425
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "preset",
+      "parentId": "left_wall_12",
+      "parentRole": "left_wall",
+      "parentEdge": "top",
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          -1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.074
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "snapMode": "flat"
+    },
+    {
+      "id": "front_second_wall_17",
+      "role": "front_second_wall",
+      "type": "square",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.074
+      },
+      "locked": false,
+      "colorRole": "",
+      "center": [
+        0,
+        0.11425,
+        -0.037
+      ],
+      "u": [
+        -1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        0,
+        1
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "T_builder_piece": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.11425
+        ],
+        [
+          0,
+          1,
+          0,
+          -0.037
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "preset",
+      "parentId": "front_wall_13",
+      "parentRole": "front_wall",
+      "parentEdge": "top",
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          -1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.074
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "snapMode": "flat"
+    },
+    {
+      "id": "right_roof_triangle_18",
+      "role": "right_roof_triangle",
+      "type": "triangle",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.135
+      },
+      "locked": false,
+      "colorRole": "",
+      "center": [
+        0.037,
+        0.21875,
+        0
+      ],
+      "u": [
+        0,
+        0,
+        1
+      ],
+      "n": [
+        1,
+        0,
+        0
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "T_builder_piece": [
+        [
+          0,
+          1,
+          0,
+          0.037
+        ],
+        [
+          0,
+          0,
+          1,
+          0.21875
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "preset",
+      "parentId": "right_second_wall_14",
+      "parentRole": "right_second_wall",
+      "parentEdge": "top",
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          -1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.1045
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "snapMode": "flat"
+    },
+    {
+      "id": "back_roof_triangle_19",
+      "role": "back_roof_triangle",
+      "type": "triangle",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.135
+      },
+      "locked": false,
+      "colorRole": "",
+      "center": [
+        0,
+        0.21875,
+        0.037
+      ],
+      "u": [
+        -1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        0,
+        1
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "T_builder_piece": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.21875
+        ],
+        [
+          0,
+          1,
+          0,
+          0.037
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "preset",
+      "parentId": "back_second_wall_15",
+      "parentRole": "back_second_wall",
+      "parentEdge": "top",
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          -1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.1045
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "snapMode": "flat"
+    },
+    {
+      "id": "left_roof_triangle_20",
+      "role": "left_roof_triangle",
+      "type": "triangle",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.135
+      },
+      "locked": false,
+      "colorRole": "",
+      "center": [
+        -0.037,
+        0.21875,
+        0
+      ],
+      "u": [
+        0,
+        0,
+        -1
+      ],
+      "n": [
+        -1,
+        0,
+        0
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "T_builder_piece": [
+        [
+          0,
+          -1,
+          0,
+          -0.037
+        ],
+        [
+          0,
+          0,
+          1,
+          0.21875
+        ],
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "preset",
+      "parentId": "left_second_wall_16",
+      "parentRole": "left_second_wall",
+      "parentEdge": "top",
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          -1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.1045
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "snapMode": "flat"
+    },
+    {
+      "id": "front_roof_triangle_21",
+      "role": "front_roof_triangle",
+      "type": "triangle",
+      "dimensions_m": {
+        "width": 0.074,
+        "thickness": 0.0065,
+        "height": 0.135
+      },
+      "locked": false,
+      "colorRole": "",
+      "center": [
+        0,
+        0.21875,
+        -0.037
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "n": [
+        0,
+        0,
+        -1
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "T_builder_piece": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.21875
+        ],
+        [
+          0,
+          -1,
+          0,
+          -0.037
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "source": "preset",
+      "parentId": "front_second_wall_17",
+      "parentRole": "front_second_wall",
+      "parentEdge": "top",
+      "childAttachEdge": "bottom",
+      "parentRelativeTransform": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          -1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0.1045
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "snapMode": "flat"
+    }
+  ]
+}

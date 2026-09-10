@@ -77,6 +77,24 @@ def jimu_lift_trial_args(task, enabled):
     return ['--joint-search-start-collision-lift-m', '0.103']
 
 
+def pickplace_lift_target_args(task, value):
+    """PickPlace SIM: explicit joint-search lift target in meters.
+
+    The pinned native default is 0.080 m (0.030 in-code fallback). Only the
+    commanded joint-start TCP-up lift target changes; grasp/place relations,
+    collision spheres, buffers, seeds and success thresholds stay at their
+    production values. The whole loaded path is re-validated by the unchanged
+    transport contact policy.
+    """
+    if value is None:
+        return []
+    if task != 'pickplace':
+        raise ValueError('The explicit lift-target trial is PickPlace SIM only')
+    if not 0.030 <= value <= 0.200:
+        raise ValueError('Lift target must stay within 0.030..0.200 m')
+    return ['--joint-search-start-collision-lift-m', f'{value:.3f}']
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--task',choices=('pickplace','magnetic'),required=True)
@@ -100,6 +118,9 @@ def main():
         help='Static original robot/tool views of every observed IK row; no candidate or solver changes')
     parser.add_argument('--failed-object-ik-seeds',type=int,choices=(128,256),
         help='Frozen PickPlace SIM: retry failed glue/sweet-potato IK at identical goals')
+    parser.add_argument('--pickplace-lift-target-m',type=float,default=None,
+        help='Frozen PickPlace SIM: explicit joint-search lift target (0.030..0.200 m); '
+             'production default 0.080 m; no collision or success relaxation')
     inputs=parser.add_mutually_exclusive_group()
     inputs.add_argument('--fixed-sam6d',type=Path)
     inputs.add_argument('--fixed-world',type=Path,help='Original T_world_obj scene; PickPlace SIM direct entry only')
@@ -125,6 +146,10 @@ def main():
             or args.fixed_world is None or args.fixed_world.resolve()!=ROOT/'assets/test_scenes/current_table.json'):
         parser.error('Tennis IK review requires the original current-table Tennis SIM')
     if args.jimu_lift_plus_3mm and args.task!='magnetic':parser.error('The +3 mm lift trial is Jimu SIM only')
+    if args.pickplace_lift_target_m is not None and args.task!='pickplace':
+        parser.error('The explicit lift-target trial is PickPlace SIM only')
+    if args.pickplace_lift_target_m is not None and not 0.030<=args.pickplace_lift_target_m<=0.200:
+        parser.error('PickPlace lift target must stay within 0.030..0.200 m')
     if args.audit_roof_ik and args.task!='magnetic':parser.error('Roof IK diagnostics are Jimu SIM only')
     if args.audit_current_table_failures and (args.task!='pickplace'
             or not set(args.cycle_order or [args.object_name]) & {'gluestick','hongshupian','tennis'}
@@ -168,6 +193,7 @@ def main():
     section['native_args']=['--curobo-torch-extensions-dir',str(args.extensions.resolve()),
         '--camera-extrinsic-opencv-path',str(ROOT/'assets/calibration/camera_extrinsic_opencv.npy')]
     section['native_args']+=jimu_lift_trial_args(args.task,args.jimu_lift_plus_3mm)
+    section['native_args']+=pickplace_lift_target_args(args.task,args.pickplace_lift_target_m)
     if args.task=='magnetic':
         section['native_args']+=['--jimu-build-layers','two','--jimu-second-layer-triangle-profile',
                                  '--no-jimu-demo-triangle-apriltag']
@@ -186,6 +212,7 @@ def main():
     report['adapter_source_sha256']={str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest()
         for path in sorted((ROOT/'rm75_app/workcell').glob('*.py'))}
     report['jimu_joint_search_lift_trial_m']=.103 if args.jimu_lift_plus_3mm else None
+    report['pickplace_joint_search_lift_m']=args.pickplace_lift_target_m
     report['original_task_bundle_sha256']=bundle_hashes
     report['original_task_bundle_read_only']=bool(bundle)
     report['documented_start_comparison']=documented_start

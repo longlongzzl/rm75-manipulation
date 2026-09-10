@@ -110,3 +110,31 @@ def test_lift_cli_rejects_other_tasks_before_starting_service(monkeypatch,tmp_pa
     monkeypatch.setattr(runner,'verify_snapshot',lambda *args:pytest.fail('Should reject before loading native code'))
     with pytest.raises(SystemExit) as exc:runner.main()
     assert exc.value.code==2 and not (tmp_path/'unused').exists()
+
+
+def test_pickplace_lift_target_is_single_explicit_argv_pair():
+    from tools.run_workcell_native_validation import pickplace_lift_target_args
+    assert pickplace_lift_target_args('pickplace',None)==[]
+    argv=pickplace_lift_target_args('pickplace',.12)
+    assert argv==['--joint-search-start-collision-lift-m','0.120']
+    assert len(argv)==2  # nothing else: same collisions, seeds and thresholds
+
+
+def test_pickplace_lift_target_guards_task_and_range():
+    from tools.run_workcell_native_validation import pickplace_lift_target_args
+    with pytest.raises(ValueError,match='PickPlace SIM only'):
+        pickplace_lift_target_args('magnetic',.12)
+    for value in (.029,.201):
+        with pytest.raises(ValueError,match='0.030..0.200'):
+            pickplace_lift_target_args('pickplace',value)
+
+
+def test_pickplace_lift_cli_rejects_bad_range_or_task_before_service(monkeypatch,tmp_path):
+    import tools.run_workcell_native_validation as runner
+    for argv in (['--task','magnetic','--pickplace-lift-target-m','0.12'],
+                 ['--task','pickplace','--pickplace-lift-target-m','0.21']):
+        monkeypatch.setattr(runner.sys,'argv',['runner',*argv,
+            '--output',str(tmp_path/'unused'),'--extensions',str(tmp_path)])
+        monkeypatch.setattr(runner,'verify_snapshot',lambda *args:pytest.fail('Should reject before loading native code'))
+        with pytest.raises(SystemExit) as exc:runner.main()
+        assert exc.value.code==2 and not (tmp_path/'unused').exists()

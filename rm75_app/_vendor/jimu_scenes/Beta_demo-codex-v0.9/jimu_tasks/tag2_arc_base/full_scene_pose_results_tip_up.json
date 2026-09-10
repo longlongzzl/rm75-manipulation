@@ -1,0 +1,3791 @@
+{
+  "scene_dir": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_exported_scenes/virtual_tag2_builder_scene",
+  "object_count": 2,
+  "ok_count": 2,
+  "results": [
+    {
+      "object_name": "jimu_base_assembly",
+      "prompt": "apriltag geometric anchor",
+      "run_dir": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_exported_scenes/virtual_tag2_builder_scene/01_jimu_base_assembly",
+      "ok": true,
+      "score": 1.0,
+      "sam3_instance_index": 0,
+      "mask_source": "apriltag_25h9",
+      "mask_pixels": 0,
+      "T_cam_obj": [
+        [
+          0.5357370376586914,
+          -0.009204589761793613,
+          -0.8443347215652466,
+          0.05280572548508644
+        ],
+        [
+          0.345324844121933,
+          -0.9101069569587708,
+          0.2290329486131668,
+          0.2057400941848755
+        ],
+        [
+          -0.7705430388450623,
+          -0.41427117586135864,
+          -0.4843994081020355,
+          0.7134084105491638
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation_m": [
+        0.05280572548508644,
+        0.2057400941848755,
+        0.7134084105491638
+      ],
+      "jimu_apriltag_anchor": {
+        "tag_id": 2,
+        "object_name": "jimu_base_assembly",
+        "tag_size_m": 0.052,
+        "tag_yaw_deg": 0.0,
+        "tray_center_offset_xy_m": [
+          0.0,
+          0.0
+        ],
+        "image_corners_px": [
+          [
+            378.0793151855469,
+            396.55657958984375
+          ],
+          [
+            406.30633544921875,
+            420.3113098144531
+          ],
+          [
+            368.6722412109375,
+            437.6156311035156
+          ],
+          [
+            344.3172912597656,
+            411.57958984375
+          ]
+        ],
+        "object_corners_m": [
+          [
+            0.052219340800729125,
+            0.00625,
+            -0.08784133338931341
+          ],
+          [
+            0.08835413903730832,
+            0.00625,
+            -0.050447799771832
+          ],
+          [
+            0.050960605419826915,
+            0.00625,
+            -0.014313001535252803
+          ],
+          [
+            0.014825807183247719,
+            0.00625,
+            -0.05170653515273421
+          ]
+        ],
+        "object_tag_center_m": [
+          0.05158997311027802,
+          0.00625,
+          -0.05107716746228311
+        ],
+        "translation_m": [
+          0.05280572548508644,
+          0.2057400941848755,
+          0.7134084105491638
+        ],
+        "solve_pnp_flag": "SOLVEPNP_ITERATIVE",
+        "solve_pnp_reprojection_error_px": 0.7065213918685913,
+        "solve_pnp_point_errors_px": [
+          0.780456006526947,
+          0.6797609329223633,
+          0.6342343091964722,
+          0.7316341996192932
+        ],
+        "world_xy_offset": {
+          "world_xy_offset_m": [
+            -0.0,
+            -0.0
+          ],
+          "applied": false
+        },
+        "translation_m_after_world_xy_offset": [
+          0.05280572548508644,
+          0.2057400941848755,
+          0.7134084105491638
+        ],
+        "builder_scene_json": "/home/zhangzhao/Downloads/jimu_builder_scene_2026-06-02_10_20_46.json",
+        "builder_tag_source": "attached_tags.T_builder_tag"
+      }
+    },
+    {
+      "object_name": "jimu_liaoban",
+      "prompt": "apriltag geometric anchor",
+      "run_dir": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_exported_scenes/virtual_tag2_builder_scene/02_jimu_liaoban",
+      "ok": true,
+      "score": 1.0,
+      "sam3_instance_index": 1,
+      "mask_source": "apriltag_25h9",
+      "mask_pixels": 0,
+      "T_cam_obj": [
+        [
+          -0.5091474652290344,
+          -0.8602202534675598,
+          -0.02810557186603546,
+          -0.12555664777755737
+        ],
+        [
+          -0.3186284005641937,
+          0.21872374415397644,
+          -0.9222992062568665,
+          0.1888851672410965
+        ],
+        [
+          0.7995278239250183,
+          -0.46063104271888733,
+          -0.3854532539844513,
+          0.7167242765426636
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation_m": [
+        -0.12555664777755737,
+        0.1888851672410965,
+        0.7167242765426636
+      ],
+      "jimu_apriltag_anchor": {
+        "tag_id": 0,
+        "object_name": "jimu_liaoban",
+        "tag_size_m": 0.06,
+        "tag_yaw_deg": 90.0,
+        "tray_center_offset_xy_m": [
+          0.0,
+          0.0
+        ],
+        "image_corners_px": [
+          [
+            127.01811981201172,
+            386.6219177246094
+          ],
+          [
+            76.49744415283203,
+            402.4596862792969
+          ],
+          [
+            67.8320083618164,
+            378.2513427734375
+          ],
+          [
+            116.50044250488281,
+            363.2353515625
+          ]
+        ],
+        "object_corners_m": [
+          [
+            0.0912499949336052,
+            0.08499999344348907,
+            0.004999999888241291
+          ],
+          [
+            0.0912499949336052,
+            0.14499999582767487,
+            0.004999999888241291
+          ],
+          [
+            0.1512499898672104,
+            0.14499999582767487,
+            0.004999999888241291
+          ],
+          [
+            0.1512499898672104,
+            0.08499999344348907,
+            0.004999999888241291
+          ]
+        ],
+        "object_tag_center_m": [
+          0.12124998867511749,
+          0.11499999463558197,
+          0.004999999888241291
+        ],
+        "translation_m": [
+          -0.1310272365808487,
+          0.1883317083120346,
+          0.7180531620979309
+        ],
+        "solve_pnp_flag": "SOLVEPNP_ITERATIVE",
+        "solve_pnp_reprojection_error_px": 0.3438202440738678,
+        "solve_pnp_point_errors_px": [
+          0.3266139626502991,
+          0.31862327456474304,
+          0.360478937625885,
+          0.36956489086151123
+        ],
+        "world_xy_offset": {
+          "world_xy_offset_m": [
+            0.004000000189989805,
+            -0.004000000189989805
+          ],
+          "applied": true,
+          "base_translation_before_m": [
+            -0.15070870518684387,
+            -0.13514107465744019,
+            0.0070577263832092285
+          ],
+          "base_translation_after_m": [
+            -0.14670871198177338,
+            -0.13914106786251068,
+            0.0070577263832092285
+          ]
+        },
+        "translation_m_after_world_xy_offset": [
+          -0.12555664777755737,
+          0.1888851672410965,
+          0.7167242765426636
+        ]
+      }
+    }
+  ],
+  "jimu_apriltag_anchor_localization": {
+    "enabled": true,
+    "family": "tag25h9",
+    "config": {
+      "base_id": 2,
+      "tray_id": 0,
+      "base_size_m": 0.052,
+      "tray_size_m": 0.06,
+      "base_yaw_deg": 0.0,
+      "tray_yaw_deg": 90.0,
+      "tray_center_offset_x_m": 0.0,
+      "tray_center_offset_y_m": 0.0,
+      "base_world_offset_x_m": -0.0,
+      "base_world_offset_y_m": -0.0,
+      "tray_world_offset_x_m": 0.004,
+      "tray_world_offset_y_m": -0.004,
+      "builder_scene_json": "/home/zhangzhao/Downloads/jimu_builder_scene_2026-06-02_10_20_46.json"
+    },
+    "detected_tag_ids": [
+      0,
+      2
+    ],
+    "overlay_path": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/sam6d_jimu_direct_runs/20260602_150325_apriltag_anchor_2objects_pid511004/apriltag_anchor_overlay.png",
+    "frame_dir": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/sam6d_jimu_direct_runs/20260602_150325_apriltag_anchor_2objects_pid511004/shared_frame",
+    "tray_projection_diagnostic": {
+      "ok": true,
+      "mode": "current_pose_projection_only",
+      "scores_path": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/sam6d_jimu_direct_runs/20260602_150325_apriltag_anchor_2objects_pid511004/tray_projection_diagnostic/tray_offset_fit_scores.json",
+      "overlay_path": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/sam6d_jimu_direct_runs/20260602_150325_apriltag_anchor_2objects_pid511004/tray_projection_diagnostic/tray_offset_fit_overlay.png",
+      "median_px": null,
+      "mean_px": null,
+      "visible_samples": 560,
+      "z_err_m": 0.001328885555267334,
+      "contour_warning": "color contour scoring disabled"
+    }
+  },
+  "jimu_expanded_scene": {
+    "schema": "jimu_expanded_scene_v1",
+    "description": "Derived base/tray/slot poses from the two assembly anchors. Root results remain the reusable provider anchors.",
+    "base_anchor_name": "jimu_base_assembly",
+    "tray_anchor_name": "jimu_liaoban",
+    "table_top_z_m": 0.0,
+    "plate_extents_m": [
+      0.07400000095367432,
+      0.006000000052154064,
+      0.07400000095367432
+    ],
+    "tray_slot_roles": [
+      "square_8",
+      "square_9",
+      "square_10",
+      "square_11",
+      "square_12",
+      "square_13",
+      "square_14",
+      "square_15",
+      "square_16",
+      "triangle_17",
+      "triangle_19",
+      "triangle_18",
+      "jimu_spare_slot_09",
+      "jimu_spare_slot_10"
+    ],
+    "base_roles": [
+      "floor",
+      "arc_triangle_0",
+      "arc_square_1",
+      "arc_triangle_2",
+      "arc_square_3",
+      "arc_triangle_4",
+      "arc_square_5",
+      "arc_triangle_6"
+    ],
+    "pick_roles": [
+      "square_8",
+      "square_9",
+      "square_10",
+      "square_11",
+      "square_12",
+      "square_13",
+      "square_14",
+      "square_15",
+      "square_16",
+      "triangle_17",
+      "triangle_19",
+      "triangle_18"
+    ],
+    "anchor_results": [
+      {
+        "object_name": "jimu_base_assembly",
+        "ok": true,
+        "kind": "anchor_base_assembly",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            0.037173252552747726,
+            0.0,
+            -0.9993088245391846,
+            0.0022142231464385986
+          ],
+          [
+            -0.9993088245391846,
+            0.0,
+            -0.037173252552747726,
+            -0.2375900149345398
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.003000000026077032
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.5357298851013184,
+            -0.008087709546089172,
+            -0.8443506956100464,
+            0.0527137815952301
+          ],
+          [
+            0.34450066089630127,
+            -0.9108518958091736,
+            0.227306067943573,
+            0.19538477063179016
+          ],
+          [
+            -0.7709167003631592,
+            -0.4126540422439575,
+            -0.4851844310760498,
+            0.7087169885635376
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.0527137815952301,
+          0.19538477063179016,
+          0.7087169885635376
+        ],
+        "object_spec_name": "jimu_base_assembly",
+        "grounding_prompt": "red cross shaped base assembly made of five square plastic building plates.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/jimu_base_assembly_5plates.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/jimu_base_assembly_5plates.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_square_plate"
+      },
+      {
+        "object_name": "jimu_liaoban",
+        "ok": true,
+        "kind": "anchor_tray",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            -0.006712143309414387,
+            -0.9999774694442749,
+            0.0,
+            -0.14670871198177338
+          ],
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.13914108276367188
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.004999999888241291
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            -0.5097581744194031,
+            -0.8602797389030457,
+            -0.008087709546089172,
+            -0.12553995847702026
+          ],
+          [
+            -0.35126563906669617,
+            0.21670538187026978,
+            -0.9108518958091736,
+            0.19075946509838104
+          ],
+          [
+            0.7853400111198425,
+            -0.4614733159542084,
+            -0.4126540422439575,
+            0.717573344707489
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.12553995847702026,
+          0.19075946509838104,
+          0.717573344707489
+        ],
+        "object_spec_name": "jimu_liaoban",
+        "grounding_prompt": "gray plastic tray with slots for red building plates.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/jimu_liaoban_new/jimu_liaoban_new.obj",
+        "mesh_scale": 0.01,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/jimu_liaoban_new/jimu_liaoban_new.obj",
+        "sim_asset_scale": 0.01,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_square_plate"
+      }
+    ],
+    "role_results": {
+      "floor": {
+        "object_name": "floor",
+        "ok": true,
+        "kind": "base_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            0.037173252552747726,
+            0.0,
+            -0.9993088245391846,
+            0.0022142231464385986
+          ],
+          [
+            -0.9993088245391846,
+            0.0,
+            -0.037173252552747726,
+            -0.2375900149345398
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.003000000026077032
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.5357298851013184,
+            -0.008087709546089172,
+            -0.8443506956100464,
+            0.0527137815952301
+          ],
+          [
+            0.34450066089630127,
+            -0.9108518958091736,
+            0.227306067943573,
+            0.19538477063179016
+          ],
+          [
+            -0.7709167003631592,
+            -0.4126540422439575,
+            -0.4851844310760498,
+            0.7087169885635376
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.0527137815952301,
+          0.19538477063179016,
+          0.7087169885635376
+        ],
+        "object_spec_name": "floor",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate"
+      },
+      "arc_triangle_0": {
+        "object_name": "arc_triangle_0",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            0.037173252552747726,
+            0.0,
+            -0.9993088245391846,
+            0.09089004993438721
+          ],
+          [
+            -0.9993088245391846,
+            0.0,
+            -0.037173252552747726,
+            -0.11466668546199799
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.5357298851013184,
+            -0.008087709546089172,
+            -0.8443506956100464,
+            0.06732524931430817
+          ],
+          [
+            0.34450066089630127,
+            -0.9108518958091736,
+            0.227306067943573,
+            0.13006091117858887
+          ],
+          [
+            -0.7709167003631592,
+            -0.4126540422439575,
+            -0.4851844310760498,
+            0.8447442054748535
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.06732524931430817,
+          0.13006091117858887,
+          0.8447442054748535
+        ],
+        "object_spec_name": "arc_triangle_0",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle"
+      },
+      "arc_square_1": {
+        "object_name": "arc_square_1",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            -0.22829227149486542,
+            0.0,
+            0.9735926389694214,
+            0.11524917185306549
+          ],
+          [
+            -0.9735926389694214,
+            0.0,
+            -0.2282922863960266,
+            -0.17670805752277374
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.2934918701648712,
+            0.008087709546089172,
+            0.9559273719787598,
+            0.11963091790676117
+          ],
+          [
+            0.3923308551311493,
+            0.9108518958091736,
+            -0.12816104292869568,
+            0.1467224657535553
+          ],
+          [
+            -0.871744692325592,
+            0.4126540422439575,
+            0.2641546428203583,
+            0.8069419860839844
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.11963091790676117,
+          0.1467224657535553,
+          0.8069419860839844
+        ],
+        "object_spec_name": "arc_square_1",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate"
+      },
+      "arc_triangle_2": {
+        "object_name": "arc_triangle_2",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            -0.47751903533935547,
+            0.0,
+            -0.8786213994026184,
+            0.0658503845334053
+          ],
+          [
+            -0.8786213994026184,
+            0.0,
+            0.47751903533935547,
+            -0.22145429253578186
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.03037632815539837,
+            -0.008087709546089172,
+            -0.9995057582855225,
+            0.09951695799827576
+          ],
+          [
+            0.4122532904148102,
+            -0.9108518958091736,
+            0.019899310544133186,
+            0.1730932742357254
+          ],
+          [
+            -0.9105626940727234,
+            -0.4126540422439575,
+            -0.02433423511683941,
+            0.7491278648376465
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.09951695799827576,
+          0.1730932742357254,
+          0.7491278648376465
+        ],
+        "object_spec_name": "arc_triangle_2",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle"
+      },
+      "arc_square_3": {
+        "object_name": "arc_square_3",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            -0.6927775144577026,
+            0.0,
+            0.7211513519287109,
+            0.055173687636852264
+          ],
+          [
+            -0.7211513519287109,
+            0.0,
+            -0.6927775144577026,
+            -0.28724566102027893
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            -0.23489902913570404,
+            0.008087709546089172,
+            0.9719860553741455,
+            0.12345270812511444
+          ],
+          [
+            0.40285077691078186,
+            0.9108518958091736,
+            0.08977755904197693,
+            0.19858717918395996
+          ],
+          [
+            -0.8846092820167542,
+            0.4126540422439575,
+            -0.21721631288528442,
+            0.6923860311508179
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.12345270812511444,
+          0.19858717918395996,
+          0.6923860311508179
+        ],
+        "object_spec_name": "arc_square_3",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate"
+      },
+      "arc_triangle_4": {
+        "object_name": "arc_triangle_4",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            -0.858756959438324,
+            0.0,
+            -0.5123831033706665,
+            -0.010135787539184093
+          ],
+          [
+            -0.5123831033706665,
+            0.0,
+            0.858756959438324,
+            -0.3005526065826416
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            -0.48346590995788574,
+            -0.008087709546089172,
+            -0.8753257989883423,
+            0.07375243306159973
+          ],
+          [
+            0.364792138338089,
+            -0.9108518958091736,
+            -0.1930685043334961,
+            0.217279314994812
+          ],
+          [
+            -0.7957306504249573,
+            -0.4126540422439575,
+            0.44331610202789307,
+            0.6521009206771851
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.07375243306159973,
+          0.217279314994812,
+          0.6521009206771851
+        ],
+        "object_spec_name": "arc_triangle_4",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle"
+      },
+      "arc_square_5": {
+        "object_name": "arc_square_5",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            -0.9636500477790833,
+            0.0,
+            0.2671675682067871,
+            -0.05286473035812378
+          ],
+          [
+            -0.2671675682067871,
+            0.0,
+            -0.9636500477790833,
+            -0.3517073392868042
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            -0.6976420879364014,
+            0.008087709546089172,
+            0.7164007425308228,
+            0.06262879073619843
+          ],
+          [
+            0.3007846772670746,
+            0.9108518958091736,
+            0.2826257646083832,
+            0.24448084831237793
+          ],
+          [
+            -0.6502492427825928,
+            0.4126540422439575,
+            -0.6378811597824097,
+            0.592276930809021
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.06262879073619843,
+          0.24448084831237793,
+          0.592276930809021
+        ],
+        "object_spec_name": "arc_square_5",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate"
+      },
+      "arc_triangle_6": {
+        "object_name": "arc_triangle_6",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            -0.9999957084655762,
+            0.0,
+            -0.002947123721241951,
+            -0.11583349853754044
+          ],
+          [
+            -0.002947126980870962,
+            0.0,
+            0.9999957084655762,
+            -0.3298569917678833
+          ],
+          [
+            0.0,
+            1.0000001192092896,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            -0.8621929287910461,
+            -0.008087710477411747,
+            -0.5065155625343323,
+            -0.0027681663632392883
+          ],
+          [
+            0.21538132429122925,
+            -0.9108520150184631,
+            -0.3520790636539459,
+            0.2502708435058594
+          ],
+          [
+            -0.45851320028305054,
+            -0.4126541018486023,
+            0.787071943283081,
+            0.5807783603668213
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.0027681663632392883,
+          0.2502708435058594,
+          0.5807783603668213
+        ],
+        "object_spec_name": "arc_triangle_6",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle"
+      },
+      "square_8": {
+        "object_name": "square_8",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.1868068128824234
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.12465990334749222
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.16783404350280762
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.15325817465782166
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.6921287775039673
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.16783404350280762,
+          0.15325817465782166,
+          0.6921287775039673
+        ],
+        "object_spec_name": "square_8",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 0
+      },
+      "square_9": {
+        "object_name": "square_9",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.18705852329730988
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.08716075122356415
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.1869499683380127
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.14008571207523346
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.7215790152549744
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.1869499683380127,
+          0.14008571207523346,
+          0.7215790152549744
+        ],
+        "object_spec_name": "square_9",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 1
+      },
+      "square_10": {
+        "object_name": "square_10",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.18731021881103516
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.04966159909963608
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.20606589317321777
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.12691324949264526
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.7510292530059814
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.20606589317321777,
+          0.12691324949264526,
+          0.7510292530059814
+        ],
+        "object_spec_name": "square_10",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 2
+      },
+      "square_11": {
+        "object_name": "square_11",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.18756192922592163
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.012162446975708008
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.22518183290958405
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.11374079436063766
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.7804795503616333
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.22518183290958405,
+          0.11374079436063766,
+          0.7804795503616333
+        ],
+        "object_spec_name": "square_11",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 3
+      },
+      "square_12": {
+        "object_name": "square_12",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.1878136396408081
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            0.02533671259880066
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.24429775774478912
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.10056833177804947
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.8099297881126404
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.24429775774478912,
+          0.10056833177804947,
+          0.8099297881126404
+        ],
+        "object_spec_name": "square_12",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 4
+      },
+      "square_13": {
+        "object_name": "square_13",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.18806535005569458
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            0.06283585727214813
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.2634136974811554
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.08739587664604187
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.8393800258636475
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.2634136974811554,
+          0.08739587664604187,
+          0.8393800258636475
+        ],
+        "object_spec_name": "square_13",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 5
+      },
+      "square_14": {
+        "object_name": "square_14",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.18831704556941986
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            0.1003350019454956
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.2825295925140381
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.07422341406345367
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.8688302636146545
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.2825295925140381,
+          0.07422341406345367,
+          0.8688302636146545
+        ],
+        "object_spec_name": "square_14",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 6
+      },
+      "square_15": {
+        "object_name": "square_15",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.3368034362792969
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.12566672265529633
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.2968759834766388
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.18576398491859436
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.6229077577590942
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.2968759834766388,
+          0.18576398491859436,
+          0.6229077577590942
+        ],
+        "object_spec_name": "square_15",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 7
+      },
+      "square_16": {
+        "object_name": "square_16",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.33705511689186096
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.08816757053136826
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.31599190831184387
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.17259152233600616
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.6523580551147461
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.31599190831184387,
+          0.17259152233600616,
+          0.6523580551147461
+        ],
+        "object_spec_name": "square_16",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 8
+      },
+      "triangle_17": {
+        "object_name": "triangle_17",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.33730682730674744
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.050668418407440186
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.08050000667572021
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.3353545069694519
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.1316380798816681
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.669222354888916
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.3353545069694519,
+          0.1316380798816681,
+          0.669222354888916
+        ],
+        "object_spec_name": "triangle_17",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle",
+        "jimu_tray_slot_index": 9
+      },
+      "triangle_19": {
+        "object_name": "triangle_19",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.3375585377216339
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.013169258832931519
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.08050000667572021
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.35447046160697937
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.1184656098484993
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.6986725926399231
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.35447046160697937,
+          0.1184656098484993,
+          0.6986725926399231
+        ],
+        "object_spec_name": "triangle_19",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle",
+        "jimu_tray_slot_index": 10
+      },
+      "triangle_18": {
+        "object_name": "triangle_18",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.337810218334198
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            0.02432990074157715
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.08050000667572021
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.37358635663986206
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.1052931398153305
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.7281228303909302
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.37358635663986206,
+          0.1052931398153305,
+          0.7281228303909302
+        ],
+        "object_spec_name": "triangle_18",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle",
+        "jimu_tray_slot_index": 11
+      },
+      "jimu_spare_slot_09": {
+        "object_name": "jimu_spare_slot_09",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.3380619287490845
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            0.06182904541492462
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.3924556076526642
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.11990167200565338
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.7701590061187744
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.3924556076526642,
+          0.11990167200565338,
+          0.7701590061187744
+        ],
+        "object_spec_name": "jimu_spare_slot_09",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 12
+      },
+      "jimu_spare_slot_10": {
+        "object_name": "jimu_spare_slot_10",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.33831363916397095
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            0.0993281900882721
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.41157156229019165
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.10672921687364578
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.7996093034744263
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.41157156229019165,
+          0.10672921687364578,
+          0.7996093034744263
+        ],
+        "object_spec_name": "jimu_spare_slot_10",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 13
+      }
+    },
+    "results": [
+      {
+        "object_name": "jimu_base_assembly",
+        "ok": true,
+        "kind": "anchor_base_assembly",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            0.037173252552747726,
+            0.0,
+            -0.9993088245391846,
+            0.0022142231464385986
+          ],
+          [
+            -0.9993088245391846,
+            0.0,
+            -0.037173252552747726,
+            -0.2375900149345398
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.003000000026077032
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.5357298851013184,
+            -0.008087709546089172,
+            -0.8443506956100464,
+            0.0527137815952301
+          ],
+          [
+            0.34450066089630127,
+            -0.9108518958091736,
+            0.227306067943573,
+            0.19538477063179016
+          ],
+          [
+            -0.7709167003631592,
+            -0.4126540422439575,
+            -0.4851844310760498,
+            0.7087169885635376
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.0527137815952301,
+          0.19538477063179016,
+          0.7087169885635376
+        ],
+        "object_spec_name": "jimu_base_assembly",
+        "grounding_prompt": "red cross shaped base assembly made of five square plastic building plates.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/jimu_base_assembly_5plates.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/jimu_base_assembly_5plates.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_square_plate"
+      },
+      {
+        "object_name": "jimu_liaoban",
+        "ok": true,
+        "kind": "anchor_tray",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            -0.006712143309414387,
+            -0.9999774694442749,
+            0.0,
+            -0.14670871198177338
+          ],
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.13914108276367188
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.004999999888241291
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            -0.5097581744194031,
+            -0.8602797389030457,
+            -0.008087709546089172,
+            -0.12553995847702026
+          ],
+          [
+            -0.35126563906669617,
+            0.21670538187026978,
+            -0.9108518958091736,
+            0.19075946509838104
+          ],
+          [
+            0.7853400111198425,
+            -0.4614733159542084,
+            -0.4126540422439575,
+            0.717573344707489
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.12553995847702026,
+          0.19075946509838104,
+          0.717573344707489
+        ],
+        "object_spec_name": "jimu_liaoban",
+        "grounding_prompt": "gray plastic tray with slots for red building plates.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/jimu_liaoban_new/jimu_liaoban_new.obj",
+        "mesh_scale": 0.01,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/jimu_liaoban_new/jimu_liaoban_new.obj",
+        "sim_asset_scale": 0.01,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_square_plate"
+      },
+      {
+        "object_name": "floor",
+        "ok": true,
+        "kind": "base_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            0.037173252552747726,
+            0.0,
+            -0.9993088245391846,
+            0.0022142231464385986
+          ],
+          [
+            -0.9993088245391846,
+            0.0,
+            -0.037173252552747726,
+            -0.2375900149345398
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.003000000026077032
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.5357298851013184,
+            -0.008087709546089172,
+            -0.8443506956100464,
+            0.0527137815952301
+          ],
+          [
+            0.34450066089630127,
+            -0.9108518958091736,
+            0.227306067943573,
+            0.19538477063179016
+          ],
+          [
+            -0.7709167003631592,
+            -0.4126540422439575,
+            -0.4851844310760498,
+            0.7087169885635376
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.0527137815952301,
+          0.19538477063179016,
+          0.7087169885635376
+        ],
+        "object_spec_name": "floor",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate"
+      },
+      {
+        "object_name": "arc_triangle_0",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            0.037173252552747726,
+            0.0,
+            -0.9993088245391846,
+            0.09089004993438721
+          ],
+          [
+            -0.9993088245391846,
+            0.0,
+            -0.037173252552747726,
+            -0.11466668546199799
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.5357298851013184,
+            -0.008087709546089172,
+            -0.8443506956100464,
+            0.06732524931430817
+          ],
+          [
+            0.34450066089630127,
+            -0.9108518958091736,
+            0.227306067943573,
+            0.13006091117858887
+          ],
+          [
+            -0.7709167003631592,
+            -0.4126540422439575,
+            -0.4851844310760498,
+            0.8447442054748535
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.06732524931430817,
+          0.13006091117858887,
+          0.8447442054748535
+        ],
+        "object_spec_name": "arc_triangle_0",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle"
+      },
+      {
+        "object_name": "arc_square_1",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            -0.22829227149486542,
+            0.0,
+            0.9735926389694214,
+            0.11524917185306549
+          ],
+          [
+            -0.9735926389694214,
+            0.0,
+            -0.2282922863960266,
+            -0.17670805752277374
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.2934918701648712,
+            0.008087709546089172,
+            0.9559273719787598,
+            0.11963091790676117
+          ],
+          [
+            0.3923308551311493,
+            0.9108518958091736,
+            -0.12816104292869568,
+            0.1467224657535553
+          ],
+          [
+            -0.871744692325592,
+            0.4126540422439575,
+            0.2641546428203583,
+            0.8069419860839844
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.11963091790676117,
+          0.1467224657535553,
+          0.8069419860839844
+        ],
+        "object_spec_name": "arc_square_1",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate"
+      },
+      {
+        "object_name": "arc_triangle_2",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            -0.47751903533935547,
+            0.0,
+            -0.8786213994026184,
+            0.0658503845334053
+          ],
+          [
+            -0.8786213994026184,
+            0.0,
+            0.47751903533935547,
+            -0.22145429253578186
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.03037632815539837,
+            -0.008087709546089172,
+            -0.9995057582855225,
+            0.09951695799827576
+          ],
+          [
+            0.4122532904148102,
+            -0.9108518958091736,
+            0.019899310544133186,
+            0.1730932742357254
+          ],
+          [
+            -0.9105626940727234,
+            -0.4126540422439575,
+            -0.02433423511683941,
+            0.7491278648376465
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.09951695799827576,
+          0.1730932742357254,
+          0.7491278648376465
+        ],
+        "object_spec_name": "arc_triangle_2",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle"
+      },
+      {
+        "object_name": "arc_square_3",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            -0.6927775144577026,
+            0.0,
+            0.7211513519287109,
+            0.055173687636852264
+          ],
+          [
+            -0.7211513519287109,
+            0.0,
+            -0.6927775144577026,
+            -0.28724566102027893
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            -0.23489902913570404,
+            0.008087709546089172,
+            0.9719860553741455,
+            0.12345270812511444
+          ],
+          [
+            0.40285077691078186,
+            0.9108518958091736,
+            0.08977755904197693,
+            0.19858717918395996
+          ],
+          [
+            -0.8846092820167542,
+            0.4126540422439575,
+            -0.21721631288528442,
+            0.6923860311508179
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.12345270812511444,
+          0.19858717918395996,
+          0.6923860311508179
+        ],
+        "object_spec_name": "arc_square_3",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate"
+      },
+      {
+        "object_name": "arc_triangle_4",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            -0.858756959438324,
+            0.0,
+            -0.5123831033706665,
+            -0.010135787539184093
+          ],
+          [
+            -0.5123831033706665,
+            0.0,
+            0.858756959438324,
+            -0.3005526065826416
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            -0.48346590995788574,
+            -0.008087709546089172,
+            -0.8753257989883423,
+            0.07375243306159973
+          ],
+          [
+            0.364792138338089,
+            -0.9108518958091736,
+            -0.1930685043334961,
+            0.217279314994812
+          ],
+          [
+            -0.7957306504249573,
+            -0.4126540422439575,
+            0.44331610202789307,
+            0.6521009206771851
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.07375243306159973,
+          0.217279314994812,
+          0.6521009206771851
+        ],
+        "object_spec_name": "arc_triangle_4",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle"
+      },
+      {
+        "object_name": "arc_square_5",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            -0.9636500477790833,
+            0.0,
+            0.2671675682067871,
+            -0.05286473035812378
+          ],
+          [
+            -0.2671675682067871,
+            0.0,
+            -0.9636500477790833,
+            -0.3517073392868042
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            -0.6976420879364014,
+            0.008087709546089172,
+            0.7164007425308228,
+            0.06262879073619843
+          ],
+          [
+            0.3007846772670746,
+            0.9108518958091736,
+            0.2826257646083832,
+            0.24448084831237793
+          ],
+          [
+            -0.6502492427825928,
+            0.4126540422439575,
+            -0.6378811597824097,
+            0.592276930809021
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.06262879073619843,
+          0.24448084831237793,
+          0.592276930809021
+        ],
+        "object_spec_name": "arc_square_5",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate"
+      },
+      {
+        "object_name": "arc_triangle_6",
+        "ok": true,
+        "kind": "base_support_plate",
+        "source": "jimu_base_assembly",
+        "T_base_obj": [
+          [
+            -0.9999957084655762,
+            0.0,
+            -0.002947123721241951,
+            -0.11583349853754044
+          ],
+          [
+            -0.002947126980870962,
+            0.0,
+            0.9999957084655762,
+            -0.3298569917678833
+          ],
+          [
+            0.0,
+            1.0000001192092896,
+            0.0,
+            0.0062500000931322575
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            -0.8621929287910461,
+            -0.008087710477411747,
+            -0.5065155625343323,
+            -0.0027681663632392883
+          ],
+          [
+            0.21538132429122925,
+            -0.9108520150184631,
+            -0.3520790636539459,
+            0.2502708435058594
+          ],
+          [
+            -0.45851320028305054,
+            -0.4126541018486023,
+            0.787071943283081,
+            0.5807783603668213
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.0027681663632392883,
+          0.2502708435058594,
+          0.5807783603668213
+        ],
+        "object_spec_name": "arc_triangle_6",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle"
+      },
+      {
+        "object_name": "square_8",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.1868068128824234
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.12465990334749222
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.16783404350280762
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.15325817465782166
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.6921287775039673
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.16783404350280762,
+          0.15325817465782166,
+          0.6921287775039673
+        ],
+        "object_spec_name": "square_8",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 0
+      },
+      {
+        "object_name": "square_9",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.18705852329730988
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.08716075122356415
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.1869499683380127
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.14008571207523346
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.7215790152549744
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.1869499683380127,
+          0.14008571207523346,
+          0.7215790152549744
+        ],
+        "object_spec_name": "square_9",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 1
+      },
+      {
+        "object_name": "square_10",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.18731021881103516
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.04966159909963608
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.20606589317321777
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.12691324949264526
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.7510292530059814
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.20606589317321777,
+          0.12691324949264526,
+          0.7510292530059814
+        ],
+        "object_spec_name": "square_10",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 2
+      },
+      {
+        "object_name": "square_11",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.18756192922592163
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.012162446975708008
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.22518183290958405
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.11374079436063766
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.7804795503616333
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.22518183290958405,
+          0.11374079436063766,
+          0.7804795503616333
+        ],
+        "object_spec_name": "square_11",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 3
+      },
+      {
+        "object_name": "square_12",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.1878136396408081
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            0.02533671259880066
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.24429775774478912
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.10056833177804947
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.8099297881126404
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.24429775774478912,
+          0.10056833177804947,
+          0.8099297881126404
+        ],
+        "object_spec_name": "square_12",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 4
+      },
+      {
+        "object_name": "square_13",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.18806535005569458
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            0.06283585727214813
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.2634136974811554
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.08739587664604187
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.8393800258636475
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.2634136974811554,
+          0.08739587664604187,
+          0.8393800258636475
+        ],
+        "object_spec_name": "square_13",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 5
+      },
+      {
+        "object_name": "square_14",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.18831704556941986
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            0.1003350019454956
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.2825295925140381
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.07422341406345367
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.8688302636146545
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.2825295925140381,
+          0.07422341406345367,
+          0.8688302636146545
+        ],
+        "object_spec_name": "square_14",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 6
+      },
+      {
+        "object_name": "square_15",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.3368034362792969
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.12566672265529633
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.2968759834766388
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.18576398491859436
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.6229077577590942
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.2968759834766388,
+          0.18576398491859436,
+          0.6229077577590942
+        ],
+        "object_spec_name": "square_15",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 7
+      },
+      {
+        "object_name": "square_16",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.33705511689186096
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.08816757053136826
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.31599190831184387
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.17259152233600616
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.6523580551147461
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.31599190831184387,
+          0.17259152233600616,
+          0.6523580551147461
+        ],
+        "object_spec_name": "square_16",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 8
+      },
+      {
+        "object_name": "triangle_17",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.33730682730674744
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.050668418407440186
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.08050000667572021
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.3353545069694519
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.1316380798816681
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.669222354888916
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.3353545069694519,
+          0.1316380798816681,
+          0.669222354888916
+        ],
+        "object_spec_name": "triangle_17",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle",
+        "jimu_tray_slot_index": 9
+      },
+      {
+        "object_name": "triangle_19",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.3375585377216339
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            -0.013169258832931519
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.08050000667572021
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.35447046160697937
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.1184656098484993
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.6986725926399231
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.35447046160697937,
+          0.1184656098484993,
+          0.6986725926399231
+        ],
+        "object_spec_name": "triangle_19",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle",
+        "jimu_tray_slot_index": 10
+      },
+      {
+        "object_name": "triangle_18",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.337810218334198
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            0.02432990074157715
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.08050000667572021
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.37358635663986206
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.1052931398153305
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.7281228303909302
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.37358635663986206,
+          0.1052931398153305,
+          0.7281228303909302
+        ],
+        "object_spec_name": "triangle_18",
+        "grounding_prompt": "red isosceles triangle building panel.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "mesh_scale": 1.0,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Demo_Triangle/red_triangle_74x135x6p5.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "topdown_long_axis",
+        "jimu_shape": "red_triangle",
+        "jimu_tray_slot_index": 11
+      },
+      {
+        "object_name": "jimu_spare_slot_09",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.3380619287490845
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            0.06182904541492462
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.3924556076526642
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.11990167200565338
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.7701590061187744
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.3924556076526642,
+          0.11990167200565338,
+          0.7701590061187744
+        ],
+        "object_spec_name": "jimu_spare_slot_09",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 12
+      },
+      {
+        "object_name": "jimu_spare_slot_10",
+        "ok": true,
+        "kind": "tray_slot_plate",
+        "source": "jimu_liaoban",
+        "T_base_obj": [
+          [
+            0.9999774694442749,
+            -0.006712143309414387,
+            0.0,
+            -0.33831363916397095
+          ],
+          [
+            0.006712143309414387,
+            0.9999774694442749,
+            0.0,
+            0.0993281900882721
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.05000000074505806
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_cam_obj": [
+          [
+            0.8602797389030457,
+            -0.5097581744194031,
+            -0.008087709546089172,
+            -0.41157156229019165
+          ],
+          [
+            -0.21670538187026978,
+            -0.35126563906669617,
+            -0.9108518958091736,
+            0.10672921687364578
+          ],
+          [
+            0.4614733159542084,
+            0.7853400111198425,
+            -0.4126540422439575,
+            0.7996093034744263
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.41157156229019165,
+          0.10672921687364578,
+          0.7996093034744263
+        ],
+        "object_spec_name": "jimu_spare_slot_10",
+        "grounding_prompt": "small square plastic building block.",
+        "mesh_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_cube.glb",
+        "mesh_scale": 0.1,
+        "sim_asset_file": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_portable_repro/assets/red_jimu_plate_74x6x74.glb",
+        "sim_asset_scale": 1.0,
+        "grasp_mode": "object_normal",
+        "jimu_shape": "red_square_plate",
+        "jimu_tray_slot_index": 13
+      }
+    ]
+  }
+}

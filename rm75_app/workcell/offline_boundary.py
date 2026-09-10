@@ -10,10 +10,35 @@ def isolate_task_worker(spec, events):
         return False
     if mode not in ('preview', 'sim'):
         raise ValueError('Unknown task mode at offline worker boundary')
-    from tools.run_network_isolated import block_network
+    block_network = _load_network_filter()
     # Installation/self-test failure propagates to the worker's failed result.
     block_network()
     events.emit('worker_network_isolation_active', mode=mode,
                 non_unix_network_denied=True, kernel_filter_inherited_by_children=True,
                 serial_usb_isolated=False, hardware_authorized=False)
     return True
+
+
+def _load_network_filter():
+    """Load the existing seccomp filter, keeping the normal import when possible.
+
+    The worker may run with an app-root that is not this repository (service
+    test fixtures symlink rm75_app only), where `import tools` fails. In that
+    case resolve this module's own file through symlinks to the real repository
+    root, where tools/run_network_isolated.py lives. The plain import stays
+    primary so tests and callers can patch tools.run_network_isolated directly.
+    """
+    try:
+        from tools.run_network_isolated import block_network
+        return block_network
+    except ImportError:
+        pass
+    import importlib.util
+    from pathlib import Path
+    module_path = Path(__file__).resolve().parents[2] / 'tools' / 'run_network_isolated.py'
+    if not module_path.is_file():
+        raise RuntimeError('Network isolation filter module is missing; refusing to dispatch')
+    spec = importlib.util.spec_from_file_location('_workcell_network_filter', module_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.block_network

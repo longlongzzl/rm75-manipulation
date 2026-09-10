@@ -16,7 +16,7 @@ def rank_pushes(*args, **kwargs):
 
 class PushTController:
     def __init__(self, observer, executor, config: Config, stop, events, *, real=False,
-                 clock=None, wait=None, verification=None, control_policy=None):
+                 clock=None, wait=None, verification=None, control_policy=None, disturb=None):
         self.observer=observer; self.executor=executor; self.config=config
         self.stop=stop; self.events=events; self.real=real
         self.clock=clock or time.time; self.wait=wait or stop.wait
@@ -28,6 +28,10 @@ class PushTController:
         self.control=SessionControl(events, control_policy)
         self.interactive=(control_policy is not None or self.control.root is not None and
                           (self.control.root/'session_policy.json').is_file())
+        # Optional per-step hook: move the target externally before the next
+        # observation (explicit scripted disturbance tests only). Returns True
+        # when a disturbance was actually applied.
+        self.disturb=disturb
 
     def _observe(self, after, previous):
         self.stop.check(); self.control.check_budget()
@@ -86,13 +90,20 @@ class PushTController:
                 if self._pause_boundary():
                     pending_response=None; best=None; stagnant=0; need_stability=True
                     self.events.emit('push_response_discarded', reason='explicit_operator_intervention')
+                disturbed=self.disturb(step) if self.disturb is not None else False
                 obs=self._observe(after, previous)
                 if need_stability:
                     obs=self._stable_observation(obs); need_stability=False
                 previous=obs
                 if pending_response is not None:
                     before, executed, epoch=pending_response; pending_response=None
-                    if response_is_plausible(before, executed, obs.pose, intervention=epoch != self.control.epoch):
+                    if disturbed:
+                        # A scripted external move between the executed push and
+                        # this observation invalidates the transition by
+                        # definition; fitting it would poison the calibration.
+                        self.events.emit('response_fit_skipped', reason='external_disturbance_after_push',
+                                         observation_sequence=obs.sequence)
+                    elif response_is_plausible(before, executed, obs.pose, intervention=epoch != self.control.epoch):
                         fit=response.update(before, executed, obs.pose)
                         self.events.emit('push_response_fitted', fit=fit, source=self.verification,
                                          observation_sequence=obs.sequence)

@@ -1,0 +1,294 @@
+{
+  "scene_dir": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/sam6d_jimu_direct_runs/20260602_150325_apriltag_anchor_2objects_pid511004",
+  "object_count": 2,
+  "ok_count": 2,
+  "results": [
+    {
+      "object_name": "jimu_base_assembly",
+      "prompt": "apriltag geometric anchor",
+      "run_dir": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/sam6d_jimu_direct_runs/20260602_150325_apriltag_anchor_2objects_pid511004/01_jimu_base_assembly",
+      "ok": true,
+      "score": 1.0,
+      "sam3_instance_index": 0,
+      "mask_source": "apriltag_25h9",
+      "mask_pixels": 0,
+      "T_cam_obj": [
+        [
+          0.5357370376586914,
+          -0.009204589761793613,
+          -0.8443347215652466,
+          0.05280572548508644
+        ],
+        [
+          0.345324844121933,
+          -0.9101069569587708,
+          0.2290329486131668,
+          0.2057400941848755
+        ],
+        [
+          -0.7705430388450623,
+          -0.41427117586135864,
+          -0.4843994081020355,
+          0.7134084105491638
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation_m": [
+        0.05280572548508644,
+        0.2057400941848755,
+        0.7134084105491638
+      ],
+      "jimu_apriltag_anchor": {
+        "tag_id": 1,
+        "object_name": "jimu_base_assembly",
+        "tag_size_m": 0.052,
+        "tag_yaw_deg": 0.0,
+        "tray_center_offset_xy_m": [
+          0.0,
+          0.0
+        ],
+        "image_corners_px": [
+          [
+            378.0793151855469,
+            396.55657958984375
+          ],
+          [
+            406.30633544921875,
+            420.3113098144531
+          ],
+          [
+            368.6722412109375,
+            437.6156311035156
+          ],
+          [
+            344.3172912597656,
+            411.57958984375
+          ]
+        ],
+        "object_corners_m": [
+          [
+            -0.026000000536441803,
+            0.007499999832361937,
+            -0.026000000536441803
+          ],
+          [
+            0.026000000536441803,
+            0.007499999832361937,
+            -0.026000000536441803
+          ],
+          [
+            0.026000000536441803,
+            0.007499999832361937,
+            0.026000000536441803
+          ],
+          [
+            -0.026000000536441803,
+            0.007499999832361937,
+            0.026000000536441803
+          ]
+        ],
+        "object_tag_center_m": [
+          0.0,
+          0.007499999832361937,
+          0.0
+        ],
+        "translation_m": [
+          0.05280572548508644,
+          0.2057400941848755,
+          0.7134084105491638
+        ],
+        "solve_pnp_flag": "SOLVEPNP_ITERATIVE",
+        "solve_pnp_reprojection_error_px": 0.7065213918685913,
+        "solve_pnp_point_errors_px": [
+          0.780456006526947,
+          0.6797609329223633,
+          0.6342343091964722,
+          0.7316341996192932
+        ],
+        "world_xy_offset": {
+          "world_xy_offset_m": [
+            -0.0,
+            -0.0
+          ],
+          "applied": false
+        },
+        "translation_m_after_world_xy_offset": [
+          0.05280572548508644,
+          0.2057400941848755,
+          0.7134084105491638
+        ]
+      }
+    },
+    {
+      "object_name": "jimu_liaoban",
+      "prompt": "apriltag geometric anchor",
+      "run_dir": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/sam6d_jimu_direct_runs/20260602_150325_apriltag_anchor_2objects_pid511004/02_jimu_liaoban",
+      "ok": true,
+      "score": 1.0,
+      "sam3_instance_index": 1,
+      "mask_source": "apriltag_25h9",
+      "mask_pixels": 0,
+      "T_cam_obj": [
+        [
+          -0.5091474652290344,
+          -0.8602202534675598,
+          -0.02810557186603546,
+          -0.12555664777755737
+        ],
+        [
+          -0.3186284005641937,
+          0.21872374415397644,
+          -0.9222992062568665,
+          0.1888851672410965
+        ],
+        [
+          0.7995278239250183,
+          -0.46063104271888733,
+          -0.3854532539844513,
+          0.7167242765426636
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation_m": [
+        -0.12555664777755737,
+        0.1888851672410965,
+        0.7167242765426636
+      ],
+      "jimu_apriltag_anchor": {
+        "tag_id": 0,
+        "object_name": "jimu_liaoban",
+        "tag_size_m": 0.06,
+        "tag_yaw_deg": 90.0,
+        "tray_center_offset_xy_m": [
+          0.0,
+          0.0
+        ],
+        "image_corners_px": [
+          [
+            127.01811981201172,
+            386.6219177246094
+          ],
+          [
+            76.49744415283203,
+            402.4596862792969
+          ],
+          [
+            67.8320083618164,
+            378.2513427734375
+          ],
+          [
+            116.50044250488281,
+            363.2353515625
+          ]
+        ],
+        "object_corners_m": [
+          [
+            0.0912499949336052,
+            0.08499999344348907,
+            0.004999999888241291
+          ],
+          [
+            0.0912499949336052,
+            0.14499999582767487,
+            0.004999999888241291
+          ],
+          [
+            0.1512499898672104,
+            0.14499999582767487,
+            0.004999999888241291
+          ],
+          [
+            0.1512499898672104,
+            0.08499999344348907,
+            0.004999999888241291
+          ]
+        ],
+        "object_tag_center_m": [
+          0.12124998867511749,
+          0.11499999463558197,
+          0.004999999888241291
+        ],
+        "translation_m": [
+          -0.1310272365808487,
+          0.1883317083120346,
+          0.7180531620979309
+        ],
+        "solve_pnp_flag": "SOLVEPNP_ITERATIVE",
+        "solve_pnp_reprojection_error_px": 0.3438202440738678,
+        "solve_pnp_point_errors_px": [
+          0.3266139626502991,
+          0.31862327456474304,
+          0.360478937625885,
+          0.36956489086151123
+        ],
+        "world_xy_offset": {
+          "world_xy_offset_m": [
+            0.004000000189989805,
+            -0.004000000189989805
+          ],
+          "applied": true,
+          "base_translation_before_m": [
+            -0.15070870518684387,
+            -0.13514107465744019,
+            0.0070577263832092285
+          ],
+          "base_translation_after_m": [
+            -0.14670871198177338,
+            -0.13914106786251068,
+            0.0070577263832092285
+          ]
+        },
+        "translation_m_after_world_xy_offset": [
+          -0.12555664777755737,
+          0.1888851672410965,
+          0.7167242765426636
+        ]
+      }
+    }
+  ],
+  "jimu_apriltag_anchor_localization": {
+    "enabled": true,
+    "family": "tag25h9",
+    "config": {
+      "base_id": 1,
+      "tray_id": 0,
+      "base_size_m": 0.052,
+      "tray_size_m": 0.06,
+      "base_yaw_deg": 0.0,
+      "tray_yaw_deg": 90.0,
+      "tray_center_offset_x_m": 0.0,
+      "tray_center_offset_y_m": 0.0,
+      "base_world_offset_x_m": -0.0,
+      "base_world_offset_y_m": -0.0,
+      "tray_world_offset_x_m": 0.004,
+      "tray_world_offset_y_m": -0.004
+    },
+    "detected_tag_ids": [
+      0,
+      1
+    ],
+    "overlay_path": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/sam6d_jimu_direct_runs/20260602_150325_apriltag_anchor_2objects_pid511004/apriltag_anchor_overlay.png",
+    "frame_dir": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/sam6d_jimu_direct_runs/20260602_150325_apriltag_anchor_2objects_pid511004/shared_frame",
+    "tray_projection_diagnostic": {
+      "ok": true,
+      "mode": "current_pose_projection_only",
+      "scores_path": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/sam6d_jimu_direct_runs/20260602_150325_apriltag_anchor_2objects_pid511004/tray_projection_diagnostic/tray_offset_fit_scores.json",
+      "overlay_path": "/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/sam6d_jimu_direct_runs/20260602_150325_apriltag_anchor_2objects_pid511004/tray_projection_diagnostic/tray_offset_fit_overlay.png",
+      "median_px": null,
+      "mean_px": null,
+      "visible_samples": 560,
+      "z_err_m": 0.001328885555267334,
+      "contour_warning": "color contour scoring disabled"
+    }
+  }
+}
