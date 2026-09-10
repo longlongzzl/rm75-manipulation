@@ -31,6 +31,8 @@ class PushTController:
         # Optional per-step hook: move the target externally before the next
         # observation (explicit scripted disturbance tests only). Returns True
         # when a disturbance was actually applied.
+        if real and disturb is not None:
+            raise PermissionError('Scripted target disturbance is simulation-only')
         self.disturb=disturb
 
     def _observe(self, after, previous):
@@ -55,7 +57,9 @@ class PushTController:
         count=0
         self.control.state('waiting_for_stability', pose=obs.pose)
         while count < self.config.success_observations:
-            self._pause_boundary()
+            if self._pause_boundary():
+                # Even a move returning to the same pose starts a new evidence window.
+                count=0
             self.wait(self.control.policy.poll_s)
             if self.verification == 'physics_pose': self.stop.wait(.02)
             latest=self._observe(obs.captured_at, obs)
@@ -91,6 +95,14 @@ class PushTController:
                     pending_response=None; best=None; stagnant=0; need_stability=True
                     self.events.emit('push_response_discarded', reason='explicit_operator_intervention')
                 disturbed=self.disturb(step) if self.disturb is not None else False
+                if disturbed:
+                    # Merge the scripted hook into the same scene epoch as UI
+                    # interventions, including resetting the old stagnation score.
+                    self.control.epoch+=1
+                    invalidate_prepared(self.executor)
+                    best=None; stagnant=0; need_stability=True
+                    self.events.emit('push_plan_invalidated', reason='scripted_external_disturbance',
+                                     scene_epoch=self.control.epoch)
                 obs=self._observe(after, previous)
                 if need_stability:
                     obs=self._stable_observation(obs); need_stability=False
@@ -132,6 +144,12 @@ class PushTController:
                             steps=step, final_observation=obs.as_dict(), model_validated_on_robot=False,
                             success_observations=self.config.success_observations,
                             external_scene_epochs=self.control.epoch)
+                    if need_stability:
+                        # A pause/move inside confirmation invalidates its old
+                        # observation. Do not fall through into planning with it.
+                        invalidate_prepared(self.executor); pending_response=None
+                        best=None; stagnant=0; previous=obs; after=obs.captured_at
+                        continue
                     score=error(obs.pose, target, self.config)
                 if step >= self.config.max_steps and not self.control.policy.run_until_goal:
                     raise RuntimeError('maximum_push_count_reached')

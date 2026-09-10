@@ -13,7 +13,7 @@ import uuid
 
 from .io import atomic_json, read_json, integer
 from rm75_app.magnetic.generation import load_library, catalog_summary, generate
-from rm75_app.magnetic.llm_client import JsonChatClient
+from rm75_app.magnetic.completion_provider import completion_client
 from rm75_app.pusht.scenarios import sample_scenarios, configured_model, GEOMETRY_FIELDS
 from rm75_app.pusht.model import valid_pose
 from .transforms import vector
@@ -40,7 +40,7 @@ class IterationAPI:
         except (ValueError, OSError, KeyError, TypeError):
             catalog=[]; errors.append('Original grid/arc template library is not installed or failed validation')
         try:
-            llm=JsonChatClient(self.service.profile.get('magnetic',{}).get('llm',{})).readiness()
+            llm=completion_client(self.service.profile.get('magnetic',{}).get('llm',{})).readiness()
         except (ValueError, TypeError):
             llm={'configured':False,'missing':['valid server-side LLM settings']}
         variants=self.service.profile.get('pusht',{}).get('physics',{}).get('geometry_variants',{})
@@ -63,7 +63,7 @@ class IterationAPI:
         integer(request.get('piece_budget',12),'piece_budget',1,12)
         if not isinstance(request.get('prompt'),str) or not 1<=len(request['prompt'].strip())<=1500:
             raise ValueError('Describe the structure in 1..1500 characters')
-        complete=self.completion or JsonChatClient(self.service.profile.get('magnetic',{}).get('llm',{}))
+        complete=self.completion or completion_client(self.service.profile.get('magnetic',{}).get('llm',{}))
         if self.completion is None and not complete.readiness()['configured']:
             raise ValueError('Configure the server LLM before generating a design')
         with self._lock:

@@ -1,0 +1,55 @@
+{
+  "schema": "rm75.review_13a5cb8.v1",
+  "reviewed_commit": "13a5cb84aafd7f90043b5e4a097cb12f8c449dfb",
+  "tests": {
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0,
+    "source": "partial_hash_verified_tree",
+    "baseline_controller_tests": {
+      "passed": 4,
+      "failed": 5
+    }
+  },
+  "compileall": "PASS",
+  "full_repository_tests": "NOT_RUN",
+  "llm": "MOCK_SDK_ONLY",
+  "browser": "NOT_RUN_STATIC_API_WIRING_ONLY",
+  "GPU": "NOT_RUN",
+  "physics": "NOT_RUN",
+  "hardware_connected": false,
+  "network_isolation_blob": "4d374ce155d84f222007f50d20ba401f7b12a65b",
+  "python": "3.13.5",
+  "files": {
+    "rm75_app/magnetic/completion_provider.py": {
+      "bytes": 9314,
+      "git_blob": "65acfe15c5ea524b2c9c88d027200e771b8a1565",
+      "sha256": "ac2c6b03698ad00e95180e29136bb471fecdbddd80a257f4eff83b52de3a8724"
+    },
+    "rm75_app/workcell/iteration_api.py": {
+      "bytes": 9822,
+      "git_blob": "66cca9b57ef3338d62fd538c73bc718864ae6ba8",
+      "sha256": "b7fab4676fa2f12d78e76dbb284db3d88e48c6ff019a784dc4a9d91ab5a85023"
+    },
+    "rm75_app/pusht/controller.py": {
+      "bytes": 14061,
+      "git_blob": "0abf51dbd5fd5b726be6935f88d1b63c11bf7b1e",
+      "sha256": "6365430690f3bea82c9778541a4e37f073cd6806003024d676fde3338cb3b386"
+    },
+    "tests/test_pusht_merge_epoch_review.py": {
+      "bytes": 5744,
+      "git_blob": "3327a09174ccc6926ccd98ced06603b546c8bdd7",
+      "sha256": "8913f0bd99b9b3e0acbb5975d3bbf5bd7c2a9888cd2fe81967a2cde1fa408c2c"
+    },
+    "tests/test_jimu_completion_provider_review.py": {
+      "bytes": 6372,
+      "git_blob": "b53390f2cc5ff1a8dbc87926e3dcf79e7cd3c9bc",
+      "sha256": "84dd85c07abce2901b9d914a4e4bf12d8fa2b37754809ad8ef7efa6dbee5b30b"
+    },
+    "docs/CHATGPT_REVIEW_13A5CB8_WORKFLOW_20260910.md": {
+      "bytes": 12972,
+      "git_blob": "ac3afec84a4fbda02ee3055fe2e1ce21be07b3b3",
+      "sha256": "e41b95f06475f5a163ff02254fba3cbc7f30bc87b69d0eafef50902b83692935"
+    }
+  }
+}
