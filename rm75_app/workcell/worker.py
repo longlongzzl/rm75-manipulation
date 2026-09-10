@@ -121,6 +121,8 @@ def main(argv=None):
     profile=read_json(args.profile);spec=validate_spec(read_json(run_dir/'request.json'),profile)
     result=None
     try:
+        from .offline_boundary import isolate_task_worker
+        isolate_task_worker(spec,events)
         if spec['mode']=='real':
             if not args.real_authorized or profile.get('hardware',{}).get('hardware_reviewed') is not True:
                 raise PermissionError('Real execution is not authorized')

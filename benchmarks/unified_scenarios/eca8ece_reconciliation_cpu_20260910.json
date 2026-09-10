@@ -1,0 +1,56 @@
+{
+  "schema": "rm75.eca8ece_reconciliation_tests/v1",
+  "user_commit": "eca8ece3aa6aa86155cd34b2e4b5e59b471a1632",
+  "patch_base": "fae8a5ee522564cc9bdbf26195ccdd3ebf19e3dd",
+  "tests": {
+    "passed": 31,
+    "failed": 0,
+    "elapsed_s": 0.67,
+    "scope": "two targeted contract suites in a partial source tree",
+    "network": "existing kernel seccomp launcher",
+    "native_producer": "AST method only; helper functions replaced, no vendor imports"
+  },
+  "compileall": "PASS",
+  "full_repository_tests": "NOT_RUN",
+  "browser": "NOT_RUN",
+  "live_llm": "NOT_RUN",
+  "gpu_physx": "NOT_RUN",
+  "hardware_connected": false,
+  "files": {
+    "rm75_app/workcell/iteration_workflows.py": {
+      "bytes": 6273,
+      "git_blob": "4683587929b2c00012a8700ef88a2d62d36f6d41",
+      "sha256": "1384ff754576eb57257417a24f85d67baab0b92c40ccad17f8ad22a1d1e5fda0"
+    },
+    "rm75_app/workcell/sequence_evidence.py": {
+      "bytes": 2710,
+      "git_blob": "a27346d516d45add0a077f60084e0a30a437e279",
+      "sha256": "48e779b1a3a378dbc84f7707c767036149ef5d503433a7810f687a1dd79f31c5"
+    },
+    "rm75_app/workcell/worker.py": {
+      "bytes": 9593,
+      "git_blob": "269a087f8e4f7687160b626370668ea66e2b3e73",
+      "sha256": "0ca0b63d95bb964854f12023526ce72e7f735f05d0516172abf5d7a80560b4f7"
+    },
+    "rm75_app/workcell/offline_boundary.py": {
+      "bytes": 934,
+      "git_blob": "c6352417b971684e57cc39a827fd8adb60dc316e",
+      "sha256": "05c67d78feabc48eb54ce282e8dd05b6891b56028b0228b8f513964713575cce"
+    },
+    "tests/test_iteration_sequence_reconciliation.py": {
+      "bytes": 6946,
+      "git_blob": "8efc38e56668e970c1e8ccae0777d5c536213ae3",
+      "sha256": "20c4f447e5f521b3826a9c5cba12b56bfcae22f0e0a74d253af59af6c78041b2"
+    },
+    "tests/test_iteration_offline_boundary.py": {
+      "bytes": 3351,
+      "git_blob": "a6371cce82d1a7b4b039aa4f586558ee311b6414",
+      "sha256": "e16f087e468071ba2ca24e0dd0ac96fd0d3ad02e1831238f167c86ecfdc6d3f1"
+    },
+    "docs/CHATGPT_REVIEW_ECA8ECE_AND_NEXT_STEPS_20260910.md": {
+      "bytes": 13208,
+      "git_blob": "790c581b194fd9ef1b914b63e830ab20e264f249",
+      "sha256": "7202ed702e4b965d9be17e5e740ba6015d5dc34615f41833fbef07c8b5fd4fee"
+    }
+  }
+}

@@ -24,7 +24,12 @@ def prepare_request(spec, profile, run_dir=None):
         if spec['mode']!='sim' or section.get('fixed_scene_format')!='native_world':
             raise PermissionError('Multi-object native sequence currently requires frozen-world SIM')
         names=ordered_sources(params['object_names'], params.get('automatic_order',False))
-        section['frozen_source_order']=names
+        # The native contract accepts a sequence only when it has >=2 sources.
+        # One selection is a normal single-object task, not a one-item cycle.
+        if len(names)>1:
+            section['frozen_source_order']=names
+        else:
+            section.pop('frozen_source_order',None)
         spec['parameters']={'object_name':names[0]}
     elif spec['task']=='magnetic' and 'generation_proof' in spec['parameters']:
         from rm75_app.magnetic.generation import load_library,validate_generated_request
@@ -65,18 +70,8 @@ def prepare_request(spec, profile, run_dir=None):
 
 
 def completion_summary(result, requested):
-    data=result.get('native_full_world_validation',{})
-    outcomes=data.get('source_outcomes',[])
-    completed=[]
-    for name in requested:
-        if any(r.get('source')==name and r.get('success') is True and
-               r.get('foreground') is True and not r.get('prefetch_capture_only',False) for r in outcomes):
-            completed.append(name)
-    return dict(requested=list(requested), native_completed=completed,
-        pending=[n for n in requested if n not in completed], total=len(requested),
-        completed_count=len(completed), same_scene_native_sequence=True,
-        all_requested_verified=bool(result.get('command_success')),
-        independent_physical_success=None, partial_results_are_not_task_success=True)
+    from .sequence_evidence import summarize_sequence
+    return summarize_sequence(result, requested)
 
 
 def run(spec, profile, app_root, run_dir, stop, events):
