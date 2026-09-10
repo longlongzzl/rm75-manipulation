@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import xml.etree.ElementTree as ET
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
@@ -19,6 +20,24 @@ DYNAMIC_GRIPPER_LINKS = (
     "left_pad",
     "right_pad",
 )
+
+
+INTERNAL_GRIPPER_LINKS = ("gripper_base_link", *DYNAMIC_GRIPPER_LINKS)
+
+
+def ignore_gripper_internal_self_collision(kinematics: dict) -> None:
+    """Exclude only pairs wholly inside the gripper, preserving every sphere.
+
+    Called on an in-memory robot configuration before native solver creation.
+    Arm, payload, and world collision checks are unaffected.
+    """
+    links = set(INTERNAL_GRIPPER_LINKS)
+    missing = links - set(kinematics['collision_link_names'])
+    if missing:
+        raise ValueError(f'Incomplete gripper collision configuration: {sorted(missing)}')
+    ignored = kinematics.setdefault('self_collision_ignore', {})
+    for link in INTERNAL_GRIPPER_LINKS:
+        ignored[link] = sorted(set(ignored.get(link, ())) | (links - {link}))
 
 
 def _vector(text: str | None) -> np.ndarray:
@@ -49,7 +68,7 @@ def _axis_angle_matrix(axis: np.ndarray, angle: float) -> np.ndarray:
 
 
 def gripper_link_transforms(
-    urdf_path: str | Path, joint_position: float
+    urdf_path: str | Path, joint_position: float | Mapping[str, float]
 ) -> dict[str, np.ndarray]:
     """Return gripper-base-relative transforms at one coupled jaw position."""
     root = ET.parse(Path(urdf_path)).getroot()
@@ -78,11 +97,27 @@ def gripper_link_transforms(
                     "1 0 0" if axis_element is None else axis_element.get("xyz")
                 )
                 rotation = np.eye(4, dtype=np.float64)
-                rotation[:3, :3] = _axis_angle_matrix(axis, float(joint_position))
+                angle=float(joint_position[joint.get('name')]) if isinstance(joint_position,Mapping) else float(joint_position)
+                if not np.isfinite(angle):raise ValueError('Nonfinite gripper joint position')
+                rotation[:3, :3] = _axis_angle_matrix(axis, angle)
                 local = local @ rotation
             transforms[child_name] = transforms[parent_name] @ local
             stack.append(child_name)
     return transforms
+
+
+
+def sphere_pair_penetration_m(first, second, padding_first=0., padding_second=0.):
+    """Linear overlap in metres, including the original self-collision padding.
+
+    cuRobo2's stored pair score is (r1+r2)^2 - distance^2, in square metres.
+    Its sign detects collision but the value is not a penetration distance.
+    """
+    a=np.asarray(first,dtype=float).reshape(4)
+    b=np.asarray(second,dtype=float).reshape(4)
+    if not np.isfinite([*a,*b,padding_first,padding_second]).all():
+        raise ValueError('Nonfinite sphere pair')
+    return float(a[3]+b[3]+padding_first+padding_second-np.linalg.norm(a[:3]-b[:3]))
 
 
 def remap_link_sphere_centers(

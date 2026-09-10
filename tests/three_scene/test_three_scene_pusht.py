@@ -11,7 +11,7 @@ from rm75_app.workcell.worker import run_pusht
 def test_config_rejects_unsafe_or_invalid(params):
     with pytest.raises(ValueError):Config.from_dict(params)
 def test_t_candidates_have_bounded_futures():
-    cfg=Config();pose=[.35,0,0];target=[.38,.02,.15];assert len(list(candidates(pose,cfg)))==10;push,report=choose_push(pose,target,cfg);assert push.length_m<=.025 and valid_pose(predict(pose,push,cfg),cfg) and report['prediction_is_observation'] is False and error(predict(pose,push,cfg),target,cfg)<error(pose,target,cfg)
+    cfg=Config();pose=[.35,0,0];target=[.38,.02,.15];assert len(list(candidates(pose,cfg)))==360;push,report=choose_push(pose,target,cfg);assert push.length_m<=cfg.maximum_push_length_m and valid_pose(predict(pose,push,cfg),cfg) and report['prediction_is_observation'] is False and error(predict(pose,push,cfg),target,cfg)<error(pose,target,cfg)
 def test_target_boundary_rejected():
     with pytest.raises(ValueError):choose_push([.35,0,0],[.65,0,0],Config())
 def test_json_observer_cannot_use_file_mtime(tmp_path):

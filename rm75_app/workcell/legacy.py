@@ -312,6 +312,17 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
             adapters.callback(install_ik_review(direct,RM75CuRoboPlanner,
                 lambda row:events.emit('contact_audit',evidence=row),
                 strategy=profile['pickplace']['tennis_ik_review']))
+        if profile.get('pickplace',{}).get('failed_object_ik_seeds'):
+            from .failed_object_ik_search import install as install_failed_search, require_search
+            require_search(spec,profile)
+            adapters.callback(install_failed_search(direct,
+                lambda row:events.emit('contact_audit',evidence=row),
+                num_seeds=profile['pickplace']['failed_object_ik_seeds']))
+        if profile.get('pickplace',{}).get('render_ik_candidates') is True:
+            from .ik_candidate_gallery import install as install_gallery, require_gallery
+            require_gallery(spec,profile)
+            adapters.callback(install_gallery(direct,run_dir/'ik_gallery',
+                lambda row:events.emit('contact_audit',evidence=row)))
         if profile.get(spec['task'],{}).get('record_sim_video') is True:
             from .sim_failure_video import install as install_video, require_sim
             require_sim(spec,profile)

@@ -12,6 +12,7 @@ from rm75_app.planning.contracts import JointConfiguration
 from rm75_app.workcell.transforms import quaternion_matrix
 from .model import vertices
 from .cartesian_ik import PushPathRejected
+from rm75_app.workcell.io import finite
 
 
 @dataclass(frozen=True)
@@ -67,6 +68,9 @@ def _bind_contact(push, observation, config, profile, geometry, scene, anchor):
     d = np.asarray(push.direction, dtype=float)
     if d.shape != (2,) or not np.isfinite(d).all() or abs(np.linalg.norm(d) - 1) > 1e-6:
         raise PushPathRejected('Invalid push direction')
+    normal=np.asarray(push.normal if push.normal is not None else push.direction,dtype=float)
+    if normal.shape!=(2,) or not np.isfinite(normal).all() or abs(np.linalg.norm(normal)-1)>1e-6 or normal@d<=0:
+        raise PushPathRejected('Invalid inward surface normal')
     r = quaternion_matrix(profile['tool_quaternion_wxyz'])
     offset = local[:, :3] @ r.T
     z = float(profile['push_tcp_z_m']); hover = float(profile['hover_clearance_m'])
@@ -78,8 +82,8 @@ def _bind_contact(push, observation, config, profile, geometry, scene, anchor):
     allowed = set(profile['pusher_contact_links'])
     if not (bottom <= sphere_z[anchor] <= top and geometry.links[anchor] in allowed):
         raise PushPathRejected('No allowed closed-gripper leading contact on a vertical target face')
-    surface = np.asarray(push.contact) + d * config.pusher_radius_m
-    contact_xy = surface - offset[anchor, :2] - d * local[anchor, 3]
+    surface = np.asarray(push.contact) + normal * config.pusher_radius_m
+    contact_xy = surface - offset[anchor, :2] - normal * local[anchor, 3]
     contact = np.r_[contact_xy, z]
     # Use ALL spheres intersecting the target's height during the ENTIRE descent.
     swept = (sphere_z - local[:, 3] <= top) & (sphere_z + hover + local[:, 3] >= bottom)
@@ -90,11 +94,14 @@ def _bind_contact(push, observation, config, profile, geometry, scene, anchor):
     entry = contact.copy(); entry[:2] += d * (entry_projection - contact_xy @ d)
     above = entry + [0, 0, hover]
     end = contact + np.r_[d * push.length_m, 0]
-    retreat = end + [0, 0, hover]
+    retreat_backoff = finite(profile.get('retreat_backoff_m', .01), 'retreat_backoff_m', .001, .03)
+    backoff = end - np.r_[d * retreat_backoff, 0]
+    retreat_clearance = finite(profile.get('retreat_clearance_m', min(hover,.05)), 'retreat_clearance_m', .02, .2)
+    retreat = backoff + [0, 0, retreat_clearance]
     # The original surrogate used a disk margin. Retain that workspace intent
     # using the full swept low-tool footprint at the actual mapped endpoints.
     w = config.workspace
-    for xyz in (above, entry, contact, end, retreat):
+    for xyz in (above, entry, contact, end, backoff, retreat):
         xy = offset[swept, :2] + xyz[:2]; radii = local[swept, 3]
         if (np.any(xy[:, 0] - radii < w[0]) or np.any(xy[:, 0] + radii > w[1])
                 or np.any(xy[:, 1] - radii < w[2]) or np.any(xy[:, 1] + radii > w[3])):
@@ -127,6 +134,8 @@ def _bind_contact(push, observation, config, profile, geometry, scene, anchor):
                     model_contact_is_tcp=False, model_contact_xy=list(push.contact),
                     surface_contact_xyz=actual.tolist(), tcp_contact_xyz=contact.tolist(),
                     tcp_descend_xyz=entry.tolist(), contact_link=geometry.links[anchor],
+                    tcp_retreat_backoff_xyz=backoff.tolist(), tcp_retreat_lift_xyz=retreat.tolist(),
+                    retreat_backoff_m=retreat_backoff, retreat_clearance_m=retreat_clearance, retreat_collision_checks=False,
                     descend_backoff_m=float((contact[:2] - entry[:2]) @ d),
                     tcp_mapping_offset_m=float(np.linalg.norm(contact[:2] - push.contact)),
                     geometry_unchanged=True, nominal_audits=audit, physical_qualified=False)
@@ -156,3 +165,25 @@ def bind_push(push, observation, config, profile, geometry, scene):
     row.update(contact_features_tested=len(geometry.links),valid_contact_features=len(good),
                rejected_contact_features=len(failures))
     return points,row
+
+
+def contact_direction_mask(observation,config,profile,geometry,scene):
+    """Current-pose whole-tool mask, reused only as a future-search heuristic.
+
+    Every executed chain is rebuilt and audited at its actual observed pose.
+    """
+    from .batch_search import action_arrays,action_normals,contact_features
+    from .model import Push
+    centers,directions,lengths,_=action_arrays(np.asarray(observation.pose).reshape(1,3),config)
+    normals=action_normals(directions,config)
+    count=len(contact_features(config)[0])*len(config.push_direction_angles_rad)
+    stride=len(lengths)//count;mask=[]
+    for index in range(0,len(lengths),stride):
+        push=Push(tuple(centers[0,index]),tuple(directions[0,index]),float(lengths[index]),
+                  config.speed_mps,tuple(normals[0,index]))
+        try:
+            bind_push(push,observation,config,profile,geometry,scene)
+            mask.append(True)
+        except PushPathRejected:
+            mask.append(False)
+    return np.asarray(mask,dtype=bool)

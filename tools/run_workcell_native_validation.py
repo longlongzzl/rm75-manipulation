@@ -96,6 +96,10 @@ def main():
         help='Explicit Tennis frozen SIM: FK/IK + center contracts and fixed 32-seed reference comparison')
     parser.add_argument('--record-sim-video',action='store_true',
         help='Record original SIM motion windows at scale 1; adds render time, never real-time qualification')
+    parser.add_argument('--render-ik-candidates',action='store_true',
+        help='Static original robot/tool views of every observed IK row; no candidate or solver changes')
+    parser.add_argument('--failed-object-ik-seeds',type=int,choices=(128,256),
+        help='Frozen PickPlace SIM: retry failed glue/sweet-potato IK at identical goals')
     inputs=parser.add_mutually_exclusive_group()
     inputs.add_argument('--fixed-sam6d',type=Path)
     inputs.add_argument('--fixed-world',type=Path,help='Original T_world_obj scene; PickPlace SIM direct entry only')
@@ -112,6 +116,8 @@ def main():
         help='Cancel after observing the actual Jimu post-release execution boundary')
     parser.add_argument('--timeout-s',type=float,default=600.)
     args=parser.parse_args()
+    if args.failed_object_ik_seeds and (args.task!='pickplace' or args.fixed_world is None):
+        parser.error('Failed-object IK search requires native-world PickPlace SIM')
     if args.cycle_order and (args.task!='pickplace' or args.fixed_world is None
             or args.cycle_order[0]!=args.object_name):
         parser.error('Cycle order requires native-world PickPlace SIM and first source equal to object-name')
@@ -154,6 +160,8 @@ def main():
     if args.audit_current_table_failures:section['audit_current_table_failures']=True
     if args.tennis_ik_review:section['tennis_ik_review']=args.tennis_ik_review
     if args.record_sim_video:section['record_sim_video']=True
+    if args.render_ik_candidates:section['render_ik_candidates']=True
+    if args.failed_object_ik_seeds:section['failed_object_ik_seeds']=args.failed_object_ik_seeds
     section.update(python=str(Path(sys.executable).resolve()),render_mode='none',fixed_scene=str(fixed),
         fixed_scene_format='native_world' if args.fixed_world else 'sam6d',
         simulation_contact_policy='transport_world_checked_compatibility')

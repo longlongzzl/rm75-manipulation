@@ -5,6 +5,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import yaml
+import pytest
 
 from rm75_app.planning.backends.curobo2 import Curobo2Backend
 from rm75_app.planning.contracts import Pose, PoseCandidate
@@ -77,3 +78,24 @@ def test_pose_ik_cache_isolated_by_gripper_state() -> None:
     backend._gripper_collision_state = "closed"
     closed_key = backend._pose_cache_key(candidate)
     assert open_key != closed_key
+
+
+def test_per_joint_gripper_feedback_preserves_unchanged_scalar_geometry():
+    names=[f'gripper_{side}_{part}_Joint' for side in ('Left','Right') for part in ('1','2','Support')]
+    expected=gripper_link_transforms(URDF,.91)
+    actual=gripper_link_transforms(URDF,dict.fromkeys(names,.91))
+    for link in expected:np.testing.assert_array_equal(actual[link],expected[link])
+    with pytest.raises(KeyError):gripper_link_transforms(URDF,{})
+    with pytest.raises(ValueError):gripper_link_transforms(URDF,dict.fromkeys(names,float('nan')))
+
+
+def test_measured_feedback_changes_centers_not_radii_or_sphere_count():
+    names=[f'gripper_{side}_{part}_Joint' for side in ('Left','Right') for part in ('1','2','Support')]
+    feedback=dict.fromkeys(names,.907);feedback['gripper_Left_2_Joint']=.904
+    params=FakeKinematicsConfig();before=params.link_spheres.clone()
+    controller=DynamicGripperSphereController(URDF)
+    controller.state_transforms['closed']=gripper_link_transforms(URDF,feedback)
+    controller.apply(params,'closed')
+    assert params.link_spheres.shape==before.shape
+    torch.testing.assert_close(params.link_spheres[:,:,3],before[:,:,3],rtol=0,atol=0)
+    assert not torch.allclose(params.link_spheres[:,:,:3],before[:,:,:3])

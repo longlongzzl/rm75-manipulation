@@ -69,6 +69,10 @@ def nominal_gripper_base_boxes(planner,reference_q,comparison_q,goals):
 
 def result_rows(result, goal_index, goal_count, start):
     """Map native raw seed errors and joints without broadcasting one seed's error."""
+    # Explicit provenance for bounded, independent single-goal SIM retries.
+    # Keep all native seed rows; never pretend they form the original batch.
+    if (getattr(result,'debug',{}) or {}).get('ik_search_goal_count') == 1:
+        goal_count = 1
     raw=result.raw_result;solution=_array(raw.solution).astype(np.float32,copy=True)
     columns={name:_array(getattr(raw,name)).copy() for name in ('success','position_error','rotation_error')}
     if solution.ndim not in (2,3) or solution.shape[-1]!=7:

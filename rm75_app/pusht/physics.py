@@ -67,7 +67,10 @@ class PhysicsSession:
             '--profile',str(self.directory/'planner_profile.json'),'--directory',str(self.directory)],
             stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=self.stderr,text=True,bufsize=1)
         hello=self.receive();atomic_json(self.directory/'planner_geometry.json',hello)
+        self.planner_geometry=hello
+        self.report['retreat_collision_checks']=hello['retreat_collision_checks']
         self.report['planned_gripper_joint_targets']=hello['gripper_locks']
+        self.report['ignore_gripper_internal_self_collision']=hello.get('ignore_gripper_internal_self_collision',False)
         from rm75_app.planning.gripper_collision import gripper_link_transforms
         jaw_values=set(hello['gripper_locks'].values())
         if len(jaw_values)!=1:raise ValueError('Coupled jaw model has inconsistent joint targets')
@@ -144,16 +147,27 @@ class PhysicsSession:
         self.sequence+=1;pose,_=self.physical_state()
         return Observation(self.session,self.sequence,self.clock(),tuple(float(v) for v in pose),'simulation')
 
-    def execute_push(self,push,obs):
+    def contact_direction_mask(self,obs,config):
+        from .closed_gripper import ToolGeometry,contact_direction_mask
+        from .motion import CuroboPushExecutor
+        geometry=ToolGeometry(np.asarray(self.planner_geometry['spheres']),tuple(self.planner_geometry['links']))
+        scene=CuroboPushExecutor(None,None,config,self.motion,self.stop,self.events,None)._scene(obs)
+        return contact_direction_mask(obs,config,self.motion,geometry,scene)
+
+    def prepare_push_candidates(self,proposals,obs,*,model=None):
         self.stop.check();obs.validate(now=self.clock(),max_age_s=self.config.max_observation_age_s)
         if obs.source!='simulation':raise ValueError('Physics executor requires simulation ground truth')
         q=self.base.read_q()
+        feedback={}
         if self.full_arm:
             actual=self.base.robot.get_qpos().detach().cpu().numpy().reshape(-1)
             gap=max(abs(actual[i]-self.base.gripper_locks[n]) for n,i in self.base.gripper_indices.items())
             self.report['last_closed_gripper_joint_error_rad']=float(gap)
             if gap>.02:raise RuntimeError('Articulated gripper does not match the closed planning model')
-        self.process.stdin.write(json.dumps(dict(op='plan',q=q.tolist(),push=asdict(push),observation=obs.as_dict()))+'\n')
+            self.report['actual_gripper_joint_positions']={n:float(actual[i]) for n,i in self.base.gripper_indices.items()}
+            if self.section['physics'].get('gripper_feedback_geometry') is True:
+                feedback['simulated_gripper_joint_positions']=self.report['actual_gripper_joint_positions']
+        self.process.stdin.write(json.dumps(dict(op='plan',q=q.tolist(),response_fits=list((model or self.config).response_fits),push_candidates=[p.as_dict() for p,_ in proposals],observation=obs.as_dict(),**feedback))+'\n')
         self.process.stdin.flush();reply=self.receive();path=Path(reply['result'])
         path.resolve().relative_to(self.directory.resolve());result=json.loads(path.read_text())
         self.report['plans'].append(dict(file=path.name,sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
@@ -162,8 +176,22 @@ class PhysicsSession:
             based_on_actual_q=True,based_on_actual_T_pose=True)
         if not result['complete_chain']:raise RuntimeError('Physics replanning rejected: '+result.get('error','unknown'))
         if result['source_observation']!=obs.as_dict():raise ValueError('Planner observation identity mismatch')
+        selected=result['selected_candidate']
+        if not 0<=selected<len(proposals) or result['selected_push']!=proposals[selected][0].as_dict():
+            raise ValueError('Planner selected an unknown push candidate')
         program=TimedProgram(result,self.fk)
         if np.max(abs(program.initial-self.base.read_q()))>1e-5:raise ValueError('Simulated start changed during planning')
+        self._prepared_selection=(proposals[selected][0],obs.as_dict(),program)
+        return selected
+
+    def execute_push(self,push,obs):
+        self.stop.check();obs.validate(now=self.clock(),max_age_s=self.config.max_observation_age_s)
+        cached=getattr(self,'_prepared_selection',None)
+        if cached is None or cached[0]!=push or cached[1]!=obs.as_dict():
+            self.prepare_push_candidates([(push,{})],obs)
+            cached=self._prepared_selection
+        self._prepared_selection=None;program=cached[2]
+        if np.max(abs(program.initial-self.base.read_q()))>1e-5:raise ValueError('Simulated start changed after planning')
         self.base.active_program=program;self.base.program_started=self.base.physics_time
         self.advance(program.duration);self.advance(1.)
         if self.full_arm:

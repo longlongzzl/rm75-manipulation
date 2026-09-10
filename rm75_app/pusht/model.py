@@ -27,14 +27,20 @@ class Config:
     stem_width_m: float = .03
     stem_height_m: float = .07
     pusher_radius_m: float = .005
-    push_length_m: float = .012
+    push_length_m: float = .012  # Retained as one baseline candidate, not a fixed action.
+    maximum_push_length_m: float = .050
+    push_length_scales: tuple = (.12, .24, .4, .6, .8, 1.)
+    push_direction_angles_rad: tuple = (-.35,0.,.35)
+    push_action_cost_m: float = .002
+    intermediate_cost_weight: float = .25
+    response_fits: tuple = ()
     approach_gap_m: float = .010
     speed_mps: float = .015
     max_steps: int = 60
     success_observations: int = 3
     success_dwell_s: float = .3
-    horizon: int = 2
-    beam_width: int = 5
+    horizon: int = 3
+    beam_width: int = 12
     position_tolerance_m: float = .006
     yaw_tolerance_rad: float = .10
     max_observation_age_s: float = 1.5
@@ -53,7 +59,7 @@ class Config:
         if unknown:
             raise ValueError(f'Unknown PushT parameters: {sorted(unknown)}')
         data = dict(raw)
-        for key in ('workspace','obstacles','friction_scales'):
+        for key in ('workspace','obstacles','friction_scales','push_length_scales','push_direction_angles_rad','response_fits'):
             if key in data:
                 data[key] = tuple(data[key])
         result = cls(**data)
@@ -61,11 +67,33 @@ class Config:
             finite(getattr(result,name),name,.002,.5)
         if result.stem_width_m > result.bar_width_m:
             raise ValueError('Stem must not be wider than the T crossbar')
-        for name,low,high in [('pusher_radius_m',.001,.03),('push_length_m',.001,.025),
+        for name,low,high in [('pusher_radius_m',.001,.03),('push_length_m',.001,.08),
+                              ('maximum_push_length_m',.006,.08),('push_action_cost_m',0,.02),
+                              ('intermediate_cost_weight',0,1),
                               ('approach_gap_m',.001,.05),('speed_mps',.001,.05),
                               ('position_tolerance_m',.0001,.05),('yaw_tolerance_rad',.005,.5),
                               ('max_observation_age_s',.05,5),('minimum_improvement',0,.05)]:
             finite(getattr(result,name),name,low,high)
+        if result.push_length_m>result.maximum_push_length_m:
+            raise ValueError('Baseline push length exceeds maximum push length')
+        if not result.push_length_scales or len(result.push_length_scales)>12:
+            raise ValueError('Expected 1..12 push length scales')
+        for scale in result.push_length_scales:
+            finite(scale,'push_length_scale',.02,1.)
+        if not result.push_direction_angles_rad or len(result.push_direction_angles_rad)>5:
+            raise ValueError('Expected 1..5 push direction angles')
+        for angle in result.push_direction_angles_rad:finite(angle,'push_direction_angle',-.6,.6)
+        features=set()
+        for row in result.response_fits:
+            index=integer(row['feature'],'response_feature',0,19)
+            if index in features:raise ValueError('Duplicate response feature')
+            features.add(index)
+            gains=vector(row['gains'],3,'response_gains')
+            if not (.1<=gains[0]<=2 and abs(gains[1])<=1 and abs(gains[2])<=12):
+                raise ValueError('Invalid observed response gains')
+            integer(row['samples'],'response_samples',1,10000)
+            vector(row['sum_xy'],3,'response_sum_xy')
+            if np.any(vector(row['sum_xx'],3,'response_sum_xx')<0):raise ValueError('Invalid response fit')
         integer(result.max_steps,'max_steps',1,500)
         integer(result.success_observations,'success_observations',2,10)
         finite(result.success_dwell_s,'success_dwell_s',.1,2)
@@ -133,39 +161,20 @@ class Push:
     direction: tuple[float,float]
     length_m: float
     speed_mps: float
+    normal: tuple[float,float] | None = None
 
     def as_dict(self):
         return {'contact':list(self.contact),'direction':list(self.direction),
-                'length_m':self.length_m,'speed_mps':self.speed_mps}
+                'length_m':self.length_m,'speed_mps':self.speed_mps,
+                **({'normal':list(self.normal)} if self.normal is not None else {})}
 
 
 def candidates(pose,config):
-    r=rotation(float(pose[2])); origin=np.asarray(pose)[:2]
-    bar,stem=rectangles(config)
-    x,y,bw,bh=bar; _,sy,sw,sh=stem
-    # Exposed edges only: skip the internal crossbar/stem interface.
-    contacts=[((-bw/2,y),(1,0)),((bw/2,y),(-1,0)),
-              ((-bw*.3,y+bh/2),(0,-1)),((0,y+bh/2),(0,-1)),((bw*.3,y+bh/2),(0,-1)),
-              ((-bw*.35,y-bh/2),(0,1)),((bw*.35,y-bh/2),(0,1)),
-              ((-sw/2,sy-sh*.3),(1,0)),((sw/2,sy-sh*.3),(-1,0)),
-              ((0,sy-sh/2),(0,1))]
-    for p,n in contacts:
-        direction=r@np.asarray(n,dtype=float)
-        # Contact is pusher center tangent to edge, rather than a center in object.
-        center=origin+r@np.asarray(p)-direction*config.pusher_radius_m
-        begin=center-direction*config.approach_gap_m
-        end=center+direction*config.push_length_m
-        w=config.workspace; margin=config.pusher_radius_m
-        if not all(w[0]+margin<=p[0]<=w[1]-margin and w[2]+margin<=p[1]<=w[3]-margin for p in (begin,end)):
-            continue
-        safe=True
-        for ox,oy,rad in config.obstacles:
-            delta=end-begin
-            t=np.clip(np.dot(np.array([ox,oy])-begin,delta)/np.dot(delta,delta),0,1)
-            if np.linalg.norm(begin+t*delta-[ox,oy]) <= rad+margin:
-                safe=False;break
-        if safe:
-            yield Push(tuple(center),tuple(direction),config.push_length_m,config.speed_mps)
+    from .batch_search import action_arrays,action_normals
+    centers,directions,lengths,valid=action_arrays(np.asarray(pose,dtype=float).reshape(1,3),config)
+    normals=action_normals(directions,config)
+    for index in np.flatnonzero(valid[0]):
+        yield Push(tuple(centers[0,index]),tuple(directions[0,index]),float(lengths[index]),config.speed_mps,tuple(normals[0,index]))
 
 
 def predict(pose,push,config,scale=1.):
@@ -174,6 +183,11 @@ def predict(pose,push,config,scale=1.):
     ell=config.length_scale
     torque=(lever[0]*d[1]-lever[1]*d[0])/(ell*ell+np.dot(lever,lever))
     translation=d*(ell*ell/(ell*ell+np.dot(lever,lever)*.35))
+    if config.response_fits:
+        from .response import contact_feature,response_gains
+        along,lateral,angular=response_gains(config)[contact_feature(pose,push,config)]
+        translation=translation*along+np.array([-push.direction[1],push.direction[0]])*push.length_m*scale*lateral
+        torque*=angular
     result=pose.copy();result[:2]+=translation;result[2]=wrap(pose[2]+torque)
     return result
 
@@ -189,25 +203,5 @@ def reached(pose,target,config):
 
 
 def choose_push(pose,target,config):
-    if not valid_pose(pose,config) or not valid_pose(target,config):
-        raise ValueError('Observed/target T geometry crosses the workspace or an obstacle')
-    beam=[(error(pose,target,config),np.asarray(pose,dtype=float),None,[])]
-    for depth in range(config.horizon):
-        expanded=[]
-        for _,state,first,history in beam:
-            for push in candidates(state,config):
-                futures=[predict(state,push,config,s) for s in config.friction_scales]
-                if not all(valid_pose(f,config) for f in futures):
-                    continue
-                nominal=predict(state,push,config)
-                costs=[error(f,target,config) for f in futures]
-                cost=max(costs)+.15*float(np.std(costs))+.00005*(depth+1)
-                expanded.append((cost,nominal,first or push,history+[nominal.tolist()]))
-        if not expanded:
-            break
-        beam=sorted(expanded,key=lambda row:row[0])[:config.beam_width]
-    best=min((item for item in beam if item[2] is not None),key=lambda row:row[0],default=None)
-    if best is None:
-        raise RuntimeError('no_valid_future')
-    return best[2], {'model':'quasi_static_surrogate_v1','predicted_cost':best[0],
-                     'nominal_future':best[3], 'prediction_is_observation':False}
+    from .batch_search import rank_pushes
+    return rank_pushes(pose,target,config,limit=1)[0]

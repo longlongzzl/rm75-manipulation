@@ -42,14 +42,14 @@ def run_pusht(spec,profile,stop,events):
         else:
             from rm75_app.workcell.realman import RealManArm
             from rm75_app.planning.backends.curobo2 import Curobo2Backend,Curobo2BackendConfig
-            from rm75_app.pusht.motion import CuroboPushExecutor
+            from rm75_app.pusht.motion import CuroboPushExecutor,pusht_planner_options
             section=profile['pusht'];camera=section['observer']
             observer=(AprilTagObserver(camera,stop) if camera['kind']=='realsense_apriltag'
                       else JsonObserver(camera['observation_file'],stop) if camera['kind']=='json_live' else None)
             if observer is None:
                 raise ValueError('Unknown live PushT observer')
             observer.observe().validate(max_age_s=config.max_observation_age_s,real=True)
-            options=dict(section.get('planner',{}))
+            options=pusht_planner_options(section.get('planner',{}))
             for key in ('robot_config','curobo_root'):
                 if key in options:
                     options[key]=Path(options[key]).expanduser().resolve()

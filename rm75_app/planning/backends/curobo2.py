@@ -7,6 +7,7 @@ import hashlib
 import sys
 import time
 from dataclasses import dataclass, replace
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
@@ -15,7 +16,8 @@ import yaml
 
 from rm75_app.paths import APP_ROOT, RUNTIME_DIR
 
-from ..gripper_collision import DynamicGripperSphereController
+from ..gripper_collision import (DynamicGripperSphereController, sphere_pair_penetration_m,
+                                 ignore_gripper_internal_self_collision)
 
 from ..contracts import (
     BatchPlanningRequest,
@@ -185,13 +187,16 @@ class Curobo2BackendConfig:
     retreat_escape_contact_links: tuple[str, ...] = (
         "attached_object", "left_pad", "right_pad"
     )
+    ignore_gripper_internal_self_collision: bool = False
     dynamic_gripper_collision: bool = True
     gripper_collision_reference_joint_position: float = 0.6
     gripper_collision_open_joint_position: float = 0.0
     gripper_collision_closed_joint_position: float = 0.6
 
 
-def load_curobo2_robot_config(path: str | Path) -> dict[str, Any]:
+def load_curobo2_robot_config(
+    path: str | Path, *, ignore_gripper_internal: bool = False
+) -> dict[str, Any]:
     """Translate the app's v1 RM75 YAML into the v2 robot schema in memory."""
 
     config_path = Path(path).expanduser().resolve()
@@ -201,6 +206,8 @@ def load_curobo2_robot_config(path: str | Path) -> dict[str, Any]:
     result = copy.deepcopy(data)
     robot = result.get("robot_cfg", result)
     kinematics = robot["kinematics"]
+    if ignore_gripper_internal:
+        ignore_gripper_internal_self_collision(kinematics)
 
     for stale_key in (
         "use_usd_kinematics",
@@ -322,7 +329,10 @@ class Curobo2Backend:
             return self._planner
         modules = self._import_modules()
         device_cfg = modules["DeviceCfg"](device=self.config.device)
-        robot_config = load_curobo2_robot_config(self.config.robot_config)
+        robot_config = load_curobo2_robot_config(
+            self.config.robot_config,
+            ignore_gripper_internal=self.config.ignore_gripper_internal_self_collision,
+        )
         kinematics = robot_config["robot_cfg"]["kinematics"]
         extra_spheres = kinematics.setdefault("extra_collision_spheres", {})
         extra_spheres["attached_object"] = max(
@@ -371,7 +381,10 @@ class Curobo2Backend:
             return self._coarse_ik_solver
         modules = self._import_modules()
         device_cfg = modules["DeviceCfg"](device=self.config.device)
-        robot_config = load_curobo2_robot_config(self.config.robot_config)
+        robot_config = load_curobo2_robot_config(
+            self.config.robot_config,
+            ignore_gripper_internal=self.config.ignore_gripper_internal_self_collision,
+        )
         kinematics = robot_config["robot_cfg"]["kinematics"]
         extra_spheres = kinematics.setdefault("extra_collision_spheres", {})
         extra_spheres["attached_object"] = max(
@@ -2164,7 +2177,13 @@ class Curobo2Backend:
                                 "candidate_index": batch_index,
                                 "robot_link": idx_to_name.get(int(link_pair[0]), f"link_index_{link_pair[0]}"),
                                 "other_robot_link": idx_to_name.get(int(link_pair[1]), f"link_index_{link_pair[1]}"),
-                                "penetration_m": float(
+                                "penetration_m": sphere_pair_penetration_m(
+                                    robot_spheres[batch_index,0,sphere_pair[0]].detach().cpu().numpy(),
+                                    robot_spheres[batch_index,0,sphere_pair[1]].detach().cpu().numpy(),
+                                    float(self_cost.config.self_collision_kin_config.sphere_padding[sphere_pair[0]].item()),
+                                    float(self_cost.config.self_collision_kin_config.sphere_padding[sphere_pair[1]].item()),
+                                ),
+                                "native_pair_distance_squared_m2": float(
                                     pair_distance[batch_index, 0, int(pair_index)].item()
                                 ),
                             }
@@ -2612,10 +2631,33 @@ class Curobo2Backend:
         }
         return not violations, diagnostics
 
+    @contextmanager
+    def suspend_collision_checks(self):
+        """Temporarily disable all native collision spheres, restoring exact state.
+
+        For explicitly collision-exempt segments such as PushT backoff/lift.
+        Kinematics, joint limits, and pose convergence remain active. In-place
+        edits reach captured CUDA graphs; no extra solver or robot is created.
+        """
+        planner = self._ensure_planner()
+        saved = {}
+        try:
+            for kinematics in (planner.kinematics, planner.ik_solver.kinematics):
+                spheres = kinematics.config.kinematics_config.link_spheres
+                key = spheres.data_ptr()
+                if key not in saved:
+                    saved[key] = (spheres, spheres[..., 3].clone())
+                    spheres[..., 3] = -100.0
+            yield
+        finally:
+            for spheres, radii in saved.values():
+                spheres[..., 3] = radii
+
     def solve_pose_ik_variants(self, request: BatchPlanningRequest) -> tuple[JointConfiguration, ...]:
         """Return all successful full-seed endpoint IK rows from stage state.
 
-        This never proves interpolation validity and never disables collision.
+        This never proves interpolation validity. Collision checks follow the
+        current model, including an explicit suspend_collision_checks context.
         """
         if len(request.candidates) != 1:
             raise ValueError('stage-state IK requires one endpoint')
@@ -2635,7 +2677,7 @@ class Curobo2Backend:
             successful, request.current.positions, limits[0], limits[1])
         changed = np.abs(adjusted - successful) > 1e-5
         # Endpoint equivalence does not establish path safety: the caller still
-        # checks every Cartesian interpolation edge with world/self collisions.
+        # checks every interpolation edge under the segment collision policy.
         self._stage_ik_periodic_audit = dict(
             successful_rows=len(successful), retained_rows=len(adjusted),
             wrapped_rows=int(np.count_nonzero(np.any(changed, axis=1))),
