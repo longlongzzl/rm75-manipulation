@@ -1,0 +1,12 @@
+.iteration-section { margin-top: 24px; padding: 18px; border: 1px solid #c6d4dc; border-radius: 12px; background: #f7fafc; }
+.iteration-section h3 { margin: 0 0 10px; }
+.iteration-section p { line-height: 1.65; }
+.iteration-section label { display: block; margin: 12px 0; }
+.iteration-section input:not([type=checkbox]), .iteration-section select, .iteration-section textarea { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 8px; }
+.iteration-section input[type=checkbox] { margin-left: 8px; width: auto; }
+.iteration-section button { margin: 5px 6px 5px 0; white-space: normal; }
+.iteration-section button:disabled { opacity: .5; cursor: not-allowed; }
+.iteration-section pre { max-height: 320px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; }
+.iteration-error { color: #9c2332; overflow-wrap: anywhere; }
+
+.iteration-t-canvas { display: block; width: 100%; height: auto; background: white; border-radius: 8px; }

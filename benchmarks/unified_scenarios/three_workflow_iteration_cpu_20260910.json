@@ -1,0 +1,172 @@
+{
+  "schema": "rm75.three_workflow_iteration_cpu/v1",
+  "base_commit": "eca8ece3aa6aa86155cd34b2e4b5e59b471a1632",
+  "new_tests": {
+    "passed": 152,
+    "failed": 0,
+    "skipped": 0,
+    "command": "PYTHONPATH=. PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/iteration"
+  },
+  "python": "3.13.5",
+  "compileall": "PASS",
+  "node_syntax": "PASS",
+  "full_repository_test": "NOT_RUN_PARTIAL_SOURCE_TREE",
+  "native_gpu_regression": "NOT_RUN",
+  "full_arm_physics_random_matrix": "NOT_RUN",
+  "original_grid_arc_data_import": "NOT_RUN_SYNTHETIC_SCHEMA_FIXTURES_ONLY",
+  "llm_network_calls": 0,
+  "llm_transport_test": "MOCKED",
+  "hardware_connected": false,
+  "browser": {
+    "status": "BLOCKED_BEFORE_PAGE_LOAD",
+    "reason": "net::ERR_BLOCKED_BY_ADMINISTRATOR",
+    "completed_ui_checks": 0
+  },
+  "actual_subprocess_checks": [
+    "sequence_preview",
+    "generated_design_preview",
+    "interactive_surrogate_loop"
+  ],
+  "files": {
+    "rm75_app/magnetic/generation.py": {
+      "bytes": 12918,
+      "git_blob": "9737be8bec49376ce1fcab397e76800a4d8e29bf",
+      "sha256": "1ed328414afcacacdf9dc5989a8e4e77e21aa4c5a2bc1b2ff134c70016396f12"
+    },
+    "rm75_app/magnetic/llm_client.py": {
+      "bytes": 5131,
+      "git_blob": "a4471290722e6bcbb4b7356f2577f259de9e6e2e",
+      "sha256": "0c751ea886a527bacc24b86446644219868d34ce0c69086de4240f8b82c8eb58"
+    },
+    "rm75_app/pusht/controller.py": {
+      "bytes": 12115,
+      "git_blob": "148846a619dea1a57befe66c87e800796c552a7f",
+      "sha256": "0f24411140bf22f90381dda65998db4c40dfeee706ec091d84d13251c7286859"
+    },
+    "rm75_app/pusht/session_control.py": {
+      "bytes": 6167,
+      "git_blob": "42012596cb4f9e6c98789e18e34fba35c855b1d0",
+      "sha256": "d9cfce8b5e16b2b16b91524d07ee8d2d800fc19489b44dbf676358033b60387e"
+    },
+    "rm75_app/pusht/physics_controls.py": {
+      "bytes": 3109,
+      "git_blob": "ca6edd584f5fb39b17e4c99c9909c5f616cb7a8f",
+      "sha256": "d3930f546387b1a29dfc5065bd3fe88332cfa08043d4f44f3a22a1feb7c5c437"
+    },
+    "rm75_app/pusht/scenarios.py": {
+      "bytes": 3792,
+      "git_blob": "e1eea90fe9fe33a1eb2549e5013b209edd5bddbd",
+      "sha256": "57200fe4c6edc646940bcbd14d26fc996cc5c0149b824c134bfe63c8ac19293c"
+    },
+    "rm75_app/workcell/iteration_api.py": {
+      "bytes": 9804,
+      "git_blob": "a4ac57a496d21afb2a6377761dd900cd9c37863d",
+      "sha256": "5ef1964806a93214c765eba17a8c72c79053e242530aeedfd8ef6c56e4491c98"
+    },
+    "rm75_app/workcell/iteration_workflows.py": {
+      "bytes": 6656,
+      "git_blob": "8619ad4f903199a83f2555112384ae3948b1b86b",
+      "sha256": "c7f55a982ee58687fbdffeb5dedd7c9fce11e1a2f7d5ba159609862769db4cfe"
+    },
+    "rm75_app/workcell/paired_endpoint_repair.py": {
+      "bytes": 7431,
+      "git_blob": "03356857041a9afd5b1c24e80d6b443be0fd92c6",
+      "sha256": "3b7c016fa2ac23577785e462a67df36012c14ee857daefac05cbb3103220f3e7"
+    },
+    "rm75_app/workcell/spec.py": {
+      "bytes": 6193,
+      "git_blob": "56bd7aafabae82510744892c22df108e497f3c2f",
+      "sha256": "60cfbccef5c0ba9f125fa6cc96eddc61378514d5fbbc240b643fe832f5306cf2"
+    },
+    "rm75_app/workcell/worker.py": {
+      "bytes": 9494,
+      "git_blob": "fd03297267431e5fbb8f146140a0eb1c4757a2f5",
+      "sha256": "5f0e369b389ff16721d7ae61e290122db639a4be65fb60fcd9a4b3f9179e53f4"
+    },
+    "rm75_app/workcell/server.py": {
+      "bytes": 8154,
+      "git_blob": "968e6b86a1c1b274be366afe2b48e152ff85ecbf",
+      "sha256": "ba899061c709ac44f81fcd81365d53e95736559110b53476e50f6f8d080edb76"
+    },
+    "rm75_app/web/static/workcell/iteration.js": {
+      "bytes": 15992,
+      "git_blob": "12b4ae0dfba465dad819ab1de8d3c76f98c04f17",
+      "sha256": "bf326751b98c39119f712317c4d09e70c29c09f348f8cb2cedd7cd9219fbd057"
+    },
+    "rm75_app/web/static/workcell/iteration.css": {
+      "bytes": 982,
+      "git_blob": "5795b6e1b3addae4c6f3da75f593b1d8a9a14be3",
+      "sha256": "27346633c438c4deaf4b991501132c6a05b455037ec8f078d4bc757d9280b0be"
+    },
+    "tools/import_jimu_design_library.py": {
+      "bytes": 6245,
+      "git_blob": "a3a81f397753f3bf8c0fa529ea76008edfe842a2",
+      "sha256": "0e788031e0ec8d16f7e9a9b7403b761d47c3d7a4bc6d9f5aa5584aa906a557c4"
+    },
+    "tools/configure_iteration_workflows.py": {
+      "bytes": 2697,
+      "git_blob": "1fc53f9de3e68c2d6f4096fbbe3246909bed8166",
+      "sha256": "a9e95e8c2e8a4e6cf73f26b6950f3636aad488ddf56d0cdf468ac8a5dd3c7404"
+    },
+    "tools/run_pusht_random_suite.py": {
+      "bytes": 4406,
+      "git_blob": "4cabc48c987a45122c588b96475fa1a633d2085c",
+      "sha256": "3099bbbe9f76cb0a42de105d0c5da0bc5b665a989342ada143bdebedcf4bb954"
+    },
+    "docs/CHATGPT_THREE_WORKFLOW_ITERATION_20260910.md": {
+      "bytes": 16679,
+      "git_blob": "24e542d44ab86ff06ed27a835416b5efb43e9479",
+      "sha256": "b36c6907cda1621fa15d38a83582b4de30b51216ec072dfa34f7f528aa833448"
+    },
+    "tests/iteration/conftest.py": {
+      "bytes": 2532,
+      "git_blob": "3e964b62217e1a9b031aa07c22af6353a00126bc",
+      "sha256": "46294045e2579069f3826c1aa2146177dd690f8b2c8713bf2bfcf2a9c7971568"
+    },
+    "tests/iteration/test_api.py": {
+      "bytes": 5545,
+      "git_blob": "cbff6a613a8e03e510bbf12351bfdc7d6a6c8d42",
+      "sha256": "13a1098035ae2f40a75db3aa97f6734fbbd2e4ee559180008b4ac25a4e3c20ce"
+    },
+    "tests/iteration/test_controller.py": {
+      "bytes": 7186,
+      "git_blob": "5e48e82026fff46aa465ec4d0343b25ac7d68251",
+      "sha256": "36a0511d56cca6bc8e6d835e90ea6e0a7fcd0df1bd6db8becde0f9a62927de5a"
+    },
+    "tests/iteration/test_endpoint_repair.py": {
+      "bytes": 3065,
+      "git_blob": "40c532827fd9c6cdc1b7eebca1928c2998607d33",
+      "sha256": "1aaa1aa8c836039d02a2b716689a08f596de124ad848ef179c53e7b602377166"
+    },
+    "tests/iteration/test_generation.py": {
+      "bytes": 6660,
+      "git_blob": "c1f898e2957eda60e76108297189ae42a02d7b92",
+      "sha256": "653550c67a696c35f017c4b8e36a537e0353fc0fd03bd7a841a06f26e8af955f"
+    },
+    "tests/iteration/test_llm_client.py": {
+      "bytes": 2734,
+      "git_blob": "b394969814328b8d55b40c22acc5cf03274c0dc5",
+      "sha256": "08182630ecbf89104177c2a4ceef2b95df9d274bc9f793664e7ce653a3298805"
+    },
+    "tests/iteration/test_physics_control.py": {
+      "bytes": 2335,
+      "git_blob": "2fca9b1a8f23a55b092db0b2901980da1213ce67",
+      "sha256": "903315e8ee222802e5c5e0d181e8b590d41844b38e2df3cf1cb31395ca4f6252"
+    },
+    "tests/iteration/test_runtime_wiring.py": {
+      "bytes": 5018,
+      "git_blob": "b6278f372edc823b1c4f390ef8f274ea56bcc3c3",
+      "sha256": "e35e9045496897ed355aa25f51a9872b8f4ba27adb93d158b643ecbc10207a53"
+    },
+    "tests/iteration/test_scenarios.py": {
+      "bytes": 1699,
+      "git_blob": "f46396aa3aacc929882d307f7f4a8082ce0ecee4",
+      "sha256": "fce83562763e3def18c8a1ea62ab3cebf46529248c3b0321ee97b20189175c3d"
+    },
+    "tests/iteration/test_spec_workflows.py": {
+      "bytes": 5867,
+      "git_blob": "a4538795ba9d4066f889683b12e5f2382857232c",
+      "sha256": "95e497c9f640ba74db9e9ff83b4933fc1efbe0dcc38b55177f5e121a99ab7d93"
+    }
+  }
+}

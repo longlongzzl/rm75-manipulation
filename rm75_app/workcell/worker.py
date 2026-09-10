@@ -16,7 +16,15 @@ def run_pusht(spec,profile,stop,events):
     from rm75_app.pusht.model import Config,predict,choose_push
     from rm75_app.pusht.observation import Observation,JsonObserver,AprilTagObserver
     from rm75_app.pusht.controller import PushTController
-    params=spec['parameters'];cfg=dict(profile.get('pusht',{}).get('model',{}))
+    params=spec['parameters']
+    from rm75_app.pusht.scenarios import configured_model
+    cfg=asdict(configured_model(profile,geometry_id=params.get('geometry_id','original'),
+                               maximum_push_length_m=params.get('maximum_push_length_m')))
+    if 'run_until_goal' in params:
+        from rm75_app.pusht.session_control import SessionPolicy
+        policy=dict(profile.get('pusht',{}).get('session_policy',{}))
+        policy['run_until_goal']=params['run_until_goal']
+        atomic_json(events.directory/'session_policy.json',asdict(SessionPolicy.from_dict(policy)))
     cfg.update({key:params[key] for key in ('speed_mps','max_steps')})
     config=Config.from_dict(cfg)
     if params.get('simulation_backend','surrogate')!='surrogate':
@@ -80,7 +88,11 @@ def preview(spec,profile):
                 'design':validate_design(spec['parameters']['design']).report()}
     if spec['task']=='pusht':
         from rm75_app.pusht.model import Config,choose_push,reached
-        cfg=dict(profile.get('pusht',{}).get('model',{}));cfg['speed_mps']=spec['parameters']['speed_mps']
+        from rm75_app.pusht.scenarios import configured_model
+        p=spec['parameters']
+        cfg=asdict(configured_model(profile,geometry_id=p.get('geometry_id','original'),
+                                   maximum_push_length_m=p.get('maximum_push_length_m')))
+        cfg['speed_mps']=p['speed_mps']
         model=Config.from_dict(cfg);p=spec['parameters']
         if reached(p['initial_pose'],p['goal_pose'],model):
             return {'command_success':True,'task_success':None,'verification':'preview_only','already_at_goal':True}
@@ -88,6 +100,11 @@ def preview(spec,profile):
         return {'command_success':True,'task_success':None,'verification':'preview_only',
                 'simulation_backend':p.get('simulation_backend','surrogate'),
                 'push':push.as_dict(),'prediction':prediction,'geometry':asdict(model)}
+    if 'object_names' in spec['parameters']:
+        from .iteration_workflows import ordered_sources
+        return {'command_success':True,'task_success':None,'verification':'preview_only',
+                'source_order':ordered_sources(spec['parameters']['object_names'],spec['parameters'].get('automatic_order',False)),
+                'same_scene_sequence':True,'placement':'original_object_specific_place_rules','hardware_connected':False}
     return {'command_success':True,'task_success':None,'verification':'preview_only',
             'object_name':spec['parameters']['object_name'],'planner':'preserved_working_pickplace',
             'placement':'original_object_specific_place_rules','hardware_connected':False}
@@ -116,7 +133,7 @@ def main(argv=None):
             elif spec['task']=='pusht':
                 result=run_pusht(spec,profile,stop,events)
             else:
-                from .legacy import run_working
+                from .iteration_workflows import run as run_working
                 result=run_working(spec,profile,args.app_root,run_dir,stop,events)
                 verify=profile.get(spec['task'],{}).get('post_verification')
                 if spec['mode']=='real' and verify and result.get('command_success') is not False:

@@ -8,6 +8,8 @@ from .io import loads,dumps
 class WorkcellWSGI:
     def __init__(self,service,fallback=None):
         self.service=service;self.fallback=fallback
+        from .iteration_api import IterationAPI
+        self.iteration=IterationAPI(service)
         self.static=Path(__file__).resolve().parents[1]/'web/static/workcell'
 
     def __call__(self,env,start_response):
@@ -21,14 +23,19 @@ class WorkcellWSGI:
             return [data]
         if path=='/' and self.fallback is None:
             path='/workcell/'
-        if path in ('/workcell','/workcell/','/workcell/index.html','/workcell/app.js','/workcell/style.css'):
+        if path in ('/workcell','/workcell/','/workcell/index.html','/workcell/app.js','/workcell/style.css','/workcell/iteration.js','/workcell/iteration.css'):
             if method!='GET':
                 return response('405 Method Not Allowed',{'error':'GET only'})
             name=path.rsplit('/',1)[-1]
             if name in ('','workcell'):
                 name='index.html'
             types={'index.html':'text/html; charset=utf-8','app.js':'application/javascript; charset=utf-8','style.css':'text/css; charset=utf-8'}
-            return response('200 OK',(self.static/name).read_bytes(),types[name])
+            types.update({'iteration.js':'application/javascript; charset=utf-8','iteration.css':'text/css; charset=utf-8'})
+            body=(self.static/name).read_bytes()
+            if name=='index.html':
+                body=body.replace(b'</head>',b'<link rel="stylesheet" href="/workcell/iteration.css"></head>',1)
+                body=body.replace(b'</body>',b'<script src="/workcell/iteration.js"></script></body>',1)
+            return response('200 OK',body,types[name])
         if not path.startswith('/api/workcell/'):
             if self.fallback:
                 if method not in ('GET','HEAD','OPTIONS') and (self.service.active or self.service.latch.exists()) and not path.endswith('/stop'):
@@ -55,6 +62,8 @@ class WorkcellWSGI:
                 return self.fallback(env,start_response)
             return response('404 Not Found',{'error':'No route'})
         try:
+            if method=='GET' and path.startswith('/api/workcell/iterate/'):
+                return response('200 OK',self.iteration.get(path[len('/api/workcell/iterate/'):]))
             if method=='GET' and path=='/api/workcell/info':
                 return response('200 OK',self.service.info())
             if method=='GET' and path.startswith('/api/workcell/jobs/'):
@@ -76,7 +85,9 @@ class WorkcellWSGI:
             if len(raw)!=size:
                 raise ValueError('Incomplete request body')
             payload=loads(raw.decode())
-            if path=='/api/workcell/arm':
+            if path.startswith('/api/workcell/iterate/'):
+                value=self.iteration.post(path[len('/api/workcell/iterate/'):],payload)
+            elif path=='/api/workcell/arm':
                 value=self.service.arm(payload['spec'],payload.get('confirmation'))
             elif path=='/api/workcell/jobs':
                 value=self.service.submit(payload['spec'],payload.get('arm_token'))
