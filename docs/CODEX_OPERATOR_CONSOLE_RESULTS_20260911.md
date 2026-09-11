@@ -190,6 +190,6 @@ env -u ALL_PROXY -u all_proxy python3 tools/launch_workcell_console.py \
 | 驱动脚本与启动配置 | `console_launch_20260911/{browser_acceptance.py,browser_jimu.py,browser_sim.py,console_profile_r2_nodiag.json,same_design_bundle.json}` |
 | 作业原始记录 | `workcell/jobs/{2854afa6…,e6a2f633…,a438f76d…,d32249dc…,45da3178…,42b86f74…}/`（request/result/events/machine_profile） |
 
-结论：本机复验下，控制台的真实 HTTP 导航、单/多对象预览、真实慢生成刷新恢复（单一 generation_id 与同一份 proof）、同设计原生 SIM、共享 Stop 与 PushT 暂停/移动 T/继续全部按 doc 描述工作，且没有把原生命令结束、预览或仿真成功说成真机成功；§8 的 9 条问题里只有 4 条由本轮新提交引入，其余为继承或环境问题；真机相关项保持 NOT_RUN。
+结论：本机复验下，控制台的真实 HTTP 导航、单/多对象预览、真实慢生成刷新恢复（单一 generation_id 与同一份 proof）、同设计原生 SIM、共享 Stop 与 PushT 暂停/移动 T/继续全部按 doc 描述工作，且没有把原生命令结束、预览或仿真成功说成真机成功；§8 的 9 条问题里 5 条由本轮新提交引入（问题 1–5），4 条继承自 `7086fbd`（问题 6–9）；真机相关项保持 NOT_RUN。
 
 OPERATOR-CONSOLE-20260911-END
