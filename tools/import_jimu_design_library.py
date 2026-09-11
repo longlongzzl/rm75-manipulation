@@ -10,6 +10,8 @@ import argparse
 from collections import Counter
 import hashlib
 from pathlib import Path
+import sys
+ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 
 from rm75_app.magnetic.design import validate_design
 from rm75_app.magnetic.generation import validate_library
@@ -20,7 +22,9 @@ BUILDER_FLAGS = {
     'outward_clearance_max_depth': '--jimu-builder-outward-clearance-max-depth',
     'layer_z_extra_m': '--jimu-builder-layer-z-extra-m',
     'roof_uniform_preplace_height_m': '--jimu-roof-uniform-preplace-height-m',
-    'final_contact_low_hover_height_m': '--jimu-final-contact-low-hover-height-m',
+    # final_contact_low_hover_height_m is manifest-only: the original arc
+    # manifest carries a per-layer list that the native CLI flag (a single
+    # scalar) cannot express. The per-job task manifest delivers it unchanged.
 }
 BOOL_FLAGS = {
     'canonicalize_outward_normals': '--jimu-builder-canonicalize-outward-normals',
@@ -48,9 +52,17 @@ def import_task(directory, board_id, index):
     for key, flag in BUILDER_FLAGS.items():
         if key in builder:
             value = builder[key]
-            if isinstance(value, bool) or not isinstance(value, (float, int)):
+            if isinstance(value, bool):
                 raise ValueError('Malformed original numeric builder option')
-            options += [flag, str(value)]
+            if isinstance(value, (float, int)):
+                serialized = str(value)
+            elif isinstance(value, list) and value and all(
+                    isinstance(x, (float, int)) and not isinstance(x, bool) for x in value):
+                # The native layer-z flag is one comma/space separated string.
+                serialized = ','.join(str(x) for x in value)
+            else:
+                raise ValueError('Malformed original numeric builder option')
+            options += [flag, serialized]
     for key, flag in BOOL_FLAGS.items():
         if key in builder:
             if type(builder[key]) is not bool: raise ValueError('Malformed original boolean option')
@@ -61,11 +73,13 @@ def import_task(directory, board_id, index):
             if isinstance(value, bool) or not isinstance(value, (float, int)):
                 raise ValueError('Malformed original tag configuration')
             options += [flag, str(value)]
+    # The tray slot order is delivered through the per-job task manifest, not as
+    # CLI arguments: generated parent-closed substructures subset the manifest
+    # order, and explicit CLI would override that subsetting with the full list.
     tray = manifest.get('tray', {}).get('slot_layout') or builder.get('tray_slot_role_order')
     if tray:
         roles = [x.get('role') if isinstance(x, dict) else x for x in tray]
         if any(not isinstance(x, str) or not x for x in roles): raise ValueError('Invalid original tray roles')
-        options += ['--jimu-tray-slot-role-order', *roles]
     recipe = dict(native_args=options,task_manifest=manifest)
     fixed = manifest.get('sam6d_fixed_scene_result_file')
     hashes = {'manifest': hashlib.sha256(manifest_file.read_bytes()).hexdigest(),

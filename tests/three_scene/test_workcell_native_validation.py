@@ -138,3 +138,45 @@ def test_pickplace_lift_cli_rejects_bad_range_or_task_before_service(monkeypatch
         monkeypatch.setattr(runner,'verify_snapshot',lambda *args:pytest.fail('Should reject before loading native code'))
         with pytest.raises(SystemExit) as exc:runner.main()
         assert exc.value.code==2 and not (tmp_path/'unused').exists()
+
+
+def test_paired_endpoint_repair_requires_native_world_pickplace(monkeypatch,tmp_path):
+    import tools.run_workcell_native_validation as runner
+    monkeypatch.setattr(runner.sys,'argv',['runner','--task','pickplace','--paired-endpoint-repair',
+        '--output',str(tmp_path/'unused'),'--extensions',str(tmp_path)])
+    monkeypatch.setattr(runner,'verify_snapshot',lambda *args:pytest.fail('Should reject before loading native code'))
+    with pytest.raises(SystemExit) as exc:runner.main()
+    assert exc.value.code==2 and not (tmp_path/'unused').exists()
+
+
+def test_return_model_sync_skips_real_and_prefetch_and_emits_evidence():
+    from types import SimpleNamespace
+    from rm75_app.workcell.jimu_return_model_sync import install_return_model_sync
+    calls=[];rows=[]
+    class Lock:
+        def __enter__(self): return self
+        def __exit__(self,*a): return False
+    class Direct:
+        def __init__(self): self._CUROBO_GPU_LOCK=Lock()
+        def _current_source_object_name(self,args): return 'square_16'
+        def _plan_return_to_start_joint_curobo(self,*a,**k):
+            calls.append((a,k)); return 'planned'
+    direct=Direct(); portable=SimpleNamespace(direct=direct)
+    install_return_model_sync(portable, rows.append)
+    args=SimpleNamespace(execute_real=True,_planning_prefetch_capture_only=False)
+    assert direct._plan_return_to_start_joint_curobo(None,None,args,None,None,label='x')=='planned'
+    assert not rows and len(calls)==1
+    # SIM path with a failed sync (no gripper state) still emits and raises.
+    class Planner:
+        _rm75_phase_participants={}
+    class Demo:
+        class Robot:
+            def get_qpos(self): return None
+        robot=Robot(); active_joint_names=[]
+    args=SimpleNamespace(execute_real=False,_planning_prefetch_capture_only=False)
+    try:
+        direct._plan_return_to_start_joint_curobo(Planner(),Demo(),args,None,None,label='y')
+    except Exception:
+        pass
+    assert len(rows)==1 and rows[0]['event']=='jimu_return_model_sync'
+    assert rows[0]['step_id']=='y' and rows[0]['source']=='square_16'

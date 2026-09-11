@@ -3,12 +3,15 @@
 Each push is newly planned from actual simulation state. Ground truth is labelled
 simulation, not camera/live data; the hardware execute_push path is never called.
 """
+from collections import deque
 from dataclasses import asdict
 import hashlib
 import json
+import os
 from pathlib import Path
 import selectors
 import subprocess
+import tempfile
 import time
 from types import SimpleNamespace
 import uuid
@@ -18,9 +21,37 @@ from .observation import Observation
 from .physics_replay import TcpFK,TimedProgram
 from .controller import PushTController
 from .model import valid_pose
-from rm75_app.workcell.io import atomic_json
+from rm75_app.workcell.io import atomic_json,dumps
 
 ROOT=Path(__file__).resolve().parents[2]
+# Bounded in-memory display cache; the full history stays on disk.
+OBSERVATION_CACHE=4096
+OBSERVATION_FLUSH_STEPS=30
+
+
+def write_observation_array(path,stream_path):
+    """Rebuild the original observations.json array from the streamed rows.
+
+    Same bytes as one dumps(list) call, written row by row so a long session
+    never has to be held in memory at once.
+    """
+    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+    fd,temp=tempfile.mkstemp(prefix=f'.{path.name}.',dir=path.parent)
+    try:
+        with os.fdopen(fd,'w',encoding='utf-8') as out:
+            with Path(stream_path).open('r',encoding='utf-8') as stream:
+                out.write('[')
+                first=True
+                for line in stream:
+                    line=line.strip()
+                    if not line:continue
+                    if not first:out.write(', ')
+                    out.write(line);first=False
+                out.write(']\n')
+            out.flush();os.fsync(out.fileno())
+        os.replace(temp,path)
+    finally:
+        if os.path.exists(temp):os.unlink(temp)
 
 
 class PhysicsSession:
@@ -29,7 +60,13 @@ class PhysicsSession:
         self.kind=spec['parameters']['simulation_backend'];self.full_arm=self.kind=='full_arm_physics'
         self.directory=events.directory/'physics';self.directory.mkdir(exist_ok=False)
         self.process=None;self.env=None;self.video=None;self.stderr=None;self.frames=0;self.steps=0
-        self.sequence=0;self.session=uuid.uuid4().hex;self.started=time.monotonic();self.observations=[]
+        self.sequence=0;self.session=uuid.uuid4().hex;self.started=time.monotonic()
+        # Per-control-step ground truth streams to disk; only a bounded tail is
+        # kept in memory, so run_until_goal sessions cannot grow an unbounded
+        # array. close() rebuilds the original observations.json array.
+        self.observations=deque(maxlen=OBSERVATION_CACHE)
+        self.observations_recorded=0
+        self.observation_log=(self.directory/'observations.jsonl').open('w',encoding='utf-8')
         self.report=dict(backend=self.kind,execute_real=False,hardware_connected=False,
             hardware_profile_qualified=False,model_validated_on_robot=False,arm_servo_simulated=self.full_arm,
             target_driven_by_physics_only=True,physics_stepped=False,plans=[],
@@ -119,7 +156,7 @@ class PhysicsSession:
         for _ in range(count):
             self.stop.check();self.env.step(None);self.steps+=1;self.report['physics_stepped']=True
             pose,state=self.physical_state()
-            self.observations.append(dict(time_s=self.base.physics_time,stage=self.base.stage,
+            self.record_observation(dict(time_s=self.base.physics_time,stage=self.base.stage,
                 pose=pose.tolist(),**state))
             if not np.isfinite(pose).all() or not all(np.isfinite(x) for x in state.values()):
                 raise RuntimeError('Nonfinite physics feedback')
@@ -140,6 +177,17 @@ class PhysicsSession:
                 raise RuntimeError('Physics forbidden early-target or static-obstacle contact')
             if self.full_arm and self.base.forbidden_target_contacts:
                 raise RuntimeError('Physics target contact by unapproved robot link/phase')
+
+    def record_observation(self,row):
+        """Stream one control-step sample to disk and keep a bounded tail.
+
+        The streamed rows are the durable evidence; the in-memory cache is only
+        what a caller may inspect in process. Flushing is periodic because this
+        runs once per control step of a long session.
+        """
+        self.observations.append(row);self.observations_recorded+=1
+        self.observation_log.write(dumps(row)+'\n')
+        if self.observations_recorded%OBSERVATION_FLUSH_STEPS==0:self.observation_log.flush()
 
     def observe(self,after=0.):
         # A new physics sample, not a republished pose with a newer wall timestamp.
@@ -207,7 +255,14 @@ class PhysicsSession:
         if not 0<=selected<len(proposals) or result['selected_push']!=proposals[selected][0].as_dict():
             raise ValueError('Planner selected an unknown push candidate')
         program=TimedProgram(result,self.fk)
-        if np.max(abs(program.initial-self.base.read_q()))>1e-5:raise ValueError('Simulated start changed during planning')
+        # Measured evidence for the interactive path: an extra observation
+        # advances the physics one control step, so the plan's start q and the
+        # simulation q are compared and reported as numbers. The original 1e-5
+        # gate below is unchanged: a real state change still fails the run.
+        drift=float(np.max(abs(program.initial-self.base.read_q())))
+        self.report['last_planning_start_q_drift_rad']=drift
+        if drift>1e-5:raise ValueError('Simulated start changed during planning: '
+                                       f'{drift:.3e} rad > 1e-5 rad')
         self._prepared_selection=(proposals[selected][0],obs.as_dict(),program)
         return selected
 
@@ -218,7 +273,12 @@ class PhysicsSession:
             self.prepare_push_candidates([(push,{})],obs)
             cached=self._prepared_selection
         self._prepared_selection=None;program=cached[2]
-        if np.max(abs(program.initial-self.base.read_q()))>1e-5:raise ValueError('Simulated start changed after planning')
+        # Same measured drift, now with the interactive pre-execution observation
+        # already applied; the gate is the original 1e-5 radians, unchanged.
+        drift=float(np.max(abs(program.initial-self.base.read_q())))
+        self.report['last_pre_execution_start_q_drift_rad']=drift
+        if drift>1e-5:raise ValueError('Simulated start changed after planning: '
+                                       f'{drift:.3e} rad > 1e-5 rad')
         self.base.active_program=program;self.base.program_started=self.base.physics_time
         self.advance(program.duration);self.advance(1.)
         if self.full_arm:
@@ -251,7 +311,10 @@ class PhysicsSession:
             self.process.stdout.close();self.process.stdin.close()
         if self.stderr is not None:self.stderr.close()
         self.report.update(elapsed_wall_s=time.monotonic()-self.started,video_frames=self.frames)
-        atomic_json(self.directory/'observations.json',self.observations)
+        self.observation_log.flush();self.observation_log.close()
+        self.report['observation_samples']=self.observations_recorded
+        self.report['observation_display_cache_rows']=len(self.observations)
+        write_observation_array(self.directory/'observations.json',self.directory/'observations.jsonl')
         atomic_json(self.directory/'summary.json',self.report)
 
 

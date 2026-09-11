@@ -60,9 +60,10 @@ class AnthropicJsonClient:
                                               os.environ.get('RM75_VLM_PROXY', '')))
         if not isinstance(self.proxy, str):
             raise ValueError('proxy must be a server-configured string')
-        self.timeout = finite(self.settings.get('timeout_s', 60), 'timeout_s', 1, 120)
+        self.timeout = finite(self.settings.get('timeout_s', 60), 'timeout_s', 1, 600)
         self.tokens = integer(self.settings.get('max_tokens', 4096), 'max_tokens', 128, 32768)
         self.client_factory = client_factory
+        self.last_usage = None
 
     def readiness(self):
         missing = []
@@ -128,6 +129,10 @@ class AnthropicJsonClient:
                 except Exception: pass
         if response.stop_reason != 'end_turn':
             raise ValueError('Design completion was not a complete end_turn')
+        usage = getattr(response, 'usage', None)
+        if usage is not None:
+            self.last_usage = dict(input_tokens=getattr(usage, 'input_tokens', None),
+                                   output_tokens=getattr(usage, 'output_tokens', None))
         content = []
         for block in response.content:
             if block.type == 'text': content.append(block.text)

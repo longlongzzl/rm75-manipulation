@@ -177,6 +177,49 @@ def compile_selection(library, proposal, *, board_id, piece_budget=12):
     return dict(design=payload, proof=proof)
 
 
+def subset_task_manifest(manifest, design, selected_roles):
+    """Adapt the original task manifest to a generated parent-closed subset.
+
+    The native program rejects build_layers/tray roles that are not part of the
+    submitted design, and derives physical tray slot poses from the role order
+    index. This keeps the selected roles' original layer grouping, original
+    tray slot positions (via an explicit tray.slot_layout) and triangle-slot
+    identity, while every non-selected role disappears from scheduling.
+    """
+    manifest = copy.deepcopy(manifest)
+    roles = set(selected_roles)
+    builder = manifest.get('builder')
+    if not isinstance(builder, dict):
+        raise ValueError('Original task manifest lacks a builder section')
+    if isinstance(builder.get('build_layers'), list):
+        builder['build_layers'] = [
+            [role for role in layer if role in roles]
+            for layer in builder['build_layers']
+            if any(role in roles for role in layer)
+        ]
+    original_order = builder.get('tray_slot_role_order')
+    if isinstance(original_order, list) and original_order:
+        filtered = [role for role in original_order if role in roles]
+        builder['tray_slot_role_order'] = filtered
+        raw_indices = builder.get('triangle_tray_slot_indices')
+        if isinstance(raw_indices, list) and raw_indices and filtered:
+            original_triangle = set(int(i) for i in raw_indices if isinstance(i, (int, float)))
+            remapped = []
+            for position, role in enumerate(filtered):
+                original_index = original_order.index(role) if role in original_order else position
+                if original_index in original_triangle:
+                    remapped.append(position)
+            builder['triangle_tray_slot_indices'] = remapped
+        pieces = {piece_key(p): p for p in design.get('pieces', [])}
+        manifest.setdefault('tray', {})
+        manifest['tray']['slot_layout'] = [
+            dict(role=role, slot=(original_order.index(role) if role in original_order else position),
+                 type=str(pieces.get(role, {}).get('type', 'square')))
+            for position, role in enumerate(filtered)
+        ]
+    return manifest
+
+
 def validate_generated_request(library, design, proof):
     if not isinstance(proof, dict): raise ValueError('Generated design provenance required')
     compiled = compile_selection(library, {k: proof[k] for k in

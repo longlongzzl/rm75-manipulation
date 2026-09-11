@@ -282,12 +282,17 @@ def run_working(spec,profile,app_root,run_dir,stop,events):
                     lambda row:events.emit('contact_audit',evidence=row))
                 from .jimu_return_diagnostics import install_return_diagnostics,install_release_execution_observer
                 install_return_diagnostics(module.portable,
-                    lambda row:events.emit('contact_audit',evidence=row))
+                    lambda row:events.emit('contact_audit',evidence=row),
+                    limit=int(profile.get('magnetic',{}).get('jimu_return_diagnostic_limit',1)))
                 from .jimu_release_execution import install_release_execution_guard
                 install_release_execution_guard(module.portable,
                     lambda row:events.emit('contact_audit',evidence=row))
                 install_release_execution_observer(module.portable,
                     lambda row:events.emit('contact_audit',evidence=row),synchronize=True)
+                if profile.get('magnetic',{}).get('jimu_return_model_sync') is True:
+                    from .jimu_return_model_sync import install_return_model_sync
+                    install_return_model_sync(module.portable,
+                        lambda row:events.emit('contact_audit',evidence=row))
         elif policy=='strict':
             install_contact_audit(direct, lambda row: events.emit('contact_audit', evidence=row))
         events.emit('native_contact_policy_selected',policy=policy,mode=spec['mode'],

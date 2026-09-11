@@ -108,6 +108,11 @@ def main():
         help='Opt-in read-only first roof IK batch per original phase/source; no extra solve')
     parser.add_argument('--jimu-lift-plus-3mm',action='store_true',
         help='Jimu SIM only: test the original failed joint-search lift at 103 instead of 100 mm')
+    parser.add_argument('--jimu-return-model-sync',action='store_true',
+        help='Jimu SIM only: sync the planner gripper locks to the SIM at the pre-release '
+             'return check; no collision, sphere or threshold changes')
+    parser.add_argument('--jimu-return-diagnostic-limit',type=int,default=None,choices=(1,2,4,8),
+        help='Jimu SIM only: capture up to N failed return queries (default 1)')
     parser.add_argument('--audit-current-table-failures',action='store_true',
         help='Read-only failed lift / already-generated tennis reverse path; no new solve or selection')
     parser.add_argument('--tennis-ik-review',choices=('baseline','standard-reference','continuation','yaw-midpoints'),
@@ -121,6 +126,9 @@ def main():
     parser.add_argument('--pickplace-lift-target-m',type=float,default=None,
         help='Frozen PickPlace SIM: explicit joint-search lift target (0.030..0.200 m); '
              'production default 0.080 m; no collision or success relaxation')
+    parser.add_argument('--paired-endpoint-repair',action='store_true',
+        help='Frozen PickPlace SIM: bounded same-relation hover<->release endpoint seeding '
+             '(max 12 queries, 5 s soft budget); no seed-count or threshold changes')
     inputs=parser.add_mutually_exclusive_group()
     inputs.add_argument('--fixed-sam6d',type=Path)
     inputs.add_argument('--fixed-world',type=Path,help='Original T_world_obj scene; PickPlace SIM direct entry only')
@@ -139,6 +147,8 @@ def main():
     args=parser.parse_args()
     if args.failed_object_ik_seeds and (args.task!='pickplace' or args.fixed_world is None):
         parser.error('Failed-object IK search requires native-world PickPlace SIM')
+    if args.paired_endpoint_repair and (args.task!='pickplace' or args.fixed_world is None):
+        parser.error('Paired endpoint repair requires native-world PickPlace SIM')
     if args.cycle_order and (args.task!='pickplace' or args.fixed_world is None
             or args.cycle_order[0]!=args.object_name):
         parser.error('Cycle order requires native-world PickPlace SIM and first source equal to object-name')
@@ -146,6 +156,10 @@ def main():
             or args.fixed_world is None or args.fixed_world.resolve()!=ROOT/'assets/test_scenes/current_table.json'):
         parser.error('Tennis IK review requires the original current-table Tennis SIM')
     if args.jimu_lift_plus_3mm and args.task!='magnetic':parser.error('The +3 mm lift trial is Jimu SIM only')
+    if args.jimu_return_model_sync and args.task!='magnetic':
+        parser.error('The return model sync is Jimu SIM only')
+    if args.jimu_return_diagnostic_limit is not None and args.task!='magnetic':
+        parser.error('The return diagnostic limit is Jimu SIM only')
     if args.pickplace_lift_target_m is not None and args.task!='pickplace':
         parser.error('The explicit lift-target trial is PickPlace SIM only')
     if args.pickplace_lift_target_m is not None and not 0.030<=args.pickplace_lift_target_m<=0.200:
@@ -182,8 +196,13 @@ def main():
     section=profile[args.task]
     if args.cycle_order:section['frozen_source_order']=args.cycle_order
     if args.audit_roof_ik:section['audit_roof_ik']=True
+    if args.jimu_return_model_sync:section['jimu_return_model_sync']=True
+    if args.jimu_return_diagnostic_limit is not None:
+        section['jimu_return_diagnostic_limit']=args.jimu_return_diagnostic_limit
     if args.audit_current_table_failures:section['audit_current_table_failures']=True
     if args.tennis_ik_review:section['tennis_ik_review']=args.tennis_ik_review
+    if args.paired_endpoint_repair:
+        section['paired_endpoint_repair']=dict(enabled=True,max_queries=12,budget_s=5.)
     if args.record_sim_video:section['record_sim_video']=True
     if args.render_ik_candidates:section['render_ik_candidates']=True
     if args.failed_object_ik_seeds:section['failed_object_ik_seeds']=args.failed_object_ik_seeds
@@ -213,6 +232,9 @@ def main():
         for path in sorted((ROOT/'rm75_app/workcell').glob('*.py'))}
     report['jimu_joint_search_lift_trial_m']=.103 if args.jimu_lift_plus_3mm else None
     report['pickplace_joint_search_lift_m']=args.pickplace_lift_target_m
+    report['paired_endpoint_repair']=args.paired_endpoint_repair
+    report['jimu_return_model_sync']=args.jimu_return_model_sync
+    report['jimu_return_diagnostic_limit']=args.jimu_return_diagnostic_limit
     report['original_task_bundle_sha256']=bundle_hashes
     report['original_task_bundle_read_only']=bool(bundle)
     report['documented_start_comparison']=documented_start

@@ -13,6 +13,7 @@ import numpy as np
 
 from .jimu_return_diagnostics import _state
 from .pickplace_curobo_only import CuroboOnlyUnsupported
+from .transport_contact import jimu_collision_details
 from .pickplace_release_contact import assert_full_state
 from .world_only_contact import FINGER_LINKS, world_only_links
 from .jimu_execution_stages import guarded_stage, stage_kind
@@ -31,6 +32,21 @@ def _dense(path):
         count=max(1,int(np.ceil(np.max(abs(end-start))/.01)))
         out.extend(np.linspace(start,end,count+1)[1:])
     return out
+
+
+def _detail_suffix(detail,index,joints):
+    """Read-only pair naming for a failed audit sample; never changes the verdict.
+
+    The audit already runs under the real world state. This only asks the
+    reviewed read-only geometry helpers which link overlaps which obstacle at
+    the failing dense index, so a report can name the pair instead of only the
+    MotionGen status. Failure to produce details never changes the raise.
+    """
+    if detail is None:return ''
+    try:
+        return ' | detail='+repr(detail(index,joints))
+    except Exception as exc:
+        return f' | detail=unavailable: {type(exc).__name__}: {exc}'
 
 
 class NativePathParts:
@@ -83,7 +99,7 @@ def _qualified_world(planner,source):
     return targets[0]
 
 
-def audit_return(planner,path,source,actual_start):
+def audit_return(planner,path,source,actual_start,detail=None):
     """Independent return: full current world and self, including its entry edge."""
     _qualified_world(planner,source)
     path=_path(path);start=np.asarray(actual_start,dtype=float)
@@ -94,13 +110,15 @@ def audit_return(planner,path,source,actual_start):
     dense=_dense(path)
     for index,joints in enumerate(dense):
         valid,status=planner.check_start_state(joints)
-        if not valid:raise CuroboOnlyUnsupported(f'Jimu return full-world collision at {index}: {status}')
+        if not valid:
+            raise CuroboOnlyUnsupported(f'Jimu return full-world collision at {index}: {status}'
+                                        +_detail_suffix(detail,index,joints))
     return dict(clearance_samples=0,return_samples=len(dense),release_contact_samples=0,
         permitted_contact_target=None,permitted_links=[],return_world_exempt_links=[],
         self_collision_input_modified=False,world_filter_calls=0,entry_connector_audited=connector)
 
 
-def audit_parts(planner,clearance,return_path,source):
+def audit_parts(planner,clearance,return_path,source,detail=None):
     """Keep the original pair-local release policy, with no new depth tolerance."""
     target=_qualified_world(planner,source);dense=_dense(_path(clearance));invalid=[]
     for index,joints in enumerate(dense):
@@ -129,7 +147,8 @@ def audit_parts(planner,clearance,return_path,source):
     for index,joints in enumerate(returning):
         valid,status=planner.check_start_state(joints)
         if not valid:
-            raise CuroboOnlyUnsupported(f'Jimu return full-world collision at {index}: {status}')
+            raise CuroboOnlyUnsupported(f'Jimu return full-world collision at {index}: {status}'
+                                        +_detail_suffix(detail,index,joints))
     return dict(clearance_samples=len(dense),return_samples=len(returning),
                 release_contact_samples=len(invalid),permitted_contact_target=target.name,
                 permitted_links=sorted(FINGER_LINKS),return_world_exempt_links=[],
@@ -167,13 +186,16 @@ def install_release_execution_guard(portable,emit):
                         or any(locks[name]!=float(q[names.index(name)]) for name in locks)):
                     raise CuroboOnlyUnsupported('Jimu execution gate requires synchronized gripper model')
                 source=direct._current_source_object_name(options)
+                detail=lambda index,joints:(dict(dense_index=index,source=source,
+                    **jimu_collision_details(portable,planner,joints)))
                 if kind=='return_only':
-                    evidence=audit_return(planner,values['q_path'],source,demo.current_arm_qpos())
+                    evidence=audit_return(planner,values['q_path'],source,demo.current_arm_qpos(),
+                                          detail=detail)
                 elif kind=='release_then_return':
                     clearance,returning=parts.split(values['q_path'])
-                    evidence=audit_parts(planner,clearance,returning,source)
+                    evidence=audit_parts(planner,clearance,returning,source,detail=detail)
                 elif kind=='release_only':
-                    evidence=audit_parts(planner,_path(values['q_path']),None,source)
+                    evidence=audit_parts(planner,_path(values['q_path']),None,source,detail=detail)
                 else:raise CuroboOnlyUnsupported('unknown Jimu release/return execution stage')
                 row.update(source=source,scene_fingerprint=before['scene_fingerprint'],
                            **evidence,passed=True)

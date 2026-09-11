@@ -121,3 +121,38 @@ def test_web_readiness_and_generation_share_the_provider_factory():
     for method in ('features','_generation'):
         f=next(n for n in c.body if isinstance(n,ast.FunctionDef) and n.name==method)
         assert any(isinstance(n,ast.Call) and isinstance(n.func,ast.Name) and n.func.id=='completion_client' for n in ast.walk(f))
+
+
+def test_subset_task_manifest_filters_layers_and_preserves_tray_slots(tmp_path):
+    from rm75_app.magnetic.generation import subset_task_manifest
+    manifest=dict(schema='jimu_task_manifest_v1', builder=dict(
+        build_layers=[['a','b'],['c'],['d']],
+        tray_slot_role_order=['a','b','c','d','e'],
+        triangle_tray_slot_indices=[3,4]))
+    design=dict(schema='jimu_builder_scene_v1', pieces=[
+        dict(role='a',type='square',locked=True,center=[0,0,0],u=[1,0,0],n=[0,1,0],v=[0,0,1]),
+        dict(role='c',type='triangle',locked=False,center=[.1,0,0],u=[1,0,0],n=[0,1,0],v=[0,0,1])])
+    subset=subset_task_manifest(manifest, design, ['c'])
+    assert subset['builder']['build_layers']==[['c']]
+    assert subset['builder']['tray_slot_role_order']==['c']
+    # 'c' was originally at index 2, which is not a triangle slot (3,4).
+    assert subset['builder']['triangle_tray_slot_indices']==[]
+    assert subset['tray']['slot_layout']==[dict(role='c',slot=2,type='triangle')]
+    # The original manifest object is untouched.
+    assert manifest['builder']['build_layers']==[['a','b'],['c'],['d']]
+    assert manifest['builder']['tray_slot_role_order']==['a','b','c','d','e']
+
+
+def test_subset_task_manifest_remaps_triangle_slot_indices(tmp_path):
+    from rm75_app.magnetic.generation import subset_task_manifest
+    manifest=dict(schema='jimu_task_manifest_v1', builder=dict(
+        build_layers=[['a'],['d']],
+        tray_slot_role_order=['a','b','d','e'],
+        triangle_tray_slot_indices=[2]))
+    design=dict(schema='jimu_builder_scene_v1', pieces=[
+        dict(role='a',type='square',locked=True,center=[0,0,0],u=[1,0,0],n=[0,1,0],v=[0,0,1]),
+        dict(role='d',type='triangle',locked=False,center=[.1,0,0],u=[1,0,0],n=[0,1,0],v=[0,0,1])])
+    subset=subset_task_manifest(manifest, design, ['a','d'])
+    # 'd' keeps its physical slot 2 and its triangle-slot identity at the new dense index 1.
+    assert subset['tray']['slot_layout']==[dict(role='a',slot=0,type='square'),dict(role='d',slot=2,type='triangle')]
+    assert subset['builder']['triangle_tray_slot_indices']==[1]

@@ -1,0 +1,269 @@
+{
+ "hardware_connected": false,
+ "head": "b5935e1bc50bef9b253133705aed9524c218de70",
+ "infra_recovery_20260911": {
+  "crashes": [
+   "19:34 with hung GPU JIT compile in flight",
+   "21:27 with GPU fully idle"
+  ],
+  "fixes": [
+   "cuRobo JIT cache: stale torch build lock + half-written geom_cu dir removed, kernels rebuilt outside scope, verified in scope",
+   "coacd installed (vendor-required dependency) + 8 mesh decomposition caches warmed",
+   "queue scripts rebuilt under runtime_data with per-step watchdog + stale-lock self-heal"
+  ],
+  "real_robot_motion": false,
+  "vendor_sources_modified": false
+ },
+ "jimu_arc_return": {
+  "sync_trial": {
+   "job": "45a03725",
+   "result": "10/12, sync active at 17 checkpoints, no regression"
+  },
+  "triangle_18_detail": {
+   "conclusion": "real return-start geometry problem, not model desync, not contact-state, not unreachable goal",
+   "curobo_raw_nonzero": [
+    [
+     "gripper_Right_2_Link",
+     "square_16",
+     0.0472
+    ]
+   ],
+   "job": "635f460b2940458f9a86706221d23f0a",
+   "limit": 1,
+   "nearest_pairs": [
+    [
+     "right_pad",
+     "scene_obstacle_square_16",
+     34.9
+    ],
+    [
+     "left_pad",
+     "scene_obstacle_square_16",
+     36.0
+    ],
+    [
+     "gripper_Right_Support_Link",
+     "scene_obstacle_square_16",
+     47.7
+    ],
+    [
+     "gripper_Left_Support_Link",
+     "scene_obstacle_square_16",
+     48.8
+    ],
+    [
+     "base_link",
+     "virtual_table_plane",
+     57.5
+    ]
+   ],
+   "stage": "return start dense_index 0",
+   "status": "INVALID_START_STATE_WORLD_COLLISION"
+  }
+ },
+ "jimu_same_design_closure": {
+  "generated_structures": 8,
+  "rows": [
+   {
+    "kind": "same-design",
+    "name": "arc_gen_1",
+    "native": "never_ran_contract_fix",
+    "note": "early boundary-contract failures (unknown build_layers role / tray order), design digest intact"
+   },
+   {
+    "cycles": "3/3",
+    "digests_equal": true,
+    "job": "c9696af2",
+    "kind": "same-design",
+    "locked_added": 0,
+    "name": "arc_gen_2"
+   },
+   {
+    "cycles": "3/3",
+    "digests_equal": true,
+    "job": "0e9ebb5e",
+    "kind": "same-design",
+    "locked_added": 0,
+    "name": "arc_gen_3"
+   },
+   {
+    "cycles": "2/2",
+    "digests_equal": true,
+    "job": "a49aa129",
+    "kind": "same-design",
+    "locked_added": 0,
+    "name": "arc_gen_4"
+   },
+   {
+    "kind": "independent-template",
+    "name": "grid_gen_1",
+    "native": "rejected_stale_proof",
+    "note": "proof native_recipe_digest predates final library (15:59:20 vs 16:04:20); design digest 8aa0eb42 intact; regenerated as grid_gen_1b through the same real entry"
+   },
+   {
+    "cycles": "3/3",
+    "digests_equal": true,
+    "job": "c957130d",
+    "kind": "same-design",
+    "name": "grid_gen_1b",
+    "native": "3/3 (job c957130d)",
+    "note": "regenerated via IterationAPI.post(\"generate\") with the original prompt; same design digest as original (8aa0eb42); 3/3 native cycles"
+   },
+   {
+    "cycles": "1/3",
+    "digests_equal": true,
+    "first_failure": "cycle 2 front_second_wall pre_release_post_place_clearance endpoint constrained placed-contact",
+    "job": "da4161b2",
+    "kind": "independent-template",
+    "locked_added": 0,
+    "name": "grid_gen_2"
+   },
+   {
+    "cycles": "3/3",
+    "digests_equal": true,
+    "job": "12e3d576",
+    "kind": "independent-template",
+    "locked_added": 0,
+    "name": "grid_gen_3"
+   },
+   {
+    "cycles": "2/2",
+    "digests_equal": true,
+    "job": "5b7a0d50",
+    "kind": "independent-template",
+    "locked_added": 0,
+    "name": "grid_gen_4"
+   }
+  ]
+ },
+ "pickplace_seven_object_denominator": {
+  "first_failure_stages": {
+   "gluestick": "grasp IK no intersection (pregrasp 5/13, grasp 0/13); paired-endpoint-repair on/off no difference",
+   "hongshupian": "transport_hover_face_robot (grasp built and succeeded, loaded transport hover fails)"
+  },
+  "original_control": {
+   "job": "54c80d42",
+   "order": [
+    "shuazi",
+    "bi",
+    "lvmukuai",
+    "carriot",
+    "gluestick",
+    "hongshupian",
+    "tennis"
+   ],
+   "result": "cycles 1-4 clean, gluestick fail-fail-succeed at 5, hongshupian x2 at 6; reproduces R1 baseline"
+  },
+  "suggested": {
+   "job": "c5f0a8c2",
+   "order": [
+    "shuazi",
+    "bi",
+    "lvmukuai",
+    "carriot",
+    "tennis",
+    "gluestick",
+    "hongshupian"
+   ],
+   "result": "5/7 clean (cycles 1-5), gluestick x2 at cycle 6, clearance audits all valid"
+  },
+  "thresholds": "unchanged"
+ },
+ "pusht": {
+  "confirmation_intervention": [
+   {
+    "api": "direct command files (transitional)",
+    "elapsed_s": 327.8,
+    "epochs": 3,
+    "final": [
+     0.3761,
+     -0.1835,
+     0.0156
+    ],
+    "job": "616004aa70ae4678a87c470aeba87d15",
+    "run": "f_transitional_file_writes",
+    "task_success": true
+   },
+   {
+    "api": "IterationAPI.control",
+    "elapsed_s": 323.6,
+    "epochs": 3,
+    "final": [
+     0.37608984112739563,
+     -0.1835157424211502,
+     0.017613384872674942
+    ],
+    "job": "34fd4f62901c4292a5f59946033f76aa",
+    "run": "g_session_api_pre_streaming_tree",
+    "source_note": "physics.py pre-streaming variant 7ccfff83 (11/12 files match committed tree)",
+    "steps": 4,
+    "task_success": true
+   },
+   {
+    "api": "IterationAPI.control",
+    "display_cache_rows": 4096,
+    "drift_rad": 1.1920928955078125e-07,
+    "elapsed_s": 328.1,
+    "epochs": 3,
+    "final": [
+     0.37608984112739563,
+     -0.1835157424211502,
+     0.017613384872674942
+    ],
+    "job": "439fcc9af3d246658d2162ef753b438a",
+    "observation_samples": 5927,
+    "run": "h_frozen_tree_streaming",
+    "source_note": "all 12 source hashes match committed tree",
+    "steps": 4,
+    "task_success": true
+   }
+  ],
+  "merged_controller_disturb_recovery": {
+   "final": [
+    0.3761683404445648,
+    -0.18345241248607635,
+    0.017634984105825424
+   ],
+   "job": "bdf05063d32443e6a0f60f7ebcf082f4",
+   "steps": 3,
+   "task_success": true
+  },
+  "merged_controller_original_regression": {
+   "final": [
+    0.37546372413635254,
+    -0.17638792097568512,
+    0.007207535207271576
+   ],
+   "job": "439f723ae96448458981da76166f1f15",
+   "steps": 2,
+   "task_success": true
+  },
+  "random_suite_seed77": {
+   "attempted": 12,
+   "failures": {
+    "case_timeout_900s": 2,
+    "left_support_workspace": 9,
+    "push_path_rejected": 1
+   },
+   "hardware_connected": false,
+   "note": "full denominator, no seed swap, no guard relaxation",
+   "profile": "build_pusht_suite_profile.py seed 77 geometry original",
+   "successes": 0
+  }
+ },
+ "real_robot_motion": false,
+ "regression": {
+  "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 run_network_isolated pytest tests -q",
+  "log": "runtime_data/three_scene/isolation_regression_r2_final_20260911.log",
+  "result": "1334 passed, 1 warning in 44.62s"
+ },
+ "runtime_file_sha256": {
+  "rm75_app/magnetic/completion_provider.py": "4bc54e324404e1e5",
+  "rm75_app/magnetic/generation.py": "49eb2dbd6c425eb0",
+  "rm75_app/pusht/controller.py": "6365430690f3bea8",
+  "rm75_app/pusht/physics.py": "95491d4b9ad9f81e",
+  "rm75_app/workcell/iteration_api.py": "4a207068d8d009bb",
+  "tools/run_network_isolated.py": "78aabee131e4c207"
+ },
+ "schema": "rm75_r2_evidence_v1"
+}

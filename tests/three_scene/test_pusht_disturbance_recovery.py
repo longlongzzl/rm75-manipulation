@@ -140,3 +140,66 @@ def test_physics_run_wires_schedule_and_labels_evidence():
     assert "kind='external_pose_overwrite_between_pushes'" in source
     assert 'external_disturbance_applied' in source
     assert "disturb=disturb if schedule else None" in source
+
+
+def _frozen_args(**overrides):
+    from types import SimpleNamespace
+    values = dict(maximum_push_length_m=.05, response_calibration=None,
+                  gravity_compensation='original-agent', gripper_feedback_geometry=True,
+                  closed_gripper_joint_position=.9, check_gripper_internal_collisions=False,
+                  ik_position_tolerance_m=None, disturb_after_pushes=None, disturb_pose=None,
+                  success_dwell_s=None, backend='full_arm_physics', confirm_window_relocate=None)
+    return SimpleNamespace(**{**values, **overrides})
+
+
+def test_interactive_request_enables_the_worker_written_session_policy(tmp_path):
+    """The typed request enables the session; the machine profile carries the policy.
+
+    The worker writes session_policy.json itself before constructing the
+    controller, so the harness never pokes a worker file behind its back and a
+    non-interactive run keeps the original request unchanged.
+    """
+    import rm75_app.workcell.spec as spec_module
+    from tools.run_pusht_physics_validation import frozen_profile
+    plain = frozen_profile(_frozen_args(), tmp_path, [.35, -.18, 0.], [.38, -.18, 0.], 'translation')
+    assert 'run_until_goal' not in plain['request']['parameters'] and plain['session_policy'] is None
+    interactive = frozen_profile(_frozen_args(confirm_window_relocate=(.358, -.186, .09)),
+                                 tmp_path, [.35, -.18, 0.], [.38, -.18, 0.], 'translation')
+    request = interactive['request']['parameters']
+    assert request['run_until_goal'] is True
+    assert interactive['session_policy'] == dict(position_replan_m=.003, yaw_replan_rad=.04,
+                                                 poll_s=.1, max_wall_s=0.)
+    profile = json.loads((tmp_path / 'machine.json').read_text())
+    assert profile['pusht']['session_policy'] == interactive['session_policy']
+    # The typed request contract accepts the flag and still rejects it for real.
+    validated = spec_module.validate_spec({'task': 'pusht', 'mode': 'sim', 'parameters': request},
+                                          profile)
+    assert validated['parameters']['run_until_goal'] is True
+    with pytest.raises(PermissionError, match='SIM-only pending hardware qualification'):
+        spec_module.validate_spec({'task': 'pusht', 'mode': 'real', 'parameters': request}, profile)
+
+
+def test_confirmation_intervention_uses_the_session_api_not_worker_files():
+    """The intervention must go through IterationAPI.control, like the browser route.
+
+    Writing session_policy.json or session_commands/*.json directly from the
+    harness would bypass the API's pause/acknowledgement validation, so the tool
+    must not contain those writes at all.
+    """
+    from pathlib import Path
+    source = (Path(__file__).resolve().parents[2] / 'tools/run_pusht_physics_validation.py').read_text()
+    body = source[source.index('def run_single('):]
+    assert 'IterationAPI' in source
+    assert "api.control(job_id,payload)" in source
+    for action in ("dict(action='pause')", "dict(action='relocate',pose=list(pose))",
+                   "dict(action='resume')"):
+        assert action in source, action
+    assert '_confirmation_intervention(api,job' in body
+    # The trigger is the first confirmation observation, and no harness code
+    # writes the worker's policy or command files.
+    assert "row.get('kind')=='goal_confirmation'" in body
+    # No harness code writes the worker's policy or command files; the profile
+    # section it does set is machine-scope data the worker reads and re-writes.
+    assert "'session_policy.json'" not in source and '"session_policy.json"' not in source
+    assert 'session_commands' not in source
+    assert '_install_session_policy' not in source and '_write_confirmation_commands' not in source

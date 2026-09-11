@@ -67,3 +67,73 @@ def test_physics_executor_uses_fresh_plan_not_saved_replay_or_hardware_execute()
     assert "op='plan'" in source and 'q=self.base.read_q()' in source
     assert "result['source_observation']!=obs.as_dict()" in source
     assert 'RealManArm' not in source and 'self.pose=predict' not in source
+
+
+def test_interactive_extra_observe_measures_start_q_drift_without_widening_the_gate():
+    """The interactive path observes once more before executing a cached plan.
+
+    That observation advances the physics one control step, so the plan start q
+    and the simulated q can differ. Both gates still compare against exactly
+    1e-5 rad and additionally record the measured drift, so a real state change
+    keeps failing the run instead of being absorbed by a wider tolerance.
+    """
+    source=(Path(__file__).resolve().parents[2]/'rm75_app/pusht/physics.py').read_text()
+    tree=ast.parse(source)
+    for name,field in (('prepare_push_candidates','last_planning_start_q_drift_rad'),
+                       ('execute_push','last_pre_execution_start_q_drift_rad')):
+        fn=next(n for n in ast.walk(tree) if isinstance(n,ast.FunctionDef) and n.name==name)
+        compares=[n for n in ast.walk(fn) if isinstance(n,ast.Compare)
+                  and 'drift' in ast.unparse(n.left) and any(isinstance(o,ast.Gt) for o in n.ops)]
+        assert len(compares)==1, name
+        assert ast.literal_eval(compares[0].comparators[0])==1e-5, name
+        recorded=f"self.report['{field}'] = drift"
+        assert recorded in ast.unparse(fn), name
+
+
+def test_observation_evidence_streams_to_disk_and_rebuilds_the_same_array(tmp_path):
+    import json
+    from rm75_app.workcell.io import dumps
+    from rm75_app.pusht.physics import write_observation_array
+    rows = [dict(time_s=1.5, stage='push', pose=[.35, -.18, 0.], z_m=.02),
+            dict(time_s=1.6, stage='push', pose=[.36, -.18, .01], z_m=.02)]
+    stream = tmp_path / 'observations.jsonl'
+    stream.write_text(''.join(dumps(row) + '\n' for row in rows))
+    out = tmp_path / 'observations.json'
+    write_observation_array(out, stream)
+    # Byte-identical to the original one-shot dumps(rows) artifact.
+    assert out.read_text() == dumps(rows) + '\n'
+    assert json.loads(out.read_text()) == rows
+
+
+def test_long_session_keeps_a_bounded_cache_and_streams_every_sample(tmp_path):
+    import json
+    from collections import deque
+    from rm75_app.pusht import physics as module
+    source = (Path(__file__).resolve().parents[2] / 'rm75_app/pusht/physics.py').read_text()
+    assert 'deque(maxlen=OBSERVATION_CACHE)' in source
+    log = (tmp_path / 'observations.jsonl').open('w', encoding='utf-8')
+    session = NS(observations=deque(maxlen=4), observations_recorded=0, observation_log=log)
+    for index in range(100):
+        module.PhysicsSession.record_observation(session, dict(index=index))
+    log.flush(); log.close()
+    assert session.observations_recorded == 100
+    assert [row['index'] for row in session.observations] == [96, 97, 98, 99]
+    rows = [json.loads(line) for line in (tmp_path / 'observations.jsonl').read_text().splitlines()]
+    assert [row['index'] for row in rows] == list(range(100))
+
+
+def test_start_q_drift_still_raises_at_the_original_tolerance_with_measured_value():
+    import numpy as np
+    from types import SimpleNamespace
+    from rm75_app.pusht.physics import PhysicsSession
+    obs=Observation('simulation',1,1.,(.35,-.18,0),'simulation')
+
+    class Base:
+        def read_q(self):return np.full(7,2e-5)
+
+    session=SimpleNamespace(stop=StopToken(),report={},full_arm=False,base=Base(),
+        clock=lambda:1.,config=Config(),
+        _prepared_selection=(object(),obs.as_dict(),SimpleNamespace(initial=np.zeros(7))))
+    with pytest.raises(ValueError,match='2.000e-05 rad > 1e-5 rad'):
+        PhysicsSession.execute_push(session,session._prepared_selection[0],obs)
+    assert session.report['last_pre_execution_start_q_drift_rad']==pytest.approx(2e-5)

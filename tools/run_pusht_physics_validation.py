@@ -50,6 +50,16 @@ def frozen_profile(args,output_dir,initial,goal,case):
         planner_python='/home/zhangzhao/anaconda3/envs/curobo2/bin/python',motion=motion,initial_pose=initial,
         gravity_compensation=args.gravity_compensation,gripper_feedback_geometry=args.gripper_feedback_geometry)
     profile['pusht']['physics']=physics
+    parameters=dict(initial_pose=initial,goal_pose=goal,speed_mps=.015,max_steps=12,
+                    simulation_backend=args.backend)
+    if args.confirm_window_relocate is not None:
+        # Interactive session split: the machine profile carries the boundary
+        # control policy, the typed request only enables it. The worker itself
+        # writes session_policy.json before building the controller, so no
+        # harness step writes worker files behind its back.
+        profile['pusht']['session_policy']=dict(position_replan_m=.003,yaw_replan_rad=.04,
+                                                poll_s=.1,max_wall_s=0.)
+        parameters['run_until_goal']=True
     if not 0<=args.closed_gripper_joint_position<=.91:raise ValueError('Gripper target exceeds original URDF limits')
     physics['planner']={'gripper_collision_closed_joint_position':args.closed_gripper_joint_position,
         'ignore_gripper_internal_self_collision':not args.check_gripper_internal_collisions}
@@ -61,10 +71,12 @@ def frozen_profile(args,output_dir,initial,goal,case):
         model=Config.from_dict(profile['pusht']['model'])
         if not valid_pose(args.disturb_pose,model):raise ValueError('Disturbance pose leaves the T workspace')
         physics['disturbances']=[dict(after_pushes=args.disturb_after_pushes,pose=list(args.disturb_pose))]
+    if args.success_dwell_s is not None:
+        if not .3<=args.success_dwell_s<=5.:raise ValueError('success dwell must stay within .3..5 s')
+        profile['pusht']['model']['success_dwell_s']=args.success_dwell_s
     assert profile['hardware']['hardware_reviewed'] is False
     atomic_json(output_dir/'machine.json',profile)
-    spec=dict(task='pusht',mode='sim',parameters=dict(initial_pose=initial,goal_pose=goal,
-        speed_mps=.015,max_steps=12,simulation_backend=args.backend))
+    spec=dict(task='pusht',mode='sim',parameters=parameters)
     atomic_json(output_dir/'request.json',spec)
     report=dict(case=case,backend=args.backend,execute_real=False,hardware_connected=False,
         push_search_model=profile['pusht']['model'],
@@ -75,6 +87,9 @@ def frozen_profile(args,output_dir,initial,goal,case):
         closed_gripper_joint_position=args.closed_gripper_joint_position,
         ignore_gripper_internal_self_collision=not args.check_gripper_internal_collisions,
         disturbance_schedule=physics.get('disturbances'),
+        session_policy=profile['pusht'].get('session_policy'),
+        confirmation_intervention=(list(args.confirm_window_relocate)
+            if getattr(args,'confirm_window_relocate',None) is not None else None),
         frozen_base_input_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),request=spec,
         expected='cancel' if case=='cancel' else 'reject' if case=='infeasible' else 'goal',
         source_sha256={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest()
@@ -82,9 +97,47 @@ def frozen_profile(args,output_dir,initial,goal,case):
                       ROOT/'tools/pusht_physics_planner.py',ROOT/'rm75_app/pusht/controller.py',
                       ROOT/'rm75_app/pusht/motion.py',ROOT/'rm75_app/pusht/closed_gripper.py',
                       ROOT/'rm75_app/pusht/model.py',ROOT/'rm75_app/pusht/batch_search.py',
-                      ROOT/'rm75_app/pusht/response.py',
+                      ROOT/'rm75_app/pusht/response.py',ROOT/'rm75_app/pusht/session_control.py',
+                      ROOT/'rm75_app/workcell/iteration_api.py',
                       ROOT/'rm75_app/planning/backends/curobo2.py']})
     return report
+
+
+def _await_session(api,job_id,predicate,timeout_s=60.):
+    deadline=time.monotonic()+timeout_s
+    while time.monotonic()<deadline:
+        state=api.session(job_id)
+        if predicate(state): return state
+        time.sleep(.05)
+    raise TimeoutError('Session control acknowledgement timeout')
+
+
+def _confirmation_intervention(api,job_id,pose,tick):
+    """Pause, relocate and resume through the real session-control API.
+
+    IterationAPI.control is the exact entry the browser route
+    POST /api/workcell/iterate/sessions/<id>/control calls: it re-validates the
+    request, requires an acknowledged boundary pause before a SIM relocation and
+    writes the numbered session command the worker's SessionControl polls. Only
+    the HTTP transport is out of scope here (this process runs under the
+    non-Unix-socket sandbox); no harness step writes worker files directly.
+    """
+    steps=[]
+    for action,payload in (('pause',dict(action='pause')),
+                           ('relocate',dict(action='relocate',pose=list(pose))),
+                           ('resume',dict(action='resume'))):
+        if action=='relocate':
+            before=_await_session(api,job_id,
+                lambda state:state.get('phase')=='paused' and state.get('safe_to_adjust') is True)
+        else:
+            before=api.session(job_id)
+        reply=api.control(job_id,payload)
+        after=_await_session(api,job_id,
+            lambda state,number=reply['sequence']:state.get('last_command',0)>=number)
+        steps.append(dict(action=action,reply=reply,at=time.monotonic()-tick,
+            phase_before=before.get('phase'),phase_after=after.get('phase'),
+            epoch_after=after.get('epoch'),last_pose=after.get('last_pose')))
+    return steps
 
 
 def run_single(args,output_dir,case_name,initial,goal):
@@ -96,12 +149,26 @@ def run_single(args,output_dir,case_name,initial,goal):
     try:
         try:
             job=service.submit(dict(task='pusht',mode='sim',parameters=dict(initial_pose=initial,goal_pose=goal,
-                speed_mps=.015,max_steps=12,simulation_backend=args.backend)))['job_id']
+                speed_mps=.015,max_steps=12,simulation_backend=args.backend,
+                **({'run_until_goal':True} if args.confirm_window_relocate is not None else {}))))['job_id']
             report['job_id']=job
             print(json.dumps(dict(job_id=job,case=case_name)),flush=True)
             cancelled=False
+            intervened=args.confirm_window_relocate is None
+            api=None
             while service.active:
                 state=service.job(job)
+                # The first goal_confirmation opens the window the intervention
+                # must land in, so that event is the trigger.
+                if (args.confirm_window_relocate is not None and not intervened and
+                        any(row.get('kind')=='goal_confirmation' for row in state.get('events',[]))):
+                    if api is None:
+                        from rm75_app.workcell.iteration_api import IterationAPI
+                        api=IterationAPI(service)
+                    steps=_confirmation_intervention(api,job,args.confirm_window_relocate,tick)
+                    intervened=True
+                    report['confirmation_intervention']=dict(pose=list(args.confirm_window_relocate),
+                        goal_confirmed_once=True,api='IterationAPI.control',steps=steps)
                 if (case_name=='cancel' and not cancelled and
                         any(row.get('kind')=='physics_replan' and row.get('plan',{}).get('complete') for row in state.get('events',[]))):
                     cancel_time=time.monotonic();report['cancel_result']=service.cancel(job)
@@ -142,9 +209,25 @@ def main():
         help='Recovery test: externally move the T to --disturb-pose after this many completed pushes')
     parser.add_argument('--disturb-pose',default=None,
         help='x,y,yaw (meters, radians) disturbance pose; requires --disturb-after-pushes')
+    parser.add_argument('--confirm-window-relocate',default=None,
+        help='Intervention inside the goal-confirmation window: pause, relocate T to '
+             'x,y,yaw, then resume through the real session-command path')
+    parser.add_argument('--success-dwell-s',type=float,default=None,
+        help='Confirmation pacing only (NOT a success threshold): widen the dwell so '
+             'the external intervention can land inside the confirmation window')
     args=parser.parse_args()
     if (args.disturb_after_pushes is None)!=(args.disturb_pose is None):
         parser.error('--disturb-after-pushes and --disturb-pose must be given together')
+    if args.confirm_window_relocate is not None:
+        try:
+            relocate_parts=[float(v) for v in args.confirm_window_relocate.split(',')]
+        except ValueError:
+            parser.error('--confirm-window-relocate must be x,y,yaw')
+        if len(relocate_parts)!=3 or not all(math.isfinite(v) for v in relocate_parts) or abs(relocate_parts[2])>math.pi:
+            parser.error('--confirm-window-relocate must be finite x,y and |yaw|<=pi')
+        args.confirm_window_relocate=tuple(relocate_parts)
+        if args.case!='translation':
+            parser.error('The confirmation-window intervention starts from the original translation case')
     if args.disturb_after_pushes is not None:
         if args.disturb_after_pushes<1:parser.error('--disturb-after-pushes must be at least 1')
         try:

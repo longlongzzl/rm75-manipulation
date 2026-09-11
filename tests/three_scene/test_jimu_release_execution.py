@@ -181,6 +181,38 @@ def test_independent_return_rejects_collision_on_actual_entry_before_clear_path(
     assert not executed and not rows[0]['passed']
 
 
+def test_failed_return_audit_names_the_sample_and_pair_without_changing_the_verdict():
+    """A failed audit must say which dense sample and which link/obstacle pair.
+
+    Verdict, path and world state stay exactly as before: the detail is
+    read-only naming appended to the same raise, and the row still records the
+    unchanged collision state.
+    """
+    _,p,demo,options,_,rows,executed,_,_,_=fixture()
+    with pytest.raises(CuroboOnlyUnsupported) as error:
+        p._jimu_execute_pose_path_stage_base(demo,None,None,'return_to_cycle_start',None,points(.02,.04),.719,options)
+    message=str(error.value)
+    assert 'return full-world collision at 0' in message and '| detail=' in message
+    detail=ast.literal_eval(message.split(' | detail=',1)[1])
+    assert detail['dense_index']==0 and detail['source']=='piece'
+    assert 'robot_world_obstacle_contacts' in detail
+    assert not executed and not rows[0]['passed'] and rows[0]['state_unchanged']
+
+
+def test_successful_audits_never_query_the_pair_detail():
+    """Detail naming is failure-only; passing runs pay no extra geometry cost."""
+    import rm75_app.workcell.jimu_release_execution as module
+    planner,_,_,_,_,rows,executed,_,sentinel,run=fixture()
+    calls=[]
+    original=module.jimu_collision_details
+    module.jimu_collision_details=lambda *args,**kwargs:calls.append(args) or original(*args,**kwargs)
+    try:
+        assert run() is sentinel
+    finally:
+        module.jimu_collision_details=original
+    assert rows[0]['passed'] and len(executed)==1 and not calls and 'detail' not in rows[0]
+
+
 def test_original_return_prelift_retains_release_only_pair_policy():
     _,_,_,_,_,rows,executed,_,sentinel,run=fixture()
     assert run(label='return_to_cycle_start_prelift') is sentinel

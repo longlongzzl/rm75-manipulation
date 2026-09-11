@@ -40,7 +40,9 @@ def prepare_request(spec, profile, run_dir=None):
         manifest=recipe.get('task_manifest')
         if manifest is not None:
             if run_dir is None: raise ValueError('Generated native task requires a per-job manifest directory')
-            manifest=copy.deepcopy(manifest)
+            from rm75_app.magnetic.generation import subset_task_manifest
+            manifest=subset_task_manifest(manifest, spec['parameters']['design'],
+                                          spec['parameters']['generation_proof']['selected_roles'])
             manifest['builder_scene_json']='builder_scene.json'
             manifest['sam6d_fixed_scene_result_file']=recipe.get('fixed_scene')
             manifest_path=Path(run_dir)/'original_base_manifest.json'

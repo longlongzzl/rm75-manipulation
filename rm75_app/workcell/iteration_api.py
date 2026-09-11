@@ -81,6 +81,7 @@ class IterationAPI:
                 try:
                     result=generate(library,request,complete)
                     final=dict(generation_id=ident,status='succeeded',**result,
+                               provider_usage=getattr(complete,'last_usage',None),
                                robot_command_submitted=False)
                 except Exception as exc:
                     # No endpoint URLs, tokens, prompts or response body in an error.
