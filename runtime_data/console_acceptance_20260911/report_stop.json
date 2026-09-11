@@ -1,0 +1,117 @@
+{
+  "stage": "stop",
+  "base": "http://127.0.0.1:7863",
+  "checks": [
+    {
+      "check": "console bootstrap over real HTTP",
+      "ok": true,
+      "detail": "console_profile_r2_nodiag.json"
+    },
+    {
+      "check": "job running and Stop offered",
+      "ok": true,
+      "detail": "运行中"
+    },
+    {
+      "check": "stop reached a terminal state",
+      "ok": true,
+      "detail": "{\"status\": \"cancelled\", \"task_success\": null, \"steps\": null, \"job\": null, \"label\": \"\\u5df2\\u505c\\u6b62\"}"
+    },
+    {
+      "check": "stop did not report a motion success",
+      "ok": true,
+      "detail": "null"
+    },
+    {
+      "check": "no page exceptions",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "no browser console errors",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "api": [
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "history",
+      "status": 200
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "preflight",
+      "status": 200,
+      "request_digest": "456a8df279a80bf646650201",
+      "valid": true
+    },
+    {
+      "url": "jobs",
+      "status": 200,
+      "request_id": "4a2b9d78f7e44410b935af9fd47e8547",
+      "job_id": "d32249dc5f2942be95a8c5c2fef4ce42",
+      "request_digest": "dacb09e8cb2e998208efe35d",
+      "canonical_request_digest": "456a8df279a80bf646650201",
+      "status_field": "accepted"
+    },
+    {
+      "url": "submissions/4a2b9d78f7e44410b935af9fd47e8547",
+      "status": 200,
+      "request_id": "4a2b9d78f7e44410b935af9fd47e8547",
+      "job_id": "d32249dc5f2942be95a8c5c2fef4ce42",
+      "request_digest": "dacb09e8cb2e998208efe35d",
+      "canonical_request_digest": "456a8df279a80bf646650201",
+      "status_field": "accepted"
+    },
+    {
+      "url": "jobs/d32249dc5f2942be95a8c5c2fef4ce42",
+      "status": 200,
+      "job_id": "d32249dc5f2942be95a8c5c2fef4ce42",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/d32249dc5f2942be95a8c5c2fef4ce42",
+      "status": 200,
+      "job_id": "d32249dc5f2942be95a8c5c2fef4ce42",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/d32249dc5f2942be95a8c5c2fef4ce42",
+      "status": 200,
+      "job_id": "d32249dc5f2942be95a8c5c2fef4ce42",
+      "status_field": "cancelled"
+    },
+    {
+      "url": "history",
+      "status": 200
+    }
+  ],
+  "page_errors": [],
+  "console_errors": [],
+  "screenshots": [
+    "runtime_data/console_acceptance_20260911/stop.png"
+  ],
+  "status": "PASS",
+  "bad_responses": [],
+  "profile": "console_profile_r2_nodiag.json",
+  "version": "2026.09.11-console.1",
+  "stop": {
+    "job_id": null,
+    "result": {
+      "command_success": false,
+      "error": "worker exited -15 without a final result",
+      "finished_at": 1789142139.6870582,
+      "mode": "sim",
+      "status": "cancelled",
+      "task": "pusht",
+      "task_success": null
+    }
+  }
+}

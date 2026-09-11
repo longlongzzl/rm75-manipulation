@@ -1,0 +1,24 @@
+PASS generation accepted by the server :: [{"http": 200, "request_id": "a93577ffb9a0c45ec7eebb4bd6b5ba72", "generation_id": "9d1379aaa0aa43f6b93869b7c94470c2", "status": "accepted"}]
+PASS wait timer is not a client deadline :: 生成中 · 已等待 0:00 · 最多两次模型调用。刷新后可恢复；前端不再按 135 秒提前报失败。
+PASS still generating when the page is reloaded :: 生成中 · 已等待 0:15 · 最多两次模型调用。刷新后可恢复；前端不再按 135 秒提前报失败。
+PASS generation polling resumed after the refresh :: 生成中 · 已等待 0:15 · 最多两次模型调用。刷新后可恢复；前端不再按 135 秒提前报失败。
+FAIL server record was reclaimed instead of resubmitted :: 已恢复此机器配置的浏览器草稿。没有自动发起任务、重试或模型请求。
+PASS no second model request after the refresh :: [{"http": 200, "request_id": "a93577ffb9a0c45ec7eebb4bd6b5ba72", "generation_id": "9d1379aaa0aa43f6b93869b7c94470c2", "status": "accepted"}]
+PASS exactly one generation identity was polled :: ["9d1379aaa0aa43f6b93869b7c94470c2"]
+PASS generated design adopted once :: LLM 生成 · 固定 9 件 / 活动 3 件
+PASS design carries its provenance :: 右侧三层小塔 · 3 块活动件。从原模板选择右墙侧父子链：right_wall 作为底板上的第一层，right_second_wall 叠放为第二层，right_roof_triangle 作为第三层三角顶，形成靠底板右侧的三层窄塔。该选择限于原模板已有坐标和父子闭合结构，共3件可动件，未进行机器人或磁吸物理验证。 生成不代表已通过原生仿真。
+PASS generation finished successfully with one proof :: {"status": "succeeded", "board": "grid_3x3", "movable": 3, "roles": ["right_wall", "right_second_wall", "right_roof_triangle"], "design_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295", "model_calls": 1}
+waiting for GPU: ['32858, 304 MiB'] (waited 0s)
+waiting for GPU: ['32858, 304 MiB'] (waited 120s)
+waiting for GPU: ['32858, 304 MiB'] (waited 240s)
+waiting for GPU: ['32858, 304 MiB'] (waited 360s)
+waiting for GPU: ['32858, 304 MiB'] (waited 480s)
+PASS GPU was serialized for the native SIM :: {"other_compute_apps": [], "waited_s": 540}
+PASS preflight passed for the generated design :: 配置与请求检查通过
+PASS SIM confirmation names the same generated design :: {   "task": "magnetic",   "mode": "sim",   "board": "grid_3x3",   "movable": 3,   "roles": [     "right_wall",     "right_second_wall",     "right_roof_triangle"   ],   "design_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d
+PASS native SIM ran the identical proof :: {"job_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295", "generation_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295"}
+PASS native SIM reached a terminal state :: {"status": "failed", "task_success": null, "native_completed_cycles": null, "native_cycles": null, "generated_design_used_unchanged": null, "verification": null, "first_failure_stage": null}
+FAIL no real-robot command was submitted :: {"robot_command_submitted": null, "mode": "sim"}
+PASS no page exceptions
+PASS no browser console errors (favicon excluded)
+{"stage": "llm", "status": "FAIL"}

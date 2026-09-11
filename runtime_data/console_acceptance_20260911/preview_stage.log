@@ -1,0 +1,8 @@
+PASS console bootstrap over real HTTP :: console_profile_r2_nodiag.json
+PASS multi-select order rendered :: 笔 → 网球
+PASS preflight rendered :: 配置与请求检查通过
+PASS multi-object preview completed :: 2854afa6722248ef85f6ec873f06d915
+PASS preview result is not a motion success :: "preview_only"
+PASS no page exceptions
+PASS no browser console errors
+{"stage": "preview", "status": "PASS"}

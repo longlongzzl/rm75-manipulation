@@ -1,0 +1,141 @@
+{
+  "stage": "preview",
+  "base": "http://127.0.0.1:7863",
+  "checks": [
+    {
+      "check": "console bootstrap over real HTTP",
+      "ok": true,
+      "detail": "console_profile_r2_nodiag.json"
+    },
+    {
+      "check": "multi-select order rendered",
+      "ok": true,
+      "detail": "笔 → 网球"
+    },
+    {
+      "check": "preflight rendered",
+      "ok": true,
+      "detail": "配置与请求检查通过"
+    },
+    {
+      "check": "multi-object preview completed",
+      "ok": true,
+      "detail": "2854afa6722248ef85f6ec873f06d915"
+    },
+    {
+      "check": "preview result is not a motion success",
+      "ok": true,
+      "detail": "\"preview_only\""
+    },
+    {
+      "check": "no page exceptions",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "no browser console errors",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "api": [
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "history",
+      "status": 200
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "preflight",
+      "status": 200,
+      "request_digest": "5e37a09d84f1f61ba6d236f1",
+      "valid": true
+    },
+    {
+      "url": "preflight",
+      "status": 200,
+      "request_digest": "5c3465b2fe2c32b8172b79c7",
+      "valid": true
+    },
+    {
+      "url": "jobs",
+      "status": 200,
+      "request_id": "fe47065dcab3330c57720a4c54a39ee2",
+      "job_id": "2854afa6722248ef85f6ec873f06d915",
+      "request_digest": "5c3465b2fe2c32b8172b79c7",
+      "canonical_request_digest": "5c3465b2fe2c32b8172b79c7",
+      "status_field": "accepted"
+    },
+    {
+      "url": "submissions/fe47065dcab3330c57720a4c54a39ee2",
+      "status": 200,
+      "request_id": "fe47065dcab3330c57720a4c54a39ee2",
+      "job_id": "2854afa6722248ef85f6ec873f06d915",
+      "request_digest": "5c3465b2fe2c32b8172b79c7",
+      "canonical_request_digest": "5c3465b2fe2c32b8172b79c7",
+      "status_field": "accepted"
+    },
+    {
+      "url": "jobs/2854afa6722248ef85f6ec873f06d915",
+      "status": 200,
+      "job_id": "2854afa6722248ef85f6ec873f06d915",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/2854afa6722248ef85f6ec873f06d915",
+      "status": 200,
+      "job_id": "2854afa6722248ef85f6ec873f06d915",
+      "status_field": "command_completed_unverified"
+    },
+    {
+      "url": "history",
+      "status": 200
+    }
+  ],
+  "page_errors": [],
+  "console_errors": [],
+  "screenshots": [
+    "runtime_data/console_acceptance_20260911/preview_preflight.png",
+    "runtime_data/console_acceptance_20260911/preview_done.png"
+  ],
+  "status": "PASS",
+  "bad_responses": [],
+  "profile": "console_profile_r2_nodiag.json",
+  "version": "2026.09.11-console.1",
+  "preview": {
+    "job_id": "2854afa6722248ef85f6ec873f06d915",
+    "request": {
+      "mode": "preview",
+      "parameters": {
+        "automatic_order": true,
+        "object_names": [
+          "bi",
+          "tennis"
+        ]
+      },
+      "task": "pickplace"
+    },
+    "result": {
+      "command_success": true,
+      "finished_at": 1789142763.232553,
+      "hardware_connected": false,
+      "mode": "preview",
+      "placement": "original_object_specific_place_rules",
+      "same_scene_sequence": true,
+      "source_order": [
+        "bi",
+        "tennis"
+      ],
+      "status": "command_completed_unverified",
+      "task": "pickplace",
+      "task_success": null,
+      "verification": "preview_only"
+    }
+  }
+}

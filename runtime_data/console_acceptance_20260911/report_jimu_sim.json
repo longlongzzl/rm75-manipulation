@@ -1,0 +1,253 @@
+{
+  "stage": "sim",
+  "bundle": "runtime_data/console_launch_20260911/same_design_bundle.json",
+  "design_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295",
+  "checks": [
+    {
+      "check": "bundle imported with its provenance",
+      "ok": true,
+      "detail": "导入设计（来源已校验） · 固定 9 件 / 活动 3 件"
+    },
+    {
+      "check": "preflight passed",
+      "ok": true,
+      "detail": "配置与请求检查通过"
+    },
+    {
+      "check": "GPU was serialized for the native SIM",
+      "ok": true,
+      "detail": "{\"other_compute_apps\": [], \"waited_s\": 0}"
+    },
+    {
+      "check": "SIM confirmation names the same design",
+      "ok": true,
+      "detail": "{   \"task\": \"magnetic\",   \"mode\": \"sim\",   \"board\": \"grid_3x3\",   \"movable\": 3,   \"roles\": [     \"right_wall\",     \"right_second_wall\",     \"right_roof_triangle\"   ],   \"design_digest\": \"8aa0eb420b231"
+    },
+    {
+      "check": "native SIM ran the identical proof",
+      "ok": true,
+      "detail": "{\"job_digest\": \"8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295\", \"expected\": \"8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295\"}"
+    },
+    {
+      "check": "native SIM terminal state",
+      "ok": true,
+      "detail": "{\"status\": \"command_completed_unverified\", \"task_success\": null, \"generated_design_used_unchanged\": true, \"mode\": \"sim\", \"task\": \"magnetic\", \"hardware_connected\": null, \"native_completed_cycles\": [1, 2, 3], \"error\": null}"
+    },
+    {
+      "check": "the run reported no real-robot execution",
+      "ok": true,
+      "detail": "{\"execute_real\": null, \"mode\": \"sim\", \"hardware_connected\": null}"
+    },
+    {
+      "check": "no page exceptions",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "no browser console errors (favicon excluded)",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "page_errors": [],
+  "console_errors": [],
+  "screenshots": [
+    "runtime_data/console_acceptance_20260911/sim_imported.png",
+    "runtime_data/console_acceptance_20260911/sim_done.png"
+  ],
+  "status": "PASS",
+  "job_id": null,
+  "job_state": "指令结束 · 未验证任务成功",
+  "result": {
+    "added_task_pose_constraints": [],
+    "clearance_failures": [],
+    "clearance_path_audits": [],
+    "clearance_selection_audits": [],
+    "command_success": true,
+    "contact_policy": "transport_world_checked_compatibility",
+    "episode_command_results": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "expected_cycles": 3,
+    "finished_at": 1789142011.6366947,
+    "fixed_scene_format": "sam6d",
+    "generated_design_used_unchanged": true,
+    "generation_proof": {
+      "board_id": "grid_3x3",
+      "design_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295",
+      "explanation": "从原模板选择右墙侧父子链：right_wall 作为底板上的第一层，right_second_wall 叠放为第二层，right_roof_triangle 作为第三层三角顶，形成靠底板右侧的三层窄塔。该选择限于原模板已有坐标和父子闭合结构，共3件可动件，未进行机器人或磁吸物理验证。",
+      "explicit_support_closure": true,
+      "inventory_used": {
+        "square": 2,
+        "triangle": 1
+      },
+      "locked_digest": "5ea0b1440a401450324515b0466ebc35640317bcd31b60971289afea36f1709c",
+      "movable_count": 3,
+      "native_planning_verified": false,
+      "native_recipe_digest": "bb52900ad988edd0457545e8bf9cfd87ab4ff758c906558c2f0d7e2fecd92c89",
+      "original_geometry_preserved": true,
+      "physical_buildability_verified": false,
+      "selected_roles": [
+        "right_wall",
+        "right_second_wall",
+        "right_roof_triangle"
+      ],
+      "template_digest": "7afbd1eb18117df12a9521e234825fc1bd1e48d3d4531e40e35d0408d38f360b",
+      "template_id": "grid_3x3_00",
+      "title": "右侧三层小塔",
+      "validation": "original_geometry_and_support_graph_only"
+    },
+    "independent_clearance_execution_audit_observed": false,
+    "jimu_release_execution_audits": [
+      {
+        "clearance_samples": 49,
+        "event": "jimu_release_execution_audit",
+        "execution_entry": "pose",
+        "execution_guard": true,
+        "passed": true,
+        "permitted_contact_target": "scene_obstacle_right_wall",
+        "permitted_links": [
+          "gripper_Left_1_Link",
+          "gripper_Left_2_Link",
+          "gripper_Left_Support_Link",
+          "gripper_Right_1_Link",
+          "gripper_Right_2_Link",
+          "gripper_Right_Support_Link",
+          "left_pad",
+          "right_pad"
+        ],
+        "physical_success": null,
+        "release_contact_samples": 2,
+        "return_samples": 157,
+        "return_world_exempt_links": [],
+        "scene_fingerprint": "8627a6c21d7c4b9c444e233f36f8ad2f175c1d53e3222caabc72fe0cf3629a0b",
+        "self_collision_input_modified": false,
+        "source": "right_wall",
+        "stage_kind": "release_then_return",
+        "state_unchanged": true,
+        "step_id": "post_place_clearance_return_to_cycle_start",
+        "world_filter_calls": 2
+      },
+      {
+        "clearance_samples": 62,
+        "event": "jimu_release_execution_audit",
+        "execution_entry": "pose",
+        "execution_guard": true,
+        "passed": true,
+        "permitted_contact_target": "scene_obstacle_right_second_wall",
+        "permitted_links": [
+          "gripper_Left_1_Link",
+          "gripper_Left_2_Link",
+          "gripper_Left_Support_Link",
+          "gripper_Right_1_Link",
+          "gripper_Right_2_Link",
+          "gripper_Right_Support_Link",
+          "left_pad",
+          "right_pad"
+        ],
+        "physical_success": null,
+        "release_contact_samples": 0,
+        "return_samples": 171,
+        "return_world_exempt_links": [],
+        "scene_fingerprint": "8627a6c21d7c4b9c444e233f36f8ad2f175c1d53e3222caabc72fe0cf3629a0b",
+        "self_collision_input_modified": false,
+        "source": "right_second_wall",
+        "stage_kind": "release_then_return",
+        "state_unchanged": true,
+        "step_id": "post_place_clearance_return_to_cycle_start",
+        "world_filter_calls": 0
+      },
+      {
+        "clearance_samples": 44,
+        "event": "jimu_release_execution_audit",
+        "execution_entry": "pose",
+        "execution_guard": true,
+        "passed": true,
+        "permitted_contact_target": "scene_obstacle_right_roof_triangle",
+        "permitted_links": [
+          "gripper_Left_1_Link",
+          "gripper_Left_2_Link",
+          "gripper_Left_Support_Link",
+          "gripper_Right_1_Link",
+          "gripper_Right_2_Link",
+          "gripper_Right_Support_Link",
+          "left_pad",
+          "right_pad"
+        ],
+        "physical_success": null,
+        "release_contact_samples": 0,
+        "return_samples": 204,
+        "return_world_exempt_links": [],
+        "scene_fingerprint": "8627a6c21d7c4b9c444e233f36f8ad2f175c1d53e3222caabc72fe0cf3629a0b",
+        "self_collision_input_modified": false,
+        "source": "right_roof_triangle",
+        "stage_kind": "release_then_return",
+        "state_unchanged": true,
+        "step_id": "post_place_clearance_return_to_cycle_start",
+        "world_filter_calls": 0
+      }
+    ],
+    "loaded_mplib_modules": [],
+    "mode": "sim",
+    "native_completed_cycles": [
+      1,
+      2,
+      3
+    ],
+    "native_cycles": [
+      {
+        "cycle": 1,
+        "success": true
+      },
+      {
+        "cycle": 2,
+        "success": true
+      },
+      {
+        "cycle": 3,
+        "success": true
+      }
+    ],
+    "native_entrypoint": "Beta_demo-codex-v0.9/rm75_jimu_triangle_roof_apriltag_portable.py",
+    "native_final_success": true,
+    "native_full_chain_passed": true,
+    "note": "Normal process return is not proof of a real grasp or magnetic connection",
+    "original_algorithms_preserved": true,
+    "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+    "status": "command_completed_unverified",
+    "task": "magnetic",
+    "task_success": null,
+    "verification": "not_observed"
+  },
+  "request_parameters": {
+    "generation_proof": {
+      "board_id": "grid_3x3",
+      "design_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295",
+      "explanation": "从原模板选择右墙侧父子链：right_wall 作为底板上的第一层，right_second_wall 叠放为第二层，right_roof_triangle 作为第三层三角顶，形成靠底板右侧的三层窄塔。该选择限于原模板已有坐标和父子闭合结构，共3件可动件，未进行机器人或磁吸物理验证。",
+      "explicit_support_closure": true,
+      "inventory_used": {
+        "square": 2,
+        "triangle": 1
+      },
+      "locked_digest": "5ea0b1440a401450324515b0466ebc35640317bcd31b60971289afea36f1709c",
+      "movable_count": 3,
+      "native_planning_verified": false,
+      "native_recipe_digest": "bb52900ad988edd0457545e8bf9cfd87ab4ff758c906558c2f0d7e2fecd92c89",
+      "original_geometry_preserved": true,
+      "physical_buildability_verified": false,
+      "selected_roles": [
+        "right_wall",
+        "right_second_wall",
+        "right_roof_triangle"
+      ],
+      "template_digest": "7afbd1eb18117df12a9521e234825fc1bd1e48d3d4531e40e35d0408d38f360b",
+      "template_id": "grid_3x3_00",
+      "title": "右侧三层小塔",
+      "validation": "original_geometry_and_support_graph_only"
+    }
+  }
+}

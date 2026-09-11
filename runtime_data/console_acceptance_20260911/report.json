@@ -1,0 +1,14 @@
+{
+  "scope": "normal browser, real WSGI transport; no LLM/GPU/real task launched",
+  "checks": [
+    "three-panel console loads with no page exception",
+    "read-only original template loaded into design viewer",
+    "mobile layout has no horizontal overflow"
+  ],
+  "errors": [],
+  "blocked_requests": [],
+  "preview_requested": null,
+  "normal_navigation": true,
+  "hardware_arming_requested": false,
+  "status": "PASS"
+}

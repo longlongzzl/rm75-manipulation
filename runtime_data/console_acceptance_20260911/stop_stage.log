@@ -1,0 +1,7 @@
+PASS console bootstrap over real HTTP :: console_profile_r2_nodiag.json
+PASS job running and Stop offered :: 运行中
+PASS stop reached a terminal state :: {"status": "cancelled", "task_success": null, "steps": null, "job": null, "label": "\u5df2\u505c\u6b62"}
+PASS stop did not report a motion success :: null
+PASS no page exceptions
+PASS no browser console errors
+{"stage": "stop", "status": "PASS"}

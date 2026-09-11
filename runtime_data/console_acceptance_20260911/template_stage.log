@@ -1,0 +1,7 @@
+PASS console bootstrap over real HTTP :: console_profile_r2_nodiag.json
+PASS original template loaded without LLM :: 原模板（未调用 LLM） · 固定 7 件 / 活动 12 件
+PASS template pieces rendered :: 12 movable pieces
+PASS template preflight :: 配置与请求检查通过
+PASS no page exceptions
+PASS no browser console errors
+{"stage": "template", "status": "PASS"}

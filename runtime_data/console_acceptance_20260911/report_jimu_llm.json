@@ -1,0 +1,2533 @@
+{
+  "stage": "llm",
+  "base": "http://127.0.0.1:7863",
+  "checks": [
+    {
+      "check": "generation accepted by the server",
+      "ok": true,
+      "detail": "[{\"http\": 200, \"request_id\": \"bcbb3bab2623f181ec13bd84f756bd8d\", \"generation_id\": \"33b54f3d21764b529e53cb509c91e129\", \"status\": \"accepted\"}]"
+    },
+    {
+      "check": "wait timer is not a client deadline",
+      "ok": true,
+      "detail": "生成中 · 已等待 0:00 · 最多两次模型调用。刷新后可恢复；前端不再按 135 秒提前报失败。"
+    },
+    {
+      "check": "still generating when the page is reloaded",
+      "ok": true,
+      "detail": "生成中 · 已等待 0:15 · 最多两次模型调用。刷新后可恢复；前端不再按 135 秒提前报失败。"
+    },
+    {
+      "check": "generation polling resumed after the refresh",
+      "ok": true,
+      "detail": "生成中 · 已等待 0:15 · 最多两次模型调用。刷新后可恢复；前端不再按 135 秒提前报失败。"
+    },
+    {
+      "check": "resumed timer continues the same server-side record",
+      "ok": true,
+      "detail": "elapsed=15s text=生成中 · 已等待 0:15 · 最多两次模型调用。刷新后可恢复；前端不再按 135 秒提前报失败。"
+    },
+    {
+      "check": "the reload restored local state instead of resubmitting",
+      "ok": true,
+      "detail": "已恢复此机器配置的浏览器草稿。没有自动发起任务、重试或模型请求。"
+    },
+    {
+      "check": "no second model request after the refresh",
+      "ok": true,
+      "detail": "[{\"http\": 200, \"request_id\": \"bcbb3bab2623f181ec13bd84f756bd8d\", \"generation_id\": \"33b54f3d21764b529e53cb509c91e129\", \"status\": \"accepted\"}]"
+    },
+    {
+      "check": "exactly one generation identity was polled",
+      "ok": true,
+      "detail": "[\"33b54f3d21764b529e53cb509c91e129\"]"
+    },
+    {
+      "check": "generated design adopted once",
+      "ok": true,
+      "detail": "LLM 生成 · 固定 9 件 / 活动 3 件"
+    },
+    {
+      "check": "design carries its provenance",
+      "ok": true,
+      "detail": "三层单柱小塔（右侧三角顶） · 3 块活动件。选择右侧一条竖直支撑链：right_wall、right_second_wall、right_roof_triangle，三块可动件依次叠放，形成三层单柱小塔，顶部为三角形。该子结构保留父件关系并连接底板中心定位件。受3件预算限制，仅能实现单柱形式，不是四面封闭塔。未进行物理验证。 生成不代表已通过原生仿真。"
+    },
+    {
+      "check": "generation finished successfully with one proof",
+      "ok": true,
+      "detail": "{\"status\": \"succeeded\", \"board\": \"grid_3x3\", \"movable\": 3, \"roles\": [\"right_wall\", \"right_second_wall\", \"right_roof_triangle\"], \"design_digest\": \"8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295\", \"model_calls\": 1}"
+    },
+    {
+      "check": "GPU was serialized for the native SIM",
+      "ok": true,
+      "detail": "{\"other_compute_apps\": [], \"waited_s\": 0}"
+    },
+    {
+      "check": "preflight passed for the generated design",
+      "ok": true,
+      "detail": "配置与请求检查通过"
+    },
+    {
+      "check": "SIM confirmation names the same generated design",
+      "ok": true,
+      "detail": "{   \"task\": \"magnetic\",   \"mode\": \"sim\",   \"board\": \"grid_3x3\",   \"movable\": 3,   \"roles\": [     \"right_wall\",     \"right_second_wall\",     \"right_roof_triangle\"   ],   \"design_digest\": \"8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295\" }"
+    },
+    {
+      "check": "native SIM ran the identical proof",
+      "ok": true,
+      "detail": "{\"job_digest\": \"8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295\", \"generation_digest\": \"8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295\"}"
+    },
+    {
+      "check": "native SIM reached a terminal state",
+      "ok": true,
+      "detail": "{\"status\": \"command_completed_unverified\", \"task_success\": null, \"native_completed_cycles\": [1, 2, 3], \"native_cycles\": [{\"cycle\": 1, \"success\": true}, {\"cycle\": 2, \"success\": true}, {\"cycle\": 3, \"success\": true}], \"generated_design_used_unchanged\": true, \"verification\": \"not_observed\", \"first_failure_stage\": null}"
+    },
+    {
+      "check": "the run reported no real-robot execution",
+      "ok": true,
+      "detail": "{\"mode\": \"sim\", \"execute_real\": null, \"hardware_connected\": null, \"robot_command_field_in_schema\": false}"
+    },
+    {
+      "check": "no page exceptions",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "no browser console errors (favicon excluded)",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "generate_posts": [
+    {
+      "http": 200,
+      "request_id": "bcbb3bab2623f181ec13bd84f756bd8d",
+      "generation_id": "33b54f3d21764b529e53cb509c91e129",
+      "status": "accepted"
+    }
+  ],
+  "generation_polls": [
+    "33b54f3d21764b529e53cb509c91e129"
+  ],
+  "page_errors": [],
+  "console_errors": [],
+  "screenshots": [
+    "runtime_data/console_acceptance_20260911/llm_generating.png",
+    "runtime_data/console_acceptance_20260911/llm_after_refresh.png",
+    "runtime_data/console_acceptance_20260911/llm_generated.png",
+    "runtime_data/console_acceptance_20260911/llm_preflight.png",
+    "runtime_data/console_acceptance_20260911/llm_confirm.png",
+    "runtime_data/console_acceptance_20260911/llm_sim_done.png"
+  ],
+  "status": "PASS",
+  "generation": {
+    "auto_execute": false,
+    "created_at": 1789142559.0383775,
+    "design": {
+      "apriltags": {
+        "attached_tags": [
+          {
+            "T_builder_tag": [
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.0065
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "T_piece_tag": [
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.00325
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "attached_surface": "piece_top",
+            "attached_to_piece_id": null,
+            "attached_to_role": "base_positioning_center",
+            "local_axes": {
+              "n": [
+                0,
+                1,
+                0
+              ],
+              "u": [
+                1,
+                0,
+                0
+              ],
+              "v": [
+                0,
+                0,
+                1
+              ]
+            },
+            "local_center_m": [
+              0,
+              0.00325,
+              0
+            ],
+            "local_yaw_deg": 0,
+            "mount": "base",
+            "name": "base_tag_1",
+            "offset_frame": "piece_local_uv",
+            "pnp_mirror_u": false,
+            "pnp_mirror_v": true,
+            "tag_black_square_size_m": 0.052,
+            "tag_family": "tag25h9",
+            "tag_id": 1,
+            "texture_mirror_u": false,
+            "texture_mirror_v": false
+          }
+        ],
+        "builder_frame": "x_right_y_up_z_forward",
+        "description": "AprilTag mount definitions plus optional imported real localization poses.",
+        "imported_poses": null,
+        "mounts": {
+          "base": {
+            "local_frame": "base_positioning_center",
+            "local_pose": {
+              "center_m": [
+                0,
+                0.0075,
+                0
+              ],
+              "n": [
+                0,
+                1,
+                0
+              ],
+              "u": [
+                1,
+                0,
+                0
+              ],
+              "v": [
+                0,
+                0,
+                1
+              ]
+            },
+            "object_name": "jimu_base_assembly",
+            "role": "base",
+            "tag_black_square_size_m": 0.052,
+            "tag_family": "tag25h9",
+            "tag_id": 1,
+            "tag_top_height_from_table_m": 0.0075
+          },
+          "tray": {
+            "local_frame": "tray_center_recess",
+            "local_pose": {
+              "center_m": [
+                0,
+                0.005,
+                0
+              ],
+              "n": [
+                0,
+                1,
+                0
+              ],
+              "u": [
+                1,
+                0,
+                0
+              ],
+              "v": [
+                0,
+                0,
+                1
+              ]
+            },
+            "object_name": "jimu_liaoban",
+            "role": "tray",
+            "tag_black_square_size_m": 0.06,
+            "tag_family": "tag25h9",
+            "tag_id": 0,
+            "tag_top_height_from_table_m": 0.005
+          }
+        },
+        "schema": "jimu_builder_apriltags_v1",
+        "units": "meters"
+      },
+      "base": "3x3_centered_on_positioning_plate",
+      "pieces": [
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              -0.074
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              -0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            -0.074,
+            0.00325,
+            -0.074
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_-1_-1_1",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_-1_-1",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              -0.074
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            -0.074,
+            0.00325,
+            0
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_-1_0_2",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_-1_0",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              -0.074
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            -0.074,
+            0.00325,
+            0.074
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_-1_1_3",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_-1_1",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              -0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0,
+            0.00325,
+            -0.074
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_0_-1_4",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_0_-1",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0,
+            0.00325,
+            0
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_positioning_center_5",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_positioning_center",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0,
+            0.00325,
+            0.074
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_0_1_6",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_0_1",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              0.074
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              -0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0.074,
+            0.00325,
+            -0.074
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_1_-1_7",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_1_-1",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              0.074
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0.074,
+            0.00325,
+            0
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_1_0_8",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_1_0",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              0.074
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0.074,
+            0.00325,
+            0.074
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_1_1_9",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_1_1",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              0,
+              1,
+              0,
+              0.037
+            ],
+            [
+              0,
+              0,
+              1,
+              0.04025
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0.037,
+            0.04025,
+            0
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "right_wall_10",
+          "locked": false,
+          "n": [
+            1,
+            0,
+            0
+          ],
+          "parentEdge": "right",
+          "parentId": "base_positioning_center_5",
+          "parentRelativeTransform": [
+            [
+              0,
+              1,
+              0,
+              0.037
+            ],
+            [
+              0,
+              0,
+              1,
+              0.037
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "parentRole": "base_positioning_center",
+          "role": "right_wall",
+          "snapMode": "up",
+          "source": "preset",
+          "type": "square",
+          "u": [
+            0,
+            0,
+            1
+          ],
+          "v": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              0,
+              -1,
+              0,
+              0.037
+            ],
+            [
+              0,
+              0,
+              1,
+              0.11425
+            ],
+            [
+              -1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0.037,
+            0.11425,
+            0
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "right_second_wall_14",
+          "locked": false,
+          "n": [
+            -1,
+            0,
+            0
+          ],
+          "parentEdge": "top",
+          "parentId": "right_wall_10",
+          "parentRelativeTransform": [
+            [
+              -1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "parentRole": "right_wall",
+          "role": "right_second_wall",
+          "snapMode": "flat",
+          "source": "preset",
+          "type": "square",
+          "u": [
+            0,
+            0,
+            -1
+          ],
+          "v": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              0,
+              1,
+              0,
+              0.037
+            ],
+            [
+              0,
+              0,
+              1,
+              0.21875
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0.037,
+            0.21875,
+            0
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "",
+          "dimensions_m": {
+            "height": 0.135,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "right_roof_triangle_18",
+          "locked": false,
+          "n": [
+            1,
+            0,
+            0
+          ],
+          "parentEdge": "top",
+          "parentId": "right_second_wall_14",
+          "parentRelativeTransform": [
+            [
+              -1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0.1045
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "parentRole": "right_second_wall",
+          "role": "right_roof_triangle",
+          "snapMode": "flat",
+          "source": "preset",
+          "type": "triangle",
+          "u": [
+            0,
+            0,
+            1
+          ],
+          "v": [
+            0,
+            1,
+            0
+          ]
+        }
+      ],
+      "plate_size_m": 0.074,
+      "robot": {
+        "apriltag_anchor": {
+          "base_tag_black_square_size_m": 0.052,
+          "base_tag_id": 1,
+          "tray_tag_black_square_size_m": 0.06,
+          "tray_tag_id": 0
+        },
+        "backend_entrypoint": "Beta_demo-codex-v0.9/rm75_jimu_triangle_roof_apriltag_portable.py",
+        "builder_scene_arg": "--jimu-builder-scene-json",
+        "coordinate_frame": "builder_frame_x_right_y_up_z_forward",
+        "locked_base_roles": [
+          "base_-1_-1",
+          "base_-1_0",
+          "base_-1_1",
+          "base_0_-1",
+          "base_positioning_center",
+          "base_0_1",
+          "base_1_-1",
+          "base_1_0",
+          "base_1_1"
+        ],
+        "piece_types": {
+          "back_roof_triangle": "triangle",
+          "back_second_wall": "square",
+          "back_wall": "square",
+          "front_roof_triangle": "triangle",
+          "front_second_wall": "square",
+          "front_wall": "square",
+          "left_roof_triangle": "triangle",
+          "left_second_wall": "square",
+          "left_wall": "square",
+          "right_roof_triangle": "triangle",
+          "right_second_wall": "square",
+          "right_wall": "square"
+        },
+        "recommended_args": [
+          "--jimu-builder-scene-json",
+          "<path-to-this-json>",
+          "--jimu-apriltag-anchor-localization",
+          "--render-mode",
+          "human",
+          "--auto-execute"
+        ],
+        "schema": "jimu_builder_robot_execution_v1",
+        "task_roles": [
+          "right_wall",
+          "back_wall",
+          "left_wall",
+          "front_wall",
+          "right_second_wall",
+          "back_second_wall",
+          "left_second_wall",
+          "front_second_wall",
+          "right_roof_triangle",
+          "back_roof_triangle",
+          "left_roof_triangle",
+          "front_roof_triangle"
+        ]
+      },
+      "schema": "jimu_builder_scene_v1",
+      "units": "meters"
+    },
+    "generation_id": "33b54f3d21764b529e53cb509c91e129",
+    "generation_method": "llm_constrained_original_slots",
+    "model_calls": 1,
+    "poll_ms": 1500,
+    "proof": {
+      "board_id": "grid_3x3",
+      "design_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295",
+      "explanation": "选择右侧一条竖直支撑链：right_wall、right_second_wall、right_roof_triangle，三块可动件依次叠放，形成三层单柱小塔，顶部为三角形。该子结构保留父件关系并连接底板中心定位件。受3件预算限制，仅能实现单柱形式，不是四面封闭塔。未进行物理验证。",
+      "explicit_support_closure": true,
+      "inventory_used": {
+        "square": 2,
+        "triangle": 1
+      },
+      "locked_digest": "5ea0b1440a401450324515b0466ebc35640317bcd31b60971289afea36f1709c",
+      "movable_count": 3,
+      "native_planning_verified": false,
+      "native_recipe_digest": "bb52900ad988edd0457545e8bf9cfd87ab4ff758c906558c2f0d7e2fecd92c89",
+      "original_geometry_preserved": true,
+      "physical_buildability_verified": false,
+      "selected_roles": [
+        "right_wall",
+        "right_second_wall",
+        "right_roof_triangle"
+      ],
+      "template_digest": "7afbd1eb18117df12a9521e234825fc1bd1e48d3d4531e40e35d0408d38f360b",
+      "template_id": "grid_3x3_00",
+      "title": "三层单柱小塔（右侧三角顶）",
+      "validation": "original_geometry_and_support_graph_only"
+    },
+    "provider_usage": {
+      "input_tokens": 8,
+      "output_tokens": 1084
+    },
+    "request": {
+      "board_id": "grid_3x3",
+      "piece_budget": 3,
+      "prompt": "用3x3底板搭一个三层小塔：选三块可动件叠放"
+    },
+    "robot_command_submitted": false,
+    "status": "succeeded",
+    "validation_errors": []
+  },
+  "proof_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295",
+  "job_id": null,
+  "job_state": "指令结束 · 未验证任务成功",
+  "result": {
+    "added_task_pose_constraints": [],
+    "clearance_failures": [],
+    "clearance_path_audits": [],
+    "clearance_selection_audits": [],
+    "command_success": true,
+    "contact_policy": "transport_world_checked_compatibility",
+    "episode_command_results": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "expected_cycles": 3,
+    "finished_at": 1789142707.5749617,
+    "fixed_scene_format": "sam6d",
+    "generated_design_used_unchanged": true,
+    "generation_proof": {
+      "board_id": "grid_3x3",
+      "design_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295",
+      "explanation": "选择右侧一条竖直支撑链：right_wall、right_second_wall、right_roof_triangle，三块可动件依次叠放，形成三层单柱小塔，顶部为三角形。该子结构保留父件关系并连接底板中心定位件。受3件预算限制，仅能实现单柱形式，不是四面封闭塔。未进行物理验证。",
+      "explicit_support_closure": true,
+      "inventory_used": {
+        "square": 2,
+        "triangle": 1
+      },
+      "locked_digest": "5ea0b1440a401450324515b0466ebc35640317bcd31b60971289afea36f1709c",
+      "movable_count": 3,
+      "native_planning_verified": false,
+      "native_recipe_digest": "bb52900ad988edd0457545e8bf9cfd87ab4ff758c906558c2f0d7e2fecd92c89",
+      "original_geometry_preserved": true,
+      "physical_buildability_verified": false,
+      "selected_roles": [
+        "right_wall",
+        "right_second_wall",
+        "right_roof_triangle"
+      ],
+      "template_digest": "7afbd1eb18117df12a9521e234825fc1bd1e48d3d4531e40e35d0408d38f360b",
+      "template_id": "grid_3x3_00",
+      "title": "三层单柱小塔（右侧三角顶）",
+      "validation": "original_geometry_and_support_graph_only"
+    },
+    "independent_clearance_execution_audit_observed": false,
+    "jimu_release_execution_audits": [
+      {
+        "clearance_samples": 49,
+        "event": "jimu_release_execution_audit",
+        "execution_entry": "pose",
+        "execution_guard": true,
+        "passed": true,
+        "permitted_contact_target": "scene_obstacle_right_wall",
+        "permitted_links": [
+          "gripper_Left_1_Link",
+          "gripper_Left_2_Link",
+          "gripper_Left_Support_Link",
+          "gripper_Right_1_Link",
+          "gripper_Right_2_Link",
+          "gripper_Right_Support_Link",
+          "left_pad",
+          "right_pad"
+        ],
+        "physical_success": null,
+        "release_contact_samples": 2,
+        "return_samples": 158,
+        "return_world_exempt_links": [],
+        "scene_fingerprint": "8627a6c21d7c4b9c444e233f36f8ad2f175c1d53e3222caabc72fe0cf3629a0b",
+        "self_collision_input_modified": false,
+        "source": "right_wall",
+        "stage_kind": "release_then_return",
+        "state_unchanged": true,
+        "step_id": "post_place_clearance_return_to_cycle_start",
+        "world_filter_calls": 2
+      },
+      {
+        "clearance_samples": 63,
+        "event": "jimu_release_execution_audit",
+        "execution_entry": "pose",
+        "execution_guard": true,
+        "passed": true,
+        "permitted_contact_target": "scene_obstacle_right_second_wall",
+        "permitted_links": [
+          "gripper_Left_1_Link",
+          "gripper_Left_2_Link",
+          "gripper_Left_Support_Link",
+          "gripper_Right_1_Link",
+          "gripper_Right_2_Link",
+          "gripper_Right_Support_Link",
+          "left_pad",
+          "right_pad"
+        ],
+        "physical_success": null,
+        "release_contact_samples": 0,
+        "return_samples": 166,
+        "return_world_exempt_links": [],
+        "scene_fingerprint": "8627a6c21d7c4b9c444e233f36f8ad2f175c1d53e3222caabc72fe0cf3629a0b",
+        "self_collision_input_modified": false,
+        "source": "right_second_wall",
+        "stage_kind": "release_then_return",
+        "state_unchanged": true,
+        "step_id": "post_place_clearance_return_to_cycle_start",
+        "world_filter_calls": 0
+      },
+      {
+        "clearance_samples": 44,
+        "event": "jimu_release_execution_audit",
+        "execution_entry": "pose",
+        "execution_guard": true,
+        "passed": true,
+        "permitted_contact_target": "scene_obstacle_right_roof_triangle",
+        "permitted_links": [
+          "gripper_Left_1_Link",
+          "gripper_Left_2_Link",
+          "gripper_Left_Support_Link",
+          "gripper_Right_1_Link",
+          "gripper_Right_2_Link",
+          "gripper_Right_Support_Link",
+          "left_pad",
+          "right_pad"
+        ],
+        "physical_success": null,
+        "release_contact_samples": 0,
+        "return_samples": 204,
+        "return_world_exempt_links": [],
+        "scene_fingerprint": "8627a6c21d7c4b9c444e233f36f8ad2f175c1d53e3222caabc72fe0cf3629a0b",
+        "self_collision_input_modified": false,
+        "source": "right_roof_triangle",
+        "stage_kind": "release_then_return",
+        "state_unchanged": true,
+        "step_id": "post_place_clearance_return_to_cycle_start",
+        "world_filter_calls": 0
+      }
+    ],
+    "loaded_mplib_modules": [],
+    "mode": "sim",
+    "native_completed_cycles": [
+      1,
+      2,
+      3
+    ],
+    "native_cycles": [
+      {
+        "cycle": 1,
+        "success": true
+      },
+      {
+        "cycle": 2,
+        "success": true
+      },
+      {
+        "cycle": 3,
+        "success": true
+      }
+    ],
+    "native_entrypoint": "Beta_demo-codex-v0.9/rm75_jimu_triangle_roof_apriltag_portable.py",
+    "native_final_success": true,
+    "native_full_chain_passed": true,
+    "note": "Normal process return is not proof of a real grasp or magnetic connection",
+    "original_algorithms_preserved": true,
+    "source_commit": "7aaff9da22486b7d25557b3795dd258f9b65f10d",
+    "status": "command_completed_unverified",
+    "task": "magnetic",
+    "task_success": null,
+    "verification": "not_observed"
+  },
+  "request_parameters": {
+    "design": {
+      "apriltags": {
+        "attached_tags": [
+          {
+            "T_builder_tag": [
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.0065
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "T_piece_tag": [
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.00325
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "attached_surface": "piece_top",
+            "attached_to_piece_id": null,
+            "attached_to_role": "base_positioning_center",
+            "local_axes": {
+              "n": [
+                0,
+                1,
+                0
+              ],
+              "u": [
+                1,
+                0,
+                0
+              ],
+              "v": [
+                0,
+                0,
+                1
+              ]
+            },
+            "local_center_m": [
+              0,
+              0.00325,
+              0
+            ],
+            "local_yaw_deg": 0,
+            "mount": "base",
+            "name": "base_tag_1",
+            "offset_frame": "piece_local_uv",
+            "pnp_mirror_u": false,
+            "pnp_mirror_v": true,
+            "tag_black_square_size_m": 0.052,
+            "tag_family": "tag25h9",
+            "tag_id": 1,
+            "texture_mirror_u": false,
+            "texture_mirror_v": false
+          }
+        ],
+        "builder_frame": "x_right_y_up_z_forward",
+        "description": "AprilTag mount definitions plus optional imported real localization poses.",
+        "imported_poses": null,
+        "mounts": {
+          "base": {
+            "local_frame": "base_positioning_center",
+            "local_pose": {
+              "center_m": [
+                0,
+                0.0075,
+                0
+              ],
+              "n": [
+                0,
+                1,
+                0
+              ],
+              "u": [
+                1,
+                0,
+                0
+              ],
+              "v": [
+                0,
+                0,
+                1
+              ]
+            },
+            "object_name": "jimu_base_assembly",
+            "role": "base",
+            "tag_black_square_size_m": 0.052,
+            "tag_family": "tag25h9",
+            "tag_id": 1,
+            "tag_top_height_from_table_m": 0.0075
+          },
+          "tray": {
+            "local_frame": "tray_center_recess",
+            "local_pose": {
+              "center_m": [
+                0,
+                0.005,
+                0
+              ],
+              "n": [
+                0,
+                1,
+                0
+              ],
+              "u": [
+                1,
+                0,
+                0
+              ],
+              "v": [
+                0,
+                0,
+                1
+              ]
+            },
+            "object_name": "jimu_liaoban",
+            "role": "tray",
+            "tag_black_square_size_m": 0.06,
+            "tag_family": "tag25h9",
+            "tag_id": 0,
+            "tag_top_height_from_table_m": 0.005
+          }
+        },
+        "schema": "jimu_builder_apriltags_v1",
+        "units": "meters"
+      },
+      "base": "3x3_centered_on_positioning_plate",
+      "pieces": [
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              -0.074
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              -0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            -0.074,
+            0.00325,
+            -0.074
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_-1_-1_1",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_-1_-1",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              -0.074
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            -0.074,
+            0.00325,
+            0
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_-1_0_2",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_-1_0",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              -0.074
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            -0.074,
+            0.00325,
+            0.074
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_-1_1_3",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_-1_1",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              -0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0,
+            0.00325,
+            -0.074
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_0_-1_4",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_0_-1",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0,
+            0.00325,
+            0
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_positioning_center_5",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_positioning_center",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0,
+            0.00325,
+            0.074
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_0_1_6",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_0_1",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              0.074
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              -0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0.074,
+            0.00325,
+            -0.074
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_1_-1_7",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_1_-1",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              0.074
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0.074,
+            0.00325,
+            0
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_1_0_8",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_1_0",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              1,
+              0,
+              0,
+              0.074
+            ],
+            [
+              0,
+              1,
+              0,
+              0.00325
+            ],
+            [
+              0,
+              0,
+              1,
+              0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0.074,
+            0.00325,
+            0.074
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "base",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "base_1_1_9",
+          "locked": true,
+          "n": [
+            0,
+            1,
+            0
+          ],
+          "parentEdge": null,
+          "parentId": null,
+          "parentRelativeTransform": null,
+          "parentRole": null,
+          "role": "base_1_1",
+          "snapMode": null,
+          "source": "base_grid",
+          "type": "square",
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              0,
+              1,
+              0,
+              0.037
+            ],
+            [
+              0,
+              0,
+              1,
+              0.04025
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0.037,
+            0.04025,
+            0
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "right_wall_10",
+          "locked": false,
+          "n": [
+            1,
+            0,
+            0
+          ],
+          "parentEdge": "right",
+          "parentId": "base_positioning_center_5",
+          "parentRelativeTransform": [
+            [
+              0,
+              1,
+              0,
+              0.037
+            ],
+            [
+              0,
+              0,
+              1,
+              0.037
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "parentRole": "base_positioning_center",
+          "role": "right_wall",
+          "snapMode": "up",
+          "source": "preset",
+          "type": "square",
+          "u": [
+            0,
+            0,
+            1
+          ],
+          "v": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              0,
+              -1,
+              0,
+              0.037
+            ],
+            [
+              0,
+              0,
+              1,
+              0.11425
+            ],
+            [
+              -1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0.037,
+            0.11425,
+            0
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "",
+          "dimensions_m": {
+            "height": 0.074,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "right_second_wall_14",
+          "locked": false,
+          "n": [
+            -1,
+            0,
+            0
+          ],
+          "parentEdge": "top",
+          "parentId": "right_wall_10",
+          "parentRelativeTransform": [
+            [
+              -1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0.074
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "parentRole": "right_wall",
+          "role": "right_second_wall",
+          "snapMode": "flat",
+          "source": "preset",
+          "type": "square",
+          "u": [
+            0,
+            0,
+            -1
+          ],
+          "v": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "T_builder_piece": [
+            [
+              0,
+              1,
+              0,
+              0.037
+            ],
+            [
+              0,
+              0,
+              1,
+              0.21875
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "center": [
+            0.037,
+            0.21875,
+            0
+          ],
+          "childAttachEdge": "bottom",
+          "colorRole": "",
+          "dimensions_m": {
+            "height": 0.135,
+            "thickness": 0.0065,
+            "width": 0.074
+          },
+          "id": "right_roof_triangle_18",
+          "locked": false,
+          "n": [
+            1,
+            0,
+            0
+          ],
+          "parentEdge": "top",
+          "parentId": "right_second_wall_14",
+          "parentRelativeTransform": [
+            [
+              -1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0.1045
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "parentRole": "right_second_wall",
+          "role": "right_roof_triangle",
+          "snapMode": "flat",
+          "source": "preset",
+          "type": "triangle",
+          "u": [
+            0,
+            0,
+            1
+          ],
+          "v": [
+            0,
+            1,
+            0
+          ]
+        }
+      ],
+      "plate_size_m": 0.074,
+      "robot": {
+        "apriltag_anchor": {
+          "base_tag_black_square_size_m": 0.052,
+          "base_tag_id": 1,
+          "tray_tag_black_square_size_m": 0.06,
+          "tray_tag_id": 0
+        },
+        "backend_entrypoint": "Beta_demo-codex-v0.9/rm75_jimu_triangle_roof_apriltag_portable.py",
+        "builder_scene_arg": "--jimu-builder-scene-json",
+        "coordinate_frame": "builder_frame_x_right_y_up_z_forward",
+        "locked_base_roles": [
+          "base_-1_-1",
+          "base_-1_0",
+          "base_-1_1",
+          "base_0_-1",
+          "base_positioning_center",
+          "base_0_1",
+          "base_1_-1",
+          "base_1_0",
+          "base_1_1"
+        ],
+        "piece_types": {
+          "back_roof_triangle": "triangle",
+          "back_second_wall": "square",
+          "back_wall": "square",
+          "front_roof_triangle": "triangle",
+          "front_second_wall": "square",
+          "front_wall": "square",
+          "left_roof_triangle": "triangle",
+          "left_second_wall": "square",
+          "left_wall": "square",
+          "right_roof_triangle": "triangle",
+          "right_second_wall": "square",
+          "right_wall": "square"
+        },
+        "recommended_args": [
+          "--jimu-builder-scene-json",
+          "<path-to-this-json>",
+          "--jimu-apriltag-anchor-localization",
+          "--render-mode",
+          "human",
+          "--auto-execute"
+        ],
+        "schema": "jimu_builder_robot_execution_v1",
+        "task_roles": [
+          "right_wall",
+          "back_wall",
+          "left_wall",
+          "front_wall",
+          "right_second_wall",
+          "back_second_wall",
+          "left_second_wall",
+          "front_second_wall",
+          "right_roof_triangle",
+          "back_roof_triangle",
+          "left_roof_triangle",
+          "front_roof_triangle"
+        ]
+      },
+      "schema": "jimu_builder_scene_v1",
+      "units": "meters"
+    },
+    "generation_proof": {
+      "board_id": "grid_3x3",
+      "design_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295",
+      "explanation": "选择右侧一条竖直支撑链：right_wall、right_second_wall、right_roof_triangle，三块可动件依次叠放，形成三层单柱小塔，顶部为三角形。该子结构保留父件关系并连接底板中心定位件。受3件预算限制，仅能实现单柱形式，不是四面封闭塔。未进行物理验证。",
+      "explicit_support_closure": true,
+      "inventory_used": {
+        "square": 2,
+        "triangle": 1
+      },
+      "locked_digest": "5ea0b1440a401450324515b0466ebc35640317bcd31b60971289afea36f1709c",
+      "movable_count": 3,
+      "native_planning_verified": false,
+      "native_recipe_digest": "bb52900ad988edd0457545e8bf9cfd87ab4ff758c906558c2f0d7e2fecd92c89",
+      "original_geometry_preserved": true,
+      "physical_buildability_verified": false,
+      "selected_roles": [
+        "right_wall",
+        "right_second_wall",
+        "right_roof_triangle"
+      ],
+      "template_digest": "7afbd1eb18117df12a9521e234825fc1bd1e48d3d4531e40e35d0408d38f360b",
+      "template_id": "grid_3x3_00",
+      "title": "三层单柱小塔（右侧三角顶）",
+      "validation": "original_geometry_and_support_graph_only"
+    }
+  }
+}

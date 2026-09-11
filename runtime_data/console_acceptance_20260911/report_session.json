@@ -1,0 +1,1417 @@
+{
+  "stage": "session",
+  "base": "http://127.0.0.1:7863",
+  "checks": [
+    {
+      "check": "console bootstrap over real HTTP",
+      "ok": true,
+      "detail": "console_profile_r2_nodiag.json"
+    },
+    {
+      "check": "pusht preflight",
+      "ok": true,
+      "detail": "配置与请求检查通过"
+    },
+    {
+      "check": "SIM confirmation dialog shown",
+      "ok": true,
+      "detail": "将启动配置中的仿真工作进程。保留原算法与检查，不运行真机。"
+    },
+    {
+      "check": "session running and pause offered",
+      "ok": true,
+      "detail": "45da3178d0f240df98c1d733cfd94bfd"
+    },
+    {
+      "check": "intervention panel opened from the UI",
+      "ok": true,
+      "detail": "运行中移动 T（仅仿真）"
+    },
+    {
+      "check": "pause acknowledged; relocation allowed",
+      "ok": true,
+      "detail": "指令 1 已确认 · 已在动作边界暂停"
+    },
+    {
+      "check": "relocation queued",
+      "ok": true,
+      "detail": "指令 2 已排队，等待服务器确认；尚未允许修改 T。"
+    },
+    {
+      "check": "session finished on the same request",
+      "ok": true,
+      "detail": "{\"job\": null, \"status\": \"succeeded\", \"task_success\": true, \"steps\": 2, \"sent_parameters\": {\"geometry_id\": \"original\", \"goal_pose\": [0.38, -0.18, 0], \"initial_pose\": [0.35, -0.18, 0], \"max_steps\": 12, \"maximum_push_length_m\": 0.05, \"run_until_goal\": true, \"simulation_backend\": \"full_arm_physics\", \"speed_mps\": 0.015}, \"external_scene_epochs\": 3, \"verification\": \"physics_pose\", \"final_pose\": [0.37614"
+    },
+    {
+      "check": "the relocated scene was actually used",
+      "ok": true,
+      "detail": "3"
+    },
+    {
+      "check": "no page exceptions",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "no browser console errors",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "api": [
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "history",
+      "status": 200
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "preflight",
+      "status": 200,
+      "request_digest": "748dc86bc9a5a4bf5bd301bf",
+      "valid": true
+    },
+    {
+      "url": "preflight",
+      "status": 200,
+      "request_digest": "748dc86bc9a5a4bf5bd301bf",
+      "valid": true
+    },
+    {
+      "url": "jobs",
+      "status": 200,
+      "request_id": "9ce25fbdfe9caf7b294f24864225b63f",
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "request_digest": "82bfaaddea9d9f15177be48d",
+      "canonical_request_digest": "748dc86bc9a5a4bf5bd301bf",
+      "status_field": "accepted"
+    },
+    {
+      "url": "submissions/9ce25fbdfe9caf7b294f24864225b63f",
+      "status": 200,
+      "request_id": "9ce25fbdfe9caf7b294f24864225b63f",
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "request_digest": "82bfaaddea9d9f15177be48d",
+      "canonical_request_digest": "748dc86bc9a5a4bf5bd301bf",
+      "status_field": "accepted"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "running"
+    },
+    {
+      "url": "jobs/45da3178d0f240df98c1d733cfd94bfd",
+      "status": 200,
+      "job_id": "45da3178d0f240df98c1d733cfd94bfd",
+      "status_field": "succeeded"
+    },
+    {
+      "url": "history",
+      "status": 200
+    }
+  ],
+  "page_errors": [],
+  "console_errors": [],
+  "screenshots": [
+    "runtime_data/console_acceptance_20260911/session_preflight.png",
+    "runtime_data/console_acceptance_20260911/session_confirm.png",
+    "runtime_data/console_acceptance_20260911/session_done.png"
+  ],
+  "status": "PASS",
+  "bad_responses": [],
+  "profile": "console_profile_r2_nodiag.json",
+  "version": "2026.09.11-console.1",
+  "session_job": "45da3178d0f240df98c1d733cfd94bfd",
+  "session_result": {
+    "command_success": true,
+    "external_scene_epochs": 3,
+    "final_observation": {
+      "captured_at": 112.26666666664764,
+      "confidence": 1,
+      "frame": "base_link",
+      "pose": [
+        0.37614381313323975,
+        -0.18354485929012299,
+        0.014939336106181145
+      ],
+      "schema": "rm75_pusht_observation_v1",
+      "sequence": 10,
+      "session_id": "0a7e05a548314ed1958b4140259e7504",
+      "source": "simulation"
+    },
+    "finished_at": 1789142533.9787257,
+    "hardware_connected": false,
+    "hardware_profile_qualified": false,
+    "mode": "sim",
+    "model_validated_on_robot": false,
+    "simulation_backend": "full_arm_physics",
+    "status": "succeeded",
+    "steps": 2,
+    "success_observations": 3,
+    "task": "pusht",
+    "task_success": true,
+    "verification": "physics_pose"
+  }
+}

@@ -1,0 +1,325 @@
+{
+  "schema": "rm75_workcell_machine_v1",
+  "notes": "Console acceptance profile: sections copied verbatim from R2-validated machine profiles; assembled only to exercise all three panels in one console session. hardware_reviewed stays false.",
+  "hardware": {
+    "endpoint_error_rad": 0.025,
+    "hardware_reviewed": false,
+    "ip": "REPLACE_WITH_CONFIRMED_ROBOT_IP",
+    "joint_lower_rad": null,
+    "joint_upper_rad": null,
+    "max_following_error_rad": 0.12,
+    "max_start_gap_rad": 0.05,
+    "max_stream_lateness_s": 0.08,
+    "port": 8080,
+    "qualification_id": "",
+    "stream_hz": 30
+  },
+  "pickplace": {
+    "fixed_scene": "/home/zhangzhao/Desktop/rm75-manipulation/assets/test_scenes/current_table.json",
+    "fixed_scene_format": "native_world",
+    "integration_qualified": false,
+    "native_args": [
+      "--curobo-torch-extensions-dir",
+      "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/curobo_native_extensions",
+      "--camera-extrinsic-opencv-path",
+      "/home/zhangzhao/Desktop/rm75-manipulation/assets/calibration/camera_extrinsic_opencv.npy"
+    ],
+    "object_names": [
+      "lvmukuai",
+      "carriot",
+      "shuazi",
+      "hongshupian",
+      "gluestick",
+      "bi",
+      "tennis"
+    ],
+    "post_verification": null,
+    "python": "/home/zhangzhao/anaconda3/bin/python3.12",
+    "render_mode": "none",
+    "simulation_contact_policy": "transport_world_checked_compatibility"
+  },
+  "magnetic": {
+    "design_library": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/three_scene/llm_jimu_20260910/design_library_r2.json",
+    "fixed_scene": null,
+    "integration_qualified": false,
+    "llm": {
+      "auth_token_env": "ANTHROPIC_AUTH_TOKEN",
+      "max_tokens": 32768,
+      "provider": "anthropic",
+      "proxy": "http://127.0.0.1:7897",
+      "timeout_s": 300
+    },
+    "native_args": [
+      "--curobo-torch-extensions-dir",
+      "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/curobo_native_extensions",
+      "--camera-extrinsic-opencv-path",
+      "/home/zhangzhao/Desktop/rm75-manipulation/assets/calibration/camera_extrinsic_opencv.npy"
+    ],
+    "post_verification": null,
+    "python": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python",
+    "render_mode": "none",
+    "simulation_contact_policy": "transport_world_checked_compatibility"
+  },
+  "pusht": {
+    "integration_qualified": false,
+    "model": {
+      "approach_gap_m": 0.01,
+      "bar_height_m": 0.03,
+      "bar_width_m": 0.1,
+      "beam_width": 12,
+      "friction_scales": [
+        0.7,
+        1.0,
+        1.3
+      ],
+      "horizon": 3,
+      "max_observation_age_s": 1.5,
+      "max_steps": 60,
+      "maximum_push_length_m": 0.05,
+      "minimum_improvement": 0.0002,
+      "obstacles": [],
+      "position_tolerance_m": 0.006,
+      "push_length_m": 0.012,
+      "pusher_radius_m": 0.005,
+      "response_fits": [
+        {
+          "feature": 0,
+          "gains": [
+            1.0017424308692588,
+            -0.3484942012203457,
+            7.748425249441229
+          ],
+          "samples": 1,
+          "sum_xx": [
+            0.0007782641499665484,
+            0.0016000000000000007,
+            0.0037648223906025695
+          ],
+          "sum_xy": [
+            0.0007796202214458876,
+            -0.0005575907219525534,
+            0.029171444871006636
+          ]
+        },
+        {
+          "feature": 1,
+          "gains": [
+            0.9430628295799766,
+            -0.2733195713640626,
+            3.1311851339932235
+          ],
+          "samples": 5,
+          "sum_xx": [
+            0.000989620779320544,
+            0.002176000000000001,
+            0.024339349847829612
+          ],
+          "sum_xy": [
+            0.0009332745723571737,
+            -0.0005947433872882004,
+            0.07621101041458431
+          ]
+        },
+        {
+          "feature": 6,
+          "gains": [
+            0.3808921955213547,
+            0.16050922710722546,
+            1.523451489197134
+          ],
+          "samples": 2,
+          "sum_xx": [
+            0.0013779140870517257,
+            0.0025360000000000005,
+            0.1764218478915039
+          ],
+          "sum_xy": [
+            0.0005248367218569349,
+            0.00040705139994392386,
+            0.26877012689722185
+          ]
+        },
+        {
+          "feature": 9,
+          "gains": [
+            0.5717647808219625,
+            0.052080325279245374,
+            0.8196078676931094
+          ],
+          "samples": 2,
+          "sum_xx": [
+            0.0001311450801308068,
+            0.00018,
+            0.015888224174751834
+          ],
+          "sum_xy": [
+            7.498413799686945e-05,
+            9.374458550264168e-06,
+            0.013022113537298464
+          ]
+        },
+        {
+          "feature": 11,
+          "gains": [
+            0.3899873688296185,
+            0.06836427257331293,
+            1.172038256809796
+          ],
+          "samples": 4,
+          "sum_xx": [
+            0.0006141043490624986,
+            0.001224,
+            0.10505882297207389
+          ],
+          "sum_xy": [
+            0.0002394929392777094,
+            8.367786962973502e-05,
+            0.12313295973867844
+          ]
+        },
+        {
+          "feature": 12,
+          "gains": [
+            0.9819922415788682,
+            -0.04935876402359615,
+            0.28435717670610416
+          ],
+          "samples": 1,
+          "sum_xx": [
+            0.0011547498149476125,
+            0.0016000000000000007,
+            0.048694325049038444
+          ],
+          "sum_xy": [
+            0.0011339553592431893,
+            -7.897402243775388e-05,
+            0.013846580792553898
+          ]
+        }
+      ],
+      "speed_mps": 0.015,
+      "stagnation_steps": 8,
+      "stem_height_m": 0.07,
+      "stem_width_m": 0.03,
+      "success_dwell_s": 0.3,
+      "success_observations": 3,
+      "workspace": [
+        0.15,
+        0.65,
+        -0.3,
+        0.3
+      ],
+      "yaw_tolerance_rad": 0.1
+    },
+    "motion": {
+      "corridor_tolerance_m": 0.003,
+      "hover_clearance_m": 0.08,
+      "joint_accel_rad_s2": 0.5,
+      "joint_speed_rad_s": 0.25,
+      "object_centroid_z_m": null,
+      "object_height_m": null,
+      "orientation_tolerance_rad": 0.05,
+      "push_tcp_z_m": null,
+      "pusher_contact_links": [],
+      "static_collision_objects": [],
+      "tool_collision_geometry_verified": false,
+      "tool_frame": "gripper_tcp",
+      "tool_quaternion_wxyz": null
+    },
+    "observer": {
+      "T_base_camera": null,
+      "T_marker_object": null,
+      "kind": "realsense_apriltag",
+      "marker_id": 0,
+      "marker_size_m": null,
+      "max_exposure_s": 0.05,
+      "object_centroid_z_m": null,
+      "serial": "",
+      "timestamp_uncertainty_s": 0.02
+    },
+    "physics": {
+      "enabled_backends": [
+        "tool_only_physics",
+        "full_arm_physics"
+      ],
+      "geometry_variants": {
+        "original": {},
+        "wide": {
+          "bar_width_m": 0.12
+        }
+      },
+      "gravity_compensation": "original-agent",
+      "gripper_feedback_geometry": true,
+      "initial_pose": [
+        0.35,
+        -0.18,
+        0.0
+      ],
+      "motion": {
+        "corridor_tolerance_m": 0.003,
+        "hover_clearance_m": 0.08,
+        "joint_accel_rad_s2": 0.5,
+        "joint_speed_rad_s": 0.25,
+        "object_centroid_z_m": 0.01,
+        "object_height_m": 0.04,
+        "orientation_tolerance_rad": 0.05,
+        "push_tcp_z_m": 0.02,
+        "pusher_contact_links": [
+          "left_pad",
+          "right_pad",
+          "gripper_Left_1_Link",
+          "gripper_Left_2_Link",
+          "gripper_Left_Support_Link",
+          "gripper_Right_1_Link",
+          "gripper_Right_2_Link",
+          "gripper_Right_Support_Link"
+        ],
+        "retreat_clearance_m": 0.05,
+        "static_collision_objects": [
+          {
+            "dimensions": [
+              0.4,
+              0.28,
+              0.04
+            ],
+            "kind": "cuboid",
+            "name": "simulation_table",
+            "position": [
+              0.4,
+              -0.18,
+              -0.03
+            ],
+            "quaternion_wxyz": [
+              1,
+              0,
+              0,
+              0
+            ]
+          }
+        ],
+        "tool_collision_geometry_verified": true,
+        "tool_frame": "gripper_tcp",
+        "tool_quaternion_wxyz": [
+          0.0,
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0
+        ]
+      },
+      "planner": {
+        "gripper_collision_closed_joint_position": 0.9,
+        "ignore_gripper_internal_self_collision": true
+      },
+      "planner_python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
+      "randomization_bounds": [
+        0.15,
+        0.65,
+        -0.3,
+        0.3
+      ],
+      "simulation_python": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python"
+    },
+    "planner": {},
+    "python": null
+  }
+}

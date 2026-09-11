@@ -1,0 +1,2 @@
+PASS generation started, timer is not a deadline :: 生成中 · 已等待 0:00 · 最多两次模型调用。刷新后可恢复；前端不再按 135 秒提前报失败。
+PASS after refresh the same generation is still polled :: 模型已配置。生成后仍需单独预览和运行仿真。

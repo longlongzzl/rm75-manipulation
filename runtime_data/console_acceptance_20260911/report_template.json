@@ -1,0 +1,69 @@
+{
+  "stage": "template",
+  "base": "http://127.0.0.1:7863",
+  "checks": [
+    {
+      "check": "console bootstrap over real HTTP",
+      "ok": true,
+      "detail": "console_profile_r2_nodiag.json"
+    },
+    {
+      "check": "original template loaded without LLM",
+      "ok": true,
+      "detail": "原模板（未调用 LLM） · 固定 7 件 / 活动 12 件"
+    },
+    {
+      "check": "template pieces rendered",
+      "ok": true,
+      "detail": "12 movable pieces"
+    },
+    {
+      "check": "template preflight",
+      "ok": true,
+      "detail": "配置与请求检查通过"
+    },
+    {
+      "check": "no page exceptions",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "no browser console errors",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "api": [
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "history",
+      "status": 200
+    },
+    {
+      "url": "bootstrap",
+      "status": 200
+    },
+    {
+      "url": "templates/arc",
+      "status": 200
+    },
+    {
+      "url": "preflight",
+      "status": 200,
+      "request_digest": "054e3e6a9a5b2c2d6e8ce569",
+      "valid": true
+    }
+  ],
+  "page_errors": [],
+  "console_errors": [],
+  "screenshots": [
+    "runtime_data/console_acceptance_20260911/template_loaded.png"
+  ],
+  "status": "PASS",
+  "bad_responses": [],
+  "profile": "console_profile_r2_nodiag.json",
+  "version": "2026.09.11-console.1"
+}

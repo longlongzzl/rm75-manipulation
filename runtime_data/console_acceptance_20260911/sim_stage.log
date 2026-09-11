@@ -1,0 +1,10 @@
+PASS bundle imported with its provenance :: 导入设计（来源已校验） · 固定 9 件 / 活动 3 件
+PASS preflight passed :: 配置与请求检查通过
+PASS GPU was serialized for the native SIM :: {"other_compute_apps": [], "waited_s": 0}
+PASS SIM confirmation names the same design :: {   "task": "magnetic",   "mode": "sim",   "board": "grid_3x3",   "movable": 3,   "roles": [     "right_wall",     "right_second_wall",     "right_roof_triangle"   ],   "design_digest": "8aa0eb420b231
+PASS native SIM ran the identical proof :: {"job_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295", "expected": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295"}
+PASS native SIM terminal state :: {"status": "command_completed_unverified", "task_success": null, "generated_design_used_unchanged": true, "mode": "sim", "task": "magnetic", "hardware_connected": null, "native_completed_cycles": [1, 2, 3], "error": null}
+PASS the run reported no real-robot execution :: {"execute_real": null, "mode": "sim", "hardware_connected": null}
+PASS no page exceptions
+PASS no browser console errors (favicon excluded)
+{"stage": "sim", "status": "PASS"}

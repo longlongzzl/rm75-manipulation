@@ -1,0 +1,20 @@
+PASS generation accepted by the server :: [{"http": 200, "request_id": "bcbb3bab2623f181ec13bd84f756bd8d", "generation_id": "33b54f3d21764b529e53cb509c91e129", "status": "accepted"}]
+PASS wait timer is not a client deadline :: 生成中 · 已等待 0:00 · 最多两次模型调用。刷新后可恢复；前端不再按 135 秒提前报失败。
+PASS still generating when the page is reloaded :: 生成中 · 已等待 0:15 · 最多两次模型调用。刷新后可恢复；前端不再按 135 秒提前报失败。
+PASS generation polling resumed after the refresh :: 生成中 · 已等待 0:15 · 最多两次模型调用。刷新后可恢复；前端不再按 135 秒提前报失败。
+PASS resumed timer continues the same server-side record :: elapsed=15s text=生成中 · 已等待 0:15 · 最多两次模型调用。刷新后可恢复；前端不再按 135 秒提前报失败。
+PASS the reload restored local state instead of resubmitting :: 已恢复此机器配置的浏览器草稿。没有自动发起任务、重试或模型请求。
+PASS no second model request after the refresh :: [{"http": 200, "request_id": "bcbb3bab2623f181ec13bd84f756bd8d", "generation_id": "33b54f3d21764b529e53cb509c91e129", "status": "accepted"}]
+PASS exactly one generation identity was polled :: ["33b54f3d21764b529e53cb509c91e129"]
+PASS generated design adopted once :: LLM 生成 · 固定 9 件 / 活动 3 件
+PASS design carries its provenance :: 三层单柱小塔（右侧三角顶） · 3 块活动件。选择右侧一条竖直支撑链：right_wall、right_second_wall、right_roof_triangle，三块可动件依次叠放，形成三层单柱小塔，顶部为三角形。该子结构保留父件关系并连接底板中心定位件。受3件预算限制，仅能实现单柱形式，不是四面封闭塔。未进行物理验证。 生成不代表已通过原生仿真。
+PASS generation finished successfully with one proof :: {"status": "succeeded", "board": "grid_3x3", "movable": 3, "roles": ["right_wall", "right_second_wall", "right_roof_triangle"], "design_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295", "model_calls": 1}
+PASS GPU was serialized for the native SIM :: {"other_compute_apps": [], "waited_s": 0}
+PASS preflight passed for the generated design :: 配置与请求检查通过
+PASS SIM confirmation names the same generated design :: {   "task": "magnetic",   "mode": "sim",   "board": "grid_3x3",   "movable": 3,   "roles": [     "right_wall",     "right_second_wall",     "right_roof_triangle"   ],   "design_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d
+PASS native SIM ran the identical proof :: {"job_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295", "generation_digest": "8aa0eb420b2318d4bda65bc04a86b73bed9f200ba08cf0938c70d1f65e348295"}
+PASS native SIM reached a terminal state :: {"status": "command_completed_unverified", "task_success": null, "native_completed_cycles": [1, 2, 3], "native_cycles": [{"cycle": 1, "success": true}, {"cycle": 2, "success": true}, {"cycle": 3, "success": true}], "generated_design_used_un
+PASS the run reported no real-robot execution :: {"mode": "sim", "execute_real": null, "hardware_connected": null, "robot_command_field_in_schema": false}
+PASS no page exceptions
+PASS no browser console errors (favicon excluded)
+{"stage": "llm", "status": "PASS"}

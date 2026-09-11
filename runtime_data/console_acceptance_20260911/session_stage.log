@@ -1,0 +1,12 @@
+PASS console bootstrap over real HTTP :: console_profile_r2_nodiag.json
+PASS pusht preflight :: 配置与请求检查通过
+PASS SIM confirmation dialog shown :: 将启动配置中的仿真工作进程。保留原算法与检查，不运行真机。
+PASS session running and pause offered :: 45da3178d0f240df98c1d733cfd94bfd
+PASS intervention panel opened from the UI :: 运行中移动 T（仅仿真）
+PASS pause acknowledged; relocation allowed :: 指令 1 已确认 · 已在动作边界暂停
+PASS relocation queued :: 指令 2 已排队，等待服务器确认；尚未允许修改 T。
+PASS session finished on the same request :: {"job": null, "status": "succeeded", "task_success": true, "steps": 2, "sent_parameters": {"geometry_id": "original", "goal_pose": [0.38, -0.18, 0], "initial_pose": [0.35, -0.18, 0], "max_steps": 12, 
+PASS the relocated scene was actually used :: 3
+PASS no page exceptions
+PASS no browser console errors
+{"stage": "session", "status": "PASS"}
