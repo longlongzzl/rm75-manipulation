@@ -10,6 +10,8 @@ class WorkcellWSGI:
         self.service=service;self.fallback=fallback
         from .iteration_api import IterationAPI
         self.iteration=IterationAPI(service)
+        from .console_api import ConsoleAPI
+        self.console=ConsoleAPI(service,self.iteration)
         self.static=Path(__file__).resolve().parents[1]/'web/static/workcell'
 
     def __call__(self,env,start_response):
@@ -21,6 +23,20 @@ class WorkcellWSGI:
                 ('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; frame-ancestors 'none'"),
                 ('Referrer-Policy','no-referrer')])
             return [data]
+        # New consolidated UI; classic routes remain compatible and unmodified.
+        console_static = {
+            '/workcell/console': 'index.html', '/workcell/console/': 'index.html',
+            '/workcell/console/index.html': 'index.html',
+            '/workcell/console/app.js': 'app.js', '/workcell/console/state.js': 'state.js',
+            '/workcell/console/views.js': 'views.js', '/workcell/console/console.css': 'console.css',
+        }
+        if path in console_static:
+            if method!='GET':
+                return response('405 Method Not Allowed',{'error':'GET only'})
+            name=console_static[path]
+            content_type=('text/html' if name.endswith('.html') else 'text/css' if name.endswith('.css')
+                          else 'application/javascript')+'; charset=utf-8'
+            return response('200 OK',(self.static/'console'/name).read_bytes(),content_type)
         if path=='/' and self.fallback is None:
             path='/workcell/'
         if path in ('/workcell','/workcell/','/workcell/index.html','/workcell/app.js','/workcell/style.css','/workcell/iteration.js','/workcell/iteration.css'):
@@ -62,6 +78,14 @@ class WorkcellWSGI:
                 return self.fallback(env,start_response)
             return response('404 Not Found',{'error':'No route'})
         try:
+            if method=='GET' and path.startswith('/api/workcell/console/'):
+                host=env.get('HTTP_HOST','')
+                if urlsplit('//'+host).hostname not in ('localhost','127.0.0.1','::1'):
+                    raise PermissionError('Console is restricted to loopback; use SSH tunnelling')
+                origin=env.get('HTTP_ORIGIN')
+                if origin and urlsplit(origin).netloc!=host:
+                    raise PermissionError('Cross-origin console read refused')
+                return response('200 OK',self.console.get(path[len('/api/workcell/console/'):],env.get('QUERY_STRING','')))
             if method=='GET' and path.startswith('/api/workcell/iterate/'):
                 return response('200 OK',self.iteration.get(path[len('/api/workcell/iterate/'):]))
             if method=='GET' and path=='/api/workcell/info':
@@ -72,7 +96,7 @@ class WorkcellWSGI:
                 return response('405 Method Not Allowed',{'error':'Unsupported method'})
             origin=env.get('HTTP_ORIGIN')
             host=env.get('HTTP_HOST','')
-            if host.split(':')[0] not in ('localhost','127.0.0.1','[::1]'):
+            if urlsplit('//'+host).hostname not in ('localhost','127.0.0.1','::1'):
                 raise PermissionError('Workcell API is restricted to loopback; use SSH tunnelling')
             if origin and urlsplit(origin).netloc!=host:
                 raise PermissionError('Cross-origin request refused')
@@ -85,7 +109,9 @@ class WorkcellWSGI:
             if len(raw)!=size:
                 raise ValueError('Incomplete request body')
             payload=loads(raw.decode())
-            if path.startswith('/api/workcell/iterate/'):
+            if path.startswith('/api/workcell/console/'):
+                value=self.console.post(path[len('/api/workcell/console/'):],payload)
+            elif path.startswith('/api/workcell/iterate/'):
                 value=self.iteration.post(path[len('/api/workcell/iterate/'):],payload)
             elif path=='/api/workcell/arm':
                 value=self.service.arm(payload['spec'],payload.get('confirmation'))

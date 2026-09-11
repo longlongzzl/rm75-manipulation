@@ -67,7 +67,8 @@ def main(argv=None):
         class ThreadingServer(ThreadingMixIn,WSGIServer):
             daemon_threads=True
         with make_server('127.0.0.1',args.port,WorkcellWSGI(service),server_class=ThreadingServer) as httpd:
-            print(f'Workcell: http://127.0.0.1:{args.port}/workcell/ — real={args.allow_real}',flush=True)
+            print(f'Console: http://127.0.0.1:{args.port}/workcell/console/ — preview/SIM only',flush=True)
+            print(f'Classic: http://127.0.0.1:{args.port}/workcell/ — real={args.allow_real}',flush=True)
             httpd.serve_forever()
     except KeyboardInterrupt:
         return 130

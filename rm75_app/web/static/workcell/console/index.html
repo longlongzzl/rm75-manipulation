@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RM75 · 三场景控制台</title>
+  <link rel="stylesheet" href="/workcell/console/console.css">
+</head>
+<body>
+<a class="skip" href="#workspace">跳到工作区</a>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">R</span><div>RM75<span class="brand-sub">MANIPULATION LAB</span></div></div>
+    <div class="nav-label">工作场景</div>
+    <nav class="task-nav" aria-label="任务场景">
+      <button class="nav-item active" data-task="pickplace" aria-current="page"><span class="nav-number">01</span><span>桌面整理<small>PickPlace</small></span></button>
+      <button class="nav-item" data-task="magnetic"><span class="nav-number">02</span><span>磁吸搭建<small>Jimu</small></span></button>
+      <button class="nav-item" data-task="pusht"><span class="nav-number">03</span><span>闭环推移<small>PushT</small></span></button>
+    </nav>
+    <div class="side-bottom">
+      <span class="side-mode">预览 / 仿真工作台</span>
+      <p>生成、观察、验证。<br>本页不发起真机运动。</p>
+      <button class="side-link" id="open-config">查看本机配置</button>
+      <a class="side-link" href="/workcell/" target="_blank" rel="noopener">原版兼容面板 ↗</a>
+      <span id="version" class="build">正在连接…</span>
+    </div>
+  </aside>
+  <div class="body">
+    <header class="topbar">
+      <div class="breadcrumb">实验工作台 <span>/</span> <span id="breadcrumb-task">桌面整理</span></div>
+      <div class="top-actions"><span id="connection" class="connection"><i></i>连接中</span><button id="refresh" class="button subtle" title="重新获取状态；不会重发任务">↻ 刷新状态</button><button id="stop" class="button danger" disabled>■ 停止当前任务</button></div>
+    </header>
+    <main id="workspace" tabindex="-1">
+      <section class="page-heading"><div><span id="task-en" class="eyebrow">01 / PICKPLACE</span><h1 id="task-title">桌面整理</h1><p id="task-subtitle">选择物体，核对顺序，再预览或运行原生仿真。</p></div><span class="pill outline">真机尚未开放</span></section>
+      <div id="connection-warning" class="notice warning" hidden></div>
+      <div id="error" class="notice error" role="alert" hidden></div>
+      <div id="restore-note" class="notice info" hidden></div>
+      <div class="workspace-grid">
+        <section class="work-card card">
+          <div class="card-head"><div><span class="step-index">1</span><h2>准备任务</h2></div><span class="muted" id="draft-status">草稿自动保存在本机浏览器</span></div>
+          <div id="panel-pickplace" class="task-panel">
+            <div class="section-title"><h3>待整理物体</h3><div><button id="select-all" class="link-button">全选</button><button id="select-none" class="link-button">清空</button></div></div>
+            <div id="object-grid" class="object-grid"><p class="muted">读取配置中的物体…</p></div>
+            <label class="check-row"><input id="pp-auto" type="checkbox" checked><span>采用建议顺序<small>优先刷子、笔、木块、胡萝卜、网球，再处理困难物体。</small></span></label>
+            <div class="sequence-box"><span class="label">请求顺序</span><div id="object-order" class="sequence"></div><p class="micro">多个物体在同一个原生场景中连续处理，不在每件之间重置。部分完成会单独记录。</p></div>
+            <details class="details"><summary>运行边界与已有问题</summary><p>胶棒和薯片罐仍可能在抓取或带载搬运阶段失败。本版只整理交互流程，不改变原生候选、碰撞检查或成功标准。</p></details>
+          </div>
+          <div id="panel-magnetic" class="task-panel" hidden>
+            <div class="form-row"><label>固定底板<select id="mg-board"><option value="">正在读取原模板库…</option></select></label><label class="small-field">最多活动件<input id="mg-budget" type="number" min="1" max="12" value="3"></label></div>
+            <label class="template-select">已安装原模板（载入时使用）<select id="mg-template"></select></label><label>描述你想搭的结构<textarea id="mg-prompt" rows="3" maxlength="1500" placeholder="例如：在弧形底板上搭一个简单的三块结构，保留所有支撑。">在原底板上搭一个简单且支撑完整的三块结构。</textarea></label>
+            <div class="button-row"><button id="generate" class="button primary" disabled>✦ 生成并校验结构</button><button id="abandon-generation" class="button subtle" hidden>不再采用本次结果</button><button id="load-template" class="button subtle" disabled>载入原模板</button></div>
+            <div id="generation-status" class="generation-status" role="status" aria-live="polite">正在读取模型配置…</div>
+            <div class="canvas-toolbar"><span id="design-summary">尚未载入设计</span><div class="button-row compact"><button id="view-iso" class="chip">立体</button><button id="view-top" class="chip">俯视</button><button id="view-front" class="chip">正视</button><button id="fit-design" class="chip">复位</button></div></div>
+            <canvas id="design-canvas" width="920" height="520" tabindex="0" aria-label="积木结构预览；拖动旋转，滚轮缩放"></canvas>
+            <div class="canvas-caption"><span>拖动旋转 · 滚轮缩放 · 仅几何预览</span><span><b class="legend fixed"></b>固定底板 <b class="legend moving"></b>待搭建积木</span></div>
+            <div id="piece-list" class="piece-list"></div>
+            <details class="details"><summary>设计 JSON / 导入与导出</summary><p class="micro">生成设计的底板与来源证明保持不变。编辑后需要明确改为手工设计，再通过服务器校验；不沿用旧证明。</p><textarea id="design-json" rows="8" spellcheck="false" aria-label="设计JSON"></textarea><div class="button-row"><button id="apply-design" class="button subtle">校验并应用手工编辑</button><button id="import-design" class="button subtle">导入 JSON</button><button id="export-design" class="button subtle" disabled>导出当前设计</button><input id="design-file" type="file" accept=".json,application/json" hidden></div></details>
+          </div>
+          <div id="panel-pusht" class="task-panel" hidden>
+            <div class="form-row"><label>执行后端<select id="pt-backend"></select></label><label>T 几何<select id="pt-geometry"></select></label></div>
+            <div class="notice neutral small">物理仿真与 CPU 近似模型会明确区分。随机姿态通过边界检查，不代表机械臂可达。</div>
+            <div class="pose-grid"><div><h3>初始位置 <small>只用于本轮仿真初始化</small></h3><div class="triple"><label>X / m<input id="pt-x" type="number" step=".005" value=".35"></label><label>Y / m<input id="pt-y" type="number" step=".005" value="-.18"></label><label>角度 / °<input id="pt-yaw" type="number" step="5" value="0"></label></div></div><div><h3>目标位置</h3><div class="triple"><label>X / m<input id="pt-gx" type="number" step=".005" value=".38"></label><label>Y / m<input id="pt-gy" type="number" step=".005" value="-.18"></label><label>角度 / °<input id="pt-gyaw" type="number" step="5" value="0"></label></div></div></div>
+            <div class="canvas-toolbar"><span>平面场景预览</span><div class="button-row compact"><button class="chip" id="pt-fit">适配目标</button><button class="chip" id="pt-world">全工作区</button></div></div><canvas id="push-canvas" width="920" height="420" tabindex="0" aria-label="T初态、实时观测与目标；无任务时点击设置目标"></canvas>
+            <div class="canvas-caption"><span id="push-caption">点击画布设置草稿目标；运行中显示任务原目标。</span><span>实线：初态 / 观测　虚线：目标</span></div>
+            <div class="form-row four"><label>最长推距 / m<input id="pt-length" type="number" min=".012" max=".08" step=".005" value=".05"></label><label>速度 / m·s⁻¹<input id="pt-speed" type="number" min=".001" max=".05" step=".001" value=".015"></label><label>步数上限<input id="pt-steps" type="number" min="1" max="500" value="60"></label><label>随机种子<input id="pt-seed" type="number" min="0" max="4294967295" value="77"></label></div>
+            <div class="button-row"><button id="randomize" class="button subtle">随机初态与目标</button><span id="random-case" class="micro"></span></div>
+            <label class="check-row"><input id="pt-continuous" type="checkbox" checked><span>未到位则继续<small>无进展时等待场景变化。停止按钮与原安全异常仍然有效。</small></span></label>
+            <details class="details" id="intervention-panel"><summary>运行中移动 T（仅仿真）</summary><p class="micro">先请求动作边界暂停，等“已暂停”确认，再移动 T。该暂停不是物理急停，不允许据此在运动臂附近伸手。</p><div class="button-row"><button id="pause" class="button subtle" disabled>本次推完并撤离后暂停</button><button id="resume" class="button subtle" disabled>重新定位并继续</button></div><div class="triple"><label>新 X / m<input id="move-x" type="number" step=".005" value=".358"></label><label>新 Y / m<input id="move-y" type="number" step=".005" value="-.186"></label><label>新角度 / °<input id="move-yaw" type="number" step="5" value="5"></label></div><button id="relocate" class="button subtle" disabled>应用仿真中的外部移动</button><p id="control-status" class="micro" role="status"></p></details>
+          </div>
+          <div class="action-footer"><div><span class="step-index">2</span><span id="action-caption">检查配置后再运行</span></div><div class="button-row"><button id="preflight" class="button subtle" disabled>预检查</button><button id="preview" class="button secondary" disabled>预览任务</button><button id="simulate" class="button primary" disabled>运行仿真 →</button></div></div>
+          <div id="preflight-result" class="preflight-result" hidden></div>
+        </section>
+        <aside class="inspector">
+          <section class="card run-card"><div class="card-head"><h2>当前任务</h2><span id="job-state" class="pill">待命</span></div><div class="run-content"><div id="job-empty" class="empty"><span class="empty-symbol">◎</span><h3>还没有任务</h3><p>先准备左侧参数。预览不会执行动作；仿真需要再次确认。</p></div><div id="job-content" hidden><div class="job-meta"><span id="job-task"></span><span id="job-mode" class="pill outline"></span></div><div id="job-phase" class="run-phase">启动中</div><div id="job-verification" class="micro"></div><code id="job-id" class="job-id"></code><div id="job-summary" class="metric-grid"></div><div id="native-prompt" class="native-prompt" hidden><strong>原程序等待输入</strong><p id="native-prompt-text"></p><div class="button-row"><button id="native-enter" class="button secondary">确认 Enter</button><button id="native-retry" class="button subtle">重试 r</button><button id="native-quit" class="button subtle">退出 q</button></div></div><div id="job-error" class="notice error" hidden></div><ol id="timeline" class="timeline"></ol><button id="export-report" class="button subtle full" disabled>导出本次诊断摘要</button></div></div></section>
+          <section class="card"><div class="card-head"><h2>配置就绪情况</h2><button id="config-refresh" class="link-button">刷新</button></div><div id="config-summary" class="config-list"><p class="muted">等待服务器…</p></div><div class="card-note">只读检查，不会连接相机、CUDA 或机械臂。</div></section>
+          <section class="card"><div class="card-head"><h2>最近任务</h2><button id="history-refresh" class="link-button">刷新</button></div><div id="history" class="history"><p class="muted">暂无记录</p></div></section>
+        </aside>
+      </div>
+      <section class="card log-card"><div class="card-head"><div><h2>运行记录</h2><span class="micro">尾部日志 / 当前工作进程</span></div><div class="button-row"><label class="inline-check"><input id="follow-log" type="checkbox" checked>跟随最新</label><button id="copy-log" class="link-button">复制可见日志</button></div></div><pre id="logs" class="logs" tabindex="0">任务提交后，日志会显示在这里。</pre><details class="details"><summary>原始请求与结果（调试）</summary><pre id="raw-result" class="raw-result">尚无任务。</pre></details></section>
+      <footer class="page-foot">UI 预检查 ≠ 运动规划通过 ≠ 物理成功 ≠ 真机验收。停止按钮依赖软件与通信，不替代现场急停。</footer>
+    </main>
+  </div>
+</div>
+<dialog id="confirm-dialog"><form method="dialog"><h2>确认运行仿真</h2><p id="confirm-text"></p><pre id="confirm-spec"></pre><p class="micro">此请求不会自动转成真机运行。请确认没有其它任务占用工作台。</p><div class="button-row end"><button value="cancel" class="button subtle">返回检查</button><button value="run" class="button primary">确认本次仿真</button></div></form></dialog>
+<dialog id="config-dialog"><form method="dialog"><h2>本机配置</h2><p id="config-profile" class="micro"></p><div id="config-detail" class="config-list"></div><p class="micro">本页不提供修改资格字段、删除锁、清理缓存或绕过检查的按钮。请在本机配置文件中更正路径，重启 Web 服务后刷新。</p><button class="button primary" value="close">关闭</button></form></dialog>
+<noscript><p>此控制台需要 JavaScript；当前未提交任何任务。</p></noscript>
+<script type="module" src="/workcell/console/app.js"></script>
+</body></html>

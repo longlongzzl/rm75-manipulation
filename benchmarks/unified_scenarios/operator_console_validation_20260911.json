@@ -1,0 +1,135 @@
+{
+  "schema": "rm75.operator_console_validation.v1",
+  "base_commit": "7086fbd86698299013ff3aef4aa077e2aad76dee",
+  "python_api_tests": {
+    "passed": 43,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "presentation_API_actual_WSGI_with_spec_generation_service_substitutes"
+  },
+  "node_state_tests": {
+    "passed": 32,
+    "failed": 0,
+    "skipped": 0
+  },
+  "offline_dom_component_checks": {
+    "passed": 11,
+    "failed": 0,
+    "transport": "in_process_fixture_bridge_no_network",
+    "storage": "map_substitute",
+    "native_worker_run": false,
+    "normal_navigation": false
+  },
+  "normal_browser_http_navigation": {
+    "status": "BLOCKED_BEFORE_PAGE_LOAD",
+    "reason": "ERR_BLOCKED_BY_ADMINISTRATOR",
+    "bypassed": false
+  },
+  "compileall": "PASS",
+  "node_syntax": "PASS",
+  "full_repository_tests": "NOT_RUN_PARTIAL_SOURCE_TREE",
+  "live_llm_calls": 0,
+  "gpu": "NOT_RUN",
+  "physics": "NOT_RUN",
+  "camera": "NOT_RUN",
+  "hardware_connected": false,
+  "robot_module_imported": false,
+  "network_isolation": "original run_network_isolated seccomp tool for tests",
+  "modified_existing_files": [
+    "rm75_app/workcell/server.py",
+    "rm75_app/workcell/cli.py"
+  ],
+  "python": "3.13.5",
+  "files": {
+    "rm75_app/workcell/console_api.py": {
+      "bytes": 24807,
+      "sha256": "b4becde17aaed64caba5628749ffaa7d0d3ab8340eea7ae4ac38016f0e16e8d8",
+      "git_blob": "534f46cc071159c1d3b9c0c0fc0a0f7b04533f07"
+    },
+    "rm75_app/workcell/server.py": {
+      "bytes": 9933,
+      "sha256": "891d6d03b2c0b4b2c002ea89599d96ba6ab50d39efb85c3404efd3a63e1dcf49",
+      "git_blob": "f595c3d9209f2d9e0a79418e8f39d82d3533d791"
+    },
+    "rm75_app/workcell/cli.py": {
+      "bytes": 3877,
+      "sha256": "f8dba46fd49d72b741eca8368c8e89724bcafa6e9c2b1c6fdd2af00a0aef6a81",
+      "git_blob": "4ef4de3b17d92075c1847b26a575eb6484aed8e4"
+    },
+    "rm75_app/web/static/workcell/console/app.js": {
+      "bytes": 34929,
+      "sha256": "b47904605361a34215b867c3e2503f3411f2a330af862ef919f1746b2f1d3804",
+      "git_blob": "5fc763ddf3bb5bbb42310ec6a083726d6d794fa1"
+    },
+    "rm75_app/web/static/workcell/console/console.css": {
+      "bytes": 15476,
+      "sha256": "d52ed4e321512a6bfcd984c5406c179330fee5e20416bd95a495de06c8dca673",
+      "git_blob": "86c28fcaa90150567faad61aa2059135c7294764"
+    },
+    "rm75_app/web/static/workcell/console/index.html": {
+      "bytes": 14040,
+      "sha256": "85976b128afc1255051fb9141a86e2a1657ce99ab3e2ebb45ad066947d38b9b6",
+      "git_blob": "dea94f519178fef217f7d2aaaa324645f3e0e88a"
+    },
+    "rm75_app/web/static/workcell/console/state.js": {
+      "bytes": 7902,
+      "sha256": "b05d1d40e8f29b26d40b8b96a0d325e827b1c9e2f191593894c0ba8e818eb77d",
+      "git_blob": "671e8e4832b0d400fe23ac5c9beb08368f68dfeb"
+    },
+    "rm75_app/web/static/workcell/console/views.js": {
+      "bytes": 7415,
+      "sha256": "393a678ae9f3b79079c34de201371d8fcd2543d1a13784d97975e4a8f5ebdc94",
+      "git_blob": "a86c09a55fa21fa47e19b0f09eb1f522eb27de77"
+    },
+    "tools/launch_workcell_console.py": {
+      "bytes": 3788,
+      "sha256": "0513fc78876bc29300abde5a2277c01ebc19587e09cf5b89fce809e08582ade7",
+      "git_blob": "4d54c2ff785294668dba176f146e8dad277775c1"
+    },
+    "tools/check_workcell_console.py": {
+      "bytes": 5131,
+      "sha256": "a3abc1cb7d1fd4178ebcc21970e15c69d8baf2a24ab7d8e421c34342a33654ae",
+      "git_blob": "edd99349f5dee1eda9f538adcb63ac9d049611c2"
+    },
+    "tests/console/__init__.py": {
+      "bytes": 61,
+      "sha256": "0724a06fa935edc3e21595eec1d03cb31e74de7063b1054079256bacec20e03f",
+      "git_blob": "9dba64660e2f6d668b04f113e8884926ee8a879d"
+    },
+    "tests/console/browser_fixture.py": {
+      "bytes": 8420,
+      "sha256": "cb63899642b7893de34b19e55048a1dfb26f19db3f19adb876a43c8adb60f6a5",
+      "git_blob": "27bbf4369661c17a145401a541fd684e03e3fc0d"
+    },
+    "tests/console/client_state.test.mjs": {
+      "bytes": 5434,
+      "sha256": "37cdc30bc9a7f46e7d5ee51f513ded5d07840d79cf7afddbcbaaa516d0d5a0d2",
+      "git_blob": "8ad467a649270fae29bda2d14f5e3526fc1066ba"
+    },
+    "tests/console/conftest.py": {
+      "bytes": 336,
+      "sha256": "9da866ecb6fed0b7fee1bc68b49edd14fe1afaf0124b8317212d95cce7ff45c3",
+      "git_blob": "c8ce8f3a3cecbaea15eaf2dc97501bc840ce1598"
+    },
+    "tests/console/dom_fixture.py": {
+      "bytes": 10156,
+      "sha256": "027629e285cf6ad5eb18c83de1a3ce1ef423083c07e3b5c631944cb53b5e980e",
+      "git_blob": "d0438875364f0329b40c8ddf946a8297c78b135d"
+    },
+    "tests/console/fixtures.py": {
+      "bytes": 10567,
+      "sha256": "8901d16b475dd308f2fca588e36e63773cba6604f26831faa4cc709453bea2c5",
+      "git_blob": "bba08bbe6ee73bd19284756b53e05129c6333318"
+    },
+    "tests/console/test_console_api.py": {
+      "bytes": 12167,
+      "sha256": "bd36bdb93aa9116360b194d856321197703017d8aab93779fb94a150f7865aa1",
+      "git_blob": "2a21856c8495be865f0e76227ba91e28ce03dcc9"
+    },
+    "docs/CHATGPT_OPERATOR_CONSOLE_20260911.md": {
+      "bytes": 12769,
+      "sha256": "5bf99277a5664ed40dbbb71fac8d69559611afd1b8f19415da68412a010a0655",
+      "git_blob": "94f1970ce1f7a14c4e306c86423e72a1c499161b"
+    }
+  }
+}
