@@ -138,7 +138,11 @@ class SapienRobotStatePort:
             raise SceneInvalid('Original complete gripper closure topology required')
         for recipe in recipes:
             self._constraints.append(recipe.build(self._scene, source, private))
-        self._physics_state = dict(shapes=expected_shapes, constraints=source_constraints)
+        if len(agent.robot._objs) != 1:
+            raise SceneInvalid('One original native articulation required')
+        drives = align_articulation_drive_policy(agent.robot._objs[0], self._robot)
+        self._physics_state = dict(shapes=expected_shapes, constraints=source_constraints,
+            articulation_drive=drives)
         return self.read_physics_policy()
 
     def read_physics_policy(self):
@@ -153,13 +157,17 @@ class SapienRobotStatePort:
             raise SceneInvalid('Native robot physics policy escaped the owned scene')
         actual = dict(shapes={name: [shape_state(shape, np.eye(4))
             for shape in link.collision_shapes] for name, link in links.items()},
-            constraints=[constraint_state(drive, links) for drive in self._constraints])
+            constraints=[constraint_state(drive, links) for drive in self._constraints],
+            articulation_drive=articulation_drive_policy(self._robot))
         compare_native_state(self._physics_state, actual, 'robot_physics_policy')
         self.physics_acknowledgement = dict(source='native_robot_shape_and_constraint_readback',
             link_count=len(links), shape_count=sum(map(len, actual['shapes'].values())),
             constraint_count=len(self._constraints), constraints=actual['constraints'],
             expected_digest=digest(self._physics_state), actual_digest=digest(actual),
             collision_shapes_and_groups_aligned=True, gripper_constraint_configuration_aligned=True,
+            articulation_drive_parameters_aligned=True,
+            articulation_drive=actual['articulation_drive'],
+            drive_target_replay_qualified=False,
             dynamics_stepping_qualified=False, attachment_qualified=False, hardware_qualified=False)
         return self.physics_acknowledgement
 
@@ -225,3 +233,68 @@ class SapienRobotStatePort:
         if self._scene is not None:
             self._scene.clear()
         self._scene = None
+
+
+def articulation_drive_policy(robot):
+    """Read native static drive policy, not controller configs or command targets."""
+    joints = list(robot.get_active_joints())
+    names = [joint.name for joint in joints]
+    if len(names) != 13 or set(names) != set(ARM_JOINTS + GRIPPER_JOINTS):
+        raise SceneInvalid('Complete independent thirteen-joint drive inventory required')
+    rows = {}
+    for joint in joints:
+        limits = _array(joint.limits)
+        armature = _array(joint.armature).reshape(-1)
+        values = {key: float(getattr(joint, key)) for key in
+            ('stiffness', 'damping', 'force_limit', 'friction')}
+        if (int(joint.dof) != 1 or joint.type not in ('revolute', 'revolute_unwrapped')
+                or joint.drive_mode not in ('force', 'acceleration')
+                or limits.shape != (1, 2) or not np.isfinite(limits).all()
+                or limits[0, 0] > limits[0, 1]
+                or armature.shape != (1,) or not np.isfinite(armature).all()
+                or np.any(armature < 0)
+                or any(not np.isfinite(value) or value < 0 for value in values.values())):
+            raise SceneInvalid('Invalid native joint drive policy: ' + joint.name)
+        rows[joint.name] = dict(type=joint.type, dof=1, limits=limits.tolist(),
+            armature=armature.tolist(), drive_mode=joint.drive_mode, **values)
+    position = robot.solver_position_iterations
+    velocity = robot.solver_velocity_iterations
+    sleep = float(robot.sleep_threshold)
+    if (type(position) is not int or not 1 <= position <= 255
+            or type(velocity) is not int or not 0 <= velocity <= 255
+            or not np.isfinite(sleep) or sleep < 0):
+        raise SceneInvalid('Invalid native articulation solver policy')
+    return dict(joints=rows, solver_position_iterations=position,
+        solver_velocity_iterations=velocity, sleep_threshold=sleep)
+
+
+def align_articulation_drive_policy(source, private):
+    """Copy to an independent mirror only; never change source q/qdot or drives.
+
+    This does not copy body inertia/gravity policy, controller state, target
+    timelines, or simulation stepping, and cannot qualify dynamics replay.
+    """
+    from .native_body_mirror import compare_native_state
+
+    if source is private:
+        raise SceneInvalid('Drive policy destination must be an independent articulation')
+    expected = articulation_drive_policy(source)
+    before = articulation_drive_policy(private)
+    source_joints = {joint.name: joint for joint in source.get_active_joints()}
+    joints = {joint.name: joint for joint in private.get_active_joints()}
+    for name, joint in joints.items():
+        if joint is source_joints[name]:
+            raise SceneInvalid('Drive policy destination aliases a primary joint')
+        identity = ('type', 'dof', 'limits')
+        compare_native_state({key: expected['joints'][name][key] for key in identity},
+            {key: before['joints'][name][key] for key in identity}, name + '.drive_identity')
+    for key in ('solver_position_iterations', 'solver_velocity_iterations', 'sleep_threshold'):
+        getattr(private, 'set_' + key)(expected[key])
+    for name, joint in joints.items():
+        row = expected['joints'][name]
+        joint.set_drive_properties(row['stiffness'], row['damping'],
+            row['force_limit'], row['drive_mode'])
+        joint.set_friction(row['friction'])
+        joint.set_armature(np.asarray(row['armature'], dtype=np.float32))
+    compare_native_state(expected, articulation_drive_policy(private), 'articulation_drive_policy')
+    return expected
