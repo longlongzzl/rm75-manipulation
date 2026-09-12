@@ -171,3 +171,33 @@ def test_measured_jaw_state_is_used_and_restored_without_holding_inference():
     assert CuroboNativeStageAuditor(model)(plan, snapshot).passed == REQUIRED_AUDITS
     assert model.measured == positions
     assert model.closed is None
+
+
+def test_identical_stage_boundary_reuses_applied_state_without_skipping_queries(monkeypatch):
+    snapshot, plan = case()
+    model = Model(snapshot)
+    auditor = CuroboNativeStageAuditor(model)
+    original = auditor._apply
+    applications = []
+    def counted(*args):
+        applications.append(args)
+        return original(*args)
+    monkeypatch.setattr(auditor, '_apply', counted)
+    assert auditor(plan, snapshot).passed == REQUIRED_AUDITS
+    assert len(applications) == 4  # initial, two post states, final fixture restore
+    assert len(model.reads) == 4  # both complete paths and both post endpoints
+    assert auditor.last_evidence[1]['reused_previous_post_state'] is True
+    assert model.held == 'a' and model.closed is True
+
+
+def test_nonidentical_but_continuous_boundary_is_reapplied(monkeypatch):
+    snapshot, plan = case()
+    stage = plan.payload.stages[-1]
+    positions = stage.trajectory.positions.copy()
+    positions[0] += 1e-8
+    payload = replace(plan.payload, stages=(plan.payload.stages[0],
+        replace(stage, trajectory=replace(stage.trajectory, positions=positions))))
+    plan = replace(plan, payload=payload, payload_digest=payload.fingerprint())
+    auditor = CuroboNativeStageAuditor(Model(snapshot))
+    assert auditor(plan, snapshot).passed == REQUIRED_AUDITS
+    assert auditor.last_evidence[1]['reused_previous_post_state'] is False

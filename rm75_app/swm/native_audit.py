@@ -86,8 +86,11 @@ class CuroboNativeStageAuditor:
                         or len(q) < 2 or not np.isfinite(q).all()
                         or not np.allclose(q[0], current.positions, atol=1e-6, rtol=0)):
                     raise SceneInvalid('Native stage path is discontinuous or starts at another state')
-                active_object = self._apply(stage.state_before, current, primitive.object_id,
-                                            scene, active_object)
+                reuse_post = (index > 0 and previous.as_dict() == stage.state_before.as_dict()
+                              and np.array_equal(q[0], current.positions))
+                if not reuse_post:
+                    active_object = self._apply(stage.state_before, current, primitive.object_id,
+                                                scene, active_object)
                 if pending_escape is not None:
                     beginning = self._contacts(q[:1], names, set(stage.contact_objects))
                     if not self._same_contacts(pending_escape, beginning):
@@ -111,6 +114,7 @@ class CuroboNativeStageAuditor:
                         raise SceneInvalid(f'{stage.name}: post-transition collision: {contacts[:3]}')
                     pending_escape = contacts
                 self.last_evidence.append(dict(stage=stage.name, **evidence,
+                    reused_previous_post_state=reuse_post,
                     state_before=stage.state_before.as_dict(), state_after=stage.state_after.as_dict(),
                     post_transition_contacts=contacts,
                     duplicate_world_proxy=self.last_duplicate_exclusion))

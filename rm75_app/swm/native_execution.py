@@ -57,12 +57,16 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
             self.last_settle_evidence = dict(stage=stage, steps=index+1,
                 primary_sequence=raw['sequence'], captured_at=raw['capture_started_at'],
                 measured_positions=q.tolist(), joint_names=list(names),
+                feedback_joint_names=list(raw["joint_names"]),
+                feedback_positions_rad=list(raw["positions"]),
+                feedback_velocities_rad_s=list(raw["velocities"]),
                 max_velocity_rad_s=float(np.max(np.abs(velocity))),
                 endpoint_error_rad=error, stable_steps=stable, idle=idle)
             if stable >= 3:
                 self.emit(kind='swm_primary_stage_settled', **self.last_settle_evidence)
                 return
-        self.emit(kind='swm_primary_settle_failed', **self.last_settle_evidence)
+        self.emit(kind='swm_primary_settle_failed', measured_objects=raw.get("objects", {}),
+            **self.last_settle_evidence)
         raise SceneInvalid('Primary stage did not reach measured idle within settle budget')
 
     def execute_trajectory(self, stage, trajectory):

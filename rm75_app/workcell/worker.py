@@ -133,6 +133,8 @@ def main(argv=None):
             swm_result=None
             if spec['mode']!='preview':
                 from rm75_app.swm.integration import dispatch_if_enabled
+                from rm75_app.swm.native_context import install_native_factories
+                install_native_factories(profile)
                 swm_result=dispatch_if_enabled(spec,profile,args.app_root,run_dir,stop,events)
             if spec['mode']=='preview':
                 result=preview(spec,profile)
