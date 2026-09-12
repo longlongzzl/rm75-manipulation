@@ -2053,6 +2053,126 @@
       "atomic_worker_qualified": false,
       "note": "Legacy initializer changes cwd; driver used a relative output path. Final artifact write failed and may obscure an earlier capture error. No fresh batch success can be inferred.",
       "hardware_connected": false
+    },
+    "primary_capture_native_02": {
+      "tested_commit": null,
+      "source_version_note": "Before primary_sequence wiring fix",
+      "domain": "actual_primary_PhysX",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "KeyError: 'sequence'",
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_primary_capture_driver_02/run.py",
+      "sha256": {
+        "driver.py": "1edac810056c03ef71fcfa01e603b05a8373ffd6d56dc60ebb05888c4d0412a2",
+        "capture_result.json": "de79261a105ca3d5a81b5ce6047e400e90eb9347627a53c1879b316c1cd01918",
+        "input.json": "3c62b3a81f68e1cbff4b1f2812a48781072e19466c1e050a65dfd92cd3dc362a",
+        "bootstrap_result.json": "1f63567fc71d28a52e3b48bcd24037ed5f35163a3226c74d702f1580a537450b",
+        "stdout.log": "492314c52178569f1fb7ec41ee369cbde21efaeaf8cb54597e768c5d6f77005d"
+      },
+      "captures": [],
+      "primary_closed": true,
+      "metric_manifest_qualified": false,
+      "full_mirror_transaction_qualified": false,
+      "atomic_worker_qualified": false,
+      "skill_checkpoint_count": 0,
+      "hardware_connected": false,
+      "note": "Infrastructure bindings use descriptor digests; not yet metric asset file registration. Idle capture probes are not skill checkpoints."
+    },
+    "primary_capture_native_03": {
+      "tested_commit": "53772ab",
+      "source_version_note": "Identical committed implementation bytes",
+      "domain": "actual_primary_PhysX",
+      "exit_code": 0,
+      "status": "two_fresh_complete_primary_batches",
+      "error": null,
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_primary_capture_driver_03/run.py",
+      "sha256": {
+        "driver.py": "fd853c08e42d96a867ac874ebd6808d066234340ad8ac626bde327a506b9542b",
+        "capture_result.json": "2c92a244e4f98c7ab0394f456d9b9211adc6bc17086c7d8d0110e8275bc6eee2",
+        "input.json": "3c62b3a81f68e1cbff4b1f2812a48781072e19466c1e050a65dfd92cd3dc362a",
+        "bootstrap_result.json": "b97f990496de918c6a92bbd62bdf2f23368a97d2544e17e70126b537d861e7b9",
+        "stdout.log": "7ad07090b30846dcbd4a550da10094d6f88ce3a160e2f5b64e944cc3d1ec5104"
+      },
+      "captures": [
+        {
+          "primary_sequence": 4,
+          "capture_started_at": 13213.98270941,
+          "capture_finished_at": 13214.000448493,
+          "capture_span_s": 0.012241968999660457,
+          "object_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "object_count": 12,
+          "holding": "empty",
+          "object_velocity_sources": [
+            "native_PhysX_rigid_body_velocity"
+          ],
+          "robot_feedback_source": "native_joint_link_and_contact_feedback"
+        },
+        {
+          "primary_sequence": 5,
+          "capture_started_at": 13214.000465219,
+          "capture_finished_at": 13214.017866435,
+          "capture_span_s": 0.011846061001051567,
+          "object_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "object_count": 12,
+          "holding": "empty",
+          "object_velocity_sources": [
+            "native_PhysX_rigid_body_velocity"
+          ],
+          "robot_feedback_source": "native_joint_link_and_contact_feedback"
+        }
+      ],
+      "primary_closed": true,
+      "metric_manifest_qualified": false,
+      "full_mirror_transaction_qualified": false,
+      "atomic_worker_qualified": false,
+      "skill_checkpoint_count": 0,
+      "hardware_connected": false,
+      "note": "Infrastructure bindings use descriptor digests; not yet metric asset file registration. Idle capture probes are not skill checkpoints."
+    },
+    "primary_capture_targeted_fixed": {
+      "tested_commit": "53772ab",
+      "domain": "software_fixture",
+      "passed": 5,
+      "failed": 0,
+      "seconds": 0.08,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/test_native_primary_capture.py -q"
+    },
+    "primary_capture_full": {
+      "tested_commit": "53772ab",
+      "domain": "software_regression",
+      "passed": 1575,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 45.25,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "log": "runtime_data/swm_release_primary_capture_full.log",
+      "log_sha256": "72ff36eac952b14d37f871cef02ae2a68a0bc71e7d1c531c4df7227ea8c5787f"
     }
   },
   "gates": {
@@ -2100,7 +2220,9 @@
         "runs.native_robot_sync_01: initial measured robot geometry aligned; NOT atomic worker or held attachment qualification",
         "runs.native_robot_mirror_01: native constructor and cleanup FAILED; no new skill checkpoints",
         "runs.native_robot_mirror_02: private articulation aligned, not full scene or worker qualification",
-        "runs.primary_capture_native_01: capture driver failed; no complete fresh batch evidence"
+        "runs.primary_capture_native_01: capture driver failed; no complete fresh batch evidence",
+        "runs.primary_capture_native_02: primary_sequence mismatch rejected",
+        "runs.primary_capture_native_03: two fresh twelve-object native batches, not skill checkpoints"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -2280,17 +2402,18 @@
         "runs.recording_wiring_full",
         "runs.se3_full",
         "runs.measured_gripper_full",
-        "runs.native_robot_mirror_full"
+        "runs.native_robot_mirror_full",
+        "runs.primary_capture_full"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
     }
   },
   "current_layer_status": {
-    "kernel": "MIRROR_TARGETED_15_PASSED_NEW_CAPTURE_TARGETED_5_FAILED_FULL_NOT_RERUN",
-    "native_wiring": "PRIVATE_ROBOT_ARTICULATION_ALIGNED_COMPLETE_CAPTURE_AND_FULL_MIRROR_PENDING",
+    "kernel": "SOFTWARE_REGRESSION_PASSED_1575",
+    "native_wiring": "FRESH_COMPLETE_PRIMARY_CAPTURE_AND_PRIVATE_ROBOT_AVAILABLE_METRIC_MANIFEST_FULL_MIRROR_AND_WORKER_PENDING",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "PRIVATE_ROBOT_SYNC_EXIT_0_PRIMARY_CAPTURE_DRIVER_EXIT_1_NO_ATOMIC_EXECUTION",
+    "actual_simulation": "TWO_FRESH_TWELVE_OBJECT_NATIVE_BATCHES_EXIT_0_NO_ATOMIC_EXECUTION",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
   "native_bootstrap": {
@@ -2303,7 +2426,7 @@
     "tool": "tools/validate_swm_native_bootstrap.py",
     "successful_environment": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
     "failed_environment": "/home/zhangzhao/anaconda3/bin/python (exit 139)",
-    "remaining": "Fix capture test Pose doubles and driver absolute paths, then metric manifest/full private actor mirror/held attachment readback and trusted worker six skill checkpoints",
+    "remaining": "Register metric original assets/infrastructure, connect fresh batches through complete dual-mirror transaction including attachment, install trusted pen worker and execute six skill checkpoints",
     "same_process_planner_environment": {
       "python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
       "append_site_packages": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",
