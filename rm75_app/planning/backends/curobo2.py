@@ -506,11 +506,43 @@ class Curobo2Backend:
             )
         controller = self._ensure_gripper_sphere_controller()
         seen: set[int] = set()
+        acknowledgements = []
         for params in parameter_sets:
             if id(params) in seen:
                 continue
             seen.add(id(params))
-            controller.apply(params, self._gripper_collision_state)
+            if self._gripper_collision_state.startswith('measured:'):
+                acknowledgement = controller.apply_measured(params, self._measured_gripper_positions)
+            else:
+                acknowledgement = controller.apply(params, self._gripper_collision_state)
+            acknowledgements.append(acknowledgement)
+        return acknowledgements
+
+    def set_measured_gripper_collision_state(self, positions):
+        """Apply independent joint feedback; no holding inference or commands."""
+        import hashlib
+        import json
+        from rm75_app.planning.gripper_collision import gripper_link_transforms
+        if not self.config.dynamic_gripper_collision:
+            raise RuntimeError('Measured gripper collision geometry is disabled')
+        controller = self._ensure_gripper_sphere_controller()
+        expected = {f'gripper_{side}_{part}_Joint' for side in ('Left', 'Right')
+                    for part in ('1', '2', 'Support')}
+        if set(positions) != expected:
+            raise ValueError('Complete six-joint gripper feedback required')
+        measured = {name: float(positions[name]) for name in sorted(expected)}
+        gripper_link_transforms(controller.urdf_path, measured)
+        self._ensure_planner()
+        self._measured_gripper_positions = measured
+        # _pose_cache_key already includes this state string. Distinct measured
+        # configurations must never share an IK cache entry.
+        self._gripper_collision_state = 'measured:' + hashlib.sha256(
+            json.dumps(measured, sort_keys=True).encode()).hexdigest()
+        acknowledgements = self._apply_gripper_collision_state()
+        if not acknowledgements or any(not row or row['sphere_count'] == 0 for row in acknowledgements):
+            raise RuntimeError('Native gripper geometry acknowledgement missing')
+        return dict(state_id=self._gripper_collision_state, positions=measured,
+                    owners=acknowledgements, holding_inferred=False)
 
     def set_gripper_collision_state(self, closed: bool) -> None:
         """Make the sole gripper sphere set follow the commanded jaw state."""

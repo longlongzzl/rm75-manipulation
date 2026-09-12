@@ -143,6 +143,7 @@ class DynamicGripperSphereController:
         open_joint_position: float = 0.0,
         closed_joint_position: float = 0.6,
     ) -> None:
+        self.urdf_path = Path(urdf_path).resolve()
         self.reference_transforms = gripper_link_transforms(
             urdf_path, reference_joint_position
         )
@@ -155,6 +156,18 @@ class DynamicGripperSphereController:
     def apply(self, kinematics_config: Any, state: str) -> None:
         if state not in self.state_transforms:
             raise ValueError(f"unsupported gripper collision state: {state}")
+        return self._apply_transforms(kinematics_config, self.state_transforms[state])
+
+    def apply_measured(self, kinematics_config: Any, positions: Mapping[str, float]) -> dict:
+        expected = {f'gripper_{side}_{part}_Joint' for side in ('Left', 'Right')
+                    for part in ('1', '2', 'Support')}
+        if not isinstance(positions, Mapping) or set(positions) != expected:
+            raise ValueError('Complete six-joint measured gripper configuration required')
+        return self._apply_transforms(kinematics_config,
+            gripper_link_transforms(self.urdf_path, positions))
+
+    def _apply_transforms(self, kinematics_config, transforms):
+        evidence = []
         parameter_id = id(kinematics_config)
         reference = self._reference_centers.setdefault(parameter_id, {})
         for link_name in DYNAMIC_GRIPPER_LINKS:
@@ -169,8 +182,17 @@ class DynamicGripperSphereController:
             mapped = remap_link_sphere_centers(
                 reference[link_name],
                 self.reference_transforms[link_name],
-                self.state_transforms[state][link_name],
+                transforms[link_name],
             )
             kinematics_config.link_spheres[:, indices, :3] = (
                 spheres.new_tensor(mapped).unsqueeze(0)
             )
+            actual = kinematics_config.link_spheres[:, indices, :].detach().cpu().numpy()
+            previous = spheres.detach().cpu().numpy()
+            if (not np.allclose(actual[:, :, :3], mapped[None, :, :], atol=1e-6, rtol=0)
+                    or not np.array_equal(actual[:, :, 3], previous[:, :, 3])):
+                raise RuntimeError('Native gripper sphere readback changed geometry or missed pose update')
+            evidence.append(dict(link=link_name, spheres=len(indices), radii_unchanged=True,
+                maximum_center_error_m=float(np.max(np.abs(actual[:, :, :3] - mapped[None, :, :])))))
+        return dict(source='native_collision_sphere_tensor_readback', links=evidence,
+                    sphere_count=sum(row['spheres'] for row in evidence))

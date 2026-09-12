@@ -26,7 +26,10 @@ def main():
     parser.add_argument('--probe-planner', action='store_true',
         help='Initialize the existing shared cuRobo2 backend in the SAME process; never plan or execute')
     parser.add_argument('--sync-planning-scene', action='store_true')
+    parser.add_argument('--sync-robot-state', action='store_true')
     options = parser.parse_args()
+    if options.sync_robot_state and not options.sync_planning_scene:
+        parser.error('--sync-robot-state requires --sync-planning-scene')
     if options.sync_planning_scene and not options.probe_planner:
         parser.error('--sync-planning-scene requires --probe-planner')
     # Enforce the SAME network guard again before native imports. A generic
@@ -56,7 +59,7 @@ def main():
     manifest = dict(schema='rm75.swm_native_bootstrap_input_v1', specification=spec,
         input_sha256=contract['sha256'], input_path=str(fixed), object_ids=list(contract['names']),
         profile_sha256=hashlib.sha256(options.profile.read_bytes()).hexdigest(),
-        probe_planner=options.probe_planner, sync_planning_scene=options.sync_planning_scene, actual_python=sys.executable,
+        probe_planner=options.probe_planner, sync_planning_scene=options.sync_planning_scene, sync_robot_state=options.sync_robot_state, actual_python=sys.executable,
         effective_profile=profile, hardware_connected=False, atomic_worker_qualified=False)
     (output / 'input.json').write_text(json.dumps(manifest, indent=2) + '\n')
     events, stop = EventLog(output), StopToken(output / 'STOP')
@@ -101,6 +104,11 @@ def main():
                     report['collision_scene_source'] = source
                     report['collision_scene_ack'] = read_curobo_collision_ack(backend, scene)
                     report['collision_geometry_synchronized'] = True
+                    if options.sync_robot_state:
+                        from rm75_app.swm.native_robot import observe_primary_robot, synchronize_robot_geometry
+                        robot_observation = observe_primary_robot(world)
+                        report['robot_observation'] = robot_observation
+                        report['robot_geometry_ack'] = synchronize_robot_geometry(backend, robot_observation)
                 events.emit('swm_shared_planner_initialized', hardware_connected=False,
                             task_scene_qualified=False)
             report['status'] = 'initialized_and_read' 
