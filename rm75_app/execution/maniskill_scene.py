@@ -28,49 +28,48 @@ def _rotation_angle_deg(rotation: np.ndarray) -> float:
     return float(np.degrees(np.arccos(cosine)))
 
 
-def _initialize_rm75_stable_gripper(agent: Any, robot_class: type) -> None:
-    """Load precise closures and preserve the RM75 parallel-pad kinematics."""
+def create_rm75_gripper_constraints(link_map, create_drive):
+    """Use the same native closure construction in primary and private scenes."""
 
     import sapien
 
-    super(robot_class, agent)._after_loading_articulation()
     link2_pin = [0.040367, 0.037539, 0.007696]
     support_pin = [-0.014463, 0.016458, 0.00053]
     # Drive-frame X is the free twist axis; rotate it onto the local Z hinge.
     frame_q = [np.sqrt(0.5), 0.0, -np.sqrt(0.5), 0.0]
     constraints = []
     for side in ("Right", "Left"):
-        link2 = agent.robot.links_map.get(f"gripper_{side}_2_Link")
-        support = agent.robot.links_map.get(f"gripper_{side}_Support_Link")
+        link2 = link_map.get(f"gripper_{side}_2_Link")
+        support = link_map.get(f"gripper_{side}_Support_Link")
         if link2 is None or support is None:
             continue
-        drive = agent.scene.create_drive(
+        drive = create_drive(
             link2,
             sapien.Pose(p=link2_pin, q=frame_q),
             support,
             sapien.Pose(p=support_pin, q=frame_q),
         )
-        for component in drive._objs:
+        for component in getattr(drive, "_objs", (drive,)):
             component.set_limit_x(0.0, 0.0)
             component.set_limit_y(0.0, 0.0)
             component.set_limit_z(0.0, 0.0)
             component.set_limit_twist(-np.pi, np.pi)
             component.set_limit_pyramid(0.0, 0.0, 0.0, 0.0)
         constraints.append(drive)
-    get_link = agent.robot.links_map.get
+    get_link = link_map.get
     left_support = get_link("gripper_Left_Support_Link")
     right_support = get_link("gripper_Right_Support_Link")
     pad_parallel_constraints = []
     if left_support is not None and right_support is not None:
         # Keep the two mirrored pad frames parallel while leaving their
         # relative translation fully free for normal opening and closing.
-        drive = agent.scene.create_drive(
+        drive = create_drive(
             left_support,
             sapien.Pose(q=[0.0, 0.0, 1.0, 0.0]),
             right_support,
             sapien.Pose(),
         )
-        for component in drive._objs:
+        for component in getattr(drive, "_objs", (drive,)):
             component.set_limit_twist(0.0, 0.0)
             component.set_limit_pyramid(0.0, 0.0, 0.0, 0.0)
             component.set_drive_property_slerp(
@@ -80,8 +79,17 @@ def _initialize_rm75_stable_gripper(agent: Any, robot_class: type) -> None:
             )
         pad_parallel_constraints.append(drive)
 
+    return constraints, pad_parallel_constraints
+
+
+def _initialize_rm75_stable_gripper(agent: Any, robot_class: type) -> None:
+    """Load precise closures and preserve the RM75 parallel-pad kinematics."""
+    super(robot_class, agent)._after_loading_articulation()
+    constraints, parallel = create_rm75_gripper_constraints(
+        agent.robot.links_map, agent.scene.create_drive)
     agent._rm75_planar_gripper_constraints = constraints
-    agent._rm75_pad_parallel_constraints = pad_parallel_constraints
+    agent._rm75_pad_parallel_constraints = parallel
+    get_link = agent.robot.links_map.get
 
     gripper_links = (
         "gripper_base_link",
