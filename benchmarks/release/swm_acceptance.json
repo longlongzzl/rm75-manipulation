@@ -7949,6 +7949,96 @@
       "motion_executed": false,
       "atomic_worker_qualified": false,
       "skill_checkpoints": 0
+    },
+    "payload_duplicate_targeted_01": {
+      "passed": 29,
+      "failed": 0,
+      "seconds": 0.55
+    },
+    "payload_duplicate_full_01": {
+      "passed": 1672,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 44.92,
+      "domain": "software_regression",
+      "log": "runtime_data/swm_release_payload_duplicate_full_01.log",
+      "source_sha256": {
+        "rm75_app/swm/native_audit.py": "d02bff9ed98683c167a1cd240b81cacc4c9f43b544bd6317015c8b7a5dbea98b",
+        "tests/swm/test_initial_payload_escape.py": "27ab2db9772dafa410c69773e3058f8936fc427e324ac56af55ef052aaf4e101",
+        "tests/swm/test_audit_payload_duplicate.py": "2d9d12ab7e2e1011fdb3d967937946a9b014a841e837b6673066d98ad765f1c1"
+      }
+    },
+    "native_pen_phase_08": {
+      "status": "AUDIT_REJECTED_GPU_CONSUMER_MISMATCH",
+      "driver_sha256": "c4a8495241f3b6ee2c2e72f96b33206bdf0d2d11f092e722b932fb8ab2bd3a79",
+      "result_sha256": "2e7c8d30b433dad3609085ac8e81db73bdd4ef2921a6a4d48abedd67f4020e5a",
+      "result_path": "runtime_data/swm_release_pen_phase_driver_08/transaction_result.json"
+    },
+    "native_pen_phase_09": {
+      "status": "AUDIT_REJECTED_COARSE_IK_ATTACHMENT_MISSING",
+      "error": "SceneInvalid: Native GPU payload geometry is absent or inconsistent",
+      "diagnosis": {
+        "source": "native_GPU_attachment_link_spheres",
+        "consumers_consistent": false,
+        "owners": [
+          {
+            "owner": "trajectory",
+            "device": "cuda:0",
+            "active_counts": [
+              4
+            ],
+            "shape": [
+              1,
+              64,
+              4
+            ]
+          },
+          {
+            "owner": "planner",
+            "device": "cuda:0",
+            "active_counts": [
+              4
+            ],
+            "shape": [
+              1,
+              64,
+              4
+            ]
+          },
+          {
+            "owner": "ik",
+            "device": "cuda:0",
+            "active_counts": [
+              4
+            ],
+            "shape": [
+              1,
+              64,
+              4
+            ]
+          },
+          {
+            "owner": "coarse_ik",
+            "device": "cuda:0",
+            "active_counts": [
+              0
+            ],
+            "shape": [
+              1,
+              64,
+              4
+            ]
+          }
+        ]
+      },
+      "driver_sha256": "f6d68146625441928d07f9ef0bef3e4b68cb0aaf18805b6612a8aabc00555e74",
+      "result_sha256": "86eacb91992529b64eae3ce21fc4d98d0df91904c9f7c3077b50be6319111177",
+      "result_path": "runtime_data/swm_release_pen_phase_driver_09/transaction_result.json",
+      "primary_closed": true,
+      "private_resources_closed": true,
+      "motion_executed": false,
+      "atomic_worker_qualified": false,
+      "skill_checkpoints": 0
     }
   },
   "gates": {

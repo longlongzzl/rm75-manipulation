@@ -40,6 +40,8 @@ def setup(fault=None):
                         world_object='b' if fault=='other_object' else TABLE,penetration_m=depth))
             return rows
     model=ContactModel(snapshot)
+    model.held = "empty"
+    model.closed = False
     model.config.retreat_escape_contact_links=('attached_object','finger')
     model.config.retreat_start_contact_max_penetration_m=.020
     return snapshot,plan,model

@@ -31,6 +31,9 @@ class CuroboNativeStageAuditor:
         self.step = interpolation_step_rad
         self.max_samples = max_samples
         self.last_evidence = []
+        self._collision_holding = "empty"
+        self._native_audit = False
+        self.last_duplicate_exclusion = None
 
     def __call__(self, plan, snapshot):
         from rm75_app.planning.contracts import JointConfiguration
@@ -45,6 +48,7 @@ class CuroboNativeStageAuditor:
         robot = snapshot['robot']
         measured_jaw = robot.get('gripper_positions')
         native = snapshot.get('observation_domain') in ('real', 'physics')
+        self._native_audit = native
         if robot.get('idle') is not True or (measured_jaw is None and (
                 native or type(robot.get('gripper_closed')) is not bool)):
             raise SceneInvalid('Independent idle jaw observation required for native audit')
@@ -53,6 +57,7 @@ class CuroboNativeStageAuditor:
                 or {obj.name for obj in scene.objects} != set(snapshot['objects'])):
             raise SceneInvalid('Native audit requires the complete current collision scene')
         holding = robot['holding']
+        self._collision_holding = holding
         relative = None if holding == 'empty' else (
             np.linalg.inv(transform(robot['T_world_tcp'])) @ transform(
                 snapshot['objects'][holding]['measured']['T_world_object']))
@@ -107,7 +112,8 @@ class CuroboNativeStageAuditor:
                     pending_escape = contacts
                 self.last_evidence.append(dict(stage=stage.name, **evidence,
                     state_before=stage.state_before.as_dict(), state_after=stage.state_after.as_dict(),
-                    post_transition_contacts=contacts))
+                    post_transition_contacts=contacts,
+                    duplicate_world_proxy=self.last_duplicate_exclusion))
                 current, previous = end, stage.state_after
             if pending_escape is not None:
                 raise SceneInvalid('Unverified post-transition support contact')
@@ -205,10 +211,52 @@ class CuroboNativeStageAuditor:
             self.backend.set_measured_gripper_collision_state(dict(state.gripper_positions))
         else:
             self.backend.set_gripper_collision_state(state.gripper_closed)
+        self._collision_holding = state.holding
         return state.holding
+
+    def _verified_contact_ignores(self, ignored):
+        """Exclude only a verified payload's duplicate world representation.
+
+        The shared diagnostic intentionally enables each world obstacle to
+        inspect it. A held object's world proxy must instead stay excluded
+        while its actual GPU attached spheres participate in every query.
+        Disabled unrelated obstacles are an error, not implicit permissions.
+        """
+        self.last_duplicate_exclusion = None
+        ignored = set(ignored)
+        holding = self._collision_holding
+        if holding == 'empty':
+            return ignored
+        enabled = getattr(self.backend, '_obstacle_enabled', None)
+        storage_reader = getattr(self.backend, 'read_attachment_collision_state', None)
+        if not callable(enabled) or not callable(storage_reader):
+            if self._native_audit:
+                raise NotImplementedError('Native duplicate exclusion requires GPU attachment and enable readback')
+            return ignored  # Explicit non-native stage-order fixtures only.
+        flags = {obj.name: enabled(obj.name) for obj in self.backend._scene.objects}
+        if holding not in flags or flags[holding] or any(not value for oid, value in flags.items() if oid != holding):
+            raise SceneInvalid('Held proxy must be the only disabled world obstacle')
+        if getattr(self.backend, '_attachment_fit_report', {}).get('object_name') != holding:
+            raise SceneInvalid('Native attachment identity differs from audited holding')
+        storage = storage_reader()
+        owners = storage.get('owners', [])
+        counts = [count for owner in owners for count in owner.get('active_counts', [])]
+        if (storage.get('source') != 'native_GPU_attachment_link_spheres'
+                or storage.get('consumers_consistent') is not True
+                or not {'trajectory', 'planner', 'ik'} <= {owner.get('owner') for owner in owners}
+                or any(not owner.get('active_counts') for owner in owners)
+                or not counts or any(type(count) is not int or count <= 0 for count in counts)
+                or len(set(counts)) != 1):
+            raise SceneInvalid('Native GPU payload geometry is absent or inconsistent')
+        ignored.add(holding)
+        self.last_duplicate_exclusion = dict(object_id=holding, source=storage['source'],
+            active_spheres=counts[0], consumers=[owner['owner'] for owner in owners],
+            world_proxy_enabled=False, unrelated_obstacles_enabled=True)
+        return ignored
 
     def _contacts(self, positions, names, ignored):
         backend = self.backend
+        ignored = self._verified_contact_ignores(ignored)
         planner = backend._ensure_planner()
         modules = backend._import_modules()
         tensor = modules['torch'].as_tensor(positions, dtype=planner.device_cfg.dtype,
