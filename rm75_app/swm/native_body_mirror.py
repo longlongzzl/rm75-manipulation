@@ -93,34 +93,14 @@ def compare_native_state(expected, actual, path='body'):
             raise SceneInvalid(f'Native geometry count differs: {path}')
         for index, (left, right) in enumerate(zip(expected, actual)):
             compare_native_state(left, right, path + f'[{index}]')
-    elif type(expected) in (int, float):
+    elif type(expected) in (int, bool):
+        if type(actual) is not type(expected) or expected != actual:
+            raise SceneInvalid(f'Native integer/boolean identity differs: {path}')
+    elif type(expected) is float:
         if not np.isclose(expected, actual, atol=1e-6, rtol=1e-6):
             raise SceneInvalid(f'Native property differs: {path}')
     elif expected != actual:
         raise SceneInvalid(f'Native property differs: {path}')
-
-
-def clone_shape(state):
-    import sapien
-    px = sapien.physx
-    material = px.PhysxMaterial(**state['material'])
-    geometry = state['geometry']
-    constructor = getattr(px, 'PhysxCollisionShape' + state['kind'])
-    if state['kind'] == 'Box':
-        shape = constructor(geometry['half_size'], material)
-    elif state['kind'] == 'Sphere':
-        shape = constructor(geometry['radius'], material)
-    elif state['kind'] in ('Capsule', 'Cylinder'):
-        shape = constructor(geometry['radius'], geometry['half_length'], material)
-    elif state['kind'] == 'ConvexMesh':
-        shape = constructor(np.asarray(geometry['vertices'], dtype=np.float32), geometry['scale'], material)
-    else:
-        shape = constructor(material)
-    shape.local_pose = native_pose(state['T_object_shape'])
-    shape.set_collision_groups(state['collision_groups'])
-    for key, value in state['properties'].items():
-        setattr(shape, key, value)
-    return shape
 
 
 class PrivateActor:
@@ -164,6 +144,7 @@ class NativeBodyMirror:
     def __init__(self, registration, robot_port, *, resources):
         import sapien
         from .native_robot_mirror import SapienRobotStatePort
+        from .native_construction import recipe_for_actor
         if not isinstance(robot_port, SapienRobotStatePort) or robot_port.closed:
             raise SceneInvalid('Live owned private robot world is required')
         self.actors, self.expected = {}, {}
@@ -173,10 +154,16 @@ class NativeBodyMirror:
             expected = body_state(native_body(binding.actor), binding.T_actor_object)
             entity = sapien.Entity()
             entity.name = oid
-            body = (sapien.physx.PhysxRigidDynamicComponent() if expected['kind'] == 'dynamic'
-                    else sapien.physx.PhysxRigidStaticComponent())
-            for shape in expected['shapes']:
-                body.attach(clone_shape(shape))
+            recipe = recipe_for_actor(registration.source.primary.construction_recipes, binding.actor)
+            body = recipe.build_body()
+            if len(body.collision_shapes) != len(expected['shapes']):
+                raise SceneInvalid('Original collision loader omitted or added a native shape')
+            for shape, state in zip(body.collision_shapes, expected['shapes']):
+                shape.local_pose = native_pose(state['T_object_shape'])
+                shape.physical_material = sapien.physx.PhysxMaterial(**state['material'])
+                shape.set_collision_groups(state['collision_groups'])
+                for key, value in state['properties'].items():
+                    setattr(shape, key, value)
             if expected['kind'] == 'dynamic':
                 body.kinematic = expected['kinematic']
                 body.disable_gravity = expected['disable_gravity']
