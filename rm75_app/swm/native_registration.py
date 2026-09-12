@@ -57,7 +57,7 @@ def write_metric_asset(directory, name, mesh, proxy, local, provenance):
         scale_evidence='Original shared scale applied without recentering; exported metric bounds read back',
         mesh_path=str(mesh_path), mesh_sha256=file_digest(mesh_path),
         collision_path=str(collision_path), collision_sha256=file_digest(collision_path),
-        T_object_collision=local.tolist(), original_asset_name=name,
+        T_object_collision=local.tolist(), original_asset_name=name, collision_role='planning_proxy',
         provenance=provenance, physics_model_qualified=False, **shape)
 
 
@@ -121,6 +121,17 @@ def register_primary_scene(primary, directory, *, sensor_session):
         bindings[oid] = PrimaryActorBinding(actor, asset['mesh_sha256'], actor_to_object)
     if set(bindings) != set(proxies):
         raise SceneInvalid('Full original collision inventory was not registered')
+    from .native_body_mirror import native_body, body_state, physics_geometry_state
+    for oid, binding in bindings.items():
+        state = body_state(native_body(binding.actor), binding.T_actor_object)
+        physical_records = dict(native_physics_geometry=physics_geometry_state(state),
+            native_physics_baseline=dict(schema='rm75_native_physics_baseline_v1', state=state))
+        for role, value in physical_records.items():
+            path = directory / (oid + '.' + role + '.json')
+            with path.open('x') as handle:
+                handle.write(json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False))
+            assets[oid][role + '_path'] = str(path)
+            assets[oid][role + '_sha256'] = file_digest(path)
     calibration = digest(evidence['T_world_base'])
     manifest = dict(schema='rm75_swm_v1', world_frame='base_link', observation_domain='physics',
         calibration_id=calibration, assets=assets, objects=objects)

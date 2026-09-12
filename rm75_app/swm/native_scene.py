@@ -161,7 +161,7 @@ class SapienScenePort:
     """
 
     def __init__(self, actors, *, asset_bindings, set_attachment, read_attachment,
-                 apply_physics, read_physics, make_pose, robot_port=None):
+                 apply_physics, read_physics, make_pose, robot_port=None, body_port=None):
         self.actors = dict(actors)
         self.assets = dict(asset_bindings)
         self.set_attachment = set_attachment
@@ -170,6 +170,7 @@ class SapienScenePort:
         self.read_physics = read_physics
         self.make_pose = make_pose
         self.robot_port = robot_port
+        self.body_port = body_port
         self.native_acknowledgement = None
         self.applied_snapshot_id = None
 
@@ -186,6 +187,13 @@ class SapienScenePort:
             from .native_robot_mirror import SapienRobotStatePort
             if not isinstance(self.robot_port, SapienRobotStatePort):
                 raise SceneInvalid('Native simulator requires its private robot state port')
+            from .native_body_mirror import NativeBodyMirror
+            if (not isinstance(self.body_port, NativeBodyMirror)
+                    or self.body_port.robot_port is not self.robot_port
+                    or set(self.body_port.actors) != set(self.actors)
+                    or any(self.body_port.actors[oid] is not actor for oid, actor in self.actors.items())):
+                raise SceneInvalid('Native simulator requires its bound physical body port')
+            self.body_port.readback()
             for actor in self.actors.values():
                 entities = getattr(actor, '_objs', [actor])
                 if not entities or any(getattr(entity, 'scene', None) != self.robot_port._scene for entity in entities):
@@ -201,7 +209,8 @@ class SapienScenePort:
         attachment = None
         for oid, obj in snapshot['objects'].items():
             asset = snapshot['assets'][obj['asset_id']]
-            if self.assets.get(oid) != asset['collision_sha256']:
+            identity = asset['native_physics_geometry_sha256'] if native else asset['collision_sha256']
+            if self.assets.get(oid) != identity:
                 raise SceneInvalid("Simulator collision asset identity differs from SWM")
             if oid == holding:
                 attachment = dict(object_id=oid, T_tcp_object=(
@@ -233,5 +242,8 @@ class SapienScenePort:
         self.apply_physics(copy.deepcopy(snapshot['physics']))
         if digest(self.read_physics()) != digest(snapshot['physics']):
             raise SceneInvalid("Simulator did not apply the physical belief revision")
+        if native:
+            self.native_acknowledgement = dict(robot=self.native_acknowledgement,
+                physical_bodies=self.body_port.readback(), snapshot_id=snapshot['snapshot_id'])
         self.applied_snapshot_id = snapshot['snapshot_id']
         return self.applied_snapshot_id

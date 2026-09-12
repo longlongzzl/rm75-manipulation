@@ -5,6 +5,8 @@ as physical actor geometry. Unsupported native shapes fail closed.
 """
 from __future__ import annotations
 
+import copy
+
 import numpy as np
 
 from .native_bootstrap import _array
@@ -90,6 +92,12 @@ def body_state(body, actor_to_object=None):
     return state
 
 
+def physics_geometry_state(state):
+    return dict(schema='rm75_native_physics_geometry_v1', frame='object',
+        body_kind=state['kind'], shapes=[copy.deepcopy({key: shape[key]
+            for key in ('kind', 'geometry', 'T_object_shape')}) for shape in state['shapes']])
+
+
 def compare_native_state(expected, actual, path='body'):
     if isinstance(expected, dict):
         if not isinstance(actual, dict) or set(expected) != set(actual):
@@ -155,11 +163,17 @@ class NativeBodyMirror:
         from .native_construction import recipe_for_actor
         if not isinstance(robot_port, SapienRobotStatePort) or robot_port.closed:
             raise SceneInvalid('Live owned private robot world is required')
-        self.actors, self.expected = {}, {}
+        self.actors, self.expected, self.asset_bindings = {}, {}, {}
         self.robot_port = robot_port
         resources.callback(self.close)
         for oid, binding in registration.source.bindings.items():
             expected = body_state(native_body(binding.actor), binding.T_actor_object)
+            asset_id = registration.world._objects[oid]['asset_id']
+            asset = registration.world.assets[asset_id]
+            geometry_id = digest(physics_geometry_state(expected))
+            if asset.get('native_physics_geometry_sha256') != geometry_id:
+                raise SceneInvalid('Native physical geometry differs from the registered asset')
+            self.asset_bindings[oid] = geometry_id
             entity = sapien.Entity()
             entity.name = oid
             recipe = recipe_for_actor(registration.source.primary.construction_recipes, binding.actor)
@@ -194,7 +208,11 @@ class NativeBodyMirror:
         for oid, actor in self.actors.items():
             actual = body_state(actor.body)
             compare_native_state(self.expected[oid], actual, oid)
-            rows[oid] = dict(shape_count=len(actual['shapes']), body_kind=actual['kind'],
+            geometry_id = digest(physics_geometry_state(actual))
+            if geometry_id != self.asset_bindings[oid]:
+                raise SceneInvalid('Private native physical geometry asset identity changed')
+            rows[oid] = dict(native_physics_geometry_sha256=geometry_id,
+                shape_count=len(actual['shapes']), body_kind=actual['kind'],
                 shape_kinds=[shape['kind'] for shape in actual['shapes']],
                 mass=actual.get('mass'), inertia=actual.get('inertia'),
                 expected_native_digest=digest(self.expected[oid]), actual_native_digest=digest(actual))
@@ -207,3 +225,4 @@ class NativeBodyMirror:
             self.robot_port._scene.remove_entity(actor.entity)
         self.actors.clear()
         self.expected.clear()
+        self.asset_bindings.clear()

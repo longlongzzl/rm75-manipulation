@@ -86,8 +86,17 @@ class SubprocessReplayWorld:
                 os.killpg(self.process.pid,signal.SIGKILL);self.process.wait(timeout=2)
 
 
+def require_physical_replay_assets(assets):
+    for asset in assets.values():
+        if asset.get('collision_role') == 'planning_proxy':
+            raise ValueError('Native physical geometry replay adapter required; planning proxies are not physical models')
+        if asset.get('collision_role') not in (None, 'physical'):
+            raise ValueError('Unknown physical replay asset role')
+
+
 def physical_replay(request):
     """Native adapter. Imported/stepped only in the network-isolated subprocess."""
+    require_physical_replay_assets(request['initial_snapshot']['assets'])
     import hashlib
     import sapien
     from mani_skill.utils.structs.types import SimConfig

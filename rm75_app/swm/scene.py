@@ -75,6 +75,17 @@ class SyncPolicy:
             positive(value, key)
 
 
+def _asset_file_roles(asset):
+    role = asset.get('collision_role')
+    if role not in (None, 'physical', 'planning_proxy'):
+        raise ValueError('Unknown collision asset role')
+    roles = ['mesh', 'collision']
+    for name in ('native_physics_geometry', 'native_physics_baseline'):
+        if role == 'planning_proxy' or name + '_path' in asset or name + '_sha256' in asset:
+            roles.append(name)
+    return tuple(roles)
+
+
 class SceneWorldModel:
     """A single authoritative measured scene, not a second simulator.
 
@@ -97,10 +108,11 @@ class SceneWorldModel:
                 raise ValueError('Model metric scale must be validated before scene registration')
             if asset.get('source') not in ('sam3d', 'legacy', 'cad'):
                 raise ValueError('Mesh source provenance is required')
-            for key in ('mesh_path', 'mesh_sha256', 'collision_path', 'collision_sha256', 'scale_evidence'):
+            file_roles = _asset_file_roles(asset)
+            for key in tuple(role + suffix for role in file_roles for suffix in ('_path', '_sha256')) + ('scale_evidence',):
                 if not isinstance(asset.get(key), str) or not asset[key]:
                     raise ValueError(f'Missing asset {key}')
-            for key in ('mesh_sha256', 'collision_sha256'):
+            for key in tuple(role + '_sha256' for role in file_roles):
                 if len(asset[key]) != 64 or any(c not in '0123456789abcdef' for c in asset[key]):
                     raise ValueError('Expected full asset SHA256')
             if 'volume_m3' in asset: positive(asset['volume_m3'], 'volume_m3')
@@ -141,7 +153,7 @@ class SceneWorldModel:
 
     def check_assets(self):
         for asset in self.assets.values():
-            for name in ('mesh', 'collision'):
+            for name in _asset_file_roles(asset):
                 path = Path(asset[name+'_path']).expanduser()
                 if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != asset[name+'_sha256']:
                     raise SceneInvalid(f'{name} asset missing or changed')
