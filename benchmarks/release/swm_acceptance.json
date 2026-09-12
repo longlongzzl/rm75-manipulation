@@ -3536,7 +3536,49 @@
       "expected_collision_mask": 2147483648,
       "changed_collision_mask": 2147483649,
       "comparison_incorrectly_accepted": true,
-      "note": "Comparator currently applies relative floating tolerance to integer masks; exact integer/boolean identity and a regression negative are required before adapter availability."
+      "note": "Comparator currently applies relative floating tolerance to integer masks; exact integer/boolean identity and a regression negative are required before adapter availability.",
+      "resolved_by": "231695e: exact integer/boolean type and value comparison; regression includes 2147483648 vs 2147483649, int vs float, bool vs int"
+    },
+    "native_body_mirror_03": {
+      "tested_commit": "231695e",
+      "domain": "actual_primary_and_private_CPU_PhysX",
+      "exit_code": 1,
+      "status": "NATIVE_ATTACHMENT_ORDER_REJECTED",
+      "error": "RuntimeError: failed to set shape local pose: this function should only be used befor the shape is attached to a rigid-body-type component",
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_body_mirror_driver_03/run.py",
+      "sha256": {
+        "driver.py": "d3d63738bde666130bfacd6d48acda92591fe2e3a463c82df00c822a5d786541",
+        "result.json": "c1fc2c25ccd133a9afbb232be123f2ee0c1d634378245c2fb0512d0490f96644",
+        "input.json": "3c62b3a81f68e1cbff4b1f2812a48781072e19466c1e050a65dfd92cd3dc362a",
+        "bootstrap_result.json": "bb5f64573e6a49d3eb260b5702536ab2d169c2325195492d01cd836299f8921d",
+        "stdout.log": "e84cfd975631cdb21a7f69112176e5c7627d76a9f183f3a186d2c8e2951b80ba"
+      },
+      "original_builder_capture_enabled": true,
+      "full_mirror_qualified": false,
+      "atomic_worker_qualified": false,
+      "hardware_connected": false,
+      "next_action": "Transform original collision-record poses before build_physx_component attaches the shapes; remove post-attachment local_pose writes, retain complete native readback."
+    },
+    "original_construction_targeted": {
+      "tested_commit": "231695e",
+      "domain": "software_fixture",
+      "passed": 25,
+      "failed": 0,
+      "seconds": 0.08,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/test_native_construction_capture.py tests/swm/test_native_body_mirror_contract.py tests/swm/test_native_bootstrap_lifetime.py -q"
+    },
+    "original_construction_full": {
+      "tested_commit": "231695e",
+      "domain": "software_regression",
+      "passed": 1588,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 42.29,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "log": "runtime_data/swm_release_original_construction_full.log",
+      "log_sha256": "673d0a12d0e92ccaa4b0a0a7c178f10e3bc11dbb1ff0c82cd3bfc5b3c2abe425"
     }
   },
   "gates": {
@@ -3589,7 +3631,8 @@
         "runs.primary_capture_native_03: two fresh twelve-object native batches, not skill checkpoints",
         "runs.metric_registration_native_01: metric files and two fresh preparations agree with original proxies and GPU; no complete mirror transaction",
         "runs.native_body_mirror_01: native convex geometry changed; rejected",
-        "runs.native_body_mirror_02: actual shrink confirmed, no relaxed collision check"
+        "runs.native_body_mirror_02: actual shrink confirmed, no relaxed collision check",
+        "runs.native_body_mirror_03: original builder capture wired but native post-attachment pose write rejected"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -3772,17 +3815,18 @@
         "runs.measured_gripper_full",
         "runs.native_robot_mirror_full",
         "runs.primary_capture_full",
-        "runs.metric_registration_full"
+        "runs.metric_registration_full",
+        "runs.original_construction_full"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
     }
   },
   "current_layer_status": {
-    "kernel": "BODY_TARGETED_6_PASSED_KNOWN_INTEGER_MASK_DEFECT_FULL_NOT_RERUN",
-    "native_wiring": "NATIVE_BODY_MIRROR_STAGED_BUT_RECOOKED_CONVEX_GEOMETRY_REJECTED",
+    "kernel": "SOFTWARE_REGRESSION_PASSED_1588",
+    "native_wiring": "ORIGINAL_CONSTRUCTION_CAPTURE_WIRED_LOCAL_POSE_APPLICATION_ORDER_FAILED",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "TWO_PRIVATE_BODY_MIRROR_ATTEMPTS_EXIT_1_NO_ATOMIC_EXECUTION",
+    "actual_simulation": "ORIGINAL_FILE_BASED_MIRROR_ATTEMPT_EXIT_1_NO_ATOMIC_EXECUTION",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
   "native_bootstrap": {
@@ -3795,7 +3839,7 @@
     "tool": "tools/validate_swm_native_bootstrap.py",
     "successful_environment": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
     "failed_environment": "/home/zhangzhao/anaconda3/bin/python (exit 139)",
-    "remaining": "Capture original ActorBuilder collision records during trusted initialization, reuse original file-based native shape construction instead of recooking cooked vertices, fix exact integer mask comparison, then complete actor/attachment mirror and formal pen worker",
+    "remaining": "Apply registered object-frame transforms to original collision records before native shape attachment, rerun complete body mirror, then attachment/robot collision-policy readback and trusted pen worker six checkpoints",
     "same_process_planner_environment": {
       "python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
       "append_site_packages": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",
