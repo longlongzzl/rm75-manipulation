@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "279576f",
+    "commit": "e01d444",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Ordinary worker_26 persists native acknowledgement for 20 link bodies and 13 drives. Existing elementwise comparison passes, raw expected/actual hashes differ; not byte identity. Worker still rejects forbidden closure contact. Full dynamics stepping and complete pen grasp/place remain unqualified."
+    "note": "Ordinary worker_27 records distinct native drive targets and timing in three fresh snapshots; initial native targets are all zero and are not measured q. Private target/timestep readback checks execute, but supplementary nonzero native transfer worker_28 fails on a diagnostic URDF path. Controller-state replay and complete pen loop remain unqualified."
   },
   "runs": {
     "m0_targeted": {
@@ -13034,6 +13034,257 @@
       "tested_commit": "279576f",
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "output": "benchmarks/release/evidence/pen_closure/link_body_full_pytest.txt"
+    },
+    "native_pen_worker_27": {
+      "domain": "actual_native_worker",
+      "source_commit": "e01d444",
+      "run_dir": "runtime_data/swm_release_pen_worker_27",
+      "result": {
+        "command_success": false,
+        "error": "SceneInvalid: Native closure detected forbidden contact",
+        "finished_at": 1789254777.7961378,
+        "mode": "sim",
+        "status": "failed",
+        "task": "pickplace",
+        "task_success": null
+      },
+      "hashes": [
+        {
+          "sha256": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+          "path": "runtime_data/swm_release_pen_worker_27/profile.json"
+        },
+        {
+          "sha256": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+          "path": "runtime_data/swm_release_pen_worker_27/request.json"
+        },
+        {
+          "sha256": "8ffbfd991ff0dc57ebed827fcf4f1e3742a1a0d651d72ab6a55b5ab2babbec67",
+          "path": "runtime_data/swm_release_pen_worker_27/events.jsonl"
+        },
+        {
+          "sha256": "b4ab01939cd3e313723d38e970f35d7941126b9bf38a89191b9fd05fbdba8b77",
+          "path": "runtime_data/swm_release_pen_worker_27/result.json"
+        }
+      ],
+      "ordinary_worker": true,
+      "skill_verified": false,
+      "hardware_connected": false,
+      "checkpoints": [
+        {
+          "boundary": "worker_initialization_probe",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 1,
+          "sequence": 6,
+          "snapshot_id": "92d9fc637f28421198629bd8c0c69d90bce963633035d4b7b2f81fe531fbbbf6",
+          "time": 1789254770.0775726
+        },
+        {
+          "boundary": "before_grasp",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 2,
+          "sequence": 9,
+          "snapshot_id": "18de6b0405b79bf5b6ae19c55a69d3cb2df37aa5226264fbb8c0a41a69505db8",
+          "time": 1789254771.383694
+        },
+        {
+          "boundary": "pre_execute_grasp",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 3,
+          "sequence": 10,
+          "snapshot_id": "de4823925f65f118f0787bd842285356615cf99566450ed6557012986877978b",
+          "time": 1789254777.0739026
+        }
+      ],
+      "cleanup": [
+        {
+          "kind": "swm_native_resources_released",
+          "planner_pointer_released": true,
+          "primary_closed": true,
+          "robot_mirror_closed": true,
+          "sequence": 22,
+          "time": 1789254777.793561
+        }
+      ],
+      "drive_checkpoints": "benchmarks/release/evidence/pen_closure/worker_27_drive_checkpoints.json"
+    },
+    "native_pen_worker_28": {
+      "domain": "actual_native_worker",
+      "source_commit": "e01d444",
+      "run_dir": "runtime_data/swm_release_pen_worker_28",
+      "result": {
+        "command_success": false,
+        "error": "FileNotFoundError: [Errno 2] No such file or directory: '/home/zhangzhao/Desktop/rm75-manipulation/assets/robots'",
+        "finished_at": 1789254918.4759288,
+        "mode": "sim",
+        "status": "failed",
+        "task": "pickplace",
+        "task_success": null
+      },
+      "hashes": [
+        {
+          "sha256": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+          "path": "runtime_data/swm_release_pen_worker_28/profile.json"
+        },
+        {
+          "sha256": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+          "path": "runtime_data/swm_release_pen_worker_28/request.json"
+        },
+        {
+          "sha256": "13ea2345e9900a75cb336da54f6969e653c9e46b4570117e43378472bc02b6ed",
+          "path": "runtime_data/swm_release_pen_worker_28/events.jsonl"
+        },
+        {
+          "sha256": "2a8d8c111363ef50aece875e6ad50f42ddcbe6d3f58929ab12f2c3216118e0c5",
+          "path": "runtime_data/swm_release_pen_worker_28/result.json"
+        }
+      ],
+      "ordinary_worker": false,
+      "skill_verified": false,
+      "hardware_connected": false,
+      "checkpoints": [
+        {
+          "boundary": "worker_initialization_probe",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 1,
+          "sequence": 6,
+          "snapshot_id": "df61ddd8a90a8831026b60541fb408250569a5ec95e6c600fec946feaa5e8290",
+          "time": 1789254910.9315128
+        },
+        {
+          "boundary": "before_grasp",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 2,
+          "sequence": 9,
+          "snapshot_id": "b34ab49df6726fccc6adf9652c22a9d2dd3533419de21dc18588544220aad539",
+          "time": 1789254912.2916315
+        },
+        {
+          "boundary": "pre_execute_grasp",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 3,
+          "sequence": 10,
+          "snapshot_id": "793dbf1c82f689da11e4335c0808e69cb43eb41de5478a5b1fe9c92e04d19f91",
+          "time": 1789254918.0030067
+        }
+      ],
+      "cleanup": [
+        {
+          "kind": "swm_native_resources_released",
+          "planner_pointer_released": true,
+          "primary_closed": true,
+          "robot_mirror_closed": true,
+          "sequence": 14,
+          "time": 1789254918.4724803
+        }
+      ],
+      "driver_archive": "benchmarks/release/evidence/pen_closure/worker_28.py.txt"
+    },
+    "native_drive_state_targeted": {
+      "passed": 22,
+      "failed": 0,
+      "seconds": 0.11,
+      "domain": "software_fixture",
+      "tested_commit": "e01d444"
+    },
+    "native_drive_state_full": {
+      "passed": 1757,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 49.01,
+      "domain": "software_regression",
+      "tested_commit": "e01d444",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "output": "benchmarks/release/evidence/pen_closure/drive_state_full_pytest.txt"
     }
   },
   "gates": {

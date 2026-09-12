@@ -1,0 +1,29 @@
+"""No-step private native target transfer after an actual idle approach."""
+import json,sys
+from pathlib import Path
+from contextlib import ExitStack
+ROOT=Path('/home/zhangzhao/Desktop/rm75-manipulation')
+sys.path.insert(0,str(ROOT))
+from rm75_app.swm.native_execution import NativePrimaryExecutor
+from rm75_app.swm.native_robot import observe_primary_robot
+from rm75_app.swm.native_robot_mirror import SapienRobotStatePort
+original=NativePrimaryExecutor.execute_trajectory
+captured=False
+def execute(self,stage,trajectory):
+    global captured
+    result=original(self,stage,trajectory)
+    if stage=='approach' and not captured:
+        captured=True
+        observation=observe_primary_robot(self.primary)
+        with ExitStack() as resources:
+            mirror=SapienRobotStatePort(ROOT/'assets/robots/RM75-B.urdf',resources=resources)
+            mirror.synchronize_primary_physics(self.primary)
+            acknowledgement=mirror.apply_idle_state(observation)
+        (ROOT/'runtime_data/swm_release_pen_worker_28/idle_target_transfer.json').write_text(json.dumps(dict(
+            domain='actual_CPU_PhysX_no_step_private_transfer',observation=observation,
+            acknowledgement=acknowledgement,private_closed=mirror.closed,
+            dynamics_stepped=False,primary_setters=False,skill_qualified=False),indent=2))
+    return result
+NativePrimaryExecutor.execute_trajectory=execute
+from rm75_app.workcell.worker import main
+raise SystemExit(main())

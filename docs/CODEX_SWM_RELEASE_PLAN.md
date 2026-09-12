@@ -557,3 +557,25 @@ worker_26 恢复原完整初始化、场景同步、规划审核和 approach/gra
 - 硬件：未授权、未连接、未操作；全部测试与仿真网络隔离，重任务串行。
 
 下一步补齐私有闭链对照所需的控制器/驱动目标及时间步状态，在独立假设世界验证原闭合并用于候选审核，而不是继续在主环境上猜参数。原碰撞和成功门槛、缺适配器检查、未完成技能不可用均保留。保持 PARTIAL_DELIVERY；代码和证据仅本地提交，未推送。
+
+## M1 / 同检查点原生驱动目标与时间步接线
+
+提交 `e01d444`。observe_primary_robot 从可信包装器对应的真实 native 关节读取 position/velocity drive targets，单独标为 native_joint_drive_targets_readback，不从 q/qdot、夹爪布尔值或 Python 命令缓存推算。读取主 PhysX timestep、实际 simulation/control frequency，验证有限正值、步频关系和整控制周期。机器人观测末尾以及完整物体采集末尾再次核对驱动状态未变；变化拒绝本批，不复用旧采集。
+
+新增 native_drive_state 保留在原 SceneWorldModel robot 字段与检查点中。SapienRobotStatePort 在完整 idle q/qdot 校验后，将它应用到独立私有 articulation 的 13 个 drive target 和私有 PhysxCpuSystem timestep，并逐项 native 读回。缺字段、非有限目标、错误身份/时间关系、native setter 未生效均拒绝。没有在主环境设置目标，没有推进私有物理时间。控制器内部状态、未来动作时间线与整体动力学重放未因此完成，qualification 仍为 false。
+
+定向 **22 passed / 0.11 s**；全量 **1757 passed / 1 existing trimesh warning / 49.01 s**。
+
+普通 worker_27 实际完成原初始化、三个不同采集：worker_initialization_probe / before_grasp / pre_execute_grasp，primary_sequence 分别 **2/3/4**。检查点中的 native targets 确实全部为零，而实测 arm q 包含约 1.5729、-1.5627 等非零值，证明没有用实测 q 填充命令目标。实际物理步长 **0.009999999776 s**、simulation/control frequency **100/20 Hz**。这些都在首次真实动作之前，不能据此证明非零目标转移或动作时间线已经验收。归档每份快照身份、时间、q 与目标字段。
+
+普通 worker_27 后续仍在原闭合触桌保护处退出 1，无 lift/place，技能仍为 2/6 检查点；主环境、镜像和 planner 释放读回均为 true。私有目标同步与读回检查已在该路径运行，但其动态 acknowledgement 尚未逐检查点单独持久化，不能把静态物理确认事件当作动态目标确认文件。
+
+补充 worker_28 在实际 approach 到位后尝试创建独立不步进镜像，以验证非零目标转移。但诊断脚本错误使用不存在的 assets/robots/RM75-B.urdf 路径，抛出 FileNotFoundError，未取得 idle_target_transfer.json。该实验未完成，不能算通过；错误只在诊断驱动，不影响普通 worker_27 的运行范围。下一步应复用正式镜像已解析的 URDF 路径，而不是继续猜路径，并补齐非零 native 目标读回证据。
+
+- 内核：上述全量通过。
+- 原生接线：native 目标与时间步进入新采集和私有同步；非零目标补充实验、控制器状态和完整动力学重放未通过。
+- 模型推理：未运行。
+- 实际仿真：27 为普通 worker，28 为未完成的不步进私有转移诊断；均非同动作参数辨识，完整笔闭环未通过。
+- 硬件：未授权、未连接、未操作；测试和仿真均网络隔离、重任务串行。
+
+先修复补充实验入口、确认非零目标与私有时间状态，再推进独立假设世界的闭合审核和原候选选择；保持原碰撞/成功标准及缺适配器检查。保持 PARTIAL_DELIVERY，代码与证据仅本地提交，未推送。

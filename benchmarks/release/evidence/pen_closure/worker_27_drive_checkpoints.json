@@ -1,0 +1,200 @@
+[
+  {
+    "snapshot_id": "92d9fc637f28421198629bd8c0c69d90bce963633035d4b7b2f81fe531fbbbf6",
+    "checkpoint": "worker_initialization_probe",
+    "sequence": 2,
+    "captured_at": 33110.932709538,
+    "measured_positions": [
+      1.572896122932434,
+      0.00905626080930233,
+      0.006035430356860161,
+      -1.562686562538147,
+      -0.0004508150741457939,
+      -1.5619994401931763,
+      1.0576796531677246
+    ],
+    "native_drive_state": {
+      "control_frequency_hz": 20,
+      "joint_names": [
+        "joint_1",
+        "joint_2",
+        "joint_3",
+        "joint_4",
+        "joint_5",
+        "joint_6",
+        "joint_7",
+        "gripper_Left_1_Joint",
+        "gripper_Left_2_Joint",
+        "gripper_Left_Support_Joint",
+        "gripper_Right_1_Joint",
+        "gripper_Right_2_Joint",
+        "gripper_Right_Support_Joint"
+      ],
+      "physics_timestep_s": 0.009999999776482582,
+      "position_targets": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "simulation_frequency_hz": 100,
+      "source": "native_joint_drive_targets_readback",
+      "velocity_targets": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  {
+    "snapshot_id": "18de6b0405b79bf5b6ae19c55a69d3cb2df37aa5226264fbb8c0a41a69505db8",
+    "checkpoint": "before_grasp",
+    "sequence": 3,
+    "captured_at": 33112.239100811,
+    "measured_positions": [
+      1.572896122932434,
+      0.00905626080930233,
+      0.006035430356860161,
+      -1.562686562538147,
+      -0.0004508150741457939,
+      -1.5619994401931763,
+      1.0576796531677246
+    ],
+    "native_drive_state": {
+      "control_frequency_hz": 20,
+      "joint_names": [
+        "joint_1",
+        "joint_2",
+        "joint_3",
+        "joint_4",
+        "joint_5",
+        "joint_6",
+        "joint_7",
+        "gripper_Left_1_Joint",
+        "gripper_Left_2_Joint",
+        "gripper_Left_Support_Joint",
+        "gripper_Right_1_Joint",
+        "gripper_Right_2_Joint",
+        "gripper_Right_Support_Joint"
+      ],
+      "physics_timestep_s": 0.009999999776482582,
+      "position_targets": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "simulation_frequency_hz": 100,
+      "source": "native_joint_drive_targets_readback",
+      "velocity_targets": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  {
+    "snapshot_id": "de4823925f65f118f0787bd842285356615cf99566450ed6557012986877978b",
+    "checkpoint": "pre_execute_grasp",
+    "sequence": 4,
+    "captured_at": 33117.924235106,
+    "measured_positions": [
+      1.572896122932434,
+      0.00905626080930233,
+      0.006035430356860161,
+      -1.562686562538147,
+      -0.0004508150741457939,
+      -1.5619994401931763,
+      1.0576796531677246
+    ],
+    "native_drive_state": {
+      "control_frequency_hz": 20,
+      "joint_names": [
+        "joint_1",
+        "joint_2",
+        "joint_3",
+        "joint_4",
+        "joint_5",
+        "joint_6",
+        "joint_7",
+        "gripper_Left_1_Joint",
+        "gripper_Left_2_Joint",
+        "gripper_Left_Support_Joint",
+        "gripper_Right_1_Joint",
+        "gripper_Right_2_Joint",
+        "gripper_Right_Support_Joint"
+      ],
+      "physics_timestep_s": 0.009999999776482582,
+      "position_targets": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "simulation_frequency_hz": 100,
+      "source": "native_joint_drive_targets_readback",
+      "velocity_targets": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  }
+]
