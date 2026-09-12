@@ -23,6 +23,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--profile', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--probe-planner', action='store_true',
+        help='Initialize the existing shared cuRobo2 backend in the SAME process; never plan or execute')
     options = parser.parse_args()
     # Enforce the SAME network guard again before native imports. A generic
     # Seccomp=2 flag alone does not prove non-Unix sockets are denied.
@@ -51,11 +53,13 @@ def main():
     manifest = dict(schema='rm75.swm_native_bootstrap_input_v1', specification=spec,
         input_sha256=contract['sha256'], input_path=str(fixed), object_ids=list(contract['names']),
         profile_sha256=hashlib.sha256(options.profile.read_bytes()).hexdigest(),
+        probe_planner=options.probe_planner, actual_python=sys.executable,
         effective_profile=profile, hardware_connected=False, atomic_worker_qualified=False)
     (output / 'input.json').write_text(json.dumps(manifest, indent=2) + '\n')
     events, stop = EventLog(output), StopToken(output / 'STOP')
     report = dict(status='failed', hardware_connected=False, atomic_worker_qualified=False,
-                  planner_executed=False, motion_executed=False, captures=[])
+                  planner_executed=False, motion_executed=False, captures=[], planner_initialized=False)
+    world = None
     try:
         with ExitStack() as resources:
             resources.enter_context(source_adapter(root))
@@ -73,12 +77,26 @@ def main():
                 artifact_directory=output / "initialization_artifacts")
             for _ in range(2):
                 report['captures'].append(world.read_state())
-            report['status'] = 'initialized_and_read'
+            if options.probe_planner:
+                from rm75_app.planning.backends.curobo2 import Curobo2Backend, Curobo2BackendConfig
+                from rm75_app.planning.contracts import PlanningScene
+                backend = resources.enter_context(Curobo2Backend(Curobo2BackendConfig()))
+                # Initialization readiness only: an empty initialization scene
+                # is NEVER an audited task scene or permission to execute.
+                backend.update_scene(PlanningScene())
+                planner = backend._ensure_planner()
+                report['planner_initialized'] = True
+                report['planner_joint_names'] = list(planner.joint_names)
+                report['planner_scene_qualified'] = False
+                events.emit('swm_shared_planner_initialized', hardware_connected=False,
+                            task_scene_qualified=False)
+            report['status'] = 'initialized_and_read' 
         report['primary_closed'] = world.closed
     except BaseException as exc:
         report['error'] = f'{type(exc).__name__}: {exc}'
         (output / 'traceback.txt').write_text(traceback.format_exc())
     finally:
+        report['primary_closed'] = None if world is None else world.closed
         (output / 'result.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report), flush=True)
     return 0 if report['status'] == 'initialized_and_read' else 1
