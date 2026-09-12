@@ -111,7 +111,8 @@ class CuroboScenePort:
             raise SceneInvalid("Cannot update a moving native scene")
         self.native_acknowledgement = None
         native = snapshot.get('observation_domain') != 'fixture'
-        if native and snapshot['robot']['holding'] != 'empty':
+        if native and snapshot['robot']['holding'] != 'empty' and not all(callable(getattr(
+                self.backend, name, None)) for name in ('read_attachment_collision_state', 'read_attachment_world_spheres')):
             raise SceneInvalid('Native attached geometry readback is not installed')
         if native:
             from .native_robot_mirror import ARM_JOINTS, GRIPPER_JOINTS, measured_joint_vectors
@@ -125,26 +126,36 @@ class CuroboScenePort:
         # Require the real planner to exist before acknowledging this transaction.
         self.backend._ensure_planner()
         robot = snapshot['robot']
-        if native:
-            from .native_planning_scene import read_curobo_collision_ack
-            from .native_robot import synchronize_robot_geometry
-            collision_ack = read_curobo_collision_ack(self.backend, scene)
-            robot_ack = synchronize_robot_geometry(self.backend, robot)
-            self.native_acknowledgement = dict(
-                snapshot_id=snapshot['snapshot_id'], collision=collision_ack,
-                robot=robot_ack, attachment_qualified=False)
-        elif 'gripper_positions' in robot:
+        if not native and 'gripper_positions' in robot:
             self.backend.set_measured_gripper_collision_state(robot['gripper_positions'])
         holding = robot['holding']
         if holding != 'empty':
             q = JointConfiguration(tuple(robot['joint_names']), robot['positions'])
             if 'gripper_positions' not in robot:
                 self.backend.set_gripper_collision_state(True)  # Explicit fixture compatibility only.
-            self.backend.attach_object(holding, q)
-            self.holding = holding
-            relative = np.linalg.inv(transform(robot['T_world_tcp'])) @ transform(
-                snapshot['objects'][holding]['measured']['T_world_object'])
-            self.backend.update_attached_object_pose(holding, q, relative)
+            previous_capture = getattr(self.backend, '_swm_capture_attachment_reference', False)
+            if native:
+                self.backend._swm_capture_attachment_reference = True
+            try:
+                self.backend.attach_object(holding, q)
+                self.holding = holding
+                relative = np.linalg.inv(transform(robot['T_world_tcp'])) @ transform(
+                    snapshot['objects'][holding]['measured']['T_world_object'])
+                self.backend.update_attached_object_pose(holding, q, relative)
+            finally:
+                if native:
+                    self.backend._swm_capture_attachment_reference = previous_capture
+        if native:
+            from .native_planning_scene import read_curobo_collision_ack
+            from .native_robot import synchronize_robot_geometry
+            from .native_attachment import read_curobo_attachment_ack
+            robot_ack = synchronize_robot_geometry(self.backend, robot)
+            collision_ack = read_curobo_collision_ack(self.backend, scene,
+                held_object=None if holding == 'empty' else holding)
+            attachment_ack = read_curobo_attachment_ack(self.backend, snapshot)
+            self.native_acknowledgement = dict(snapshot_id=snapshot['snapshot_id'],
+                collision=collision_ack, robot=robot_ack, attachment=attachment_ack,
+                attachment_qualified=attachment_ack['attachment_geometry_qualified'])
         if self.backend._scene.revision != snapshot['snapshot_id']:
             raise SceneInvalid("cuRobo did not retain the complete checkpoint scene")
         self.physics = copy.deepcopy(snapshot['physics'])

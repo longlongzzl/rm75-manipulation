@@ -117,7 +117,7 @@ def compile_primary_collision_scene(primary):
     return PlanningScene(tuple(objects), revision=revision), evidence
 
 
-def read_curobo_collision_ack(backend, scene):
+def read_curobo_collision_ack(backend, scene, *, held_object=None):
     """Read actual GPU storage, including disabled/misplaced obstacle negatives."""
     from scipy.spatial.transform import Rotation
 
@@ -126,6 +126,8 @@ def read_curobo_collision_ack(backend, scene):
     if not isinstance(expected, dict) or set(expected) - {'cuboid'}:
         raise SceneInvalid('Native mesh/multi-environment readback is not installed')
     expected = expected.get('cuboid', {})
+    if held_object is not None and held_object not in expected:
+        raise SceneInvalid('Held object is absent from the complete planning scene')
     names = checker.get_obstacle_names()
     if len(names) != len(set(names)) or set(names) != set(expected):
         raise SceneInvalid('Native GPU scene identity/count differs from complete scene')
@@ -152,10 +154,10 @@ def read_curobo_collision_ack(backend, scene):
         reference = expected[name]
         actual_pose = np.linalg.inv(matrix(inv_poses[index]))
         p, r = pose_error(actual_pose, matrix(reference['pose']))
-        if (enabled[index] != 1 or not np.allclose(dims[index], reference['dims'], atol=1e-6, rtol=0)
+        if (enabled[index] != (0 if name == held_object else 1) or not np.allclose(dims[index], reference['dims'], atol=1e-6, rtol=0)
                 or p > 1e-5 or r > 1e-3):
             raise SceneInvalid(f'Native GPU geometry/enable readback differs for {name}')
-        rows.append(dict(name=name, enabled=True, dimensions=dims[index].tolist(),
+        rows.append(dict(name=name, enabled=bool(enabled[index]), dimensions=dims[index].tolist(),
                          T_base_proxy=actual_pose.tolist()))
     return dict(scene_revision=scene.revision, source='native_GPU_collision_tensors',
                 coordinate_frame='base_link', count=count, obstacles=rows,

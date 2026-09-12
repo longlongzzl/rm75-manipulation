@@ -747,6 +747,24 @@ class Curobo2Backend:
         return dict(source='native_GPU_attachment_link_spheres', owners=rows,
             consumers_consistent=consistent, attachment_geometry_qualified=False)
 
+    def read_attachment_world_spheres(self, current):
+        """Read the GPU FK payload output at the supplied measured joints."""
+        planner = self._ensure_planner()
+        modules = self._import_modules()
+        position = modules['torch'].as_tensor(current.positions,
+            dtype=planner.device_cfg.dtype, device=planner.device_cfg.device).unsqueeze(0)
+        state = modules['JointState'].from_position(position, joint_names=list(current.names))
+        result = planner.compute_kinematics(state)
+        spheres = result.robot_spheres.detach().cpu().numpy()
+        params = planner.kinematics.config.kinematics_config
+        indices = params.get_sphere_index_from_link_name('attached_object').detach().cpu().numpy()
+        if spheres.shape[-1] != 4:
+            raise RuntimeError('Native FK sphere shape is invalid')
+        spheres = spheres.reshape(-1, spheres.shape[-2], 4)
+        if spheres.shape[0] != 1:
+            raise RuntimeError('Measured attachment FK requires one robot state')
+        return spheres[:, indices, :].copy()
+
     @staticmethod
     def _batch_values(value: Any, count: int, default: float | None = None) -> list[Any]:
         if value is None:
@@ -3362,6 +3380,7 @@ class Curobo2Backend:
         return object_world_pose.multiply(local_center_pose)
 
     def _attach_at_world_pose(self, object_name: str, state: Any, object_world_pose: Any) -> None:
+        self._swm_attachment_reference = None
         planner = self._ensure_planner()
         modules = self._import_modules()
         scene_model = planner.scene_collision_checker.scene_model
@@ -3453,6 +3472,14 @@ class Curobo2Backend:
                 # cannot concatenate with its [1, 1] radius tensor. Duplicate
                 # the official fitted sphere; the collision union is identical.
                 sphere_tensor = sphere_tensor.repeat(2, 1)
+            if getattr(self, '_swm_capture_attachment_reference', False):
+                if collision_object is None or not collision_object.metadata.get('visual_mesh_path'):
+                    raise RuntimeError('Native attachment requires its registered metric mesh')
+                source_mesh = Path(collision_object.metadata['visual_mesh_path']).resolve(strict=True)
+                self._swm_attachment_reference = dict(object_name=str(object_name),
+                    mesh_path=str(source_mesh), mesh_sha256=hashlib.sha256(source_mesh.read_bytes()).hexdigest(),
+                    scale=list(collision_object.metadata.get('visual_mesh_scale') or [1., 1., 1.]),
+                    object_spheres=sphere_tensor.detach().cpu().numpy().copy())
             object_pose_batch = object_world_pose
             state_batch_size = int(state.position.shape[0])
             if (
@@ -3523,6 +3550,7 @@ class Curobo2Backend:
         self._attach_at_world_pose(object_name, state, object_world_pose)
 
     def detach_object(self, object_name: str, released_pose: Any | None = None) -> None:
+        self._swm_attachment_reference = None
         if self._planner is not None:
             if self._attachment_active:
                 self._attachment_manager().detach(link_name="attached_object")
