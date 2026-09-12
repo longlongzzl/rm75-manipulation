@@ -160,19 +160,19 @@
             -0.00025351185468025506
           ],
           "qdot": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
           ]
         },
         {
@@ -221,19 +221,19 @@
             -0.00025351185468025506
           ],
           "qdot": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
           ]
         }
       ],
@@ -320,19 +320,19 @@
             -0.00025351185468025506
           ],
           "qdot": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
           ]
         },
         {
@@ -381,19 +381,19 @@
             -0.00025351185468025506
           ],
           "qdot": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
           ]
         }
       ],
@@ -541,12 +541,12 @@
       "measured_T_world_base": [
         [
           -1.1920928955078125e-07,
-          -1.0,
+          -1,
           -1.8439244797718857e-08,
           -0.30000004172325134
         ],
         [
-          1.0,
+          1,
           -1.1920928955078125e-07,
           1.8439244797718857e-08,
           -5.820766091346741e-10
@@ -554,14 +554,14 @@
         [
           -1.8439244797718857e-08,
           -1.8439244797718857e-08,
-          1.0,
-          0.0
+          1,
+          0
         ],
         [
-          0.0,
-          0.0,
-          0.0,
-          1.0
+          0,
+          0,
+          0,
+          1
         ]
       ],
       "source": {
@@ -572,12 +572,12 @@
         "T_world_base": [
           [
             -1.1920928955078125e-07,
-            -1.0,
+            -1,
             -1.8439244797718857e-08,
             -0.30000004172325134
           ],
           [
-            1.0,
+            1,
             -1.1920928955078125e-07,
             1.8439244797718857e-08,
             -5.820766091346741e-10
@@ -585,14 +585,14 @@
           [
             -1.8439244797718857e-08,
             -1.8439244797718857e-08,
-            1.0,
-            0.0
+            1,
+            0
           ],
           [
-            0.0,
-            0.0,
-            0.0,
-            1.0
+            0,
+            0,
+            0,
+            1
           ]
         ],
         "object_ids": [
@@ -625,7 +625,7 @@
           "desk": {
             "mesh_sha256": "857cb2acfd5aa5a504723a760bfe293290158e3a524c38ce31148cd37ce79b6e",
             "simulation_sha256": "27f055f1165d1a5b2df8168e0bdfdff7017430153bf85cbbfa5c99c3e4c4620b",
-            "simulation_scale": 1.0
+            "simulation_scale": 1
           },
           "gluestick": {
             "mesh_sha256": "f399210d01a5bf91eb059ea2a20cbff0d112ff1c52fca9fec9c7b8698e1bb19f",
@@ -650,7 +650,7 @@
           "tennis": {
             "mesh_sha256": "10b61d7a44d507694d6e374fd63d03f5d50e7209d72047d4673e5fed37a5a0d2",
             "simulation_sha256": "45fcba2474d2386d8990fcf97fa97f24f7f7e5297f817be4dee0b15f6a7fafb2",
-            "simulation_scale": 1.0
+            "simulation_scale": 1
           }
         },
         "infrastructure": {
@@ -658,28 +658,28 @@
             "source": "native_SAPIEN_table_collision_shape",
             "world_pose": [
               [
-                0.0,
-                -1.0,
-                0.0,
+                0,
+                -1,
+                0,
                 -0.11999999731779099
               ],
               [
-                1.0,
-                0.0,
-                0.0,
-                0.0
+                1,
+                0,
+                0,
+                0
               ],
               [
-                0.0,
-                0.0,
-                1.0,
+                0,
+                0,
+                1,
                 -0.4598214626312256
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ],
             "dimensions": [
@@ -692,28 +692,28 @@
             "source": "original_virtual_wall_policy_and_native_actor_pose",
             "world_pose": [
               [
-                1.0,
-                0.0,
-                0.0,
+                1,
+                0,
+                0,
                 -0.9150000214576721
               ],
               [
-                0.0,
-                1.0,
-                0.0,
-                0.0
+                0,
+                1,
+                0,
+                0
               ],
               [
-                0.0,
-                0.0,
-                1.0,
+                0,
+                0,
+                1,
                 0.4009999930858612
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ],
             "dimensions": [
@@ -726,28 +726,28 @@
             "source": "original_virtual_wall_policy_and_native_actor_pose",
             "world_pose": [
               [
-                1.0,
-                0.0,
-                0.0,
-                0.0
+                1,
+                0,
+                0,
+                0
               ],
               [
-                0.0,
-                1.0,
-                0.0,
-                0.0
+                0,
+                1,
+                0,
+                0
               ],
               [
-                0.0,
-                0.0,
-                1.0,
+                0,
+                0,
+                1,
                 0.8149999976158142
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ],
             "dimensions": [
@@ -793,10 +793,10 @@
                 0.01251158028986179
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -828,10 +828,10 @@
                 0.048961977496712994
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -863,10 +863,10 @@
                 0.018474949831595616
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -898,10 +898,10 @@
                 0.05563574058214461
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -933,10 +933,10 @@
                 0.015999661012681174
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -968,10 +968,10 @@
                 0.03571725992757709
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -986,27 +986,27 @@
             "T_base_proxy": [
               [
                 0.8675998247214618,
-                0.0,
+                0,
                 -0.4972630532658633,
                 0.051585956660317185
               ],
               [
                 -0.4972630532658633,
-                -0.0,
+                -0,
                 -0.867599824721462,
                 -0.24780856785472707
               ],
               [
-                0.0,
-                1.0,
-                0.0,
+                0,
+                1,
+                0,
                 0.015218066982924938
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -1038,10 +1038,10 @@
                 0.026771120653668164
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -1055,28 +1055,28 @@
             ],
             "T_base_proxy": [
               [
-                1.0,
-                0.0,
-                0.0,
+                1,
+                0,
+                0,
                 0.14492912590503693
               ],
               [
-                0.0,
-                1.0,
-                0.0,
+                0,
+                1,
+                0,
                 -0.29760149121284485
               ],
               [
-                0.0,
-                0.0,
-                1.0,
+                0,
+                0,
+                1,
                 0.03692774474620819
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -1108,10 +1108,10 @@
                 -0.45982146595029055
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -1143,10 +1143,10 @@
                 0.4009999746236729
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -1178,10 +1178,10 @@
                 0.8149998728747505
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           }
@@ -1267,25 +1267,25 @@
           1.0576796531677246
         ],
         "velocities": [
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         "units": "rad",
         "idle": true,
         "T_world_base": [
           [
             -1.1920928955078125e-07,
-            -1.0,
+            -1,
             -1.8439244797718857e-08,
             -0.30000004172325134
           ],
           [
-            1.0,
+            1,
             -1.1920928955078125e-07,
             1.8439244797718857e-08,
             -5.820766091346741e-10
@@ -1293,14 +1293,14 @@
           [
             -1.8439244797718857e-08,
             -1.8439244797718857e-08,
-            1.0,
-            0.0
+            1,
+            0
           ],
           [
-            0.0,
-            0.0,
-            0.0,
-            1.0
+            0,
+            0,
+            0,
+            1
           ]
         ],
         "T_world_tcp": [
@@ -1323,10 +1323,10 @@
             0.14821289082953912
           ],
           [
-            0.0,
-            0.0,
-            0.0,
-            1.0
+            0,
+            0,
+            0,
+            1
           ]
         ],
         "tcp_coordinate_frame": "base_link",
@@ -1339,12 +1339,12 @@
           "gripper_Right_Support_Joint": -0.00025351185468025506
         },
         "gripper_velocities": {
-          "gripper_Left_1_Joint": 0.0,
-          "gripper_Left_2_Joint": 0.0,
-          "gripper_Left_Support_Joint": 0.0,
-          "gripper_Right_1_Joint": 0.0,
-          "gripper_Right_2_Joint": 0.0,
-          "gripper_Right_Support_Joint": 0.0
+          "gripper_Left_1_Joint": 0,
+          "gripper_Left_2_Joint": 0,
+          "gripper_Left_Support_Joint": 0,
+          "gripper_Right_1_Joint": 0,
+          "gripper_Right_2_Joint": 0,
+          "gripper_Right_Support_Joint": 0
         },
         "gripper_links_in_base": {
           "gripper_base_link": [
@@ -1367,10 +1367,10 @@
               0.3481454512510135
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "gripper_Left_1_Link": [
@@ -1393,10 +1393,10 @@
               0.2440373703782274
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "gripper_Left_Support_Link": [
@@ -1419,10 +1419,10 @@
               0.20671203208822328
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "gripper_Left_2_Link": [
@@ -1445,10 +1445,10 @@
               0.2271898346623798
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "gripper_Right_1_Link": [
@@ -1471,10 +1471,10 @@
               0.24402376672699394
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "gripper_Right_Support_Link": [
@@ -1497,10 +1497,10 @@
               0.20552156599283541
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "gripper_Right_2_Link": [
@@ -1523,10 +1523,10 @@
               0.22718259328670556
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "left_pad": [
@@ -1549,10 +1549,10 @@
               0.15168523298703626
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "right_pad": [
@@ -1575,10 +1575,10 @@
               0.1511460064779284
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ]
         },
@@ -1591,118 +1591,118 @@
           "contacts": {
             "bi": {
               "left_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "right_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "original_grasp_predicate": false
             },
             "bitong": {
               "left_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "right_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "original_grasp_predicate": false
             },
             "carriot": {
               "left_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "right_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "original_grasp_predicate": false
             },
             "desk": {
               "left_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "right_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "original_grasp_predicate": false
             },
             "gluestick": {
               "left_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "right_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "original_grasp_predicate": false
             },
             "hongshupian": {
               "left_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "right_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "original_grasp_predicate": false
             },
             "lvmukuai": {
               "left_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "right_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "original_grasp_predicate": false
             },
             "shuazi": {
               "left_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "right_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "original_grasp_predicate": false
             },
             "tennis": {
               "left_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "right_force_n": [
-                0.0,
-                0.0,
-                0.0
+                0,
+                0,
+                0
               ],
               "original_grasp_predicate": false
             }
@@ -1714,7 +1714,7 @@
         "source": "native_FK_and_GPU_gripper_geometry_readback",
         "primary_sequence": 4,
         "tcp_position_error_m": 1.560618199565332e-07,
-        "tcp_rotation_error_rad": 0.0,
+        "tcp_rotation_error_rad": 0,
         "gripper_link_errors": {
           "gripper_Left_1_Link": {
             "position_error_m": 2.3862595091758874e-08,
@@ -1923,40 +1923,40 @@
           -0.00025351185468025506
         ],
         "velocities": [
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         "link_errors": {
           "gripper_base_link": {
             "position_error_m": 1.186082701746396e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "gripper_Left_1_Link": {
             "position_error_m": 1.3902132829331365e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "gripper_Left_Support_Link": {
             "position_error_m": 1.3760193746328147e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "gripper_Left_2_Link": {
             "position_error_m": 1.3363026033991112e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "gripper_Right_1_Link": {
             "position_error_m": 1.4358221958564906e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "gripper_Right_Support_Link": {
             "position_error_m": 1.4871136961507652e-07,
@@ -1964,11 +1964,11 @@
           },
           "gripper_Right_2_Link": {
             "position_error_m": 1.5414157831106407e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "left_pad": {
             "position_error_m": 1.3941783320304572e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "right_pad": {
             "position_error_m": 1.443393015661179e-07,
@@ -1976,7 +1976,7 @@
           },
           "gripper_tcp": {
             "position_error_m": 1.3689189605805066e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           }
         },
         "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
@@ -2195,28 +2195,28 @@
           "collision_kind": "cuboid",
           "T_object_collision": [
             [
-              1.0,
-              0.0,
-              0.0,
+              1,
+              0,
+              0,
               4.9831680962270456e-05
             ],
             [
-              0.0,
-              1.0,
-              0.0,
+              0,
+              1,
+              0,
               -7.509363545258498e-05
             ],
             [
-              0.0,
-              0.0,
-              1.0,
+              0,
+              0,
+              1,
               -1.2150220518227443e-05
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "provenance": {
@@ -2235,28 +2235,28 @@
           "collision_kind": "cuboid",
           "T_object_collision": [
             [
-              1.0,
-              0.0,
-              0.0,
+              1,
+              0,
+              0,
               -3.648193192672426e-05
             ],
             [
-              0.0,
-              1.0,
-              0.0,
+              0,
+              1,
+              0,
               1.6807863041794564e-06
             ],
             [
-              0.0,
-              0.0,
-              1.0,
+              0,
+              0,
+              1,
               5.596757109978785e-05
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "provenance": {
@@ -2266,7 +2266,7 @@
             "original_simulation_scale": 0.09494584133019865,
             "original_simulation_sha256": "d41e0b4c671dda71598096c10a645f2c2c97e97312d830dd5bceed872e4cd2d0",
             "proxy_source": "shared_build_automatic_collision_proxy",
-            "proxy_scale": 1.0
+            "proxy_scale": 1
           }
         },
         "carriot": {
@@ -2275,28 +2275,28 @@
           "collision_kind": "cuboid",
           "T_object_collision": [
             [
-              1.0,
-              0.0,
-              0.0,
+              1,
+              0,
+              0,
               0.0002008199065127852
             ],
             [
-              0.0,
-              1.0,
-              0.0,
+              0,
+              1,
+              0,
               0.0003597091262385112
             ],
             [
-              0.0,
-              0.0,
-              1.0,
+              0,
+              0,
+              1,
               1.634273015966916e-06
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "provenance": {
@@ -2306,7 +2306,7 @@
             "original_simulation_scale": 0.9999999999999999,
             "original_simulation_sha256": "c97f909b565f43206e12f3780f27c3d0f7c8f757c43a30fafcf1e2d7541148f0",
             "proxy_source": "shared_build_automatic_collision_proxy",
-            "proxy_scale": 1.0
+            "proxy_scale": 1
           }
         },
         "desk": {
@@ -2315,35 +2315,35 @@
           "collision_kind": "cuboid",
           "T_object_collision": [
             [
-              1.0,
-              0.0,
-              0.0,
+              1,
+              0,
+              0,
               -4.59715995859884e-05
             ],
             [
-              0.0,
-              1.0,
-              0.0,
+              0,
+              1,
+              0,
               -0.0008454566558298322
             ],
             [
-              0.0,
-              0.0,
-              1.0,
+              0,
+              0,
+              1,
               0.00015396451017653403
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "provenance": {
             "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/desk.glb",
             "source_mesh_sha256": "857cb2acfd5aa5a504723a760bfe293290158e3a524c38ce31148cd37ce79b6e",
             "applied_uniform_scale": 0.429799641192331,
-            "original_simulation_scale": 1.0,
+            "original_simulation_scale": 1,
             "original_simulation_sha256": "27f055f1165d1a5b2df8168e0bdfdff7017430153bf85cbbfa5c99c3e4c4620b",
             "proxy_source": "shared_build_automatic_collision_proxy",
             "proxy_scale": 1.1
@@ -2355,28 +2355,28 @@
           "collision_kind": "cuboid",
           "T_object_collision": [
             [
-              1.0,
-              0.0,
-              0.0,
+              1,
+              0,
+              0,
               -1.4126061408641887e-05
             ],
             [
-              0.0,
-              1.0,
-              0.0,
+              0,
+              1,
+              0,
               -9.799314778167821e-06
             ],
             [
-              0.0,
-              0.0,
-              1.0,
+              0,
+              0,
+              1,
               2.8770119383008268e-05
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "provenance": {
@@ -2386,7 +2386,7 @@
             "original_simulation_scale": 1.0000000000000002,
             "original_simulation_sha256": "d13f564601e6b9b1f7c4619bb7d75a6a7013fc7dde05281e8b04ec50078d1bc8",
             "proxy_source": "shared_build_automatic_collision_proxy",
-            "proxy_scale": 1.0
+            "proxy_scale": 1
           }
         },
         "hongshupian": {
@@ -2395,28 +2395,28 @@
           "collision_kind": "cuboid",
           "T_object_collision": [
             [
-              1.0,
-              0.0,
-              0.0,
+              1,
+              0,
+              0,
               -3.835377514650855e-05
             ],
             [
-              0.0,
-              1.0,
-              0.0,
+              0,
+              1,
+              0,
               -5.1251958092211e-05
             ],
             [
-              0.0,
-              0.0,
-              1.0,
+              0,
+              0,
+              1,
               -8.873959730684052e-05
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "provenance": {
@@ -2426,7 +2426,7 @@
             "original_simulation_scale": 0.1498806294816057,
             "original_simulation_sha256": "695f93e28f0a6611410a13de961bb4a0bd3ddaabcf74811d0fbfcfece9dc4754",
             "proxy_source": "shared_build_automatic_collision_proxy",
-            "proxy_scale": 1.0
+            "proxy_scale": 1
           }
         },
         "lvmukuai": {
@@ -2435,28 +2435,28 @@
           "collision_kind": "cuboid",
           "T_object_collision": [
             [
-              1.0,
-              0.0,
-              0.0,
+              1,
+              0,
+              0,
               3.4614021314187355e-07
             ],
             [
-              0.0,
-              1.0,
-              0.0,
+              0,
+              1,
+              0,
               4.569408581134893e-05
             ],
             [
-              0.0,
-              0.0,
-              1.0,
+              0,
+              0,
+              1,
               -8.471043820844145e-06
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "provenance": {
@@ -2466,7 +2466,7 @@
             "original_simulation_scale": 0.06002345345909304,
             "original_simulation_sha256": "d5a86f3123e3ff6e99e8d019431cc2580647d94484607092d1759973e61d7258",
             "proxy_source": "shared_build_automatic_collision_proxy",
-            "proxy_scale": 1.0
+            "proxy_scale": 1
           }
         },
         "shuazi": {
@@ -2475,28 +2475,28 @@
           "collision_kind": "cuboid",
           "T_object_collision": [
             [
-              1.0,
-              0.0,
-              0.0,
+              1,
+              0,
+              0,
               -1.881824123820006e-05
             ],
             [
-              0.0,
-              1.0,
-              0.0,
+              0,
+              1,
+              0,
               -3.294648980694161e-06
             ],
             [
-              0.0,
-              0.0,
-              1.0,
+              0,
+              0,
+              1,
               0.0003454924519300874
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "provenance": {
@@ -2515,38 +2515,38 @@
           "collision_kind": "sphere",
           "T_object_collision": [
             [
-              1.0,
-              0.0,
-              0.0,
+              1,
+              0,
+              0,
               8.140641821982576e-06
             ],
             [
-              0.0,
-              1.0,
-              0.0,
+              0,
+              1,
+              0,
               -4.79738746018681e-06
             ],
             [
-              0.0,
-              0.0,
-              1.0,
+              0,
+              0,
+              1,
               8.897959346682646e-07
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "provenance": {
             "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/tennis.glb",
             "source_mesh_sha256": "10b61d7a44d507694d6e374fd63d03f5d50e7209d72047d4673e5fed37a5a0d2",
             "applied_uniform_scale": 0.07000374486214005,
-            "original_simulation_scale": 1.0,
+            "original_simulation_scale": 1,
             "original_simulation_sha256": "45fcba2474d2386d8990fcf97fa97f24f7f7e5297f817be4dee0b15f6a7fafb2",
             "proxy_source": "shared_build_automatic_collision_proxy",
-            "proxy_scale": 1.0
+            "proxy_scale": 1
           }
         },
         "__maniskill_workspace_table__": {
@@ -2555,28 +2555,28 @@
           "collision_kind": "cuboid",
           "T_object_collision": [
             [
-              1.0,
-              0.0,
-              0.0,
-              0.0
+              1,
+              0,
+              0,
+              0
             ],
             [
-              0.0,
-              1.0,
-              0.0,
-              0.0
+              0,
+              1,
+              0,
+              0
             ],
             [
-              0.0,
-              0.0,
-              1.0,
-              0.0
+              0,
+              0,
+              1,
+              0
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "provenance": {
@@ -2594,28 +2594,28 @@
           "collision_kind": "cuboid",
           "T_object_collision": [
             [
-              1.0,
-              0.0,
-              0.0,
-              0.0
+              1,
+              0,
+              0,
+              0
             ],
             [
-              0.0,
-              1.0,
-              0.0,
-              0.0
+              0,
+              1,
+              0,
+              0
             ],
             [
-              0.0,
-              0.0,
-              1.0,
-              0.0
+              0,
+              0,
+              1,
+              0
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "provenance": {
@@ -2633,28 +2633,28 @@
           "collision_kind": "cuboid",
           "T_object_collision": [
             [
-              1.0,
-              0.0,
-              0.0,
-              0.0
+              1,
+              0,
+              0,
+              0
             ],
             [
-              0.0,
-              1.0,
-              0.0,
-              0.0
+              0,
+              1,
+              0,
+              0
             ],
             [
-              0.0,
-              0.0,
-              1.0,
-              0.0
+              0,
+              0,
+              1,
+              0
             ],
             [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           ],
           "provenance": {
@@ -2679,74 +2679,74 @@
             {
               "name": "bi",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "bitong",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "carriot",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "desk",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "gluestick",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "hongshupian",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "lvmukuai",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "shuazi",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "tennis",
               "kind": "sphere",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "__maniskill_workspace_table__",
               "kind": "cuboid",
               "position_error_m": 5.551115123125785e-17,
-              "rotation_error_rad": 0.0
+              "rotation_error_rad": 0
             },
             {
               "name": "virtual_side_wall",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "virtual_top_wall",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             }
           ]
         },
@@ -2761,74 +2761,74 @@
             {
               "name": "bi",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "bitong",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "carriot",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "desk",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "gluestick",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "hongshupian",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "lvmukuai",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "shuazi",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "tennis",
               "kind": "sphere",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "__maniskill_workspace_table__",
               "kind": "cuboid",
               "position_error_m": 5.551115123125785e-17,
-              "rotation_error_rad": 0.0
+              "rotation_error_rad": 0
             },
             {
               "name": "virtual_side_wall",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             },
             {
               "name": "virtual_top_wall",
               "kind": "cuboid",
-              "position_error_m": 0.0,
-              "rotation_error_rad": 0.0
+              "position_error_m": 0,
+              "rotation_error_rad": 0
             }
           ]
         }
@@ -2867,10 +2867,10 @@
                 0.01251158028986179
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -2902,10 +2902,10 @@
                 0.048961977496712994
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -2937,10 +2937,10 @@
                 0.018474949831595616
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -2972,10 +2972,10 @@
                 0.05563574058214461
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -3007,10 +3007,10 @@
                 0.015999661012681174
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -3042,10 +3042,10 @@
                 0.03571725992757709
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -3060,27 +3060,27 @@
             "T_base_proxy": [
               [
                 0.8675998247214618,
-                0.0,
+                0,
                 -0.4972630532658633,
                 0.051585956660317185
               ],
               [
                 -0.4972630532658633,
-                -0.0,
+                -0,
                 -0.867599824721462,
                 -0.24780856785472707
               ],
               [
-                0.0,
-                1.0,
-                0.0,
+                0,
+                1,
+                0,
                 0.015218066982924938
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -3112,10 +3112,10 @@
                 0.026771120653668164
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -3129,28 +3129,28 @@
             ],
             "T_base_proxy": [
               [
-                1.0,
-                0.0,
-                0.0,
+                1,
+                0,
+                0,
                 0.14492912590503693
               ],
               [
-                0.0,
-                1.0,
-                0.0,
+                0,
+                1,
+                0,
                 -0.29760149121284485
               ],
               [
-                0.0,
-                0.0,
-                1.0,
+                0,
+                0,
+                1,
                 0.03692774474620819
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -3182,10 +3182,10 @@
                 -0.45982146595029055
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -3217,10 +3217,10 @@
                 0.4009999746236729
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           },
@@ -3252,10 +3252,10 @@
                 0.8149998728747505
               ],
               [
-                0.0,
-                0.0,
-                0.0,
-                1.0
+                0,
+                0,
+                0,
+                1
               ]
             ]
           }
@@ -3314,7 +3314,7 @@
             "parameters": {
               "static_friction": 0.15,
               "dynamic_friction": 0.1,
-              "density_kg_m3": 800.0
+              "density_kg_m3": 800
             },
             "loss": 27.91358997284087,
             "weight": 0.05000025642002142
@@ -3324,7 +3324,7 @@
             "parameters": {
               "static_friction": 0.6,
               "dynamic_friction": 0.45,
-              "density_kg_m3": 800.0
+              "density_kg_m3": 800
             },
             "loss": 1.2079304489454972e-08,
             "weight": 0.3453323200836004
@@ -3334,7 +3334,7 @@
             "parameters": {
               "static_friction": 1.1,
               "dynamic_friction": 0.95,
-              "density_kg_m3": 800.0
+              "density_kg_m3": 800
             },
             "loss": 0.6883298063341241,
             "weight": 0.2593351034918316
@@ -3344,7 +3344,7 @@
             "parameters": {
               "static_friction": 0.6,
               "dynamic_friction": 0.45,
-              "density_kg_m3": 1600.0
+              "density_kg_m3": 1600
             },
             "loss": 1.2614659643144396e-08,
             "weight": 0.34533232000454656
@@ -3354,7 +3354,7 @@
         "best_fit_parameters": {
           "static_friction": 0.6,
           "dynamic_friction": 0.45,
-          "density_kg_m3": 800.0
+          "density_kg_m3": 800
         },
         "minimum_loss": 1.2079304489454972e-08,
         "density_informative": false,
@@ -3903,40 +3903,40 @@
           -0.00025351185468025506
         ],
         "velocities": [
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         "link_errors": {
           "gripper_base_link": {
             "position_error_m": 1.186082701746396e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "gripper_Left_1_Link": {
             "position_error_m": 1.3902132829331365e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "gripper_Left_Support_Link": {
             "position_error_m": 1.3760193746328147e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "gripper_Left_2_Link": {
             "position_error_m": 1.3363026033991112e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "gripper_Right_1_Link": {
             "position_error_m": 1.4358221958564906e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "gripper_Right_Support_Link": {
             "position_error_m": 1.4871136961507652e-07,
@@ -3944,11 +3944,11 @@
           },
           "gripper_Right_2_Link": {
             "position_error_m": 1.5414157831106407e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "left_pad": {
             "position_error_m": 1.3941783320304572e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           },
           "right_pad": {
             "position_error_m": 1.443393015661179e-07,
@@ -3956,7 +3956,7 @@
           },
           "gripper_tcp": {
             "position_error_m": 1.3689189605805066e-07,
-            "rotation_error_rad": 0.0
+            "rotation_error_rad": 0
           }
         },
         "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
@@ -3969,12 +3969,12 @@
         {
           "name": "bi",
           "position_error_m": 8.692400533203332e-09,
-          "rotation_error_rad": 0.0
+          "rotation_error_rad": 0
         },
         {
           "name": "bitong",
           "position_error_m": 1.5986998742591955e-09,
-          "rotation_error_rad": 0.0
+          "rotation_error_rad": 0
         },
         {
           "name": "carriot",
@@ -3994,7 +3994,7 @@
         {
           "name": "hongshupian",
           "position_error_m": 6.295941654915861e-09,
-          "rotation_error_rad": 0.0
+          "rotation_error_rad": 0
         },
         {
           "name": "lvmukuai",
@@ -4004,17 +4004,17 @@
         {
           "name": "shuazi",
           "position_error_m": 3.0536883969214426e-09,
-          "rotation_error_rad": 0.0
+          "rotation_error_rad": 0
         },
         {
           "name": "tennis",
           "position_error_m": 1.3207224624386043e-08,
-          "rotation_error_rad": 0.0
+          "rotation_error_rad": 0
         },
         {
           "name": "__maniskill_workspace_table__",
           "position_error_m": 3.4746725102659015e-09,
-          "rotation_error_rad": 0.0
+          "rotation_error_rad": 0
         },
         {
           "name": "virtual_side_wall",
@@ -4099,6 +4099,266 @@
       "log": "runtime_data/swm_release_native_body_final_full.log",
       "log_sha256": "737e48e77931fd6a4b6cfa79d3ed1093468fe319eb387f04eae36285f92c7a9d",
       "note": "Final run after all implementation edits; earlier intermediate full run is not used to qualify this revision."
+    },
+    "native_physics_identity_targeted": {
+      "tested_commit": "ffaa03c",
+      "domain": "software_fixture",
+      "passed": 18,
+      "failed": 0,
+      "seconds": 0.4
+    },
+    "native_physics_identity_full": {
+      "tested_commit": "ffaa03c",
+      "domain": "software_regression",
+      "passed": 1603,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 45.04,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "note": "Final implementation bytes remained unchanged throughout this run; only commit creation overlapped."
+    },
+    "native_body_mirror_08": {
+      "tested_commit": "ffaa03c",
+      "domain": "native_CPU_PhysX_and_GPU_scene_sync",
+      "process_exit_code": 0,
+      "status": "native_body_properties_and_fresh_state_verified",
+      "physical_body_count": 12,
+      "physical_shape_count": 23,
+      "physical_body_ack": {
+        "source": "native_CPU_PhysX_shape_and_body_readback",
+        "objects": {
+          "bi": {
+            "native_physics_geometry_sha256": "278b97027b8645009a9c776c8f97ff108ee517b0807d6584a6639cb468b9a3fd",
+            "shape_count": 10,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh"
+            ],
+            "mass": 0.04651080444455147,
+            "inertia": [
+              7.150604506023228e-05,
+              3.1645511171518592e-06,
+              7.14740453986451e-05
+            ],
+            "expected_native_digest": "b4ad4d6c5e604e2d603dc54f2192de8e3964707b552eb06d500b437ecf7877f8",
+            "actual_native_digest": "b4ad4d6c5e604e2d603dc54f2192de8e3964707b552eb06d500b437ecf7877f8"
+          },
+          "bitong": {
+            "native_physics_geometry_sha256": "ab57453801da931dc72794e4044ae500fa50278aded73792c1c313a22598ab51",
+            "shape_count": 5,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box",
+              "Box",
+              "Box",
+              "Box",
+              "Box"
+            ],
+            "mass": 0.18447226285934448,
+            "inertia": [
+              0.00027690952992998064,
+              0.0002919824328273535,
+              0.00027690952992998064
+            ],
+            "expected_native_digest": "c0e5522bde827d6e0181065779370bb03f9735bde56ce87d0263090a670dfe9e",
+            "actual_native_digest": "c0e5522bde827d6e0181065779370bb03f9735bde56ce87d0263090a670dfe9e"
+          },
+          "carriot": {
+            "native_physics_geometry_sha256": "b2d60228165ca08145433b962436f0275b35a613bc907c1294d743796a707feb",
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 0.18753525614738464,
+            "inertia": [
+              0.0005737523315474391,
+              0.0005737523315474391,
+              3.101364563917741e-05
+            ],
+            "expected_native_digest": "42435489bfeaf275ed2d8e20e7ccbd52c60050e539648a3e0797fc617cdaf0a5",
+            "actual_native_digest": "42435489bfeaf275ed2d8e20e7ccbd52c60050e539648a3e0797fc617cdaf0a5"
+          },
+          "desk": {
+            "native_physics_geometry_sha256": "17a4057ebeea9f8b2e380a49b4241654751b76906975f1d86311c4cb5f39c7a7",
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 10.013486862182617,
+            "inertia": [
+              0.055286772549152374,
+              0.19832903146743774,
+              0.15939927101135254
+            ],
+            "expected_native_digest": "595de082e1b9668fc9f80a583515985a2d740dc0f360b28b595f742bb7a4dd84",
+            "actual_native_digest": "595de082e1b9668fc9f80a583515985a2d740dc0f360b28b595f742bb7a4dd84"
+          },
+          "gluestick": {
+            "native_physics_geometry_sha256": "e5d1cd7d75b64adae404e34fabed3b62c2333dc4c3ffb95096d854597150ada6",
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 0.07217100262641907,
+            "inertia": [
+              6.333005876513198e-05,
+              8.76877675182186e-06,
+              6.333005876513198e-05
+            ],
+            "expected_native_digest": "6e6278d16356ea7f66ed16bb8dd65cc534e17d517ac2a4f92c1bf42313745b25",
+            "actual_native_digest": "6e6278d16356ea7f66ed16bb8dd65cc534e17d517ac2a4f92c1bf42313745b25"
+          },
+          "hongshupian": {
+            "native_physics_geometry_sha256": "a5e0d639c48a8a4f11b7e5f39c72d6f1111c97ac9543d5c287e2fb5f7e9ceb38",
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 0.5358150005340576,
+            "inertia": [
+              0.0009909899672493339,
+              0.000354441610397771,
+              0.000990989850834012
+            ],
+            "expected_native_digest": "0a63b6b215e0054a93880bf40e831de217a72e71b985187f6b93fae9f9cd8837",
+            "actual_native_digest": "0a63b6b215e0054a93880bf40e831de217a72e71b985187f6b93fae9f9cd8837"
+          },
+          "lvmukuai": {
+            "native_physics_geometry_sha256": "06c9af7841baeee395f26c4dd60717ceaf0f09a536cc92f5ddfee36a86755df6",
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 0.03998000919818878,
+            "inertia": [
+              4.970427653461229e-06,
+              1.2503400284913369e-05,
+              1.1897312106157187e-05
+            ],
+            "expected_native_digest": "cba6a767cf5ac7557e8b25e930b96639a84497ad7f7e62846a030fe4e86a97a4",
+            "actual_native_digest": "cba6a767cf5ac7557e8b25e930b96639a84497ad7f7e62846a030fe4e86a97a4"
+          },
+          "shuazi": {
+            "native_physics_geometry_sha256": "7177c1ccedcf451e7dd1c6312da518d7f43cc4930774c4fa5422e4cbf94290d7",
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 0.5122414827346802,
+            "inertia": [
+              0.00038226559991016984,
+              0.0007391551625914872,
+              0.0008343722438439727
+            ],
+            "expected_native_digest": "dde8116dd73cea36ba6cc5797a10985e87961dcfff3b231ff1a432608d2d3354",
+            "actual_native_digest": "dde8116dd73cea36ba6cc5797a10985e87961dcfff3b231ff1a432608d2d3354"
+          },
+          "tennis": {
+            "native_physics_geometry_sha256": "dc09025f1f2b0b68cfee665a71b4c8571b9d45ac9644e357757a02908e798b3a",
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 0.2500469982624054,
+            "inertia": [
+              0.00016540609067305923,
+              0.000165406076121144,
+              0.000165406076121144
+            ],
+            "expected_native_digest": "7ef85c77108ef0e019e557a7eed21930393f49a1648bc2213448cdc82664fffe",
+            "actual_native_digest": "7ef85c77108ef0e019e557a7eed21930393f49a1648bc2213448cdc82664fffe"
+          },
+          "__maniskill_workspace_table__": {
+            "native_physics_geometry_sha256": "67d45755e5b6a8bbcfba35eb0fa83c275c66d4389e3bb548704466d8152784e6",
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 2688.44921875,
+            "inertia": [
+              516.9493408203125,
+              1499.363037109375,
+              1637.3560791015625
+            ],
+            "expected_native_digest": "3a19c4b085b2bb54e274c334a87532efc72daae7f6c30a834c34dcd65317d874",
+            "actual_native_digest": "3a19c4b085b2bb54e274c334a87532efc72daae7f6c30a834c34dcd65317d874"
+          },
+          "virtual_side_wall": {
+            "native_physics_geometry_sha256": "b30d7852f72cee0723ffa73e4f17c6f94000c72843d97c48c9d28cfd6f402eef",
+            "shape_count": 0,
+            "body_kind": "dynamic",
+            "shape_kinds": [],
+            "mass": 9.999999974752427e-07,
+            "inertia": [
+              9.999999974752427e-07,
+              9.999999974752427e-07,
+              9.999999974752427e-07
+            ],
+            "expected_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75",
+            "actual_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75"
+          },
+          "virtual_top_wall": {
+            "native_physics_geometry_sha256": "b30d7852f72cee0723ffa73e4f17c6f94000c72843d97c48c9d28cfd6f402eef",
+            "shape_count": 0,
+            "body_kind": "dynamic",
+            "shape_kinds": [],
+            "mass": 9.999999974752427e-07,
+            "inertia": [
+              9.999999974752427e-07,
+              9.999999974752427e-07,
+              9.999999974752427e-07
+            ],
+            "expected_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75",
+            "actual_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75"
+          }
+        },
+        "original_body_geometry_and_properties_aligned": true,
+        "primary_world_mutated": false,
+        "attachment_qualified": false,
+        "robot_collision_policy_qualified": false,
+        "hardware_qualified": false
+      },
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "gpu_scene_synchronized": true,
+      "world_checkpoint_committed": false,
+      "atomic_worker_qualified": false,
+      "skill_checkpoints": 0,
+      "motion_executed": false,
+      "hardware_connected": false,
+      "sha256": {
+        "rm75_app/swm/native_body_mirror.py": "86f6353c6994e1ac4168855319e05fc567dde9eeb50418bbbaf2477fe1b5f505",
+        "rm75_app/swm/native_registration.py": "f442074cc7c814a3fec553b90e90737eff810dbd68789f209747750e33800a96",
+        "rm75_app/swm/native_scene.py": "51346a47c84ac3ee15f09e34275366143de4a24581b3c1cf4d23be5d9018ae8d",
+        "rm75_app/swm/physics_replay.py": "f357fb7be34e2a291df28749952a6cb0c2319ae0ff9ce121adef2f14c4f42fca",
+        "rm75_app/swm/scene.py": "cf657ab995bf2da3d7ea184d792ece1cda57f2c359e8e4f3014b07024b6c6bdd",
+        "tests/swm/test_native_physics_asset_identity.py": "e991a51c667949f866614b3ab73c4195ad8cba8ef005f4a2a34adda726d2220f",
+        "runtime_data/swm_release_body_mirror_driver_08/run.py": "482923e7145537e95fb32e086caa7a8a44d7667a3a722e81526746a48a1bdecd",
+        "runtime_data/swm_release_body_mirror_driver_08/registration_result.json": "03c0c3155ca05222e81654d097485b9129b532da08edee037b602ff07dc5eb02",
+        "runtime_data/swm_release_body_mirror_bootstrap_08/result.json": "f9c4efd122be77c4f88cadf9e0d29ca323d145af740786c9159b4dee51b0f7c1",
+        "runtime_data/swm_release_body_mirror_driver_08.log": "7f6b0c8acb7e45ed1304ed459e0cc65c45f4a49249bf7d08f7165fe7b1d2ed7a",
+        "runtime_data/swm_release_physics_identity_full.log": "326c16ac1cec83e81c46682df5ba0279a6127640e5464159180516d4385d99ac",
+        "runtime_data/swm_release_physics_identity_targeted.log": "9594d3d65ae6a2e9e8ca15ce1d339b3e1f84b880987c2d87d65013ebb67ae50f",
+        "assets/test_scenes/current_table.json": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908"
+      },
+      "note": "Native geometry and immutable startup physics baseline have independent file identities. Planning proxy assets cannot enter generic physics replay. Private mirror closes before the outer GPU sync: not a live dual-mirror transaction. No physics stepping, attachment, formal worker, or next-plan posterior consumption was qualified."
     }
   },
   "gates": {
@@ -4351,7 +4611,14 @@
     "native_wiring": "TWELVE_NATIVE_BODY_GEOMETRY_AND_PARAMETERS_ALIGNED_ATTACHMENT_ROBOT_POLICY_AND_WORKER_PENDING",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
     "actual_simulation": "NATIVE_BODY_AND_MEASURED_STATE_READBACK_EXIT_0_NO_ATOMIC_EXECUTION",
-    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "physics_asset_identity": {
+      "kernel": "1603 passed; 1 existing warning on ffaa03c",
+      "native_wiring": "Original native bodies bound to separate geometry identity; robot collision policy, jaw constraints, attachment and live transaction remain incomplete",
+      "model_inference": "NOT_RUN",
+      "actual_simulation": "Native body identity and state synchronization succeeded; no atomic action",
+      "hardware": "NOT_AUTHORIZED_NOT_RUN"
+    }
   },
   "native_bootstrap": {
     "code_commit": "d0c8708",
