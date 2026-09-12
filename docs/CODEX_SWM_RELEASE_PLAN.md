@@ -79,3 +79,14 @@ G0 可移植验证与 S1 管理上下文已提交 `9c38a5449fbe02b4eb35481cb99f4
 重跑同一输入 `swm_release_pen_scene_sync_02`：退出 0，完整原基座矩阵已记录，9 个对象加原 SAPIEN 桌面和两面虚拟墙共 12 个障碍成功进入共享 cuRobo GPU；名称、数量、启用位、尺寸和逆位姿读回一致。原资产/仿真资源字节及尺度一致性检查通过，未缩小共享代理。保留上次 sync_01 拒绝记录。
 
 定向 10 passed；正式全量 1556 passed、1 个既有警告（41.68 s）。下一步不再停在基座/空场景初始化：补原生 TCP、独立 jaw/holding、全场景 SWM manifest 与 private mirror，接可信 worker 工厂并执行笔 grasp/place 六检查点。当前 GPU acknowledgement 的 robot_state_qualified、attachment_qualified 均为 false，工厂仍不完整，不能据 12 障碍同步解锁执行。
+
+
+## M1 / 实测机器人与夹爪几何接线：3709e06
+
+复用共享夹爪碰撞控制器，读入六个独立关节而非由 holding 推断开合；IK 缓存身份绑定该六关节配置摘要。原生主世界读取 TCP、八个夹爪链节及九对象双指接触力，沿用原 ManiSkill 持物谓词（0.5 N、95 度），不从命令推断持物。
+
+实际串行运行 `runtime_data/swm_release_pen_robot_sync_01`，网络隔离、180 秒上限、退出 0。主仿真 TCP 与共享 cuRobo FK 比较、八链节与原 URDF 六关节 FK 比较以及 GPU 碰撞球中心/半径读回均通过既定检查。完整原始 observation、误差 acknowledgement、命令和输入/结果/事件/日志 SHA256 已记录在机器验收表；未放宽碰撞或几何阈值。
+
+内核：正式全量 **1560 passed / 1 warning / 41.87 s**。原生接线：初始静止机器人/夹爪几何对齐已实测，持物 attachment 与正式 worker 仍未完成。模型推理：本轮未运行。实际仿真：初始化、场景同步和原生状态查询已运行，无抓放动作。硬件：未授权、未连接、未运行。
+
+下一步将此独立观测接入同一 SWM 检查点及私有镜像，再安装完整可信 worker 并执行笔 grasp/place 六次新采集。初始空手接触查询不证明抓取成功；本次不解锁未完成技能、不删除缺适配器检查，G1/G2/S4 仍不标整体通过。代码已本地提交，尚未推送。

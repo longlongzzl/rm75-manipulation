@@ -1218,6 +1218,625 @@
       "tested_commit": "079e654",
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "note": "Tests started before commit and ended after commit on identical unchanged implementation bytes."
+    },
+    "native_robot_sync_01": {
+      "tested_commit": "3709e06",
+      "domain": "actual_native_primary_and_curobo_GPU",
+      "exit_code": 0,
+      "artifact_directory": "runtime_data/swm_release_pen_robot_sync_01",
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -c 'import sys,runpy; sys.path.append(\"/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages\"); sys.argv=[\\'tools/validate_swm_native_bootstrap.py\\', \\'--profile\\', \\'runtime_data/three_scene/review_a35328c_20260909/tennis_standard_reference_v1/machine.json\\', \\'--output\\', \\'runtime_data/swm_release_pen_robot_sync_01\\', \\'--probe-planner\\', \\'--sync-planning-scene\\', \\'--sync-robot-state\\']; runpy.run_path(sys.argv[0],run_name=\"__main__\")'",
+      "argv": [
+        "tools/validate_swm_native_bootstrap.py",
+        "--profile",
+        "runtime_data/three_scene/review_a35328c_20260909/tennis_standard_reference_v1/machine.json",
+        "--output",
+        "runtime_data/swm_release_pen_robot_sync_01",
+        "--probe-planner",
+        "--sync-planning-scene",
+        "--sync-robot-state"
+      ],
+      "sha256": {
+        "input.json": "b3e2cdc7c5931c563ce40f9fd6c7b8365e0a72da59b69355608d8bf2a544e789",
+        "result.json": "45726c092ae0739aca809345182fc39b546e5e59b596f5e77b71860f374e40f2",
+        "events.jsonl": "aead21b63ebcee88ee66b0a108f5f00ae28bb646f60ce78b53d527dc0506f7ff",
+        "stdout.log": "cf4b673b328639f38890cdf45fdd414b1aee7358f5a0d66cd3f977d0a2244d21"
+      },
+      "robot_observation": {
+        "source": "native_joint_link_and_contact_feedback",
+        "domain": "physics",
+        "captured_at": 11744.119932365,
+        "capture_finished_at": 11744.128822261,
+        "query_elapsed_s": 0.008889896000255249,
+        "primary_sequence": 4,
+        "joint_names": [
+          "joint_1",
+          "joint_2",
+          "joint_3",
+          "joint_4",
+          "joint_5",
+          "joint_6",
+          "joint_7"
+        ],
+        "positions": [
+          1.572896122932434,
+          0.00905626080930233,
+          0.006035430356860161,
+          -1.562686562538147,
+          -0.0004508150741457939,
+          -1.5619994401931763,
+          1.0576796531677246
+        ],
+        "velocities": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "units": "rad",
+        "idle": true,
+        "T_world_base": [
+          [
+            -1.1920928955078125e-07,
+            -1.0,
+            -1.8439244797718857e-08,
+            -0.30000004172325134
+          ],
+          [
+            1.0,
+            -1.1920928955078125e-07,
+            1.8439244797718857e-08,
+            -5.820766091346741e-10
+          ],
+          [
+            -1.8439244797718857e-08,
+            -1.8439244797718857e-08,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "T_world_tcp": [
+          [
+            0.002346177092349042,
+            0.9999971983053799,
+            -0.0002868266016711008,
+            0.001601271976091144
+          ],
+          [
+            0.9996602537238437,
+            -0.002352833277704631,
+            -0.025963016013587074,
+            -0.21678286338171743
+          ],
+          [
+            -0.02596361950159665,
+            -0.00022581527954977664,
+            -0.9996629958224672,
+            0.14821289082953912
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "tcp_coordinate_frame": "base_link",
+        "gripper_positions": {
+          "gripper_Left_1_Joint": -0.0004450046399142593,
+          "gripper_Left_2_Joint": -0.007228843867778778,
+          "gripper_Left_Support_Joint": 0.0016043701907619834,
+          "gripper_Right_1_Joint": 0.028663400560617447,
+          "gripper_Right_2_Joint": -0.005655086133629084,
+          "gripper_Right_Support_Joint": -0.00025351185468025506
+        },
+        "gripper_velocities": {
+          "gripper_Left_1_Joint": 0.0,
+          "gripper_Left_2_Joint": 0.0,
+          "gripper_Left_Support_Joint": 0.0,
+          "gripper_Right_1_Joint": 0.0,
+          "gripper_Right_2_Joint": 0.0,
+          "gripper_Right_Support_Joint": 0.0
+        },
+        "gripper_links_in_base": {
+          "gripper_base_link": [
+            [
+              -0.999997317514668,
+              0.00234603925660134,
+              -0.0002867537838904067,
+              0.0016586333732307099
+            ],
+            [
+              0.0023528337433814527,
+              0.9996601941192158,
+              -0.025963042090627844,
+              -0.21159025198336018
+            ],
+            [
+              0.0002257435095016808,
+              -0.02596364371598723,
+              -0.9996629958224663,
+              0.3481454512510135
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "gripper_Left_1_Link": [
+            [
+              -0.9999970194982684,
+              -0.0007318104908916788,
+              -0.002346069058977693,
+              -0.02851216087796573
+            ],
+            [
+              0.002364397036229655,
+              -0.02596579130181981,
+              -0.9996600749099909,
+              -0.21422340085928926
+            ],
+            [
+              0.0006705934627757762,
+              -0.999662638202855,
+              0.025967341066610104,
+              0.2440373703782274
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "gripper_Left_Support_Link": [
+            [
+              -0.999994635337092,
+              -0.002336248318547722,
+              -0.002346038790989111,
+              -0.0688983788716202
+            ],
+            [
+              0.002406001048424491,
+              -0.025962000627721193,
+              -0.9996600153053519,
+              -0.21509818292567187
+            ],
+            [
+              0.002274464581864196,
+              -0.9996602540465787,
+              0.02596746027590131,
+              0.20671203208822328
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "gripper_Left_2_Link": [
+            [
+              -0.9999690054192691,
+              -0.007515653529881888,
+              -0.0023462776752295,
+              -0.014376032495852911
+            ],
+            [
+              0.0025405882377973446,
+              -0.02594913099541794,
+              -0.9996600153053234,
+              -0.21469415226764668
+            ],
+            [
+              0.007452260937473174,
+              -0.9996349817724609,
+              0.025967460275896907,
+              0.2271898346623798
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "gripper_Right_1_Link": [
+            [
+              0.999578297300728,
+              -0.02894590751148937,
+              0.0023535196394596485,
+              0.031769685777674306
+            ],
+            [
+              -0.0031031364335889293,
+              -0.02588108974589617,
+              0.9996602537229008,
+              -0.214365229846857
+            ],
+            [
+              -0.028875183566287075,
+              -0.9992458830452702,
+              -0.025959950090517273,
+              0.24402376672699394
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "gripper_Right_Support_Link": [
+            [
+              0.9995707871193603,
+              -0.02919922725182114,
+              0.0023535492089513926,
+              0.07103011103097209
+            ],
+            [
+              -0.0031098121482386327,
+              -0.025880251525517234,
+              0.9996602537228972,
+              -0.21545751873494431
+            ],
+            [
+              -0.029128439976908987,
+              -0.9992384920739736,
+              -0.02595995009051673,
+              0.20552156599283541
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "gripper_Right_2_Link": [
+            [
+              0.9999828931030083,
+              0.005368307668288247,
+              0.0023536090464312083,
+              0.01762389264677155
+            ],
+            [
+              -0.002213418581775995,
+              -0.02597252735413506,
+              0.9996602537228945,
+              -0.214769451649714
+            ],
+            [
+              0.005427617351362663,
+              -0.9996482733711067,
+              -0.025960188509094727,
+              0.22718259328670556
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "left_pad": [
+            [
+              -0.999994635337092,
+              -0.002336248318548388,
+              -0.0023460392566503983,
+              -0.04902697922635102
+            ],
+            [
+              0.0024060010484244824,
+              -0.02596200621565664,
+              -0.9996600153053519,
+              -0.2165742039007701
+            ],
+            [
+              0.0022744650475254834,
+              -0.9996602540465788,
+              0.025967460275901303,
+              0.15168523298703626
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "right_pad": [
+            [
+              0.9995707871193603,
+              -0.02919922725182114,
+              0.0023535492089513926,
+              0.049432733915433937
+            ],
+            [
+              -0.0031098121482386327,
+              -0.025880251525517234,
+              0.9996602537228972,
+              -0.21681872878216946
+            ],
+            [
+              -0.029128439976908987,
+              -0.9992384920739736,
+              -0.02595995009051673,
+              0.1511460064779284
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "gripper_observed": true,
+        "holding": "empty",
+        "holding_evidence": {
+          "source": "original_ManiSkill_is_grasping",
+          "min_force_n": 0.5,
+          "max_angle_deg": 95,
+          "contacts": {
+            "bi": {
+              "left_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "right_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "original_grasp_predicate": false
+            },
+            "bitong": {
+              "left_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "right_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "original_grasp_predicate": false
+            },
+            "carriot": {
+              "left_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "right_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "original_grasp_predicate": false
+            },
+            "desk": {
+              "left_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "right_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "original_grasp_predicate": false
+            },
+            "gluestick": {
+              "left_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "right_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "original_grasp_predicate": false
+            },
+            "hongshupian": {
+              "left_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "right_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "original_grasp_predicate": false
+            },
+            "lvmukuai": {
+              "left_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "right_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "original_grasp_predicate": false
+            },
+            "shuazi": {
+              "left_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "right_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "original_grasp_predicate": false
+            },
+            "tennis": {
+              "left_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "right_force_n": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "original_grasp_predicate": false
+            }
+          }
+        },
+        "hardware_qualified": false
+      },
+      "robot_geometry_ack": {
+        "source": "native_FK_and_GPU_gripper_geometry_readback",
+        "primary_sequence": 4,
+        "tcp_position_error_m": 1.560618199565332e-07,
+        "tcp_rotation_error_rad": 0.0,
+        "gripper_link_errors": {
+          "gripper_Left_1_Link": {
+            "position_error_m": 2.3862595091758874e-08,
+            "rotation_error_rad": 0.0003923361299108573
+          },
+          "gripper_Left_Support_Link": {
+            "position_error_m": 1.7487999117464233e-08,
+            "rotation_error_rad": 0.0003926487956583632
+          },
+          "gripper_Left_2_Link": {
+            "position_error_m": 2.1848255953567795e-08,
+            "rotation_error_rad": 0.0005938014044481225
+          },
+          "gripper_Right_1_Link": {
+            "position_error_m": 2.307915253149151e-08,
+            "rotation_error_rad": 0.00039813307454024036
+          },
+          "gripper_Right_Support_Link": {
+            "position_error_m": 2.8802324123574698e-08,
+            "rotation_error_rad": 0.0005849808593416696
+          },
+          "gripper_Right_2_Link": {
+            "position_error_m": 3.5274225160812174e-08,
+            "rotation_error_rad": 0.0003920325201774984
+          },
+          "left_pad": {
+            "position_error_m": 2.3809308170848564e-08,
+            "rotation_error_rad": 0.00039246127487095123
+          },
+          "right_pad": {
+            "position_error_m": 2.7990446984008277e-08,
+            "rotation_error_rad": 0.0005849808593416696
+          }
+        },
+        "gripper": {
+          "state_id": "measured:5fdbe1ed3bf1ba5b6e514eb1fe1164c096781f051ac5b840fb1c3627f4b21cfc",
+          "positions": {
+            "gripper_Left_1_Joint": -0.0004450046399142593,
+            "gripper_Left_2_Joint": -0.007228843867778778,
+            "gripper_Left_Support_Joint": 0.0016043701907619834,
+            "gripper_Right_1_Joint": 0.028663400560617447,
+            "gripper_Right_2_Joint": -0.005655086133629084,
+            "gripper_Right_Support_Joint": -0.00025351185468025506
+          },
+          "owners": [
+            {
+              "source": "native_collision_sphere_tensor_readback",
+              "links": [
+                {
+                  "link": "gripper_Left_1_Link",
+                  "spheres": 8,
+                  "radii_unchanged": true,
+                  "maximum_center_error_m": 1.8359263206924048e-09
+                },
+                {
+                  "link": "gripper_Left_Support_Link",
+                  "spheres": 4,
+                  "radii_unchanged": true,
+                  "maximum_center_error_m": 1.8307015070551103e-09
+                },
+                {
+                  "link": "gripper_Left_2_Link",
+                  "spheres": 5,
+                  "radii_unchanged": true,
+                  "maximum_center_error_m": 9.482448437569957e-10
+                },
+                {
+                  "link": "gripper_Right_1_Link",
+                  "spheres": 4,
+                  "radii_unchanged": true,
+                  "maximum_center_error_m": 4.549975396450634e-10
+                },
+                {
+                  "link": "gripper_Right_Support_Link",
+                  "spheres": 5,
+                  "radii_unchanged": true,
+                  "maximum_center_error_m": 1.3407464513615075e-09
+                },
+                {
+                  "link": "gripper_Right_2_Link",
+                  "spheres": 8,
+                  "radii_unchanged": true,
+                  "maximum_center_error_m": 1.1571383087827236e-09
+                },
+                {
+                  "link": "left_pad",
+                  "spheres": 1,
+                  "radii_unchanged": true,
+                  "maximum_center_error_m": 2.263736594010357e-10
+                },
+                {
+                  "link": "right_pad",
+                  "spheres": 1,
+                  "radii_unchanged": true,
+                  "maximum_center_error_m": 8.974803018813038e-10
+                }
+              ],
+              "sphere_count": 36
+            }
+          ],
+          "holding_inferred": false
+        },
+        "robot_geometry_aligned": true,
+        "attachment_qualified": false,
+        "hardware_qualified": false
+      },
+      "motion_executed": false,
+      "atomic_worker_qualified": false,
+      "hardware_connected": false,
+      "scope": "Initial idle native joint/TCP/eight-link/contact observation and GPU measured gripper synchronization only. No positive grasp, held attachment, six skill checkpoints or formal worker qualification."
+    },
+    "measured_gripper_full": {
+      "tested_commit": "3709e06",
+      "domain": "software_regression",
+      "passed": 1560,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 41.87,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "log": "runtime_data/swm_release_measured_gripper_full.log",
+      "log_sha256": "e88369a6bd90fd129ae728c5b35f15ed53727263bb8ea4bb03c6482a7f384359",
+      "note": "Regression crossed the commit boundary on identical implementation bytes; no hardware access."
     }
   },
   "gates": {
@@ -1261,7 +1880,8 @@
         "runs.native_bootstrap_02: initialization only, not atomic worker qualification",
         "runs.native_planner_probe_02: coexisting initialization only; collision scene NOT synchronized",
         "runs.native_scene_sync_01: failed before GPU scene application",
-        "runs.native_scene_sync_02: 12 native GPU obstacles matched; NOT atomic execution qualification"
+        "runs.native_scene_sync_02: 12 native GPU obstacles matched; NOT atomic execution qualification",
+        "runs.native_robot_sync_01: initial measured robot geometry aligned; NOT atomic worker or held attachment qualification"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -1439,17 +2059,18 @@
       "evidence": [
         "runs.m1_stage_full",
         "runs.recording_wiring_full",
-        "runs.se3_full"
+        "runs.se3_full",
+        "runs.measured_gripper_full"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
     }
   },
   "current_layer_status": {
-    "kernel": "SOFTWARE_REGRESSION_PASSED_1556",
-    "native_wiring": "TWELVE_OBSTACLES_GPU_SYNCED_ROBOT_AND_ATTACHMENT_NOT_QUALIFIED",
+    "kernel": "SOFTWARE_REGRESSION_PASSED_1560",
+    "native_wiring": "INITIAL_NATIVE_ROBOT_AND_GRIPPER_GEOMETRY_ALIGNED_ATTACHMENT_AND_WORKER_NOT_QUALIFIED",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "PRIMARY_AND_COLLISION_SYNC_RUN_NO_ATOMIC_EXECUTION",
+    "actual_simulation": "PRIMARY_COLLISION_ROBOT_CONTACT_READBACK_RUN_NO_ATOMIC_EXECUTION",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
   "native_bootstrap": {
@@ -1462,13 +2083,14 @@
     "tool": "tools/validate_swm_native_bootstrap.py",
     "successful_environment": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
     "failed_environment": "/home/zhangzhao/anaconda3/bin/python (exit 139)",
-    "remaining": "Independent native jaw/holding/TCP observation, full SWM manifest/private mirror and formal worker grasp/place six checkpoints",
+    "remaining": "Full SWM manifest and private mirror including measured jaw and attachment; trusted formal worker grasp/place six fresh checkpoints",
     "same_process_planner_environment": {
       "python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
       "append_site_packages": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",
       "evidence": "runs.native_planner_probe_02",
       "worker_installed": false
     },
-    "full_collision_scene_evidence": "runs.native_scene_sync_02"
+    "full_collision_scene_evidence": "runs.native_scene_sync_02",
+    "robot_geometry_evidence": "runs.native_robot_sync_01"
   }
 }
