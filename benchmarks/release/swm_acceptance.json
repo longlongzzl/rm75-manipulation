@@ -8,16 +8,18 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "8007e0a",
+    "commit": "bcd2dac",
     "sha256": {
-      "rm75_app/planning/backends/curobo2.py": "7962deb8fe31d6dcfe0664a452d6f227f9d2d7e1908c3ca0497ef64497803d03",
-      "rm75_app/swm/native_planning_scene.py": "61cb73d3b7da44643876b159bf66ae7a9d5bb2d71dc5d8a060294d821ce793ef",
-      "rm75_app/swm/native_attachment.py": "425e9efdbb90369ebb3c6772420d3d56dd45a8518e964bda21dd387ceed939e3",
-      "rm75_app/swm/native_scene.py": "2a8635145097f112942769523dcb78f0e8f20838b858b8592e1fe81918dcd4a8",
-      "tests/swm/test_native_attachment_geometry.py": "3bb93cc2c3a9154f756854e76dcbfdb3f6ea93c8d6f86338e4ede6cf1f37c52e"
+      "rm75_app/swm/native_skills.py": "8d268b3622d9a6bd04870e959a7569726031c1cbec5938a06bbc1397b5403d57",
+      "rm75_app/swm/native_audit.py": "2553ddd377a4ed41a83d8779c47f49661cc9766cecc50e84d888400e5ede55f2",
+      "rm75_app/swm/native_registration.py": "ade1d76ccfd5d235dfb09450fc2e0e0f408e7caee78c9fabe10e56eed88340d3",
+      "rm75_app/swm/native_tasks.py": "09ce76e66f69fb0b6dff8b4d5c7874e9cacf3523dbd429dc46682030eb14c0c6",
+      "rm75_app/pickplace/atom_task_builder.py": "5b67689410ffc2c04278c2bf7ff78fd780e6554c756a2f4f4fdd3c17c59c5636",
+      "tests/swm/test_native_stage_audit.py": "bf07a8ddf4584fd8af935c0716dbd5d1141e6fe784aa3e00832c7e36e10a8e8b",
+      "tests/swm/test_native_task_infrastructure.py": "f653e08859e8ba81a233929ed72d5a92880b34b1993531d5e7b91ed9bc996ff3"
     },
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Native evidence/source hashes recorded in runs.native_bound_attachment_01."
+    "note": "Full regression has one known infrastructure type failure. Native evidence/source hashes in runs.native_measured_stage_audit_01."
   },
   "runs": {
     "m0_targeted": {
@@ -6833,6 +6835,106 @@
         "assets/test_scenes/current_table.json": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908"
       },
       "note": "Original shared fitted sphere reference is bound to registered metric mesh hash, measured TCP-relative pose and independent native GPU local/FK output. Held/refined/empty scenarios are private hypotheses, not observations or actual grasp. Only the initial empty world checkpoint was committed to SWM. No physical stepping or posterior application qualified."
+    },
+    "native_worker_boundary_targeted": {
+      "tested_commit": "bcd2dac",
+      "domain": "software_fixture",
+      "passed": 10,
+      "failed": 1,
+      "seconds": 0.5,
+      "failed_test": "tests/swm/test_native_task_infrastructure.py::test_fixed_native_wall_is_not_dropped_or_scaled_by_original_builder"
+    },
+    "native_worker_boundary_full": {
+      "tested_commit": "bcd2dac",
+      "domain": "software_regression",
+      "passed": 1621,
+      "failed": 1,
+      "warnings": 1,
+      "seconds": 43.09,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "failed_test": "tests/swm/test_native_task_infrastructure.py::test_fixed_native_wall_is_not_dropped_or_scaled_by_original_builder",
+      "error": "CollisionObject evaluates dimensions or (); newly added infrastructure branch passes NumPy array rather than list.",
+      "note": "Final implementation unchanged during tests; this is NOT a full regression pass."
+    },
+    "native_measured_stage_audit_01": {
+      "tested_commit": "bcd2dac",
+      "domain": "native_stationary_stage_audit",
+      "process_exit_code": 0,
+      "status": "live_dual_mirror_checkpoint_committed",
+      "stage_audit": {
+        "status": "passed",
+        "passed": [
+          "collision",
+          "contact_policy",
+          "joint_limits",
+          "path_continuity",
+          "tool_state"
+        ],
+        "evidence": [
+          {
+            "stage": "stationary_geometry_audit_probe",
+            "samples": 2,
+            "contacts": 0,
+            "escape": false,
+            "state_before": {
+              "gripper_closed": null,
+              "holding": "empty",
+              "T_tcp_object": null,
+              "released_object_pose": null,
+              "gripper_positions": {
+                "gripper_Left_1_Joint": -0.0004450046399142593,
+                "gripper_Left_2_Joint": -0.007228843867778778,
+                "gripper_Left_Support_Joint": 0.0016043701907619834,
+                "gripper_Right_1_Joint": 0.028663400560617447,
+                "gripper_Right_2_Joint": -0.005655086133629084,
+                "gripper_Right_Support_Joint": -0.00025351185468025506
+              }
+            },
+            "state_after": {
+              "gripper_closed": null,
+              "holding": "empty",
+              "T_tcp_object": null,
+              "released_object_pose": null,
+              "gripper_positions": {
+                "gripper_Left_1_Joint": -0.0004450046399142593,
+                "gripper_Left_2_Joint": -0.007228843867778778,
+                "gripper_Left_Support_Joint": 0.0016043701907619834,
+                "gripper_Right_1_Joint": 0.028663400560617447,
+                "gripper_Right_2_Joint": -0.005655086133629084,
+                "gripper_Right_Support_Joint": -0.00025351185468025506
+              }
+            },
+            "post_transition_contacts": []
+          }
+        ],
+        "motion_executed": false,
+        "grasp_qualified": false,
+        "skill_checkpoints": 0
+      },
+      "world_revision": 1,
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "atomic_worker_qualified": false,
+      "skill_checkpoints": 0,
+      "motion_executed": false,
+      "hardware_connected": false,
+      "sha256": {
+        "rm75_app/swm/native_skills.py": "8d268b3622d9a6bd04870e959a7569726031c1cbec5938a06bbc1397b5403d57",
+        "rm75_app/swm/native_audit.py": "2553ddd377a4ed41a83d8779c47f49661cc9766cecc50e84d888400e5ede55f2",
+        "rm75_app/swm/native_registration.py": "ade1d76ccfd5d235dfb09450fc2e0e0f408e7caee78c9fabe10e56eed88340d3",
+        "rm75_app/swm/native_tasks.py": "09ce76e66f69fb0b6dff8b4d5c7874e9cacf3523dbd429dc46682030eb14c0c6",
+        "rm75_app/pickplace/atom_task_builder.py": "5b67689410ffc2c04278c2bf7ff78fd780e6554c756a2f4f4fdd3c17c59c5636",
+        "tests/swm/test_native_stage_audit.py": "bf07a8ddf4584fd8af935c0716dbd5d1141e6fe784aa3e00832c7e36e10a8e8b",
+        "tests/swm/test_native_task_infrastructure.py": "f653e08859e8ba81a233929ed72d5a92880b34b1993531d5e7b91ed9bc996ff3",
+        "runtime_data/swm_release_measured_audit_driver_01/run.py": "a938ececca940275babbcf8772f5b128c5e10b88f4d087a20f947695cbb6e55b",
+        "runtime_data/swm_release_measured_audit_driver_01/transaction_result.json": "73ef9b193c99fa3f53408b69507cf52c778fb845fe36fb5bedb9c84abacbb808",
+        "runtime_data/swm_release_measured_audit_bootstrap_01/result.json": "b77b7e78d160bdbfbe7316ebf439417430ca60205597cf260411e5ad0be551aa",
+        "runtime_data/swm_release_measured_audit_driver_01.log": "c2f5dd2926c50c3fee4ceba81dfe470808de782da1ce7e60a5ad50860a28d01d",
+        "runtime_data/swm_release_worker_boundary_targeted.log": "a74573122cb0cae51825891631600ead3ff6a9277b9f0fba20646a1bb1f1b694",
+        "runtime_data/swm_release_worker_boundary_full.log": "308edfbdfabad816058893a834f330b1186ac58696aea6065aa8a8138d4aa3de",
+        "assets/test_scenes/current_table.json": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908"
+      },
+      "note": "Two identical measured joint states audited with actual six-joint jaw geometry against full native scene, then full native scene/jaw restoration read back. Not a generated grasp path, not task compilation, not execution."
     }
   },
   "gates": {
@@ -7081,7 +7183,12 @@
     }
   },
   "current_layer_status": {
-    "kernel": "SOFTWARE_REGRESSION_PASSED_1595",
+    "kernel": {
+      "tested_commit": "bcd2dac",
+      "status": "FAILED_REGRESSION",
+      "passed": 1621,
+      "failed": 1
+    },
     "native_wiring": "TWELVE_NATIVE_BODY_GEOMETRY_AND_PARAMETERS_ALIGNED_ATTACHMENT_ROBOT_POLICY_AND_WORKER_PENDING",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
     "actual_simulation": "NATIVE_BODY_AND_MEASURED_STATE_READBACK_EXIT_0_NO_ATOMIC_EXECUTION",
@@ -7121,6 +7228,14 @@
       "model_inference": "NOT_RUN",
       "actual_simulation": "Private held/refined/empty geometry transactions and two native GPU negative cases passed; no actual grasp",
       "hardware": "NOT_AUTHORIZED_NOT_RUN"
+    },
+    "worker_task_boundary": {
+      "kernel": "1621 passed / 1 failed / 1 existing warning",
+      "native_wiring": "Measured six-joint stage state and native restore implemented. Native asset name/infrastructure metadata wired, but original builder fails constructing fixed proxy due to NumPy dimensions type",
+      "model_inference": "NOT_RUN",
+      "actual_simulation": "Stationary native stage audit succeeded; task compilation and formal worker remain unavailable",
+      "hardware": "NOT_AUTHORIZED_NOT_RUN",
+      "next_action": "Convert validated infrastructure dimensions to list before CollisionObject construction; run original full-inventory task compilation, then assemble original phases/auditor/executor in formal pen worker."
     }
   },
   "native_bootstrap": {

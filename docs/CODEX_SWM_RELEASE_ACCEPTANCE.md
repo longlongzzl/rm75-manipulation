@@ -273,3 +273,18 @@ SAPIEN 端已绑定真实 NativeBodyMirror 的附着与物理基线方法，原�
 定向 **10 passed / 0.41 s**；最终代码全量 **1618 passed / 1 warning / 41.46 s**，唯一警告为既有 trimesh 弃用提示。代码、输入、驱动、原生结果及日志哈希记录在机器验收表 native_bound_attachment_01，历史失败/成功记录保留。
 
 内核：全量通过。原生接线：原资产/实测附着/GPU/FK 几何确认已接，原生私有持物事务通过；正式 worker 与非空后验应用未完成。模型推理：未运行。实际仿真：私有几何事务及负例成功，无真实抓放。硬件：未授权、未连接。下一步把已验证的观测源、双镜像、原阶段规划/审计和共享执行器装配到正式笔 worker，优先取得 grasp/place 六个真实技能检查点，再接同一实测动作的辨识和下一规划。保持 PARTIAL_DELIVERY，未完成技能不可用。代码与证据仅本地提交，未推送。
+
+
+## M1 / 正式任务边界接线与编译类型失败：bcd2dac
+
+原 NativeStageState、PickPlaceNativePhases 和 CuroboNativeStageAuditor 已接入独立六关节实测夹爪状态，不再要求从 holding 推断一个开闭布尔值。未来显式开闭阶段仍保留原目标几何，当前观测阶段使用实测值；候选失败与审计退出恢复实测几何，原生审计恢复改走完整 CuroboScenePort 读回。旧显式 fixture 布尔合同保留。
+
+同时补 native_asset_name 注册字段，并将真实桌面和两面虚拟墙的固定几何传递给原 CompiledNativeTask 和 FixedSceneAtomTaskBuilder。原九物体仍走原 ObjectSpec/共享代理，不能以删除基础设施规避原 builder 不认识这些资产的问题。新增分支只接受指定固定基础设施、正米制尺寸和有效刚体局部变换。
+
+该编译接线存在明确代码错误：新增分支将 NumPy dimensions 数组传给 CollisionObject，而后者使用 dimensions or ()，触发数组真值歧义。定向 **10 passed / 1 failed / 0.50 s**；最终全量 **1621 passed / 1 failed / 1 warning / 43.09 s**。唯一失败为 test_fixed_native_wall_is_not_dropped_or_scaled_by_original_builder，已向用户说明；本轮不宣称全量通过，也不注册未完成工厂。下一步应将已验证尺寸转换成普通列表，不能删除测例或基础设施。
+
+独立实际 measured_audit_01 退出 0：完整原生场景下，实测六关节夹爪状态的静止两样本路径通过关节限位、碰撞、连续性、工具状态和接触策略审计，接触为 0；审计后完整原生场景与实测机器人几何恢复、读回成功。该证据仅是 stationary_geometry_audit_probe，不是原 solver 生成的抓取路径，没有执行动作或技能检查点。私有资源和主环境均关闭。
+
+内核：有上述 1 项明确失败。原生接线：实测阶段状态及恢复取得原生证据；完整原任务编译仍因类型错误不可用，正式 worker 未装配。模型推理：未运行。实际仿真：静止审计成功，无原子执行。硬件：未授权、未连接。输入、代码、驱动、结果及日志哈希已记录在机器验收表，既有成功/失败历史保留。
+
+下一步先修复尺寸类型并验证原任务完整 12 对象编译，再把原阶段规划、原生审计和共享执行器装配进正式笔 worker，推进 grasp/place 六个真实检查点。不得以本次审计代替真实原子闭环。保持 PARTIAL_DELIVERY；未完成技能和缺适配器检查保留。代码及证据仅本地提交，未推送。
