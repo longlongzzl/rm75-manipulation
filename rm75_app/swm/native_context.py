@@ -113,7 +113,8 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     registration = register_primary_scene(primary, output / 'metric_assets', sensor_session=uuid.uuid4().hex)
     robot = SapienRobotStatePort(app_root / 'assets/robot_models/RM75_gripper/RM75-B/urdf/RM75-B.urdf', resources=resources)
     owned["robot"] = robot
-    robot.synchronize_primary_physics(primary)
+    events.emit(kind="swm_native_robot_physics_aligned",
+        acknowledgement=robot.synchronize_primary_physics(primary))
     bodies = NativeBodyMirror(registration, robot, resources=resources)
     simulator = SapienScenePort(bodies.actors, asset_bindings=bodies.asset_bindings,
         set_attachment=bodies.set_attachment, read_attachment=bodies.read_attachment,

@@ -148,8 +148,9 @@ class SapienRobotStatePort:
             source_joints[name] = wrapper._objs[0]
         drives = align_articulation_drive_policy(agent.robot._objs[0], self._robot,
             source_joints=source_joints)
+        bodies = align_link_body_policy(source, private)
         self._physics_state = dict(shapes=expected_shapes, constraints=source_constraints,
-            articulation_drive=drives)
+            articulation_drive=drives, link_bodies=bodies)
         return self.read_physics_policy()
 
     def read_physics_policy(self):
@@ -165,7 +166,8 @@ class SapienRobotStatePort:
         actual = dict(shapes={name: [shape_state(shape, np.eye(4))
             for shape in link.collision_shapes] for name, link in links.items()},
             constraints=[constraint_state(drive, links) for drive in self._constraints],
-            articulation_drive=articulation_drive_policy(self._robot))
+            articulation_drive=articulation_drive_policy(self._robot),
+            link_bodies={name: link_body_policy(link) for name, link in links.items()})
         compare_native_state(self._physics_state, actual, 'robot_physics_policy')
         self.physics_acknowledgement = dict(source='native_robot_shape_and_constraint_readback',
             link_count=len(links), shape_count=sum(map(len, actual['shapes'].values())),
@@ -173,6 +175,7 @@ class SapienRobotStatePort:
             expected_digest=digest(self._physics_state), actual_digest=digest(actual),
             collision_shapes_and_groups_aligned=True, gripper_constraint_configuration_aligned=True,
             articulation_drive_parameters_aligned=True,
+            link_body_parameters_aligned=True, link_bodies=actual['link_bodies'],
             articulation_drive=actual['articulation_drive'],
             drive_target_replay_qualified=False,
             dynamics_stepping_qualified=False, attachment_qualified=False, hardware_qualified=False)
@@ -319,3 +322,52 @@ def _native_drive_joints(robot, joint_map=None):
             or any(not any(joint is member for member in native) for joint in joints.values())):
         raise SceneInvalid('Complete independent thirteen-joint drive inventory required')
     return joints
+
+
+def link_body_policy(link):
+    """Read native link-local inertial, damping and gravity properties."""
+    from .native_body_mirror import pose_matrix
+    values = {key: float(getattr(link, key)) for key in
+        ('mass', 'linear_damping', 'angular_damping')}
+    inertia = _array(link.inertia)
+    cmass = transform(pose_matrix(link.cmass_local_pose))
+    if (any(not np.isfinite(value) or value < 0 for value in values.values())
+            or inertia.shape != (3,) or not np.isfinite(inertia).all()
+            or np.any(inertia < 0)):
+        raise SceneInvalid('Invalid native link inertial policy')
+    return dict(**values, inertia=inertia.tolist(), T_link_cmass=cmass.tolist(),
+        auto_compute_mass=bool(link.auto_compute_mass), disable_gravity=bool(link.disable_gravity))
+
+
+def align_link_body_policy(source, private):
+    """Align independent link bodies without changing automatic mass semantics.
+
+    The enclosing mirror validates the full URDF link inventory and shapes.
+    Automatic mass must already match after shape synchronization. Assigning
+    manual inertia would silently disable that original native policy.
+    """
+    from .native_body_mirror import compare_native_state, native_pose
+    if (not source or set(source) != set(private)
+            or len({id(link) for link in source.values()}) != len(source)
+            or len({id(link) for link in private.values()}) != len(private)
+            or any(dst is src for dst in private.values() for src in source.values())):
+        raise SceneInvalid('Independent complete link-body inventory required')
+    expected = {name: link_body_policy(link) for name, link in source.items()}
+    before = {name: link_body_policy(link) for name, link in private.items()}
+    inertial = ('mass', 'inertia', 'T_link_cmass', 'auto_compute_mass')
+    for name, row in expected.items():
+        if row['auto_compute_mass']:
+            compare_native_state({key: row[key] for key in inertial},
+                {key: before[name][key] for key in inertial}, name + '.automatic_mass')
+    for name, row in expected.items():
+        link = private[name]
+        if not row['auto_compute_mass']:
+            link.mass = row['mass']
+            link.inertia = np.asarray(row['inertia'], dtype=np.float32)
+            link.cmass_local_pose = native_pose(row['T_link_cmass'])
+        link.disable_gravity = row['disable_gravity']
+        link.linear_damping = row['linear_damping']
+        link.angular_damping = row['angular_damping']
+    compare_native_state(expected,
+        {name: link_body_policy(link) for name, link in private.items()}, 'link_body_policy')
+    return expected
