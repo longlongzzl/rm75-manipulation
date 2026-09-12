@@ -2173,6 +2173,1199 @@
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "log": "runtime_data/swm_release_primary_capture_full.log",
       "log_sha256": "72ff36eac952b14d37f871cef02ae2a68a0bc71e7d1c531c4df7227ea8c5787f"
+    },
+    "metric_registration_native_01": {
+      "tested_commit": "67aa37d",
+      "domain": "actual_primary_PhysX_and_curobo_GPU",
+      "exit_code": 0,
+      "status": "metric_assets_and_fresh_preparations_verified",
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_metric_registration_driver_01/run.py",
+      "sha256": {
+        "driver.py": "3559a48c0ede43efe9c8415b4fc887d62bd2ab46715eb94c64921a697c7e8683",
+        "registration_result.json": "7f3f291a17f72d132a157c62a5325168a25a3cef5e33314c9210c5b61c912556",
+        "manifest.json": "6cdc0c2eb5cc6f5119daceb464b70cef7d8db6a25917f4f82145975ea6a13a9b",
+        "bootstrap_input.json": "3c62b3a81f68e1cbff4b1f2812a48781072e19466c1e050a65dfd92cd3dc362a",
+        "bootstrap_result.json": "c6fed41ca3d536f7bca01d7a98dcfc44f1c254bebe08eac21bcbf115abdba33a",
+        "stdout.log": "d775f87dbc8e86e70ffeea0f0f136d6c6c91a8e9080cd4297919abfeff153b34"
+      },
+      "registered_assets": {
+        "bi": {
+          "mesh_sha256": "1ef8131456d07671e2f12933b3aa4861b489fa47a86d081b2f49b52dea68d2bc",
+          "collision_sha256": "ee0e3872ddc421e079a1961fc42dfa32b4101f833af4dd6f2d1c410c1b2845ab",
+          "collision_kind": "cuboid",
+          "T_object_collision": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              4.9831680962270456e-05
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              -7.509363545258498e-05
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              -1.2150220518227443e-05
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "provenance": {
+            "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/pen.glb",
+            "source_mesh_sha256": "717a9c1d415794bcd17d06d8d21592ad023282ede3bf1cc68673f292dcc80652",
+            "applied_uniform_scale": 0.13794992113145285,
+            "original_simulation_scale": 0.13794992113145285,
+            "original_simulation_sha256": "717a9c1d415794bcd17d06d8d21592ad023282ede3bf1cc68673f292dcc80652",
+            "proxy_source": "shared_build_automatic_collision_proxy",
+            "proxy_scale": 1.5
+          }
+        },
+        "bitong": {
+          "mesh_sha256": "c49eafd82dc6006ffc9dab5786827d76b6ac5856b56a4bc9be9243359c2d0865",
+          "collision_sha256": "aede0ff35614dedf516fc81edfca78f9a89da5c8028518f83876c166d6d9b685",
+          "collision_kind": "cuboid",
+          "T_object_collision": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              -3.648193192672426e-05
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              1.6807863041794564e-06
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              5.596757109978785e-05
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "provenance": {
+            "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/holder_85x95.glb",
+            "source_mesh_sha256": "c62151d11a1c0031b2913222d5c8218db57a494d27f5db35204593a9bc7a2d7f",
+            "applied_uniform_scale": 0.09494588084791672,
+            "original_simulation_scale": 0.09494584133019865,
+            "original_simulation_sha256": "d41e0b4c671dda71598096c10a645f2c2c97e97312d830dd5bceed872e4cd2d0",
+            "proxy_source": "shared_build_automatic_collision_proxy",
+            "proxy_scale": 1.0
+          }
+        },
+        "carriot": {
+          "mesh_sha256": "a7df8bcbf64eff0163f3cd1fdeb710918072adca564b3a7feccf937f768723df",
+          "collision_sha256": "0ed871ccbcf3414db10c5693e2aaa46bf94bc47730e3564114aa481faa16f9ec",
+          "collision_kind": "cuboid",
+          "T_object_collision": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0002008199065127852
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              0.0003597091262385112
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              1.634273015966916e-06
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "provenance": {
+            "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/carriot.glb",
+            "source_mesh_sha256": "9530b5da1c16c73a9d5f4e8f29cbe6f8900d94540292df25b516229aad7b9a65",
+            "applied_uniform_scale": 0.2101038420831295,
+            "original_simulation_scale": 0.9999999999999999,
+            "original_simulation_sha256": "c97f909b565f43206e12f3780f27c3d0f7c8f757c43a30fafcf1e2d7541148f0",
+            "proxy_source": "shared_build_automatic_collision_proxy",
+            "proxy_scale": 1.0
+          }
+        },
+        "desk": {
+          "mesh_sha256": "cf67bdb8baff36e825a411b66f40f2a010041175e8a3ed4f6fbb57164f3928c0",
+          "collision_sha256": "0c8aec50e41d0647e535926f58918c0f327bf2e6c78651f4a980cd47974f1ec0",
+          "collision_kind": "cuboid",
+          "T_object_collision": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              -4.59715995859884e-05
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              -0.0008454566558298322
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.00015396451017653403
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "provenance": {
+            "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/desk.glb",
+            "source_mesh_sha256": "857cb2acfd5aa5a504723a760bfe293290158e3a524c38ce31148cd37ce79b6e",
+            "applied_uniform_scale": 0.429799641192331,
+            "original_simulation_scale": 1.0,
+            "original_simulation_sha256": "27f055f1165d1a5b2df8168e0bdfdff7017430153bf85cbbfa5c99c3e4c4620b",
+            "proxy_source": "shared_build_automatic_collision_proxy",
+            "proxy_scale": 1.1
+          }
+        },
+        "gluestick": {
+          "mesh_sha256": "6f94f6275931c1e54fbe5d9c1ed48567a2bc61235577d6ed53065420997966e5",
+          "collision_sha256": "18a90824bd7d2b25e33f5fff627914dfb6decd7fc9bcd345c6d9ca9b7564c3f1",
+          "collision_kind": "cuboid",
+          "T_object_collision": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              -1.4126061408641887e-05
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              -9.799314778167821e-06
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              2.8770119383008268e-05
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "provenance": {
+            "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/gluestick.glb",
+            "source_mesh_sha256": "f399210d01a5bf91eb059ea2a20cbff0d112ff1c52fca9fec9c7b8698e1bb19f",
+            "applied_uniform_scale": 0.11000683886605127,
+            "original_simulation_scale": 1.0000000000000002,
+            "original_simulation_sha256": "d13f564601e6b9b1f7c4619bb7d75a6a7013fc7dde05281e8b04ec50078d1bc8",
+            "proxy_source": "shared_build_automatic_collision_proxy",
+            "proxy_scale": 1.0
+          }
+        },
+        "hongshupian": {
+          "mesh_sha256": "b56793bc79933a4dcebf18bac4219ddcd3b8290f2749cd0086ea0e9b1e920668",
+          "collision_sha256": "573474711bcc20a46ee984a18944f2aeadf2132a0feb30d29bac68b3092f5f77",
+          "collision_kind": "cuboid",
+          "T_object_collision": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              -3.835377514650855e-05
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              -5.1251958092211e-05
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              -8.873959730684052e-05
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "provenance": {
+            "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/hongshupian.glb",
+            "source_mesh_sha256": "695f93e28f0a6611410a13de961bb4a0bd3ddaabcf74811d0fbfcfece9dc4754",
+            "applied_uniform_scale": 0.1498806294816057,
+            "original_simulation_scale": 0.1498806294816057,
+            "original_simulation_sha256": "695f93e28f0a6611410a13de961bb4a0bd3ddaabcf74811d0fbfcfece9dc4754",
+            "proxy_source": "shared_build_automatic_collision_proxy",
+            "proxy_scale": 1.0
+          }
+        },
+        "lvmukuai": {
+          "mesh_sha256": "7ed9478496c6c0902887dc22c116577ba607977770207c063659eecc9154fbf4",
+          "collision_sha256": "ae51275d8ba6586091f0e42dd5d4c9b1e8d2590a167b8b4c278457e4dc55d825",
+          "collision_kind": "cuboid",
+          "T_object_collision": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              3.4614021314187355e-07
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              4.569408581134893e-05
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              -8.471043820844145e-06
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "provenance": {
+            "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/lvmukuai.glb",
+            "source_mesh_sha256": "d5a86f3123e3ff6e99e8d019431cc2580647d94484607092d1759973e61d7258",
+            "applied_uniform_scale": 0.06002345345909304,
+            "original_simulation_scale": 0.06002345345909304,
+            "original_simulation_sha256": "d5a86f3123e3ff6e99e8d019431cc2580647d94484607092d1759973e61d7258",
+            "proxy_source": "shared_build_automatic_collision_proxy",
+            "proxy_scale": 1.0
+          }
+        },
+        "shuazi": {
+          "mesh_sha256": "a5742ed9f4a17ef417200169e4ca1099c760a2f978609b58bd0794f5d6e6eacc",
+          "collision_sha256": "9c4ede059217018216e8f77b21c0e4691d8fcf416ec592ae792a8f197480bd65",
+          "collision_kind": "cuboid",
+          "T_object_collision": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              -1.881824123820006e-05
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              -3.294648980694161e-06
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.0003454924519300874
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "provenance": {
+            "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/shuazi.glb",
+            "source_mesh_sha256": "520e8353da429cd1005433b6eb86efed50b76e0419619639f84025b9667129c5",
+            "applied_uniform_scale": 0.10568840840016398,
+            "original_simulation_scale": 0.10568840840016398,
+            "original_simulation_sha256": "520e8353da429cd1005433b6eb86efed50b76e0419619639f84025b9667129c5",
+            "proxy_source": "shared_build_automatic_collision_proxy",
+            "proxy_scale": 1.25
+          }
+        },
+        "tennis": {
+          "mesh_sha256": "6a8e77f0c986dc1c6e0d863ac82985d66b273278970229cb9cb6e5ef7b26c545",
+          "collision_sha256": "b575ebfab578454ca22dab537b1665a269673fb7e29c388a2c8d1573f478fb3c",
+          "collision_kind": "sphere",
+          "T_object_collision": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              8.140641821982576e-06
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              -4.79738746018681e-06
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              8.897959346682646e-07
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "provenance": {
+            "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/tennis.glb",
+            "source_mesh_sha256": "10b61d7a44d507694d6e374fd63d03f5d50e7209d72047d4673e5fed37a5a0d2",
+            "applied_uniform_scale": 0.07000374486214005,
+            "original_simulation_scale": 1.0,
+            "original_simulation_sha256": "45fcba2474d2386d8990fcf97fa97f24f7f7e5297f817be4dee0b15f6a7fafb2",
+            "proxy_source": "shared_build_automatic_collision_proxy",
+            "proxy_scale": 1.0
+          }
+        },
+        "__maniskill_workspace_table__": {
+          "mesh_sha256": "ffaa5addffecd984d024fded7d57110326fab9cfdd1b0ce88ea4609d62e4b243",
+          "collision_sha256": "ffaa5addffecd984d024fded7d57110326fab9cfdd1b0ce88ea4609d62e4b243",
+          "collision_kind": "cuboid",
+          "T_object_collision": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "provenance": {
+            "source": "native_SAPIEN_table_collision_shape",
+            "original_dimensions_m": [
+              2.4179999828338623,
+              1.2089999914169312,
+              0.9196429252624512
+            ]
+          }
+        },
+        "virtual_side_wall": {
+          "mesh_sha256": "a676e0d471bc8a7b6e03e8898c4f719da39fbbeffbb04830a19c85f7bc391a0f",
+          "collision_sha256": "a676e0d471bc8a7b6e03e8898c4f719da39fbbeffbb04830a19c85f7bc391a0f",
+          "collision_kind": "cuboid",
+          "T_object_collision": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "provenance": {
+            "source": "original_virtual_wall_policy_and_native_actor_pose",
+            "original_dimensions_m": [
+              0.029999999329447746,
+              1.2000000476837158,
+              0.800000011920929
+            ]
+          }
+        },
+        "virtual_top_wall": {
+          "mesh_sha256": "b77be76ebcb65b93e412db9186b289aaad6508cad6cbb620029990c0a0f297da",
+          "collision_sha256": "b77be76ebcb65b93e412db9186b289aaad6508cad6cbb620029990c0a0f297da",
+          "collision_kind": "cuboid",
+          "T_object_collision": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "provenance": {
+            "source": "original_virtual_wall_policy_and_native_actor_pose",
+            "original_dimensions_m": [
+              1.2000000476837158,
+              1.2000000476837158,
+              0.029999999329447746
+            ]
+          }
+        }
+      },
+      "preparations": [
+        {
+          "snapshot_id": "c76bca6c5d2e2f54f9acf25f0b2c2479c79135bb2ad50ad59de0baf7307d8fb9",
+          "primary_sequence": 4,
+          "objects": 12,
+          "assets": 12,
+          "swm_prepare_accepted": true,
+          "authoritative_world_revision": 0,
+          "geometry_comparison": [
+            {
+              "name": "bi",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "bitong",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "carriot",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "desk",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "gluestick",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "hongshupian",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "lvmukuai",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "shuazi",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "tennis",
+              "kind": "sphere",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "__maniskill_workspace_table__",
+              "kind": "cuboid",
+              "position_error_m": 5.551115123125785e-17,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "virtual_side_wall",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "virtual_top_wall",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            }
+          ]
+        },
+        {
+          "snapshot_id": "17d22a5aef141165f3b92ac744fca59dd6552fe9e6e39c11ff8502bfec7306c1",
+          "primary_sequence": 5,
+          "objects": 12,
+          "assets": 12,
+          "swm_prepare_accepted": true,
+          "authoritative_world_revision": 0,
+          "geometry_comparison": [
+            {
+              "name": "bi",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "bitong",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "carriot",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "desk",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "gluestick",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "hongshupian",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "lvmukuai",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "shuazi",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "tennis",
+              "kind": "sphere",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "__maniskill_workspace_table__",
+              "kind": "cuboid",
+              "position_error_m": 5.551115123125785e-17,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "virtual_side_wall",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            },
+            {
+              "name": "virtual_top_wall",
+              "kind": "cuboid",
+              "position_error_m": 0.0,
+              "rotation_error_rad": 0.0
+            }
+          ]
+        }
+      ],
+      "gpu_acknowledgement": {
+        "scene_revision": "17d22a5aef141165f3b92ac744fca59dd6552fe9e6e39c11ff8502bfec7306c1",
+        "source": "native_GPU_collision_tensors",
+        "coordinate_frame": "base_link",
+        "count": 12,
+        "obstacles": [
+          {
+            "name": "bi",
+            "enabled": true,
+            "dimensions": [
+              0.03453478217124939,
+              0.2070000022649765,
+              0.0345638245344162
+            ],
+            "T_base_proxy": [
+              [
+                7.098051751223009e-08,
+                0.9083841039028954,
+                -0.41813672378365463,
+                -0.1922331832286474
+              ],
+              [
+                4.546640159895943e-08,
+                -0.4181367237836582,
+                -0.9083841039028955,
+                -0.21113500816079545
+              ],
+              [
+                -0.9999999999999962,
+                4.546640159895942e-08,
+                -7.098051751223009e-08,
+                0.01251158028986179
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "bitong",
+            "enabled": true,
+            "dimensions": [
+              0.08500000089406967,
+              0.0949999988079071,
+              0.08500000089406967
+            ],
+            "T_base_proxy": [
+              [
+                0.999939279452158,
+                0.0026982087202875853,
+                0.010684431589975013,
+                -0.2802845332093598
+              ],
+              [
+                0.010714694989231667,
+                -0.011462453380825986,
+                -0.9998768961596122,
+                -0.002302034726998599
+              ],
+              [
+                -0.0025754067614312363,
+                0.9999306635123226,
+                -0.011490667857832452,
+                0.048961977496712994
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "carriot",
+            "enabled": true,
+            "dimensions": [
+              0.04314685985445976,
+              0.03761950135231018,
+              0.20999999344348907
+            ],
+            "T_base_proxy": [
+              [
+                0.753074940598267,
+                9.840913625707047e-09,
+                0.6579347489249344,
+                -0.212982679551118
+              ],
+              [
+                -0.6579347489249309,
+                -9.372801351854225e-08,
+                0.7530749405982643,
+                -0.08526446118335324
+              ],
+              [
+                6.907786245864054e-08,
+                -0.9999999999999956,
+                -6.410953912539486e-08,
+                0.018474949831595616
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "desk",
+            "enabled": true,
+            "dimensions": [
+              0.4729999899864197,
+              0.12289875745773315,
+              0.2756061255931854
+            ],
+            "T_base_proxy": [
+              [
+                0.019344957979072607,
+                -0.008543649282643152,
+                0.9997763643224036,
+                0.394772131670522
+              ],
+              [
+                0.999595663881387,
+                0.021007829162616884,
+                -0.019161937882255918,
+                -0.01753117779889387
+              ],
+              [
+                -0.02083941818566552,
+                0.9997428055109022,
+                0.008946590349035801,
+                0.05563574058214461
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "gluestick",
+            "enabled": true,
+            "dimensions": [
+              0.030726440250873566,
+              0.10999999940395355,
+              0.031415779143571854
+            ],
+            "T_base_proxy": [
+              [
+                -8.379260376500126e-08,
+                -0.029862180926388572,
+                -0.999554025628586,
+                -0.009789023935500686
+              ],
+              [
+                -3.41822910397506e-08,
+                0.9995540256285891,
+                -0.029862180926385793,
+                -0.16129839237743349
+              ],
+              [
+                0.9999999999999956,
+                3.166481672201685e-08,
+                -8.477599215023387e-08,
+                0.015999661012681174
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "hongshupian",
+            "enabled": true,
+            "dimensions": [
+              0.07000000029802322,
+              0.15000000596046448,
+              0.07000000029802322
+            ],
+            "T_base_proxy": [
+              [
+                -0.6226255432891455,
+                0.7824410358462236,
+                0.011111177605697598,
+                0.16361965160375733
+              ],
+              [
+                -0.7814262587149994,
+                -0.6224431185370618,
+                0.04401779613447959,
+                -0.048688315364849744
+              ],
+              [
+                0.04135740604263969,
+                0.018724038286283048,
+                0.9989689561521311,
+                0.03571725992757709
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "lvmukuai",
+            "enabled": true,
+            "dimensions": [
+              0.05999999865889549,
+              0.02843616157770157,
+              0.032143495976924896
+            ],
+            "T_base_proxy": [
+              [
+                0.8675998247214618,
+                0.0,
+                -0.4972630532658633,
+                0.051585956660317185
+              ],
+              [
+                -0.4972630532658633,
+                -0.0,
+                -0.867599824721462,
+                -0.24780856785472707
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.015218066982924938
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "shuazi",
+            "enabled": true,
+            "dimensions": [
+              0.13124999403953552,
+              0.08309492468833923,
+              0.06442781537771225
+            ],
+            "T_base_proxy": [
+              [
+                -0.8904306172518691,
+                -0.45511901285318157,
+                -1.9562952115023053e-08,
+                -0.10655343712222488
+              ],
+              [
+                0.4551190128531819,
+                -0.8904306172518689,
+                -2.6249896043931433e-08,
+                -0.13626071988260421
+              ],
+              [
+                -5.472624752036023e-09,
+                -3.2277182592278633e-08,
+                0.9999999999999993,
+                0.026771120653668164
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "tennis",
+            "enabled": true,
+            "dimensions": [
+              0.07000000029802322,
+              0.07000000029802322,
+              0.07000000029802322
+            ],
+            "T_base_proxy": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.14492912590503693
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                -0.29760149121284485
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.03692774474620819
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "__maniskill_workspace_table__",
+            "enabled": true,
+            "dimensions": [
+              2.4179999828338623,
+              1.2089999914169312,
+              0.9196429252624512
+            ],
+            "T_base_proxy": [
+              [
+                0.9999999999999926,
+                1.192092893807779e-07,
+                -1.8439245896783423e-08,
+                -1.2396839754872952e-08
+              ],
+              [
+                -1.1920928972078365e-07,
+                0.9999999999999926,
+                -1.843924369865415e-08,
+                -0.1800000433772797
+              ],
+              [
+                1.843924369865415e-08,
+                1.8439245896783423e-08,
+                0.9999999999999996,
+                -0.45982146595029055
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "virtual_side_wall",
+            "enabled": true,
+            "dimensions": [
+              0.029999999329447746,
+              1.2000000476837158,
+              0.800000011920929
+            ],
+            "T_base_proxy": [
+              [
+                -1.6858739670250213e-07,
+                0.9999999999999859,
+                -1.8439245581254376e-08,
+                4.545110343195874e-08
+              ],
+              [
+                -0.9999999999999857,
+                -1.6858739693842437e-07,
+                -1.8439242472630218e-08,
+                0.6149999425379626
+              ],
+              [
+                -1.843924558125437e-08,
+                1.843924247263022e-08,
+                0.9999999999999998,
+                0.4009999746236729
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "virtual_top_wall",
+            "enabled": true,
+            "dimensions": [
+              1.2000000476837158,
+              1.2000000476837158,
+              0.029999999329447746
+            ],
+            "T_base_proxy": [
+              [
+                -1.6858739670250213e-07,
+                0.9999999999999859,
+                -1.8439245581254376e-08,
+                -3.994013364204501e-08
+              ],
+              [
+                -0.9999999999999857,
+                -1.6858739693842437e-07,
+                -1.8439242472630218e-08,
+                -0.3000000567512317
+              ],
+              [
+                -1.843924558125437e-08,
+                1.843924247263022e-08,
+                0.9999999999999998,
+                0.8149998728747505
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "robot_state_qualified": false,
+        "attachment_qualified": false
+      },
+      "primary_closed": true,
+      "world_checkpoint_committed": false,
+      "full_mirror_qualified": false,
+      "physics_model_qualified": false,
+      "task_semantics_qualified": false,
+      "atomic_worker_qualified": false,
+      "skill_checkpoint_count": 0,
+      "hardware_connected": false
+    },
+    "metric_registration_full": {
+      "tested_commit": "67aa37d",
+      "domain": "software_regression",
+      "passed": 1577,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 41.85,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "log": "runtime_data/swm_release_metric_registration_full.log",
+      "log_sha256": "32a605cbff4a5efa931779b0720550da4690188e37e0a0b474b7511fae2c4805"
+    },
+    "metric_replay_regression_01": {
+      "tested_commit": "67aa37d",
+      "domain": "actual_CPU_PhysX_tool_only",
+      "exit_code": 0,
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 480s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/realman/bin/python tools/validate_swm_physics_replay.py --python /home/zhangzhao/anaconda3/envs/realman/bin/python --output runtime_data/swm_release_metric_replay_01",
+      "sha256": {
+        "report.json": "8fdebdecce179c1995f5e19b556b580c9ef451cd736b51301dcb7bf09783d11e",
+        "stdout.log": "8ac8f870b435881b03b6b5f49feffb63c3b227620d73be855568a1f405c60ec7"
+      },
+      "all_valid": true,
+      "hypothesis_count": 4,
+      "measured_action_digest": "e30b8059f2b9bce6390ae222cc4d5b9396162489277757e33702c31c7724db53",
+      "reference_command_digest": "8f1105fafb68aa30c2891e79440725be16a737bc47a82bf74d889c6bd24630f3",
+      "posterior": {
+        "schema": "rm75_physics_posterior_v1",
+        "mesh_sha256": "949231230186e0b5ef1ec1230337f06cb2ffe483957818ba634ffd7f175dff1d",
+        "object_id": "target",
+        "support_id": "table",
+        "domain": "physics",
+        "support_mesh_sha256": "c1781aeb2253ce1aafc9bcade9138df547c843123c320ac0dfef107050c74cbf",
+        "transition_digest": "01763d7f4d9b64757d6ebc65ddba978ec2112d0ac18f1acd349a0531654a1176",
+        "actual_action_digest": "e30b8059f2b9bce6390ae222cc4d5b9396162489277757e33702c31c7724db53",
+        "observed_initial_snapshot_id": "3a1fd9f7bca58221fa1ee95b83aa7197c6aa418f09c910d4d71944fbe58e62e2",
+        "observation_mode": "endpoint_only",
+        "updated": true,
+        "particles": [
+          {
+            "id": "low_friction",
+            "parameters": {
+              "static_friction": 0.15,
+              "dynamic_friction": 0.1,
+              "density_kg_m3": 800.0
+            },
+            "loss": 27.91358997284087,
+            "weight": 0.05000025642002142
+          },
+          {
+            "id": "truth",
+            "parameters": {
+              "static_friction": 0.6,
+              "dynamic_friction": 0.45,
+              "density_kg_m3": 800.0
+            },
+            "loss": 1.2079304489454972e-08,
+            "weight": 0.3453323200836004
+          },
+          {
+            "id": "high_friction",
+            "parameters": {
+              "static_friction": 1.1,
+              "dynamic_friction": 0.95,
+              "density_kg_m3": 800.0
+            },
+            "loss": 0.6883298063341241,
+            "weight": 0.2593351034918316
+          },
+          {
+            "id": "other_density",
+            "parameters": {
+              "static_friction": 0.6,
+              "dynamic_friction": 0.45,
+              "density_kg_m3": 1600.0
+            },
+            "loss": 1.2614659643144396e-08,
+            "weight": 0.34533232000454656
+          }
+        ],
+        "best_fit_id": "truth",
+        "best_fit_parameters": {
+          "static_friction": 0.6,
+          "dynamic_friction": 0.45,
+          "density_kg_m3": 800.0
+        },
+        "minimum_loss": 1.2079304489454972e-08,
+        "density_informative": false,
+        "unique_parameters_identified": false,
+        "note": "Effective material/density belief. No unique density claim; future actions must be replanned from a new checkpoint."
+      },
+      "next_native_plan_consumed": false,
+      "original_T_continuous_controller_qualified": false,
+      "new_sphere_or_nonidentity_collision_frame_physx_qualified": false,
+      "hardware_connected": false,
+      "note": "Regression of original tool-only cuboid case with identity collision frames; does not qualify new metric-scene dynamics or adaptive next-plan wiring."
     }
   },
   "gates": {
@@ -2222,7 +3415,8 @@
         "runs.native_robot_mirror_02: private articulation aligned, not full scene or worker qualification",
         "runs.primary_capture_native_01: capture driver failed; no complete fresh batch evidence",
         "runs.primary_capture_native_02: primary_sequence mismatch rejected",
-        "runs.primary_capture_native_03: two fresh twelve-object native batches, not skill checkpoints"
+        "runs.primary_capture_native_03: two fresh twelve-object native batches, not skill checkpoints",
+        "runs.metric_registration_native_01: metric files and two fresh preparations agree with original proxies and GPU; no complete mirror transaction"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -2323,7 +3517,8 @@
       "numerator": 0,
       "denominator": null,
       "evidence": [
-        "runs.recording_wiring_targeted: recording lifecycle software wiring, NOT native physics acceptance"
+        "runs.recording_wiring_targeted: recording lifecycle software wiring, NOT native physics acceptance",
+        "runs.metric_replay_regression_01: original actual four-parameter tool-only regression; no next-plan consumption"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -2403,17 +3598,18 @@
         "runs.se3_full",
         "runs.measured_gripper_full",
         "runs.native_robot_mirror_full",
-        "runs.primary_capture_full"
+        "runs.primary_capture_full",
+        "runs.metric_registration_full"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
     }
   },
   "current_layer_status": {
-    "kernel": "SOFTWARE_REGRESSION_PASSED_1575",
-    "native_wiring": "FRESH_COMPLETE_PRIMARY_CAPTURE_AND_PRIVATE_ROBOT_AVAILABLE_METRIC_MANIFEST_FULL_MIRROR_AND_WORKER_PENDING",
+    "kernel": "SOFTWARE_REGRESSION_PASSED_1577",
+    "native_wiring": "METRIC_ASSETS_FRESH_SWM_PREPARATIONS_AND_GPU_GEOMETRY_VERIFIED_FULL_MIRROR_AND_WORKER_PENDING",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "TWO_FRESH_TWELVE_OBJECT_NATIVE_BATCHES_EXIT_0_NO_ATOMIC_EXECUTION",
+    "actual_simulation": "METRIC_REGISTRATION_AND_ORIGINAL_FOUR_PARAMETER_PHYSX_REGRESSION_EXIT_0_NO_ATOMIC_WORKER",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
   "native_bootstrap": {
@@ -2426,7 +3622,7 @@
     "tool": "tools/validate_swm_native_bootstrap.py",
     "successful_environment": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
     "failed_environment": "/home/zhangzhao/anaconda3/bin/python (exit 139)",
-    "remaining": "Register metric original assets/infrastructure, connect fresh batches through complete dual-mirror transaction including attachment, install trusted pen worker and execute six skill checkpoints",
+    "remaining": "Complete private actor dynamics/attachment mirror from original native geometry, then trusted pen worker six fresh committed skill checkpoints; preserve original task semantics",
     "same_process_planner_environment": {
       "python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
       "append_site_packages": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",
