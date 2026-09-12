@@ -25,7 +25,10 @@ def main():
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--probe-planner', action='store_true',
         help='Initialize the existing shared cuRobo2 backend in the SAME process; never plan or execute')
+    parser.add_argument('--sync-planning-scene', action='store_true')
     options = parser.parse_args()
+    if options.sync_planning_scene and not options.probe_planner:
+        parser.error('--sync-planning-scene requires --probe-planner')
     # Enforce the SAME network guard again before native imports. A generic
     # Seccomp=2 flag alone does not prove non-Unix sockets are denied.
     from tools.run_network_isolated import block_network
@@ -53,7 +56,7 @@ def main():
     manifest = dict(schema='rm75.swm_native_bootstrap_input_v1', specification=spec,
         input_sha256=contract['sha256'], input_path=str(fixed), object_ids=list(contract['names']),
         profile_sha256=hashlib.sha256(options.profile.read_bytes()).hexdigest(),
-        probe_planner=options.probe_planner, actual_python=sys.executable,
+        probe_planner=options.probe_planner, sync_planning_scene=options.sync_planning_scene, actual_python=sys.executable,
         effective_profile=profile, hardware_connected=False, atomic_worker_qualified=False)
     (output / 'input.json').write_text(json.dumps(manifest, indent=2) + '\n')
     events, stop = EventLog(output), StopToken(output / 'STOP')
@@ -88,6 +91,13 @@ def main():
                 report['planner_initialized'] = True
                 report['planner_joint_names'] = list(planner.joint_names)
                 report['planner_scene_qualified'] = False
+                if options.sync_planning_scene:
+                    from rm75_app.swm.native_planning_scene import compile_primary_collision_scene, read_curobo_collision_ack
+                    scene, source = compile_primary_collision_scene(world)
+                    backend.update_scene(scene)
+                    report['collision_scene_source'] = source
+                    report['collision_scene_ack'] = read_curobo_collision_ack(backend, scene)
+                    report['collision_geometry_synchronized'] = True
                 events.emit('swm_shared_planner_initialized', hardware_connected=False,
                             task_scene_qualified=False)
             report['status'] = 'initialized_and_read' 
