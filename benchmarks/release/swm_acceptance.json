@@ -8,14 +8,14 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "f488a58",
+    "commit": "4e2a48f",
     "sha256": {
-      "rm75_app/swm/native_body_mirror.py": "7ffec172817c1a8d79d8783005488b45b6bc3e264ebe44245788bd8d37f81e7b",
-      "rm75_app/swm/native_scene.py": "2656d7c766c5b9a27c4c68a66b87ef4c32091a93e4aacfd3917e8747dcfa89c3",
-      "tests/swm/test_native_baseline_manager.py": "418c640fd66edafbc0ebeb399679bd99125a1334a27fee346e613ac3c01ef7ac"
+      "rm75_app/swm/native_scene.py": "65ab7a3bf499b5fb45e6b381450a2596fa99704fe3a7c529e823eb199c00c06c",
+      "rm75_app/planning/backends/curobo2.py": "60e91f33fe3061d7ce7a45ef6dcf75539ca92d3d4fd700f82f53ac8abbedb85b",
+      "tests/swm/test_native_attachment_switch_order.py": "8467fd864e3d7090d2b75a117b50a3d4cbfa3b2f54a214e9f6701bd9ae4c7bc8"
     },
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Implementation unchanged during native run and full regression; complete artifact hashes in runs.native_live_mirror_01."
+    "note": "Raw native evidence and source hashes recorded in runs.native_attachment_storage_01."
   },
   "runs": {
     "m0_targeted": {
@@ -6443,6 +6443,291 @@
         "assets/test_scenes/current_table.json": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908"
       },
       "note": "Actual CheckpointSynchronizer -> TransactionalSceneMirror -> both native ports -> SWM commit, with one existing GPU planner and private world alive together. Initialization only, empty holding and empty posterior overrides. No grasp/place or physical stepping."
+    },
+    "native_attachment_order_targeted": {
+      "tested_commit": "4e2a48f",
+      "domain": "software_fixture",
+      "passed": 7,
+      "failed": 0,
+      "seconds": 0.41
+    },
+    "native_attachment_order_full": {
+      "tested_commit": "4e2a48f",
+      "domain": "software_regression",
+      "passed": 1612,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 43.23,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "note": "Final implementation unchanged throughout native and full regression runs."
+    },
+    "native_attachment_storage_01": {
+      "tested_commit": "4e2a48f",
+      "domain": "private_native_hypothesis_and_GPU_storage",
+      "process_exit_code": 0,
+      "status": "live_dual_mirror_checkpoint_committed",
+      "private_attachment_transition": {
+        "domain": "private_hypothesis",
+        "injected_private_joint_delta_rad": 0.02,
+        "before_switch": {
+          "object_id": "bi",
+          "T_tcp_object": [
+            [
+              0.025963664054870605,
+              -0.41586339473724365,
+              -0.9090563654899597,
+              0.00867089256644249
+            ],
+            [
+              0.00022581219673156738,
+              0.9093653559684753,
+              -0.41599828004837036,
+              -0.19375336170196533
+            ],
+            [
+              0.9996628165245056,
+              0.010595574975013733,
+              0.023704349994659424,
+              0.13551576435565948
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ]
+        },
+        "actual_snapshot_restored": true,
+        "primary_state_unchanged": true,
+        "actual_grasp": false,
+        "skill_checkpoints": 0
+      },
+      "gpu_before": {
+        "source": "native_GPU_attachment_link_spheres",
+        "consumers_consistent": true,
+        "attachment_geometry_qualified": false,
+        "owners": [
+          {
+            "owner": "trajectory",
+            "device": "cuda:0",
+            "coordinate_frame": "attached_object_link",
+            "slot_count": 64,
+            "active_counts": [
+              0
+            ],
+            "active_spheres_by_env": [
+              []
+            ]
+          },
+          {
+            "owner": "planner",
+            "device": "cuda:0",
+            "coordinate_frame": "attached_object_link",
+            "slot_count": 64,
+            "active_counts": [
+              0
+            ],
+            "active_spheres_by_env": [
+              []
+            ]
+          },
+          {
+            "owner": "ik",
+            "device": "cuda:0",
+            "coordinate_frame": "attached_object_link",
+            "slot_count": 64,
+            "active_counts": [
+              0
+            ],
+            "active_spheres_by_env": [
+              []
+            ]
+          }
+        ]
+      },
+      "gpu_attached": {
+        "source": "native_GPU_attachment_link_spheres",
+        "consumers_consistent": true,
+        "attachment_geometry_qualified": false,
+        "owners": [
+          {
+            "owner": "trajectory",
+            "device": "cuda:0",
+            "coordinate_frame": "attached_object_link",
+            "slot_count": 64,
+            "active_counts": [
+              4
+            ],
+            "active_spheres_by_env": [
+              [
+                [
+                  0.03130386769771576,
+                  -0.24086621403694153,
+                  0.1345076858997345,
+                  0.018577245995402336
+                ],
+                [
+                  0.014744717627763748,
+                  -0.20946809649467468,
+                  0.13465334475040436,
+                  0.017147459089756012
+                ],
+                [
+                  0.0012083742767572403,
+                  -0.1777268797159195,
+                  0.13509027659893036,
+                  0.016341252252459526
+                ],
+                [
+                  -0.013372097164392471,
+                  -0.14686529338359833,
+                  0.13549396395683289,
+                  0.015609265305101871
+                ]
+              ]
+            ]
+          },
+          {
+            "owner": "planner",
+            "device": "cuda:0",
+            "coordinate_frame": "attached_object_link",
+            "slot_count": 64,
+            "active_counts": [
+              4
+            ],
+            "active_spheres_by_env": [
+              [
+                [
+                  0.03130386769771576,
+                  -0.24086621403694153,
+                  0.1345076858997345,
+                  0.018577245995402336
+                ],
+                [
+                  0.014744717627763748,
+                  -0.20946809649467468,
+                  0.13465334475040436,
+                  0.017147459089756012
+                ],
+                [
+                  0.0012083742767572403,
+                  -0.1777268797159195,
+                  0.13509027659893036,
+                  0.016341252252459526
+                ],
+                [
+                  -0.013372097164392471,
+                  -0.14686529338359833,
+                  0.13549396395683289,
+                  0.015609265305101871
+                ]
+              ]
+            ]
+          },
+          {
+            "owner": "ik",
+            "device": "cuda:0",
+            "coordinate_frame": "attached_object_link",
+            "slot_count": 64,
+            "active_counts": [
+              4
+            ],
+            "active_spheres_by_env": [
+              [
+                [
+                  0.03130386769771576,
+                  -0.24086621403694153,
+                  0.1345076858997345,
+                  0.018577245995402336
+                ],
+                [
+                  0.014744717627763748,
+                  -0.20946809649467468,
+                  0.13465334475040436,
+                  0.017147459089756012
+                ],
+                [
+                  0.0012083742767572403,
+                  -0.1777268797159195,
+                  0.13509027659893036,
+                  0.016341252252459526
+                ],
+                [
+                  -0.013372097164392471,
+                  -0.14686529338359833,
+                  0.13549396395683289,
+                  0.015609265305101871
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      "gpu_detached": {
+        "source": "native_GPU_attachment_link_spheres",
+        "consumers_consistent": true,
+        "attachment_geometry_qualified": false,
+        "owners": [
+          {
+            "owner": "trajectory",
+            "device": "cuda:0",
+            "coordinate_frame": "attached_object_link",
+            "slot_count": 64,
+            "active_counts": [
+              0
+            ],
+            "active_spheres_by_env": [
+              []
+            ]
+          },
+          {
+            "owner": "planner",
+            "device": "cuda:0",
+            "coordinate_frame": "attached_object_link",
+            "slot_count": 64,
+            "active_counts": [
+              0
+            ],
+            "active_spheres_by_env": [
+              []
+            ]
+          },
+          {
+            "owner": "ik",
+            "device": "cuda:0",
+            "coordinate_frame": "attached_object_link",
+            "slot_count": 64,
+            "active_counts": [
+              0
+            ],
+            "active_spheres_by_env": [
+              []
+            ]
+          }
+        ]
+      },
+      "world_revision": 1,
+      "both_ports_alive_at_commit": true,
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "atomic_worker_qualified": false,
+      "actual_grasp": false,
+      "skill_checkpoints": 0,
+      "hardware_connected": false,
+      "sha256": {
+        "rm75_app/swm/native_scene.py": "65ab7a3bf499b5fb45e6b381450a2596fa99704fe3a7c529e823eb199c00c06c",
+        "rm75_app/planning/backends/curobo2.py": "60e91f33fe3061d7ce7a45ef6dcf75539ca92d3d4fd700f82f53ac8abbedb85b",
+        "tests/swm/test_native_attachment_switch_order.py": "8467fd864e3d7090d2b75a117b50a3d4cbfa3b2f54a214e9f6701bd9ae4c7bc8",
+        "runtime_data/swm_release_attachment_driver_01/run.py": "82a1086211cf1fdce6b462b833380b97e01fffde255bf77c94eab9ce172a48b3",
+        "runtime_data/swm_release_attachment_driver_01/transaction_result.json": "79482478d3857c5632b0fee522c25ad11000585806dc20dd4ecc515cf0212e78",
+        "runtime_data/swm_release_attachment_bootstrap_01/result.json": "c385b37d8309253028fe199da1e0da4f8d50670aaaeeee9874926253f6a039ae",
+        "runtime_data/swm_release_attachment_driver_01.log": "82df9adb991afa348f790a6e3d91ee6667dbc7464dcf810be04069ca536b9d2b",
+        "runtime_data/swm_release_attachment_order_targeted.log": "969a65710739d0624335c3ad4a31ff43fa87a475c91ba1308a3ed2ed54903234",
+        "runtime_data/swm_release_attachment_order_full.log": "97ad10ae6a69454643c02ae430656f933ed727db163574756f2a6ac07dd3f3ab",
+        "assets/test_scenes/current_table.json": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908"
+      },
+      "note": "A private payload relation and 0.02 rad private joint perturbation were injected without stepping or changing primary state. Applying the actual empty-holding snapshot restored native state through SapienScenePort. GPU attachment used the existing original fit/attach/detach path and restored independently measured jaw geometry. Storage agreement alone does not bind spheres to the asset or measured TCP relation; held native SWM guard remains."
     }
   },
   "gates": {
@@ -6712,11 +6997,18 @@
     },
     "live_dual_mirror": {
       "kernel": "1611 passed; 1 existing warning on f488a58",
-      "native_wiring": "Initial live native transaction committed revision 1; repeated holding transitions, GPU attachment readback and nonempty posterior application remain incomplete",
+      "native_wiring": "Initial live transaction qualified; old-attachment switch ordering fixed and exercised in private native hypothesis. Actual holding geometry binding and posterior adapters remain incomplete",
       "model_inference": "NOT_RUN",
       "actual_simulation": "12-object initial transaction succeeded; no atomic skill checkpoint",
       "hardware": "NOT_AUTHORIZED_NOT_RUN",
-      "known_defect": "Robot q is updated before old held attachment is cleared; old payload pose can then be checked against new TCP and rejected. Must detach/validate the old private relation before switching robot state, then build the new measured relation."
+      "known_defect": null
+    },
+    "gpu_attachment_storage": {
+      "kernel": "1612 passed; 1 existing warning on 4e2a48f",
+      "native_wiring": "GPU trajectory/planner/IK storage readback implemented; asset and measured TCP-relative geometry qualification pending",
+      "model_inference": "NOT_RUN",
+      "actual_simulation": "Three consumers each showed 0 -> 4 -> 0 active attachment spheres across attach/detach in 64 slots, with equal complete storage",
+      "hardware": "NOT_AUTHORIZED_NOT_RUN"
     }
   },
   "native_bootstrap": {
