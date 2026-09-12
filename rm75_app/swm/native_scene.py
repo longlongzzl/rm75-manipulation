@@ -174,6 +174,12 @@ class SapienScenePort:
         self.native_acknowledgement = None
         self.applied_snapshot_id = None
 
+    def _switch_native_robot_state(self, robot):
+        # Validate/remove the OLD relation while its old TCP still exists.
+        # Rebuild the new measured relation only after the idle q/qdot switch.
+        self.set_attachment(None)
+        return self.robot_port.apply_idle_state(robot)
+
     def apply_idle_snapshot(self, snapshot):
         from rm75_app.execution.maniskill_scene import _pose_matrix
 
@@ -210,7 +216,7 @@ class SapienScenePort:
                     velocity = np.asarray(measured.get(key), dtype=float)
                     if velocity.shape != (3,) or not np.isfinite(velocity).all():
                         raise SceneInvalid('Native object velocity observation is required')
-            self.native_acknowledgement = self.robot_port.apply_idle_state(robot)
+            self.native_acknowledgement = self._switch_native_robot_state(robot)
         holding = robot['holding']
         attachment = None
         for oid, obj in snapshot['objects'].items():

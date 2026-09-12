@@ -707,6 +707,46 @@ class Curobo2Backend:
             manager = planner.trajopt_solver.core.attachment_manager
         return manager
 
+    def read_attachment_collision_state(self):
+        """Read actual attachment slots for every existing planning consumer.
+
+        This is storage evidence, NOT a grasp, fitted-mesh coverage, TCP-frame
+        alignment or task acknowledgement. Do not use Python attachment flags.
+        """
+        planner = self._ensure_planner()
+        owners = [
+            ('trajectory', self._attachment_manager().kinematics_params),
+            ('planner', planner.kinematics.config.kinematics_config),
+            ('ik', planner.ik_solver.kinematics.kinematics_config),
+        ]
+        if self._coarse_ik_solver is not None:
+            owners.append(('coarse_ik', self._coarse_ik_solver.kinematics.kinematics_config))
+        rows = []
+        native_arrays = []
+        for name, params in owners:
+            spheres = params.link_spheres
+            if spheres.device.type != 'cuda':
+                raise RuntimeError('Native attachment readback requires CUDA sphere storage')
+            indices = params.get_sphere_index_from_link_name('attached_object')
+            indices_cpu = indices.detach().cpu().numpy().reshape(-1)
+            if (spheres.ndim != 3 or spheres.shape[-1] != 4 or not len(indices_cpu)
+                    or len(np.unique(indices_cpu)) != len(indices_cpu)
+                    or np.any(indices_cpu < 0) or np.any(indices_cpu >= spheres.shape[1])):
+                raise RuntimeError('Native attached-object slot identity or shape is invalid')
+            actual = spheres[:, indices, :].detach().cpu().numpy().copy()
+            if not np.isfinite(actual).all():
+                raise RuntimeError('Native attachment contains nonfinite sphere geometry')
+            native_arrays.append(actual)
+            rows.append(dict(owner=name, device=str(spheres.device),
+                slot_indices=indices_cpu.tolist(), coordinate_frame='attached_object_link',
+                active_counts=np.sum(actual[:, :, 3] > 0., axis=1).tolist(),
+                spheres=actual.tolist()))
+        reference = native_arrays[0]
+        consistent = all(value.shape == reference.shape and np.allclose(
+            value, reference, atol=1e-6, rtol=0) for value in native_arrays[1:])
+        return dict(source='native_GPU_attachment_link_spheres', owners=rows,
+            consumers_consistent=consistent, attachment_geometry_qualified=False)
+
     @staticmethod
     def _batch_values(value: Any, count: int, default: float | None = None) -> list[Any]:
         if value is None:
