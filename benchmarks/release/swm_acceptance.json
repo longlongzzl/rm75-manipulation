@@ -1224,7 +1224,7 @@
       "domain": "actual_native_primary_and_curobo_GPU",
       "exit_code": 0,
       "artifact_directory": "runtime_data/swm_release_pen_robot_sync_01",
-      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -c 'import sys,runpy; sys.path.append(\"/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages\"); sys.argv=[\\'tools/validate_swm_native_bootstrap.py\\', \\'--profile\\', \\'runtime_data/three_scene/review_a35328c_20260909/tennis_standard_reference_v1/machine.json\\', \\'--output\\', \\'runtime_data/swm_release_pen_robot_sync_01\\', \\'--probe-planner\\', \\'--sync-planning-scene\\', \\'--sync-robot-state\\']; runpy.run_path(sys.argv[0],run_name=\"__main__\")'",
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -c 'import sys,runpy; sys.path.append(\"/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages\"); sys.argv=['\"'\"'tools/validate_swm_native_bootstrap.py'\"'\"', '\"'\"'--profile'\"'\"', '\"'\"'runtime_data/three_scene/review_a35328c_20260909/tennis_standard_reference_v1/machine.json'\"'\"', '\"'\"'--output'\"'\"', '\"'\"'runtime_data/swm_release_pen_robot_sync_01'\"'\"', '\"'\"'--probe-planner'\"'\"', '\"'\"'--sync-planning-scene'\"'\"', '\"'\"'--sync-robot-state'\"'\"']; runpy.run_path(sys.argv[0],run_name=\"__main__\")'",
       "argv": [
         "tools/validate_swm_native_bootstrap.py",
         "--profile",
@@ -1824,7 +1824,9 @@
       "motion_executed": false,
       "atomic_worker_qualified": false,
       "hardware_connected": false,
-      "scope": "Initial idle native joint/TCP/eight-link/contact observation and GPU measured gripper synchronization only. No positive grasp, held attachment, six skill checkpoints or formal worker qualification."
+      "scope": "Initial idle native joint/TCP/eight-link/contact observation and GPU measured gripper synchronization only. No positive grasp, held attachment, six skill checkpoints or formal worker qualification.",
+      "previous_recorded_command_with_quoting_error": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -c 'import sys,runpy; sys.path.append(\"/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages\"); sys.argv=[\\'tools/validate_swm_native_bootstrap.py\\', \\'--profile\\', \\'runtime_data/three_scene/review_a35328c_20260909/tennis_standard_reference_v1/machine.json\\', \\'--output\\', \\'runtime_data/swm_release_pen_robot_sync_01\\', \\'--probe-planner\\', \\'--sync-planning-scene\\', \\'--sync-robot-state\\']; runpy.run_path(sys.argv[0],run_name=\"__main__\")'",
+      "command_recording_correction": "Use shlex.join rather than Python repr for shell quoting; recorded original argv and runtime evidence unchanged."
     },
     "measured_gripper_full": {
       "tested_commit": "3709e06",
@@ -1880,6 +1882,177 @@
       "log": "runtime_data/swm_release_robot_mirror_full.log",
       "log_sha256": "fac73ef02f81e262bf57399c2bf4b6fa12a6012632ab9b686fb779b14fcf2879",
       "note": "Same implementation bytes throughout test/commit; passing software fixtures do not qualify the failed native mirror."
+    },
+    "native_robot_mirror_02": {
+      "tested_commit": "067accf",
+      "domain": "actual_native_CPU_PhysX_private_articulation",
+      "exit_code": 0,
+      "status": "native_private_robot_state_aligned",
+      "acknowledgement": {
+        "source": "native_CPU_PhysX_articulation_readback",
+        "world_role": "private_mirror",
+        "coordinate_frame": "base_link",
+        "joint_names": [
+          "joint_1",
+          "joint_2",
+          "joint_3",
+          "joint_4",
+          "joint_5",
+          "joint_6",
+          "joint_7",
+          "gripper_Left_1_Joint",
+          "gripper_Left_2_Joint",
+          "gripper_Right_1_Joint",
+          "gripper_Right_2_Joint",
+          "gripper_Left_Support_Joint",
+          "gripper_Right_Support_Joint"
+        ],
+        "positions": [
+          1.572896122932434,
+          0.00905626080930233,
+          0.006035430356860161,
+          -1.562686562538147,
+          -0.0004508150741457939,
+          -1.5619994401931763,
+          1.0576796531677246,
+          -0.0004450046399142593,
+          -0.007228843867778778,
+          0.028663400560617447,
+          -0.005655086133629084,
+          0.0016043701907619834,
+          -0.00025351185468025506
+        ],
+        "velocities": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "link_errors": {
+          "gripper_base_link": {
+            "position_error_m": 1.186082701746396e-07,
+            "rotation_error_rad": 0.0
+          },
+          "gripper_Left_1_Link": {
+            "position_error_m": 1.3902132829331365e-07,
+            "rotation_error_rad": 0.0
+          },
+          "gripper_Left_Support_Link": {
+            "position_error_m": 1.3760193746328147e-07,
+            "rotation_error_rad": 0.0
+          },
+          "gripper_Left_2_Link": {
+            "position_error_m": 1.3363026033991112e-07,
+            "rotation_error_rad": 0.0
+          },
+          "gripper_Right_1_Link": {
+            "position_error_m": 1.4358221958564906e-07,
+            "rotation_error_rad": 0.0
+          },
+          "gripper_Right_Support_Link": {
+            "position_error_m": 1.4871136961507652e-07,
+            "rotation_error_rad": 0.00013241164468051313
+          },
+          "gripper_Right_2_Link": {
+            "position_error_m": 1.5414157831106407e-07,
+            "rotation_error_rad": 0.0
+          },
+          "left_pad": {
+            "position_error_m": 1.3941783320304572e-07,
+            "rotation_error_rad": 0.0
+          },
+          "right_pad": {
+            "position_error_m": 1.443393015661179e-07,
+            "rotation_error_rad": 0.00013241164468051313
+          },
+          "gripper_tcp": {
+            "position_error_m": 1.3689189605805066e-07,
+            "rotation_error_rad": 0.0
+          }
+        },
+        "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+        "robot_state_aligned": true,
+        "primary_world_mutated": false,
+        "attachment_qualified": false,
+        "hardware_qualified": false
+      },
+      "source": {
+        "source": "runtime_data/swm_release_pen_robot_sync_01/result.json",
+        "source_sha256": "45726c092ae0739aca809345182fc39b546e5e59b596f5e77b71860f374e40f2",
+        "urdf": "assets/robot_models/RM75_gripper/RM75-B/urdf/RM75-B.urdf",
+        "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+        "source_kind": "saved_actual_primary_observation",
+        "fresh_primary_capture": false,
+        "hardware_connected": false,
+        "physics_step_executed": false
+      },
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 120s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_robot_mirror_02/run.py",
+      "artifact_directory": "runtime_data/swm_release_robot_mirror_02",
+      "sha256": {
+        "run.py": "484c2b08e531a0f0fb82534b6e85dd13c35b2ba8267c1e38e8b5116ccd771b7a",
+        "input.json": "8b69212c4e02d4d3971042327513ef40ce1d6ed578e7337e5bc5360a7c753e55",
+        "result.json": "01b66cd13346234da23688f63e267272198302bbfea3fcc141f7559114123189",
+        "stdout.log": "5a406adf8870089f47a53a927ce684d684fc073da312d9c562062a0d41011420"
+      },
+      "private_port_closed": true,
+      "fresh_primary_capture": false,
+      "full_scene_mirror_qualified": false,
+      "atomic_worker_qualified": false,
+      "hardware_connected": false
+    },
+    "robot_mirror_fix_targeted": {
+      "tested_commit": "067accf",
+      "domain": "software_fixture",
+      "passed": 15,
+      "failed": 0,
+      "seconds": 0.42,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/test_native_robot_mirror.py tests/swm/test_native_robot_port_gates.py tests/swm/test_native_feedback.py -q"
+    },
+    "primary_capture_targeted_01": {
+      "tested_commit": null,
+      "draft_sha256": {
+        "rm75_app/swm/native_capture.py": "01a7e9eaa5c630699648ba81d938a560077ff37735fa828e48bc2756e95950d2",
+        "tests/swm/test_native_primary_capture.py": "a2514771157105792817130b9035e71aab04a10c3c9701084e69b382426de928"
+      },
+      "domain": "software_fixture",
+      "passed": 0,
+      "failed": 5,
+      "seconds": 0.1,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/test_native_primary_capture.py -q",
+      "error": "Test doubles supplied numpy arrays instead of ManiSkill Pose objects with to_transformation_matrix().",
+      "full_regression_rerun": false
+    },
+    "primary_capture_native_01": {
+      "tested_commit": null,
+      "draft_sha256": {
+        "rm75_app/swm/native_capture.py": "01a7e9eaa5c630699648ba81d938a560077ff37735fa828e48bc2756e95950d2",
+        "tests/swm/test_native_primary_capture.py": "a2514771157105792817130b9035e71aab04a10c3c9701084e69b382426de928"
+      },
+      "domain": "actual_primary_PhysX_attempt",
+      "exit_code": 1,
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_primary_capture_driver_01/run.py",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: 'runtime_data/swm_release_primary_capture_driver_01/capture_result.json'",
+      "primary_closed": true,
+      "sha256": {
+        "bootstrap_input.json": "3c62b3a81f68e1cbff4b1f2812a48781072e19466c1e050a65dfd92cd3dc362a",
+        "bootstrap_result.json": "a12595f2ce960f15e5a55ce935f16925844c2da7a24c7bf957cfde73cc4a40be",
+        "driver.py": "b73d873df57673f74e65cc55e0cc5ffea2dcc2022f5359ce91caaecf751e536e",
+        "stdout.log": "f846a7215d29376536e188b79ab90f73c1517789ed04b498fd9c6877eda49be5"
+      },
+      "capture_result_written": false,
+      "fresh_complete_batch_qualified": false,
+      "atomic_worker_qualified": false,
+      "note": "Legacy initializer changes cwd; driver used a relative output path. Final artifact write failed and may obscure an earlier capture error. No fresh batch success can be inferred.",
+      "hardware_connected": false
     }
   },
   "gates": {
@@ -1925,7 +2098,9 @@
         "runs.native_scene_sync_01: failed before GPU scene application",
         "runs.native_scene_sync_02: 12 native GPU obstacles matched; NOT atomic execution qualification",
         "runs.native_robot_sync_01: initial measured robot geometry aligned; NOT atomic worker or held attachment qualification",
-        "runs.native_robot_mirror_01: native constructor and cleanup FAILED; no new skill checkpoints"
+        "runs.native_robot_mirror_01: native constructor and cleanup FAILED; no new skill checkpoints",
+        "runs.native_robot_mirror_02: private articulation aligned, not full scene or worker qualification",
+        "runs.primary_capture_native_01: capture driver failed; no complete fresh batch evidence"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -2112,10 +2287,10 @@
     }
   },
   "current_layer_status": {
-    "kernel": "SOFTWARE_REGRESSION_PASSED_1570",
-    "native_wiring": "MEASURED_ROBOT_PORTS_WIRED_PRIVATE_NATIVE_MIRROR_CONSTRUCTOR_FAILED",
+    "kernel": "MIRROR_TARGETED_15_PASSED_NEW_CAPTURE_TARGETED_5_FAILED_FULL_NOT_RERUN",
+    "native_wiring": "PRIVATE_ROBOT_ARTICULATION_ALIGNED_COMPLETE_CAPTURE_AND_FULL_MIRROR_PENDING",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "PRIVATE_ROBOT_INITIALIZATION_FAILED_EXIT_134_NO_ATOMIC_EXECUTION",
+    "actual_simulation": "PRIVATE_ROBOT_SYNC_EXIT_0_PRIMARY_CAPTURE_DRIVER_EXIT_1_NO_ATOMIC_EXECUTION",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
   "native_bootstrap": {
@@ -2128,7 +2303,7 @@
     "tool": "tools/validate_swm_native_bootstrap.py",
     "successful_environment": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
     "failed_environment": "/home/zhangzhao/anaconda3/bin/python (exit 139)",
-    "remaining": "Correct private robot URDF/render constructor and cleanup, then full SWM manifest/private actor mirror and trusted worker grasp/place six fresh checkpoints",
+    "remaining": "Fix capture test Pose doubles and driver absolute paths, then metric manifest/full private actor mirror/held attachment readback and trusted worker six skill checkpoints",
     "same_process_planner_environment": {
       "python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
       "append_site_packages": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",

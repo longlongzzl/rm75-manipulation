@@ -107,3 +107,16 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python
 内核：全量 **1570 passed / 1 warning / 44.99 s**。原生接线：状态端口已接，但私有构造未通过，完整工厂仍未安装。模型推理：未运行。实际仿真：私有初始化尝试失败，无动作。硬件：未授权、未连接。保持 PARTIAL_DELIVERY，未完成技能不可用。
 
 下一步修正私有构造器的原 URDF 视觉依赖与异常清理后重跑，再接完整观测/镜像和笔的正式 worker。该新代码缺陷与上一轮报告命令的引号修正均已告知用户，按编辑约束待确认；它们不是硬件授权请求。其他独立软件工作可继续。代码本地提交，未推送。
+
+
+## M1 / 私有镜像构造修复及新采集草稿：067accf
+
+按继续修复要求处理此前已说明的问题：为原 URDF 视觉组件保留被动 RenderSystem，物理仍为 CPU PhysX，无相机/控制器/executor；关闭时显式清理私有场景。报告 `native_robot_sync_01.command` 改用 shlex shell 引号，旧错误记录保留，argv 和原成绩未改变。
+
+实际 `swm_release_robot_mirror_02` 退出 0，私有端口关闭成功。13 关节 q/qdot 及 10 个链节（含 TCP）均从原生 articulation 读回；最大位置误差 1.54141578e-07 m、角度误差 0.000132411645 rad。输入仍是上一轮保存的实测状态，不是新采集；没有证明完整对象/attachment 镜像或正式 worker。
+
+相关定向 15 passed / 0.42 s。新增 NativePrimaryCapture 草稿读取绑定 actor 的姿态/速度、独立机器人反馈，检查序号、完整注册集、采集中变化及 SE(3) 速度换算，但尚未提交/开放：其 5 项新测试全部因 Pose 替身错误失败（0.10 s）。本轮未重跑全量，历史 1570 passed 不能归属于当前含草稿的工作区。
+
+实际完整采集探测 `primary_capture_native_01` 退出 1：原初始化改变 cwd，驱动使用相对输出路径，最终写入 capture_result.json 失败；该错误还可能遮蔽更早的采集异常。无批次成功证据，不计任何技能检查点。主环境关闭，错误和输入/脚本/结果/日志哈希已保留。
+
+下一步先修正本轮测试 Pose 替身和采集驱动的绝对路径，再运行完整 12 对象新批次；之后接 metric manifest、完整私有 actor/attachment 镜像和正式笔 worker。内核有上述新测试失败；原生只有私有机器人对齐通过；模型未运行；实际采集探测失败；硬件未授权、未连接。全部未完成技能保持不可用，状态仍 PARTIAL_DELIVERY。修复代码和报告本地提交，未推送。
