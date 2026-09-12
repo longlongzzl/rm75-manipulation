@@ -74,6 +74,12 @@ class CompiledNativeTask:
             state.lifecycle = ObjectLifecycle.HELD if obj['lifecycle'] == 'held' else ObjectLifecycle.AVAILABLE
             state.movable = not obj['fixed']
             state.metadata['swm_observation'] = copy.deepcopy(obj['measured'])
+            if asset.get('native_infrastructure') is True:
+                if obj['fixed'] is not True or asset['collision_kind'] != 'cuboid':
+                    raise SceneInvalid('Native infrastructure must retain fixed cuboid geometry')
+                state.metadata['swm_native_infrastructure'] = dict(
+                    dimensions_m=copy.deepcopy(asset['collision_dimensions_m']),
+                    T_object_collision=copy.deepcopy(asset['T_object_collision']))
         scene.revision = snapshot['revision']
         scene.backend_revision = snapshot['snapshot_id']
         scene.joint_names = tuple(snapshot['robot']['joint_names'])

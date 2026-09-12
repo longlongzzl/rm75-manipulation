@@ -478,6 +478,25 @@ class FixedSceneAtomTaskBuilder:
         objects: list[CollisionObject] = []
         for state in scene.objects.values():
             spec = get_object_spec(state.asset_name)
+            native = state.metadata.get('swm_native_infrastructure')
+            if native is not None:
+                if (spec is not None or state.movable or state.object_id not in (
+                        MANISKILL_TABLE_COLLISION_NAME, 'virtual_side_wall', 'virtual_top_wall')):
+                    raise ValueError('Only bound fixed native infrastructure may use explicit geometry')
+                dimensions = np.asarray(native['dimensions_m'], dtype=float)
+                local = np.asarray(native['T_object_collision'], dtype=float)
+                if (dimensions.shape != (3,) or not np.isfinite(dimensions).all()
+                        or np.any(dimensions <= 0) or local.shape != (4, 4)
+                        or not np.isfinite(local).all()
+                        or not np.allclose(local[3], [0., 0., 0., 1.], atol=1e-7, rtol=0)
+                        or not np.allclose(local[:3, :3].T @ local[:3, :3], np.eye(3), atol=1e-5, rtol=0)
+                        or abs(np.linalg.det(local[:3, :3]) - 1.) > 1e-5):
+                    raise ValueError('Finite metric native infrastructure geometry required')
+                objects.append(CollisionObject(state.object_id, 'cuboid',
+                    _matrix_to_pose(self._to_planning_pose(state.pose) @ local),
+                    dimensions=dimensions, metadata=dict(fixed=True,
+                        source='registered_original_native_infrastructure')))
+                continue
             if spec is None:
                 raise KeyError(f"scene asset {state.asset_name!r} is not registered")
             proxy = build_automatic_collision_proxy(

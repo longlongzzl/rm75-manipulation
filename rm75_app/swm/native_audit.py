@@ -19,7 +19,7 @@ class CuroboNativeStageAuditor:
     bound into the primitive digest, not supplied by a browser or model. Escape
     contacts retain the backend's link allowlist and 1 mm depth tolerance.
     The worker must first synchronize the complete native scene and provide
-    independently observed ``robot.gripper_closed``; holding is not a proxy.
+    independently observed six-joint jaw geometry; holding is not a proxy.
     """
 
     def __init__(self, backend, *, interpolation_step_rad=.01, max_samples=20000):
@@ -43,7 +43,10 @@ class CuroboNativeStageAuditor:
         if primitive.skill not in ('grasp', 'place'):
             raise SceneInvalid('Native contact auditor not installed for this skill')
         robot = snapshot['robot']
-        if robot.get('idle') is not True or type(robot.get('gripper_closed')) is not bool:
+        measured_jaw = robot.get('gripper_positions')
+        native = snapshot.get('observation_domain') in ('real', 'physics')
+        if robot.get('idle') is not True or (measured_jaw is None and (
+                native or type(robot.get('gripper_closed')) is not bool)):
             raise SceneInvalid('Independent idle jaw observation required for native audit')
         scene = self.backend._scene
         if (scene is None or scene.revision != snapshot['snapshot_id']
@@ -53,7 +56,8 @@ class CuroboNativeStageAuditor:
         relative = None if holding == 'empty' else (
             np.linalg.inv(transform(robot['T_world_tcp'])) @ transform(
                 snapshot['objects'][holding]['measured']['T_world_object']))
-        initial = NativeStageState(robot['gripper_closed'], holding, relative)
+        initial = NativeStageState(None if measured_jaw is not None else robot['gripper_closed'],
+                                   holding, relative, gripper_positions=measured_jaw)
         names = tuple(robot['joint_names'])
         current = JointConfiguration(names, robot['positions'])
         previous = initial
@@ -67,7 +71,8 @@ class CuroboNativeStageAuditor:
                         or (stage.gripper_after is not None
                             and stage.gripper_after != stage.state_after.gripper_closed)
                         or (stage.gripper_after is None
-                            and stage.state_before.gripper_closed != stage.state_after.gripper_closed)):
+                            and (stage.state_before.gripper_closed != stage.state_after.gripper_closed
+                                 or stage.state_before.gripper_positions != stage.state_after.gripper_positions))):
                     raise SceneInvalid('Native stage has inconsistent jaw/contact transition')
                 path = stage.trajectory
                 q = np.asarray(path.positions, dtype=float)
@@ -94,9 +99,13 @@ class CuroboNativeStageAuditor:
             # Restore even if attachment application failed partway through;
             # detach_object clears the backend's actual single attachment slot.
             self.backend.detach_object(primitive.object_id)
-            self.backend.update_scene(scene)
-            q0 = JointConfiguration(names, robot['positions'])
-            self._apply(initial, q0, primitive.object_id, scene, 'empty')
+            if native:
+                from .native_scene import CuroboScenePort
+                CuroboScenePort(self.backend).apply_idle_snapshot(snapshot)
+            else:
+                self.backend.update_scene(scene)
+                q0 = JointConfiguration(names, robot['positions'])
+                self._apply(initial, q0, primitive.object_id, scene, 'empty')
         return PlanAudit(plan.payload_digest, snapshot['snapshot_id'], REQUIRED_AUDITS)
 
     @staticmethod
@@ -104,6 +113,8 @@ class CuroboNativeStageAuditor:
         if (expected.gripper_closed != actual.gripper_closed
                 or expected.holding != actual.holding):
             raise SceneInvalid('Stage jaw/attachment chain differs from current state')
+        if expected.gripper_positions != actual.gripper_positions:
+            raise SceneInvalid('Stage measured jaw geometry changed')
         for key in ('T_tcp_object', 'released_object_pose'):
             a, b = getattr(expected, key), getattr(actual, key)
             if (a is None) != (b is None):
@@ -130,7 +141,10 @@ class CuroboNativeStageAuditor:
         if state.holding != 'empty':
             self.backend.attach_object(state.holding, q)
             self.backend.update_attached_object_pose(state.holding, q, transform(state.T_tcp_object))
-        self.backend.set_gripper_collision_state(state.gripper_closed)
+        if state.gripper_positions is not None:
+            self.backend.set_measured_gripper_collision_state(dict(state.gripper_positions))
+        else:
+            self.backend.set_gripper_collision_state(state.gripper_closed)
         return state.holding
 
     def _contacts(self, positions, names, ignored):

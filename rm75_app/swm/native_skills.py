@@ -20,14 +20,24 @@ from .skills import ExecutionReceipt, PlannedSkill
 @dataclass(frozen=True)
 class NativeStageState:
     """Predicted collision state, not evidence that a grasp actually succeeded."""
-    gripper_closed: bool
+    gripper_closed: bool | None
     holding: str
     T_tcp_object: object = None
     released_object_pose: object = None
+    gripper_positions: object = None
 
     def __post_init__(self):
-        if type(self.gripper_closed) is not bool or not self.holding:
+        if (not self.holding or (type(self.gripper_closed) is not bool
+                and not (self.gripper_closed is None and self.gripper_positions is not None))):
             raise ValueError("Explicit jaw geometry and attachment required")
+        if self.gripper_positions is not None:
+            positions = dict(self.gripper_positions)
+            required = {f'gripper_{side}_{part}_Joint' for side in ('Left', 'Right')
+                        for part in ('1', '2', 'Support')}
+            if set(positions) != required or not np.isfinite(list(positions.values())).all():
+                raise ValueError('Complete finite six-joint jaw geometry required')
+            object.__setattr__(self, 'gripper_positions', tuple(
+                (name, float(positions[name])) for name in sorted(positions)))
         if (self.holding != 'empty') != (self.T_tcp_object is not None):
             raise ValueError("Held geometry requires a TCP-relative transform")
         if self.holding != 'empty' and self.released_object_pose is not None:
@@ -38,8 +48,11 @@ class NativeStageState:
                 object.__setattr__(self, key, tuple(tuple(row) for row in transform(value).tolist()))
 
     def as_dict(self):
-        return dict(gripper_closed=self.gripper_closed, holding=self.holding,
-                    T_tcp_object=self.T_tcp_object, released_object_pose=self.released_object_pose)
+        value = dict(gripper_closed=self.gripper_closed, holding=self.holding,
+                     T_tcp_object=self.T_tcp_object, released_object_pose=self.released_object_pose)
+        if self.gripper_positions is not None:
+            value['gripper_positions'] = dict(self.gripper_positions)
+        return value
 
 
 @dataclass(frozen=True)
@@ -172,11 +185,15 @@ class PickPlaceNativePhases:
             if p > 1e-8 or r > 1e-6:
                 raise SceneInvalid("Native task compiler did not use measured object poses")
         c = self.coordinator
+        measured_jaw = snapshot['robot'].get('gripper_positions')
         stages = None
         if request.skill == 'grasp':
             if snapshot['robot']['holding'] != 'empty':
                 raise SceneInvalid("Native grasp requires an observed empty gripper")
-            c.planner.set_gripper_collision_state(False)
+            if measured_jaw is not None:
+                c.planner.set_measured_gripper_collision_state(measured_jaw)
+            else:
+                c.planner.set_gripper_collision_state(False)
             for grasp_candidate in sorted(task.grasp_candidates, key=lambda x: x.score, reverse=True)[:task.max_motion_candidates]:
                 pre = _approach_offset_candidates((grasp_candidate,), abs(task.grasp_approach_offset))[0]
                 approach = c._plan_pose_stage(stage='pregrasp', current=task.current, candidates=(pre,), task=task)
@@ -205,7 +222,8 @@ class PickPlaceNativePhases:
                             # place skill MUST solve again after its fresh observation.
                             if self._placement_stages(task, lifted_q, relative, None) is None:
                                 continue
-                            empty = NativeStageState(False, 'empty')
+                            empty = NativeStageState(None if measured_jaw is not None else False,
+                                'empty', gripper_positions=measured_jaw)
                             held = NativeStageState(True, task.object_name, relative)
                             stages = (NativeStage('approach', approach.trajectory,
                                           state_before=empty, state_after=empty),
@@ -221,7 +239,10 @@ class PickPlaceNativePhases:
                     # complete obstacle set after hypothetical candidate planning.
                     c.planner.detach_object(task.object_name)
                     c.planner.update_scene(task.scene)
-                    c.planner.set_gripper_collision_state(False)
+                    if measured_jaw is not None:
+                        c.planner.set_measured_gripper_collision_state(measured_jaw)
+                    else:
+                        c.planner.set_gripper_collision_state(False)
                 if stages is not None:
                     break
         else:
@@ -231,7 +252,8 @@ class PickPlaceNativePhases:
                 snapshot['objects'][request.object_id]['measured']['T_world_object'])
             try:
                 c.planner.update_attached_object_pose(task.object_name, task.current, relative)
-                placement = self._placement_stages(task, task.current, relative, request)
+                placement = self._placement_stages(task, task.current, relative, request,
+                    jaw_positions=measured_jaw)
                 if placement is not None:
                     stages, expected = placement
             finally:
@@ -241,7 +263,10 @@ class PickPlaceNativePhases:
                 c.planner.update_scene(task.scene)
                 c.planner.attach_object(task.object_name, task.current)
                 c.planner.update_attached_object_pose(task.object_name, task.current, relative)
-                c.planner.set_gripper_collision_state(True)
+                if measured_jaw is not None:
+                    c.planner.set_measured_gripper_collision_state(measured_jaw)
+                else:
+                    c.planner.set_gripper_collision_state(True)
         if stages is None:
             raise RuntimeError('Native atomic phase has no feasible trajectory')
         primitive = NativePrimitive(request.skill, request.object_id, stages)
@@ -249,7 +274,7 @@ class PickPlaceNativePhases:
                             primitive, expected.tolist(), 'shared_PickPlaceCoordinator_phase_solvers')
 
 
-    def _placement_stages(self, task, current, relative, request):
+    def _placement_stages(self, task, current, relative, request, *, jaw_positions=None):
         """Shared feasibility screening and post-observation place planning.
 
         These are candidate paths only. In particular, the reversed retreat
@@ -260,7 +285,8 @@ class PickPlaceNativePhases:
         from rm75_app.planning.contracts import Pose
 
         c = self.coordinator
-        held = NativeStageState(True, task.object_name, relative)
+        held = NativeStageState(None if jaw_positions is not None else True,
+                               task.object_name, relative, gripper_positions=jaw_positions)
         for original in sorted(task.place_candidates, key=lambda x: x.score, reverse=True)[:task.max_motion_candidates]:
             raw_target = original.metadata.get('planning_target_object_pose')
             if raw_target is None:

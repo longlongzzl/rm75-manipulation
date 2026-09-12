@@ -77,6 +77,11 @@ class Model:
 
     def set_gripper_collision_state(self, closed):
         self.closed = closed
+        self.measured = None
+
+    def set_measured_gripper_collision_state(self, positions):
+        self.measured = dict(positions)
+        self.closed = None
 
 
 def case():
@@ -150,3 +155,19 @@ def test_discontinuous_next_stage_is_rejected_and_restored():
     with pytest.raises(SceneInvalid, match='discontinuous'):
         CuroboNativeStageAuditor(model)(changed, snapshot)
     assert model.held == 'a' and model.closed is True
+
+
+def test_measured_jaw_state_is_used_and_restored_without_holding_inference():
+    snapshot, plan = case()
+    positions = {f'gripper_{side}_{part}_Joint': .13
+                 for side in ('Left', 'Right') for part in ('1', '2', 'Support')}
+    snapshot['robot'].pop('gripper_closed')
+    snapshot['robot']['gripper_positions'] = positions
+    measured = NativeStageState(None, 'a', np.eye(4), gripper_positions=positions)
+    first = replace(plan.payload.stages[0], state_before=measured)
+    payload = replace(plan.payload, stages=(first, *plan.payload.stages[1:]))
+    plan = replace(plan, payload=payload, payload_digest=payload.fingerprint())
+    model = Model(snapshot)
+    assert CuroboNativeStageAuditor(model)(plan, snapshot).passed == REQUIRED_AUDITS
+    assert model.measured == positions
+    assert model.closed is None

@@ -57,7 +57,8 @@ def write_metric_asset(directory, name, mesh, proxy, local, provenance):
         scale_evidence='Original shared scale applied without recentering; exported metric bounds read back',
         mesh_path=str(mesh_path), mesh_sha256=file_digest(mesh_path),
         collision_path=str(collision_path), collision_sha256=file_digest(collision_path),
-        T_object_collision=local.tolist(), original_asset_name=name, collision_role='planning_proxy',
+        T_object_collision=local.tolist(), original_asset_name=name, native_asset_name=name,
+        collision_role='planning_proxy',
         provenance=provenance, physics_model_qualified=False, **shape)
 
 
@@ -116,6 +117,7 @@ def register_primary_scene(primary, directory, *, sensor_session):
         mesh = trimesh.creation.box(extents=np.asarray(item['dimensions']))
         asset = write_metric_asset(directory, oid, mesh, proxy, np.eye(4), dict(
             source=item['source'], original_dimensions_m=item['dimensions']))
+        asset['native_infrastructure'] = True
         assets[oid] = asset
         objects.append(dict(id=oid, name=oid, asset_id=oid, fixed=True))
         bindings[oid] = PrimaryActorBinding(actor, asset['mesh_sha256'], actor_to_object)
