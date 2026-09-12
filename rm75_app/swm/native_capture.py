@@ -13,7 +13,7 @@ import time
 import numpy as np
 
 from .native_bootstrap import _array
-from .native_robot import observe_primary_robot
+from .native_robot import observe_primary_robot, read_primary_drive_state
 from .native_robot_mirror import ARM_JOINTS, GRIPPER_JOINTS, measured_joint_vectors
 from .scene import ObservationUnavailable, pose_error, transform
 
@@ -133,6 +133,8 @@ class NativePrimaryCapture:
             p, r = pose_error(actor_pose(native_robot), self.T_world_base)
             if p > 1e-6 or r > 1e-3:
                 raise ObservationUnavailable('Primary base changed during capture')
+            if read_primary_drive_state(self.primary) != robot.get('native_drive_state'):
+                raise ObservationUnavailable('Native drive targets changed during capture')
             self.primary.stop.check()
             finished = self.clock()
             return dict(schema='rm75_swm_observation_v1', world_frame='base_link',

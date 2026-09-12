@@ -68,6 +68,7 @@ class SapienRobotStatePort:
         import sapien
 
         self._scene = None
+        self._physics_system = None
         self._robot = None
         self.closed = False
         self.acknowledgement = None
@@ -79,8 +80,8 @@ class SapienRobotStatePort:
         resources.callback(self.close)
         # Original URDF visual components require a passive render system.
         # No camera, hardware driver, controller, or executor is constructed.
-        self._scene = sapien.Scene([
-            sapien.physx.PhysxCpuSystem(), sapien.render.RenderSystem()])
+        self._physics_system = sapien.physx.PhysxCpuSystem()
+        self._scene = sapien.Scene([self._physics_system, sapien.render.RenderSystem()])
         loader = self._scene.create_urdf_loader()
         loader.fix_root_link = True
         self._robot = loader.load(str(self.urdf_path))
@@ -190,6 +191,7 @@ class SapienRobotStatePort:
         robot = self._robot
         names = [joint.name for joint in robot.get_active_joints()]
         q, v = measured_joint_vectors(observation, names)
+        validate_native_drive_state(observation.get('native_drive_state'))
         expected_tcp = transform(observation['T_world_tcp'])
         expected_links = observation.get('gripper_links_in_base', {})
         from rm75_app.planning.gripper_collision import DYNAMIC_GRIPPER_LINKS
@@ -226,6 +228,8 @@ class SapienRobotStatePort:
             joint_names=names, positions=actual_q.tolist(), velocities=actual_v.tolist(),
             link_errors=errors, urdf_sha256=self.urdf_sha256,
             robot_state_aligned=True, primary_world_mutated=False,
+            native_drive_state=apply_native_drive_state(robot, self._physics_system,
+                observation['native_drive_state']),
             attachment_qualified=False, hardware_qualified=False)
         if self._physics_state is not None:
             self.acknowledgement['physics_policy'] = self.read_physics_policy()
@@ -243,6 +247,7 @@ class SapienRobotStatePort:
         if self._scene is not None:
             self._scene.clear()
         self._scene = None
+        self._physics_system = None
 
 
 def articulation_drive_policy(robot, *, joint_map=None):
@@ -371,3 +376,54 @@ def align_link_body_policy(source, private):
     compare_native_state(expected,
         {name: link_body_policy(link) for name, link in private.items()}, 'link_body_policy')
     return expected
+
+
+def validate_native_drive_state(state):
+    """Validate effective targets and actual timing, never infer targets from q."""
+    required = {'source', 'joint_names', 'position_targets', 'velocity_targets',
+        'physics_timestep_s', 'simulation_frequency_hz', 'control_frequency_hz'}
+    if not isinstance(state, dict) or set(state) != required or state['source'] != 'native_joint_drive_targets_readback':
+        raise SceneInvalid('Complete native drive target readback required')
+    try:
+        names = tuple(state['joint_names'])
+        p, v = np.asarray(state['position_targets'], dtype=float), np.asarray(state['velocity_targets'], dtype=float)
+        dt = float(state['physics_timestep_s'])
+        sim, control = float(state['simulation_frequency_hz']), float(state['control_frequency_hz'])
+        if (len(names) != 13 or set(names) != set(ARM_JOINTS + GRIPPER_JOINTS)
+                or p.shape != (13,) or v.shape != (13,) or not np.isfinite(p).all() or not np.isfinite(v).all()
+                or not np.isfinite([dt, sim, control]).all() or min(dt, sim, control) <= 0
+                or abs(dt * sim - 1.) > 1e-6 or sim < control
+                or abs(sim / control - round(sim / control)) > 1e-9):
+            raise ValueError('invalid target vector or timing')
+    except (TypeError, ValueError, OverflowError) as error:
+        raise SceneInvalid('Invalid native drive target or timing readback') from error
+    return names, p, v, dt
+
+
+def apply_native_drive_state(robot, physics_system, state):
+    """Set only the owned private mirror's effective drive targets and timestep.
+
+    This neither runs a controller nor steps physics, and is not measured-action
+    replay. The caller owns the destination robot/system and validated idle q/v.
+    """
+    from .native_body_mirror import compare_native_state
+    names, p, v, dt = validate_native_drive_state(state)
+    joints = _native_drive_joints(robot)
+    physics_system.timestep = dt
+    for index, name in enumerate(names):
+        joints[name].set_drive_target(np.asarray([p[index]], dtype=np.float32))
+        joints[name].set_drive_velocity_target(np.asarray([v[index]], dtype=np.float32))
+    actual_p, actual_v = [], []
+    for name in names:
+        target = _array(joints[name].drive_target).reshape(-1)
+        velocity = _array(joints[name].drive_velocity_target).reshape(-1)
+        if target.shape != (1,) or velocity.shape != (1,):
+            raise SceneInvalid('Incomplete private native drive target readback')
+        actual_p.append(float(target[0])); actual_v.append(float(velocity[0]))
+    actual = dict(state, position_targets=actual_p, velocity_targets=actual_v,
+        physics_timestep_s=float(physics_system.timestep))
+    validate_native_drive_state(actual)
+    compare_native_state(state, actual, 'native_drive_state')
+    return dict(actual, source='native_private_drive_target_and_timestep_readback',
+        drive_targets_aligned=True, controller_state_replay_qualified=False,
+        dynamics_stepping_qualified=False)

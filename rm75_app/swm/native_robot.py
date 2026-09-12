@@ -18,6 +18,7 @@ def observe_primary_robot(primary):
     from rm75_app.planning.gripper_collision import DYNAMIC_GRIPPER_LINKS
 
     raw = primary.read_state()
+    drive_state = read_primary_drive_state(primary)
     robot = primary.demo.robot
     agent = primary.env.unwrapped.agent
     names = tuple(raw['joint_names'])
@@ -50,6 +51,8 @@ def observe_primary_robot(primary):
         raise ObservationUnavailable('Ambiguous multi-object native holding evidence')
     if not np.allclose(_array(robot.get_qpos()).reshape(-1), q, atol=1e-6, rtol=0):
         raise ObservationUnavailable('Robot moved during idle contact observation')
+    if read_primary_drive_state(primary) != drive_state:
+        raise ObservationUnavailable('Native drive targets changed during robot observation')
     finished = time.monotonic()
     return dict(source='native_joint_link_and_contact_feedback', domain='physics',
         captured_at=raw['capture_started_at'], capture_finished_at=finished,
@@ -59,7 +62,7 @@ def observe_primary_robot(primary):
         T_world_base=base.tolist(), T_world_tcp=tcp.tolist(), tcp_coordinate_frame='base_link',
         gripper_positions={name: float(q[names.index(name)]) for name in grip_names},
         gripper_velocities={name: float(qdot[names.index(name)]) for name in grip_names},
-        gripper_links_in_base=gripper_links, gripper_observed=True,
+        gripper_links_in_base=gripper_links, gripper_observed=True, native_drive_state=drive_state,
         holding=held[0] if held else 'empty', holding_evidence=dict(
             source='original_ManiSkill_is_grasping', min_force_n=.5, max_angle_deg=95, contacts=contacts),
         hardware_qualified=False)
@@ -93,3 +96,37 @@ def synchronize_robot_geometry(backend, observation):
         primary_sequence=observation['primary_sequence'], tcp_position_error_m=p,
         tcp_rotation_error_rad=r, gripper_link_errors=link_errors, gripper=gripper,
         robot_geometry_aligned=True, attachment_qualified=False, hardware_qualified=False)
+
+
+def read_primary_drive_state(primary):
+    """Native command targets, explicitly separate from measured q/qdot."""
+    from .native_robot_mirror import (ARM_JOINTS, GRIPPER_JOINTS,
+        _native_drive_joints, validate_native_drive_state)
+    if primary.closed:
+        raise ObservationUnavailable('Primary closed during drive target observation')
+    primary.stop.check()
+    env = primary.env.unwrapped
+    robot = env.agent.robot
+    if len(robot._objs) != 1:
+        raise ObservationUnavailable('One source native articulation required')
+    mapping = {}
+    for name in ARM_JOINTS + GRIPPER_JOINTS:
+        wrapper = robot.joints_map.get(name)
+        if wrapper is None or len(wrapper._objs) != 1:
+            raise ObservationUnavailable('Complete source drive target identity required')
+        mapping[name] = wrapper._objs[0]
+    joints = _native_drive_joints(robot._objs[0], mapping)
+    positions, velocities = [], []
+    for name in ARM_JOINTS + GRIPPER_JOINTS:
+        primary.stop.check()
+        p = _array(joints[name].drive_target).reshape(-1)
+        v = _array(joints[name].drive_velocity_target).reshape(-1)
+        if p.shape != (1,) or v.shape != (1,):
+            raise ObservationUnavailable('Single-DOF native drive targets required')
+        positions.append(float(p[0])); velocities.append(float(v[0]))
+    state = dict(source='native_joint_drive_targets_readback',
+        joint_names=list(ARM_JOINTS + GRIPPER_JOINTS), position_targets=positions,
+        velocity_targets=velocities, physics_timestep_s=float(env.scene.px.timestep),
+        simulation_frequency_hz=float(env.sim_freq), control_frequency_hz=float(env.control_freq))
+    validate_native_drive_state(state)
+    return state

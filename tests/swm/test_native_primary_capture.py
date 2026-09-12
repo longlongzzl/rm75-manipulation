@@ -23,11 +23,17 @@ def capture_rig(rig, monkeypatch):
         angular_velocity=np.zeros(3), px_body_type='dynamic') for oid in world._objects}
     primary = SimpleNamespace(actors=actors, closed=False, stop=rig.stop,
         demo=SimpleNamespace(robot=robot), sequence=0)
+    primary.drive_state = dict(source='native_joint_drive_targets_readback',
+        joint_names=list(names), position_targets=[0.]*13, velocity_targets=[0.]*13,
+        physics_timestep_s=.01, simulation_frequency_hz=100., control_frequency_hz=20.)
+    monkeypatch.setattr(native_capture, 'read_primary_drive_state',
+        lambda primary: copy.deepcopy(primary.drive_state))
     def clock():
         return rig.clock.tick(.001)
     def observe(primary):
         primary.sequence += 1
         return dict(primary_sequence=primary.sequence, captured_at=clock(), idle=True, units='rad',
+            native_drive_state=copy.deepcopy(primary.drive_state),
             joint_names=list(ARM_JOINTS), positions=[0.] * 7, velocities=[0.] * 7,
             gripper_positions={name: 0. for name in GRIPPER_JOINTS},
             gripper_velocities={name: 0. for name in GRIPPER_JOINTS},
@@ -90,3 +96,14 @@ def test_velocity_is_transformed_to_registered_offset_origin():
     row = read_primary_actor(binding, base)
     np.testing.assert_allclose(row['linear_velocity'], [-.0001, 0., 0.], atol=1e-12)
     np.testing.assert_allclose(row['T_world_object'], base @ local)
+
+
+def test_drive_target_change_during_actor_capture_rejects_batch(capture_rig, monkeypatch):
+    r = capture_rig
+    original = native_capture.read_primary_actor
+    def changing(*args):
+        r.primary.drive_state['position_targets'][0] = .1
+        return original(*args)
+    monkeypatch.setattr(native_capture, 'read_primary_actor', changing)
+    with pytest.raises(ObservationUnavailable, match='drive targets changed'):
+        r.source.capture(tuple(r.bindings), after=r.clock(), boundary='before_grasp')
