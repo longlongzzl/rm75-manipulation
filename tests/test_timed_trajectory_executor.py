@@ -59,3 +59,21 @@ def test_timed_gripper_holds_commanded_endpoint_not_observed_tracking_error():
     for (position, gripper), tag in actions[2:]:
         np.testing.assert_array_equal(position, [1])
         assert gripper == (1 if tag == "gripper_close" else -1)
+
+
+@pytest.mark.parametrize('closing', [True, False])
+def test_post_step_guard_exception_prevents_following_commands(closing):
+    actions = []
+    class Demo:
+        def compose_action(self, q, gripper): return q
+        def step_and_render(self, action, tag): actions.append(tag)
+    class Guarded(ManiSkillTrajectoryExecutor):
+        def _after_control_step(self, stage): raise RuntimeError('measured guard rejected')
+    executor = Guarded(Demo(), control_dt=.05)
+    executor._last_commanded_target = np.zeros(1)
+    with pytest.raises(RuntimeError, match='guard rejected'):
+        if closing:
+            executor.set_gripper(True)
+        else:
+            executor.execute_trajectory('move', JointTrajectory(('j',), np.array([[0],[1]]), dt=1.))
+    assert len(actions) == 1

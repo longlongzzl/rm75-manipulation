@@ -59,3 +59,62 @@ def test_gripper_without_preceding_endpoint_never_commands():
     primary,state=make_primary(); executor=NativePrimaryExecutor(primary)
     with pytest.raises(SceneInvalid,match='preceding audited'): executor.set_gripper(True)
     assert state['steps']==0
+
+
+def contact_primary(*, contact_object='table', contact_link='left', force=(0., 0., 1.), after=1):
+    primary, state = make_primary()
+    links = {name: SimpleNamespace(name=name) for name in ('left', 'right', 'wrist')}
+    actors = {name: object() for name in ('bi', 'neighbor')}
+    table = object()
+    objects = dict(actors, table=table)
+    def query(link, actor):
+        if state['steps'] >= after and link.name == contact_link and actor is objects[contact_object]:
+            return np.asarray(force)
+        return np.zeros(3)
+    primary.actors = actors
+    primary.env.unwrapped.agent = SimpleNamespace(robot=SimpleNamespace(links_map=links),
+        finger1_link=links['left'], finger2_link=links['right'],
+        scene=SimpleNamespace(get_pairwise_contact_forces=query))
+    primary.env.unwrapped.table_scene = SimpleNamespace(table=table)
+    executor = NativePrimaryExecutor(primary)
+    executor.closure_target = 'bi'
+    executor._last_commanded_target = np.zeros(7)
+    return executor, state
+
+
+@pytest.mark.parametrize('object_id,link', [('table','left'), ('neighbor','right'), ('bi','wrist')])
+def test_closure_forbidden_contact_stops_before_second_command(object_id, link):
+    executor, state = contact_primary(contact_object=object_id, contact_link=link)
+    with pytest.raises(SceneInvalid, match='forbidden contact'):
+        executor.set_gripper(True)
+    assert state['steps'] == 1
+
+
+def test_contact_guard_remains_active_during_closed_settling():
+    executor, state = contact_primary(after=21)
+    with pytest.raises(SceneInvalid, match='forbidden contact'):
+        executor.set_gripper(True)
+    assert state['steps'] == 21
+
+
+def test_original_target_finger_contact_is_not_holding_verification():
+    executor, state = contact_primary(contact_object='bi')
+    events = []
+    executor.emit = lambda **row: events.append(row)
+    executor.set_gripper(True)
+    assert state['steps'] == 23
+    assert all(not row['skill_verified'] for row in events if row['kind']=='swm_primary_closure_contacts')
+
+
+@pytest.mark.parametrize('force', [(float('nan'),0.,0.), (0.,0.), (1e-20,0.,0.)])
+def test_invalid_or_arbitrarily_small_forbidden_force_is_not_ignored(force):
+    executor, state = contact_primary(force=force)
+    with pytest.raises(SceneInvalid): executor.set_gripper(True)
+    assert state['steps'] == 1
+
+
+def test_unbound_closure_target_rejects_before_motion():
+    executor, state = contact_primary()
+    executor.closure_target = None
+    with pytest.raises(SceneInvalid, match='bound target'): executor.set_gripper(True)
+    assert state['steps'] == 0

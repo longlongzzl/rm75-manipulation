@@ -164,6 +164,9 @@ class ManiSkillTrajectoryExecutor:
         self._gripper_value = self.gripper_open
         self.last_contact_summary: list[dict[str, Any]] = []
 
+    def _after_control_step(self, stage: str) -> None:
+        """Override for measured post-step guards; exceptions stop later commands."""
+
     def _record_contacts(
         self,
         contacts: dict[tuple[str, str], dict[str, Any]],
@@ -202,6 +205,7 @@ class ManiSkillTrajectoryExecutor:
             self.demo.step_and_render(action, tag=str(stage))
             self._last_commanded_target = np.asarray(position, dtype=np.float64).copy()
             self._record_contacts(contacts)
+            self._after_control_step(str(stage))
         self.last_contact_summary = sorted(
             contacts.values(),
             key=lambda item: (-item["max_impulse_ns"], item["body_a"], item["body_b"]),
@@ -215,5 +219,6 @@ class ManiSkillTrajectoryExecutor:
                     self._stop_check()
                 action = self.demo.compose_action(self._last_commanded_target, self._gripper_value)
                 self.demo.step_and_render(action, tag="gripper_close" if closed else "gripper_open")
+                self._after_control_step("gripper_close" if closed else "gripper_open")
             return
         self.demo.hold_current_and_set_gripper(self._gripper_value, steps=self.gripper_steps)

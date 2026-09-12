@@ -2,7 +2,7 @@
 from __future__ import annotations
 import numpy as np
 from rm75_app.execution.trajectory_executor import ManiSkillTrajectoryExecutor
-from .native_bootstrap import FrozenPrimaryWorld
+from .native_bootstrap import FrozenPrimaryWorld, _array
 from .scene import SceneInvalid
 
 
@@ -26,6 +26,7 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         self.max_settle_steps = max_settle_steps
         self.emit = emit or (lambda **row: None)
         self.last_settle_evidence = None
+        self.closure_target = None
 
     def _read(self):
         self.primary.stop.check()
@@ -50,6 +51,7 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
             self.primary.stop.check()
             action = self.demo.compose_action(self._last_commanded_target, self._gripper_value)
             self.demo.step_and_render(action, tag='settle_'+stage)
+            self._after_control_step('settle_'+stage)
             raw, names, q, velocity = self._read()
             error = float(np.max(np.abs(q-self._last_commanded_target)))
             idle = float(np.max(np.abs(velocity))) <= .001
@@ -78,6 +80,8 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         self.primary.stop.check()
         if self._last_commanded_target is None:
             raise SceneInvalid('Primary gripper requires a preceding audited trajectory endpoint')
+        if closed:
+            self._after_control_step('gripper_close')
         super().set_gripper(closed)
         self._settle('gripper_close' if closed else 'gripper_open')
 
@@ -86,3 +90,45 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         return dict(source='measured_feedback', captured_at=raw['capture_started_at'],
             primary_sequence=raw['sequence'], joint_names=list(names), positions=q.tolist(),
             idle=bool(np.max(np.abs(velocity)) <= .001))
+
+    def _after_control_step(self, stage):
+        """Reject detected forbidden closure forces, not a sweep audit substitute.
+
+        Pairwise forces are measured at control boundaries, not every physics
+        substep. Zero resultant force is not proof of absence of collision.
+        The trusted task context must bind the intended object before closing.
+        """
+        if stage not in ('gripper_close', 'settle_gripper_close'):
+            return
+        self.primary.stop.check()
+        actors = dict(self.primary.actors)
+        if self.closure_target not in actors:
+            raise SceneInvalid('Native closure requires a bound target actor')
+        agent = self.primary.env.unwrapped.agent
+        links = agent.robot.links_map
+        allowed = {agent.finger1_link.name, agent.finger2_link.name}
+        if len(allowed) != 2 or not allowed <= set(links):
+            raise SceneInvalid('Native closure requires both original finger links')
+        table_id = '__swm_primary_table_contact_guard__'
+        if table_id in actors:
+            raise SceneInvalid('Reserved closure table identity is occupied')
+        actors[table_id] = self.primary.env.unwrapped.table_scene.table
+        contacts = []
+        forbidden = []
+        for name, link in links.items():
+            for object_id, actor in actors.items():
+                self.primary.stop.check()
+                force = _array(agent.scene.get_pairwise_contact_forces(link, actor)).reshape(-1)
+                if force.shape != (3,) or not np.isfinite(force).all():
+                    raise SceneInvalid('Native closure contact feedback is incomplete or nonfinite')
+                if np.any(force != 0.):
+                    row = dict(robot_link=name, object_id=object_id, force_n=force.tolist())
+                    contacts.append(row)
+                    if object_id != self.closure_target or name not in allowed:
+                        forbidden.append(row)
+        self.emit(kind='swm_primary_closure_contacts', stage=stage,
+            source='native_pairwise_contact_force_readback', target=self.closure_target,
+            contacts=contacts, forbidden_contacts=forbidden,
+            coverage='control_boundary_resultant_forces_only', skill_verified=False)
+        if forbidden:
+            raise SceneInvalid('Native closure detected forbidden contact')

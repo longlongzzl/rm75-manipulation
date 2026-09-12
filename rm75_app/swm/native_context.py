@@ -127,6 +127,7 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     _prepare_pen_attachment(backend, planner, initial, stop, events)
     bridge = _compile_pen_task(initial, registration.evidence, fixed, run_dir.name)
     sink = NativePrimaryExecutor(primary, emit=events.emit)
+    sink.closure_target = "bi"
     coordinator = PickPlaceCoordinator(backend, sink)
     auditor = CuroboNativeStageAuditor(backend)
 
