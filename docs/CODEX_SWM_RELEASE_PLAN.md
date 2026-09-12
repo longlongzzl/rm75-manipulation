@@ -389,3 +389,13 @@ native_pen_phase_10 退出 0，实际同一 GPU 原 grasp 原子通过 collision
 新增测试辅助函数命名 setup 与 pytest xunit 模块钩子冲突，模块对象被当作 configs 参数，7 项测试初始化错误，测试体未运行。定向 51 passed / 7 errors / 0.55 s；全量 1672 passed / 7 errors / 1 existing warning / 45.34 s。该错误已报告，不能用原生审核通过冒充全量通过；下一步先重命名辅助函数并跑完这 7 项，再继续正式 worker 的共享执行器、实测反馈和六检查点装配。
 
 内核：有上述 7 项初始化错误。原生接线：宽批附着/世界同步取得真实证据，grasp 全阶段原生审核通过；正式 worker 未完成。模型推理：未运行。实际仿真：真实初始化及 GPU 求解/审核成功，无主环境动作。硬件：未授权、未连接。代码和原生驱动/结果摘要记录于 coarse_attachment_* / native_pen_phase_10。保持 PARTIAL_DELIVERY 和缺适配器检查，本轮实现及未修复测试与证据仅本地提交，未推送。
+
+## M1 / 原子运行首次进入主仿真，闭合静止失败
+
+`73169cf` 已提交共享执行器逐步 Stop 检查及 NativePrimaryExecutor 实测静止反馈；原测试 helper 命名冲突已修复，定向 18 passed。`259100a` 将原碰撞诊断逐样本 GPU 索引回传改为整批提取，保持全部样本、正穿透判据、自碰撞与深度计算。定向 45 passed；正式全量 1688 passed / 1 existing warning / 42.32 s。
+
+native_pen_phase_11 真实 AtomicSkillRuntime 取得 before_grasp/pre_execute_grasp 两次新采集，但完整审计后观测过期，退出 1、无动作。12 使用同一原场景，完整审计耗时 1.254555 s，通过原新鲜度检查；approach/grasp 均在 14 个保持步后获得连续 3 次独立静止读回。闭合后 200 步仍不静止，最大关节速度 1.467355 rad/s、末端关节误差 0.063897 rad，故停止，无 lift/place，无 after_grasp。主环境和私有资源均关闭。
+
+内核：全量通过。原生接线：真实运行时已连接原阶段规划、审核、共享执行器和主仿真反馈，但正式 worker 工厂仍未完成。模型推理：未运行。实际仿真：执行了 approach/grasp 及闭合尝试，抓取未验证，技能检查点 2/6。硬件：未授权、未连接。历史失败保留，证据摘要见机器表 native_pen_phase_11/12。
+
+下一实际动作：诊断闭合阶段全部 13 关节与实际接触，不清零速度、不放宽静止要求；完成正式 worker 拥有的笔 runtime 上下文，再取得完整六检查点。不将本诊断驱动算作正式 worker 验收。保持 PARTIAL_DELIVERY，未完成技能不可用、缺适配器检查保留。本轮代码及证据仅本地提交，未推送。
