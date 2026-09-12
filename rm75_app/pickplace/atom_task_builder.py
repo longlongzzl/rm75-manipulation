@@ -494,7 +494,7 @@ class FixedSceneAtomTaskBuilder:
                     raise ValueError('Finite metric native infrastructure geometry required')
                 objects.append(CollisionObject(state.object_id, 'cuboid',
                     _matrix_to_pose(self._to_planning_pose(state.pose) @ local),
-                    dimensions=dimensions, metadata=dict(fixed=True,
+                    dimensions=dimensions.tolist(), metadata=dict(fixed=True,
                         source='registered_original_native_infrastructure')))
                 continue
             if spec is None:
