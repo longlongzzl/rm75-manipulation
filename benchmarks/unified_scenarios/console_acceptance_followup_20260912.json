@@ -1,0 +1,101 @@
+{
+  "base_commit": "f0dd73abe33dc6dbd96a3d2183041ba1a56c7692",
+  "python": "3.13.5",
+  "python_tests": {
+    "passed": 65,
+    "failed": 0,
+    "skipped": 0,
+    "new": 22
+  },
+  "node_tests": {
+    "passed": 32
+  },
+  "offline_dom": {
+    "checks_passed": 11,
+    "normal_navigation": false,
+    "runtime": "UI_FIXTURE_ONLY"
+  },
+  "compileall": "PASS",
+  "full_repo": "NOT_RUN_PARTIAL_RECONSTRUCTED_TREE",
+  "LLM": "NOT_RUN_CONSTRUCTOR_MOCK_ONLY",
+  "GPU_PhysX": "NOT_RUN",
+  "hardware_contacted": false,
+  "issue_9_test_history": "NOT_FIXED",
+  "files": {
+    "rm75_app/workcell/console_api.py": {
+      "bytes": 25861,
+      "sha256": "de0907dfc141b9ea740050c1c9a21143090b9653a1828b79a7c9ea7a84fdae21",
+      "git_blob": "e889a35f02eb2a1c10cb92b7d955ef622acf38ce"
+    },
+    "rm75_app/workcell/server.py": {
+      "bytes": 10271,
+      "sha256": "4e9b7bdf8e47c83d7de5d7b4953b5c19a2ded3056403c053dece130728e0b74a",
+      "git_blob": "c03e759b2c1f36e684871a10e2ac890703006094"
+    },
+    "rm75_app/workcell/scene_readiness.py": {
+      "bytes": 1570,
+      "sha256": "454ab21070c0c3edc682214ac8620c75c59cd3c3c96ee4834e4e9bf0b52b3b98",
+      "git_blob": "804e86376c79b0d9e1769faad2b388e5f84b3187"
+    },
+    "rm75_app/workcell/profile_discovery.py": {
+      "bytes": 3701,
+      "sha256": "47074189973c4a4525dca3e3e012c76630ebe9df5caf583f8dbe7111d35b4501",
+      "git_blob": "5fd091f8b200753f9a4dab02c3b9d3d618f27006"
+    },
+    "rm75_app/workcell/task_diagnostics.py": {
+      "bytes": 827,
+      "sha256": "297848ca5d5ca1536260938c321b76845c4227c38d4c0549a71cd2afc911e8d8",
+      "git_blob": "b12c0bc05ae1a3533d7d634efe967f9cda37cfd5"
+    },
+    "rm75_app/workcell/iteration_workflows.py": {
+      "bytes": 7109,
+      "sha256": "ef28caf8d5293377e29e6272a65414c1ee427d7551d1609ec76ee6c7baf019c3",
+      "git_blob": "1ee455ca71be12ebd3c0530cbed86ab9ff68a3ee"
+    },
+    "rm75_app/magnetic/completion_provider.py": {
+      "bytes": 10383,
+      "sha256": "6297777dcd411ac4b56e24ddef63b9f4293d85cc8a85743606769e528572dfa8",
+      "git_blob": "a7710405d24f27a9038f12015baaf3101d1d21a1"
+    },
+    "rm75_app/web/static/workcell/console/index.html": {
+      "bytes": 14113,
+      "sha256": "a14b14414eccbc3c18808c49632c758f4bb8e7e0f28569e1966948097471f7d8",
+      "git_blob": "b62d19ef682c8157724d9d72c8226be90b7ad347"
+    },
+    "rm75_app/web/static/workcell/console/icon.svg": {
+      "bytes": 302,
+      "sha256": "9d057c8f136ab253065d1275357add932793fe3e3c9071cbbbdd3640e914ed75",
+      "git_blob": "95b6c627ad034f33cfad579f2e8c83cb6dff4cc3"
+    },
+    "tools/console_browser_support.py": {
+      "bytes": 1440,
+      "sha256": "356551d2fd2f7c57ff7a96e311a20c9cf19474cdcf822b1ed5adb44f18b10655",
+      "git_blob": "265941f9fc567c001c8f8c3a7cef0c36feb8b8e2"
+    },
+    "tools/check_workcell_console.py": {
+      "bytes": 5326,
+      "sha256": "a9ab9742d2e3cda95b294f7819a09334014682c601b6fb316698ca97ed5a22f5",
+      "git_blob": "79823d64462bf77b4c11bf9b9f034592aaede18d"
+    },
+    "tools/launch_workcell_console.py": {
+      "bytes": 3164,
+      "sha256": "dd7bb90c8597a05049531d6e76858dc483d3d23ca65cdea3ea901a96895d34a6",
+      "git_blob": "3fa29ed9b48154a31fe200398c98ed94615db8b7"
+    },
+    "tests/console/dom_fixture.py": {
+      "bytes": 10517,
+      "sha256": "e8619a3435fa4ffbb435bd017930f9797bc5d8c84667fce398cd5a315f2df1bb",
+      "git_blob": "357eca4080b55c4d9d4dfa39611f7c0005eb00a6"
+    },
+    "tests/console/test_acceptance_followup.py": {
+      "bytes": 11783,
+      "sha256": "08afed79960fb5c601e4115c4d73480acb0381459a0fbf382b1ad38bf9eb1b58",
+      "git_blob": "b27f890e2bb67f18a60acc6b6b2dcf90ea792b8f"
+    },
+    "docs/CHATGPT_CONSOLE_ACCEPTANCE_FOLLOWUP_20260912.md": {
+      "bytes": 9465,
+      "sha256": "dc74b1ea05f61c8a25c849a1451a2d18e21454434cd6d5513a892d2aa87a2703",
+      "git_blob": "4c525d89788bc13356909d087156732110a9f815"
+    }
+  }
+}

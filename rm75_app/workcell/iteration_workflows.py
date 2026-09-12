@@ -83,6 +83,12 @@ def run(spec, profile, app_root, run_dir, stop, events):
     # first import time.
     legacy=importlib.import_module('rm75_app.workcell.legacy')
     original_spec=copy.deepcopy(spec)
+    # Scope optional diagnostics before calling the unchanged strict native adapter.
+    # Never edit the shared profile or suppress PickPlace's own validity checks.
+    from .task_diagnostics import scoped_profile
+    profile,ignored=scoped_profile(spec,profile)
+    for key in ignored:
+        events.emit('unrelated_task_diagnostic_ignored',task=spec['task'],option='pickplace.'+key)
     spec,profile=prepare_request(spec,profile,run_dir)
     atomic_json(Path(run_dir)/'effective_task_profile.json',profile)
     requested=profile.get('pickplace',{}).get('frozen_source_order',[spec['parameters'].get('object_name')])

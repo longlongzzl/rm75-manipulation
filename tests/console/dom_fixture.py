@@ -6,6 +6,7 @@ WorkcellService, worker, SDK or solver. Author-created HTML/JS is rendered in an
 This is NOT normal navigation, HTTP/CSP, native/LLM/physics qualification.
 """
 from __future__ import annotations
+import argparse
 import json
 import io
 import re
@@ -26,17 +27,23 @@ class Patch:
     def setitem(self,mapping,key,value):mapping[key]=value
 
 
-def main():
-    from playwright.sync_api import sync_playwright,expect
-    output=Path(sys.argv[1] if len(sys.argv)>1 else '/mnt/data/rm75_console_dom')
-    output.mkdir(parents=True,exist_ok=True)
+def main(argv=None):
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--chromium',type=Path)
+    args=parser.parse_args(argv)
+    output=args.output.expanduser().resolve()
+    if output.exists(): raise FileExistsError('Choose a new fixture evidence directory')
+    from tools.console_browser_support import playwright_api,chromium_options
+    sync_playwright,expect=playwright_api()
     report={'runtime':'UI_FIXTURE_ONLY','network_model_calls':0,'robot_imported':False,'hardware_connected':False,
             'native_worker_run':False,'physics_run':False,'transport':'in_process_fixture_bridge_no_network',
-            'storage':'component_map_substitute','normal_browser_navigation':'BLOCKED_BY_ADMINISTRATOR_NOT_BYPASSED','checks':[],'page_errors':[]}
+            'storage':'component_map_substitute','normal_browser_navigation':'NOT_EXERCISED_COMPONENT_FIXTURE_ONLY','checks':[],'page_errors':[]}
     install_substitutes(Patch())
     from rm75_app.workcell.server import WorkcellWSGI
     root=Path(tempfile.mkdtemp(prefix='console_ui_fixture_'))
     service=FakeService(root);app=WorkcellWSGI(service)
+    created_output=False
     requests=[]
     def fetch(path,method,headers,body):
         requests.append((method,path))
@@ -74,7 +81,9 @@ def main():
     def check(name):report['checks'].append({'name':name,'status':'PASS'})
     try:
         with sync_playwright() as pw:
-            browser=pw.chromium.launch(headless=True,executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage'])
+            browser=pw.chromium.launch(**chromium_options(pw,args.chromium))
+            output.mkdir(parents=True,exist_ok=False)
+            created_output=True
             context=browser.new_context(viewport={'width':1560,'height':1080},device_scale_factor=1)
             context.route('**/*',lambda r:r.abort())
             page=mount(context)
@@ -152,7 +161,7 @@ def main():
         report.update(status='FAILED',error=str(exc))
         raise
     finally:
-        atomic_json(output/'report.json',report)
+        if created_output: atomic_json(output/'report.json',report)
     return 0
 
 if __name__=='__main__':raise SystemExit(main())

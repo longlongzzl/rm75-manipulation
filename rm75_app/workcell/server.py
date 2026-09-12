@@ -29,12 +29,16 @@ class WorkcellWSGI:
             '/workcell/console/index.html': 'index.html',
             '/workcell/console/app.js': 'app.js', '/workcell/console/state.js': 'state.js',
             '/workcell/console/views.js': 'views.js', '/workcell/console/console.css': 'console.css',
+            '/workcell/console/icon.svg': 'icon.svg',
         }
+        if path=='/favicon.ico' and self.fallback is None:
+            if method not in ('GET','HEAD'): return response('405 Method Not Allowed',{'error':'GET/HEAD only'})
+            return response('204 No Content',b'', 'image/x-icon')
         if path in console_static:
             if method!='GET':
                 return response('405 Method Not Allowed',{'error':'GET only'})
             name=console_static[path]
-            content_type=('text/html' if name.endswith('.html') else 'text/css' if name.endswith('.css')
+            content_type=('image/svg+xml' if name.endswith('.svg') else 'text/html' if name.endswith('.html') else 'text/css' if name.endswith('.css')
                           else 'application/javascript')+'; charset=utf-8'
             return response('200 OK',(self.static/'console'/name).read_bytes(),content_type)
         if path=='/' and self.fallback is None:

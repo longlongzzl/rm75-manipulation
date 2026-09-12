@@ -17,7 +17,7 @@ from urllib.parse import parse_qs
 
 from .io import atomic_json, read_json, digest, dumps, integer
 
-VERSION = '2026.09.11-console.1'
+VERSION = '2026.09.12-console.2'
 IDENTITY = re.compile(r'[0-9a-f]{32}\Z')
 TASKS = ('pickplace', 'magnetic', 'pusht')
 TERMINAL = {'succeeded', 'failed', 'cancelled', 'verification_failed',
@@ -101,7 +101,12 @@ class ConsoleAPI:
     def _safe_feature_state(self):
         # A malformed optional model must not hide console configuration or Stop.
         try:
-            return self.iteration.features()
+            value = copy.deepcopy(self.iteration.features())
+            # Presentation must not duplicate the reserved original geometry.
+            ids = value.get('geometry_ids', ['original'])
+            if isinstance(ids, list) and all(isinstance(x, str) for x in ids):
+                value['geometry_ids'] = list(dict.fromkeys(ids))
+            return value
         except (ValueError, OSError, KeyError, TypeError) as exc:
             return {'jimu_catalog': [], 'llm': {'configured': False, 'missing': ['valid configuration']},
                     'geometry_ids': ['original'], 'geometry_models': {},
@@ -158,8 +163,16 @@ class ConsoleAPI:
                 # Generated Jimu selects its own original frozen scene in the recipe.
                 generated = name == 'magnetic' and spec and 'generation_proof' in spec.get('parameters', {})
                 if not generated:
-                    add(name+'.scene', name+' 冻结场景', isinstance(fixed, str) and Path(fixed).expanduser().is_file(),
-                        '仿真需要可读取的本机冻结场景。生成结构使用其原模板的场景。')
+                    present = isinstance(fixed, str) and Path(fixed).expanduser().is_file()
+                    template_hint = None
+                    if name == 'magnetic' and spec is None and not present:
+                        from .scene_readiness import template_scene_hint
+                        template_hint = template_scene_hint(profile)
+                    if template_hint is not None:
+                        checks.append(template_hint)
+                    else:
+                        add(name+'.scene', name+' 冻结场景', present,
+                            '手动设计仿真需要 fixed_scene；生成结构提交时使用并校验所选原模板场景。')
                 if name == 'magnetic':
                     library = section.get('design_library')
                     add('magnetic.library', '原 3×3 / 弧形模板库', isinstance(library, str) and Path(library).expanduser().is_file(),
@@ -325,6 +338,9 @@ class ConsoleAPI:
             if not (root/'request.json').is_file(): raise
             status = {'generation_id': ident, 'status': 'interrupted',
                       'error': '服务器重启或生成任务已失去管理；未自动重发模型请求。'}
+        if status.get('error_type') == 'CompletionClientInitError':
+            status = {**status, 'error_code': 'LLM_CLIENT_INIT',
+                      'error': '模型客户端初始化失败；检查 Web 解释器中的 SDK 和 magnetic.llm.proxy。此次未发送模型请求。'}
         return {**status, 'created_at': meta.get('created_at', root.stat().st_mtime),
                 'request': meta.get('request'), 'poll_ms': 1500, 'auto_execute': False}
 

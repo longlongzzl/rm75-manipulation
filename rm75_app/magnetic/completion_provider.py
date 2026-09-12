@@ -31,6 +31,11 @@ def _endpoint(value):
     return value.rstrip('/')
 
 
+class CompletionClientInitError(RuntimeError):
+    """Safe, distinct error category; never contains endpoint or secret values."""
+    code = 'LLM_CLIENT_INIT'
+
+
 class AnthropicJsonClient:
     """Official SDK adapter, also usable with the user's configured compatible API.
 
@@ -83,7 +88,11 @@ class AnthropicJsonClient:
         # sending a second secret to a server that only uses bearer authentication.
         kwargs.update(api_key='', auth_token='')
         kwargs[self.auth_kind] = os.environ[self.key_env]
-        http = anthropic.DefaultHttpxClient(proxy=self.proxy or None, trust_env=False,
+        # SDK v1.4 builds environment proxy mounts unless the transport keyword
+        # is present, even with trust_env=False. An explicit None delegates the
+        # default transport to HTTPX2, which honours trust_env and our proxy.
+        # Keep SDK timeout/limits; never mutate process-wide proxy variables.
+        http = anthropic.DefaultHttpxClient(transport=None, proxy=self.proxy or None, trust_env=False,
                                             follow_redirects=False, timeout=self.timeout)
         try:
             return anthropic.Anthropic(http_client=http, **kwargs)
@@ -113,6 +122,12 @@ class AnthropicJsonClient:
         client = None
         try:
             client = self.client_factory() if self.client_factory else self._make_client()
+        except Exception:
+            raise CompletionClientInitError(
+                'LLM_CLIENT_INIT: SDK/client construction failed; check the web interpreter '
+                'and the explicit magnetic.llm.proxy setting. No model request was sent.'
+            ) from None
+        try:
             start = time.monotonic()
             with client.messages.stream(**request) as stream:
                 # Socket/read timeout and event-boundary wall budget; not a

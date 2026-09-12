@@ -11,6 +11,11 @@ import argparse
 import json
 from pathlib import Path
 from urllib.parse import urlsplit
+import sys
+
+ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
+from tools.console_browser_support import playwright_api, chromium_options
 
 
 def main(argv=None):
@@ -24,17 +29,18 @@ def main(argv=None):
     if origin.scheme!='http' or origin.hostname not in ('127.0.0.1','localhost') or origin.username or origin.password:
         raise ValueError('Use only the loopback workcell URL')
     if args.output.exists():raise FileExistsError('Choose a new evidence directory')
-    args.output.mkdir(parents=True)
     report={'scope':'normal browser, real WSGI transport; no LLM/GPU/real task launched',
             'checks':[],'errors':[],'blocked_requests':[],'preview_requested':args.preview_object,
             'normal_navigation':False,'hardware_arming_requested':False}
-    from playwright.sync_api import sync_playwright,expect
+    sync_playwright,expect=playwright_api()
     base=f'{origin.scheme}://{origin.netloc}'
+    created_output=False
     try:
         with sync_playwright() as pw:
-            options={'headless':True}
-            if args.chromium:options['executable_path']=str(args.chromium)
+            options=chromium_options(pw,args.chromium)
             browser=pw.chromium.launch(**options)
+            args.output.mkdir(parents=True,exist_ok=False)
+            created_output=True
             context=browser.new_context(viewport={'width':1560,'height':1080})
             def route(r):
                 req=r.request
@@ -78,7 +84,8 @@ def main(argv=None):
         report['error']=str(exc)
         raise
     finally:
-        (args.output/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+        if created_output:
+            (args.output/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
     return 0
 
 if __name__=='__main__':raise SystemExit(main())
