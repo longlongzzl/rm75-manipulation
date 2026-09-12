@@ -8,14 +8,16 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "4e2a48f",
+    "commit": "8007e0a",
     "sha256": {
-      "rm75_app/swm/native_scene.py": "65ab7a3bf499b5fb45e6b381450a2596fa99704fe3a7c529e823eb199c00c06c",
-      "rm75_app/planning/backends/curobo2.py": "60e91f33fe3061d7ce7a45ef6dcf75539ca92d3d4fd700f82f53ac8abbedb85b",
-      "tests/swm/test_native_attachment_switch_order.py": "8467fd864e3d7090d2b75a117b50a3d4cbfa3b2f54a214e9f6701bd9ae4c7bc8"
+      "rm75_app/planning/backends/curobo2.py": "7962deb8fe31d6dcfe0664a452d6f227f9d2d7e1908c3ca0497ef64497803d03",
+      "rm75_app/swm/native_planning_scene.py": "61cb73d3b7da44643876b159bf66ae7a9d5bb2d71dc5d8a060294d821ce793ef",
+      "rm75_app/swm/native_attachment.py": "425e9efdbb90369ebb3c6772420d3d56dd45a8518e964bda21dd387ceed939e3",
+      "rm75_app/swm/native_scene.py": "2a8635145097f112942769523dcb78f0e8f20838b858b8592e1fe81918dcd4a8",
+      "tests/swm/test_native_attachment_geometry.py": "3bb93cc2c3a9154f756854e76dcbfdb3f6ea93c8d6f86338e4ede6cf1f37c52e"
     },
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Raw native evidence and source hashes recorded in runs.native_attachment_storage_01."
+    "note": "Native evidence/source hashes recorded in runs.native_bound_attachment_01."
   },
   "runs": {
     "m0_targeted": {
@@ -6728,6 +6730,109 @@
         "assets/test_scenes/current_table.json": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908"
       },
       "note": "A private payload relation and 0.02 rad private joint perturbation were injected without stepping or changing primary state. Applying the actual empty-holding snapshot restored native state through SapienScenePort. GPU attachment used the existing original fit/attach/detach path and restored independently measured jaw geometry. Storage agreement alone does not bind spheres to the asset or measured TCP relation; held native SWM guard remains."
+    },
+    "native_bound_attachment_targeted": {
+      "tested_commit": "8007e0a",
+      "domain": "software_fixture",
+      "passed": 10,
+      "failed": 0,
+      "seconds": 0.41
+    },
+    "native_bound_attachment_full": {
+      "tested_commit": "8007e0a",
+      "domain": "software_regression",
+      "passed": 1618,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 41.46,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "note": "Final implementation unchanged during native and full regression runs."
+    },
+    "native_bound_attachment_01": {
+      "tested_commit": "8007e0a",
+      "domain": "private_native_held_geometry_transactions",
+      "process_exit_code": 0,
+      "status": "live_dual_mirror_checkpoint_committed",
+      "initial_transaction": {
+        "snapshot_id": "31acc1d37902cc457ba7df0607f36a947dd797ce3cdcda2eae1699ba8d322732",
+        "revision": 1
+      },
+      "held_snapshot_id": "7eeee117074b5debde471cfec08cfcb271efadd5878fa4aef5affd4e2b158c15",
+      "simulator_held_snapshot_id": "7eeee117074b5debde471cfec08cfcb271efadd5878fa4aef5affd4e2b158c15",
+      "held_geometry": {
+        "source": "native_GPU_payload_and_FK_readback",
+        "holding": "bi",
+        "mesh_sha256": "1ef8131456d07671e2f12933b3aa4861b489fa47a86d081b2f49b52dea68d2bc",
+        "active_spheres": 4,
+        "consumer_max_errors_m": {
+          "trajectory": [
+            4.826422228543237e-08
+          ],
+          "planner": [
+            4.826422228543237e-08
+          ],
+          "ik": [
+            4.826422228543237e-08
+          ]
+        },
+        "world_max_error_m": 1.0122276369872729e-07,
+        "original_fit_binding_verified": true,
+        "attachment_geometry_qualified": true,
+        "actual_grasp_qualified": false
+      },
+      "refined_geometry": {
+        "source": "native_GPU_payload_and_FK_readback",
+        "holding": "bi",
+        "mesh_sha256": "1ef8131456d07671e2f12933b3aa4861b489fa47a86d081b2f49b52dea68d2bc",
+        "active_spheres": 4,
+        "consumer_max_errors_m": {
+          "trajectory": [
+            2.999942944059697e-08
+          ],
+          "planner": [
+            2.999942944059697e-08
+          ],
+          "ik": [
+            2.999942944059697e-08
+          ]
+        },
+        "world_max_error_m": 1.1612392489257495e-07,
+        "original_fit_binding_verified": true,
+        "attachment_geometry_qualified": true,
+        "actual_grasp_qualified": false
+      },
+      "empty_geometry": {
+        "source": "native_GPU_attachment_link_spheres",
+        "holding": "empty",
+        "active_spheres": 0,
+        "attachment_geometry_qualified": true,
+        "actual_grasp_qualified": false
+      },
+      "gpu_displaced_sphere_rejected": "Native attachment geometry or measured transform differs",
+      "gpu_duplicate_world_payload_rejected": "Native GPU geometry/enable readback differs for bi",
+      "primary_state_unchanged": true,
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "world_revision": 1,
+      "actual_grasp": false,
+      "atomic_worker_qualified": false,
+      "skill_checkpoints": 0,
+      "hardware_connected": false,
+      "sha256": {
+        "rm75_app/planning/backends/curobo2.py": "7962deb8fe31d6dcfe0664a452d6f227f9d2d7e1908c3ca0497ef64497803d03",
+        "rm75_app/swm/native_planning_scene.py": "61cb73d3b7da44643876b159bf66ae7a9d5bb2d71dc5d8a060294d821ce793ef",
+        "rm75_app/swm/native_attachment.py": "425e9efdbb90369ebb3c6772420d3d56dd45a8518e964bda21dd387ceed939e3",
+        "rm75_app/swm/native_scene.py": "2a8635145097f112942769523dcb78f0e8f20838b858b8592e1fe81918dcd4a8",
+        "tests/swm/test_native_attachment_geometry.py": "3bb93cc2c3a9154f756854e76dcbfdb3f6ea93c8d6f86338e4ede6cf1f37c52e",
+        "runtime_data/swm_release_bound_attachment_driver_01/run.py": "bdba48405555f4bfb19e7d1a511c305ec1d9b5dd9380a623efb63b12ba665ab5",
+        "runtime_data/swm_release_bound_attachment_driver_01/transaction_result.json": "c22969588e2179af94d589efe7dec01c25e3de566d69ce96fa7bb500f4587221",
+        "runtime_data/swm_release_bound_attachment_bootstrap_01/result.json": "614cf257da8fb09da529e056b969f1eeba1307bfa387fc4277efb4a55a1bdbdc",
+        "runtime_data/swm_release_bound_attachment_driver_01.log": "9e14bd3c62310e83dc6263894dcb5f5f1256ac2736d3579c4a03a20ee6d631ed",
+        "runtime_data/swm_release_bound_attachment_targeted.log": "7765a34d7bca843defc61de4b271bb9376d3937ca38f1d31fb73bbf296787f24",
+        "runtime_data/swm_release_bound_attachment_full.log": "c0acfa66daf1f5bfe19549a717c96dad16224acd8dff175134f4a88603d9aa3b",
+        "assets/test_scenes/current_table.json": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908"
+      },
+      "note": "Original shared fitted sphere reference is bound to registered metric mesh hash, measured TCP-relative pose and independent native GPU local/FK output. Held/refined/empty scenarios are private hypotheses, not observations or actual grasp. Only the initial empty world checkpoint was committed to SWM. No physical stepping or posterior application qualified."
     }
   },
   "gates": {
@@ -6983,7 +7088,7 @@
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
-      "native_wiring": "Native physical identities used in actual initial live transaction; held geometry and posterior application adapters remain incomplete",
+      "native_wiring": "Physical identities and original fitted planning payload provenance verified in native ports; posterior parameter application and actual skill worker incomplete",
       "model_inference": "NOT_RUN",
       "actual_simulation": "Native body identity and state synchronization succeeded; no atomic action",
       "hardware": "NOT_AUTHORIZED_NOT_RUN"
@@ -6997,7 +7102,7 @@
     },
     "live_dual_mirror": {
       "kernel": "1611 passed; 1 existing warning on f488a58",
-      "native_wiring": "Initial live transaction qualified; old-attachment switch ordering fixed and exercised in private native hypothesis. Actual holding geometry binding and posterior adapters remain incomplete",
+      "native_wiring": "Actual initial checkpoint committed; private held/refined/empty geometry transactions passed. Formal worker actions and post-action observed checkpoints pending",
       "model_inference": "NOT_RUN",
       "actual_simulation": "12-object initial transaction succeeded; no atomic skill checkpoint",
       "hardware": "NOT_AUTHORIZED_NOT_RUN",
@@ -7005,9 +7110,16 @@
     },
     "gpu_attachment_storage": {
       "kernel": "1612 passed; 1 existing warning on 4e2a48f",
-      "native_wiring": "GPU trajectory/planner/IK storage readback implemented; asset and measured TCP-relative geometry qualification pending",
+      "native_wiring": "Original fitted payload bound to registered mesh and measured TCP relation; all GPU consumers plus world FK checked, displaced sphere and duplicate world-obstacle negatives rejected. Actual grasp and worker still pending",
       "model_inference": "NOT_RUN",
       "actual_simulation": "Three consumers each showed 0 -> 4 -> 0 active attachment spheres across attach/detach in 64 slots, with equal complete storage",
+      "hardware": "NOT_AUTHORIZED_NOT_RUN"
+    },
+    "bound_attachment": {
+      "kernel": "1618 passed; 1 existing warning on 8007e0a",
+      "native_wiring": "Measured relation and mesh identity bound to original fit and GPU/FK storage; missing-reader guard retained",
+      "model_inference": "NOT_RUN",
+      "actual_simulation": "Private held/refined/empty geometry transactions and two native GPU negative cases passed; no actual grasp",
       "hardware": "NOT_AUTHORIZED_NOT_RUN"
     }
   },
