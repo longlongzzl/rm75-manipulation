@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "880ef4c",
+    "commit": "279576f",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Native identity regression repaired via trusted canonical wrapper-to-native handle bijection. 1734 tests pass; ordinary worker_24 restores actual execution to forbidden closure contact rejection. Instrumented worker_25 has seven aligned native static drive readbacks. Complete dynamics stepping and pen grasp/place remain unqualified."
+    "note": "Ordinary worker_26 persists native acknowledgement for 20 link bodies and 13 drives. Existing elementwise comparison passes, raw expected/actual hashes differ; not byte identity. Worker still rejects forbidden closure contact. Full dynamics stepping and complete pen grasp/place remain unqualified."
   },
   "runs": {
     "m0_targeted": {
@@ -12849,6 +12849,191 @@
       "tested_commit": "880ef4c",
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "output": "benchmarks/release/evidence/pen_closure/drive_identity_full_pytest.txt"
+    },
+    "native_pen_worker_26": {
+      "domain": "actual_primary_physics_ordinary_worker",
+      "source_commit": "279576f",
+      "run_dir": "runtime_data/swm_release_pen_worker_26",
+      "result": {
+        "command_success": false,
+        "error": "SceneInvalid: Native closure detected forbidden contact",
+        "finished_at": 1789254037.9582727,
+        "mode": "sim",
+        "status": "failed",
+        "task": "pickplace",
+        "task_success": null
+      },
+      "hashes": [
+        {
+          "sha256": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+          "path": "runtime_data/swm_release_pen_worker_26/profile.json"
+        },
+        {
+          "sha256": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+          "path": "runtime_data/swm_release_pen_worker_26/request.json"
+        },
+        {
+          "sha256": "bd6db22917321ddaf92ab8a092ed796204a5ebc5861e2db485fd96082098be4a",
+          "path": "runtime_data/swm_release_pen_worker_26/events.jsonl"
+        },
+        {
+          "sha256": "05a55614faa8fc969e6d492369901ce8ea4a507c1ba5556d4c9e07444e9b3c85",
+          "path": "runtime_data/swm_release_pen_worker_26/result.json"
+        }
+      ],
+      "physics_acknowledgement": "benchmarks/release/evidence/pen_closure/worker_26_physics_ack.json",
+      "skill_verified": false,
+      "hardware_connected": false,
+      "checkpoints": [
+        {
+          "boundary": "worker_initialization_probe",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 1,
+          "sequence": 6,
+          "snapshot_id": "e97313411cc4535e31533fb3ecc4145ed1b673b408b0ce20e47b1bde59054498",
+          "time": 1789254030.1423795
+        },
+        {
+          "boundary": "before_grasp",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 2,
+          "sequence": 9,
+          "snapshot_id": "6490fb82c2423d04b165341f42b5e65cf8ef21f0bd63914020d5a516db68845d",
+          "time": 1789254031.4933114
+        },
+        {
+          "boundary": "pre_execute_grasp",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 3,
+          "sequence": 10,
+          "snapshot_id": "10157b8c9124ffeba6e9a445c9d6674b23e9ed83dc6eb9a3a1face43cb875579",
+          "time": 1789254037.1957147
+        }
+      ],
+      "forbidden_contacts": [
+        {
+          "contacts": [
+            {
+              "force_n": [
+                -45.54527282714844,
+                23.37187385559082,
+                4.472634792327881
+              ],
+              "object_id": "bi",
+              "robot_link": "gripper_Left_Support_Link"
+            },
+            {
+              "force_n": [
+                -0.004531335551291704,
+                0.003668211866170168,
+                5.585110664367676
+              ],
+              "object_id": "__swm_primary_table_contact_guard__",
+              "robot_link": "gripper_Left_Support_Link"
+            },
+            {
+              "force_n": [
+                45.87213134765625,
+                -23.455781936645508,
+                6.131959915161133
+              ],
+              "object_id": "bi",
+              "robot_link": "gripper_Right_Support_Link"
+            }
+          ],
+          "coverage": "control_boundary_resultant_forces_only",
+          "forbidden_contacts": [
+            {
+              "force_n": [
+                -0.004531335551291704,
+                0.003668211866170168,
+                5.585110664367676
+              ],
+              "object_id": "__swm_primary_table_contact_guard__",
+              "robot_link": "gripper_Left_Support_Link"
+            }
+          ],
+          "kind": "swm_primary_closure_contacts",
+          "sequence": 20,
+          "skill_verified": false,
+          "source": "native_pairwise_contact_force_readback",
+          "stage": "gripper_close",
+          "target": "bi",
+          "time": 1789254037.7887805
+        }
+      ],
+      "cleanup": [
+        {
+          "kind": "swm_native_resources_released",
+          "planner_pointer_released": true,
+          "primary_closed": true,
+          "robot_mirror_closed": true,
+          "sequence": 22,
+          "time": 1789254037.9529815
+        }
+      ]
+    },
+    "native_link_body_targeted": {
+      "passed": 38,
+      "failed": 0,
+      "seconds": 0.08,
+      "domain": "software_fixture",
+      "tested_commit": "279576f"
+    },
+    "native_link_body_full": {
+      "passed": 1747,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 45.06,
+      "domain": "software_regression",
+      "tested_commit": "279576f",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "output": "benchmarks/release/evidence/pen_closure/link_body_full_pytest.txt"
     }
   },
   "gates": {
