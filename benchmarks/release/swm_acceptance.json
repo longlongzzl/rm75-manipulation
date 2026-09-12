@@ -3366,6 +3366,177 @@
       "new_sphere_or_nonidentity_collision_frame_physx_qualified": false,
       "hardware_connected": false,
       "note": "Regression of original tool-only cuboid case with identity collision frames; does not qualify new metric-scene dynamics or adaptive next-plan wiring."
+    },
+    "native_body_mirror_01": {
+      "tested_commit": "bb26fb6",
+      "domain": "actual_primary_and_private_CPU_PhysX",
+      "exit_code": 1,
+      "status": "NATIVE_GEOMETRY_READBACK_REJECTED",
+      "error": "SceneInvalid: Native geometry count differs: bi.shapes[2].geometry.vertices",
+      "private_resources_closed": true,
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_body_mirror_driver_01/run.py",
+      "full_mirror_qualified": false,
+      "atomic_worker_qualified": false,
+      "hardware_connected": false,
+      "sha256": {
+        "driver.py": "2748bc787133bf8d97f8d05e2ef2a380b0ef4221ec5234503dcedf4f378e5f18",
+        "result.json": "56ae361070c99bac0ee82fbf172978583c2e8861d593a9187e6340d6fddaec1c",
+        "input.json": "3c62b3a81f68e1cbff4b1f2812a48781072e19466c1e050a65dfd92cd3dc362a",
+        "bootstrap_result.json": "1eff2bcc12b52d72450cdc089a5ee2207880eddb3ced7ad1908e4ad64beae481",
+        "stdout.log": "3cc2fce4cfcfc6c5fe977cbbee550f7d66f6f54549e5495b38b863dbbfddb6bd"
+      }
+    },
+    "native_body_mirror_02": {
+      "tested_commit": "bb26fb6",
+      "domain": "actual_primary_and_private_CPU_PhysX",
+      "exit_code": 1,
+      "status": "NATIVE_GEOMETRY_READBACK_REJECTED",
+      "error": "SceneInvalid: Native geometry count differs: bi.shapes[2].geometry.vertices",
+      "private_resources_closed": true,
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_body_mirror_driver_02/run.py",
+      "full_mirror_qualified": false,
+      "atomic_worker_qualified": false,
+      "hardware_connected": false,
+      "convex_shape_comparison": [
+        {
+          "index": 0,
+          "source_kind": "ConvexMesh",
+          "private_kind": "ConvexMesh",
+          "source_vertices": 131,
+          "private_vertices": 131,
+          "source_hull_volume": 3.110415088320873e-05,
+          "private_hull_volume": 3.110415088320873e-05,
+          "source_outside_private_m": 1.3877787807814457e-17,
+          "private_outside_source_m": 1.3877787807814457e-17
+        },
+        {
+          "index": 1,
+          "source_kind": "ConvexMesh",
+          "private_kind": "ConvexMesh",
+          "source_vertices": 65,
+          "private_vertices": 65,
+          "source_hull_volume": 2.911791409923901e-06,
+          "private_hull_volume": 2.911791409923901e-06,
+          "source_outside_private_m": 1.3877787807814457e-17,
+          "private_outside_source_m": 1.3877787807814457e-17
+        },
+        {
+          "index": 2,
+          "source_kind": "ConvexMesh",
+          "private_kind": "ConvexMesh",
+          "source_vertices": 64,
+          "private_vertices": 62,
+          "source_hull_volume": 3.9223711271963515e-06,
+          "private_hull_volume": 3.919772551477196e-06,
+          "source_outside_private_m": 6.527777448604027e-05,
+          "private_outside_source_m": 1.3877787807814457e-17
+        },
+        {
+          "index": 3,
+          "source_kind": "ConvexMesh",
+          "private_kind": "ConvexMesh",
+          "source_vertices": 67,
+          "private_vertices": 63,
+          "source_hull_volume": 3.0918379941468795e-06,
+          "private_hull_volume": 3.0854856869036595e-06,
+          "source_outside_private_m": 8.983982241439047e-05,
+          "private_outside_source_m": 1.3877787807814457e-17
+        },
+        {
+          "index": 4,
+          "source_kind": "ConvexMesh",
+          "private_kind": "ConvexMesh",
+          "source_vertices": 68,
+          "private_vertices": 61,
+          "source_hull_volume": 2.854120598169043e-06,
+          "private_hull_volume": 2.850280894794717e-06,
+          "source_outside_private_m": 8.81142251874193e-05,
+          "private_outside_source_m": 1.3877787807814457e-17
+        },
+        {
+          "index": 5,
+          "source_kind": "ConvexMesh",
+          "private_kind": "ConvexMesh",
+          "source_vertices": 31,
+          "private_vertices": 30,
+          "source_hull_volume": 7.512374011739372e-07,
+          "private_hull_volume": 7.506451580874344e-07,
+          "source_outside_private_m": 5.3111206985456336e-05,
+          "private_outside_source_m": 3.469446951953614e-18
+        },
+        {
+          "index": 6,
+          "source_kind": "ConvexMesh",
+          "private_kind": "ConvexMesh",
+          "source_vertices": 28,
+          "private_vertices": 27,
+          "source_hull_volume": 7.705597081534923e-07,
+          "private_hull_volume": 7.7036679993232e-07,
+          "source_outside_private_m": 5.151970169481497e-05,
+          "private_outside_source_m": 1.734723475976807e-18
+        },
+        {
+          "index": 7,
+          "source_kind": "ConvexMesh",
+          "private_kind": "ConvexMesh",
+          "source_vertices": 8,
+          "private_vertices": 8,
+          "source_hull_volume": 7.375752557500842e-10,
+          "private_hull_volume": 7.375752557500842e-10,
+          "source_outside_private_m": 8.673617379884035e-19,
+          "private_outside_source_m": 8.673617379884035e-19
+        },
+        {
+          "index": 8,
+          "source_kind": "ConvexMesh",
+          "private_kind": "ConvexMesh",
+          "source_vertices": 22,
+          "private_vertices": 19,
+          "source_hull_volume": 3.77909031205985e-07,
+          "private_hull_volume": 3.7640280124332615e-07,
+          "source_outside_private_m": 7.658624209246588e-05,
+          "private_outside_source_m": 1.3877787807814457e-17
+        },
+        {
+          "index": 9,
+          "source_kind": "ConvexMesh",
+          "private_kind": "ConvexMesh",
+          "source_vertices": 36,
+          "private_vertices": 36,
+          "source_hull_volume": 7.697974605885e-07,
+          "private_hull_volume": 7.697974605885e-07,
+          "source_outside_private_m": 1.734723475976807e-18,
+          "private_outside_source_m": 1.734723475976807e-18
+        }
+      ],
+      "maximum_original_surface_outside_private_m": 8.983982241439047e-05,
+      "diagnostic_scope": "Read-only support-plane and volume diagnostics; original vertex-count rejection remains enabled.",
+      "sha256": {
+        "driver.py": "86bc6a533e596d841f375c0838b82efc469df0dedccc4e50c5c11754af17a338",
+        "result.json": "dd53d2803aca1db54d438a58038cb5aaf561ea8e55947709eaf44efbcdf803c4",
+        "input.json": "3c62b3a81f68e1cbff4b1f2812a48781072e19466c1e050a65dfd92cd3dc362a",
+        "bootstrap_result.json": "69b5ba4afb469799f10ebec47fda758865165d5b298f501d5c2a55bfd7afa4ed",
+        "stdout.log": "b24367f87d8d6817cd2c34d375a744415a3d357726f55de2edbcd2857d155ef0",
+        "bi_geometry_diagnostic.json": "2f93dbe6c7e54825fed49247e396cc6c430cb1f5ed5184ee636336344a86d1f2"
+      }
+    },
+    "native_body_mirror_targeted": {
+      "tested_commit": "bb26fb6",
+      "domain": "software_fixture",
+      "passed": 6,
+      "failed": 0,
+      "seconds": 0.03,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/test_native_body_mirror_contract.py -q",
+      "full_regression_rerun": false
+    },
+    "native_body_mask_defect": {
+      "tested_commit": "bb26fb6",
+      "domain": "isolated_software_reproducer",
+      "status": "CONFIRMED_DEFECT",
+      "expected_collision_mask": 2147483648,
+      "changed_collision_mask": 2147483649,
+      "comparison_incorrectly_accepted": true,
+      "note": "Comparator currently applies relative floating tolerance to integer masks; exact integer/boolean identity and a regression negative are required before adapter availability."
     }
   },
   "gates": {
@@ -3416,7 +3587,9 @@
         "runs.primary_capture_native_01: capture driver failed; no complete fresh batch evidence",
         "runs.primary_capture_native_02: primary_sequence mismatch rejected",
         "runs.primary_capture_native_03: two fresh twelve-object native batches, not skill checkpoints",
-        "runs.metric_registration_native_01: metric files and two fresh preparations agree with original proxies and GPU; no complete mirror transaction"
+        "runs.metric_registration_native_01: metric files and two fresh preparations agree with original proxies and GPU; no complete mirror transaction",
+        "runs.native_body_mirror_01: native convex geometry changed; rejected",
+        "runs.native_body_mirror_02: actual shrink confirmed, no relaxed collision check"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -3606,10 +3779,10 @@
     }
   },
   "current_layer_status": {
-    "kernel": "SOFTWARE_REGRESSION_PASSED_1577",
-    "native_wiring": "METRIC_ASSETS_FRESH_SWM_PREPARATIONS_AND_GPU_GEOMETRY_VERIFIED_FULL_MIRROR_AND_WORKER_PENDING",
+    "kernel": "BODY_TARGETED_6_PASSED_KNOWN_INTEGER_MASK_DEFECT_FULL_NOT_RERUN",
+    "native_wiring": "NATIVE_BODY_MIRROR_STAGED_BUT_RECOOKED_CONVEX_GEOMETRY_REJECTED",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "METRIC_REGISTRATION_AND_ORIGINAL_FOUR_PARAMETER_PHYSX_REGRESSION_EXIT_0_NO_ATOMIC_WORKER",
+    "actual_simulation": "TWO_PRIVATE_BODY_MIRROR_ATTEMPTS_EXIT_1_NO_ATOMIC_EXECUTION",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
   "native_bootstrap": {
@@ -3622,7 +3795,7 @@
     "tool": "tools/validate_swm_native_bootstrap.py",
     "successful_environment": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
     "failed_environment": "/home/zhangzhao/anaconda3/bin/python (exit 139)",
-    "remaining": "Complete private actor dynamics/attachment mirror from original native geometry, then trusted pen worker six fresh committed skill checkpoints; preserve original task semantics",
+    "remaining": "Capture original ActorBuilder collision records during trusted initialization, reuse original file-based native shape construction instead of recooking cooked vertices, fix exact integer mask comparison, then complete actor/attachment mirror and formal pen worker",
     "same_process_planner_environment": {
       "python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
       "append_site_packages": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",
