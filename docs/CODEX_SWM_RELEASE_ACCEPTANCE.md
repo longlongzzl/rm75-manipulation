@@ -339,3 +339,13 @@ native_pen_phase_01 在 solver 之前被原生同位姿比较误拒绝：实际 
 进一步原编译器离线诊断：当前阶段适配器截取全局放置前 8 项，只有 4 个不同目标；实际可行 grasp_04 对应的原配对前 8 项有 8 个不同目标。原轴对称姿态字段本身存在，不能误报为已丢失；实际问题是未复用 places_for_grasp 进行前瞻筛选。下一步恢复原配对筛选，再验证可行性，不能直接扩大预算或减少障碍。本诊断尚不证明配对修复足以解决全部 preplace 失败。
 
 内核：上述全量通过。原生接线：已取得真实 pregrasp/grasp/lift 求解和联合前瞻拒绝证据，正式 worker 尚未装配。模型推理：未运行。实际仿真：真实初始化和镜像存活期间调用 GPU 原阶段求解，但没有主环境运动、抓取或六检查点。硬件：未授权、未连接。失败、驱动、结果和代码哈希记录于机器验收表 native_pen_phase_* / rotation_precision_* / native_pen_pairing_diagnosis_01。保持 PARTIAL_DELIVERY，缺适配器检查保留，本轮代码及证据仅本地提交，未推送。
+
+## M1 / 恢复原抓放配对前瞻
+
+PickPlaceNativePhases 的 grasp 前瞻现调用原 task.places_for_grasp(selected_id)，在当前配对内部应用原 max_motion_candidates 预算，不再让其他抓取的重复目标占据名额。仅传入原配对列表，原规划器、阶段参数、碰撞场景、目标和预算不变。负例确认当前配对不可行时不得借用另一抓取的可行放置候选通过。
+
+定向 13 passed / 0.58 s；全量 1651 passed / 1 existing trimesh warning / 42.20 s。native_pen_phase_03 实际单 GPU 重跑约 8.80 s，已确认前瞻候选属于实际可行的 grasp_04 配对，但 pregrasp 8/8、grasp 1/8、lift 2/2、preplace 0/128，仍无完整可行原子。没有进入最终 auditor 或执行动作。主环境和私有资源关闭。
+
+进一步源码定位：原 coordinator.run 在运动截断之前进行完整 pregrasp/grasp 宽批 IK、配对 place/preplace 联合筛选和分层扩展；原 segmented chain 再按缓存关节距离和关系分数排序。当前 SWM 原子仍只按候选静态分数取前 8，缺失这段原成功策略。下一步从原协调器复用执行前联合筛选及排序，不能把 run 整任务包装成 grasp，也不能直接扩大预算或删碰撞物。
+
+内核：全量通过。原生接线：配对缺口已修复并实测生效，宽批筛选/排序和正式 worker 仍待接。模型推理：未运行。实际仿真：原生初始化与 GPU 分段求解运行，但联合放置仍失败，主环境无运动、技能检查点为 0。硬件：未授权、未连接。代码与原生驱动/结果摘要记录于 grasp_pairing_* / native_pen_phase_03，历史失败保留。保持 PARTIAL_DELIVERY 和缺适配器检查；本轮代码及证据仅本地提交，未推送。

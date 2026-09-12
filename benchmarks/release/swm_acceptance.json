@@ -7597,6 +7597,61 @@
       "note": "Offline compiler diagnosis, not a new native feasibility result",
       "result_sha256": "532baec6364db3e7471bac23c4cf5084b355e79e92bbbe0e3bb6c7a26f1430f5",
       "result_path": "runtime_data/swm_release_pen_pairing_diagnosis_01.json"
+    },
+    "grasp_pairing_targeted_01": {
+      "passed": 13,
+      "failed": 0,
+      "seconds": 0.58
+    },
+    "grasp_pairing_full_01": {
+      "passed": 1651,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 42.2,
+      "domain": "software_regression",
+      "log": "runtime_data/swm_release_grasp_pairing_full_01.log",
+      "source_sha256": {
+        "rm75_app/swm/native_skills.py": "07a4f6ee6189f484aaf4d718b9df9826ce61db90ff1c5a75624324910ad4c102",
+        "tests/swm/test_native_grasp_pairing.py": "b97fa4e0aad5a338dfadf9d7ec5fa84900c2df7bd65360ab00275eea5b17904c"
+      }
+    },
+    "native_pen_phase_03": {
+      "status": "failed",
+      "error": "RuntimeError: Native atomic phase has no feasible trajectory",
+      "domain": "actual_native_gpu_phase_planning",
+      "elapsed_s": 8.797936999999365,
+      "stage_summary": [
+        {
+          "stage": "grasp",
+          "count": 8,
+          "successes": 1
+        },
+        {
+          "stage": "lift",
+          "count": 2,
+          "successes": 2
+        },
+        {
+          "stage": "pregrasp",
+          "count": 8,
+          "successes": 8
+        },
+        {
+          "stage": "preplace",
+          "count": 128,
+          "successes": 0
+        }
+      ],
+      "original_grasp_pairing_used": true,
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "motion_executed": false,
+      "atomic_worker_qualified": false,
+      "skill_checkpoints": 0,
+      "driver_sha256": "9928c6b0d14ff55890f63c25bed060cb154e9c15847f1ce4efd5e72301f0f3b6",
+      "result_sha256": "f2d2e2da50b81e3a4cd315a6a1084452949469f24ccc665ed34a755383360778",
+      "result_path": "runtime_data/swm_release_pen_phase_driver_03/transaction_result.json",
+      "next_gap": "Reuse original broad IK relation screening and cached joint-distance ranking before motion shortlist; not whole episode execution"
     }
   },
   "gates": {

@@ -220,7 +220,8 @@ class PickPlaceNativePhases:
                             # Screen placement with the same original candidates and
                             # measured/predicted attachment. Discard these paths: the
                             # place skill MUST solve again after its fresh observation.
-                            if self._placement_stages(task, lifted_q, relative, None) is None:
+                            if self._placement_stages(task, lifted_q, relative, None,
+                                    candidates=task.places_for_grasp(grasp_candidate.candidate_id)) is None:
                                 continue
                             empty = NativeStageState(None if measured_jaw is not None else False,
                                 'empty', gripper_positions=measured_jaw)
@@ -274,7 +275,7 @@ class PickPlaceNativePhases:
                             primitive, expected.tolist(), 'shared_PickPlaceCoordinator_phase_solvers')
 
 
-    def _placement_stages(self, task, current, relative, request, *, jaw_positions=None):
+    def _placement_stages(self, task, current, relative, request, *, jaw_positions=None, candidates=None):
         """Shared feasibility screening and post-observation place planning.
 
         These are candidate paths only. In particular, the reversed retreat
@@ -287,7 +288,11 @@ class PickPlaceNativePhases:
         c = self.coordinator
         held = NativeStageState(None if jaw_positions is not None else True,
                                task.object_name, relative, gripper_positions=jaw_positions)
-        for original in sorted(task.place_candidates, key=lambda x: x.score, reverse=True)[:task.max_motion_candidates]:
+        # During grasp lookahead retain the ORIGINAL per-grasp pairing before
+        # applying its candidate budget. Global rows include duplicate symmetry
+        # targets from other grasps and can crowd out the selected relation.
+        pool = task.place_candidates if candidates is None else candidates
+        for original in sorted(pool, key=lambda x: x.score, reverse=True)[:task.max_motion_candidates]:
             raw_target = original.metadata.get('planning_target_object_pose')
             if raw_target is None:
                 raise SceneInvalid("Original placement compiler must provide a world object target")
