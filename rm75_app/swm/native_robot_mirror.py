@@ -56,8 +56,10 @@ class SapienRobotStatePort:
         self.urdf_path = Path(urdf_path).expanduser().resolve(strict=True)
         self.urdf_sha256 = hashlib.sha256(self.urdf_path.read_bytes()).hexdigest()
         resources.callback(self.close)
-        # No renderer, camera, hardware driver, controller, or executor.
-        self._scene = sapien.Scene([sapien.physx.PhysxCpuSystem()])
+        # Original URDF visual components require a passive render system.
+        # No camera, hardware driver, controller, or executor is constructed.
+        self._scene = sapien.Scene([
+            sapien.physx.PhysxCpuSystem(), sapien.render.RenderSystem()])
         loader = self._scene.create_urdf_loader()
         loader.fix_root_link = True
         self._robot = loader.load(str(self.urdf_path))
@@ -118,4 +120,6 @@ class SapienRobotStatePort:
         self.closed = True
         self.acknowledgement = None
         self._robot = None
+        if self._scene is not None:
+            self._scene.clear()
         self._scene = None
