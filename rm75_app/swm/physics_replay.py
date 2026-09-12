@@ -155,9 +155,13 @@ def physical_replay(request):
         env.reset(seed=0)
         def read():return env.target.pose.to_transformation_matrix().detach().cpu().numpy().reshape(4,4)
         previous=read();poses=[previous.tolist()];cursor=1;previous_t=0.
+        def read_tool():return env.tool.pose.to_transformation_matrix().detach().cpu().numpy().reshape(4,4).tolist()
+        feedback_times=[0.];feedback_poses=[read_tool()];feedback_stages=[program.stages[0]]
         while cursor<len(sample_times):
             env.step(None);now=float(env.physics_time);current=read()
-            while cursor<len(sample_times) and sample_times[cursor]<=now+1e-9:
+            feedback_times.append(now);feedback_poses.append(read_tool())
+            feedback_stages.append(program.sample(min(now,program.duration))[0])
+            while cursor<len(sample_times) and sample_times[cursor]<=now:
                 fraction=(sample_times[cursor]-previous_t)/(now-previous_t)
                 poses.append(interpolate_pose(previous,current,fraction).tolist());cursor+=1
             previous,previous_t=current,now
@@ -167,6 +171,9 @@ def physical_replay(request):
                     T_world_object=poses,engine_domain='physics',engine='ManiSkill/PhysX CPU',
                     material_parameterization='shared_effective_object_support_tool_friction',
                     density_applied_at_collision_construction=True,
+                    measured_tool_feedback=dict(source="measured_feedback",time_s=feedback_times,
+                        T_world_tcp=feedback_poses,stages=feedback_stages,
+                        measurement_source="sapien_kinematic_actor_pose_after_step"),
                     safety_qualification=False,full_arm_simulated=False,
                     note='Measured tool replay for identification only; not execution path approval')
     finally:

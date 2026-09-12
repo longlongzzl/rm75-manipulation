@@ -1,0 +1,233 @@
+"""Native phase solvers using the shared PickPlace coordinator and push planner.
+
+No legacy episode is called. The caller must supply the original trusted task
+compiler, current-scene full-path auditor, and feedback-producing executor.
+Incomplete installations must not advertise these bindings in a worker.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass, replace
+import copy
+import uuid
+
+import numpy as np
+
+from .adapters import NativeAtomicBinding
+from .scene import SceneInvalid, digest, transform, pose_error
+from .skills import ExecutionReceipt, PlannedSkill
+
+
+@dataclass(frozen=True)
+class NativeStage:
+    name: str
+    trajectory: object
+    gripper_after: bool | None = None
+
+
+@dataclass(frozen=True)
+class NativePrimitive:
+    skill: str
+    object_id: str
+    stages: tuple[NativeStage, ...]
+
+    def fingerprint(self):
+        return digest(dict(skill=self.skill, object_id=self.object_id, stages=[
+            dict(name=s.name, joint_names=list(s.trajectory.joint_names),
+                 positions=np.asarray(s.trajectory.positions).tolist(),
+                 dt=None if s.trajectory.dt is None else np.asarray(s.trajectory.dt).tolist(),
+                 gripper_after=s.gripper_after) for s in self.stages]))
+
+
+class SharedPrimitiveExecutor:
+    """Dispatch native stages to the SAME trajectory/gripper sink.
+
+    Completion is checked against fresh feedback after the final stage. Closing
+    a gripper does not set holding; only the following SWM observation may do so.
+    ``feedback`` must read the existing executor/simulator, never a command cache.
+    """
+
+    def __init__(self, executor, feedback, *, clock, stop, endpoint_tolerance_rad=.08):
+        if not 0 < endpoint_tolerance_rad <= .08:
+            raise ValueError("Bounded measured endpoint tolerance required")
+        self.executor, self.feedback = executor, feedback
+        self.clock, self.stop = clock, stop
+        self.tolerance = endpoint_tolerance_rad
+
+    def __call__(self, plan, audit):
+        primitive = plan.payload
+        if not isinstance(primitive, NativePrimitive) or primitive.fingerprint() != plan.payload_digest:
+            raise SceneInvalid("Native primitive changed since audit")
+        if audit.payload_digest != plan.payload_digest:
+            raise SceneInvalid("Audit belongs to another native primitive")
+        if not primitive.stages:
+            raise SceneInvalid("Empty native primitive")
+        started = self.clock()
+        action_id = uuid.uuid4().hex
+        for stage in primitive.stages:
+            self.stop.check()
+            self.executor.execute_trajectory(stage.name, stage.trajectory)
+            if stage.gripper_after is not None:
+                self.stop.check()
+                self.executor.set_gripper(stage.gripper_after)
+        observed = self.feedback()
+        ended = self.clock()
+        final = primitive.stages[-1].trajectory
+        q = np.asarray(observed['positions'], dtype=float)
+        if (observed.get('source') != 'measured_feedback' or observed.get('idle') is not True
+                or not started <= observed['captured_at'] <= ended
+                or tuple(observed['joint_names']) != tuple(final.joint_names)
+                or q.shape != (7,) or not np.isfinite(q).all()
+                or np.max(np.abs(q - final.positions[-1])) > self.tolerance):
+            raise SceneInvalid("Native executor lacks fresh completed-motion feedback")
+        return ExecutionReceipt(True, started, ended, True, action_id)
+
+
+class PickPlaceNativePhases:
+    """Independent grasp/lift and measured-attachment place/retreat solvers.
+
+    ``build_task(request, snapshot)`` reuses the installed object-specific or
+    Jimu compiler. It must preserve the original collision/placement policies
+    and return a task in base_link with stable instance ids. The restricted
+    first migration supports exact rigid targets; symmetry/containment tasks
+    need their original goal-verifier adapter before installation.
+    """
+
+    def __init__(self, coordinator, build_task, audit, execute):
+        self.coordinator = coordinator
+        self.build_task = build_task
+        self.audit = audit
+        self.execute = execute
+
+    def bindings(self):
+        return {skill: NativeAtomicBinding(self.plan, self.audit, self.execute, boundary)
+                for skill, boundary in (('grasp', 'approach->grasp->close->lift'),
+                                        ('place', 'measured_attachment->preplace->place->release->retreat'))}
+
+    def plan(self, request, snapshot):
+        from rm75_app.pickplace.coordinator import (
+            _approach_offset_candidates, _offset_candidates, _place_approach_candidates,
+            _reverse_trajectory, _pose_matrix)
+        from rm75_app.pickplace.cached_scene import matrix_to_quaternion_wxyz
+        from rm75_app.planning.contracts import Pose, PoseCandidate
+
+        if request.skill not in ('grasp', 'place'):
+            raise NotImplementedError("Only native grasp and place are installed")
+        task = self.build_task(request, copy.deepcopy(snapshot))
+        if (task.object_name != request.object_id or task.scene.revision != snapshot['snapshot_id']
+                or tuple(task.current.names) != tuple(snapshot['robot']['joint_names'])
+                or not np.array_equal(task.current.positions, snapshot['robot']['positions'])):
+            raise SceneInvalid("Native task compiler returned another scene/start/instance")
+        if {o.name for o in task.scene.objects} != set(snapshot['objects']):
+            raise SceneInvalid("Native task omitted obstacles or already placed objects")
+        for obj in task.scene.objects:
+            p, r = pose_error(obj.metadata.get("swm_object_pose", _pose_matrix(obj.pose)), snapshot['objects'][obj.name]['measured']['T_world_object'])
+            if p > 1e-8 or r > 1e-6:
+                raise SceneInvalid("Native task compiler did not use measured object poses")
+        c = self.coordinator
+        stages = None
+        if request.skill == 'grasp':
+            if snapshot['robot']['holding'] != 'empty':
+                raise SceneInvalid("Native grasp requires an observed empty gripper")
+            c.planner.set_gripper_collision_state(False)
+            for grasp_candidate in sorted(task.grasp_candidates, key=lambda x: x.score, reverse=True)[:task.max_motion_candidates]:
+                pre = _approach_offset_candidates((grasp_candidate,), abs(task.grasp_approach_offset))[0]
+                approach = c._plan_pose_stage(stage='pregrasp', current=task.current, candidates=(pre,), task=task)
+                if approach is None or approach.trajectory is None:
+                    continue
+                grasp = c._plan_linear_stage(stage='grasp', current=c._end_configuration(approach.trajectory),
+                    candidate=grasp_candidate, task=task, ignore_object_name=task.object_name)
+                if grasp is None or grasp.trajectory is None:
+                    continue
+                grasp_q = c._end_configuration(grasp.trajectory)
+                c.planner.attach_object(task.object_name, grasp_q)
+                try:
+                    origin = PoseCandidate(grasp_candidate.candidate_id,
+                        c.planner.tool_pose_for_configuration(grasp_q, task.tool_frame))
+                    options = ((_offset_candidates((origin,), abs(task.lift_height), 'lift_world_z')[0], False),
+                               (_approach_offset_candidates((origin,), abs(task.lift_height), 'lift_tool_z')[0], True))
+                    for candidate, project in options:
+                        lift = c._plan_linear_stage(stage='lift', current=grasp_q, candidate=candidate,
+                            task=task, allow_start_contact_escape=True, axis='z', project_distance_to_goal=project)
+                        if lift is not None and lift.trajectory is not None:
+                            stages = (NativeStage('approach', approach.trajectory),
+                                      NativeStage('grasp', grasp.trajectory, True), NativeStage('lift', lift.trajectory))
+                            relative = np.linalg.inv(_pose_matrix(origin.pose)) @ transform(
+                                snapshot['objects'][request.object_id]['measured']['T_world_object'])
+                            expected = _pose_matrix(c.planner.tool_pose_for_configuration(
+                                c._end_configuration(lift.trajectory), task.tool_frame)) @ relative
+                            break
+                finally:
+                    c.planner.detach_object(task.object_name)
+                if stages is not None:
+                    break
+        else:
+            if snapshot['robot']['holding'] != request.object_id:
+                raise SceneInvalid("Native place requires measured holding of this instance")
+            relative = np.linalg.inv(transform(snapshot['robot']['T_world_tcp'])) @ transform(
+                snapshot['objects'][request.object_id]['measured']['T_world_object'])
+            c.planner.update_attached_object_pose(task.object_name, task.current, relative)
+            # Recompute every release TCP from THIS measured grasp relation.
+            # Nothing from the pre-grasp placement trajectory is reused.
+            for original in sorted(task.place_candidates, key=lambda x: x.score, reverse=True)[:task.max_motion_candidates]:
+                raw_target = original.metadata.get('planning_target_object_pose')
+                if raw_target is None:
+                    raise SceneInvalid("Original placement compiler must provide a world object target")
+                p, r = pose_error(raw_target, request.target)
+                if p > request.position_tolerance_m or r > request.rotation_tolerance_rad:
+                    continue
+                tcp = transform(raw_target) @ np.linalg.inv(relative)
+                candidate = replace(original, pose=Pose(tcp[:3, 3], matrix_to_quaternion_wxyz(tcp[:3, :3])),
+                    metadata={**original.metadata, 'T_tcp_object': relative.tolist()})
+                for pre in _place_approach_candidates(candidate, task.place_clearance):
+                    preplace = c._plan_pose_stage(stage='preplace', current=task.current, candidates=(pre,), task=task)
+                    if preplace is None or preplace.trajectory is None:
+                        continue
+                    place = c._plan_linear_stage(stage='place', current=c._end_configuration(preplace.trajectory),
+                        candidate=candidate, task=task, ignore_object_name=task.place_contact_object_name,
+                        project_distance_to_goal=True)
+                    if place is None or place.trajectory is None:
+                        continue
+                    stages = (NativeStage('preplace', preplace.trajectory), NativeStage('place', place.trajectory, False),
+                              NativeStage('retreat', _reverse_trajectory(place.trajectory)))
+                    expected = transform(raw_target)
+                    break
+                if stages is not None:
+                    break
+        if stages is None:
+            raise RuntimeError('Native atomic phase has no feasible trajectory')
+        primitive = NativePrimitive(request.skill, request.object_id, stages)
+        return PlannedSkill(digest(request.as_dict()), snapshot['snapshot_id'], primitive.fingerprint(),
+                            primitive, expected.tolist(), 'shared_PickPlaceCoordinator_phase_solvers')
+
+
+class PushNativePhase:
+    """One original prepared long-push segment; never a complete PushT session.
+
+    The native scene compiler must include every SWM instance (including moving
+    obstacles) before this adapter is installed. ``select_segment`` uses the
+    original local search and returns a segment plus its predicted WORLD pose.
+    """
+
+    def __init__(self, planner, select_segment, compile_observation, audit, execute):
+        self.planner, self.select_segment = planner, select_segment
+        self.compile_observation, self.audit, self.execute = compile_observation, audit, execute
+
+    def binding(self):
+        return NativeAtomicBinding(self.plan, self.audit, self.execute, 'approach->descend->contact->push->retreat')
+
+    def plan(self, request, snapshot):
+        from rm75_app.planning.contracts import JointTrajectory
+
+        if request.skill != 'push':
+            raise NotImplementedError('Only a native push segment is installed')
+        observation = self.compile_observation(snapshot, request.object_id)
+        push, expected = self.select_segment(request, copy.deepcopy(snapshot), observation)
+        prepared = self.planner.plan_push(push, observation)
+        if not np.array_equal(prepared.start_q, snapshot['robot']['positions']):
+            raise SceneInvalid('Push planner did not start from measured SWM joints')
+        names = tuple(self.planner.names)
+        stages = tuple(NativeStage(stage, JointTrajectory(names, path, dt=np.diff(times)))
+                       for stage, path, times in prepared.stages)
+        primitive = NativePrimitive('push', request.object_id, stages)
+        return PlannedSkill(digest(request.as_dict()), snapshot['snapshot_id'], primitive.fingerprint(),
+                            primitive, transform(expected).tolist(), 'shared_CuroboPushExecutor.plan_push')

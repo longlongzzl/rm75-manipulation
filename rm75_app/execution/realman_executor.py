@@ -374,11 +374,14 @@ class RealManTrajectoryExecutor:
         *,
         sleep_fn: Callable[[float], None] = time.sleep,
         clock_fn: Callable[[], float] = time.monotonic,
+        feedback_observer: Callable[[dict[str, Any]], None] | None = None,
     ) -> None:
         self.session = session
         self.config = config or RealManExecutionConfig()
         self._sleep = sleep_fn
         self._clock = clock_fn
+        self.feedback_observer = feedback_observer
+        self._feedback_stage = "idle"
         self._armed = False
         self.last_stage_metrics: dict[str, Any] = {}
         self.last_gripper_metrics: dict[str, Any] = {}
@@ -490,11 +493,19 @@ class RealManTrajectoryExecutor:
             )
         return samples, start_gap
 
+    def _record_actual_feedback(self) -> None:
+        if self.feedback_observer is not None:
+            positions = self.session.read_joint_radians()
+            self.feedback_observer(dict(source="measured_feedback", stage=self._feedback_stage,
+                captured_at=self._clock(), joint_names=list(self.session.config.joint_names),
+                positions=positions.tolist()))
+
     def _stream_samples(self, samples: np.ndarray) -> None:
         next_deadline = self._clock()
         for sample in samples:
             self._require_armed()
             self.session.send_joint_follow(sample)
+            self._record_actual_feedback()
             if not self.config.pace_commands:
                 continue
             next_deadline += self.config.control_period_s
@@ -512,6 +523,7 @@ class RealManTrajectoryExecutor:
         for _ in range(hold_count):
             self._require_armed()
             self.session.send_joint_follow(final)
+            self._record_actual_feedback()
             if self.config.pace_commands:
                 self._sleep(self.config.control_period_s)
 
@@ -533,10 +545,13 @@ class RealManTrajectoryExecutor:
     def execute_trajectory(self, stage: str, trajectory: JointTrajectory) -> None:
         self._require_armed()
         samples, start_gap = self._validate_trajectory(trajectory)
+        self._feedback_stage = str(stage)
+        self._record_actual_feedback()
         started = self._clock()
         try:
             self._stream_samples(samples)
             endpoint_error = self._wait_for_endpoint(samples[-1])
+            self._record_actual_feedback()
         except Exception:
             self._armed = False
             # Best effort only; do not hide the original execution failure.
