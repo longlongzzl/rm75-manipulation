@@ -17,6 +17,14 @@ BODY_SCALARS = ('linear_damping', 'angular_damping', 'max_linear_velocity',
 SHAPE_SCALARS = ('density', 'contact_offset', 'rest_offset', 'patch_radius', 'min_patch_radius')
 
 
+def _apply_kinematic_mode(body, measured):
+    if type(measured) is not bool:
+        raise SceneInvalid('Measured kinematic mode must be boolean')
+    # Native SAPIEN resets automatic mass even on a same-value assignment.
+    if body.kinematic != measured:
+        body.kinematic = measured
+
+
 def native_pose(matrix):
     import sapien
     from rm75_app.pickplace.cached_scene import matrix_to_quaternion_wxyz
@@ -155,17 +163,18 @@ class NativeBodyMirror:
             entity = sapien.Entity()
             entity.name = oid
             recipe = recipe_for_actor(registration.source.primary.construction_recipes, binding.actor)
-            body = recipe.build_body()
+            body = recipe.build_body(binding.T_actor_object,
+                                     auto_compute_mass=expected.get("auto_compute_mass"))
             if len(body.collision_shapes) != len(expected['shapes']):
                 raise SceneInvalid('Original collision loader omitted or added a native shape')
             for shape, state in zip(body.collision_shapes, expected['shapes']):
-                shape.local_pose = native_pose(state['T_object_shape'])
                 shape.physical_material = sapien.physx.PhysxMaterial(**state['material'])
                 shape.set_collision_groups(state['collision_groups'])
                 for key, value in state['properties'].items():
-                    setattr(shape, key, value)
+                    if getattr(shape, key) != value:
+                        setattr(shape, key, value)
             if expected['kind'] == 'dynamic':
-                body.kinematic = expected['kinematic']
+                _apply_kinematic_mode(body, expected['kinematic'])
                 body.disable_gravity = expected['disable_gravity']
                 body.set_locked_motion_axes(expected['locked_motion_axes'])
                 for key, value in expected['properties'].items():

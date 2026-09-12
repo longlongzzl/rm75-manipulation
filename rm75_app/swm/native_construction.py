@@ -13,7 +13,9 @@ from pathlib import Path
 import threading
 from unittest.mock import patch
 
-from .scene import SceneInvalid
+import numpy as np
+
+from .scene import SceneInvalid, transform
 
 
 class NativeConstructionRecipe:
@@ -48,14 +50,19 @@ class NativeConstructionRecipe:
             self.records.append((record, matrix, material_values))
         self.prototype.collision_records = []
 
-    def build_body(self):
+    def build_body(self, actor_to_object, *, auto_compute_mass=None):
         import sapien
         from .native_body_mirror import native_pose
 
         for filename, expected in self.files.items():
             if hashlib.sha256(Path(filename).read_bytes()).hexdigest() != expected:
                 raise SceneInvalid('Original collision construction file changed')
+        object_from_actor = np.linalg.inv(transform(actor_to_object))
         builder = copy.copy(self.prototype)
+        if auto_compute_mass is not None:
+            if type(auto_compute_mass) is not bool:
+                raise SceneInvalid("Measured automatic-mass mode must be boolean")
+            builder._auto_inertial = auto_compute_mass
         builder._plane_collision_poses = set()
         builder.collision_records = []
         for source, matrix, material in self.records:
@@ -63,7 +70,7 @@ class NativeConstructionRecipe:
             record.scale = copy.deepcopy(source.scale)
             if hasattr(source, 'decomposition_params'):
                 record.decomposition_params = copy.deepcopy(source.decomposition_params)
-            record.pose = native_pose(matrix)
+            record.pose = native_pose(object_from_actor @ matrix)
             record.material = sapien.physx.PhysxMaterial(*material)
             builder.collision_records.append(record)
         # Reuse original native loaders and decomposition cache. Its legacy
