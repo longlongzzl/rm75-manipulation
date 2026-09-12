@@ -1,0 +1,103 @@
+"""Read-only contact instrumentation around the actual formal worker entry."""
+import sys
+from pathlib import Path
+ROOT=Path('/home/zhangzhao/Desktop/rm75-manipulation')
+sys.path.insert(0,str(ROOT))
+from rm75_app.swm.native_execution import NativePrimaryExecutor
+original=NativePrimaryExecutor.__init__
+def instrument(self, *args, **kwargs):
+    original(self,*args,**kwargs)
+    read=self._read
+    count=0
+    def observed():
+        nonlocal count
+        result=read()
+        count+=1
+        if count not in (28,29,48,128,228):
+            return result
+        import numpy as np
+        from rm75_app.swm.native_bootstrap import _array
+        primary=self.primary
+        agent=primary.env.unwrapped.agent
+        actors=dict(primary.actors)
+        actors['primary_table']=primary.env.unwrapped.table_scene.table
+        contacts=[]
+        for name,link in primary.demo.robot.links_map.items():
+            for oid, actor in actors.items():
+                force=_array(agent.scene.get_pairwise_contact_forces(link,actor)).reshape(-1)
+                if np.linalg.norm(force)>.0001:
+                    contacts.append(dict(robot_link=name,object_id=oid,force_n=force.tolist()))
+        self.emit(kind='swm_primary_contact_diagnosis',read_count=count,
+            contacts=contacts,feedback=result[0],semantic_gripper_value=self._gripper_value,
+            native_gripper_args={key:getattr(primary.args,key,None)
+                for key in ('gripper_open','gripper_close','close_steps')},
+            original_pen_grasp_predicate=bool(_array(agent.is_grasping(primary.actors['bi'],min_force=.5,max_angle=95)).reshape(-1)[0]),
+            skill_holding_verified=False)
+        return result
+    self._read=observed
+NativePrimaryExecutor.__init__=instrument
+from rm75_app.swm.native_audit import CuroboNativeStageAuditor
+import time,json
+original_audit=CuroboNativeStageAuditor.__call__
+def profiled_audit(self,plan,snapshot):
+    timings={}
+    restore=[]
+    def wrap(owner,name,label):
+        old=getattr(owner,name)
+        restore.append((owner,name,old))
+        def measured(*args,**kwargs):
+            begin=time.monotonic()
+            try:
+                return old(*args,**kwargs)
+            finally:
+                elapsed=time.monotonic()-begin
+                row=timings.setdefault(label,dict(calls=0,total_s=0.,max_s=0.))
+                row['calls']+=1
+                row['total_s']+=elapsed
+                row['max_s']=max(row['max_s'],elapsed)
+        setattr(owner,name,measured)
+    for name in ('_apply','_contacts','_check_path','_verified_contact_ignores'):
+        wrap(self,name,'audit.'+name)
+    for name in ('_collision_diagnostics_for_states','update_scene','attach_object',
+                 'update_attached_object_pose','set_measured_gripper_collision_state',
+                 'set_gripper_collision_state','read_attachment_collision_state','_set_obstacle_enabled'):
+        wrap(self.backend,name,'backend.'+name)
+    begin=time.monotonic()
+    try:
+        return original_audit(self,plan,snapshot)
+    finally:
+        elapsed=time.monotonic()-begin
+        for owner,name,old in restore:
+            setattr(owner,name,old)
+        (ROOT/'runtime_data/swm_release_pen_worker_05/audit_timing.json').write_text(json.dumps(dict(
+            audit_elapsed_s=elapsed,timings=timings,snapshot_id=snapshot['snapshot_id'],
+            source_snapshot_id=plan.source_snapshot_id,skill=plan.payload.skill),indent=2))
+CuroboNativeStageAuditor.__call__=profiled_audit
+from rm75_app.swm import native_bootstrap
+from unittest.mock import patch
+import copy
+initialize_original=native_bootstrap.initialize_frozen_primary
+def initialize_numeric(resources,direct,args,contract,**kwargs):
+    base=direct.targeted.base
+    make_original=base.gym.make
+    requested={}
+    def make(*pos,**kw):
+        original_config=kw.get('sim_config',{})
+        if hasattr(original_config,'dict'):original_config=original_config.dict()
+        requested['original_explicit_config']=copy.deepcopy(original_config)
+        config=copy.deepcopy(original_config)
+        config['sim_freq']=1000
+        kw['sim_config']=config
+        return make_original(*pos,**kw)
+    with patch.object(base.gym,'make',make):
+        primary=initialize_original(resources,direct,args,contract,**kwargs)
+    env=primary.env.unwrapped
+    kwargs['events'].emit('swm_numerical_integration_probe',requested_sim_freq_hz=1000,
+        original_explicit_config=requested['original_explicit_config'],
+        effective_sim_config=env.sim_config.dict(),actual_sim_freq=env.sim_freq,
+        actual_control_freq=env.control_freq,physics_timestep_s=env.scene.px.timestep,
+        hardware_connected=False,qualification=False)
+    return primary
+native_bootstrap.initialize_frozen_primary=initialize_numeric
+from rm75_app.workcell.worker import main
+raise SystemExit(main())
