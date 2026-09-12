@@ -8,15 +8,15 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "259100a",
+    "commit": "4fdf4b5",
     "sha256": {
-      "rm75_app/planning/backends/curobo2.py": "e43dd853ae4f5d8c6de9bfd8db57908f9a20feff3bb30853e213e12c8fafbc69",
-      "rm75_app/execution/trajectory_executor.py": "1b06bb65abfcde311dbbc17d93e8760e2da5ba7620aa330a736b24a66d96202b",
-      "rm75_app/swm/native_execution.py": "106db72b3dc487ed7add2d55a4f2f67af3c10260618e6a35f0f6ad432892f26c",
-      "tests/swm/test_batched_contact_indices.py": "a1023898d5256102ce9c1a8089926ecb1cf0133d84a74def95c3d94945f0fdbd"
+      "rm75_app/swm/native_context.py": "57a4162adda4f62710f466029e3aff578f2a7c32eb14183f259f5fc829feee0c",
+      "rm75_app/workcell/worker.py": "321877e2f2c0d5261f1fb7a45bb13e4d3ad6cd6566a63016b81359b63dd16065",
+      "rm75_app/swm/native_audit.py": "60dcf9b0fca14a0020df05d3218910c1374208dee84b22a90ef901e504817fb2",
+      "rm75_app/swm/native_execution.py": "373f0ea5e8e5207252935cca02bf4dcec6393b0b33d4a512d66f8138376d45d9"
     },
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Original full collision sampling and freshness limits unchanged. Native execution failed at gripper closure settling; no worker qualification."
+    "note": "Formal pen SIM worker factory installed and actually invoked; complete six-checkpoint task remains failed."
   },
   "runs": {
     "m0_targeted": {
@@ -8409,6 +8409,1085 @@
         "runtime_data/swm_release_pen_phase_driver_12/full_tests.log": "599c85dbf12f30882227e6c16718ccbab6abc6e8b925a5254f5006f155e04668"
       },
       "note": "Existing trimesh deprecation only. Tests ran before commit on identical source bytes."
+    },
+    "native_pen_worker_01": {
+      "tested_commit": "4fdf4b5",
+      "domain": "formal_worker_native_primary_physics",
+      "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "process_exit_code": 1,
+      "status": "failed",
+      "error": "SceneInvalid: Primary stage did not reach measured idle within settle budget",
+      "command_success": false,
+      "task_success": null,
+      "entrypoint": "rm75_app.workcell.worker.main",
+      "invocation": "python -m rm75_app.workcell.worker",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -m rm75_app.workcell.worker --run-dir /home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_01 --profile /home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_01/profile.json --app-root /home/zhangzhao/Desktop/rm75-manipulation",
+      "native_factory_installed": true,
+      "hardware_connected": false,
+      "atomic_worker_qualified": false,
+      "primary_closed": true,
+      "private_handle_cleanup_readback": "not separately instrumented; owned ExitStack and terminal worker process",
+      "checkpoints": [
+        {
+          "boundary": "worker_initialization_probe",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 1,
+          "sequence": 5,
+          "snapshot_id": "927d28b34c54a150469cb7dfe30e9818f53d42432dbaafe96608a3af8982b8a3",
+          "time": 1789247794.4748385
+        },
+        {
+          "boundary": "before_grasp",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 2,
+          "sequence": 7,
+          "snapshot_id": "24bfd0fb3000d421ccfe844ea33819d70481fe75d38e4bae406015fbf7e7e090",
+          "time": 1789247794.7170882
+        },
+        {
+          "boundary": "pre_execute_grasp",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 3,
+          "sequence": 8,
+          "snapshot_id": "03eeb55e6e4bb1e336ef2e809ae74598e337ac6a2206478e06558746db4a566a",
+          "time": 1789247800.26445
+        }
+      ],
+      "skill_checkpoints": 2,
+      "required_skill_checkpoints": 6,
+      "audits": [
+        {
+          "elapsed_s": 1.23517093099872,
+          "snapshot_id": "03eeb55e6e4bb1e336ef2e809ae74598e337ac6a2206478e06558746db4a566a",
+          "passed": [
+            "collision",
+            "contact_policy",
+            "joint_limits",
+            "path_continuity",
+            "tool_state"
+          ],
+          "stages": [
+            {
+              "stage": "approach",
+              "samples": 119,
+              "contacts": 0,
+              "escape": false,
+              "reused_previous_post_state": false
+            },
+            {
+              "stage": "grasp",
+              "samples": 47,
+              "contacts": 0,
+              "escape": false,
+              "reused_previous_post_state": false
+            },
+            {
+              "stage": "lift",
+              "samples": 45,
+              "contacts": 7,
+              "escape": true,
+              "reused_previous_post_state": false
+            }
+          ]
+        }
+      ],
+      "stage_feedback": [
+        {
+          "captured_at": 26142.704285302,
+          "endpoint_error_rad": 0.00002384185791015625,
+          "feedback_joint_names": [
+            "joint_1",
+            "joint_2",
+            "joint_3",
+            "joint_4",
+            "joint_5",
+            "joint_6",
+            "joint_7",
+            "gripper_Left_1_Joint",
+            "gripper_Left_2_Joint",
+            "gripper_Right_1_Joint",
+            "gripper_Right_2_Joint",
+            "gripper_Left_Support_Joint",
+            "gripper_Right_Support_Joint"
+          ],
+          "feedback_positions_rad": [
+            1.0431901216506958,
+            -0.39786359667778015,
+            -0.5261234045028687,
+            -1.315608263015747,
+            0.19664305448532104,
+            -1.4791921377182007,
+            2.0120246410369873,
+            0.00042815765482373536,
+            0.0006356881349347532,
+            0.00041897580376826227,
+            0.0006274890620261431,
+            1.2668836291140906e-7,
+            -1.0273382144987409e-9
+          ],
+          "feedback_velocities_rad_s": [
+            -0.0000639380668872036,
+            -0.00006899670552229509,
+            -0.00006200837378855795,
+            0.00007486156391678378,
+            0.00007488724077120423,
+            0.0000492267899971921,
+            0.00022429089585784823,
+            -0.000020893099645036273,
+            0.0000132655659399461,
+            0.000023363250875263475,
+            0.000020211351511534303,
+            3.0486262403428555e-9,
+            -0.000006152627975097857
+          ],
+          "idle": true,
+          "joint_names": [
+            "joint_1",
+            "joint_2",
+            "joint_3",
+            "joint_4",
+            "joint_5",
+            "joint_6",
+            "joint_7"
+          ],
+          "kind": "swm_primary_stage_settled",
+          "max_velocity_rad_s": 0.00022429089585784823,
+          "measured_positions": [
+            1.0431901216506958,
+            -0.39786359667778015,
+            -0.5261234045028687,
+            -1.315608263015747,
+            0.19664305448532104,
+            -1.4791921377182007,
+            2.0120246410369873
+          ],
+          "primary_sequence": 18,
+          "sequence": 10,
+          "stable_steps": 3,
+          "stage": "approach",
+          "steps": 14,
+          "time": 1789247801.609038
+        },
+        {
+          "captured_at": 26142.791058063,
+          "endpoint_error_rad": 0.00005221366882324219,
+          "feedback_joint_names": [
+            "joint_1",
+            "joint_2",
+            "joint_3",
+            "joint_4",
+            "joint_5",
+            "joint_6",
+            "joint_7",
+            "gripper_Left_1_Joint",
+            "gripper_Left_2_Joint",
+            "gripper_Right_1_Joint",
+            "gripper_Right_2_Joint",
+            "gripper_Left_Support_Joint",
+            "gripper_Right_Support_Joint"
+          ],
+          "feedback_positions_rad": [
+            1.0381139516830444,
+            -0.4913138449192047,
+            -0.49968042969703674,
+            -1.581418752670288,
+            0.25217780470848083,
+            -1.133569359779358,
+            1.9594733715057373,
+            0.00042840870446525514,
+            0.000635758216958493,
+            0.0004184724821243435,
+            0.0006272322498261929,
+            7.79480444634828e-8,
+            -1.057449128261112e-9
+          ],
+          "feedback_velocities_rad_s": [
+            -0.00004100870501133613,
+            -0.000008066720511124004,
+            0.000015348312444984913,
+            -0.0002068994945148006,
+            0.000049018057325156406,
+            0.0003200840437784791,
+            -0.00007512773299822584,
+            -0.000025744648155523464,
+            -0.000024803790438454598,
+            0.000087423060904257,
+            0.0000847118062665686,
+            -0.000039804323023417965,
+            0.00011317674943711609
+          ],
+          "idle": true,
+          "joint_names": [
+            "joint_1",
+            "joint_2",
+            "joint_3",
+            "joint_4",
+            "joint_5",
+            "joint_6",
+            "joint_7"
+          ],
+          "kind": "swm_primary_stage_settled",
+          "max_velocity_rad_s": 0.0003200840437784791,
+          "measured_positions": [
+            1.0381139516830444,
+            -0.4913138449192047,
+            -0.49968042969703674,
+            -1.581418752670288,
+            0.25217780470848083,
+            -1.133569359779358,
+            1.9594733715057373
+          ],
+          "primary_sequence": 32,
+          "sequence": 11,
+          "stable_steps": 3,
+          "stage": "grasp",
+          "steps": 14,
+          "time": 1789247801.6958082
+        },
+        {
+          "captured_at": 26144.011135895,
+          "endpoint_error_rad": 0.0638967752456665,
+          "feedback_joint_names": [
+            "joint_1",
+            "joint_2",
+            "joint_3",
+            "joint_4",
+            "joint_5",
+            "joint_6",
+            "joint_7",
+            "gripper_Left_1_Joint",
+            "gripper_Left_2_Joint",
+            "gripper_Right_1_Joint",
+            "gripper_Right_2_Joint",
+            "gripper_Left_Support_Joint",
+            "gripper_Right_Support_Joint"
+          ],
+          "feedback_positions_rad": [
+            1.0376161336898804,
+            -0.48703378438949585,
+            -0.49938294291496277,
+            -1.5900768041610718,
+            0.25162723660469055,
+            -1.1224435567855835,
+            2.023322582244873,
+            0.7758617401123047,
+            0.7327855229377747,
+            0.8027151226997375,
+            0.7593546509742737,
+            0.8800543546676636,
+            0.9092159271240234
+          ],
+          "feedback_velocities_rad_s": [
+            -5.590845830738544e-7,
+            0.001319211907684803,
+            -0.0015011313371360302,
+            0.005871078930795193,
+            -0.0006789306062273681,
+            -0.006368197966367006,
+            0.00015945499762892723,
+            -0.563683032989502,
+            -0.06447617709636688,
+            -0.0684690997004509,
+            -0.032045114785432816,
+            -1.4673545360565186,
+            -0.13648179173469543
+          ],
+          "idle": false,
+          "joint_names": [
+            "joint_1",
+            "joint_2",
+            "joint_3",
+            "joint_4",
+            "joint_5",
+            "joint_6",
+            "joint_7"
+          ],
+          "kind": "swm_primary_settle_failed",
+          "max_velocity_rad_s": 1.4673545360565186,
+          "measured_objects": {
+            "bi": [
+              [
+                0.2519710659980774,
+                0.4838118553161621,
+                0.8381150960922241,
+                -0.08802480250597
+              ],
+              [
+                -0.17764444649219513,
+                0.8744659423828125,
+                -0.45138880610466003,
+                -0.1921183466911316
+              ],
+              [
+                -0.9512902498245239,
+                -0.03514954820275307,
+                0.3062865734100342,
+                0.011890406720340252
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "bitong": [
+              [
+                -0.01071476936340332,
+                0.011462360620498657,
+                0.9998769164085388,
+                -0.29775434732437134
+              ],
+              [
+                0.9999393224716187,
+                0.002698183059692383,
+                0.01068452000617981,
+                -0.28024864196777344
+              ],
+              [
+                -0.0025754570960998535,
+                0.999930739402771,
+                -0.011490583419799805,
+                0.0489608496427536
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "carriot": [
+              [
+                0.6579346656799316,
+                5.960464477539063e-8,
+                -0.7530750036239624,
+                -0.21486645936965942
+              ],
+              [
+                0.7530750036239624,
+                0,
+                0.6579346060752869,
+                -0.2131349742412567
+              ],
+              [
+                0,
+                -0.9999999403953552,
+                -1.1920928955078125e-7,
+                0.018834665417671204
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "desk": [
+              [
+                -0.9995956420898438,
+                -0.021007820963859558,
+                0.019161848351359367,
+                -0.282535582780838
+              ],
+              [
+                0.019344866275787354,
+                -0.008543610572814941,
+                0.9997763633728027,
+                0.3946118652820587
+              ],
+              [
+                -0.02083940990269184,
+                0.9997427463531494,
+                0.008946537971496582,
+                0.05647863820195198
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "gluestick": [
+              [
+                0,
+                -0.9995539784431458,
+                0.029862314462661743,
+                -0.1387123167514801
+              ],
+              [
+                0,
+                -0.029862284660339355,
+                -0.9995539784431458,
+                -0.0097605399787426
+              ],
+              [
+                1,
+                0,
+                0,
+                0.016013791784644127
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "hongshupian": [
+              [
+                0.7814264297485352,
+                0.6224429607391357,
+                -0.044017814099788666,
+                -0.25125378370285034
+              ],
+              [
+                -0.6226253509521484,
+                0.7824411988258362,
+                0.011111186817288399,
+                0.16363686323165894
+              ],
+              [
+                0.04135742783546448,
+                0.01872403174638748,
+                0.9989689588546753,
+                0.03580844774842262
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "lvmukuai": [
+              [
+                0.49726295471191406,
+                0,
+                0.8675998449325562,
+                -0.05218431353569031
+              ],
+              [
+                0.8675998449325562,
+                0,
+                -0.49726295471191406,
+                0.05158147215843201
+              ],
+              [
+                0,
+                1,
+                0,
+                0.015172386541962624
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "shuazi": [
+              [
+                -0.45511889457702637,
+                0.8904306292533875,
+                7.810653457340777e-9,
+                -0.1637449413537979
+              ],
+              [
+                -0.8904306292533875,
+                -0.45511889457702637,
+                -1.1237055730362044e-9,
+                -0.10657167434692383
+              ],
+              [
+                2.554194411530375e-9,
+                -7.466264939637313e-9,
+                1,
+                0.02642563357949257
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "tennis": [
+              [
+                0.6265426278114319,
+                0.6608723998069763,
+                0.41314879059791565,
+                -0.0024008750915527344
+              ],
+              [
+                -0.2774723768234253,
+                0.6845023036003113,
+                -0.6741406917572021,
+                0.14493530988693237
+              ],
+              [
+                -0.7283223271369934,
+                0.30774056911468506,
+                0.61224365234375,
+                0.03693460673093796
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "measured_positions": [
+            1.0376161336898804,
+            -0.48703378438949585,
+            -0.49938294291496277,
+            -1.5900768041610718,
+            0.25162723660469055,
+            -1.1224435567855835,
+            2.023322582244873
+          ],
+          "primary_sequence": 232,
+          "sequence": 12,
+          "stable_steps": 0,
+          "stage": "gripper_close",
+          "steps": 200,
+          "time": 1789247802.915901
+        }
+      ],
+      "contact_diagnosis_records": 0,
+      "motion_executed": true,
+      "sha256": {
+        "runtime_data/swm_release_pen_worker_01/request.json": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+        "runtime_data/swm_release_pen_worker_01/profile.json": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+        "runtime_data/swm_release_pen_worker_01/worker.log": "ee749e2422499ac7c66bcb2495be7683e304716e086179ee84821005fc3fc78b",
+        "runtime_data/swm_release_pen_worker_01/events.jsonl": "79727a94e6c247ba2b2017266c38efa69d67f29b8e7869c8bcb27769dae8e17a",
+        "runtime_data/swm_release_pen_worker_01/result.json": "3971220b0da474f8e47f55a715f2adcb804485b5d72e010b7d7f4a6d65df25c8"
+      },
+      "note": "Actual ordinary worker startup and native execution. Gripper close did not settle; no lift/place or verified holding."
+    },
+    "native_pen_worker_02": {
+      "tested_commit": "4fdf4b5",
+      "domain": "formal_worker_native_primary_physics",
+      "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "process_exit_code": 1,
+      "status": "failed",
+      "error": "SceneInvalid: Observation expired during path auditing; acquire a fresh checkpoint",
+      "command_success": false,
+      "task_success": null,
+      "entrypoint": "rm75_app.workcell.worker.main",
+      "invocation": "read-only instrumentation wrapping the unchanged formal worker main",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_pen_worker_02/diagnose.py --run-dir /home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_02 --profile /home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_02/profile.json --app-root /home/zhangzhao/Desktop/rm75-manipulation",
+      "native_factory_installed": true,
+      "hardware_connected": false,
+      "atomic_worker_qualified": false,
+      "primary_closed": true,
+      "private_handle_cleanup_readback": "not separately instrumented; owned ExitStack and terminal worker process",
+      "checkpoints": [
+        {
+          "boundary": "worker_initialization_probe",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 1,
+          "sequence": 5,
+          "snapshot_id": "fbe2e8a6429cb6f82bf93e0bebc66ff9eb5a89008460d90c2d703910742272a3",
+          "time": 1789247897.820015
+        },
+        {
+          "boundary": "before_grasp",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 2,
+          "sequence": 7,
+          "snapshot_id": "86ac63913bb257bc7fc40871afc80e17f726b31e092d321c7c7e5ba161042f15",
+          "time": 1789247898.2632072
+        },
+        {
+          "boundary": "pre_execute_grasp",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 3,
+          "sequence": 8,
+          "snapshot_id": "36db49288d053c0d525831d5470f482bd92f35305e4ccf863bb067cbd0c6b497",
+          "time": 1789247903.9004216
+        }
+      ],
+      "skill_checkpoints": 2,
+      "required_skill_checkpoints": 6,
+      "audits": [
+        {
+          "elapsed_s": 1.3625051290000556,
+          "snapshot_id": "36db49288d053c0d525831d5470f482bd92f35305e4ccf863bb067cbd0c6b497",
+          "passed": [
+            "collision",
+            "contact_policy",
+            "joint_limits",
+            "path_continuity",
+            "tool_state"
+          ],
+          "stages": [
+            {
+              "stage": "approach",
+              "samples": 119,
+              "contacts": 0,
+              "escape": false,
+              "reused_previous_post_state": false
+            },
+            {
+              "stage": "grasp",
+              "samples": 47,
+              "contacts": 0,
+              "escape": false,
+              "reused_previous_post_state": false
+            },
+            {
+              "stage": "lift",
+              "samples": 45,
+              "contacts": 6,
+              "escape": true,
+              "reused_previous_post_state": false
+            }
+          ]
+        }
+      ],
+      "stage_feedback": [],
+      "contact_diagnosis_records": 0,
+      "motion_executed": false,
+      "sha256": {
+        "runtime_data/swm_release_pen_worker_02/request.json": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+        "runtime_data/swm_release_pen_worker_02/profile.json": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+        "runtime_data/swm_release_pen_worker_02/worker.log": "65f546fd19897a02e1d96944a0e8850ffa48e13272cf41f42aec860927f7c3a2",
+        "runtime_data/swm_release_pen_worker_02/events.jsonl": "da9fc6bc3bbeb7dfd8f20878529a9acb2b22e0d9c6dfedd088850f0a7bb091f5",
+        "runtime_data/swm_release_pen_worker_02/result.json": "752b18e1672bbe60ed2a44ba062eba38cb272027ebb76bc67b945faa3f61816f",
+        "runtime_data/swm_release_pen_worker_02/diagnose.py": "153af4046509c4fd710e5ae5305b473a3bfbc108fa9adc8a4bbdf0aea9484966"
+      },
+      "note": "Freshness rejected before execution, so added contact instrumentation produced no data."
+    },
+    "native_pen_worker_03": {
+      "tested_commit": "4fdf4b5",
+      "domain": "formal_worker_native_primary_physics",
+      "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "process_exit_code": 1,
+      "status": "failed",
+      "error": "SceneInvalid: Observation expired during path auditing; acquire a fresh checkpoint",
+      "command_success": false,
+      "task_success": null,
+      "entrypoint": "rm75_app.workcell.worker.main",
+      "invocation": "read-only instrumentation wrapping the unchanged formal worker main",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_pen_worker_03/diagnose.py --run-dir /home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_03 --profile /home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_03/profile.json --app-root /home/zhangzhao/Desktop/rm75-manipulation",
+      "native_factory_installed": true,
+      "hardware_connected": false,
+      "atomic_worker_qualified": false,
+      "primary_closed": true,
+      "private_handle_cleanup_readback": "not separately instrumented; owned ExitStack and terminal worker process",
+      "checkpoints": [
+        {
+          "boundary": "worker_initialization_probe",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 1,
+          "sequence": 5,
+          "snapshot_id": "7ff2ddb46878032dbf7a3c79361612408edfef13f76be058c67672007ff52801",
+          "time": 1789248180.5099661
+        },
+        {
+          "boundary": "before_grasp",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 2,
+          "sequence": 7,
+          "snapshot_id": "42291de12c75c687824b2bd3eef57aada317c21f16ee18f0a201616f62780535",
+          "time": 1789248180.751132
+        },
+        {
+          "boundary": "pre_execute_grasp",
+          "kind": "swm_checkpoint",
+          "observation_domain": "physics",
+          "observed_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis",
+            "__maniskill_workspace_table__",
+            "virtual_side_wall",
+            "virtual_top_wall"
+          ],
+          "revision": 3,
+          "sequence": 8,
+          "snapshot_id": "940cdbff3d572088cad38af898bc1db8e8eee588d0cccc7712cc626cdff5a147",
+          "time": 1789248186.3045816
+        }
+      ],
+      "skill_checkpoints": 2,
+      "required_skill_checkpoints": 6,
+      "audits": [
+        {
+          "elapsed_s": 1.2661006240014103,
+          "snapshot_id": "940cdbff3d572088cad38af898bc1db8e8eee588d0cccc7712cc626cdff5a147",
+          "passed": [
+            "collision",
+            "contact_policy",
+            "joint_limits",
+            "path_continuity",
+            "tool_state"
+          ],
+          "stages": [
+            {
+              "stage": "approach",
+              "samples": 119,
+              "contacts": 0,
+              "escape": false,
+              "reused_previous_post_state": false
+            },
+            {
+              "stage": "grasp",
+              "samples": 47,
+              "contacts": 0,
+              "escape": false,
+              "reused_previous_post_state": false
+            },
+            {
+              "stage": "lift",
+              "samples": 45,
+              "contacts": 7,
+              "escape": true,
+              "reused_previous_post_state": false
+            }
+          ]
+        }
+      ],
+      "stage_feedback": [],
+      "contact_diagnosis_records": 0,
+      "motion_executed": false,
+      "sha256": {
+        "runtime_data/swm_release_pen_worker_03/request.json": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+        "runtime_data/swm_release_pen_worker_03/profile.json": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+        "runtime_data/swm_release_pen_worker_03/worker.log": "5f06cebbcb72458bfa556986bd61d2ed75ada638a128633eef025cc98aaeca6e",
+        "runtime_data/swm_release_pen_worker_03/events.jsonl": "dd8f8deea332c21787bc4d47132f4fdb35d7648a6d2388df8461accc04f35d45",
+        "runtime_data/swm_release_pen_worker_03/result.json": "e70fcef23fa09d13ba16fad137e97ba9850ab84d791a9e421bc879454149c082",
+        "runtime_data/swm_release_pen_worker_03/diagnose.py": "d422bf7b465ce67fa32a0adb2b1d08b5c12b15df21cc079eff669238847b926d",
+        "runtime_data/swm_release_pen_worker_03/audit_timing.json": "3431464788ddf2a3b816f426ad96713b4331a8680ee796cd787d849b2c13a635"
+      },
+      "note": "Freshness rejected before execution, so added contact instrumentation produced no data.",
+      "audit_profile": {
+        "audit_elapsed_s": 1.2659195470005216,
+        "timings": {
+          "backend.update_scene": {
+            "calls": 7,
+            "total_s": 0.05264548600098351,
+            "max_s": 0.007809219001501333
+          },
+          "backend.set_measured_gripper_collision_state": {
+            "calls": 4,
+            "total_s": 0.021648977002769243,
+            "max_s": 0.00567663500260096
+          },
+          "audit._apply": {
+            "calls": 6,
+            "total_s": 1.1801171010047256,
+            "max_s": 1.0938977770019847
+          },
+          "audit._verified_contact_ignores": {
+            "calls": 8,
+            "total_s": 0.003086455999437021,
+            "max_s": 0.0008166330007952638
+          },
+          "backend._set_obstacle_enabled": {
+            "calls": 383,
+            "total_s": 0.009164709968899842,
+            "max_s": 0.00023833999875932932
+          },
+          "backend._collision_diagnostics_for_states": {
+            "calls": 8,
+            "total_s": 0.05499425700691063,
+            "max_s": 0.007298019001609646
+          },
+          "audit._contacts": {
+            "calls": 8,
+            "total_s": 0.058654666994698346,
+            "max_s": 0.007726313000603113
+          },
+          "audit._check_path": {
+            "calls": 3,
+            "total_s": 0.030168893004884012,
+            "max_s": 0.015178403002209961
+          },
+          "backend.set_gripper_collision_state": {
+            "calls": 9,
+            "total_s": 0.03144651000548038,
+            "max_s": 0.003681326001242269
+          },
+          "backend.attach_object": {
+            "calls": 3,
+            "total_s": 1.0904302680028195,
+            "max_s": 1.0792616860017006
+          },
+          "backend.update_attached_object_pose": {
+            "calls": 3,
+            "total_s": 0.009775586000614567,
+            "max_s": 0.0034747479985526297
+          },
+          "backend.read_attachment_collision_state": {
+            "calls": 5,
+            "total_s": 0.0030509710049955174,
+            "max_s": 0.0006464690013672225
+          }
+        },
+        "snapshot_id": "940cdbff3d572088cad38af898bc1db8e8eee588d0cccc7712cc626cdff5a147",
+        "source_snapshot_id": "42291de12c75c687824b2bd3eef57aada317c21f16ee18f0a201616f62780535",
+        "skill": "grasp"
+      }
+    },
+    "native_pen_phase_13": {
+      "tested_commit": "d372c70",
+      "domain": "native_diagnostic_not_formal_worker",
+      "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "status": "failed",
+      "error": "SceneInvalid: Observation expired during path auditing; acquire a fresh checkpoint",
+      "process_exit_code": 1,
+      "motion_executed": false,
+      "hardware_connected": false,
+      "atomic_worker_qualified": false,
+      "primary_closed": true,
+      "private_resources_closed": true,
+      "skill_checkpoints": 2,
+      "phase_status": "failed",
+      "audit_elapsed_s": null,
+      "audit_profile": null,
+      "sha256": {
+        "runtime_data/swm_release_pen_phase_driver_13/run.py": "9e21dbc13a16b0de4dfbdce25d352681f02e3de025c0987b7d08be19f8c1b270",
+        "runtime_data/swm_release_pen_phase_driver_13/run.log": "98ee2df24cccd0db34c7bb92d73ebeb4daf1b96589a0f1c444cbadf6f80185f8",
+        "runtime_data/swm_release_pen_phase_driver_13/transaction_result.json": "15cfd8180f53666b21d4057b4f0ec4bd500bf304ba5cbd79a3114ca9ad214069",
+        "runtime_data/swm_release_pen_phase_bootstrap_13/result.json": "a15eb7d158154d5d1fb891183374c9095603900fc9a39e85dcffa6a9196c1cd2"
+      },
+      "note": "Freshness rejection; no new contact diagnosis."
+    },
+    "native_pen_phase_14": {
+      "tested_commit": "4fdf4b5",
+      "domain": "native_diagnostic_not_formal_worker",
+      "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "status": "live_dual_mirror_checkpoint_committed",
+      "error": null,
+      "process_exit_code": 0,
+      "motion_executed": false,
+      "hardware_connected": false,
+      "atomic_worker_qualified": false,
+      "primary_closed": true,
+      "private_resources_closed": true,
+      "skill_checkpoints": 0,
+      "phase_status": "planned_and_audited",
+      "audit_elapsed_s": 0.18966919200101984,
+      "audit_profile": {
+        "backend.update_scene": {
+          "calls": 7,
+          "total_s": 0.051966796007036464,
+          "max_s": 0.007649868999578757
+        },
+        "backend.set_measured_gripper_collision_state": {
+          "calls": 4,
+          "total_s": 0.021060265000414802,
+          "max_s": 0.005342196000128752
+        },
+        "audit._apply": {
+          "calls": 6,
+          "total_s": 0.10471471300115809,
+          "max_s": 0.023501294999732636
+        },
+        "audit._verified_contact_ignores": {
+          "calls": 8,
+          "total_s": 0.0028514149962575175,
+          "max_s": 0.0007519330029026605
+        },
+        "backend._set_obstacle_enabled": {
+          "calls": 383,
+          "total_s": 0.008933645010984037,
+          "max_s": 0.00021909600036451593
+        },
+        "backend._collision_diagnostics_for_states": {
+          "calls": 8,
+          "total_s": 0.05430918500496773,
+          "max_s": 0.007261965001816861
+        },
+        "audit._contacts": {
+          "calls": 8,
+          "total_s": 0.057699506000062684,
+          "max_s": 0.007748710999294417
+        },
+        "audit._check_path": {
+          "calls": 3,
+          "total_s": 0.029792844998155488,
+          "max_s": 0.01487206100136973
+        },
+        "backend.set_gripper_collision_state": {
+          "calls": 9,
+          "total_s": 0.03094890200009104,
+          "max_s": 0.0035394919977989048
+        },
+        "backend.attach_object": {
+          "calls": 3,
+          "total_s": 0.016714303001208464,
+          "max_s": 0.005656014000123832
+        },
+        "backend.update_attached_object_pose": {
+          "calls": 3,
+          "total_s": 0.009568729001330212,
+          "max_s": 0.0032386519997089636
+        },
+        "backend.read_attachment_collision_state": {
+          "calls": 5,
+          "total_s": 0.0028791759978048503,
+          "max_s": 0.0006530880018544849
+        }
+      },
+      "sha256": {
+        "runtime_data/swm_release_pen_phase_driver_14/run.py": "c77251d18611d0bc73f33e9b24249a7411b99d78bd07ed4d9738769980266fd1",
+        "runtime_data/swm_release_pen_phase_driver_14/run.log": "079eff5dc8d1778a83a102bcb1f86b9757c2969fd518c0fb149532f790615ff1",
+        "runtime_data/swm_release_pen_phase_driver_14/transaction_result.json": "f39a94f2107790dc56e8e828fa761fd158c494bc462b68588459076901b15b93",
+        "runtime_data/swm_release_pen_phase_bootstrap_14/result.json": "cf32ea79bcf681abb9681d39b786974420e2ace6d903083cbcc2644797bdaf10"
+      },
+      "note": "Direct planning-snapshot audit only; no new pre-execute checkpoint and no execution. Timing comparison is not freshness acceptance."
+    },
+    "native_context_targeted": {
+      "tested_commit": "4fdf4b5",
+      "domain": "software_fixture",
+      "passed": 44,
+      "failed": 0,
+      "seconds": 0.44,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest -q tests/swm/test_native_context_binding.py tests/swm/test_native_stage_audit.py tests/swm/test_native_primary_execution.py tests/swm/test_runtime_context.py tests/swm/test_initial_payload_escape.py tests/swm/test_audit_payload_duplicate.py"
+    },
+    "native_context_full": {
+      "tested_commit": "4fdf4b5",
+      "domain": "software_regression",
+      "passed": 1698,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 50.92,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest -q tests/",
+      "sha256": {
+        "runtime_data/swm_release_pen_worker_01/full_tests.log": "f6084183dd7990764586bcc387d85a7f2124b311d9e66765332ba10f3649a79f"
+      }
     }
   },
   "gates": {
@@ -8732,5 +9811,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Diagnose original primary gripper-close contacts and all 13 joint feedback without force-zeroing velocities or loosening idle limits; complete owned formal pen worker context and six fresh checkpoints."
+  "next_actual_action": "Move original registered-mesh attachment fit preparation before the fresh execution checkpoint, preserving asset/fit-parameter cache binding and actual GPU audit; then diagnose physical gripper closure and complete the formal worker six checkpoints."
 }
