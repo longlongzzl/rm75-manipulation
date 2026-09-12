@@ -1,0 +1,306 @@
+{
+  "domain": "experimental_full_original_private_CPU_PhysX_closure",
+  "phase": "complete_unqualified_prediction",
+  "error": null,
+  "skill_qualified": false,
+  "model_qualified": false,
+  "hardware_connected": false,
+  "object_ids": [
+    "__maniskill_workspace_table__",
+    "bi",
+    "bitong",
+    "carriot",
+    "desk",
+    "gluestick",
+    "hongshupian",
+    "lvmukuai",
+    "shuazi",
+    "tennis",
+    "virtual_side_wall",
+    "virtual_top_wall"
+  ],
+  "primary_unchanged_while_private_stepped": true,
+  "private_robot_closed": true,
+  "closed_drive_targets": {
+    "source": "native_joint_drive_targets_readback",
+    "joint_names": [
+      "joint_1",
+      "joint_2",
+      "joint_3",
+      "joint_4",
+      "joint_5",
+      "joint_6",
+      "joint_7",
+      "gripper_Left_1_Joint",
+      "gripper_Left_2_Joint",
+      "gripper_Left_Support_Joint",
+      "gripper_Right_1_Joint",
+      "gripper_Right_2_Joint",
+      "gripper_Right_Support_Joint"
+    ],
+    "position_targets": [
+      1.0381098985671997,
+      -0.49131539463996887,
+      -0.4996761977672577,
+      -1.581451177597046,
+      0.25218796730041504,
+      -1.1335171461105347,
+      1.9594258069992065,
+      0.9100000262260437,
+      0,
+      0,
+      0.9100000262260437,
+      0,
+      0
+    ],
+    "velocity_targets": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "physics_timestep_s": 0.009999999776482582,
+    "simulation_frequency_hz": 100,
+    "control_frequency_hz": 20
+  },
+  "initial_body_ack": {
+    "source": "native_CPU_PhysX_shape_and_body_readback",
+    "objects": {
+      "bi": {
+        "native_physics_geometry_sha256": "278b97027b8645009a9c776c8f97ff108ee517b0807d6584a6639cb468b9a3fd",
+        "shape_count": 10,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh"
+        ],
+        "mass": 0.04651080444455147,
+        "inertia": [
+          7.150604506023228e-05,
+          3.1645511171518592e-06,
+          7.14740453986451e-05
+        ],
+        "expected_native_digest": "b4ad4d6c5e604e2d603dc54f2192de8e3964707b552eb06d500b437ecf7877f8",
+        "actual_native_digest": "b4ad4d6c5e604e2d603dc54f2192de8e3964707b552eb06d500b437ecf7877f8"
+      },
+      "bitong": {
+        "native_physics_geometry_sha256": "ab57453801da931dc72794e4044ae500fa50278aded73792c1c313a22598ab51",
+        "shape_count": 5,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box",
+          "Box",
+          "Box",
+          "Box",
+          "Box"
+        ],
+        "mass": 0.18447226285934448,
+        "inertia": [
+          0.00027690952992998064,
+          0.0002919824328273535,
+          0.00027690952992998064
+        ],
+        "expected_native_digest": "c0e5522bde827d6e0181065779370bb03f9735bde56ce87d0263090a670dfe9e",
+        "actual_native_digest": "c0e5522bde827d6e0181065779370bb03f9735bde56ce87d0263090a670dfe9e"
+      },
+      "carriot": {
+        "native_physics_geometry_sha256": "b2d60228165ca08145433b962436f0275b35a613bc907c1294d743796a707feb",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 0.18753525614738464,
+        "inertia": [
+          0.0005737523315474391,
+          0.0005737523315474391,
+          3.101364563917741e-05
+        ],
+        "expected_native_digest": "42435489bfeaf275ed2d8e20e7ccbd52c60050e539648a3e0797fc617cdaf0a5",
+        "actual_native_digest": "42435489bfeaf275ed2d8e20e7ccbd52c60050e539648a3e0797fc617cdaf0a5"
+      },
+      "desk": {
+        "native_physics_geometry_sha256": "17a4057ebeea9f8b2e380a49b4241654751b76906975f1d86311c4cb5f39c7a7",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 10.013486862182617,
+        "inertia": [
+          0.055286772549152374,
+          0.19832903146743774,
+          0.15939927101135254
+        ],
+        "expected_native_digest": "595de082e1b9668fc9f80a583515985a2d740dc0f360b28b595f742bb7a4dd84",
+        "actual_native_digest": "595de082e1b9668fc9f80a583515985a2d740dc0f360b28b595f742bb7a4dd84"
+      },
+      "gluestick": {
+        "native_physics_geometry_sha256": "e5d1cd7d75b64adae404e34fabed3b62c2333dc4c3ffb95096d854597150ada6",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 0.07217100262641907,
+        "inertia": [
+          6.333005876513198e-05,
+          8.76877675182186e-06,
+          6.333005876513198e-05
+        ],
+        "expected_native_digest": "6e6278d16356ea7f66ed16bb8dd65cc534e17d517ac2a4f92c1bf42313745b25",
+        "actual_native_digest": "6e6278d16356ea7f66ed16bb8dd65cc534e17d517ac2a4f92c1bf42313745b25"
+      },
+      "hongshupian": {
+        "native_physics_geometry_sha256": "a5e0d639c48a8a4f11b7e5f39c72d6f1111c97ac9543d5c287e2fb5f7e9ceb38",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 0.5358150005340576,
+        "inertia": [
+          0.0009909899672493339,
+          0.000354441610397771,
+          0.000990989850834012
+        ],
+        "expected_native_digest": "0a63b6b215e0054a93880bf40e831de217a72e71b985187f6b93fae9f9cd8837",
+        "actual_native_digest": "0a63b6b215e0054a93880bf40e831de217a72e71b985187f6b93fae9f9cd8837"
+      },
+      "lvmukuai": {
+        "native_physics_geometry_sha256": "06c9af7841baeee395f26c4dd60717ceaf0f09a536cc92f5ddfee36a86755df6",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 0.03998000919818878,
+        "inertia": [
+          4.970427653461229e-06,
+          1.2503400284913369e-05,
+          1.1897312106157187e-05
+        ],
+        "expected_native_digest": "cba6a767cf5ac7557e8b25e930b96639a84497ad7f7e62846a030fe4e86a97a4",
+        "actual_native_digest": "cba6a767cf5ac7557e8b25e930b96639a84497ad7f7e62846a030fe4e86a97a4"
+      },
+      "shuazi": {
+        "native_physics_geometry_sha256": "7177c1ccedcf451e7dd1c6312da518d7f43cc4930774c4fa5422e4cbf94290d7",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 0.5122414827346802,
+        "inertia": [
+          0.00038226559991016984,
+          0.0007391551625914872,
+          0.0008343722438439727
+        ],
+        "expected_native_digest": "dde8116dd73cea36ba6cc5797a10985e87961dcfff3b231ff1a432608d2d3354",
+        "actual_native_digest": "dde8116dd73cea36ba6cc5797a10985e87961dcfff3b231ff1a432608d2d3354"
+      },
+      "tennis": {
+        "native_physics_geometry_sha256": "dc09025f1f2b0b68cfee665a71b4c8571b9d45ac9644e357757a02908e798b3a",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 0.2500469982624054,
+        "inertia": [
+          0.00016540609067305923,
+          0.000165406076121144,
+          0.000165406076121144
+        ],
+        "expected_native_digest": "7ef85c77108ef0e019e557a7eed21930393f49a1648bc2213448cdc82664fffe",
+        "actual_native_digest": "7ef85c77108ef0e019e557a7eed21930393f49a1648bc2213448cdc82664fffe"
+      },
+      "__maniskill_workspace_table__": {
+        "native_physics_geometry_sha256": "67d45755e5b6a8bbcfba35eb0fa83c275c66d4389e3bb548704466d8152784e6",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 2688.44921875,
+        "inertia": [
+          516.9493408203125,
+          1499.363037109375,
+          1637.3560791015625
+        ],
+        "expected_native_digest": "3a19c4b085b2bb54e274c334a87532efc72daae7f6c30a834c34dcd65317d874",
+        "actual_native_digest": "3a19c4b085b2bb54e274c334a87532efc72daae7f6c30a834c34dcd65317d874"
+      },
+      "virtual_side_wall": {
+        "native_physics_geometry_sha256": "b30d7852f72cee0723ffa73e4f17c6f94000c72843d97c48c9d28cfd6f402eef",
+        "shape_count": 0,
+        "body_kind": "dynamic",
+        "shape_kinds": [],
+        "mass": 9.999999974752427e-07,
+        "inertia": [
+          9.999999974752427e-07,
+          9.999999974752427e-07,
+          9.999999974752427e-07
+        ],
+        "expected_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75",
+        "actual_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75"
+      },
+      "virtual_top_wall": {
+        "native_physics_geometry_sha256": "b30d7852f72cee0723ffa73e4f17c6f94000c72843d97c48c9d28cfd6f402eef",
+        "shape_count": 0,
+        "body_kind": "dynamic",
+        "shape_kinds": [],
+        "mass": 9.999999974752427e-07,
+        "inertia": [
+          9.999999974752427e-07,
+          9.999999974752427e-07,
+          9.999999974752427e-07
+        ],
+        "expected_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75",
+        "actual_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75"
+      }
+    },
+    "original_body_geometry_and_properties_aligned": true,
+    "primary_world_mutated": false,
+    "attachment_qualified": false,
+    "robot_collision_policy_qualified": false,
+    "hardware_qualified": false
+  },
+  "step_count": 100,
+  "first_nonzero_table_contact": {
+    "control_tick": 6,
+    "substep": 2,
+    "body_names": [
+      "gripper_Left_Support_Link",
+      "__maniskill_workspace_table__"
+    ],
+    "force_in_base_n": [
+      2.917720352814645e-07,
+      4.3765805292219674e-07,
+      7.34268294295705
+    ],
+    "separations_m": [
+      0.0006446242332458496,
+      0.0009765625,
+      -5.7369470596313477e-05
+    ]
+  },
+  "final_max_velocity_rad_s": 1.7487823963165283
+}

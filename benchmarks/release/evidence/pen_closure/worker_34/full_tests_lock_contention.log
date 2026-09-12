@@ -1,0 +1,98 @@
+Network isolation active: non-Unix sockets blocked in this process and its descendants.
+........................................................................ [  4%]
+........................................................................ [  8%]
+........................................................................ [ 12%]
+........................................................................ [ 16%]
+........................................................................ [ 20%]
+........................................................................ [ 24%]
+........................................................................ [ 28%]
+....................................................FF...F.............. [ 32%]
+........................................................................ [ 36%]
+........................................................................ [ 40%]
+........................................................................ [ 44%]
+........................................................................ [ 48%]
+........................................................................ [ 52%]
+........................................................................ [ 57%]
+.....................s.................................................. [ 61%]
+........................................................................ [ 65%]
+........................................................................ [ 69%]
+........................................................................ [ 73%]
+........................................................................ [ 77%]
+........................................................................ [ 81%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+........................................................................ [ 93%]
+........................................................................ [ 97%]
+.......................................                                  [100%]
+=================================== FAILURES ===================================
+__________________ test_real_service_worker_sequence_preview ___________________
+
+tmp_path = PosixPath('/tmp/pytest-of-zhangzhao/pytest-82/test_real_service_worker_seque0')
+profile = {'hardware': {'hardware_reviewed': False}, 'magnetic': {'design_library': '/tmp/pytest-of-zhangzhao/pytest-82/test_rea...bled_backends': ['tool_only_physics', 'full_arm_physics'], 'geometry_variants': {'wide': {'bar_width_m': 0.12}}}}, ...}
+
+    def test_real_service_worker_sequence_preview(tmp_path,profile):
+        path=tmp_path/'profile.json';atomic_json(path,profile)
+        service=WorkcellService(ROOT,path,allow_real=False)
+        try:
+            spec=dict(task='pickplace',mode='preview',parameters=dict(object_names=['tennis','bi'],automatic_order=True))
+            ident=service.submit(spec)['job_id']
+            service._thread.join(timeout=10);assert not service.active
+            job=service.job(ident)
+>           assert job['status']=='command_completed_unverified'
+E           AssertionError: assert 'failed' == 'command_completed_unverified'
+E             - command_completed_unverified
+E             + failed
+
+tests/iteration/test_runtime_wiring.py:27: AssertionError
+__________________ test_real_service_worker_generated_preview __________________
+
+tmp_path = PosixPath('/tmp/pytest-of-zhangzhao/pytest-82/test_real_service_worker_gener0')
+profile = {'hardware': {'hardware_reviewed': False}, 'magnetic': {'design_library': '/tmp/pytest-of-zhangzhao/pytest-82/test_rea...bled_backends': ['tool_only_physics', 'full_arm_physics'], 'geometry_variants': {'wide': {'bar_width_m': 0.12}}}}, ...}
+library = {'boards': {'arc': {'templates': [{'design': {'pieces': [...], 'schema': 'jimu_builder_scene_v1', 'unknown_original_fi..._00', 'inventory': {'square': 8, 'triangle': 4}, ...}], 'title': 'grid_3x3'}}, 'schema': 'rm75_jimu_design_library_v1'}
+proposal = {'board_id': 'grid_3x3', 'explanation': 'All explicit parents are included', 'selected_roles': ['wall_0_0', 'wall_0_1', 'wall_0_2'], 'template_id': 'grid_3x3_00', ...}
+
+    def test_real_service_worker_generated_preview(tmp_path,profile,library,proposal):
+        path=tmp_path/'profile.json';atomic_json(path,profile)
+        service=WorkcellService(ROOT,path,allow_real=False)
+        data=compile_selection(library,proposal,board_id='grid_3x3')
+        try:
+            ident=service.submit(dict(task='magnetic',mode='preview',parameters={'design':data['design'],'generation_proof':data['proof']}))['job_id']
+            service._thread.join(timeout=10);assert not service.active
+            job=service.job(ident)
+>           assert job['status']=='command_completed_unverified'
+E           AssertionError: assert 'failed' == 'command_completed_unverified'
+E             - command_completed_unverified
+E             + failed
+
+tests/iteration/test_runtime_wiring.py:40: AssertionError
+__________ test_real_service_worker_interactive_surrogate_not_physics __________
+
+tmp_path = PosixPath('/tmp/pytest-of-zhangzhao/pytest-82/test_real_service_worker_inter0')
+profile = {'hardware': {'hardware_reviewed': False}, 'magnetic': {'design_library': '/tmp/pytest-of-zhangzhao/pytest-82/test_rea...bled_backends': ['tool_only_physics', 'full_arm_physics'], 'geometry_variants': {'wide': {'bar_width_m': 0.12}}}}, ...}
+
+    def test_real_service_worker_interactive_surrogate_not_physics(tmp_path,profile):
+        path=tmp_path/'profile.json';atomic_json(path,profile)
+        service=WorkcellService(ROOT,path,allow_real=False)
+        try:
+            spec=dict(task='pusht',mode='sim',parameters=dict(initial_pose=[.35,0,0],goal_pose=[.36,0,0],
+                      simulation_backend='surrogate',run_until_goal=True,maximum_push_length_m=.05))
+            ident=service.submit(spec)['job_id'];service._thread.join(timeout=15)
+            assert not service.active
+            result=service.job(ident)['result']
+>           assert result['status']=='succeeded' and result['verification']=='surrogate_pose'
+E           AssertionError: assert ('failed' == 'succeeded'
+E             - succeeded
+E             + failed)
+
+tests/iteration/test_runtime_wiring.py:91: AssertionError
+=============================== warnings summary ===============================
+tests/three_scene/test_rrtrack_plate_material.py::test_actual_plate_uniform_pbr_expands_color_without_changing_mesh
+  /home/zhangzhao/Desktop/rm75-manipulation/tests/three_scene/test_rrtrack_plate_material.py:13: DeprecationWarning: `Scene.dump(concatenate=True)` DEPRECATED FOR REMOVAL APRIL 2025: replace with `Scene.to_geometry()`
+    mesh = trimesh.load(path, force='scene').dump(concatenate=True)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/iteration/test_runtime_wiring.py::test_real_service_worker_sequence_preview
+FAILED tests/iteration/test_runtime_wiring.py::test_real_service_worker_generated_preview
+FAILED tests/iteration/test_runtime_wiring.py::test_real_service_worker_interactive_surrogate_not_physics
+3 failed, 1763 passed, 1 skipped, 1 warning in 41.96s

@@ -1,0 +1,134 @@
+[
+  {
+    "kind": "body",
+    "attributes": {
+      "actors": {
+        "type": "dict",
+        "keys": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis",
+          "__maniskill_workspace_table__",
+          "virtual_side_wall",
+          "virtual_top_wall"
+        ]
+      },
+      "expected": {
+        "type": "dict",
+        "keys": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis",
+          "__maniskill_workspace_table__",
+          "virtual_side_wall",
+          "virtual_top_wall"
+        ]
+      },
+      "asset_bindings": {
+        "type": "dict",
+        "keys": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis",
+          "__maniskill_workspace_table__",
+          "virtual_side_wall",
+          "virtual_top_wall"
+        ]
+      },
+      "robot_port": {
+        "type": "SapienRobotStatePort"
+      },
+      "_attachment_drive": {
+        "type": "NoneType"
+      },
+      "_baseline_applied": {
+        "type": "bool"
+      }
+    }
+  },
+  {
+    "kind": "port",
+    "args": [
+      {
+        "type": "dict",
+        "keys": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis",
+          "__maniskill_workspace_table__",
+          "virtual_side_wall",
+          "virtual_top_wall"
+        ]
+      }
+    ],
+    "kwargs": {
+      "asset_bindings": {
+        "type": "dict",
+        "keys": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis",
+          "__maniskill_workspace_table__",
+          "virtual_side_wall",
+          "virtual_top_wall"
+        ]
+      },
+      "set_attachment": {
+        "type": "method",
+        "bound_owner": "NativeBodyMirror"
+      },
+      "read_attachment": {
+        "type": "method",
+        "bound_owner": "NativeBodyMirror"
+      },
+      "apply_physics": {
+        "type": "method",
+        "bound_owner": "NativeBodyMirror"
+      },
+      "read_physics": {
+        "type": "method",
+        "bound_owner": "NativeBodyMirror"
+      },
+      "make_pose": {
+        "type": "function",
+        "bound_owner": "NoneType"
+      },
+      "robot_port": {
+        "type": "SapienRobotStatePort"
+      },
+      "body_port": {
+        "type": "NativeBodyMirror"
+      }
+    }
+  }
+]

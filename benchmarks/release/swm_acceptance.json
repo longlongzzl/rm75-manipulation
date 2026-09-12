@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "3902082",
+    "commit": "191e7e8",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Nonzero native targets transferred to an independent no-step CPU mirror. Three free-space hold ticks quantified private/source differences without qualifying contact replay. Ordinary worker_31 persists dynamic acknowledgements for fresh sequences 2/3/4; pen closure still rejects forbidden contact."
+    "note": "Native full-scene closure veto wired into ordinary worker_34 before primary close. Serial full regression 1767 passed; first overlapping run rejected by existing workcell lock. No six-checkpoint pen success or qualified contact replay."
   },
   "runs": {
     "m0_targeted": {
@@ -13646,6 +13646,56 @@
       "tested_commit": "3902082",
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "output": "benchmarks/release/evidence/pen_closure/dynamic_ack_full_pytest.txt"
+    },
+    "m1_private_closure_33": {
+      "domain": "experimental_CPU_PhysX",
+      "steps": 100,
+      "objects": 12,
+      "primary_unchanged": true,
+      "private_closed": true,
+      "first_nonzero_table_contact": {
+        "control_tick": 6,
+        "substep": 2,
+        "force_z_n": 7.34268294295705
+      },
+      "model_qualified": false,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_33/summary.json"
+    },
+    "m1_formal_closure_veto_34": {
+      "domain": "native_worker_CPU_PhysX",
+      "tested_commit": "191e7e8",
+      "status": "predicted_forbidden_contact_rejected_before_primary_close",
+      "private_substeps": 26,
+      "control_tick": 6,
+      "substep": 1,
+      "min_separation_m": -1.4223158359527588e-05,
+      "primary_unchanged": true,
+      "private_closed": true,
+      "formal_cleanup_all_true": true,
+      "skill_verified": false,
+      "model_qualified": false,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_34/"
+    },
+    "m1_closure_veto_targeted": {
+      "passed": 10,
+      "seconds": 0.04
+    },
+    "m1_closure_full_lock_contention": {
+      "passed": 1763,
+      "failed": 3,
+      "skipped": 1,
+      "seconds": 41.96,
+      "cause": "Tests overlapped native worker; original workcell lock rejected three child workers",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_34/full_tests_lock_contention.log"
+    },
+    "m1_closure_full_serial": {
+      "tested_commit": "191e7e8",
+      "passed": 1767,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 42.56,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_34/full_tests_serial.log"
     }
   },
   "gates": {
@@ -13969,5 +14019,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Bind original passive-joint closure/contact geometry into candidate planning and stage audit; uniform nominal closed angle is insufficient. Preserve table collisions and strict final idle checks, then finish formal pen grasp/place and cancellation evidence."
+  "next_actual_action": "Feed bounded native closure rejection into original joint grasp/place candidate selection, preserve full audit and obtain actual pen six-checkpoint closure before expanding tasks."
 }

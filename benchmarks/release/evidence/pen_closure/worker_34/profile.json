@@ -1,0 +1,102 @@
+{
+  "hardware": {
+    "endpoint_error_rad": 0.025,
+    "hardware_reviewed": false,
+    "ip": "REPLACE_WITH_CONFIRMED_ROBOT_IP",
+    "joint_lower_rad": null,
+    "joint_upper_rad": null,
+    "max_following_error_rad": 0.12,
+    "max_start_gap_rad": 0.05,
+    "max_stream_lateness_s": 0.08,
+    "port": 8080,
+    "qualification_id": "",
+    "stream_hz": 30
+  },
+  "magnetic": {
+    "fixed_scene": null,
+    "integration_qualified": false,
+    "native_args": [],
+    "post_verification": null,
+    "python": null,
+    "render_mode": "human"
+  },
+  "notes": "示例尺寸只用于 CPU 模型。现场实测标定和机械臂限位必须另行填写，禁止自动启用。",
+  "pickplace": {
+    "fixed_scene": "/home/zhangzhao/Desktop/rm75-manipulation/assets/test_scenes/current_table.json",
+    "fixed_scene_format": "native_world",
+    "integration_qualified": false,
+    "native_args": [
+      "--curobo-torch-extensions-dir",
+      "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/curobo_native_extensions",
+      "--camera-extrinsic-opencv-path",
+      "/home/zhangzhao/Desktop/rm75-manipulation/assets/calibration/camera_extrinsic_opencv.npy"
+    ],
+    "object_names": [
+      "lvmukuai",
+      "carriot",
+      "shuazi",
+      "hongshupian",
+      "gluestick",
+      "bi",
+      "tennis"
+    ],
+    "post_verification": null,
+    "python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
+    "render_mode": "none",
+    "simulation_contact_policy": "transport_world_checked_compatibility",
+    "tennis_ik_review": "standard-reference"
+  },
+  "pusht": {
+    "integration_qualified": false,
+    "model": {
+      "bar_height_m": 0.03,
+      "bar_width_m": 0.1,
+      "obstacles": [],
+      "push_length_m": 0.012,
+      "speed_mps": 0.015,
+      "stem_height_m": 0.07,
+      "stem_width_m": 0.03,
+      "workspace": [
+        0.15,
+        0.65,
+        -0.3,
+        0.3
+      ]
+    },
+    "motion": {
+      "corridor_tolerance_m": 0.003,
+      "hover_clearance_m": 0.08,
+      "joint_accel_rad_s2": 0.5,
+      "joint_speed_rad_s": 0.25,
+      "object_centroid_z_m": null,
+      "object_height_m": null,
+      "orientation_tolerance_rad": 0.05,
+      "push_tcp_z_m": null,
+      "pusher_contact_links": [],
+      "static_collision_objects": [],
+      "tool_collision_geometry_verified": false,
+      "tool_frame": "gripper_tcp",
+      "tool_quaternion_wxyz": null
+    },
+    "observer": {
+      "T_base_camera": null,
+      "T_marker_object": null,
+      "kind": "realsense_apriltag",
+      "marker_id": 0,
+      "marker_size_m": null,
+      "max_exposure_s": 0.05,
+      "object_centroid_z_m": null,
+      "serial": "",
+      "timestamp_uncertainty_s": 0.02
+    },
+    "planner": {},
+    "python": null
+  },
+  "schema": "rm75_workcell_machine_v1",
+  "swm": {
+    "enabled": true,
+    "dependency_site_packages": [
+      "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages"
+    ]
+  }
+}
