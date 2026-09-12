@@ -130,6 +130,10 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     bridge = _compile_pen_task(initial, registration.evidence, fixed, run_dir.name)
     sink = NativePrimaryExecutor(primary, emit=events.emit)
     sink.closure_target = "bi"
+    from .native_closure import reject_predicted_closure
+    sink.closure_prediction = lambda: reject_predicted_closure(
+        primary, registration, robot.urdf_path, target="bi", emit=events.emit,
+        output=output / "closure_prediction.json")
     coordinator = PickPlaceCoordinator(backend, sink)
     auditor = CuroboNativeStageAuditor(backend)
 

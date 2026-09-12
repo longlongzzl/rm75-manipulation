@@ -27,6 +27,7 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         self.emit = emit or (lambda **row: None)
         self.last_settle_evidence = None
         self.closure_target = None
+        self.closure_prediction = None
 
     def _read(self):
         self.primary.stop.check()
@@ -82,6 +83,9 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
             raise SceneInvalid('Primary gripper requires a preceding audited trajectory endpoint')
         if closed:
             self._after_control_step('gripper_close')
+            prediction = getattr(self, "closure_prediction", None)
+            if prediction is not None:
+                prediction()
         super().set_gripper(closed)
         self._settle('gripper_close' if closed else 'gripper_open')
 
