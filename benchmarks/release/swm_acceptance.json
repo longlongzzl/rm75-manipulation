@@ -412,6 +412,88 @@
         "tools/validate_swm_native_bootstrap.py": "046fe30b8c9ae46de3159c569c26473fabb4d66f20b0d8ced43966200a9363c2",
         "tests/swm/test_native_bootstrap_lifetime.py": "78d0352d11bf1ae3abe172f40b8ff5bf5e800159ef8a920927189c074fdafc5e"
       }
+    },
+    "native_planner_probe_01": {
+      "domain": "native_primary_and_shared_planner_initialization",
+      "tested_commit": "6a4ccbe",
+      "process_exit_code": 1,
+      "status": "failed",
+      "error": "ValueError: Error loading cuda.core backend: No module named 'cuda'",
+      "actual_python": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
+      "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "captures": 2,
+      "object_ids": [
+        "bi",
+        "bitong",
+        "carriot",
+        "desk",
+        "gluestick",
+        "hongshupian",
+        "lvmukuai",
+        "shuazi",
+        "tennis"
+      ],
+      "primary_closed": true,
+      "planner_initialized": false,
+      "planner_joint_names": null,
+      "planner_scene_qualified": false,
+      "planner_executed": false,
+      "motion_executed": false,
+      "hardware_connected": false,
+      "raw_artifacts": "runtime_data/swm_release_pen_planner_probe_01",
+      "sha256": {
+        "result.json": "4e967cd5d3523c5bb1eff9f4a051558ed8f3ca496dd2ae9516ba4b4e4d9873b7",
+        "input.json": "e7cdc7a7b3d61a2646b856cc447d2f67d6a135b46ecc2230489a0c5e0c2024a6",
+        "stdout.log": "96233dfa43b6542c812f8179411b05db2cb9504f9dc62efd2ce7663e579a2859"
+      },
+      "backend_log_lines": [],
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10 tools/validate_swm_native_bootstrap.py --profile runtime_data/three_scene/review_a35328c_20260909/tennis_standard_reference_v1/machine.json --output runtime_data/swm_release_pen_planner_probe_01 --probe-planner"
+    },
+    "native_planner_probe_02": {
+      "domain": "native_primary_and_shared_planner_initialization",
+      "tested_commit": "6a4ccbe",
+      "process_exit_code": 0,
+      "status": "initialized_and_read",
+      "error": null,
+      "actual_python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
+      "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "captures": 2,
+      "object_ids": [
+        "bi",
+        "bitong",
+        "carriot",
+        "desk",
+        "gluestick",
+        "hongshupian",
+        "lvmukuai",
+        "shuazi",
+        "tennis"
+      ],
+      "primary_closed": true,
+      "planner_initialized": true,
+      "planner_joint_names": [
+        "joint_1",
+        "joint_2",
+        "joint_3",
+        "joint_4",
+        "joint_5",
+        "joint_6",
+        "joint_7"
+      ],
+      "planner_scene_qualified": false,
+      "planner_executed": false,
+      "motion_executed": false,
+      "hardware_connected": false,
+      "raw_artifacts": "runtime_data/swm_release_pen_planner_probe_02",
+      "sha256": {
+        "result.json": "57bc6e2b38a59507ae17b9258749db08f1a2896ec29b3bc23aed299e5f105aa2",
+        "input.json": "b310962783f38b91a7b9ded1d20dfd794b29eda4dd339868e931f4c89a0a2a54",
+        "stdout.log": "ee85d2378118aa934c1bbacfc158be73998410fa857c8de3df3194e25d4b9c8d"
+      },
+      "backend_log_lines": [],
+      "supplementary_python_path": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",
+      "path_policy": "append only; curobo2 environment takes precedence; no copies/installations",
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -c 'import sys,runpy; sys.path.append(\"/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages\"); sys.argv=[\"tools/validate_swm_native_bootstrap.py\",\"--profile\",\"runtime_data/three_scene/review_a35328c_20260909/tennis_standard_reference_v1/machine.json\",\"--output\",\"runtime_data/swm_release_pen_planner_probe_02\",\"--probe-planner\"]; runpy.run_path(sys.argv[0],run_name=\"__main__\")'"
     }
   },
   "gates": {
@@ -429,7 +511,9 @@
         "runs.m0_targeted",
         "runs.m1_bootstrap_lifetime",
         "runs.native_bootstrap_01",
-        "runs.native_bootstrap_02"
+        "runs.native_bootstrap_02",
+        "runs.native_planner_probe_01",
+        "runs.native_planner_probe_02"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -450,7 +534,8 @@
       "evidence": [
         "managed_context_contract_only_not_native_qualification",
         "runs.m1_stage_targeted: software fixtures only, NOT native qualification",
-        "runs.native_bootstrap_02: initialization only, not atomic worker qualification"
+        "runs.native_bootstrap_02: initialization only, not atomic worker qualification",
+        "runs.native_planner_probe_02: coexisting initialization only; collision scene NOT synchronized"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -635,7 +720,7 @@
   },
   "current_layer_status": {
     "kernel": "SOFTWARE_REGRESSION_PASSED_1540",
-    "native_wiring": "IN_PROGRESS_NOT_INSTALLED",
+    "native_wiring": "PRIMARY_AND_PLANNER_COINITIALIZED_WORKER_NOT_INSTALLED",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
     "actual_simulation": "NATIVE_INITIALIZATION_READBACK_ONLY_NO_ATOMIC_EXECUTION",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
@@ -650,6 +735,12 @@
     "tool": "tools/validate_swm_native_bootstrap.py",
     "successful_environment": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
     "failed_environment": "/home/zhangzhao/anaconda3/bin/python (exit 139)",
-    "remaining": "Complete primary/mirror/worker wiring; actual grasp/place checkpoints and native audit; investigate alternate interpreter teardown crash"
+    "remaining": "Install trusted same-process environment in worker; complete actual scene, jaw/holding, mirrors and six checkpoints",
+    "same_process_planner_environment": {
+      "python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
+      "append_site_packages": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",
+      "evidence": "runs.native_planner_probe_02",
+      "worker_installed": false
+    }
   }
 }

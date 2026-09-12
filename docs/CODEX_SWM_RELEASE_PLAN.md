@@ -55,3 +55,11 @@ G0 可移植验证与 S1 管理上下文已提交 `9c38a5449fbe02b4eb35481cb99f4
 - bootstrap_02：改用原机器配置指定的 foundationpose310 Python 3.10，同一冻结输入，读回 9 个对象、7 个机械臂关节及 6 个夹爪关节的 q/qdot，两次采集区间独立，env.close 返回且进程退出 0。仅初始化通过，不是 SWM 原子闭环通过。
 
 本轮 SWM 139 passed（0.93 s）；未重跑全量，上一条全量 1540 passed 保留原提交归属。下一步固定原 profile 的 Python 环境，接正式 worker 的私有规划镜像、独立 jaw/holding 观测及原 builder；补齐 virtual table/walls 等完整障碍身份，再运行笔 grasp/place 六个新检查点。不能把此次 2 次无动作读回当作 6 个技能检查点，也不能因进程正常退出宣称所有原生资源泄漏检查完成。
+
+## 当前 M1 同进程环境接线证据：6a4ccbe
+
+主仿真独立成功的 Python 3.10 环境无法初始化共享 cuRobo2：实际探测报缺少 cuda.core，退出 1，主环境正常关闭。未移除后端版本检查，也未安装新包。
+
+已验证现有同 ABI 组合：`envs/curobo2/bin/python`（3.11.15、torch 2.11.0+cu128、cuda-core 0.7.0），在 sys.path 末尾追加现有 `envs/realman/lib/python3.11/site-packages` 提供 ManiSkill/SAPIEN。原 9 对象主仿真与共享 Curobo2Backend 在同一进程初始化成功，实际返回 joint_1..joint_7，主环境 close 返回且退出 0。未复制、修改或安装环境。准确启动命令与证据摘要在验收表。
+
+下一正式接线应沿用这个已测组合，而非继续假定 Python 3.10 单环境足够：将依赖来源固定到可信 worker 初始化；补真实全场景规划镜像、TCP/夹爪/持物证据以及 virtual infrastructure，再运行 grasp/place 六检查点。此次规划器仅空场景初始化，无路径/动作；不能记为碰撞场景已同步或原子 worker 通过。本轮没有新增软件测试数量或重跑全量。

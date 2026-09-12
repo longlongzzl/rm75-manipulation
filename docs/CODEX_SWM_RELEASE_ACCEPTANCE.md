@@ -60,3 +60,12 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python
 - `runtime_data/swm_release_pen_bootstrap_02`：原 profile 指定 Python 3.10，原 9 对象桌面，13 个活动关节 q/qdot，两次独立原生读回；主环境 close 返回、进程退出 0。仅初始化证据成立。
 
 内核：本轮定向回归通过；原生接线：主世界初始化可用但工厂仍未完整安装；模型推理：未运行；实际仿真：已运行初始化与状态读取，未运行原子任务；硬件：未授权、未连接。独立 holding、virtual infrastructure 完整观测、私有镜像、实际 cuRobo 阶段审计和六检查点仍缺证据，G0/G1 不标整体通过。两个运行摘要、时间区间和原始文件哈希见唯一机器验收表。
+
+## M1 / 主仿真与共享规划器同进程探测
+
+提交 `6a4ccbe`，新增验证工具的 `--probe-planner`。两次同输入运行均经网络隔离、180 秒上限、串行执行：
+
+- `swm_release_pen_planner_probe_01`：foundationpose310 Python 3.10 原主仿真成功，cuRobo2 因缺少 `cuda.core` 失败，退出 1；失败保留。
+- `swm_release_pen_planner_probe_02`：现有 curobo2 Python 3.11，加同 ABI realman site-packages 作为末尾补充路径，主仿真和共享 cuRobo2 初始化成功、7 关节身份一致、退出 0。
+
+只证明现有依赖可以同进程共存，未安装新包。规划器初始化使用空场景，明确 `planner_scene_qualified=false`、`planner_executed=false`、`motion_executed=false`。未把空场景当作可执行碰撞场景；原 9 对象仍未完整接进规划器。模型推理与硬件本轮均未运行，正式 worker 和六检查点仍待完成。最新全量测试仍归属 `7f51ceb`，本轮没有另做全量回归。
