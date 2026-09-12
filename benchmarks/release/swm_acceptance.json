@@ -61,6 +61,24 @@
       "tested_commit": "82be044",
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/test_native_bootstrap_lifetime.py tests/swm/test_runtime_context.py -q",
       "note": "Constructor/environment stubs only; no actual initialization or asset writes. Tests preceded commit on identical bytes."
+    },
+    "recording_wiring_targeted": {
+      "passed": 25,
+      "failed": 0,
+      "seconds": 0.6,
+      "domain": "software_fixture",
+      "tested_commit": "7f51ceb",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/test_recording_execution_wiring.py tests/swm/test_native_feedback.py tests/swm/test_measurement_storage.py tests/swm/test_native_phases.py -q"
+    },
+    "recording_wiring_full": {
+      "passed": 1540,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 71.32,
+      "domain": "software_regression",
+      "tested_commit": "7f51ceb",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "note": "Full tests started before commit and ended after commit on identical unchanged implementation bytes."
     }
   },
   "gates": {
@@ -197,9 +215,18 @@
       "command": null,
       "numerator": 0,
       "denominator": null,
-      "evidence": [],
+      "evidence": [
+        "runs.recording_wiring_targeted: recording lifecycle software wiring, NOT native physics acceptance"
+      ],
       "blocker": null,
-      "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
+      "remaining": [
+        "Actual feedback FK and calibrated clock mapping",
+        "Measured query latency and production after-exposure sampling",
+        "Original T two actual primary-world actions and frozen held-out prediction",
+        "Posterior version consumed by next native plan",
+        "Bound historical action identity storage"
+      ]
     },
     "G7": {
       "status": "NOT_RUN",
@@ -264,14 +291,15 @@
       "numerator": 0,
       "denominator": null,
       "evidence": [
-        "runs.m1_stage_full"
+        "runs.m1_stage_full",
+        "runs.recording_wiring_full"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
     }
   },
   "current_layer_status": {
-    "kernel": "SOFTWARE_REGRESSION_PASSED",
+    "kernel": "SOFTWARE_REGRESSION_PASSED_1540",
     "native_wiring": "IN_PROGRESS_NOT_INSTALLED",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
     "actual_simulation": "NOT_RUN_THIS_INCREMENT",

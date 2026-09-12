@@ -38,3 +38,9 @@ G0 可移植验证与 S1 管理上下文已提交 `9c38a5449fbe02b4eb35481cb99f4
 已复用原 create_demo 的初始化边界，并在 gym.make 返回后、reset/demo 构造之前注册清理；完整 actor 注册表缺失、初始化异常、取消、意外 live runtime、抓前持续冻结或额外世界创建均拒绝。仅软件替身测试：初始化生命周期加 managed runtime 共 18 passed（0.07 s）；未运行本轮全量。
 
 原生启动尚未执行：源码确认原 resolve_planning_artifact_paths 会在 sim URDF 同目录生成 planning URDF/SRDF，当前新入口仍继承该行为。已询问是否修正为本次运行目录，未收到明确确认。不得运行 tools/validate_swm_native_bootstrap.py 来绕过这项待修复风险；该脚本仍为未提交草稿。无活跃仿真进程，不将待确认解释为真实运行中的等待。下一原生步骤仍为先消除此写入风险，再运行冻结输入初始化、真实读回并接正式 worker。
+
+## S5 独立推进：7f51ceb
+
+在原生启动输出路径确认待回期间，已接通另一明确断点：SharedPrimitiveExecutor 在 push 命令前调用 recorder.begin_action，完成反馈核验后将同一录制句柄放入 ExecutionReceipt；runtime 在后测曝光后调用原 transition observer。严格缺覆盖检查保留，命令异常/后测失败/未安装 observer 都释放对应动作窗口；完成窗口裁剪、无动作时有界滚动缓存，活动窗口满额仍拒绝丢弃起点。
+
+定向 25 passed；正式全量 1540 passed、1 个既有警告（71.32 s）。均为软件回归，不是实际推送或 PhysX 成绩。尚未接实际关节反馈 FK/时钟映射、查询延迟、原 T 两动作辨识及 N+1 的下一规划消费；历史 action-id 集合长期有界策略仍需收口。M1 主线仍优先，初始化输出路径风险未绕过，未启动原生验证草稿。
