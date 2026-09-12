@@ -83,3 +83,30 @@ def test_silent_native_setter_failure_is_rejected():
     source.joints[0].damping = 0.
     private.joints[0].set_drive_properties = lambda *args: None
     with pytest.raises(SceneInvalid): align_articulation_drive_policy(source, private)
+
+
+def test_namespaced_native_source_uses_owned_wrapper_handles_not_suffixes():
+    source, private = Robot(), Robot()
+    canonical = {joint.name: joint for joint in source.joints}
+    for joint in source.joints:
+        joint.name = 'scene-0-RM75_' + joint.name
+    source.joints.reverse()
+    with pytest.raises(SceneInvalid): align_articulation_drive_policy(source, private)
+    expected = align_articulation_drive_policy(source, private, source_joints=canonical)
+    assert expected == articulation_drive_policy(private)
+    assert all(joint.name.startswith('scene-0-RM75_') for joint in source.joints)
+
+
+@pytest.mark.parametrize('bad', ['foreign', 'duplicate', 'missing', 'extra', 'native_duplicate'])
+def test_canonical_map_must_cover_exact_owned_native_inventory(bad):
+    source, private = Robot(), Robot()
+    mapping = {joint.name: joint for joint in source.joints}
+    if bad == 'foreign': mapping[ARM_JOINTS[0]] = Robot().joints[0]
+    if bad == 'duplicate': mapping[ARM_JOINTS[0]] = source.joints[1]
+    if bad == 'missing': mapping.pop(ARM_JOINTS[0])
+    if bad == 'extra': mapping['extra'] = source.joints[0]
+    if bad == 'native_duplicate': source.joints[0] = source.joints[1]
+    before = articulation_drive_policy(private)
+    with pytest.raises(SceneInvalid):
+        align_articulation_drive_policy(source, private, source_joints=mapping)
+    assert articulation_drive_policy(private) == before

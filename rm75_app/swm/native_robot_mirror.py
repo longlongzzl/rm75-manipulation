@@ -140,7 +140,14 @@ class SapienRobotStatePort:
             self._constraints.append(recipe.build(self._scene, source, private))
         if len(agent.robot._objs) != 1:
             raise SceneInvalid('One original native articulation required')
-        drives = align_articulation_drive_policy(agent.robot._objs[0], self._robot)
+        source_joints = {}
+        for name in ARM_JOINTS + GRIPPER_JOINTS:
+            wrapper = agent.robot.joints_map.get(name)
+            if wrapper is None or len(wrapper._objs) != 1:
+                raise SceneInvalid('One native source joint per canonical wrapper required')
+            source_joints[name] = wrapper._objs[0]
+        drives = align_articulation_drive_policy(agent.robot._objs[0], self._robot,
+            source_joints=source_joints)
         self._physics_state = dict(shapes=expected_shapes, constraints=source_constraints,
             articulation_drive=drives)
         return self.read_physics_policy()
@@ -235,14 +242,11 @@ class SapienRobotStatePort:
         self._scene = None
 
 
-def articulation_drive_policy(robot):
+def articulation_drive_policy(robot, *, joint_map=None):
     """Read native static drive policy, not controller configs or command targets."""
-    joints = list(robot.get_active_joints())
-    names = [joint.name for joint in joints]
-    if len(names) != 13 or set(names) != set(ARM_JOINTS + GRIPPER_JOINTS):
-        raise SceneInvalid('Complete independent thirteen-joint drive inventory required')
+    joints = _native_drive_joints(robot, joint_map)
     rows = {}
-    for joint in joints:
+    for name, joint in joints.items():
         limits = _array(joint.limits)
         armature = _array(joint.armature).reshape(-1)
         values = {key: float(getattr(joint, key)) for key in
@@ -255,7 +259,7 @@ def articulation_drive_policy(robot):
                 or np.any(armature < 0)
                 or any(not np.isfinite(value) or value < 0 for value in values.values())):
             raise SceneInvalid('Invalid native joint drive policy: ' + joint.name)
-        rows[joint.name] = dict(type=joint.type, dof=1, limits=limits.tolist(),
+        rows[name] = dict(type=joint.type, dof=1, limits=limits.tolist(),
             armature=armature.tolist(), drive_mode=joint.drive_mode, **values)
     position = robot.solver_position_iterations
     velocity = robot.solver_velocity_iterations
@@ -268,7 +272,7 @@ def articulation_drive_policy(robot):
         solver_velocity_iterations=velocity, sleep_threshold=sleep)
 
 
-def align_articulation_drive_policy(source, private):
+def align_articulation_drive_policy(source, private, *, source_joints=None):
     """Copy to an independent mirror only; never change source q/qdot or drives.
 
     This does not copy body inertia/gravity policy, controller state, target
@@ -278,9 +282,9 @@ def align_articulation_drive_policy(source, private):
 
     if source is private:
         raise SceneInvalid('Drive policy destination must be an independent articulation')
-    expected = articulation_drive_policy(source)
+    expected = articulation_drive_policy(source, joint_map=source_joints)
     before = articulation_drive_policy(private)
-    source_joints = {joint.name: joint for joint in source.get_active_joints()}
+    source_joints = _native_drive_joints(source, source_joints)
     joints = {joint.name: joint for joint in private.get_active_joints()}
     for name, joint in joints.items():
         if joint is source_joints[name]:
@@ -298,3 +302,20 @@ def align_articulation_drive_policy(source, private):
         joint.set_armature(np.asarray(row['armature'], dtype=np.float32))
     compare_native_state(expected, articulation_drive_policy(private), 'articulation_drive_policy')
     return expected
+
+
+def _native_drive_joints(robot, joint_map=None):
+    """Canonical names must resolve bijectively to this articulation's handles.
+
+    ManiSkill namespaces native joint names. Its trusted wrapper map supplies
+    canonical identities; suffix stripping or position-based matching cannot.
+    """
+    native = list(robot.get_active_joints())
+    joints = ({joint.name: joint for joint in native}
+        if joint_map is None else dict(joint_map))
+    required = set(ARM_JOINTS + GRIPPER_JOINTS)
+    if (len(native) != 13 or len({id(joint) for joint in native}) != 13
+            or set(joints) != required or len({id(joint) for joint in joints.values()}) != 13
+            or any(not any(joint is member for member in native) for joint in joints.values())):
+        raise SceneInvalid('Complete independent thirteen-joint drive inventory required')
+    return joints
