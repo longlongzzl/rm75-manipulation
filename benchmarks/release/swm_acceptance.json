@@ -1837,6 +1837,49 @@
       "log": "runtime_data/swm_release_measured_gripper_full.log",
       "log_sha256": "e88369a6bd90fd129ae728c5b35f15ed53727263bb8ea4bb03c6482a7f384359",
       "note": "Regression crossed the commit boundary on identical implementation bytes; no hardware access."
+    },
+    "native_robot_mirror_01": {
+      "tested_commit": "d1232a3",
+      "domain": "actual_native_CPU_PhysX_initialization_attempt",
+      "exit_code": 134,
+      "status": "FAILED_INITIALIZATION_AND_CLEANUP",
+      "error": "RuntimeError: failed to get system: no system with name [render] is added to scene",
+      "input": {
+        "source": "runtime_data/swm_release_pen_robot_sync_01/result.json",
+        "source_sha256": "45726c092ae0739aca809345182fc39b546e5e59b596f5e77b71860f374e40f2",
+        "urdf": "assets/robot_models/RM75_gripper/RM75-B/urdf/RM75-B.urdf",
+        "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+        "source_kind": "saved_actual_primary_observation",
+        "fresh_primary_capture": false,
+        "hardware_connected": false,
+        "physics_step_executed": false
+      },
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 120s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_robot_mirror_01/run.py",
+      "artifact_directory": "runtime_data/swm_release_robot_mirror_01",
+      "sha256": {
+        "run.py": "052e269a468d1cd26d67fa22ba682bfa261db053dbd8c8a6f2397e1be53c4d94",
+        "input.json": "8b69212c4e02d4d3971042327513ef40ce1d6ed578e7337e5bc5360a7c753e55",
+        "result.json": "3cf623f24c117be16c7e0a1888583323ef8438a74f0ed6aa3ac012830f30e698",
+        "stdout.log": "47f47b221b91936df26238778a2a929a26c32081cf677e2b147b8eaab99ebf75"
+      },
+      "fresh_primary_capture": false,
+      "motion_executed": false,
+      "atomic_worker_qualified": false,
+      "hardware_connected": false,
+      "failure_reason": "URDF visual components require a render system absent from the new physics-only scene; native teardown also aborts.",
+      "next_action": "Correct private constructor to support original URDF visual dependencies or use a verified collision-only builder; preserve original collision geometry and retry. New-code bug fix awaiting confirmation under editing constraints."
+    },
+    "native_robot_mirror_full": {
+      "tested_commit": "d1232a3",
+      "domain": "software_regression",
+      "passed": 1570,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 44.99,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "log": "runtime_data/swm_release_robot_mirror_full.log",
+      "log_sha256": "fac73ef02f81e262bf57399c2bf4b6fa12a6012632ab9b686fb779b14fcf2879",
+      "note": "Same implementation bytes throughout test/commit; passing software fixtures do not qualify the failed native mirror."
     }
   },
   "gates": {
@@ -1881,7 +1924,8 @@
         "runs.native_planner_probe_02: coexisting initialization only; collision scene NOT synchronized",
         "runs.native_scene_sync_01: failed before GPU scene application",
         "runs.native_scene_sync_02: 12 native GPU obstacles matched; NOT atomic execution qualification",
-        "runs.native_robot_sync_01: initial measured robot geometry aligned; NOT atomic worker or held attachment qualification"
+        "runs.native_robot_sync_01: initial measured robot geometry aligned; NOT atomic worker or held attachment qualification",
+        "runs.native_robot_mirror_01: native constructor and cleanup FAILED; no new skill checkpoints"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -2060,17 +2104,18 @@
         "runs.m1_stage_full",
         "runs.recording_wiring_full",
         "runs.se3_full",
-        "runs.measured_gripper_full"
+        "runs.measured_gripper_full",
+        "runs.native_robot_mirror_full"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
     }
   },
   "current_layer_status": {
-    "kernel": "SOFTWARE_REGRESSION_PASSED_1560",
-    "native_wiring": "INITIAL_NATIVE_ROBOT_AND_GRIPPER_GEOMETRY_ALIGNED_ATTACHMENT_AND_WORKER_NOT_QUALIFIED",
+    "kernel": "SOFTWARE_REGRESSION_PASSED_1570",
+    "native_wiring": "MEASURED_ROBOT_PORTS_WIRED_PRIVATE_NATIVE_MIRROR_CONSTRUCTOR_FAILED",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "PRIMARY_COLLISION_ROBOT_CONTACT_READBACK_RUN_NO_ATOMIC_EXECUTION",
+    "actual_simulation": "PRIVATE_ROBOT_INITIALIZATION_FAILED_EXIT_134_NO_ATOMIC_EXECUTION",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
   "native_bootstrap": {
@@ -2083,7 +2128,7 @@
     "tool": "tools/validate_swm_native_bootstrap.py",
     "successful_environment": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
     "failed_environment": "/home/zhangzhao/anaconda3/bin/python (exit 139)",
-    "remaining": "Full SWM manifest and private mirror including measured jaw and attachment; trusted formal worker grasp/place six fresh checkpoints",
+    "remaining": "Correct private robot URDF/render constructor and cleanup, then full SWM manifest/private actor mirror and trusted worker grasp/place six fresh checkpoints",
     "same_process_planner_environment": {
       "python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
       "append_site_packages": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",
