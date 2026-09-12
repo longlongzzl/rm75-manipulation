@@ -29,7 +29,7 @@ def test_import_manifest_is_complete_and_self_consistent():
     assert manifest['source_head']=='36798efbd12814841607951c9af470b309b34fd3'
 
 
-def test_installed_files_match_manifest_hashes_and_old_repo_unchanged():
+def test_installed_files_match_manifest_hashes_without_external_checkout():
     manifest=json.loads(MANIFEST_PATH.read_text())
     installed=json.loads((DEST/'IMPORT_MANIFEST.json').read_text())
     assert installed['old_repository_modified'] is False
@@ -41,10 +41,8 @@ def test_installed_files_match_manifest_hashes_and_old_repo_unchanged():
         else:
             assert _sha256(data)==row['source_sha256']==row['installed_sha256'], row['source_path']
     assert sum(1 for row in installed['files'] if row['relocations'])==1
-    # The old worktree still matches the frozen status hash recorded at import.
-    raw=subprocess.run(['git','-C','/home/zhangzhao/Desktop/lerobot','status','--porcelain=v1','-z'],
-        capture_output=True).stdout
-    assert _sha256(raw)==manifest['source_status_sha256']
+    from tools.import_jimu_scene_bundle import verify_installed
+    verify_installed(manifest,DEST)
 
 
 def test_imported_scenes_are_valid_designs_with_relocated_tag2_manifest():
@@ -58,10 +56,6 @@ def test_imported_scenes_are_valid_designs_with_relocated_tag2_manifest():
     ref=tag2_manifest['sam6d_fixed_scene_result_file']
     assert ref=='full_scene_pose_results_tip_up.json'
     assert (tasks/'tag2_arc_base'/ref).is_file()
-    # The old repository copy is untouched: its path still points outside the dir.
-    old=json.loads(Path('/home/zhangzhao/Desktop/lerobot/Beta_demo-codex-v0.9/jimu_tasks'
-        '/tag2_arc_base/manifest.json').read_text())
-    assert old['sam6d_fixed_scene_result_file'].startswith('../../jimu_exported_scenes/')
 
 
 def test_collect_rejects_symlink_escape_and_hash_mismatch(tmp_path):

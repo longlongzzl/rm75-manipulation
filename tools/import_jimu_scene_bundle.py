@@ -31,7 +31,7 @@ def _old_repo_state(source_repo: Path) -> tuple[str, str]:
     head=subprocess.run(['git','-C',str(source_repo),'rev-parse','HEAD'],
         capture_output=True,text=True,check=True).stdout.strip()
     status=subprocess.run(['git','-C',str(source_repo),'status','--porcelain=v1','-z'],
-        capture_output=True).stdout
+        capture_output=True,check=True).stdout
     return head,_sha256(status)
 
 
@@ -91,11 +91,69 @@ def _collect(manifest: dict, source_repo: Path, destination_root: Path, *, verif
     return records
 
 
+def verify_installed(manifest, destination_root):
+    """Verify imported bytes/provenance without accessing the old checkout."""
+    installed=json.loads((destination_root/MANIFEST_NAME).read_text())
+    for key in ('schema','source_head','source_status_sha256','destination_root'):
+        if installed.get(key)!=manifest.get(key):
+            raise ValueError(f'Installed provenance mismatch on {key}')
+    rows=installed.get('files',[])
+    expected={entry['path']:entry for entry in manifest['files']}
+    if len(expected)!=len(manifest['files']) or len(rows)!=len(expected):
+        raise ValueError('Installed file count mismatch')
+    if len({row['source_path'] for row in rows})!=len(rows) or {row['source_path'] for row in rows}!=set(expected):
+        raise ValueError('Installed source identity mismatch')
+    for row in rows:
+        entry=expected[row['source_path']]
+        relocations=manifest.get('relocations',{}).get(entry['path'],[])
+        if (row['source_sha256']!=entry['sha256'] or row['destination']!=entry.get('destination',entry['path'])
+                or row['relocations']!=relocations):
+            raise ValueError('Installed relocation/provenance mismatch')
+        path=_resolve_inside(destination_root,row['destination'])
+        if path.is_symlink() or not path.is_file():
+            raise ValueError('Installed file missing or symbolic')
+        data=path.read_bytes()
+        if _sha256(data)!=row['installed_sha256']:
+            raise ValueError('Installed bytes corrupted')
+        for relocation in reversed(relocations):
+            if relocation['kind']!='json_text':raise ValueError('Unsupported relocation')
+            data=data.replace(relocation['to'].encode(),relocation['from'].encode())
+        if _sha256(data)!=entry['sha256']:
+            raise ValueError('Installed bytes do not reproduce original source digest')
+    return installed
+
+
+def _source_closure(manifest, source_repo):
+    result={}
+    for entry in manifest['files']:
+        path=_resolve_inside(source_repo,entry['path'])
+        if path.is_symlink() or not path.is_file():raise ValueError('Source closure is not regular')
+        result[entry['path']]=_sha256(path.read_bytes())
+    return result
+
+
+def import_checked(manifest, source_repo, destination_root):
+    """Guard both Git state and closure bytes, including exceptional collection."""
+    before=_old_repo_state(source_repo)
+    if before!=(manifest['source_head'],manifest['source_status_sha256']):
+        raise ValueError('Source state differs from approved import manifest')
+    closure=_source_closure(manifest,source_repo)
+    try:
+        records=_collect(manifest,source_repo,destination_root,verify_only=False)
+    finally:
+        if _old_repo_state(source_repo)!=before or _source_closure(manifest,source_repo)!=closure:
+            raise ValueError('Source changed during collection; no provenance may be recorded')
+    return dict(schema=SCHEMA,source_repo=str(source_repo),source_head=before[0],source_status_sha256=before[1],
+        destination_root=manifest['destination_root'],files=records,old_repository_modified=False,write_attempted=True)
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--manifest',required=True,type=Path)
     parser.add_argument('--target-repo',default=str(ROOT),type=Path)
-    parser.add_argument('--verify-only',action='store_true')
+    modes=parser.add_mutually_exclusive_group()
+    modes.add_argument('--verify-only',action='store_true')
+    modes.add_argument('--audit-source',action='store_true')
     args=parser.parse_args()
     manifest=_load_manifest(args.manifest.resolve())
     target=args.target_repo.resolve()
@@ -103,33 +161,26 @@ def main():
         raise ValueError('--target-repo must be this repository')
     source_repo=Path(manifest['source_repo']).resolve()
     destination_root=_resolve_inside(target,manifest['destination_root'])
-    head,status=_old_repo_state(source_repo)
-    if head!=manifest['source_head']:
-        raise ValueError(f'Old repository HEAD changed: {head} != {manifest["source_head"]}')
-    if status!=manifest['source_status_sha256']:
-        raise ValueError(f'Old repository worktree status changed: {status} != {manifest["source_status_sha256"]}')
-    records=_collect(manifest,source_repo,destination_root,verify_only=args.verify_only)
-    head_after,status_after=_old_repo_state(source_repo)
-    if (head_after,status_after)!=(head,status):
-        raise ValueError('Old repository state changed during collection; nothing was safe to record')
-    record=dict(schema=SCHEMA,source_repo=str(source_repo),source_head=head,source_status_sha256=status,
-        destination_root=manifest['destination_root'],files=records,
-        old_repository_modified=False,write_attempted=not args.verify_only)
-    if not args.verify_only:
-        (destination_root/MANIFEST_NAME).write_text(json.dumps(record,indent=2,ensure_ascii=False)+'\n')
-        print(f'Imported {len(records)} files into {destination_root}',file=sys.stderr)
-    else:
-        existing=json.loads((destination_root/MANIFEST_NAME).read_text())
-        for field in ('source_head','source_status_sha256','destination_root'):
-            if existing.get(field)!=record[field]:
-                raise ValueError(f'Installed provenance mismatch on {field}')
-        for row,installed in zip(records,existing['files']):
-            if {k:row[k] for k in ('source_path','destination','source_sha256','installed_sha256')}!=\
-               {k:installed[k] for k in ('source_path','destination','source_sha256','installed_sha256')}:
-                raise ValueError(f'Installed provenance mismatch for {row["source_path"]}')
-        print(f'Verified {len(records)} files in {destination_root}',file=sys.stderr)
-    print(json.dumps(dict(files=len(records),verify_only=args.verify_only,
-        source_head=head,status_sha256=status)))
+    if args.audit_source:
+        head,status=_old_repo_state(source_repo)
+        differences=[]
+        for entry in manifest['files']:
+            path=_resolve_inside(source_repo,entry['path'])
+            actual=_sha256(path.read_bytes()) if path.is_file() and not path.is_symlink() else None
+            if actual!=entry['sha256']:
+                differences.append(dict(path=entry['path'],expected_sha256=entry['sha256'],actual_sha256=actual))
+        print(json.dumps(dict(schema='rm75.jimu_source_audit_v1',source_head=head,
+            head_matches_import=head==manifest['source_head'],status_sha256=status,
+            status_matches_import=status==manifest['source_status_sha256'],file_differences=differences)))
+        return
+    if args.verify_only:
+        record=verify_installed(manifest,destination_root)
+        print(json.dumps(dict(files=len(record['files']),verify_only=True,source_accessed=False)))
+        return
+    record=import_checked(manifest,source_repo,destination_root)
+    (destination_root/MANIFEST_NAME).write_text(json.dumps(record,indent=2,ensure_ascii=False)+'\n')
+    print(json.dumps(dict(files=len(record['files']),verify_only=False,source_head=record['source_head'])))
+
 
 
 if __name__=='__main__':

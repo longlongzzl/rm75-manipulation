@@ -7,12 +7,52 @@ There is NO fallback to a legacy macro after SWM execution/measurement fails.
 """
 from __future__ import annotations
 import copy
+from contextlib import AbstractContextManager, ExitStack
+from dataclasses import dataclass
 import json
 from pathlib import Path
 from .scene import SceneWorldModel
 from .skills import SKILLS, AtomicSkillRuntime
 
 _FACTORIES={}
+
+
+@dataclass(frozen=True)
+class RuntimeSession:
+    runtime: AtomicSkillRuntime
+    requests: object
+    goals_check: object
+
+    def __post_init__(self):
+        if not isinstance(self.runtime,AtomicSkillRuntime) or not callable(self.goals_check):
+            raise TypeError('Session requires atomic runtime and independent goal verification')
+
+
+class RuntimeContext(AbstractContextManager):
+    """Factory-owned resource lifetime, including partially failed initialization.
+
+    The trusted builder immediately registers each acquired resource with the
+    supplied ExitStack. The worker owns this context; the web parent does not.
+    Neither entry nor cleanup grants permission to connect real hardware.
+    """
+    def __init__(self, build):
+        self.build=build
+        self.resources=ExitStack()
+        self.entered=False
+
+    def __enter__(self):
+        if self.entered:raise RuntimeError('Runtime context cannot be reused')
+        self.entered=True
+        try:
+            session=self.build(self.resources)
+            if not isinstance(session,RuntimeSession):raise TypeError('Factory must build RuntimeSession')
+            return session
+        except BaseException:
+            self.resources.close()
+            raise
+
+    def __exit__(self, *exc):
+        return self.resources.__exit__(*exc)
 
 
 def register_runtime_factory(task, factory):
@@ -48,10 +88,18 @@ def dispatch_if_enabled(spec,profile,app_root,run_dir,stop,events):
     task=spec['task']
     if task not in _FACTORIES:
         raise RuntimeError('SWM_ATOMIC_ADAPTER_REQUIRED: retain the legacy mode for existing demos; do not claim checkpointed execution')
-    runtime,requests,goals_check=_FACTORIES[task](spec,profile,app_root,run_dir,stop,events)
-    if not isinstance(runtime,AtomicSkillRuntime) or not callable(goals_check):
-        raise TypeError('Factory must supply checkpoint runtime, typed requests and independent task-goal verifier')
     if spec['mode']=='preview':raise RuntimeError('SWM preview uses compile-only APIs, not an execution factory')
+    context=_FACTORIES[task](spec,profile,app_root,run_dir,stop,events)
+    if not isinstance(context,AbstractContextManager):
+        raise TypeError('Native factory must return a managed runtime context')
+    with context as session:
+        if not isinstance(session,RuntimeSession):raise TypeError('Managed factory must yield RuntimeSession')
+        return _dispatch_session(spec,session,stop)
+
+
+def _dispatch_session(spec,session,stop):
+    runtime,requests,goals_check=session.runtime,session.requests,session.goals_check
+    task=spec['task']
     expected='real' if spec['mode']=='real' else 'physics'
     if runtime.world.domain!=expected:raise PermissionError('SWM execution domain is not the requested task mode')
     outcomes=[]
