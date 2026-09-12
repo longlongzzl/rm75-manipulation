@@ -94,6 +94,7 @@ class CuroboScenePort:
         self.holding = 'empty'
         self.applied_snapshot_id = None
         self.physics = {}
+        self.native_acknowledgement = None
 
     def apply_idle_snapshot(self, snapshot):
         from rm75_app.planning.contracts import JointConfiguration
@@ -101,6 +102,13 @@ class CuroboScenePort:
         self.applied_snapshot_id = None
         if snapshot['robot']['idle'] is not True:
             raise SceneInvalid("Cannot update a moving native scene")
+        self.native_acknowledgement = None
+        native = snapshot.get('observation_domain') != 'fixture'
+        if native and snapshot['robot']['holding'] != 'empty':
+            raise SceneInvalid('Native attached geometry readback is not installed')
+        if native:
+            from .native_robot_mirror import ARM_JOINTS, GRIPPER_JOINTS, measured_joint_vectors
+            measured_joint_vectors(snapshot['robot'], ARM_JOINTS + GRIPPER_JOINTS)
         scene = planning_scene(snapshot)
         if self.holding != 'empty':
             self.backend.detach_object(self.holding)
@@ -110,10 +118,21 @@ class CuroboScenePort:
         # Require the real planner to exist before acknowledging this transaction.
         self.backend._ensure_planner()
         robot = snapshot['robot']
+        if native:
+            from .native_planning_scene import read_curobo_collision_ack
+            from .native_robot import synchronize_robot_geometry
+            collision_ack = read_curobo_collision_ack(self.backend, scene)
+            robot_ack = synchronize_robot_geometry(self.backend, robot)
+            self.native_acknowledgement = dict(
+                snapshot_id=snapshot['snapshot_id'], collision=collision_ack,
+                robot=robot_ack, attachment_qualified=False)
+        elif 'gripper_positions' in robot:
+            self.backend.set_measured_gripper_collision_state(robot['gripper_positions'])
         holding = robot['holding']
         if holding != 'empty':
             q = JointConfiguration(tuple(robot['joint_names']), robot['positions'])
-            self.backend.set_gripper_collision_state(True)
+            if 'gripper_positions' not in robot:
+                self.backend.set_gripper_collision_state(True)  # Explicit fixture compatibility only.
             self.backend.attach_object(holding, q)
             self.holding = holding
             relative = np.linalg.inv(transform(robot['T_world_tcp'])) @ transform(
@@ -130,12 +149,12 @@ class SapienScenePort:
     """Update an existing PRIVATE simulator mirror, never the observation world.
 
     The native mirror's attachment and material managers must apply changes and
-    return their actual state. Missing managers fail closed. No robot qpos is
-    assigned here, and no held object is teleported as a separate free actor.
+    return their actual state. Native snapshots require an owned robot port;
+    no held object is teleported as a separate free actor.
     """
 
     def __init__(self, actors, *, asset_bindings, set_attachment, read_attachment,
-                 apply_physics, read_physics, make_pose):
+                 apply_physics, read_physics, make_pose, robot_port=None):
         self.actors = dict(actors)
         self.assets = dict(asset_bindings)
         self.set_attachment = set_attachment
@@ -143,6 +162,8 @@ class SapienScenePort:
         self.apply_physics = apply_physics
         self.read_physics = read_physics
         self.make_pose = make_pose
+        self.robot_port = robot_port
+        self.native_acknowledgement = None
         self.applied_snapshot_id = None
 
     def apply_idle_snapshot(self, snapshot):
@@ -152,6 +173,23 @@ class SapienScenePort:
         if snapshot['robot']['idle'] is not True or set(self.actors) != set(snapshot['objects']):
             raise SceneInvalid("Idle complete simulator actor coverage is required")
         robot = snapshot['robot']
+        self.native_acknowledgement = None
+        native = snapshot.get('observation_domain') != 'fixture'
+        if native:
+            from .native_robot_mirror import SapienRobotStatePort
+            if not isinstance(self.robot_port, SapienRobotStatePort):
+                raise SceneInvalid('Native simulator requires its private robot state port')
+            for actor in self.actors.values():
+                entities = getattr(actor, '_objs', [actor])
+                if not entities or any(getattr(entity, 'scene', None) != self.robot_port._scene for entity in entities):
+                    raise SceneInvalid('Simulator actors do not belong to the private robot world')
+            for obj in snapshot['objects'].values():
+                measured = obj['measured']
+                for key in ('linear_velocity', 'angular_velocity'):
+                    velocity = np.asarray(measured.get(key), dtype=float)
+                    if velocity.shape != (3,) or not np.isfinite(velocity).all():
+                        raise SceneInvalid('Native object velocity observation is required')
+            self.native_acknowledgement = self.robot_port.apply_idle_state(robot)
         holding = robot['holding']
         attachment = None
         for oid, obj in snapshot['objects'].items():
@@ -171,6 +209,14 @@ class SapienScenePort:
             actor = self.actors[oid]
             expected = transform(obj['measured']['T_world_object'])
             actor.set_pose(self.make_pose(expected))
+            if native:
+                from .native_bootstrap import _array
+                for key in ('linear_velocity', 'angular_velocity'):
+                    expected_velocity = np.asarray(obj['measured'][key], dtype=float)
+                    getattr(actor, 'set_' + key)(expected_velocity)
+                    actual_velocity = _array(getattr(actor, key)).reshape(-1)
+                    if actual_velocity.shape != (3,) or not np.allclose(actual_velocity, expected_velocity, atol=1e-6, rtol=0):
+                        raise SceneInvalid('Simulator object velocity readback differs from observation')
             actual = _pose_matrix(actor.pose)
             if actual is None:
                 raise SceneInvalid("Simulator pose readback is unavailable")
