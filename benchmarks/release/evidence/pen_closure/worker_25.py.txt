@@ -1,0 +1,19 @@
+"""Read-only private native drive acknowledgement capture around formal worker."""
+import json,sys
+from pathlib import Path
+ROOT=Path('/home/zhangzhao/Desktop/rm75-manipulation')
+sys.path.insert(0,str(ROOT))
+from rm75_app.swm.native_robot_mirror import SapienRobotStatePort
+original=SapienRobotStatePort.read_physics_policy
+count=0
+def capture(self):
+    global count
+    result=original(self)
+    count+=1
+    if count>32: raise RuntimeError('Bounded native acknowledgement capture exhausted')
+    with (ROOT/'runtime_data/swm_release_pen_worker_25/drive_readbacks.jsonl').open('a') as stream:
+        stream.write(json.dumps(dict(read=count,acknowledgement=result))+'\n')
+    return result
+SapienRobotStatePort.read_physics_policy=capture
+from rm75_app.workcell.worker import main
+raise SystemExit(main())

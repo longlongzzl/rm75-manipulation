@@ -513,3 +513,25 @@ worker_20 对低速闭合补足有界观察：接近最多 200 步，首次接�
 - 硬件：未授权、未连接、未操作；所有测试/仿真均网络隔离、重任务串行。
 
 保持 PARTIAL_DELIVERY，六检查点和笔完整原子闭环未通过。先修复当前初始化回归，再继续闭链/候选分析和实测闭合几何重审；不能把镜像参数组件或新的测试计数作为交付完成。代码与证据仅本地提交，未推送。
+
+## M1 / 原生驱动身份回归已修复，七次真实参数读回
+
+提交 `880ef4c`。worker_23 修正只读诊断输出通道后，取得实际源关节名 `scene-0-RM75_joint_1` 等；ManiSkill 包装器保留 canonical 名称，私有 URDF 使用 canonical 名称。源 native active 清单实际为完整 13 关节，并非缺关节。此前 worker_21 的初始化拒绝源于错误要求两侧 native 名称字符串相同。
+
+现通过可信 agent.robot.joints_map 的原 native 句柄建立 canonical 映射：要求恰好覆盖 13 个实际 active native 对象、句柄唯一、全部属于同一源 articulation；禁止外来、重复、缺失/多余成员和源/目标对象别名。不剥离任意字符串前缀，不按枚举位置猜测对应关系，保留原类型/自由度/限位比较和所有参数读回。新增 namespace 与不同枚举顺序正例及拒绝映射负例。
+
+定向 **28 passed / 0.06 s**，全量 **1734 passed / 1 existing trimesh warning / 45.03 s**。普通正式 worker_24 已通过初始化及真实驱动参数复制/核对，恢复到原先的实际执行范围：approach/grasp 到位后，闭合第 6 个控制步检测左指触桌，竖向力 **5.585110664 N**，拒绝后续命令，无 lift/place。初始化、before_grasp、pre_execute_grasp 为不同快照，均保留完整 12 对象；技能检查点仍只有 2/6。
+
+完整参数确认没有被现有 checkpoint JSON 持久化，因此没有把“未报错”当作全部 native 参数证据。worker_25 使用只读仪器捕获 **7 次**实际 SapienRobotStatePort.read_physics_policy 返回值，全部 expected/actual digest 对齐，13 关节驱动参数读回一致。首份完整确认与每次摘要已归档，普通 worker_24 与仪器 worker_25 的证据级别分开。25 首次启动有路径拼写错误，退出 2、未启动 worker；错误日志保留，随后正确路径运行退出 1、停在同一触桌拒绝处。
+
+实际原生参数包括：七臂关节 stiffness=1000、damping=100、force_limit=20、friction 约 0.1；两主动夹爪根关节 stiffness=1000、damping=100、force_limit=5、friction=1；四被动关节 stiffness/damping/friction 均为 0、force_limit=1e10；全部 armature=0。原 articulation position/velocity iterations 为 15/1，sleep_threshold 约 0.005，均在私有 native 对象上读回。没有改变源世界、原阈值或主仿真配置。
+
+这仍不是完整动力学重放：body 惯量/重力政策、controller 状态、实际驱动目标时间线和步进尚待补齐；dynamics_stepping_qualified 与 drive_target_replay_qualified 明确保留 false。7 次确认不是 7 个技能检查点，也不证明笔已被稳定抓取。
+
+- 内核：全量通过，新增实际命名空间差异已纳入测试。
+- 原生接线：上轮初始化回归已修复，静态驱动镜像有真实读回；完整闭合与原子闭环仍未通过。
+- 模型推理：未运行。
+- 实际仿真：23 为只读身份诊断，24 为普通 worker 恢复验证，25 为只读参数仪器验证；都非同动作参数重放。24/25 执行到触桌拒绝，资源释放三项均为 true。
+- 硬件：未授权、未连接、未操作；测试及仿真均网络隔离，重任务串行。
+
+保留 21/22 的失败历史，保持 PARTIAL_DELIVERY 和缺适配器检查。下一步补齐闭链对照所需的剩余 native 物理状态、候选与实测闭合几何审核，继续取得笔的完整六检查点；不能把驱动镜像修复算作软件交付完成。代码和证据仅本地提交，未推送。

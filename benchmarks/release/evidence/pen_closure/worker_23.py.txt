@@ -1,0 +1,23 @@
+"""Read-only native/wrapper joint identity instrumentation; no fallback."""
+import sys,json
+from pathlib import Path
+ROOT=Path('/home/zhangzhao/Desktop/rm75-manipulation')
+sys.path.insert(0,str(ROOT))
+from rm75_app.swm.native_robot_mirror import SapienRobotStatePort
+original=SapienRobotStatePort.synchronize_primary_physics
+def diagnose(self,primary):
+    source=primary.env.unwrapped.agent.robot
+    native=list(source._objs[0].get_active_joints())
+    rows=[]
+    for name,wrapper in source.joints_map.items():
+        rows.append(dict(wrapper_name=name,native_names=[j.name for j in wrapper._objs],
+            dofs=[int(j.dof) for j in wrapper._objs],
+            active_members=[any(j is active for active in native) for j in wrapper._objs]))
+    print(json.dumps(dict(kind='swm_native_drive_identity_probe',
+        native_active_names=[j.name for j in native],wrapper_map=rows,
+        private_active_names=[j.name for j in self._robot.get_active_joints()],
+        qualification=False,primary_mutated=False)),flush=True)
+    return original(self,primary)
+SapienRobotStatePort.synchronize_primary_physics=diagnose
+from rm75_app.workcell.worker import main
+raise SystemExit(main())

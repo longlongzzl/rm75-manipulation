@@ -1,0 +1,649 @@
+{
+  "read_count": 7,
+  "first": {
+    "source": "native_robot_shape_and_constraint_readback",
+    "link_count": 20,
+    "shape_count": 16,
+    "constraint_count": 2,
+    "constraints": [
+      {
+        "parent": "gripper_Left_2_Link",
+        "child": "gripper_Left_Support_Link",
+        "T_parent_constraint": [
+          [
+            1,
+            0,
+            0,
+            0.04039999842643738
+          ],
+          [
+            0,
+            1,
+            0,
+            0.03750000149011612
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "T_child_constraint": [
+          [
+            1,
+            0,
+            0,
+            -0.014100000262260437
+          ],
+          [
+            0,
+            1,
+            0,
+            0.017000000923871994
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "limits": {
+          "x": [
+            -1.1342744887950962e+38,
+            1.1342744887950962e+38,
+            0,
+            0
+          ],
+          "y": [
+            -1.1342744887950962e+38,
+            1.1342744887950962e+38,
+            0,
+            0
+          ],
+          "z": [
+            -1.1342744887950962e+38,
+            1.1342744887950962e+38,
+            0,
+            0
+          ],
+          "twist": [
+            -1.5707963705062866,
+            1.5707963705062866,
+            0,
+            0
+          ],
+          "cone": [
+            1.5707963705062866,
+            1.5707963705062866,
+            0,
+            0
+          ],
+          "pyramid": [
+            -1.5707963705062866,
+            1.5707963705062866,
+            -1.5707963705062866,
+            1.5707963705062866,
+            0,
+            0
+          ]
+        },
+        "properties": {
+          "x": [
+            0,
+            0,
+            3.4028234663852886e+38,
+            "force"
+          ],
+          "y": [
+            0,
+            0,
+            3.4028234663852886e+38,
+            "force"
+          ],
+          "z": [
+            0,
+            0,
+            3.4028234663852886e+38,
+            "force"
+          ],
+          "twist": [
+            0,
+            0,
+            3.4028234663852886e+38,
+            "force"
+          ],
+          "swing": [
+            0,
+            0,
+            3.4028234663852886e+38,
+            "force"
+          ],
+          "slerp": [
+            0,
+            0,
+            3.4028234663852886e+38,
+            "force"
+          ]
+        },
+        "target": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "velocity_target": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      {
+        "parent": "gripper_Right_2_Link",
+        "child": "gripper_Right_Support_Link",
+        "T_parent_constraint": [
+          [
+            1,
+            0,
+            0,
+            0.04039999842643738
+          ],
+          [
+            0,
+            1,
+            0,
+            0.03750000149011612
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "T_child_constraint": [
+          [
+            1,
+            0,
+            0,
+            -0.014100000262260437
+          ],
+          [
+            0,
+            1,
+            0,
+            0.017000000923871994
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "limits": {
+          "x": [
+            -1.1342744887950962e+38,
+            1.1342744887950962e+38,
+            0,
+            0
+          ],
+          "y": [
+            -1.1342744887950962e+38,
+            1.1342744887950962e+38,
+            0,
+            0
+          ],
+          "z": [
+            -1.1342744887950962e+38,
+            1.1342744887950962e+38,
+            0,
+            0
+          ],
+          "twist": [
+            -1.5707963705062866,
+            1.5707963705062866,
+            0,
+            0
+          ],
+          "cone": [
+            1.5707963705062866,
+            1.5707963705062866,
+            0,
+            0
+          ],
+          "pyramid": [
+            -1.5707963705062866,
+            1.5707963705062866,
+            -1.5707963705062866,
+            1.5707963705062866,
+            0,
+            0
+          ]
+        },
+        "properties": {
+          "x": [
+            0,
+            0,
+            3.4028234663852886e+38,
+            "force"
+          ],
+          "y": [
+            0,
+            0,
+            3.4028234663852886e+38,
+            "force"
+          ],
+          "z": [
+            0,
+            0,
+            3.4028234663852886e+38,
+            "force"
+          ],
+          "twist": [
+            0,
+            0,
+            3.4028234663852886e+38,
+            "force"
+          ],
+          "swing": [
+            0,
+            0,
+            3.4028234663852886e+38,
+            "force"
+          ],
+          "slerp": [
+            0,
+            0,
+            3.4028234663852886e+38,
+            "force"
+          ]
+        },
+        "target": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "velocity_target": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      }
+    ],
+    "expected_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+    "actual_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+    "collision_shapes_and_groups_aligned": true,
+    "gripper_constraint_configuration_aligned": true,
+    "articulation_drive_parameters_aligned": true,
+    "articulation_drive": {
+      "joints": {
+        "joint_1": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              -3.1059999465942383,
+              3.1059999465942383
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 1000,
+          "damping": 100,
+          "force_limit": 20,
+          "friction": 0.10000000149011612
+        },
+        "joint_2": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              -2.268899917602539,
+              2.268899917602539
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 1000,
+          "damping": 100,
+          "force_limit": 20,
+          "friction": 0.10000000149011612
+        },
+        "joint_3": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              -3.1059999465942383,
+              3.1059999465942383
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 1000,
+          "damping": 100,
+          "force_limit": 20,
+          "friction": 0.10000000149011612
+        },
+        "joint_4": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              -2.3559999465942383,
+              2.3559999465942383
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 1000,
+          "damping": 100,
+          "force_limit": 20,
+          "friction": 0.10000000149011612
+        },
+        "joint_5": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              -3.1059999465942383,
+              3.1059999465942383
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 1000,
+          "damping": 100,
+          "force_limit": 20,
+          "friction": 0.10000000149011612
+        },
+        "joint_6": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              -2.2339999675750732,
+              2.2339999675750732
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 1000,
+          "damping": 100,
+          "force_limit": 20,
+          "friction": 0.10000000149011612
+        },
+        "joint_7": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              -6.28000020980835,
+              6.28000020980835
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 1000,
+          "damping": 100,
+          "force_limit": 20,
+          "friction": 0.10000000149011612
+        },
+        "gripper_Left_1_Joint": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              0,
+              0.9100000262260437
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 1000,
+          "damping": 100,
+          "force_limit": 5,
+          "friction": 1
+        },
+        "gripper_Left_2_Joint": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              0,
+              0.9100000262260437
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 0,
+          "damping": 0,
+          "force_limit": 10000000000,
+          "friction": 0
+        },
+        "gripper_Right_1_Joint": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              0,
+              0.9100000262260437
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 1000,
+          "damping": 100,
+          "force_limit": 5,
+          "friction": 1
+        },
+        "gripper_Right_2_Joint": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              0,
+              0.9100000262260437
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 0,
+          "damping": 0,
+          "force_limit": 10000000000,
+          "friction": 0
+        },
+        "gripper_Left_Support_Joint": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              0,
+              0.9100000262260437
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 0,
+          "damping": 0,
+          "force_limit": 10000000000,
+          "friction": 0
+        },
+        "gripper_Right_Support_Joint": {
+          "type": "revolute_unwrapped",
+          "dof": 1,
+          "limits": [
+            [
+              0,
+              0.9100000262260437
+            ]
+          ],
+          "armature": [
+            0
+          ],
+          "drive_mode": "force",
+          "stiffness": 0,
+          "damping": 0,
+          "force_limit": 10000000000,
+          "friction": 0
+        }
+      },
+      "solver_position_iterations": 15,
+      "solver_velocity_iterations": 1,
+      "sleep_threshold": 0.004999999888241291
+    },
+    "drive_target_replay_qualified": false,
+    "dynamics_stepping_qualified": false,
+    "attachment_qualified": false,
+    "hardware_qualified": false
+  },
+  "reads": [
+    {
+      "read": 1,
+      "actual_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "expected_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "aligned": true
+    },
+    {
+      "read": 2,
+      "actual_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "expected_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "aligned": true
+    },
+    {
+      "read": 3,
+      "actual_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "expected_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "aligned": true
+    },
+    {
+      "read": 4,
+      "actual_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "expected_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "aligned": true
+    },
+    {
+      "read": 5,
+      "actual_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "expected_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "aligned": true
+    },
+    {
+      "read": 6,
+      "actual_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "expected_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "aligned": true
+    },
+    {
+      "read": 7,
+      "actual_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "expected_digest": "0b6f903830117ee038c82dca7a80e5e248ecd13f3195cd83380a05f8e5a3428e",
+      "aligned": true
+    }
+  ]
+}
