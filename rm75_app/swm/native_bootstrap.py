@@ -9,6 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 import threading
 import time
+from pathlib import Path
+import shutil
 from unittest.mock import patch
 
 import numpy as np
@@ -71,7 +73,7 @@ class FrozenPrimaryWorld:
             self.env.close()
 
 
-def initialize_frozen_primary(resources, direct, base_args, contract, *, stop, events):
+def initialize_frozen_primary(resources, direct, base_args, contract, *, stop, events, artifact_directory):
     """Reuse the existing full-scene constructor under immediate resource ownership.
 
     Called only in a dedicated, network-isolated simulation worker. The caller
@@ -83,6 +85,10 @@ def initialize_frozen_primary(resources, direct, base_args, contract, *, stop, e
             or getattr(base_args, 'skip_foundationpose', False) is not True
             or getattr(base_args, 'foundationpose_refine_after_render', False)):
         raise PermissionError('Frozen primary initialization is offline simulation only')
+    artifact_directory = Path(artifact_directory).absolute()
+    # Refuse pre-existing paths (including symlinks), so constructor-generated
+    # artifacts cannot replace any user-owned or earlier-run file.
+    artifact_directory.mkdir(parents=False, exist_ok=False)
     source = contract['source']
     base = direct.targeted.base
     args, _ = base.make_cycle_args(base_args, source)
@@ -95,6 +101,14 @@ def initialize_frozen_primary(resources, direct, base_args, contract, *, stop, e
     args._targeted_place_state_cache = {'used_slots_by_target': {}}
     bridge = base.load_module_from_path('swm_original_pick_bridge', args.bridge_script_path)
     planner = base.load_module_from_path('swm_original_demo_setup', args.pick_script_path)
+    planning_urdf = artifact_directory / 'robot.planning.tiny.urdf'
+    planning_srdf = artifact_directory / 'robot.permissive.srdf'
+    source_srdf = getattr(args, 'srdf_path', None)
+    if source_srdf is not None:
+        shutil.copyfile(Path(source_srdf).expanduser().resolve(), planning_srdf)
+        args.srdf_path = str(planning_srdf)
+    def artifact_paths(sim_urdf_path, native_args):
+        return str(planning_urdf), str(planning_srdf)
     cache = {}
     owner = threading.get_ident()
     original_make = base.gym.make
@@ -122,7 +136,8 @@ def initialize_frozen_primary(resources, direct, base_args, contract, *, stop, e
         return env
 
     stop.check()
-    with patch.object(base.gym, 'make', acquire):
+    with patch.object(base.gym, 'make', acquire), patch.object(
+            planner, 'resolve_planning_artifact_paths', artifact_paths):
         env, demo = base.create_demo(args, bridge, planner, scene_capture_cache=cache)
     if len(acquired) != 1 or env is not acquired[0]:
         raise SceneInvalid('Original initialization returned another environment')
