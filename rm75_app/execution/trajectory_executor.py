@@ -147,6 +147,7 @@ class ManiSkillTrajectoryExecutor:
         gripper_steps: int = 20,
         max_path_points: int = 400,
         control_dt: float | None = None,
+        stop_check=None,
     ):
         self.demo = demo
         self.gripper_open = float(gripper_open)
@@ -156,6 +157,9 @@ class ManiSkillTrajectoryExecutor:
         if control_dt is not None and (not np.isfinite(control_dt) or control_dt <= 0):
             raise ValueError("control_dt must be finite and positive")
         self.control_dt = control_dt
+        if stop_check is not None and (not callable(stop_check) or control_dt is None):
+            raise ValueError('Per-step stop checking requires a callable and timed control')
+        self._stop_check = stop_check
         self._last_commanded_target: np.ndarray | None = None
         self._gripper_value = self.gripper_open
         self.last_contact_summary: list[dict[str, Any]] = []
@@ -192,6 +196,8 @@ class ManiSkillTrajectoryExecutor:
             else sample_timed_joint_path(trajectory, self.control_dt)
         )
         for position in positions:
+            if self._stop_check is not None:
+                self._stop_check()
             action = self.demo.compose_action(position, self._gripper_value)
             self.demo.step_and_render(action, tag=str(stage))
             self._last_commanded_target = np.asarray(position, dtype=np.float64).copy()
@@ -205,6 +211,8 @@ class ManiSkillTrajectoryExecutor:
         self._gripper_value = self.gripper_closed if closed else self.gripper_open
         if self.control_dt is not None and self._last_commanded_target is not None:
             for _ in range(self.gripper_steps):
+                if self._stop_check is not None:
+                    self._stop_check()
                 action = self.demo.compose_action(self._last_commanded_target, self._gripper_value)
                 self.demo.step_and_render(action, tag="gripper_close" if closed else "gripper_open")
             return

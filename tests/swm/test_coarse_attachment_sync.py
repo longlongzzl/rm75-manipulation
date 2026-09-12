@@ -23,7 +23,7 @@ class Parameters:
         self.link_spheres[config_idx]=values
 
 
-def setup(configs=1,slots=64):
+def make_backend(configs=1,slots=64):
     source=Parameters(); target=Parameters(configs,slots)
     backend=Curobo2Backend.__new__(Curobo2Backend)
     backend._planner=SimpleNamespace(joint_names=('q',),tool_frames=('tcp',),scene_collision_checker={})
@@ -36,7 +36,7 @@ def setup(configs=1,slots=64):
 
 
 def test_same_fit_refinement_and_detach_propagate_complete_slots():
-    backend,source,target,manager=setup()
+    backend,source,target,manager=make_backend()
     source.link_spheres[0,:4]=[[.01,.02,.03,.004]]*4
     backend._sync_coarse_attachment()
     np.testing.assert_array_equal(target.link_spheres,source.link_spheres)
@@ -55,7 +55,7 @@ def test_same_fit_refinement_and_detach_propagate_complete_slots():
 
 @pytest.mark.parametrize('fault',['configs','slots','joints','tool'])
 def test_incompatible_consumer_rejected_before_any_write(fault):
-    backend,source,target,_=setup(configs=2 if fault=='configs' else 1,slots=32 if fault=='slots' else 64)
+    backend,source,target,_=make_backend(configs=2 if fault=='configs' else 1,slots=32 if fault=='slots' else 64)
     if fault=='joints': backend._coarse_ik_solver.kinematics.joint_names=('wrong',)
     if fault=='tool': backend._coarse_ik_solver.kinematics.tool_frames=('wrong',)
     with pytest.raises(RuntimeError,match='differs'): backend._sync_coarse_attachment()
@@ -63,7 +63,7 @@ def test_incompatible_consumer_rejected_before_any_write(fault):
 
 
 def test_world_enable_updates_both_existing_consumers():
-    backend,_,_,_=setup()
+    backend,_,_,_=make_backend()
     def enable(collision,name,value): collision[name]=value
     backend._set_collision_obstacle_enabled=enable
     backend._set_obstacle_enabled('pen',False)
@@ -74,7 +74,7 @@ def test_world_enable_updates_both_existing_consumers():
 
 
 def test_world_pose_updates_both_existing_consumers():
-    backend,_,_,_=setup()
+    backend,_,_,_=make_backend()
     backend._update_collision_obstacle_pose=lambda collision,name,value:collision.update({name:value})
     backend._update_obstacle_pose('pen','measured_pose')
     assert backend._planner.scene_collision_checker['pen']=='measured_pose'
