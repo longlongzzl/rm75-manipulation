@@ -2212,6 +2212,13 @@ class Curobo2Backend:
             path = path[:, indices]
         return JointTrajectory(active_joint_names, path, dt=dt)
 
+    @staticmethod
+    def _positive_contact_indices(distance):
+        """Transfer all positive contacts once, preserving row-major order and > 0."""
+        if distance.ndim != 2:
+            raise ValueError("Contact distances require batch-by-feature layout")
+        return (distance > 0).nonzero().detach().cpu().tolist()
+
     def _collision_diagnostics_for_states(
         self,
         planner: Any,
@@ -2261,21 +2268,19 @@ class Curobo2Backend:
                         torch.ones(1, device=robot_spheres.device),
                         torch.zeros(1, device=robot_spheres.device),
                     )
-                    for batch_index in range(batch_size):
-                        sphere_indices = (distance[batch_index, 0] > 0).nonzero().reshape(-1)
-                        for sphere_index in sphere_indices.detach().cpu().tolist():
-                            penetration = float(distance[batch_index, 0, sphere_index].item())
-                            link_idx = int(sphere_to_link[int(sphere_index)].item())
-                            output.append(
-                                {
-                                    "collision_type": "world",
-                                    "state": state_name,
-                                    "candidate_index": batch_index,
-                                    "robot_link": idx_to_name.get(link_idx, f"link_index_{link_idx}"),
-                                    "world_object": obstacle_name,
-                                    "penetration_m": penetration,
-                                }
-                            )
+                    for batch_index, sphere_index in self._positive_contact_indices(distance[:, 0]):
+                        penetration = float(distance[batch_index, 0, sphere_index].item())
+                        link_idx = int(sphere_to_link[int(sphere_index)].item())
+                        output.append(
+                            {
+                                "collision_type": "world",
+                                "state": state_name,
+                                "candidate_index": batch_index,
+                                "robot_link": idx_to_name.get(link_idx, f"link_index_{link_idx}"),
+                                "world_object": obstacle_name,
+                                "penetration_m": penetration,
+                            }
+                        )
                     self._set_obstacle_enabled(obstacle_name, False)
 
                 self_cost = SelfCollisionCost(
@@ -2289,29 +2294,27 @@ class Curobo2Backend:
                 self_cost.forward(robot_spheres)
                 pair_distance = self_cost._pair_distance.reshape(batch_size, 1, -1)
                 collision_pairs = planner.kinematics.get_self_collision_config().collision_pairs
-                for batch_index in range(batch_size):
-                    pair_indices = (pair_distance[batch_index, 0] > 0).nonzero().reshape(-1)
-                    for pair_index in pair_indices.detach().cpu().tolist():
-                        sphere_pair = collision_pairs[int(pair_index)].to(dtype=torch.int32)
-                        link_pair = sphere_to_link[sphere_pair].detach().cpu().tolist()
-                        output.append(
-                            {
-                                "collision_type": "self",
-                                "state": state_name,
-                                "candidate_index": batch_index,
-                                "robot_link": idx_to_name.get(int(link_pair[0]), f"link_index_{link_pair[0]}"),
-                                "other_robot_link": idx_to_name.get(int(link_pair[1]), f"link_index_{link_pair[1]}"),
-                                "penetration_m": sphere_pair_penetration_m(
-                                    robot_spheres[batch_index,0,sphere_pair[0]].detach().cpu().numpy(),
-                                    robot_spheres[batch_index,0,sphere_pair[1]].detach().cpu().numpy(),
-                                    float(self_cost.config.self_collision_kin_config.sphere_padding[sphere_pair[0]].item()),
-                                    float(self_cost.config.self_collision_kin_config.sphere_padding[sphere_pair[1]].item()),
-                                ),
-                                "native_pair_distance_squared_m2": float(
-                                    pair_distance[batch_index, 0, int(pair_index)].item()
-                                ),
-                            }
-                        )
+                for batch_index, pair_index in self._positive_contact_indices(pair_distance[:, 0]):
+                    sphere_pair = collision_pairs[int(pair_index)].to(dtype=torch.int32)
+                    link_pair = sphere_to_link[sphere_pair].detach().cpu().tolist()
+                    output.append(
+                        {
+                            "collision_type": "self",
+                            "state": state_name,
+                            "candidate_index": batch_index,
+                            "robot_link": idx_to_name.get(int(link_pair[0]), f"link_index_{link_pair[0]}"),
+                            "other_robot_link": idx_to_name.get(int(link_pair[1]), f"link_index_{link_pair[1]}"),
+                            "penetration_m": sphere_pair_penetration_m(
+                                robot_spheres[batch_index,0,sphere_pair[0]].detach().cpu().numpy(),
+                                robot_spheres[batch_index,0,sphere_pair[1]].detach().cpu().numpy(),
+                                float(self_cost.config.self_collision_kin_config.sphere_padding[sphere_pair[0]].item()),
+                                float(self_cost.config.self_collision_kin_config.sphere_padding[sphere_pair[1]].item()),
+                            ),
+                            "native_pair_distance_squared_m2": float(
+                                pair_distance[batch_index, 0, int(pair_index)].item()
+                            ),
+                        }
+                    )
         finally:
             for name in scene_names:
                 self._set_obstacle_enabled(name, enabled_snapshot[name])
