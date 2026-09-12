@@ -79,12 +79,17 @@ class SharedPrimitiveExecutor:
     ``feedback`` must read the existing executor/simulator, never a command cache.
     """
 
-    def __init__(self, executor, feedback, *, clock, stop, endpoint_tolerance_rad=.08):
+    def __init__(self, executor, feedback, *, clock, stop, endpoint_tolerance_rad=.08,
+                 recorder=None, recording_context=None):
         if not 0 < endpoint_tolerance_rad <= .08:
             raise ValueError("Bounded measured endpoint tolerance required")
         self.executor, self.feedback = executor, feedback
         self.clock, self.stop = clock, stop
         self.tolerance = endpoint_tolerance_rad
+        if (recorder is None) != (recording_context is None) or (
+                recording_context is not None and not callable(recording_context)):
+            raise ValueError('Recorder and trusted measured support context must be installed together')
+        self.recorder, self.recording_context = recorder, recording_context
 
     def __call__(self, plan, audit):
         primitive = plan.payload
@@ -96,23 +101,33 @@ class SharedPrimitiveExecutor:
             raise SceneInvalid("Empty native primitive")
         started = self.clock()
         action_id = uuid.uuid4().hex
-        for stage in primitive.stages:
-            self.stop.check()
-            self.executor.execute_trajectory(stage.name, stage.trajectory)
-            if stage.gripper_after is not None:
+        handle = None
+        if self.recorder is not None and primitive.skill == 'push':
+            handle = self.recorder.begin_action(action_id, started,
+                **self.recording_context(primitive))
+        try:
+            for stage in primitive.stages:
                 self.stop.check()
-                self.executor.set_gripper(stage.gripper_after)
-        observed = self.feedback()
-        ended = self.clock()
-        final = primitive.stages[-1].trajectory
-        q = np.asarray(observed['positions'], dtype=float)
-        if (observed.get('source') != 'measured_feedback' or observed.get('idle') is not True
-                or not started <= observed['captured_at'] <= ended
-                or tuple(observed['joint_names']) != tuple(final.joint_names)
-                or q.shape != (7,) or not np.isfinite(q).all()
-                or np.max(np.abs(q - final.positions[-1])) > self.tolerance):
-            raise SceneInvalid("Native executor lacks fresh completed-motion feedback")
-        return ExecutionReceipt(True, started, ended, True, action_id)
+                self.executor.execute_trajectory(stage.name, stage.trajectory)
+                if stage.gripper_after is not None:
+                    self.stop.check()
+                    self.executor.set_gripper(stage.gripper_after)
+            observed = self.feedback()
+            ended = self.clock()
+            final = primitive.stages[-1].trajectory
+            q = np.asarray(observed['positions'], dtype=float)
+            if (observed.get('source') != 'measured_feedback' or observed.get('idle') is not True
+                    or not started <= observed['captured_at'] <= ended
+                    or tuple(observed['joint_names']) != tuple(final.joint_names)
+                    or q.shape != (7,) or not np.isfinite(q).all()
+                    or np.max(np.abs(q - final.positions[-1])) > self.tolerance):
+                raise SceneInvalid("Native executor lacks fresh completed-motion feedback")
+            receipt = ExecutionReceipt(True, started, ended, True, action_id)
+            return receipt if handle is None else self.recorder.finish_command(handle, receipt)
+        except BaseException:
+            if handle is not None:
+                handle.close()
+            raise
 
 
 class PickPlaceNativePhases:

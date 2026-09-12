@@ -148,7 +148,7 @@ class AtomicSkillRuntime:
     def run(self, request):
         if not isinstance(request, SkillRequest): raise TypeError('Expected typed SkillRequest')
         if not self._execution_lock.acquire(blocking=False): raise RuntimeError('Another atomic skill owns this runtime')
-        attempts = []; pending_plan = None
+        attempts = []; pending_plan = None; receipt = None
         try:
             for attempt in range(self.max_replans+1):
                 self.stop.check()
@@ -196,6 +196,8 @@ class AtomicSkillRuntime:
                         self.transition_observer(request,receipt,initial_snapshot=current,final_snapshot=post)
                     else:
                         self.sync.emit(kind='swm_physics_fit_skipped',reason='no_measured_tool_and_object_trace')
+                from .feedback import close_receipt_recording
+                close_receipt_recording(receipt)
                 actual = post['objects'][request.object_id]['measured']['T_world_object']
                 predicted_error = pose_error(actual, plan.expected_object_pose)
                 row.update(actual_action_id=receipt.actual_action_id,
@@ -240,6 +242,8 @@ class AtomicSkillRuntime:
             raise
         finally:
             try:
+                from .feedback import close_receipt_recording
+                close_receipt_recording(receipt)
                 discard=getattr(self.backend,'discard',None)
                 if pending_plan is not None and discard is not None:discard(pending_plan)
             finally:
