@@ -8039,6 +8039,108 @@
       "motion_executed": false,
       "atomic_worker_qualified": false,
       "skill_checkpoints": 0
+    },
+    "coarse_attachment_targeted_01": {
+      "passed": 51,
+      "errors": 7,
+      "seconds": 0.55,
+      "reason": "Helper named setup is invoked by pytest xunit module hook with module argument"
+    },
+    "coarse_attachment_full_01": {
+      "passed": 1672,
+      "errors": 7,
+      "warnings": 1,
+      "seconds": 45.34,
+      "domain": "software_regression",
+      "log": "runtime_data/swm_release_coarse_attachment_full_01.log",
+      "reason": "New test helper setup conflicts with pytest xunit hook; seven new test bodies did not run",
+      "source_sha256": {
+        "rm75_app/planning/backends/curobo2.py": "75fd00f765481a37602c48035fc7d0a54cca69a30e54b8ce73e4d7da023acd06",
+        "tests/swm/test_coarse_attachment_sync.py": "8b235bacf02abaf36b4df5378217ef63b27baf2ce6558392548218bb5e9341c8"
+      }
+    },
+    "native_pen_phase_10": {
+      "status": "GRASP_PLANNED_AND_NATIVE_AUDITED",
+      "domain": "actual_native_gpu_phase_planning_and_audit",
+      "passed": [
+        "collision",
+        "contact_policy",
+        "joint_limits",
+        "path_continuity",
+        "tool_state"
+      ],
+      "audit_summary": [
+        {
+          "stage": "approach",
+          "samples": 119,
+          "contacts": 0,
+          "escape": false,
+          "post_transition_contacts": [],
+          "post_transition_escape_verified_by": null,
+          "duplicate_world_proxy": null
+        },
+        {
+          "stage": "grasp",
+          "samples": 47,
+          "contacts": 0,
+          "escape": false,
+          "post_transition_contacts": [
+            {
+              "collision_type": "world",
+              "state": "path",
+              "candidate_index": 0,
+              "robot_link": "attached_object",
+              "world_object": "__maniskill_workspace_table__",
+              "penetration_m": 0.005503199994564056
+            }
+          ],
+          "post_transition_escape_verified_by": "lift",
+          "duplicate_world_proxy": {
+            "object_id": "bi",
+            "source": "native_GPU_attachment_link_spheres",
+            "active_spheres": 4,
+            "consumers": [
+              "trajectory",
+              "planner",
+              "ik",
+              "coarse_ik"
+            ],
+            "world_proxy_enabled": false,
+            "unrelated_obstacles_enabled": true
+          }
+        },
+        {
+          "stage": "lift",
+          "samples": 45,
+          "contacts": 6,
+          "escape": true,
+          "post_transition_contacts": [],
+          "post_transition_escape_verified_by": null,
+          "duplicate_world_proxy": {
+            "object_id": "bi",
+            "source": "native_GPU_attachment_link_spheres",
+            "active_spheres": 4,
+            "consumers": [
+              "trajectory",
+              "planner",
+              "ik",
+              "coarse_ik"
+            ],
+            "world_proxy_enabled": false,
+            "unrelated_obstacles_enabled": true
+          }
+        }
+      ],
+      "elapsed_s": 5.51633122000203,
+      "primary_closed": true,
+      "private_resources_closed": true,
+      "world_restored": true,
+      "motion_executed": false,
+      "atomic_worker_qualified": false,
+      "skill_checkpoints": 0,
+      "driver_sha256": "baa0c9f7e0b7ad8e258b326225f4fc6c4a7da6cc5e1b5e0b74ebe46b54b81e66",
+      "result_sha256": "d5143e6a3f6e8f8003cbd1087f3161c94073e288d5f363f78ae033a41f9de47e",
+      "result_path": "runtime_data/swm_release_pen_phase_driver_10/transaction_result.json"
     }
   },
   "gates": {

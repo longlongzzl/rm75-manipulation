@@ -419,6 +419,7 @@ class Curobo2Backend:
         self._apply_gripper_collision_state()
         if self._scene.objects:
             self._coarse_ik_solver.update_world(self._to_curobo_scene(self._scene))
+        self._sync_coarse_attachment()
         return self._coarse_ik_solver
 
     def begin_coarse_screening(self) -> None:
@@ -675,6 +676,8 @@ class Curobo2Backend:
         planner = self._ensure_planner()
         collision = planner.scene_collision_checker
         self._set_collision_obstacle_enabled(collision, name, enabled)
+        if self._coarse_ik_solver is not None:
+            self._set_collision_obstacle_enabled(self._coarse_ik_solver.scene_collision_checker, name, enabled)
 
     def _obstacle_enabled(self, name: str) -> bool:
         planner = self._ensure_planner()
@@ -682,8 +685,12 @@ class Curobo2Backend:
         return self._collision_obstacle_enabled(collision, name)
 
     def _update_obstacle_pose(self, name: str, pose: Any) -> None:
-        planner = self._ensure_planner()
-        collision = planner.scene_collision_checker
+        self._update_collision_obstacle_pose(self._ensure_planner().scene_collision_checker, name, pose)
+        if self._coarse_ik_solver is not None:
+            self._update_collision_obstacle_pose(self._coarse_ik_solver.scene_collision_checker, name, pose)
+
+    @staticmethod
+    def _update_collision_obstacle_pose(collision: Any, name: str, pose: Any) -> None:
         for store_name in ("cuboids", "meshes", "voxels"):
             store = getattr(collision.data, store_name, None)
             names = None if store is None else getattr(store, "names", None)
@@ -706,6 +713,33 @@ class Curobo2Backend:
         if manager is None:
             manager = planner.trajopt_solver.core.attachment_manager
         return manager
+
+    def _sync_coarse_attachment(self) -> None:
+        """Copy the original link-local fit to the existing coarse IK consumer.
+
+        Use the SDK sphere update API, including every inactive padding slot.
+        No new fitting, radius adjustment, or world-to-link approximation is
+        performed here. Incompatible model/config layouts fail explicitly.
+        """
+        if self._coarse_ik_solver is None or self._planner is None:
+            return
+        planner = self._planner
+        coarse = self._coarse_ik_solver.kinematics
+        if (tuple(coarse.joint_names) != tuple(planner.joint_names)
+                or tuple(coarse.tool_frames) != tuple(planner.tool_frames)):
+            raise RuntimeError('Coarse attachment robot/tool frame differs from original planner')
+        source = self._attachment_manager().kinematics_params
+        destination = coarse.config.kinematics_config
+        configs = int(source.link_spheres.shape[0])
+        if int(destination.link_spheres.shape[0]) != configs:
+            raise RuntimeError('Coarse attachment config count differs from original planner')
+        copies = [source.get_link_spheres('attached_object', config_idx=i).clone() for i in range(configs)]
+        for index, values in enumerate(copies):
+            target = destination.get_link_spheres('attached_object', config_idx=index)
+            if values.ndim != 2 or values.shape[-1] != 4 or tuple(values.shape) != tuple(target.shape):
+                raise RuntimeError('Coarse attachment slot layout differs from original fit')
+        for index, values in enumerate(copies):
+            destination.update_link_spheres('attached_object', values, config_idx=index)
 
     def read_attachment_collision_state(self):
         """Read actual attachment slots for every existing planning consumer.
@@ -3507,6 +3541,7 @@ class Curobo2Backend:
             }
             self._attachment_active = True
         self._set_obstacle_enabled(str(object_name), False)
+        self._sync_coarse_attachment()
 
     def update_attached_object_pose(
         self,
@@ -3568,6 +3603,7 @@ class Curobo2Backend:
             if released_pose is None:
                 self._set_obstacle_enabled(str(object_name), True)
         self.set_gripper_collision_state(False)
+        self._sync_coarse_attachment()
 
     def enable_object_collision(self, object_name: str) -> None:
         self._set_obstacle_enabled(str(object_name), True)

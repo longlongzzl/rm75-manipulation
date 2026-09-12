@@ -377,3 +377,15 @@ native_pen_phase_05 只读原 GPU/FK、拟合来源、米制笔网格和桌面�
 native_pen_phase_08/09 实際原生仍拒绝 GPU 消费者不一致。09 实际 cuda:0 槽读回：trajectory、planner、ik 各 4 个有效附着球体，coarse_ik 为 0；四端形状均为 [1,64,4]，故不是比较形状错误，而是宽批 IK 真实未附着。原宽批求解器在联合筛选中创建，原 attachment manager 更新未覆盖它。下一步应同步原拟合球体的 attach/update/detach 到这个既有消费者并逐端读回，不将 coarse_ik 从检查移除。
 
 内核：全量通过。原生接线：唯一重复副本排除合同和夹具修复已完成，真实审核仍被宽批 IK 附着缺失阻断，正式 worker 未装配。模型推理：未运行。实际仿真：2 次串行原生规划/审计诊断，无主环境动作，技能检查点 0，主环境和私有资源关闭。硬件：未授权、未连接。代码、驱动和结果摘要记录于 payload_duplicate_* / native_pen_phase_08/09；保持 PARTIAL_DELIVERY 和所有缺适配器检查，本轮代码及证据仅本地提交，未推送。
+
+## M1 / 宽批附着同步，首次原生 grasp 全阶段审核通过
+
+原 Curobo2Backend 通过 SDK get_link_spheres/update_link_spheres 将原 AttachmentManager 已计算的同一附着链接局部球体完整同步至现有 coarse_ik，包括全部负半径填充槽。attach、实测关系更新、detach 和宽批消费者创建覆盖该同步；配置数、槽布局、关节/工具帧不符则拒绝，不广播不兼容假设。原球体拟合、半径和尺度不变。对象启用状态和位姿更新同时传播到既有宽批碰撞世界，避免持物或释放后留下旧副本。
+
+native_pen_phase_10 退出 0，实际同一 GPU 原 grasp 原子通过 collision/contact_policy/joint_limits/path_continuity/tool_state 五类审核。approach 审核 119 个插值样本、grasp 47 个、lift 45 个；闭合后的 5.5032 mm 原拟合桌面重叠在紧接 lift 中经过 6 条接触记录的有界脱离审核，终点无接触。trajectory/planner/ik/coarse_ik 实際全部为同样的 4 个附着球体；只有笔的重复世界代理禁用，其余障碍启用。最终完整初始场景恢复读回，主环境和私有资源关闭。
+
+这证明实际 grasp 规划与阶段状态审核，不是执行抓取。5 段路径中的放置仍只是前瞻；未执行主环境动作，未发生独立持物观测，技能检查点仍为 0，正式 worker 未装配。
+
+新增测试辅助函数命名 setup 与 pytest xunit 模块钩子冲突，模块对象被当作 configs 参数，7 项测试初始化错误，测试体未运行。定向 51 passed / 7 errors / 0.55 s；全量 1672 passed / 7 errors / 1 existing warning / 45.34 s。该错误已报告，不能用原生审核通过冒充全量通过；下一步先重命名辅助函数并跑完这 7 项，再继续正式 worker 的共享执行器、实测反馈和六检查点装配。
+
+内核：有上述 7 项初始化错误。原生接线：宽批附着/世界同步取得真实证据，grasp 全阶段原生审核通过；正式 worker 未完成。模型推理：未运行。实际仿真：真实初始化及 GPU 求解/审核成功，无主环境动作。硬件：未授权、未连接。代码和原生驱动/结果摘要记录于 coarse_attachment_* / native_pen_phase_10。保持 PARTIAL_DELIVERY 和缺适配器检查，本轮实现及未修复测试与证据仅本地提交，未推送。
