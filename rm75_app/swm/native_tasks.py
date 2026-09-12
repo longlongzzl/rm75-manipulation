@@ -10,8 +10,8 @@ from dataclasses import replace
 import copy
 import numpy as np
 
-from .scene import SceneInvalid, transform, pose_error
-from .skills import SkillRequest
+from .scene import SceneInvalid, transform, pose_error, digest
+from .skills import SkillRequest, SkillVerification
 
 
 class CompiledNativeTask:
@@ -72,7 +72,7 @@ class CompiledNativeTask:
             reference, target = self._relative_targets.get(atom.atom_id, (None, self._base_target(atom)))
             yield SkillRequest('place', atom.object_id, target,
                 position_tolerance_m=position_tolerance, rotation_tolerance_rad=float(angle_tolerance),
-                target_reference_id=reference)
+                target_reference_id=reference, goal_predicate="native_relation")
         self._active = None
 
     def measured_native_scene(self, snapshot):
@@ -123,9 +123,50 @@ class CompiledNativeTask:
             'swm_object_pose': snapshot['objects'][obj.name]['measured']['T_world_object']}) for obj in task.scene.objects)
         return replace(task, scene=replace(task.scene, objects=objects, revision=snapshot['snapshot_id']))
 
-    def verify_goals(self, snapshot):
+    def _validate_atom(self, atom, snapshot, scene, *, request=None):
         from rm75_app.orchestration.multi_object_executor import AtomExecution, validate_target_pose
+        from rm75_app.execution.maniskill_task_bridge import validate_inside_relation
 
+        current = replace(atom, target_pose=self.T_world_base @ self._base_target(atom, snapshot))
+        actual = scene.objects[atom.object_id].pose
+        if atom.success.relation.strip().lower() == 'inside':
+            support = scene.objects.get(atom.support_object_id)
+            if support is None:
+                raise SceneInvalid('Native inside verification requires measured container')
+            # Only the original pure geometric predicate: no settling, actor
+            # writes or extra observation outside the synchronized checkpoint.
+            return validate_inside_relation(current, actual, support.pose, support.asset_name)
+        if request is not None:
+            current = replace(current, success=replace(current.success,
+                position_tolerance_m=min(request.position_tolerance_m,
+                    current.success.position_tolerance_m or request.position_tolerance_m),
+                orientation_tolerance_deg=min(float(np.rad2deg(request.rotation_tolerance_rad)),
+                    current.success.orientation_tolerance_deg or float(np.rad2deg(request.rotation_tolerance_rad)))))
+        return validate_target_pose(current, AtomExecution(True, final_object_pose=actual))
+
+    def verify_skill(self, request, snapshot):
+        atom = self._active
+        if (atom is None or request.skill != 'place' or request.object_id != atom.object_id
+                or request.goal_predicate != 'native_relation'):
+            raise SceneInvalid('Native verification is not bound to the active original place atom')
+        reference, local = self._relative_targets.get(atom.atom_id, (None, self._base_target(atom)))
+        # Bind the semantic program, not a cached resolved pose. A moved
+        # container must affect both the target and the measured predicate.
+        if request.target_reference_id != reference:
+            raise SceneInvalid('Native verification target reference differs from compiled atom')
+        p, r = pose_error(request.target, local)
+        if p > 1e-9 or r > 1e-7:
+            raise SceneInvalid('Native verification target differs from compiled atom')
+        scene = self.measured_native_scene(snapshot)
+        result = self._validate_atom(atom, snapshot, scene, request=request)
+        reached = bool(result.success and snapshot['robot']['holding'] == 'empty')
+        return SkillVerification(digest(request.as_dict()), snapshot['snapshot_id'], reached,
+            dict(relation=atom.success.relation, message=result.message,
+                 position_error_m=result.position_error_m,
+                 orientation_error_deg=result.orientation_error_deg,
+                 geometry=copy.deepcopy(result.diagnostics)))
+
+    def verify_goals(self, snapshot):
         if snapshot['robot']['holding'] != 'empty':
             return False
         scene = self.measured_native_scene(snapshot)
@@ -134,8 +175,5 @@ class CompiledNativeTask:
             if type(result) is not bool:
                 raise TypeError('Measured structure verifier must return a boolean')
             return result
-        # Each object's final compiled target wins for repeated-object tasks.
         final_atoms = {atom.object_id: atom for atom in self.plan.atoms}
-        return all(validate_target_pose(replace(atom,
-            target_pose=self.T_world_base @ self._base_target(atom, snapshot)), AtomExecution(True,
-            final_object_pose=scene.objects[oid].pose)).success for oid, atom in final_atoms.items())
+        return all(self._validate_atom(atom, snapshot, scene).success for atom in final_atoms.values())

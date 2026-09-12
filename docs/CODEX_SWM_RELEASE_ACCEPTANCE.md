@@ -319,3 +319,13 @@ CompiledNativeTask 为原 inside 原子保留原容器 ID 和原编译目标的�
 内核：定向 56 passed / 0.73 s；项目默认 Python 全量 1629 passed / 1 existing trimesh warning / 42.39 s。先前 realman 全量收集因缺 flask 出现 3 个错误，失败记录保留，不安装依赖。原生接线：修改后的原快照笔入筒候选编译通过，12 对象、70 抓取候选及 2240 配对放置候选保持。模型推理：未运行。实际仿真：本轮仅离线使用原实测快照，无新动作、无技能检查点。硬件：未授权、未连接。
 
 源代码和结果 SHA、环境失败和成功记录写入机器验收表 relative_targets_* / native_pen_task_compile_relative_01。下一步继续原阶段求解、原生审计及执行器的正式 worker 装配，同时补容器/对称后测谓词。正式工厂与未完成技能仍不可用，缺适配器检查不删除。保持 PARTIAL_DELIVERY；本轮代码和证据仅本地提交，未推送。
+
+## M1 / 原容器和对称判据的原子后测接口
+
+原子请求新增 native_relation 明示合同；没有可信 goal_verifier 时在运动前拒绝。后测结果必须是 SkillVerification，绑定原请求摘要和后测快照 ID；错误绑定、无类型布尔结果、验证期间场景变化均拒绝。place 仍须观测为空手，原几何判据不能绕过释放要求。
+
+CompiledNativeTask.verify_skill 使用当前活动原子、原参照 ID 和局部目标核对程序，再只读消费完整后测快照。inside 复用原 validate_inside_relation 和原米制网格；其他姿态目标复用原 symmetry_aware_pose_error / validate_target_pose，姿态容差只能取原合同与请求的较严值。最终任务检查复用同一容器判据，不再将 nominal release pose 匹配冒充入筒。未调用 ManiSkillTaskBridge 的 settle 或 actor 读取来偷做检查点外动作。
+
+内核：定向 18 passed / 0.56 s；全量 1636 passed / 1 existing trimesh warning / 42.53 s。原生接线：可信后测接口已实现，尚未装配正式 worker。模型推理：未运行。实际仿真：本轮只离线读取既有原生快照，原 bi/bitong 网格负例正确拒绝桌上的笔入筒，横向越界 0.20257621585 m，原几何余量 0.003 m；不宣称正例抓放或物理执行成功。技能检查点仍为 0。硬件：未授权、未连接。
+
+原候选仍完整：12 对象、70 抓取和 2240 配对放置候选。代码、驱动、结果和日志摘要记录于机器验收表 native_goals_* / native_pen_goal_geometry_01。下一步将原候选阶段求解、原生 auditor、共享执行器和本后测接口装配进正式笔 worker，取得六次真实新采集，不以本轮几何负例替代。保持 PARTIAL_DELIVERY，未完成技能不可用，缺适配器检查保留。本轮代码和证据仅本地提交，未推送。

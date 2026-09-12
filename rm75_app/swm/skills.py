@@ -26,9 +26,12 @@ class SkillRequest:
     position_tolerance_m: float = .006
     rotation_tolerance_rad: float = .10
     target_reference_id: str | None = None
+    goal_predicate: str = "rigid_pose"
 
     def __post_init__(self):
         if self.skill not in SKILLS: raise ValueError('Unknown atomic skill')
+        if self.goal_predicate not in ('rigid_pose', 'native_relation'):
+            raise ValueError('Unknown goal predicate')
         identifier(self.object_id)
         if self.target_reference_id is not None:
             identifier(self.target_reference_id)
@@ -51,6 +54,8 @@ class SkillRequest:
                     rotation_tolerance_rad=self.rotation_tolerance_rad)
         if self.target_reference_id is not None:
             result['target_reference_id'] = self.target_reference_id
+        if self.goal_predicate != 'rigid_pose':
+            result['goal_predicate'] = self.goal_predicate
         return result
 
     def resolve(self, snapshot):
@@ -65,6 +70,19 @@ class SkillRequest:
             raise SceneInvalid('Target reference has no measured pose')
         return replace(self, target=transform(measured['T_world_object']) @ transform(self.target),
                        target_reference_id=None)
+
+
+@dataclass(frozen=True)
+class SkillVerification:
+    request_digest: str
+    snapshot_id: str
+    reached: bool
+    diagnostics: dict
+
+    def __post_init__(self):
+        if type(self.reached) is not bool or not self.request_digest or not self.snapshot_id:
+            raise TypeError('Verification requires explicit outcome and request/snapshot provenance')
+        object.__setattr__(self, 'diagnostics', copy.deepcopy(dict(self.diagnostics)))
 
 
 @dataclass(frozen=True)
@@ -130,12 +148,15 @@ class AtomicSkillRuntime:
     Unknown SDK/collision/observation errors are never caught and blindly retried.
     """
     def __init__(self, synchronizer, backend, *, clock, stop, max_replans=2,
-                 max_position_tolerance_m=.006, max_rotation_tolerance_rad=.10, transition_observer=None):
+                 max_position_tolerance_m=.006, max_rotation_tolerance_rad=.10, transition_observer=None, goal_verifier=None):
         self.sync = synchronizer; self.world = synchronizer.world; self.backend = backend
         self.clock = clock; self.stop = stop
         if type(max_replans) is not int or not 0 <= max_replans <= 8: raise ValueError('Bounded replanning required')
         self.max_replans = max_replans
         self.transition_observer = transition_observer
+        if goal_verifier is not None and not callable(goal_verifier):
+            raise TypeError("Trusted native goal verifier must be callable")
+        self.goal_verifier = goal_verifier
         # Upper bounds on user request tolerances: callers may tighten, not loosen.
         self.max_position_tolerance = positive(max_position_tolerance_m, 'configured_position_tolerance')
         self.max_rotation_tolerance = positive(max_rotation_tolerance_rad, 'configured_rotation_tolerance')
@@ -149,6 +170,8 @@ class AtomicSkillRuntime:
 
     def _preconditions(self, req, snap):
         if req.skill not in self.backend.capabilities: raise NotImplementedError(f'{req.skill}: atomic adapter not installed')
+        if req.goal_predicate == 'native_relation' and self.goal_verifier is None:
+            raise NotImplementedError('Native relation verifier adapter not installed')
         if not snap['valid'] or req.object_id not in snap['objects']: raise SceneInvalid('Scene not synchronized')
         obj = snap['objects'][req.object_id]
         if obj['fixed']: raise ValueError('Fixed infrastructure cannot be manipulated as a free object')
@@ -245,7 +268,17 @@ class AtomicSkillRuntime:
                     target_error = pose_error(actual, program_request.resolve(post).target)
                     reached = target_error[0] <= request.position_tolerance_m and target_error[1] <= request.rotation_tolerance_rad
                     row.update(goal_error_m=target_error[0], goal_error_rad=target_error[1])
-                    if request.skill == 'place': reached = reached and post['robot']['holding']=='empty'
+                    if request.goal_predicate == 'native_relation':
+                        verified_goal = self.goal_verifier(program_request, copy.deepcopy(post))
+                        if (not isinstance(verified_goal, SkillVerification)
+                                or verified_goal.request_digest != digest(program_request.as_dict())
+                                or verified_goal.snapshot_id != post['snapshot_id']):
+                            raise SceneInvalid('Native goal verification has wrong request/snapshot provenance')
+                        if self.world.snapshot()['snapshot_id'] != post['snapshot_id']:
+                            raise SceneInvalid('Scene changed during native goal verification')
+                        reached = verified_goal.reached
+                        row['native_goal_verification'] = copy.deepcopy(verified_goal.diagnostics)
+                    if request.skill == 'place': reached = reached and post['robot']['holding']=='empty' 
                 model_agrees = predicted_error[0] <= request.position_tolerance_m and predicted_error[1] <= request.rotation_tolerance_rad
                 verified = bool(receipt.command_success and reached)
                 row['model_agrees'] = model_agrees
