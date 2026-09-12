@@ -194,6 +194,12 @@ class SapienScenePort:
                     or any(self.body_port.actors[oid] is not actor for oid, actor in self.actors.items())):
                 raise SceneInvalid('Native simulator requires its bound physical body port')
             self.body_port.readback()
+            for name in ('set_attachment', 'read_attachment', 'apply_physics', 'read_physics'):
+                method = getattr(self, name)
+                if (getattr(method, '__self__', None) is not self.body_port
+                        or getattr(method, '__func__', None) is not getattr(NativeBodyMirror, name)):
+                    raise SceneInvalid('Native simulator requires owned physical manager methods')
+            self.robot_port.read_physics_policy()
             for actor in self.actors.values():
                 entities = getattr(actor, '_objs', [actor])
                 if not entities or any(getattr(entity, 'scene', None) != self.robot_port._scene for entity in entities):
@@ -217,14 +223,18 @@ class SapienScenePort:
                     np.linalg.inv(transform(robot['T_world_tcp'])) @ transform(
                         obj['measured']['T_world_object'])).tolist())
         self.set_attachment(attachment)
-        if digest(self.read_attachment()) != digest(attachment):
-            raise SceneInvalid("Simulator did not apply the measured attachment")
+        actual_attachment = self.read_attachment()
+        if native and attachment is not None and actual_attachment is not None:
+            p, r = pose_error(actual_attachment['T_tcp_object'], attachment['T_tcp_object'])
+            if actual_attachment['object_id'] != attachment['object_id'] or p > 1e-6 or r > 1e-3:
+                raise SceneInvalid('Simulator did not apply the measured attachment')
+        elif digest(actual_attachment) != digest(attachment):
+            raise SceneInvalid('Simulator did not apply the measured attachment')
         for oid, obj in snapshot['objects'].items():
-            if oid == holding:
-                continue
             actor = self.actors[oid]
             expected = transform(obj['measured']['T_world_object'])
-            actor.set_pose(self.make_pose(expected))
+            if oid != holding:
+                actor.set_pose(self.make_pose(expected))
             if native:
                 from .native_bootstrap import _array
                 for key in ('linear_velocity', 'angular_velocity'):
@@ -244,6 +254,7 @@ class SapienScenePort:
             raise SceneInvalid("Simulator did not apply the physical belief revision")
         if native:
             self.native_acknowledgement = dict(robot=self.native_acknowledgement,
-                physical_bodies=self.body_port.readback(), snapshot_id=snapshot['snapshot_id'])
+                physical_bodies=self.body_port.readback(), attachment=self.read_attachment(),
+                snapshot_id=snapshot['snapshot_id'])
         self.applied_snapshot_id = snapshot['snapshot_id']
         return self.applied_snapshot_id

@@ -165,6 +165,8 @@ class NativeBodyMirror:
             raise SceneInvalid('Live owned private robot world is required')
         self.actors, self.expected, self.asset_bindings = {}, {}, {}
         self.robot_port = robot_port
+        self._attachment_drive = None
+        self._baseline_applied = False
         resources.callback(self.close)
         for oid, binding in registration.source.bindings.items():
             expected = body_state(native_body(binding.actor), binding.T_actor_object)
@@ -220,7 +222,83 @@ class NativeBodyMirror:
             original_body_geometry_and_properties_aligned=True, primary_world_mutated=False,
             attachment_qualified=False, robot_collision_policy_qualified=False, hardware_qualified=False)
 
+    def _tcp(self):
+        if self.robot_port.closed:
+            raise SceneInvalid('Private robot world is closed')
+        links = {link.name: link for link in self.robot_port._robot.get_links()}
+        if 'gripper_tcp' not in links:
+            raise SceneInvalid('Native attachment requires the original TCP link')
+        return links['gripper_tcp']
+
+    def read_attachment(self):
+        import sapien
+        tcp = self._tcp()
+        found = [(oid, component) for oid, actor in self.actors.items()
+                 for component in actor.entity.components
+                 if isinstance(component, sapien.physx.PhysxDriveComponent)]
+        if not found and self._attachment_drive is None:
+            return None
+        if len(found) != 1 or found[0][1] is not self._attachment_drive:
+            raise SceneInvalid('Foreign or missing native object attachment constraint')
+        oid, drive = found[0]
+        if drive.parent is not tcp or drive.entity.scene is not self.robot_port._scene:
+            raise SceneInvalid('Native attachment has foreign endpoints')
+        relative = pose_matrix(drive.pose_in_parent) @ np.linalg.inv(pose_matrix(drive.pose_in_child))
+        measured = np.linalg.inv(pose_matrix(tcp.pose)) @ pose_matrix(self.actors[oid].pose)
+        from .scene import pose_error
+        p, r = pose_error(relative, measured)
+        if p > 1e-6 or r > 1e-3:
+            raise SceneInvalid('Native held object pose disagrees with its TCP constraint')
+        return dict(object_id=oid, T_tcp_object=relative.tolist())
+
+    def set_attachment(self, attachment):
+        import sapien
+        self.read_attachment()
+        if self._attachment_drive is not None:
+            self._attachment_drive.entity.remove_component(self._attachment_drive)
+            self._attachment_drive = None
+        if attachment is None:
+            return
+        if set(attachment) != {'object_id', 'T_tcp_object'}:
+            raise SceneInvalid('Measured native attachment schema required')
+        oid = attachment['object_id']
+        if oid not in self.actors:
+            raise SceneInvalid('Native attachment object is unregistered')
+        actor = self.actors[oid]
+        if not isinstance(actor.body, sapien.physx.PhysxRigidDynamicComponent) or actor.body.kinematic:
+            raise SceneInvalid('Only an original dynamic object can become attached')
+        relative = transform(attachment['T_tcp_object'])
+        tcp = self._tcp()
+        # Private IDLE synchronization places the payload through its measured
+        # TCP relation, never independently as a free actor or in the primary.
+        actor.set_pose(native_pose(pose_matrix(tcp.pose) @ relative))
+        drive = self.robot_port._scene.create_drive(tcp, native_pose(relative), actor.body, native_pose(np.eye(4)))
+        self._attachment_drive = drive
+        for axis in ('x', 'y', 'z', 'twist'):
+            getattr(drive, 'set_limit_' + axis)(0., 0.)
+        drive.set_limit_pyramid(0., 0., 0., 0.)
+        self.read_attachment()
+
+    def apply_physics(self, belief):
+        self._baseline_applied = False
+        if belief != {}:
+            raise SceneInvalid('Native posterior parameter application adapter required')
+        # Empty belief means no posterior overrides, not an empty physical
+        # world. Every original native body property must still read back.
+        self.readback()
+        self._baseline_applied = True
+
+    def read_physics(self):
+        if not self._baseline_applied:
+            raise SceneInvalid('Native physical baseline has not been acknowledged')
+        self.readback()
+        return {}
+
     def close(self):
+        if self._attachment_drive is not None:
+            self._attachment_drive.entity.remove_component(self._attachment_drive)
+            self._attachment_drive = None
+        self._baseline_applied = False
         for actor in self.actors.values():
             self.robot_port._scene.remove_entity(actor.entity)
         self.actors.clear()
