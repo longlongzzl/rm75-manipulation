@@ -1,0 +1,235 @@
+{
+  "schema": "rm75.swm_release_acceptance_v1",
+  "status": "PARTIAL_DELIVERY",
+  "milestone": "M1",
+  "specification": "docs/CODEX_SWM_RELEASE_GOAL_827A15E.md",
+  "baseline_commit": "7e3fee4196e7337e18217a0d72518789113eda77",
+  "hardware_status": "NOT_AUTHORIZED_NOT_RUN",
+  "native_heavy_workers": 1,
+  "previous_goal_turn_classification": "progress",
+  "tested_source": {
+    "commit": "9c38a5449fbe02b4eb35481cb99f40749ded1d74",
+    "sha256": {
+      "tools/import_jimu_scene_bundle.py": "cb797cc792cb039c022538da1379f75e968ac24e5b02e2ef2b2569c5b4ca6d5b",
+      "tests/three_scene/test_jimu_scene_import.py": "6f579c35659537c1269aeeebdfea076c0bf2b7d14db6ca3dac0ae53a93653b01",
+      "tests/three_scene/test_jimu_import_portable.py": "960a318a39fedfbbc5cba958570450a51c15517c2e228a3f42d15e024c31e022",
+      "rm75_app/swm/integration.py": "32c3e2c565f40e0846d8808ec1b3c25682eb6781c918b287475dcd99f20823ed",
+      "tests/swm/test_runtime_context.py": "bf417b6a075c7b59fb792e3f944e19317f98566c48120a80b3b58fe7b6b32b65"
+    },
+    "input_digest": "9e80bcdb3aa671c6a9f254ee0b045035932796e13bd6b08d37c670fe00b7c4c1",
+    "note": "Tests ran on the worktree immediately before this commit; committed source bytes are identical. Documentation is not runtime evidence."
+  },
+  "runs": {
+    "m0_targeted": {
+      "passed": 125,
+      "failed": 0,
+      "seconds": 1.45,
+      "domain": "software_fixture"
+    },
+    "m0_full": {
+      "passed": 1518,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 42.96,
+      "domain": "software_regression",
+      "warning": "Existing trimesh Scene.dump deprecation",
+      "tested_commit": "9c38a5449fbe02b4eb35481cb99f40749ded1d74"
+    }
+  },
+  "gates": {
+    "G0": {
+      "status": "IN_PROGRESS",
+      "requirements": "Baseline/source/environment provenance; portable asset integrity; success, failure, cancellation and initialization resource cleanup.",
+      "tested_commit": "9c38a5449fbe02b4eb35481cb99f40749ded1d74",
+      "domain": "software_fixture",
+      "input_digest": "9e80bcdb3aa671c6a9f254ee0b045035932796e13bd6b08d37c670fe00b7c4c1",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "numerator": 0,
+      "denominator": null,
+      "evidence": [
+        "runs.m0_full",
+        "runs.m0_targeted"
+      ],
+      "blocker": null,
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
+      "remaining": [
+        "native job resource cleanup",
+        "native environment and asset input manifests"
+      ]
+    },
+    "G1": {
+      "status": "IN_PROGRESS",
+      "requirements": "Three scenarios each through browser/service/worker -> SWM -> native -> fresh checkpoints; no fixtures or legacy fallback.",
+      "tested_commit": null,
+      "domain": null,
+      "input_digest": null,
+      "command": null,
+      "numerator": 0,
+      "denominator": null,
+      "evidence": [
+        "managed_context_contract_only_not_native_qualification"
+      ],
+      "blocker": null,
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
+    },
+    "G2": {
+      "status": "NOT_RUN",
+      "requirements": "Moved object/neighbour/base, changed attachment, dropped/expired frame, dynamic reference, inconsistent mirrors: reobserve/replan/block with provenance.",
+      "tested_commit": null,
+      "domain": null,
+      "input_digest": null,
+      "command": null,
+      "numerator": 0,
+      "denominator": null,
+      "evidence": [],
+      "blocker": null,
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
+    },
+    "G3": {
+      "status": "NOT_RUN",
+      "requirements": "Seven original objects retained; stable objects three repeats; one complete same-scene seven-object success; original and suggested orders.",
+      "tested_commit": null,
+      "domain": null,
+      "input_digest": null,
+      "command": null,
+      "numerator": 0,
+      "denominator": null,
+      "evidence": [],
+      "blocker": null,
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
+      "suites": {
+        "objects": {
+          "numerator": 0,
+          "denominator": 7
+        },
+        "stable_object_repeats": 3,
+        "same_scene_full_sequences_required": 1
+      }
+    },
+    "G4": {
+      "status": "NOT_RUN",
+      "requirements": "Two bases, three generated designs per base, original twelve-active-piece template once per base; same-design proof and independent geometry checks.",
+      "tested_commit": null,
+      "domain": null,
+      "input_digest": null,
+      "command": null,
+      "numerator": 0,
+      "denominator": null,
+      "evidence": [],
+      "blocker": null,
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
+      "suites": {
+        "generated_designs": {
+          "numerator": 0,
+          "denominator": 6
+        },
+        "full_templates": {
+          "numerator": 0,
+          "denominator": 2,
+          "active_pieces": 12
+        }
+      }
+    },
+    "G5": {
+      "status": "NOT_RUN",
+      "requirements": "Original successful example three repeats; twelve frozen legal random cases with at least ten successes; two simulated interventions; infeasible negatives and difficult regressions retained.",
+      "tested_commit": null,
+      "domain": null,
+      "input_digest": null,
+      "command": null,
+      "numerator": 0,
+      "denominator": null,
+      "evidence": [],
+      "blocker": null,
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
+      "suites": {
+        "random": {
+          "numerator": 0,
+          "denominator": 12,
+          "minimum_success": 10
+        },
+        "baseline_repeats": 3,
+        "interventions": 2
+      }
+    },
+    "G6": {
+      "status": "NOT_RUN",
+      "requirements": "Same measured action/initial state/timebase across PhysX parameters; posterior consumed by next plan; frozen posterior held-out prediction; uninformative/mismatched/intervened evidence rejected appropriately.",
+      "tested_commit": null,
+      "domain": null,
+      "input_digest": null,
+      "command": null,
+      "numerator": 0,
+      "denominator": null,
+      "evidence": [],
+      "blocker": null,
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
+    },
+    "G7": {
+      "status": "NOT_RUN",
+      "requirements": "Actual offline FoundationPose/shared RRTrack and one actual SAM3D registration chain with weight/scale/frame provenance.",
+      "tested_commit": null,
+      "domain": null,
+      "input_digest": null,
+      "command": null,
+      "numerator": 0,
+      "denominator": null,
+      "evidence": [],
+      "blocker": null,
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
+    },
+    "G8": {
+      "status": "NOT_RUN",
+      "requirements": "Actual LLM two tasks including recovery; constrained pull and rotate three times each plus negatives; immutable AST/target/capability binding.",
+      "tested_commit": null,
+      "domain": null,
+      "input_digest": null,
+      "command": null,
+      "numerator": 0,
+      "denominator": null,
+      "evidence": [],
+      "blocker": null,
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
+      "suites": {
+        "llm_tasks": {
+          "numerator": 0,
+          "denominator": 2
+        },
+        "pull": {
+          "numerator": 0,
+          "denominator": 3
+        },
+        "rotate": {
+          "numerator": 0,
+          "denominator": 3
+        }
+      }
+    },
+    "G9": {
+      "status": "NOT_RUN",
+      "requirements": "One console: navigation, slow generation refresh, deduplication, reconnect, Stop, pause/relocalize, bounded recorder and evidence storage.",
+      "tested_commit": null,
+      "domain": null,
+      "input_digest": null,
+      "command": null,
+      "numerator": 0,
+      "denominator": null,
+      "evidence": [],
+      "blocker": null,
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
+    },
+    "G10": {
+      "status": "IN_PROGRESS",
+      "requirements": "Complete formal tests, Node/browser integration, required native regressions, clean-checkout reproducible startup with declared environment/data.",
+      "tested_commit": null,
+      "domain": null,
+      "input_digest": null,
+      "command": null,
+      "numerator": 0,
+      "denominator": null,
+      "evidence": [],
+      "blocker": null,
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
+    }
+  }
+}
