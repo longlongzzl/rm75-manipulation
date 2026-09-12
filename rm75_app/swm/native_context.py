@@ -81,6 +81,13 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     from rm75_app.planning.contracts import PlanningScene
     from rm75_app.pickplace.coordinator import PickPlaceCoordinator
 
+    owned = {}
+    def report_cleanup():
+        events.emit("swm_native_resources_released",
+            primary_closed=None if "primary" not in owned else owned["primary"].closed,
+            robot_mirror_closed=None if "robot" not in owned else owned["robot"].closed,
+            planner_pointer_released=None if "backend" not in owned else owned["backend"]._planner is None)
+    resources.callback(report_cleanup)
     output = run_dir / 'swm_native'
     output.mkdir(exist_ok=False)
     root = snapshot_root(app_root)
@@ -98,11 +105,14 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     args.foundationpose_refine_after_render = False
     primary = initialize_frozen_primary(resources, direct, args, contract, stop=stop, events=events,
         artifact_directory=output / 'initialization_artifacts', capture_builders=True)
+    owned["primary"] = primary
     backend = resources.enter_context(Curobo2Backend(Curobo2BackendConfig()))
+    owned["backend"] = backend
     backend.update_scene(PlanningScene())
     backend._ensure_planner()
     registration = register_primary_scene(primary, output / 'metric_assets', sensor_session=uuid.uuid4().hex)
     robot = SapienRobotStatePort(app_root / 'assets/robot_models/RM75_gripper/RM75-B/urdf/RM75-B.urdf', resources=resources)
+    owned["robot"] = robot
     robot.synchronize_primary_physics(primary)
     bodies = NativeBodyMirror(registration, robot, resources=resources)
     simulator = SapienScenePort(bodies.actors, asset_bindings=bodies.asset_bindings,
@@ -112,8 +122,9 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     planner = CuroboScenePort(backend)
     mirror = TransactionalSceneMirror(simulator, planner)
     sync = CheckpointSynchronizer(registration.world, registration.source, mirror,
-        clock=time.monotonic, emit=events.emit)
+        clock=time.monotonic, emit=events.emit, store=_PenCheckpointStore(output / "checkpoints"))
     initial = sync.sync('worker_initialization_probe')
+    _prepare_pen_attachment(backend, planner, initial, stop, events)
     bridge = _compile_pen_task(initial, registration.evidence, fixed, run_dir.name)
     sink = NativePrimaryExecutor(primary, emit=events.emit)
     coordinator = PickPlaceCoordinator(backend, sink)
@@ -175,3 +186,67 @@ def _compile_pen_task(snapshot, evidence, scene_file, plan_id):
     builder = FixedSceneAtomTaskBuilder(config=AtomTaskBuilderConfig(
         robot_base_world_transform=base, include_maniskill_workspace_table=False))
     return CompiledNativeTask('pickplace', program, TaskSceneState(states), builder)
+
+
+class _PenCheckpointStore:
+    """Bounded immutable-revision evidence for this single-pen context."""
+    def __init__(self, directory):
+        self.directory = directory
+        self.count = 0
+
+    def save(self, world):
+        from rm75_app.workcell.io import atomic_json
+        from .scene import SceneInvalid
+        if self.count >= 32:
+            raise SceneInvalid('Single-pen checkpoint evidence budget exhausted')
+        snapshot = world.snapshot()
+        atomic_json(self.directory / f"{snapshot['revision']:04d}.json", snapshot)
+        self.count += 1
+
+
+def _prepare_pen_attachment(backend, planner_port, snapshot, stop, events):
+    """Prepare ORIGINAL metric mesh fitting before any execution-age window.
+
+    This temporary attachment belongs only to the private planning model. No
+    executor or primary world is passed here. The same original fit/cache API
+    is reused and the complete observed scene is restored even on failure.
+    The subsequent runtime must still acquire and audit a fresh checkpoint.
+    """
+    import hashlib
+    from rm75_app.planning.contracts import JointConfiguration
+    from .scene import SceneInvalid
+
+    stop.check()
+    robot = snapshot['robot']
+    if (snapshot.get('valid') is not True or snapshot.get('observation_domain') != 'physics'
+            or robot.get('idle') is not True or robot.get('holding') != 'empty'
+            or planner_port.backend is not backend
+            or backend._scene.revision != snapshot['snapshot_id']
+            or {obj.name for obj in backend._scene.objects} != set(snapshot['objects'])):
+        raise SceneInvalid('Attachment preparation requires the complete observed idle private model')
+    item = next(obj for obj in backend._scene.objects if obj.name == 'bi')
+    asset = snapshot['assets'][snapshot['objects']['bi']['asset_id']]
+    path = Path(asset['mesh_path']).resolve(strict=True)
+    if (Path(item.metadata['visual_mesh_path']).resolve(strict=True) != path
+            or list(item.metadata['visual_mesh_scale']) != [1., 1., 1.]
+            or hashlib.sha256(path.read_bytes()).hexdigest() != asset['mesh_sha256']):
+        raise SceneInvalid('Prepare only the same registered metric mesh and scale')
+    started = time.monotonic()
+    try:
+        backend.attach_object('bi', JointConfiguration(tuple(robot['joint_names']), robot['positions']))
+        fit = copy.deepcopy(backend._attachment_fit_report)
+        if (not isinstance(fit, dict) or fit.get('object_name') != 'bi'
+                or fit.get('fit_type') != 'morphit' or not fit.get('cache_file')
+                or type(fit.get('fitted_spheres')) is not int or fit['fitted_spheres'] <= 0):
+            raise SceneInvalid('Original registered-mesh fitting did not produce cache evidence')
+    finally:
+        try:
+            backend.detach_object('bi')
+        finally:
+            restored = planner_port.apply_idle_snapshot(snapshot)
+            if restored != snapshot['snapshot_id']:
+                raise SceneInvalid('Attachment preparation failed complete observed-state restoration')
+    stop.check()
+    events.emit('swm_native_attachment_prepared', object_id='bi', source_snapshot_id=snapshot['snapshot_id'],
+        mesh_sha256=asset['mesh_sha256'], elapsed_s=time.monotonic()-started, fit=fit,
+        domain='private_planning_preparation', motion_executed=False, skill_verified=False)
