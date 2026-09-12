@@ -73,16 +73,23 @@ def planning_scene(snapshot):
     objects = []
     for oid, obj in snapshot['objects'].items():
         asset = snapshot['assets'][obj['asset_id']]
-        matrix = transform(obj['measured']['T_world_object'])
+        object_matrix = transform(obj['measured']['T_world_object'])
+        matrix = object_matrix @ transform(asset.get('T_object_collision', np.eye(4)))
         pose = Pose(matrix[:3, 3], matrix_to_quaternion_wxyz(matrix[:3, :3]))
         if asset.get('collision_kind') == 'cuboid':
             shape = dict(kind='cuboid', dimensions=asset['collision_dimensions_m'])
+        elif asset.get('collision_kind') == 'sphere':
+            shape = dict(kind='sphere', radius=asset['collision_radius_m'])
         elif asset.get('collision_kind') == 'convex_mesh':
             shape = dict(kind='mesh', mesh_path=asset['collision_path'], scale=[1., 1., 1.])
         else:
             raise SceneInvalid("Native world requires a registered metric collision proxy")
         objects.append(CollisionObject(oid, pose=pose, **shape,
-            metadata=dict(asset_id=obj['asset_id'], mesh_sha256=asset['mesh_sha256'])))
+            metadata=dict(asset_id=obj['asset_id'], mesh_sha256=asset['mesh_sha256'],
+                asset_name=asset.get('original_asset_name', obj['asset_id']),
+                visual_mesh_path=asset['mesh_path'], visual_mesh_scale=[1., 1., 1.],
+                object_world_pose=object_matrix.tolist(),
+                proxy_local_center=transform(asset.get('T_object_collision', np.eye(4)))[:3, 3].tolist())))
     return PlanningScene(tuple(objects), revision=snapshot['snapshot_id'])
 
 

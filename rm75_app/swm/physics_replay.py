@@ -106,7 +106,7 @@ def physical_replay(request):
         p=Path(asset['collision_path'])
         if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest()!=asset['collision_sha256']:
             raise ValueError('Changed collision mesh')
-        if asset.get('collision_kind') not in ('convex_mesh','cuboid'):
+        if asset.get('collision_kind') not in ('convex_mesh','cuboid','sphere'):
             raise ValueError('Replay requires a prevalidated convex collision proxy, not gaussian splats')
     def spose(matrix):
         a=transform(matrix);xyzw=Rotation.from_matrix(a[:3,:3]).as_quat()
@@ -126,12 +126,17 @@ def physical_replay(request):
                 if obj['fixed']:density=1000.  # static actor has no simulated mass
                 if density is None or not np.isfinite(density) or density<=0:
                     raise ValueError('Non-target dynamic objects require explicit nominal density')
+                local_pose=spose(asset.get('T_object_collision',np.eye(4)))
                 if asset['collision_kind']=='convex_mesh':
-                    builder.add_convex_collision_from_file(asset['collision_path'],material=material,density=density)
+                    builder.add_convex_collision_from_file(asset['collision_path'],pose=local_pose,material=material,density=density)
+                elif asset['collision_kind']=='sphere':
+                    radius=float(asset['collision_radius_m'])
+                    if not np.isfinite(radius) or radius<=0:raise ValueError('Invalid collision sphere')
+                    builder.add_sphere_collision(pose=local_pose,radius=radius,material=material,density=density)
                 else:
                     dims=np.asarray(asset['collision_dimensions_m'],dtype=float)
                     if dims.shape!=(3,) or not np.isfinite(dims).all() or (dims<=0).any():raise ValueError('Invalid collision box')
-                    builder.add_box_collision(half_size=dims/2,material=material,density=density)
+                    builder.add_box_collision(pose=local_pose,half_size=dims/2,material=material,density=density)
                 actor=builder.build_static(name=oid) if obj['fixed'] else builder.build(name=oid)
                 if oid==target_id:
                     if obj['fixed']:raise ValueError('Target may not be static')
