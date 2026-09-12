@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "3c7fd0c",
+    "commit": "8a2b590",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Full regression 1716 passed. Ordinary native worker_14 detects forbidden table contact at closure control step 6 and rejects subsequent commands. No successful grasp/place or complete six-checkpoint qualification."
+    "note": "WIP: 1728 fixture/regression tests pass, but ordinary worker_21 now rejects source native joint inventory during initialization. Diagnostic worker_22 has missing FrozenPrimaryWorld.events attribute. Neither native drive alignment nor pen closure is qualified."
   },
   "runs": {
     "m0_targeted": {
@@ -12210,6 +12210,235 @@
           "time": 1789252556.1662982
         }
       ]
+    },
+    "native_pen_worker_20": {
+      "domain": "actual_native_worker",
+      "run_dir": "runtime_data/swm_release_pen_worker_20",
+      "result": {
+        "command_success": false,
+        "error": "SceneInvalid: Feedback closure exhausted bounded convergence budget",
+        "finished_at": 1789252742.1946933,
+        "mode": "sim",
+        "status": "failed",
+        "task": "pickplace",
+        "task_success": null
+      },
+      "hashes": [
+        {
+          "sha256": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+          "path": "runtime_data/swm_release_pen_worker_20/profile.json"
+        },
+        {
+          "sha256": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+          "path": "runtime_data/swm_release_pen_worker_20/request.json"
+        },
+        {
+          "sha256": "a4597db0b9b0defa4ace47a819047368f4cc605b8625f849e7de1737086b7b86",
+          "path": "runtime_data/swm_release_pen_worker_20/events.jsonl"
+        },
+        {
+          "sha256": "069c29b83798ab0156dad6667dfddd01ef1e6fb856a1a49755322856c72a1da4",
+          "path": "runtime_data/swm_release_pen_worker_20/result.json"
+        }
+      ],
+      "source_commit": "3c7fd0c",
+      "ordinary_worker": false,
+      "driver_archive": "benchmarks/release/evidence/pen_closure/worker_20.py.txt",
+      "hardware_connected": false,
+      "skill_verified": false,
+      "same_measured_action_parameter_replay": false,
+      "settle_events": [
+        {
+          "kind": "swm_primary_stage_settled",
+          "stage": "approach",
+          "steps": 13,
+          "max_velocity_rad_s": 0.0006844648742116988,
+          "endpoint_error_rad": 4.3272972106933594e-05
+        },
+        {
+          "kind": "swm_primary_stage_settled",
+          "stage": "grasp",
+          "steps": 14,
+          "max_velocity_rad_s": 0.0003315085778012872,
+          "endpoint_error_rad": 7.700920104980469e-05
+        }
+      ],
+      "feedback_closure": [
+        {
+          "steps": 343,
+          "last": {
+            "command": 0.48071222431962446,
+            "endpoint_error": 0.0004831552505493164,
+            "forbidden": [],
+            "forces_n": [
+              1.407367724569913,
+              1.4757055909157217
+            ],
+            "grasped": true,
+            "max_velocity": 0.02007516846060753,
+            "positions": [
+              1.0381239652633667,
+              -0.49125024676322937,
+              -0.4996931254863739,
+              -1.5813685655593872,
+              0.25218215584754944,
+              -1.1335302591323853,
+              1.9599089622497559,
+              0.6726051568984985,
+              0.6713969707489014,
+              0.6736464500427246,
+              0.6724328994750977,
+              0.6709282398223877,
+              0.6719761490821838
+            ],
+            "step": 343,
+            "velocities": [
+              -0.00022908096434548497,
+              5.745589442085475e-05,
+              -0.0002219321031589061,
+              0.0008080127299763262,
+              8.678580343257636e-05,
+              -0.0009699639049358666,
+              -0.009720676578581333,
+              -0.007445641793310642,
+              -0.005008040927350521,
+              -0.01003038790076971,
+              -0.005545525811612606,
+              -0.013293988071382046,
+              -0.02007516846060753
+            ]
+          },
+          "last_50_max_velocity_range": {
+            "min": 0.012598676607012749,
+            "max": 0.022374233230948448
+          }
+        }
+      ],
+      "cleanup": [
+        {
+          "kind": "swm_native_resources_released",
+          "planner_pointer_released": true,
+          "primary_closed": true,
+          "robot_mirror_closed": true,
+          "sequence": 364,
+          "time": 1789252742.1921127
+        }
+      ]
+    },
+    "native_pen_worker_21": {
+      "domain": "actual_native_worker",
+      "run_dir": "runtime_data/swm_release_pen_worker_21",
+      "result": {
+        "command_success": false,
+        "error": "SceneInvalid: Complete independent thirteen-joint drive inventory required",
+        "finished_at": 1789253126.7035623,
+        "mode": "sim",
+        "status": "failed",
+        "task": "pickplace",
+        "task_success": null
+      },
+      "hashes": [
+        {
+          "sha256": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+          "path": "runtime_data/swm_release_pen_worker_21/profile.json"
+        },
+        {
+          "sha256": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+          "path": "runtime_data/swm_release_pen_worker_21/request.json"
+        },
+        {
+          "sha256": "bceec88f6717b07bccb8914826bc530011f3abff21ab1dfdbfd0f38cc2e93f3a",
+          "path": "runtime_data/swm_release_pen_worker_21/events.jsonl"
+        },
+        {
+          "sha256": "51cf9fe002384a837d2a708d9955428edb4a856a82f5179a34975bfad01e091f",
+          "path": "runtime_data/swm_release_pen_worker_21/result.json"
+        }
+      ],
+      "source_commit": "8a2b590",
+      "ordinary_worker": true,
+      "driver_archive": null,
+      "hardware_connected": false,
+      "skill_verified": false,
+      "same_measured_action_parameter_replay": false,
+      "settle_events": [],
+      "feedback_closure": [],
+      "cleanup": [
+        {
+          "kind": "swm_native_resources_released",
+          "planner_pointer_released": true,
+          "primary_closed": true,
+          "robot_mirror_closed": true,
+          "sequence": 6,
+          "time": 1789253126.701313
+        }
+      ]
+    },
+    "native_pen_worker_22": {
+      "domain": "actual_native_worker",
+      "run_dir": "runtime_data/swm_release_pen_worker_22",
+      "result": {
+        "command_success": false,
+        "error": "AttributeError: 'FrozenPrimaryWorld' object has no attribute 'events'",
+        "finished_at": 1789253209.2272463,
+        "mode": "sim",
+        "status": "failed",
+        "task": "pickplace",
+        "task_success": null
+      },
+      "hashes": [
+        {
+          "sha256": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+          "path": "runtime_data/swm_release_pen_worker_22/profile.json"
+        },
+        {
+          "sha256": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+          "path": "runtime_data/swm_release_pen_worker_22/request.json"
+        },
+        {
+          "sha256": "e615ec68b8b8b96981403c0a0a004b40f6797556b7df6d4303a149e1d3d52391",
+          "path": "runtime_data/swm_release_pen_worker_22/events.jsonl"
+        },
+        {
+          "sha256": "387ee2ee7dc12fadbf85c4c3399983bfb519802f6f44ab63e144578042092089",
+          "path": "runtime_data/swm_release_pen_worker_22/result.json"
+        }
+      ],
+      "source_commit": "8a2b590",
+      "ordinary_worker": false,
+      "driver_archive": "benchmarks/release/evidence/pen_closure/worker_22.py.txt",
+      "hardware_connected": false,
+      "skill_verified": false,
+      "same_measured_action_parameter_replay": false,
+      "settle_events": [],
+      "feedback_closure": [],
+      "cleanup": [
+        {
+          "kind": "swm_native_resources_released",
+          "planner_pointer_released": true,
+          "primary_closed": true,
+          "robot_mirror_closed": true,
+          "sequence": 6,
+          "time": 1789253209.222177
+        }
+      ]
+    },
+    "native_drive_policy_targeted": {
+      "passed": 22,
+      "failed": 0,
+      "seconds": 0.06,
+      "domain": "software_fixture",
+      "tested_commit": "8a2b590"
+    },
+    "native_drive_policy_full": {
+      "passed": 1728,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 42.91,
+      "domain": "software_regression",
+      "tested_commit": "8a2b590",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "output": "benchmarks/release/evidence/pen_closure/drive_policy_full_pytest.txt"
     }
   },
   "gates": {

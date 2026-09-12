@@ -509,3 +509,23 @@ native_pen_phase_10 退出 0，实际同一 GPU 原 grasp 原子通过 collision
 - 硬件：未授权、未连接、未操作。
 
 下一步回到原候选策略与闭链机构一致性，不继续把数值参数变化当作充分修复；先取得严格静止、无禁止接触和实测几何审核，再执行 lift 和后测。保持 PARTIAL_DELIVERY，缺适配器检查保留。本轮证据仅本地提交，未推送。
+
+## M1 / 低速完整窗口与驱动镜像 WIP，新增初始化回归未修复
+
+worker_20 对低速闭合补足有界观察：接近最多 200 步，首次接触后最多 200 步，实际共 **343 步**。末次双指力 1.4074/1.4757 N，原持物谓词真，但最大关节速度 **0.020075 rad/s**；末 50 步最大速度范围 **0.012599–0.022374 rad/s**。因此本次失败不只是先前 18 步后测时间不足。仍拒绝 lift，未放宽静止要求。归档末 50 步位置范围与控制区间平均速度分析；平均速度不等于瞬时速度，不能排除子步振动或代替原 idle 判据。
+
+生产 **WIP 提交 `8a2b590`** 在现有 SapienRobotStatePort 中增加 13 关节静态驱动参数复制与 native 读回：stiffness、damping、force_limit、friction、armature、drive_mode、原 joint 类型/自由度/限位身份，以及 articulation 求解迭代和原 sleep_threshold。只写独立私有 articulation，源对象不写；没有改变主环境阈值或强制睡眠。复制后及后续物理政策读回均逐项核对，不用目标配置缓存充当已生效证明。尚未复制 body 惯量/重力政策、controller 状态和驱动目标时间线，dynamics_stepping_qualified 与 drive_target_replay_qualified 仍为 false。
+
+定向 **22 passed / 0.06 s**；全量 **1728 passed / 1 existing trimesh warning / 42.91 s**。新增夹具覆盖主动/被动参数、源不变、原生 setter 未生效、参数读回漂移、对象别名与身份/非有限参数拒绝。
+
+**实际验收没有通过，而且引入了已知初始化回归。** 普通正式 worker_21 在 source native get_active_joints 的名称/数量集合校验处抛出 Complete independent thirteen-joint drive inventory required，尚未进入原参数复制、规划或执行。此前 worker_14 能执行到闭合第 6 步的证据属于旧提交，不能宣称当前提交保留了该实际运行范围。
+
+只读 worker_22 原计划记录 native 与 ManiSkill 包装器关节映射，但诊断代码错误访问不存在的 FrozenPrimaryWorld.events，抛出 AttributeError；**没有取得映射结果**。目前不能断言一定是名称前缀、缺关节或排序问题。下一步先修诊断输出通道，读取真实映射，再修身份合同并新增覆盖该差异的负例/正例；不能删除 13 关节、独立句柄和原几何检查。上述两个问题本轮明确保留，未伪称修复。
+
+- 内核：全量通过，但夹具没有覆盖新增接线遇到的真实源身份差异。
+- 原生接线：驱动政策代码为 WIP；普通 worker 初始化回归，native 参数对齐尚未验证，缺适配器和所有拒绝检查保留。
+- 模型推理：未运行。
+- 实际仿真：20 实际执行到闭合收敛失败；21/22 仅初始化失败，无规划/技能动作。三个进程均退出 1，主环境、机器人镜像和 planner 释放均有 true 读回。
+- 硬件：未授权、未连接、未操作；所有测试/仿真均网络隔离、重任务串行。
+
+保持 PARTIAL_DELIVERY，六检查点和笔完整原子闭环未通过。先修复当前初始化回归，再继续闭链/候选分析和实测闭合几何重审；不能把镜像参数组件或新的测试计数作为交付完成。代码与证据仅本地提交，未推送。
