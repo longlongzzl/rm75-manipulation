@@ -22,7 +22,7 @@ def test_lookahead_uses_selected_grasp_pair_before_budget(rig, paired_feasible):
     planner = Planner()
     snap = rig.sync.sync('initial')
     selected = PoseCandidate('selected_grasp', Pose([.3,0,.03],[1,0,0,0]), score=2.)
-    other = PoseCandidate('other_grasp', Pose([.31,0,.03],[1,0,0,0]), score=1.)
+    other = PoseCandidate('other_grasp', Pose([.31,0,.03],[1,0,0,0]), score=-100.)
     paired = PoseCandidate('paired_place', Pose([.4,0,.03],[1,0,0,0]), score=1.,
         metadata={'planning_target_object_pose':pose(.4,z=.03)})
     unrelated = PoseCandidate('unrelated_place', Pose([.5,0,.03],[1,0,0,0]), score=99.,

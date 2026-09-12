@@ -7652,6 +7652,76 @@
       "result_sha256": "f2d2e2da50b81e3a4cd315a6a1084452949469f24ccc665ed34a755383360778",
       "result_path": "runtime_data/swm_release_pen_phase_driver_03/transaction_result.json",
       "next_gap": "Reuse original broad IK relation screening and cached joint-distance ranking before motion shortlist; not whole episode execution"
+    },
+    "relation_screen_targeted_01": {
+      "passed": 36,
+      "failed": 0,
+      "seconds": 0.58
+    },
+    "relation_screen_full_01": {
+      "passed": 1654,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 42.24,
+      "domain": "software_regression",
+      "log": "runtime_data/swm_release_relation_screen_full_01.log",
+      "source_sha256": {
+        "rm75_app/pickplace/coordinator.py": "eeea6dbeb6194393bc1e4af9fade3b1b619739a7d9c9555c0e26311f815cada4",
+        "rm75_app/swm/native_skills.py": "b09be483af4012dacbc725e8f2fbfd28eea20b4173b53bd27972a2b48373dae3",
+        "tests/swm/test_original_relation_screen.py": "753ef50ae2a89022625cceba0985a64b1cd572cf2bdcf9385bab59ddb72fe137"
+      }
+    },
+    "native_pen_phase_04": {
+      "status": "NATIVE_PATHS_FEASIBLE_AUDIT_REJECTED",
+      "error": "SceneInvalid: grasp: post-transition collision: [{'collision_type': 'world', 'state': 'path', 'candidate_index': 0, 'robot_link': 'attached_object', 'world_object': '__maniskill_workspace_table__', 'penetration_m': 0.005503199994564056}]",
+      "domain": "actual_native_gpu_phase_planning_and_audit",
+      "elapsed_s": 5.468834566003352,
+      "stage_summary": [
+        {
+          "stage": "grasp",
+          "count": 1,
+          "successes": 1
+        },
+        {
+          "stage": "lift",
+          "count": 1,
+          "successes": 1
+        },
+        {
+          "stage": "place",
+          "count": 1,
+          "successes": 1
+        },
+        {
+          "stage": "pregrasp",
+          "count": 1,
+          "successes": 1
+        },
+        {
+          "stage": "preplace",
+          "count": 1,
+          "successes": 1
+        }
+      ],
+      "relation_screen": {
+        "grasp_candidate_count": 70,
+        "pick_relation_count": 1,
+        "complete_relation_count": 1,
+        "search_tier": 2,
+        "coarse_ik_call_count": 4,
+        "grasp_feasible_count": 2,
+        "preplace_feasible_count": 26,
+        "place_feasible_count": 4
+      },
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "motion_executed": false,
+      "atomic_worker_qualified": false,
+      "skill_checkpoints": 0,
+      "driver_sha256": "73528b8a4fb00fa58532d93ea59fd3cc65bffc72d7f656dc92c362eb3832a873",
+      "result_sha256": "fc99021b0841b38e92ac6bb6aa7870515fcdb9b3e45b41284dcb66a201d84b2c",
+      "result_path": "runtime_data/swm_release_pen_phase_driver_04/transaction_result.json",
+      "next_gap": "Investigate measured attachment geometry versus original support-contact policy; do not delete table or relax collision thresholds"
     }
   },
   "gates": {

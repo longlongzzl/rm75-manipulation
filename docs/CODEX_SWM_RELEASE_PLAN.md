@@ -343,3 +343,15 @@ PickPlaceNativePhases 的 grasp 前瞻现调用原 task.places_for_grasp(selecte
 进一步源码定位：原 coordinator.run 在运动截断之前进行完整 pregrasp/grasp 宽批 IK、配对 place/preplace 联合筛选和分层扩展；原 segmented chain 再按缓存关节距离和关系分数排序。当前 SWM 原子仍只按候选静态分数取前 8，缺失这段原成功策略。下一步从原协调器复用执行前联合筛选及排序，不能把 run 整任务包装成 grasp，也不能直接扩大预算或删碰撞物。
 
 内核：全量通过。原生接线：配对缺口已修复并实测生效，宽批筛选/排序和正式 worker 仍待接。模型推理：未运行。实际仿真：原生初始化与 GPU 分段求解运行，但联合放置仍失败，主环境无运动、技能检查点为 0。硬件：未授权、未连接。代码与原生驱动/结果摘要记录于 grasp_pairing_* / native_pen_phase_03，历史失败保留。保持 PARTIAL_DELIVERY 和缺适配器检查；本轮代码及证据仅本地提交，未推送。
+
+## M1 / 复用原宽批联合筛选与排序，进入真实阶段审计
+
+从原 PickPlaceCoordinator.run 执行前边界提取 screen_relations，保留原宽批 pregrasp/grasp、配对 place/preplace、分层扩展和诊断逻辑，返回 RelationScreenResult 而不执行 episode。原 run 与 SWM grasp 现在共用该实现；原缓存关节距离/关系分数排序也提取共用。旧 run 的连续轴回退仍保留；本轮不宣称 SWM 所有回退分支已迁完。SWM 联合筛选结束或异常时恢复独立实测夹爪几何，不将名义 open 覆盖成实测状态。筛选出的配对再送入原原子阶段前瞻，抓后 place 仍须重新采集和规划。
+
+定向 36 passed / 0.58 s，包含原协调器与新原子边界；全量 1654 passed / 1 existing trimesh warning / 42.24 s。旧配对 fixture 调低无关抓取分数，使其继续只验证配对约束而不是与新增原关系排序矛盾。
+
+实际 native_pen_phase_04 单 GPU 实验已取得突破：原 70 个抓取候选经过 4 次宽批 IK，在 tier 2 找到 1 个完整关系；2 个 grasp 端点可行，26 个 preplace 和 4 个 place 端点可行。随后 pregrasp、grasp、lift、preplace、place 各 1 次规划均成功，grasp 原子路径为 approach 41 样本、grasp 21 样本、lift 21 样本。
+
+原生 auditor 随后正确拒绝 grasp 闭合后的状态：attached_object 与 __maniskill_workspace_table__ 碰撞，报告穿透 0.005503199994564056 m。故没有执行动作，没有完整审计通过，也没有抓放成功；不能用五段可行路径代替原子验收。主环境和私有资源均关闭。下一步核对原附着拟合几何与原支持面接触/脱离策略，保留桌面、原碰撞阈值和审计拒绝，不为通过而忽略碰撞。
+
+内核：上述全量通过。原生接线：原联合筛选与排序已接，五段真实规划成功，闭合后审计失败；正式 worker 未装配。模型推理：未运行。实际仿真：真实初始化及 GPU 规划/审计，无主环境动作、技能检查点 0。硬件：未授权、未连接。源代码和原生驱动/结果摘要记录于 relation_screen_* / native_pen_phase_04，历史失败保留。保持 PARTIAL_DELIVERY 与缺适配器检查；本轮代码及证据仅本地提交，未推送。

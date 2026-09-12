@@ -356,6 +356,15 @@ def _reverse_trajectory(trajectory: JointTrajectory) -> JointTrajectory:
     )
 
 
+@dataclass(frozen=True)
+class RelationScreenResult:
+    grasp_candidates: tuple[PoseCandidate, ...]
+    places_by_grasp: Mapping[str, tuple[PoseCandidate, ...]]
+    grasp_scores: Mapping[str, float]
+    diagnostics: Mapping[str, Any]
+    axis_requested: bool
+
+
 class PickPlaceCoordinator:
     def __init__(
         self,
@@ -608,22 +617,7 @@ class PickPlaceCoordinator:
             self._last_plan_failure = {}
         return best
 
-    def _run_segmented_chain(
-        self,
-        task: PickPlaceTask,
-        relation_grasp_candidates: tuple[PoseCandidate, ...],
-        complete_places_by_grasp: Mapping[str, tuple[PoseCandidate, ...]],
-        grasp_scores: Mapping[str, float],
-        relation_screen: Mapping[str, Any],
-    ) -> PickPlaceRunResult:
-        """Run the proven segmented chain without cuRobo2 PlanGrasp.
-
-        Free-space legs use normal MotionGen.  Contact-adjacent legs use the
-        independent world-Z linear primitive, and broad reachability has
-        already been screened by the fixed batch64 IK solver.
-        """
-
-        planning_started = time.perf_counter()
+    def rank_grasp_relations(self, task, relation_grasp_candidates, grasp_scores):
         pregrasps_by_grasp = {
             item.candidate_id: _approach_offset_candidates(
                 (item,), abs(float(task.grasp_approach_offset))
@@ -660,6 +654,31 @@ class PickPlaceCoordinator:
                 seen_sources.add(source_id)
                 primary.append(item)
         ranked_grasps = (primary + secondary)[: task.max_motion_candidates]
+        return tuple(ranked_grasps)
+
+    def _run_segmented_chain(
+        self,
+        task: PickPlaceTask,
+        relation_grasp_candidates: tuple[PoseCandidate, ...],
+        complete_places_by_grasp: Mapping[str, tuple[PoseCandidate, ...]],
+        grasp_scores: Mapping[str, float],
+        relation_screen: Mapping[str, Any],
+    ) -> PickPlaceRunResult:
+        """Run the proven segmented chain without cuRobo2 PlanGrasp.
+
+        Free-space legs use normal MotionGen.  Contact-adjacent legs use the
+        independent world-Z linear primitive, and broad reachability has
+        already been screened by the fixed batch64 IK solver.
+        """
+
+        planning_started = time.perf_counter()
+        pregrasps_by_grasp = {
+            item.candidate_id: _approach_offset_candidates(
+                (item,), abs(float(task.grasp_approach_offset))
+            )[0]
+            for item in relation_grasp_candidates
+        }
+        ranked_grasps = self.rank_grasp_relations(task, relation_grasp_candidates, grasp_scores)
         selected_chain = None
         failures: list[dict[str, Any]] = []
         attached = False
@@ -1228,10 +1247,43 @@ class PickPlaceCoordinator:
                 self.planner.enable_object_collision(task.object_name)
 
     def run(self, task: PickPlaceTask) -> PickPlaceRunResult:
+        set_gripper_collision_state = getattr(self.planner, "set_gripper_collision_state", None)
+        try:
+            screened = self.screen_relations(task)
+            if not screened.grasp_candidates:
+                primary = PickPlaceRunResult(False, (), failure_stage="relation_screen",
+                    message="no grasp relation has feasible preplace and place endpoints",
+                    diagnostics={"relation_screen": screened.diagnostics})
+                if screened.axis_requested:
+                    return self._run_axis_fallback(task, primary,
+                        self.planner.resolve_axis_constrained_pose_candidates)
+                return primary
+            primary = self._run_segmented_chain(task, screened.grasp_candidates,
+                screened.places_by_grasp, screened.grasp_scores, screened.diagnostics)
+            if (not primary.success and primary.failure_stage == "segmented_chain"
+                    and screened.axis_requested):
+                return self._run_axis_fallback(task, primary,
+                    self.planner.resolve_axis_constrained_pose_candidates)
+            return primary
+        finally:
+            if callable(set_gripper_collision_state):
+                set_gripper_collision_state(False)
+
+    def screen_relations(self, task: PickPlaceTask, *, initial_gripper_positions=None) -> RelationScreenResult:
         coarse_screening_active = False
         set_gripper_collision_state = getattr(
             self.planner, "set_gripper_collision_state", None
         )
+        if initial_gripper_positions is not None:
+            measured_setter = getattr(self.planner, "set_measured_gripper_collision_state", None)
+            if not callable(measured_setter) or not callable(set_gripper_collision_state):
+                raise NotImplementedError("Native screening requires measured jaw geometry")
+            nominal_setter = set_gripper_collision_state
+            def set_gripper_collision_state(closed):
+                if closed:
+                    nominal_setter(True)
+                else:
+                    measured_setter(initial_gripper_positions)
         try:
             if callable(set_gripper_collision_state):
                 set_gripper_collision_state(False)
@@ -1948,17 +2000,6 @@ class PickPlaceCoordinator:
                 coarse_screening_active = False
             if callable(set_gripper_collision_state):
                 set_gripper_collision_state(False)
-            if not relation_grasp_candidates:
-                primary = PickPlaceRunResult(
-                    False,
-                    (),
-                    failure_stage="relation_screen",
-                    message="no grasp relation has feasible preplace and place endpoints",
-                    diagnostics={"relation_screen": relation_screen},
-                )
-                if axis_requested:
-                    return self._run_axis_fallback(task, primary, axis_resolver)
-                return primary
             grasp_scores = {
                 item.candidate_id: float(item.score)
                 + max(
@@ -1970,20 +2011,8 @@ class PickPlaceCoordinator:
                 )
                 for item in relation_grasp_candidates
             }
-            primary = self._run_segmented_chain(
-                task,
-                relation_grasp_candidates,
-                complete_places_by_grasp,
-                grasp_scores,
-                relation_screen,
-            )
-            if (
-                not primary.success
-                and primary.failure_stage == "segmented_chain"
-                and axis_requested
-            ):
-                return self._run_axis_fallback(task, primary, axis_resolver)
-            return primary
+            return RelationScreenResult(tuple(relation_grasp_candidates),
+                complete_places_by_grasp, grasp_scores, relation_screen, axis_requested)
         finally:
             if coarse_screening_active:
                 end_coarse()

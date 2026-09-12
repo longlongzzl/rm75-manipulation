@@ -156,6 +156,7 @@ class PickPlaceNativePhases:
     def __init__(self, coordinator, build_task, audit, execute):
         self.coordinator = coordinator
         self.build_task = build_task
+        self.last_relation_screen = {}
         self.audit = audit
         self.execute = execute
 
@@ -194,7 +195,12 @@ class PickPlaceNativePhases:
                 c.planner.set_measured_gripper_collision_state(measured_jaw)
             else:
                 c.planner.set_gripper_collision_state(False)
-            for grasp_candidate in sorted(task.grasp_candidates, key=lambda x: x.score, reverse=True)[:task.max_motion_candidates]:
+            screened = c.screen_relations(task, initial_gripper_positions=measured_jaw)
+            self.last_relation_screen = copy.deepcopy(dict(screened.diagnostics))
+            if not screened.grasp_candidates:
+                raise RuntimeError('Native atomic phase has no feasible trajectory: original relation screen rejected')
+            ranked_grasps = c.rank_grasp_relations(task, screened.grasp_candidates, screened.grasp_scores)
+            for grasp_candidate in ranked_grasps:
                 pre = _approach_offset_candidates((grasp_candidate,), abs(task.grasp_approach_offset))[0]
                 approach = c._plan_pose_stage(stage='pregrasp', current=task.current, candidates=(pre,), task=task)
                 if approach is None or approach.trajectory is None:
@@ -221,7 +227,7 @@ class PickPlaceNativePhases:
                             # measured/predicted attachment. Discard these paths: the
                             # place skill MUST solve again after its fresh observation.
                             if self._placement_stages(task, lifted_q, relative, None,
-                                    candidates=task.places_for_grasp(grasp_candidate.candidate_id)) is None:
+                                    candidates=screened.places_by_grasp[grasp_candidate.candidate_id]) is None:
                                 continue
                             empty = NativeStageState(None if measured_jaw is not None else False,
                                 'empty', gripper_positions=measured_jaw)
