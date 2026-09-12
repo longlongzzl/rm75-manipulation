@@ -1,0 +1,152 @@
+"""Experimental bounded feedback closure around the actual formal worker entry."""
+import sys
+from pathlib import Path
+ROOT=Path('/home/zhangzhao/Desktop/rm75-manipulation')
+sys.path.insert(0,str(ROOT))
+from rm75_app.swm.native_execution import NativePrimaryExecutor
+original=NativePrimaryExecutor.__init__
+def instrument(self, *args, **kwargs):
+    original(self,*args,**kwargs)
+    read=self._read
+    count=0
+    def observed():
+        nonlocal count
+        result=read()
+        count+=1
+        if count not in (28,29,48,128,228):
+            return result
+        import numpy as np
+        from rm75_app.swm.native_bootstrap import _array
+        primary=self.primary
+        agent=primary.env.unwrapped.agent
+        actors=dict(primary.actors)
+        actors['primary_table']=primary.env.unwrapped.table_scene.table
+        contacts=[]
+        for name,link in primary.demo.robot.links_map.items():
+            for oid, actor in actors.items():
+                force=_array(agent.scene.get_pairwise_contact_forces(link,actor)).reshape(-1)
+                if np.linalg.norm(force)>.0001:
+                    contacts.append(dict(robot_link=name,object_id=oid,force_n=force.tolist()))
+        self.emit(kind='swm_primary_contact_diagnosis',read_count=count,
+            contacts=contacts,feedback=result[0],semantic_gripper_value=self._gripper_value,
+            native_gripper_args={key:getattr(primary.args,key,None)
+                for key in ('gripper_open','gripper_close','close_steps')},
+            original_pen_grasp_predicate=bool(_array(agent.is_grasping(primary.actors['bi'],min_force=.5,max_angle=95)).reshape(-1)[0]),
+            skill_holding_verified=False)
+        return result
+    self._read=observed
+NativePrimaryExecutor.__init__=instrument
+from rm75_app.swm.native_audit import CuroboNativeStageAuditor
+import time,json
+original_audit=CuroboNativeStageAuditor.__call__
+def profiled_audit(self,plan,snapshot):
+    timings={}
+    restore=[]
+    def wrap(owner,name,label):
+        old=getattr(owner,name)
+        restore.append((owner,name,old))
+        def measured(*args,**kwargs):
+            begin=time.monotonic()
+            try:
+                return old(*args,**kwargs)
+            finally:
+                elapsed=time.monotonic()-begin
+                row=timings.setdefault(label,dict(calls=0,total_s=0.,max_s=0.))
+                row['calls']+=1
+                row['total_s']+=elapsed
+                row['max_s']=max(row['max_s'],elapsed)
+        setattr(owner,name,measured)
+    for name in ('_apply','_contacts','_check_path','_verified_contact_ignores'):
+        wrap(self,name,'audit.'+name)
+    for name in ('_collision_diagnostics_for_states','update_scene','attach_object',
+                 'update_attached_object_pose','set_measured_gripper_collision_state',
+                 'set_gripper_collision_state','read_attachment_collision_state','_set_obstacle_enabled'):
+        wrap(self.backend,name,'backend.'+name)
+    begin=time.monotonic()
+    try:
+        return original_audit(self,plan,snapshot)
+    finally:
+        elapsed=time.monotonic()-begin
+        for owner,name,old in restore:
+            setattr(owner,name,old)
+        (ROOT/'runtime_data/swm_release_pen_worker_15/audit_timing.json').write_text(json.dumps(dict(
+            audit_elapsed_s=elapsed,timings=timings,snapshot_id=snapshot['snapshot_id'],
+            source_snapshot_id=plan.source_snapshot_id,skill=plan.payload.skill),indent=2))
+CuroboNativeStageAuditor.__call__=profiled_audit
+import numpy as np
+from rm75_app.swm.native_bootstrap import _array
+from rm75_app.swm.scene import SceneInvalid
+original_gripper=NativePrimaryExecutor.set_gripper
+def feedback_gripper(self,closed):
+    if not closed:return original_gripper(self,closed)
+    if self._last_commanded_target is None:raise SceneInvalid('Missing audited preceding endpoint')
+    primary=self.primary
+    agent=primary.env.unwrapped.agent
+    obj=primary.actors['bi']
+    contact_mode=False
+    stable=0
+    trace=[]
+    for step in range(200):
+        primary.stop.check()
+        if not contact_mode:self._gripper_value=min(1.,self._gripper_value+.04)
+        primary.demo.step_and_render(primary.demo.compose_action(self._last_commanded_target,self._gripper_value),tag='feedback_gripper_close')
+        self._after_control_step('gripper_close')
+        raw,arm,q,velocity=self._read()
+        forces=[float(np.linalg.norm(_array(agent.scene.get_pairwise_contact_forces(link,obj))))
+            for link in (agent.finger1_link,agent.finger2_link)]
+        grasped=bool(_array(agent.is_grasping(obj,min_force=.5,max_angle=95)).reshape(-1)[0])
+        table=primary.env.unwrapped.table_scene.table
+        foreign=dict(primary.actors);foreign.pop('bi');foreign['primary_table']=table
+        forbidden=[]
+        for oid,actor in foreign.items():
+            for link in (agent.finger1_link,agent.finger2_link):
+                force=float(np.linalg.norm(_array(agent.scene.get_pairwise_contact_forces(link,actor))))
+                if force>0:forbidden.append(dict(object_id=oid,force_n=force))
+        trace.append(dict(step=step+1,command=self._gripper_value,forces_n=forces,grasped=grasped,
+            max_velocity=float(np.max(np.abs(velocity))),endpoint_error=float(np.max(np.abs(q-self._last_commanded_target))),forbidden=forbidden))
+        if forbidden:
+            self.emit(kind='swm_feedback_closure_probe',trace=trace)
+            raise SceneInvalid('Feedback closure encountered forbidden contact')
+        if max(forces)>.1:contact_mode=True
+        in_band=grasped and min(forces)>=.5 and max(forces)<=.7
+        stable=stable+1 if in_band and np.max(np.abs(velocity))<=.001 and np.max(np.abs(q-self._last_commanded_target))<=.02 else 0
+        if stable>=3:
+            self.emit(kind='swm_feedback_closure_probe',trace=trace)
+            self._settle('gripper_close')
+            return
+        if contact_mode and not in_band:
+            roots=[raw['positions'][raw['joint_names'].index('gripper_'+side+'_1_Joint')] for side in ('Left','Right')]
+            error=.6-(max(forces) if max(forces)>.7 else min(forces))
+            target=float((self._gripper_value+1.)*.91/2.+np.clip(error*.0005,-.0005,.0005))
+            self._gripper_value=float(np.clip(2.*target/.91-1.,-1.,1.))
+    self.emit(kind='swm_feedback_closure_probe',trace=trace)
+    raise SceneInvalid('Feedback closure exhausted bounded convergence budget')
+NativePrimaryExecutor.set_gripper=feedback_gripper
+from rm75_app.swm import native_bootstrap
+from unittest.mock import patch
+import copy
+initialize_original=native_bootstrap.initialize_frozen_primary
+def initialize_numeric(resources,direct,args,contract,**kwargs):
+    base=direct.targeted.base
+    make_original=base.gym.make
+    requested={}
+    def make(*pos,**kw):
+        original_config=kw.get('sim_config',{})
+        if hasattr(original_config,'dict'):original_config=original_config.dict()
+        requested['original_explicit_config']=copy.deepcopy(original_config)
+        config=copy.deepcopy(original_config)
+        config.setdefault('scene_config',{}).update(solver_position_iterations=64,solver_velocity_iterations=16)
+        kw['sim_config']=config
+        return make_original(*pos,**kw)
+    with patch.object(base.gym,'make',make):
+        primary=initialize_original(resources,direct,args,contract,**kwargs)
+    env=primary.env.unwrapped
+    kwargs['events'].emit('swm_numerical_integration_probe',requested_solver_iterations=[64,16],
+        original_explicit_config=requested['original_explicit_config'],
+        original_default_sim_config=env._default_sim_config.dict(),effective_sim_config=env.sim_config.dict(),actual_sim_freq=env.sim_freq,
+        actual_control_freq=env.control_freq,physics_timestep_s=env.scene.px.timestep,
+        hardware_connected=False,qualification=False)
+    return primary
+native_bootstrap.initialize_frozen_primary=initialize_numeric
+from rm75_app.workcell.worker import main
+raise SystemExit(main())

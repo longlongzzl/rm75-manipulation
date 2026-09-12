@@ -11293,6 +11293,923 @@
       "tested_commit": "3c7fd0c",
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "output": "benchmarks/release/evidence/pen_closure/guard_full_pytest.txt"
+    },
+    "native_pen_worker_15": {
+      "domain": "actual_primary_physics_with_experimental_driver",
+      "run_dir": "runtime_data/swm_release_pen_worker_15",
+      "result": {
+        "command_success": false,
+        "error": "SceneInvalid: Feedback closure exhausted bounded convergence budget",
+        "finished_at": 1789252089.81063,
+        "mode": "sim",
+        "status": "failed",
+        "task": "pickplace",
+        "task_success": null
+      },
+      "hashes": [
+        {
+          "sha256": "6892b9c81905047e8eb6aa374ca4710e41d0e3b265da458f0dec0f26153f0c3c",
+          "path": "runtime_data/swm_release_pen_worker_15/diagnose.py"
+        },
+        {
+          "sha256": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+          "path": "runtime_data/swm_release_pen_worker_15/profile.json"
+        },
+        {
+          "sha256": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+          "path": "runtime_data/swm_release_pen_worker_15/request.json"
+        },
+        {
+          "sha256": "b8cb4cef3956a329f525d0ddbe076dda13664ad0e04e43079e49897357d112fb",
+          "path": "runtime_data/swm_release_pen_worker_15/events.jsonl"
+        },
+        {
+          "sha256": "d7aace64e8e7b5f69054ddba4263520b11220e4438541440c99dd47561412425",
+          "path": "runtime_data/swm_release_pen_worker_15/result.json"
+        }
+      ],
+      "source_commit": "3c7fd0c",
+      "driver_archive": "benchmarks/release/evidence/pen_closure/worker_15.py.txt",
+      "production_change": false,
+      "hardware_connected": false,
+      "skill_verified": false,
+      "same_measured_action_parameter_replay": false,
+      "settle_events": [
+        {
+          "kind": "swm_primary_stage_settled",
+          "stage": "approach",
+          "steps": 13,
+          "max_velocity_rad_s": 0.0006844648742116988,
+          "endpoint_error_rad": 4.3272972106933594e-05
+        },
+        {
+          "kind": "swm_primary_stage_settled",
+          "stage": "grasp",
+          "steps": 14,
+          "max_velocity_rad_s": 0.0003315085778012872,
+          "endpoint_error_rad": 7.700920104980469e-05
+        }
+      ],
+      "feedback_closure": [
+        {
+          "steps": 200,
+          "last": {
+            "command": 0.4803158904099998,
+            "endpoint_error": 0.0001939535140991211,
+            "forbidden": [],
+            "forces_n": [
+              0.6890515008723561,
+              0.607195858277661
+            ],
+            "grasped": true,
+            "max_velocity": 0.016029521822929382,
+            "step": 200
+          },
+          "grasp_predicate_samples": 158
+        }
+      ],
+      "closure_contact_guard": {
+        "samples": 200,
+        "forbidden": []
+      },
+      "drive_target_probe": [],
+      "numerical_config": [
+        {
+          "actual_control_freq": 20,
+          "actual_sim_freq": 100,
+          "effective_sim_config": {
+            "control_freq": 20,
+            "default_materials_config": {
+              "dynamic_friction": 0.3,
+              "restitution": 0,
+              "static_friction": 0.3
+            },
+            "gpu_memory_config": {
+              "found_lost_aggregate_pairs_capacity": 1024,
+              "found_lost_pairs_capacity": 33554432,
+              "heap_capacity": 67108864,
+              "max_rigid_contact_count": 1048576,
+              "max_rigid_patch_count": 524288,
+              "temp_buffer_capacity": 16777216,
+              "total_aggregate_pairs_capacity": 1024
+            },
+            "scene_config": {
+              "bounce_threshold": 2,
+              "contact_offset": 0.02,
+              "cpu_workers": 0,
+              "enable_ccd": false,
+              "enable_enhanced_determinism": false,
+              "enable_friction_every_iteration": true,
+              "enable_pcm": true,
+              "enable_tgs": true,
+              "gravity": [
+                0,
+                0,
+                -9.81
+              ],
+              "rest_offset": 0,
+              "sleep_threshold": 0.005,
+              "solver_position_iterations": 64,
+              "solver_velocity_iterations": 16
+            },
+            "sim_freq": 100,
+            "spacing": 5
+          },
+          "hardware_connected": false,
+          "kind": "swm_numerical_integration_probe",
+          "original_default_sim_config": {
+            "control_freq": 20,
+            "default_materials_config": {
+              "dynamic_friction": 0.3,
+              "restitution": 0,
+              "static_friction": 0.3
+            },
+            "gpu_memory_config": {
+              "found_lost_aggregate_pairs_capacity": 1024,
+              "found_lost_pairs_capacity": 33554432,
+              "heap_capacity": 67108864,
+              "max_rigid_contact_count": 1048576,
+              "max_rigid_patch_count": 524288,
+              "temp_buffer_capacity": 16777216,
+              "total_aggregate_pairs_capacity": 1024
+            },
+            "scene_config": {
+              "bounce_threshold": 2,
+              "contact_offset": 0.02,
+              "cpu_workers": 0,
+              "enable_ccd": false,
+              "enable_enhanced_determinism": false,
+              "enable_friction_every_iteration": true,
+              "enable_pcm": true,
+              "enable_tgs": true,
+              "gravity": [
+                0,
+                0,
+                -9.81
+              ],
+              "rest_offset": 0,
+              "sleep_threshold": 0.005,
+              "solver_position_iterations": 15,
+              "solver_velocity_iterations": 1
+            },
+            "sim_freq": 100,
+            "spacing": 5
+          },
+          "original_explicit_config": {},
+          "physics_timestep_s": 0.009999999776482582,
+          "qualification": false,
+          "requested_solver_iterations": [
+            64,
+            16
+          ],
+          "sequence": 5,
+          "time": 1789252069.2299201
+        }
+      ],
+      "cleanup": [
+        {
+          "kind": "swm_native_resources_released",
+          "planner_pointer_released": true,
+          "primary_closed": true,
+          "robot_mirror_closed": true,
+          "sequence": 220,
+          "time": 1789252089.8081183
+        }
+      ]
+    },
+    "native_pen_worker_16": {
+      "domain": "actual_primary_physics_with_experimental_driver",
+      "run_dir": "runtime_data/swm_release_pen_worker_16",
+      "result": {
+        "command_success": false,
+        "error": "SceneInvalid: Primary stage did not reach measured idle within settle budget",
+        "finished_at": 1789252205.3945184,
+        "mode": "sim",
+        "status": "failed",
+        "task": "pickplace",
+        "task_success": null
+      },
+      "hashes": [
+        {
+          "sha256": "2c0ab2836c10901ff5cc07a40e11a906d83ccf670e45a5ece04d94b40b95843d",
+          "path": "runtime_data/swm_release_pen_worker_16/diagnose.py"
+        },
+        {
+          "sha256": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+          "path": "runtime_data/swm_release_pen_worker_16/profile.json"
+        },
+        {
+          "sha256": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+          "path": "runtime_data/swm_release_pen_worker_16/request.json"
+        },
+        {
+          "sha256": "4d06c2c8d135cacf8d98143e5c103d45d06ce44590288012b7c31781ca7fc45f",
+          "path": "runtime_data/swm_release_pen_worker_16/events.jsonl"
+        },
+        {
+          "sha256": "5cdc8bf77197be74443a21d64c68b468e4d515e1b07b6449f6a19f994bdecff1",
+          "path": "runtime_data/swm_release_pen_worker_16/result.json"
+        }
+      ],
+      "source_commit": "3c7fd0c",
+      "driver_archive": "benchmarks/release/evidence/pen_closure/worker_16.py.txt",
+      "production_change": false,
+      "hardware_connected": false,
+      "skill_verified": false,
+      "same_measured_action_parameter_replay": false,
+      "settle_events": [
+        {
+          "kind": "swm_primary_stage_settled",
+          "stage": "approach",
+          "steps": 13,
+          "max_velocity_rad_s": 0.0006844648742116988,
+          "endpoint_error_rad": 4.3272972106933594e-05
+        },
+        {
+          "kind": "swm_primary_settle_failed",
+          "stage": "grasp",
+          "steps": 200,
+          "max_velocity_rad_s": 0.0028492684941738844,
+          "endpoint_error_rad": 0.0003046989440917969
+        }
+      ],
+      "feedback_closure": [],
+      "closure_contact_guard": {
+        "samples": 0,
+        "forbidden": []
+      },
+      "drive_target_probe": [
+        {
+          "counts": {
+            "arm": {
+              "sent": 29,
+              "unchanged_skipped": 214
+            },
+            "gripper": {
+              "sent": 1,
+              "unchanged_skipped": 242
+            }
+          },
+          "forced_sleep": false,
+          "kind": "swm_unchanged_drive_target_probe",
+          "qualification": false,
+          "sequence": 18,
+          "time": 1789252205.2415512,
+          "velocity_setters": false
+        }
+      ],
+      "numerical_config": [
+        {
+          "actual_control_freq": 20,
+          "actual_sim_freq": 100,
+          "effective_sim_config": {
+            "control_freq": 20,
+            "default_materials_config": {
+              "dynamic_friction": 0.3,
+              "restitution": 0,
+              "static_friction": 0.3
+            },
+            "gpu_memory_config": {
+              "found_lost_aggregate_pairs_capacity": 1024,
+              "found_lost_pairs_capacity": 33554432,
+              "heap_capacity": 67108864,
+              "max_rigid_contact_count": 1048576,
+              "max_rigid_patch_count": 524288,
+              "temp_buffer_capacity": 16777216,
+              "total_aggregate_pairs_capacity": 1024
+            },
+            "scene_config": {
+              "bounce_threshold": 2,
+              "contact_offset": 0.02,
+              "cpu_workers": 0,
+              "enable_ccd": false,
+              "enable_enhanced_determinism": false,
+              "enable_friction_every_iteration": true,
+              "enable_pcm": true,
+              "enable_tgs": true,
+              "gravity": [
+                0,
+                0,
+                -9.81
+              ],
+              "rest_offset": 0,
+              "sleep_threshold": 0.005,
+              "solver_position_iterations": 64,
+              "solver_velocity_iterations": 16
+            },
+            "sim_freq": 100,
+            "spacing": 5
+          },
+          "hardware_connected": false,
+          "kind": "swm_numerical_integration_probe",
+          "original_default_sim_config": {
+            "control_freq": 20,
+            "default_materials_config": {
+              "dynamic_friction": 0.3,
+              "restitution": 0,
+              "static_friction": 0.3
+            },
+            "gpu_memory_config": {
+              "found_lost_aggregate_pairs_capacity": 1024,
+              "found_lost_pairs_capacity": 33554432,
+              "heap_capacity": 67108864,
+              "max_rigid_contact_count": 1048576,
+              "max_rigid_patch_count": 524288,
+              "temp_buffer_capacity": 16777216,
+              "total_aggregate_pairs_capacity": 1024
+            },
+            "scene_config": {
+              "bounce_threshold": 2,
+              "contact_offset": 0.02,
+              "cpu_workers": 0,
+              "enable_ccd": false,
+              "enable_enhanced_determinism": false,
+              "enable_friction_every_iteration": true,
+              "enable_pcm": true,
+              "enable_tgs": true,
+              "gravity": [
+                0,
+                0,
+                -9.81
+              ],
+              "rest_offset": 0,
+              "sleep_threshold": 0.005,
+              "solver_position_iterations": 15,
+              "solver_velocity_iterations": 1
+            },
+            "sim_freq": 100,
+            "spacing": 5
+          },
+          "original_explicit_config": {},
+          "physics_timestep_s": 0.009999999776482582,
+          "qualification": false,
+          "requested_solver_iterations": [
+            64,
+            16
+          ],
+          "sequence": 5,
+          "time": 1789252190.4236846
+        }
+      ],
+      "cleanup": [
+        {
+          "kind": "swm_native_resources_released",
+          "planner_pointer_released": true,
+          "primary_closed": true,
+          "robot_mirror_closed": true,
+          "sequence": 20,
+          "time": 1789252205.3922079
+        }
+      ]
+    },
+    "native_pen_worker_17": {
+      "domain": "actual_primary_physics_with_experimental_driver",
+      "run_dir": "runtime_data/swm_release_pen_worker_17",
+      "result": {
+        "command_success": false,
+        "error": "SceneInvalid: Feedback closure exhausted bounded convergence budget",
+        "finished_at": 1789252324.5532315,
+        "mode": "sim",
+        "status": "failed",
+        "task": "pickplace",
+        "task_success": null
+      },
+      "hashes": [
+        {
+          "sha256": "3a6a80790e80ac5fbec05180997bad1d76d6fcb0beffbacab1cd2fceb328c6d6",
+          "path": "runtime_data/swm_release_pen_worker_17/diagnose.py"
+        },
+        {
+          "sha256": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+          "path": "runtime_data/swm_release_pen_worker_17/profile.json"
+        },
+        {
+          "sha256": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+          "path": "runtime_data/swm_release_pen_worker_17/request.json"
+        },
+        {
+          "sha256": "30b2745a005c0cbafdd04bd0b0c92b4ffeaa4f6d13cedd7b09e3ea7283f5d0d5",
+          "path": "runtime_data/swm_release_pen_worker_17/events.jsonl"
+        },
+        {
+          "sha256": "ab2d34b3659525b2709304005a4676220ef17fcbe7e6a5097d320fc21427b560",
+          "path": "runtime_data/swm_release_pen_worker_17/result.json"
+        }
+      ],
+      "source_commit": "3c7fd0c",
+      "driver_archive": "benchmarks/release/evidence/pen_closure/worker_17.py.txt",
+      "production_change": false,
+      "hardware_connected": false,
+      "skill_verified": false,
+      "same_measured_action_parameter_replay": false,
+      "settle_events": [
+        {
+          "kind": "swm_primary_stage_settled",
+          "stage": "approach",
+          "steps": 13,
+          "max_velocity_rad_s": 0.0006844648742116988,
+          "endpoint_error_rad": 4.3272972106933594e-05
+        },
+        {
+          "kind": "swm_primary_stage_settled",
+          "stage": "grasp",
+          "steps": 14,
+          "max_velocity_rad_s": 0.0003315085778012872,
+          "endpoint_error_rad": 7.700920104980469e-05
+        }
+      ],
+      "feedback_closure": [
+        {
+          "steps": 200,
+          "last": {
+            "command": 0.48071222431962446,
+            "endpoint_error": 0.0004769563674926758,
+            "forbidden": [],
+            "forces_n": [
+              1.3910875543448842,
+              1.4725483634916579
+            ],
+            "grasped": true,
+            "max_velocity": 0.015789935365319252,
+            "step": 200
+          },
+          "grasp_predicate_samples": 19
+        }
+      ],
+      "closure_contact_guard": {
+        "samples": 200,
+        "forbidden": []
+      },
+      "drive_target_probe": [],
+      "numerical_config": [
+        {
+          "actual_control_freq": 20,
+          "actual_sim_freq": 100,
+          "effective_sim_config": {
+            "control_freq": 20,
+            "default_materials_config": {
+              "dynamic_friction": 0.3,
+              "restitution": 0,
+              "static_friction": 0.3
+            },
+            "gpu_memory_config": {
+              "found_lost_aggregate_pairs_capacity": 1024,
+              "found_lost_pairs_capacity": 33554432,
+              "heap_capacity": 67108864,
+              "max_rigid_contact_count": 1048576,
+              "max_rigid_patch_count": 524288,
+              "temp_buffer_capacity": 16777216,
+              "total_aggregate_pairs_capacity": 1024
+            },
+            "scene_config": {
+              "bounce_threshold": 2,
+              "contact_offset": 0.02,
+              "cpu_workers": 0,
+              "enable_ccd": false,
+              "enable_enhanced_determinism": false,
+              "enable_friction_every_iteration": true,
+              "enable_pcm": true,
+              "enable_tgs": true,
+              "gravity": [
+                0,
+                0,
+                -9.81
+              ],
+              "rest_offset": 0,
+              "sleep_threshold": 0.005,
+              "solver_position_iterations": 64,
+              "solver_velocity_iterations": 16
+            },
+            "sim_freq": 100,
+            "spacing": 5
+          },
+          "hardware_connected": false,
+          "kind": "swm_numerical_integration_probe",
+          "original_default_sim_config": {
+            "control_freq": 20,
+            "default_materials_config": {
+              "dynamic_friction": 0.3,
+              "restitution": 0,
+              "static_friction": 0.3
+            },
+            "gpu_memory_config": {
+              "found_lost_aggregate_pairs_capacity": 1024,
+              "found_lost_pairs_capacity": 33554432,
+              "heap_capacity": 67108864,
+              "max_rigid_contact_count": 1048576,
+              "max_rigid_patch_count": 524288,
+              "temp_buffer_capacity": 16777216,
+              "total_aggregate_pairs_capacity": 1024
+            },
+            "scene_config": {
+              "bounce_threshold": 2,
+              "contact_offset": 0.02,
+              "cpu_workers": 0,
+              "enable_ccd": false,
+              "enable_enhanced_determinism": false,
+              "enable_friction_every_iteration": true,
+              "enable_pcm": true,
+              "enable_tgs": true,
+              "gravity": [
+                0,
+                0,
+                -9.81
+              ],
+              "rest_offset": 0,
+              "sleep_threshold": 0.005,
+              "solver_position_iterations": 15,
+              "solver_velocity_iterations": 1
+            },
+            "sim_freq": 100,
+            "spacing": 5
+          },
+          "original_explicit_config": {},
+          "physics_timestep_s": 0.009999999776482582,
+          "qualification": false,
+          "requested_solver_iterations": [
+            64,
+            16
+          ],
+          "sequence": 5,
+          "time": 1789252304.4561782
+        }
+      ],
+      "cleanup": [
+        {
+          "kind": "swm_native_resources_released",
+          "planner_pointer_released": true,
+          "primary_closed": true,
+          "robot_mirror_closed": true,
+          "sequence": 220,
+          "time": 1789252324.5507932
+        }
+      ]
+    },
+    "native_pen_worker_18": {
+      "domain": "actual_primary_physics_with_experimental_driver",
+      "run_dir": "runtime_data/swm_release_pen_worker_18",
+      "result": {
+        "command_success": false,
+        "error": "SceneInvalid: Feedback closure exhausted bounded convergence budget",
+        "finished_at": 1789252453.8373613,
+        "mode": "sim",
+        "status": "failed",
+        "task": "pickplace",
+        "task_success": null
+      },
+      "hashes": [
+        {
+          "sha256": "beee8d1e0ec546f48e5ce986e6b28d86106e485f4c462738e9a9db9971977c91",
+          "path": "runtime_data/swm_release_pen_worker_18/diagnose.py"
+        },
+        {
+          "sha256": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+          "path": "runtime_data/swm_release_pen_worker_18/profile.json"
+        },
+        {
+          "sha256": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+          "path": "runtime_data/swm_release_pen_worker_18/request.json"
+        },
+        {
+          "sha256": "8527e0048c714391ba25b28d3c89ca1bd3d20abd8d167dbdf1276d64c2ccc200",
+          "path": "runtime_data/swm_release_pen_worker_18/events.jsonl"
+        },
+        {
+          "sha256": "bd8629a83a5360d894d3faa2985a9c899c918eb76cf38113e28fe64c7ba7619f",
+          "path": "runtime_data/swm_release_pen_worker_18/result.json"
+        }
+      ],
+      "source_commit": "3c7fd0c",
+      "driver_archive": "benchmarks/release/evidence/pen_closure/worker_18.py.txt",
+      "production_change": false,
+      "hardware_connected": false,
+      "skill_verified": false,
+      "same_measured_action_parameter_replay": false,
+      "settle_events": [
+        {
+          "kind": "swm_primary_stage_settled",
+          "stage": "approach",
+          "steps": 13,
+          "max_velocity_rad_s": 0.0006833537481725216,
+          "endpoint_error_rad": 4.374980926513672e-05
+        },
+        {
+          "kind": "swm_primary_stage_settled",
+          "stage": "grasp",
+          "steps": 14,
+          "max_velocity_rad_s": 0.00032767513766884804,
+          "endpoint_error_rad": 7.641315460205078e-05
+        }
+      ],
+      "feedback_closure": [
+        {
+          "steps": 200,
+          "last": {
+            "command": 0.48043956043956504,
+            "endpoint_error": 0.0005413293838500977,
+            "forbidden": [],
+            "forces_n": [
+              1.58414140898843,
+              1.5967488347490084
+            ],
+            "grasped": true,
+            "max_velocity": 0.04701250046491623,
+            "step": 200
+          },
+          "grasp_predicate_samples": 162
+        }
+      ],
+      "closure_contact_guard": {
+        "samples": 200,
+        "forbidden": []
+      },
+      "drive_target_probe": [],
+      "numerical_config": [
+        {
+          "actual_control_freq": 20,
+          "actual_sim_freq": 100,
+          "effective_sim_config": {
+            "control_freq": 20,
+            "default_materials_config": {
+              "dynamic_friction": 0.3,
+              "restitution": 0,
+              "static_friction": 0.3
+            },
+            "gpu_memory_config": {
+              "found_lost_aggregate_pairs_capacity": 1024,
+              "found_lost_pairs_capacity": 33554432,
+              "heap_capacity": 67108864,
+              "max_rigid_contact_count": 1048576,
+              "max_rigid_patch_count": 524288,
+              "temp_buffer_capacity": 16777216,
+              "total_aggregate_pairs_capacity": 1024
+            },
+            "scene_config": {
+              "bounce_threshold": 2,
+              "contact_offset": 0.02,
+              "cpu_workers": 0,
+              "enable_ccd": false,
+              "enable_enhanced_determinism": false,
+              "enable_friction_every_iteration": true,
+              "enable_pcm": true,
+              "enable_tgs": true,
+              "gravity": [
+                0,
+                0,
+                -9.81
+              ],
+              "rest_offset": 0,
+              "sleep_threshold": 0.005,
+              "solver_position_iterations": 64,
+              "solver_velocity_iterations": 128
+            },
+            "sim_freq": 100,
+            "spacing": 5
+          },
+          "hardware_connected": false,
+          "kind": "swm_numerical_integration_probe",
+          "original_default_sim_config": {
+            "control_freq": 20,
+            "default_materials_config": {
+              "dynamic_friction": 0.3,
+              "restitution": 0,
+              "static_friction": 0.3
+            },
+            "gpu_memory_config": {
+              "found_lost_aggregate_pairs_capacity": 1024,
+              "found_lost_pairs_capacity": 33554432,
+              "heap_capacity": 67108864,
+              "max_rigid_contact_count": 1048576,
+              "max_rigid_patch_count": 524288,
+              "temp_buffer_capacity": 16777216,
+              "total_aggregate_pairs_capacity": 1024
+            },
+            "scene_config": {
+              "bounce_threshold": 2,
+              "contact_offset": 0.02,
+              "cpu_workers": 0,
+              "enable_ccd": false,
+              "enable_enhanced_determinism": false,
+              "enable_friction_every_iteration": true,
+              "enable_pcm": true,
+              "enable_tgs": true,
+              "gravity": [
+                0,
+                0,
+                -9.81
+              ],
+              "rest_offset": 0,
+              "sleep_threshold": 0.005,
+              "solver_position_iterations": 15,
+              "solver_velocity_iterations": 1
+            },
+            "sim_freq": 100,
+            "spacing": 5
+          },
+          "original_explicit_config": {},
+          "physics_timestep_s": 0.009999999776482582,
+          "qualification": false,
+          "requested_solver_iterations": [
+            64,
+            128
+          ],
+          "sequence": 5,
+          "time": 1789252431.4555762
+        }
+      ],
+      "cleanup": [
+        {
+          "kind": "swm_native_resources_released",
+          "planner_pointer_released": true,
+          "primary_closed": true,
+          "robot_mirror_closed": true,
+          "sequence": 220,
+          "time": 1789252453.8349051
+        }
+      ]
+    },
+    "native_pen_worker_19": {
+      "domain": "actual_primary_physics_with_experimental_driver",
+      "run_dir": "runtime_data/swm_release_pen_worker_19",
+      "result": {
+        "command_success": false,
+        "error": "SceneInvalid: Feedback closure exhausted bounded convergence budget",
+        "finished_at": 1789252556.168735,
+        "mode": "sim",
+        "status": "failed",
+        "task": "pickplace",
+        "task_success": null
+      },
+      "hashes": [
+        {
+          "sha256": "71f52eb1d600faa38144a7cc61a433c7b34c1da8aa313248854e0cedf038c8c6",
+          "path": "runtime_data/swm_release_pen_worker_19/diagnose.py"
+        },
+        {
+          "sha256": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+          "path": "runtime_data/swm_release_pen_worker_19/profile.json"
+        },
+        {
+          "sha256": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+          "path": "runtime_data/swm_release_pen_worker_19/request.json"
+        },
+        {
+          "sha256": "4bbf2a0dcf118437b8e722b2e245c6a61242658f7fb1f1e6730508fc848eadf2",
+          "path": "runtime_data/swm_release_pen_worker_19/events.jsonl"
+        },
+        {
+          "sha256": "61daa742c0583c7c0eff6602935902ff0ab889e15ac4e3dc3913b2271fc68186",
+          "path": "runtime_data/swm_release_pen_worker_19/result.json"
+        }
+      ],
+      "source_commit": "3c7fd0c",
+      "driver_archive": "benchmarks/release/evidence/pen_closure/worker_19.py.txt",
+      "production_change": false,
+      "hardware_connected": false,
+      "skill_verified": false,
+      "same_measured_action_parameter_replay": false,
+      "settle_events": [
+        {
+          "kind": "swm_primary_stage_settled",
+          "stage": "approach",
+          "steps": 13,
+          "max_velocity_rad_s": 0.0006788313621655107,
+          "endpoint_error_rad": 3.743171691894531e-05
+        },
+        {
+          "kind": "swm_primary_stage_settled",
+          "stage": "grasp",
+          "steps": 14,
+          "max_velocity_rad_s": 0.0003235275507904589,
+          "endpoint_error_rad": 7.510185241699219e-05
+        }
+      ],
+      "feedback_closure": [
+        {
+          "steps": 200,
+          "last": {
+            "command": 0.482637362637367,
+            "endpoint_error": 0.0004665851593017578,
+            "forbidden": [],
+            "forces_n": [
+              1.483577420995671,
+              1.325417587217516
+            ],
+            "grasped": true,
+            "max_velocity": 0.057480234652757645,
+            "step": 200
+          },
+          "grasp_predicate_samples": 162
+        }
+      ],
+      "closure_contact_guard": {
+        "samples": 200,
+        "forbidden": []
+      },
+      "drive_target_probe": [],
+      "numerical_config": [
+        {
+          "actual_control_freq": 20,
+          "actual_sim_freq": 100,
+          "effective_sim_config": {
+            "control_freq": 20,
+            "default_materials_config": {
+              "dynamic_friction": 0.3,
+              "restitution": 0,
+              "static_friction": 0.3
+            },
+            "gpu_memory_config": {
+              "found_lost_aggregate_pairs_capacity": 1024,
+              "found_lost_pairs_capacity": 33554432,
+              "heap_capacity": 67108864,
+              "max_rigid_contact_count": 1048576,
+              "max_rigid_patch_count": 524288,
+              "temp_buffer_capacity": 16777216,
+              "total_aggregate_pairs_capacity": 1024
+            },
+            "scene_config": {
+              "bounce_threshold": 2,
+              "contact_offset": 0.02,
+              "cpu_workers": 0,
+              "enable_ccd": false,
+              "enable_enhanced_determinism": false,
+              "enable_friction_every_iteration": true,
+              "enable_pcm": true,
+              "enable_tgs": true,
+              "gravity": [
+                0,
+                0,
+                -9.81
+              ],
+              "rest_offset": 0,
+              "sleep_threshold": 0.005,
+              "solver_position_iterations": 64,
+              "solver_velocity_iterations": 16
+            },
+            "sim_freq": 100,
+            "spacing": 5
+          },
+          "hardware_connected": false,
+          "kind": "swm_numerical_integration_probe",
+          "original_default_sim_config": {
+            "control_freq": 20,
+            "default_materials_config": {
+              "dynamic_friction": 0.3,
+              "restitution": 0,
+              "static_friction": 0.3
+            },
+            "gpu_memory_config": {
+              "found_lost_aggregate_pairs_capacity": 1024,
+              "found_lost_pairs_capacity": 33554432,
+              "heap_capacity": 67108864,
+              "max_rigid_contact_count": 1048576,
+              "max_rigid_patch_count": 524288,
+              "temp_buffer_capacity": 16777216,
+              "total_aggregate_pairs_capacity": 1024
+            },
+            "scene_config": {
+              "bounce_threshold": 2,
+              "contact_offset": 0.02,
+              "cpu_workers": 0,
+              "enable_ccd": false,
+              "enable_enhanced_determinism": false,
+              "enable_friction_every_iteration": true,
+              "enable_pcm": true,
+              "enable_tgs": true,
+              "gravity": [
+                0,
+                0,
+                -9.81
+              ],
+              "rest_offset": 0,
+              "sleep_threshold": 0.005,
+              "solver_position_iterations": 15,
+              "solver_velocity_iterations": 1
+            },
+            "sim_freq": 100,
+            "spacing": 5
+          },
+          "original_explicit_config": {},
+          "physics_timestep_s": 0.009999999776482582,
+          "qualification": false,
+          "requested_solver_iterations": [
+            64,
+            16
+          ],
+          "sequence": 5,
+          "time": 1789252533.875379
+        }
+      ],
+      "cleanup": [
+        {
+          "kind": "swm_native_resources_released",
+          "planner_pointer_released": true,
+          "primary_closed": true,
+          "robot_mirror_closed": true,
+          "sequence": 220,
+          "time": 1789252556.1662982
+        }
+      ]
     }
   },
   "gates": {
