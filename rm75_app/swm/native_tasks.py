@@ -40,8 +40,23 @@ class CompiledNativeTask:
         self.base_offset = self.T_world_base[:3, 3].copy()
         self._active = None
         self._iterated = False
+        # Preserve the original container-relative inside goal. Support metadata
+        # alone does not make other task targets relative.
+        self._relative_targets = {}
+        for atom in self.plan.atoms:
+            if atom.semantic_operator != 'inside':
+                continue
+            reference = atom.support_object_id
+            if reference not in self.template.objects or reference == atom.object_id:
+                raise SceneInvalid('Inside target requires its original observed container')
+            local = np.linalg.inv(transform(self.template.objects[reference].pose)) @ transform(atom.target_pose)
+            self._relative_targets[atom.atom_id] = (reference, local)
 
-    def _base_target(self, atom):
+    def _base_target(self, atom, snapshot=None):
+        if atom.atom_id in self._relative_targets and snapshot is not None:
+            reference, local = self._relative_targets[atom.atom_id]
+            return transform(SkillRequest('place', atom.object_id, local,
+                target_reference_id=reference).resolve(snapshot).target)
         return self.T_base_world @ transform(atom.target_pose)
 
     def requests(self):
@@ -54,8 +69,10 @@ class CompiledNativeTask:
             angle_tolerance = min(.10, np.deg2rad(atom.success.orientation_tolerance_deg or np.rad2deg(.10)))
             yield SkillRequest('grasp', atom.object_id, position_tolerance_m=position_tolerance,
                                rotation_tolerance_rad=float(angle_tolerance))
-            yield SkillRequest('place', atom.object_id, self._base_target(atom),
-                position_tolerance_m=position_tolerance, rotation_tolerance_rad=float(angle_tolerance))
+            reference, target = self._relative_targets.get(atom.atom_id, (None, self._base_target(atom)))
+            yield SkillRequest('place', atom.object_id, target,
+                position_tolerance_m=position_tolerance, rotation_tolerance_rad=float(angle_tolerance),
+                target_reference_id=reference)
         self._active = None
 
     def measured_native_scene(self, snapshot):
@@ -91,12 +108,14 @@ class CompiledNativeTask:
         if atom is None or request.object_id != atom.object_id or request.skill not in ('grasp', 'place'):
             raise SceneInvalid('Request is not the active original compiled atom')
         if request.skill == 'place':
-            p, r = pose_error(request.target, self._base_target(atom))
+            p, r = pose_error(request.resolve(snapshot).target, self._base_target(atom, snapshot))
             if p > 1e-9 or r > 1e-7:
                 raise SceneInvalid('Atomic target differs from the trusted compiled target')
         # Call the ORIGINAL FixedSceneAtomTaskBuilder or its magnetic wrapper.
         # Candidate support metadata, release clearances and collision proxies
         # remain owned by that implementation.
+        if atom.atom_id in self._relative_targets:
+            atom = replace(atom, target_pose=self.T_world_base @ self._base_target(atom, snapshot))
         task = self.builder(atom, self.measured_native_scene(snapshot))
         if {obj.name for obj in task.scene.objects} != set(snapshot['objects']):
             raise SceneInvalid('Implicit native table/obstacles must be registered and observed in SWM')
@@ -117,5 +136,6 @@ class CompiledNativeTask:
             return result
         # Each object's final compiled target wins for repeated-object tasks.
         final_atoms = {atom.object_id: atom for atom in self.plan.atoms}
-        return all(validate_target_pose(atom, AtomExecution(True,
+        return all(validate_target_pose(replace(atom,
+            target_pose=self.T_world_base @ self._base_target(atom, snapshot)), AtomExecution(True,
             final_object_pose=scene.objects[oid].pose)).success for oid, atom in final_atoms.items())

@@ -5,7 +5,7 @@ injected. A whole pick-and-place episode must NOT be registered as a grasp.
 Availability is determined by installed adapters, never by merely listing names.
 """
 from __future__ import annotations
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 import copy
 import threading
 from typing import Protocol
@@ -25,10 +25,15 @@ class SkillRequest:
     functional_pose_id: str | None = None
     position_tolerance_m: float = .006
     rotation_tolerance_rad: float = .10
+    target_reference_id: str | None = None
 
     def __post_init__(self):
         if self.skill not in SKILLS: raise ValueError('Unknown atomic skill')
         identifier(self.object_id)
+        if self.target_reference_id is not None:
+            identifier(self.target_reference_id)
+            if self.target_reference_id == self.object_id or self.target is None:
+                raise ValueError("Relative target requires another instance and a local transform")
         if self.functional_pose_id is not None: identifier(self.functional_pose_id)
         if self.skill != 'grasp' and self.target is None: raise ValueError('Non-grasp skill requires an object goal')
         if self.target is not None:
@@ -39,11 +44,27 @@ class SkillRequest:
             raise ValueError('Goal tolerances exceed the typed skill contract')
 
     def as_dict(self):
-        return dict(skill=self.skill, object_id=self.object_id,
+        result = dict(skill=self.skill, object_id=self.object_id,
                     target=None if self.target is None else [list(r) for r in self.target],
                     functional_pose_id=self.functional_pose_id,
                     position_tolerance_m=self.position_tolerance_m,
                     rotation_tolerance_rad=self.rotation_tolerance_rad)
+        if self.target_reference_id is not None:
+            result['target_reference_id'] = self.target_reference_id
+        return result
+
+    def resolve(self, snapshot):
+        """Resolve a local goal against the current valid measured reference."""
+        if self.target_reference_id is None:
+            return self
+        reference = snapshot.get('objects', {}).get(self.target_reference_id)
+        if not snapshot.get('valid') or not reference or not reference.get('measured'):
+            raise SceneInvalid('Target reference is not observed in a valid scene')
+        measured = reference['measured']
+        if measured.get('T_world_object') is None:
+            raise SceneInvalid('Target reference has no measured pose')
+        return replace(self, target=transform(measured['T_world_object']) @ transform(self.target),
+                       target_reference_id=None)
 
 
 @dataclass(frozen=True)
@@ -147,12 +168,14 @@ class AtomicSkillRuntime:
 
     def run(self, request):
         if not isinstance(request, SkillRequest): raise TypeError('Expected typed SkillRequest')
+        program_request = request
         if not self._execution_lock.acquire(blocking=False): raise RuntimeError('Another atomic skill owns this runtime')
         attempts = []; pending_plan = None; receipt = None
         try:
             for attempt in range(self.max_replans+1):
                 self.stop.check()
                 initial = self.sync.sync('before_'+request.skill)
+                request = program_request.resolve(initial)
                 self._preconditions(request, initial)
                 plan = self.backend.plan(request, copy.deepcopy(initial));pending_plan = plan
                 if plan.skill_digest != digest(request.as_dict()) or plan.source_snapshot_id != initial['snapshot_id']:
@@ -163,11 +186,19 @@ class AtomicSkillRuntime:
                 row = dict(attempt=attempt, plan_snapshot=initial['snapshot_id'],
                            execution_snapshot=current['snapshot_id'], executed=False)
                 attempts.append(row)
-                if moved_between(initial, current, self.sync.policy):
+                current_request = program_request.resolve(current)
+                target_changed = False
+                if program_request.target_reference_id is not None:
+                    p, r = pose_error(request.target, current_request.target)
+                    target_changed = p > request.position_tolerance_m or r > request.rotation_tolerance_rad
+                    row.update(target_reference_id=program_request.target_reference_id,
+                               resolved_target=request.as_dict()['target'],
+                               target_reference_error_m=p, target_reference_error_rad=r)
+                if target_changed or moved_between(initial, current, self.sync.policy):
                     discard=getattr(self.backend,'discard',None)
                     if discard is not None:discard(plan)
                     pending_plan=None
-                    row['reason'] = 'scene_changed_during_planning'
+                    row['reason'] = 'target_changed_during_planning' if target_changed else 'scene_changed_during_planning'
                     self.sync.emit(kind='swm_replan', **row)
                     continue
                 audit = self.backend.audit(plan, copy.deepcopy(current))
@@ -211,7 +242,7 @@ class AtomicSkillRuntime:
                         relative = np.linalg.inv(transform(post['robot']['T_world_tcp'])) @ transform(actual)
                         row['measured_T_tcp_object'] = relative.tolist()
                 else:
-                    target_error = pose_error(actual, request.target)
+                    target_error = pose_error(actual, program_request.resolve(post).target)
                     reached = target_error[0] <= request.position_tolerance_m and target_error[1] <= request.rotation_tolerance_rad
                     row.update(goal_error_m=target_error[0], goal_error_rad=target_error[1])
                     if request.skill == 'place': reached = reached and post['robot']['holding']=='empty'
