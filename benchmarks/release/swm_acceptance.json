@@ -8,15 +8,13 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "4fdf4b5",
+    "commit": "f22feee",
     "sha256": {
-      "rm75_app/swm/native_context.py": "57a4162adda4f62710f466029e3aff578f2a7c32eb14183f259f5fc829feee0c",
-      "rm75_app/workcell/worker.py": "321877e2f2c0d5261f1fb7a45bb13e4d3ad6cd6566a63016b81359b63dd16065",
-      "rm75_app/swm/native_audit.py": "60dcf9b0fca14a0020df05d3218910c1374208dee84b22a90ef901e504817fb2",
-      "rm75_app/swm/native_execution.py": "373f0ea5e8e5207252935cca02bf4dcec6393b0b33d4a512d66f8138376d45d9"
+      "rm75_app/swm/native_context.py": "6e807a56d6f742d163cd1ac719edb65452b25718f7b847e66f0890c6edf7dc2f",
+      "tests/swm/test_native_attachment_preparation.py": "d1bf239d8a2de123ed80bf4efe1ce81f7a0e9754caa468318cb7cea38bb6a293"
     },
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Formal pen SIM worker factory installed and actually invoked; complete six-checkpoint task remains failed."
+    "note": "Fresh-checkpoint audit cold-fit delay resolved in actual worker. Physical pen closure still fails; no complete skill/worker qualification."
   },
   "runs": {
     "m0_targeted": {
@@ -9488,6 +9486,396 @@
       "sha256": {
         "runtime_data/swm_release_pen_worker_01/full_tests.log": "f6084183dd7990764586bcc387d85a7f2124b311d9e66765332ba10f3649a79f"
       }
+    },
+    "native_pen_worker_04": {
+      "tested_commit": "f22feee",
+      "domain": "formal_worker_native_primary_physics_with_read_only_instrumentation",
+      "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "process_exit_code": 1,
+      "status": "failed",
+      "error": "SceneInvalid: Primary stage did not reach measured idle within settle budget",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_pen_worker_04/diagnose.py --run-dir /home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_04 --profile /home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_04/profile.json --app-root /home/zhangzhao/Desktop/rm75-manipulation",
+      "native_factory_installed": true,
+      "atomic_worker_qualified": false,
+      "hardware_connected": false,
+      "motion_executed": true,
+      "skill_verified": false,
+      "skill_checkpoints": 2,
+      "required_skill_checkpoints": 6,
+      "attachment_preparation": {
+        "domain": "private_planning_preparation",
+        "elapsed_s": 1.0591919860016787,
+        "fit": {
+          "automatic_count": true,
+          "cache_file": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/curobo2_attachment_spheres/8076a668d385eec14245deffb5f891c65dfd31c6936fce0d2711d1dd2b328847.npz",
+          "cache_hit": false,
+          "fallback_used": false,
+          "fit_type": "morphit",
+          "fitted_spheres": 4,
+          "max_spheres": 64,
+          "object_name": "bi",
+          "stored_spheres": 4,
+          "used_convex_hull": false
+        },
+        "kind": "swm_native_attachment_prepared",
+        "mesh_sha256": "1ef8131456d07671e2f12933b3aa4861b489fa47a86d081b2f49b52dea68d2bc",
+        "motion_executed": false,
+        "object_id": "bi",
+        "sequence": 6,
+        "skill_verified": false,
+        "source_snapshot_id": "1c38266e150e72e735b53da9ac4ab54a8fd2793e95befd423d7cbb05ce179af4",
+        "time": 1789248607.980149
+      },
+      "resource_release_readback": {
+        "kind": "swm_native_resources_released",
+        "planner_pointer_released": true,
+        "primary_closed": true,
+        "robot_mirror_closed": true,
+        "sequence": 20,
+        "time": 1789248615.8323922
+      },
+      "audit_profile": {
+        "audit_elapsed_s": 0.19204758599880734,
+        "timings": {
+          "backend.update_scene": {
+            "calls": 7,
+            "total_s": 0.05293642600008752,
+            "max_s": 0.007874135997553822
+          },
+          "backend.set_measured_gripper_collision_state": {
+            "calls": 4,
+            "total_s": 0.021795255997858476,
+            "max_s": 0.0056283679987245705
+          },
+          "audit._apply": {
+            "calls": 6,
+            "total_s": 0.10669485699690995,
+            "max_s": 0.02359557299860171
+          },
+          "audit._verified_contact_ignores": {
+            "calls": 8,
+            "total_s": 0.0029304390009201597,
+            "max_s": 0.0007505680005124304
+          },
+          "backend._set_obstacle_enabled": {
+            "calls": 383,
+            "total_s": 0.009000400044897106,
+            "max_s": 0.000045919001422589645
+          },
+          "backend._collision_diagnostics_for_states": {
+            "calls": 8,
+            "total_s": 0.054861600994627224,
+            "max_s": 0.007440225999744143
+          },
+          "audit._contacts": {
+            "calls": 8,
+            "total_s": 0.05834153100659023,
+            "max_s": 0.007804513003065949
+          },
+          "audit._check_path": {
+            "calls": 3,
+            "total_s": 0.03034713300439762,
+            "max_s": 0.015259293002600316
+          },
+          "backend.set_gripper_collision_state": {
+            "calls": 9,
+            "total_s": 0.03121510099299485,
+            "max_s": 0.0035693249992618803
+          },
+          "backend.attach_object": {
+            "calls": 3,
+            "total_s": 0.016873535001650453,
+            "max_s": 0.005771817999630002
+          },
+          "backend.update_attached_object_pose": {
+            "calls": 3,
+            "total_s": 0.00963555000271299,
+            "max_s": 0.003226888002245687
+          },
+          "backend.read_attachment_collision_state": {
+            "calls": 5,
+            "total_s": 0.0029246589983813465,
+            "max_s": 0.0006282819995249156
+          }
+        },
+        "snapshot_id": "62e1d68c10c7a0a25b25e1d258f836dcfc679da4dd5adae98f094c0172e65a7b",
+        "source_snapshot_id": "7b80bb39b1b9d31bcb5f6adb122eeb22c340930df96777079c740492fdce81ef",
+        "skill": "grasp"
+      },
+      "checkpoints": [
+        {
+          "path": "runtime_data/swm_release_pen_worker_04/swm_native/checkpoints/0001.json",
+          "checkpoint": "worker_initialization_probe",
+          "revision": 1,
+          "snapshot_id": "1c38266e150e72e735b53da9ac4ab54a8fd2793e95befd423d7cbb05ce179af4",
+          "primary_sequence": 2,
+          "captured_at": 26947.779434088,
+          "holding": "empty",
+          "object_count": 12
+        },
+        {
+          "path": "runtime_data/swm_release_pen_worker_04/swm_native/checkpoints/0002.json",
+          "checkpoint": "before_grasp",
+          "revision": 2,
+          "snapshot_id": "7b80bb39b1b9d31bcb5f6adb122eeb22c340930df96777079c740492fdce81ef",
+          "primary_sequence": 3,
+          "captured_at": 26949.102797127,
+          "holding": "empty",
+          "object_count": 12
+        },
+        {
+          "path": "runtime_data/swm_release_pen_worker_04/swm_native/checkpoints/0003.json",
+          "checkpoint": "pre_execute_grasp",
+          "revision": 3,
+          "snapshot_id": "62e1d68c10c7a0a25b25e1d258f836dcfc679da4dd5adae98f094c0172e65a7b",
+          "primary_sequence": 4,
+          "captured_at": 26954.799058874,
+          "holding": "empty",
+          "object_count": 12
+        }
+      ],
+      "contact_diagnosis_records": 5,
+      "last_contact_diagnosis": {
+        "read_count": 228,
+        "primary_sequence": 232,
+        "contacts": [
+          {
+            "force_n": [
+              -39.46470260620117,
+              21.280498504638672,
+              4.428042888641357
+            ],
+            "object_id": "bi",
+            "robot_link": "gripper_Left_Support_Link"
+          },
+          {
+            "force_n": [
+              0.052577294409275055,
+              -0.032145217061042786,
+              12.471044540405273
+            ],
+            "object_id": "primary_table",
+            "robot_link": "gripper_Left_Support_Link"
+          },
+          {
+            "force_n": [
+              39.37618637084961,
+              -21.1958065032959,
+              5.028220176696777
+            ],
+            "object_id": "bi",
+            "robot_link": "gripper_Right_Support_Link"
+          },
+          {
+            "force_n": [
+              -0.01245380099862814,
+              0.0065380060113966465,
+              6.35808801651001
+            ],
+            "object_id": "primary_table",
+            "robot_link": "gripper_Right_Support_Link"
+          }
+        ],
+        "original_pen_grasp_predicate": true,
+        "skill_holding_verified": false,
+        "joint_names": [
+          "joint_1",
+          "joint_2",
+          "joint_3",
+          "joint_4",
+          "joint_5",
+          "joint_6",
+          "joint_7",
+          "gripper_Left_1_Joint",
+          "gripper_Left_2_Joint",
+          "gripper_Right_1_Joint",
+          "gripper_Right_2_Joint",
+          "gripper_Left_Support_Joint",
+          "gripper_Right_Support_Joint"
+        ],
+        "positions": [
+          1.0376161336898804,
+          -0.48703378438949585,
+          -0.49938294291496277,
+          -1.5900768041610718,
+          0.25162723660469055,
+          -1.1224435567855835,
+          2.023322582244873,
+          0.7758617401123047,
+          0.7327855229377747,
+          0.8027151226997375,
+          0.7593546509742737,
+          0.8800543546676636,
+          0.9092159271240234
+        ],
+        "velocities": [
+          -5.590845830738544e-7,
+          0.001319211907684803,
+          -0.0015011313371360302,
+          0.005871078930795193,
+          -0.0006789306062273681,
+          -0.006368197966367006,
+          0.00015945499762892723,
+          -0.563683032989502,
+          -0.06447617709636688,
+          -0.0684690997004509,
+          -0.032045114785432816,
+          -1.4673545360565186,
+          -0.13648179173469543
+        ]
+      },
+      "sha256": {
+        "runtime_data/swm_release_pen_worker_04/request.json": "3ef1775a435fa35217e6636de927268d7abaf418a4b60030897bceed2ab046ee",
+        "runtime_data/swm_release_pen_worker_04/profile.json": "11216794ce78479d5c47216c5da020ac27bc8f91ea46c7eb045c108566002375",
+        "runtime_data/swm_release_pen_worker_04/diagnose.py": "3d569cbf7bc223e3f7aa2a05bae32254ab8a0ac0b8774c0e2e6cb389e47629ed",
+        "runtime_data/swm_release_pen_worker_04/worker.log": "29a7317232e48391d032150e49c11355671009db66353f9926b39eaedb1af92e",
+        "runtime_data/swm_release_pen_worker_04/events.jsonl": "40291ed4df2b200cb107debe93fdf6a260e25250ad0ebcfc10369a9b8c263632",
+        "runtime_data/swm_release_pen_worker_04/result.json": "263dd43315ff8ef871b9d34e475bf8ba981c9b5d717767ee5f597b120a8219b5",
+        "runtime_data/swm_release_pen_worker_04/audit_timing.json": "4bfbb68144213740a884205456874375bca77e2e0741d826e18208c724121454",
+        "runtime_data/swm_release_pen_worker_04/full_tests.log": "3767ec690e5314e7516cec7cb3441d2feb3add7d0e6b2988c7d405ceaaf7a06d",
+        "runtime_data/swm_release_pen_worker_04/closure_geometry.py": "d1ee54e6eb3b3b6ca919a8ce1036d9b03beb14458b4ceff9f0779c1e530dec6e",
+        "runtime_data/swm_release_pen_worker_04/closure_geometry.json": "d072814c3c10927f6881edfce193055ab63a2d1a7134d9028e533d8db67f0f77",
+        "runtime_data/swm_release_pen_worker_04/closure_geometry_factors.py": "e59213d4901e9e5c61f1f47b88971ac693e4cb34182d1aa4456cd2e2480b29eb",
+        "runtime_data/swm_release_pen_worker_04/closure_geometry_factors.json": "ea1131e5d5a0efdec301e51d4a8de38a904e007730fd5b54d5f482406780bef0",
+        "runtime_data/swm_release_pen_worker_04/swm_native/checkpoints/0001.json": "1ddcdbcc3a8772eeabb70c909f7034a10e95aa9304617b2b071d587df67a3f56",
+        "runtime_data/swm_release_pen_worker_04/swm_native/checkpoints/0002.json": "ade5d49acb7fdb02fe7bd3d19e813b145a28cb315823e1284afcc826c889f71f",
+        "runtime_data/swm_release_pen_worker_04/swm_native/checkpoints/0003.json": "2a1d231417c062b1208596fc734263439dbf31b394bd482c9db58202100b9ad5"
+      },
+      "note": "Cold original MORPHIT fitting prepared in private planner before skill checkpoints; full fresh-snapshot audit remained mandatory. Physical closure contacts both pen and table. No lift/place or after_grasp checkpoint; instantaneous grasp predicate is not skill success."
+    },
+    "native_closure_geometry_01": {
+      "tested_commit": "f22feee",
+      "domain": "offline_original_collision_mesh_FK",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 runtime_data/swm_release_pen_worker_04/closure_geometry_factors.py",
+      "process_exit_code": 0,
+      "result": {
+        "domain": "offline_original_collision_mesh_FK",
+        "hardware_connected": false,
+        "caveat": "Geometry prediction from registered URDF and saved measurements, not a new native contact query.",
+        "cases": [
+          {
+            "case": "measured_preclose_arm_nominal_planner_jaw_0_6",
+            "source_primary_sequence": 32,
+            "support_mesh_bounds": [
+              {
+                "link": "gripper_Left_Support_Link",
+                "min_world_z_m": 0.004018532926864882,
+                "max_world_z_m": 0.07251621395165446
+              },
+              {
+                "link": "gripper_Right_Support_Link",
+                "min_world_z_m": 0.004017735649450696,
+                "max_world_z_m": 0.07251464510045064
+              }
+            ]
+          },
+          {
+            "case": "measured_preclose_arm_controller_upper_jaw_0_91",
+            "source_primary_sequence": 32,
+            "support_mesh_bounds": [
+              {
+                "link": "gripper_Left_Support_Link",
+                "min_world_z_m": 0.0028490943183452633,
+                "max_world_z_m": 0.07134677534313486
+              },
+              {
+                "link": "gripper_Right_Support_Link",
+                "min_world_z_m": 0.0028489332093042385,
+                "max_world_z_m": 0.07134584266030419
+              }
+            ]
+          },
+          {
+            "case": "hypothesis_preclose_arm_with_measured_closed_jaw",
+            "source_primary_sequence": [
+              32,
+              232
+            ],
+            "support_mesh_bounds": [
+              {
+                "link": "gripper_Left_Support_Link",
+                "min_world_z_m": 0.00038573318318375904,
+                "max_world_z_m": 0.07119708384615742
+              },
+              {
+                "link": "gripper_Right_Support_Link",
+                "min_world_z_m": 0.0002906492676154476,
+                "max_world_z_m": 0.0711455859239011
+              }
+            ]
+          },
+          {
+            "case": "measured_closed_arm_nominal_jaw_0_6",
+            "source_primary_sequence": 232,
+            "support_mesh_bounds": [
+              {
+                "link": "gripper_Left_Support_Link",
+                "min_world_z_m": 0.003474452311882009,
+                "max_world_z_m": 0.07188507895709552
+              },
+              {
+                "link": "gripper_Right_Support_Link",
+                "min_world_z_m": 0.0037110570501658335,
+                "max_world_z_m": 0.07237321687363403
+              }
+            ]
+          },
+          {
+            "case": "measured_closed_arm_nominal_jaw_0_91",
+            "source_primary_sequence": 232,
+            "support_mesh_bounds": [
+              {
+                "link": "gripper_Left_Support_Link",
+                "min_world_z_m": 0.0024025867704359216,
+                "max_world_z_m": 0.07081321341564943
+              },
+              {
+                "link": "gripper_Right_Support_Link",
+                "min_world_z_m": 0.0024447283692994592,
+                "max_world_z_m": 0.07110688819276767
+              }
+            ]
+          },
+          {
+            "case": "measured_closed_arm_and_six_jaw_positions",
+            "source_primary_sequence": 232,
+            "support_mesh_bounds": [
+              {
+                "link": "gripper_Left_Support_Link",
+                "min_world_z_m": -0.00009508266317145853,
+                "max_world_z_m": 0.07062396436170071
+              },
+              {
+                "link": "gripper_Right_Support_Link",
+                "min_world_z_m": -0.000037700103530380336,
+                "max_world_z_m": 0.07094156857168815
+              }
+            ]
+          }
+        ]
+      },
+      "hardware_connected": false,
+      "note": "Mixed arm/jaw case explicitly combines two measured sequences as a counterfactual, not a new observation. Uniform 0.91-rad jaw geometry alone does not reproduce measured coupled passive-joint geometry."
+    },
+    "attachment_preparation_targeted": {
+      "tested_commit": "f22feee",
+      "domain": "software_fixture",
+      "passed": 33,
+      "failed": 0,
+      "seconds": 0.62,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest -q tests/swm/test_native_attachment_preparation.py tests/swm/test_native_context_binding.py tests/swm/test_native_primary_execution.py tests/swm/test_runtime_context.py tests/swm/test_native_stage_audit.py"
+    },
+    "attachment_preparation_full": {
+      "tested_commit": "f22feee",
+      "domain": "software_regression",
+      "passed": 1705,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 45.25,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest -q tests/",
+      "sha256": {
+        "runtime_data/swm_release_pen_worker_04/full_tests.log": "3767ec690e5314e7516cec7cb3441d2feb3add7d0e6b2988c7d405ceaaf7a06d"
+      }
     }
   },
   "gates": {
@@ -9811,5 +10199,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Move original registered-mesh attachment fit preparation before the fresh execution checkpoint, preserving asset/fit-parameter cache binding and actual GPU audit; then diagnose physical gripper closure and complete the formal worker six checkpoints."
+  "next_actual_action": "Bind original passive-joint closure/contact geometry into candidate planning and stage audit; uniform nominal closed angle is insufficient. Preserve table collisions and strict final idle checks, then finish formal pen grasp/place and cancellation evidence."
 }
