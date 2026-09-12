@@ -8,16 +8,15 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "9c38a5449fbe02b4eb35481cb99f40749ded1d74",
+    "commit": "a8818b5",
     "sha256": {
-      "tools/import_jimu_scene_bundle.py": "cb797cc792cb039c022538da1379f75e968ac24e5b02e2ef2b2569c5b4ca6d5b",
-      "tests/three_scene/test_jimu_scene_import.py": "6f579c35659537c1269aeeebdfea076c0bf2b7d14db6ca3dac0ae53a93653b01",
-      "tests/three_scene/test_jimu_import_portable.py": "960a318a39fedfbbc5cba958570450a51c15517c2e228a3f42d15e024c31e022",
-      "rm75_app/swm/integration.py": "32c3e2c565f40e0846d8808ec1b3c25682eb6781c918b287475dcd99f20823ed",
-      "tests/swm/test_runtime_context.py": "bf417b6a075c7b59fb792e3f944e19317f98566c48120a80b3b58fe7b6b32b65"
+      "rm75_app/swm/native_construction.py": "5d8904909a999a7792bb30e7a2615a6ead406a6fa392c88a90ec552d9f1a9fe9",
+      "rm75_app/swm/native_bootstrap.py": "56a8d37824428f35402eb42fa58a93a16097a4d19fbb2cec686b19ce6cceb5c3",
+      "rm75_app/swm/native_robot_mirror.py": "a648e7e808adc3db02736c5f37be5e7ee070f2b292cabbd60989b84f6a224ef9",
+      "tests/swm/test_native_drive_construction.py": "a3d3228ff5b8d75c65b2317665383dee5b5d07fd4b6d3e34f919e0e983f3b0e1"
     },
-    "input_digest": "9e80bcdb3aa671c6a9f254ee0b045035932796e13bd6b08d37c670fe00b7c4c1",
-    "note": "Tests ran on the worktree immediately before this commit; committed source bytes are identical. Documentation is not runtime evidence."
+    "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+    "note": "Final source bytes tested before/through local commit creation, without implementation edits during the runs. Runtime artifact hashes are in runs.native_robot_policy_02."
   },
   "runs": {
     "m0_targeted": {
@@ -4763,6 +4762,411 @@
       "atomic_worker_qualified": false,
       "robot_physics_policy_qualified": false,
       "note": "Frozen primary uses installed original two-drive construction, not the shared adapter three-drive patch. Zero-limit constructor calls and broad native limit getter values demonstrate that parameter getters alone are insufficient to establish locked/free motion state. Do not change the primary world to match the draft mirror."
+    },
+    "native_drive_capture_targeted": {
+      "tested_commit": "a8818b5",
+      "domain": "software_fixture",
+      "passed": 19,
+      "failed": 0,
+      "seconds": 0.08
+    },
+    "native_drive_capture_full": {
+      "tested_commit": "a8818b5",
+      "domain": "software_regression",
+      "passed": 1608,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 45.15,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "note": "Final implementation bytes unchanged throughout regression."
+    },
+    "native_robot_policy_02": {
+      "tested_commit": "a8818b5",
+      "domain": "native_CPU_PhysX_and_GPU_scene_sync",
+      "process_exit_code": 0,
+      "status": "native_body_properties_and_fresh_state_verified",
+      "robot_physics_policy": {
+        "source": "native_robot_shape_and_constraint_readback",
+        "link_count": 20,
+        "shape_count": 16,
+        "constraint_count": 2,
+        "constraints": [
+          {
+            "parent": "gripper_Left_2_Link",
+            "child": "gripper_Left_Support_Link",
+            "T_parent_constraint": [
+              [
+                1,
+                0,
+                0,
+                0.04039999842643738
+              ],
+              [
+                0,
+                1,
+                0,
+                0.03750000149011612
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "T_child_constraint": [
+              [
+                1,
+                0,
+                0,
+                -0.014100000262260437
+              ],
+              [
+                0,
+                1,
+                0,
+                0.017000000923871994
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "limits": {
+              "x": [
+                -1.1342744887950962e+38,
+                1.1342744887950962e+38,
+                0,
+                0
+              ],
+              "y": [
+                -1.1342744887950962e+38,
+                1.1342744887950962e+38,
+                0,
+                0
+              ],
+              "z": [
+                -1.1342744887950962e+38,
+                1.1342744887950962e+38,
+                0,
+                0
+              ],
+              "twist": [
+                -1.5707963705062866,
+                1.5707963705062866,
+                0,
+                0
+              ],
+              "cone": [
+                1.5707963705062866,
+                1.5707963705062866,
+                0,
+                0
+              ],
+              "pyramid": [
+                -1.5707963705062866,
+                1.5707963705062866,
+                -1.5707963705062866,
+                1.5707963705062866,
+                0,
+                0
+              ]
+            },
+            "properties": {
+              "x": [
+                0,
+                0,
+                3.4028234663852886e+38,
+                "force"
+              ],
+              "y": [
+                0,
+                0,
+                3.4028234663852886e+38,
+                "force"
+              ],
+              "z": [
+                0,
+                0,
+                3.4028234663852886e+38,
+                "force"
+              ],
+              "twist": [
+                0,
+                0,
+                3.4028234663852886e+38,
+                "force"
+              ],
+              "swing": [
+                0,
+                0,
+                3.4028234663852886e+38,
+                "force"
+              ],
+              "slerp": [
+                0,
+                0,
+                3.4028234663852886e+38,
+                "force"
+              ]
+            },
+            "target": [
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "velocity_target": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "parent": "gripper_Right_2_Link",
+            "child": "gripper_Right_Support_Link",
+            "T_parent_constraint": [
+              [
+                1,
+                0,
+                0,
+                0.04039999842643738
+              ],
+              [
+                0,
+                1,
+                0,
+                0.03750000149011612
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "T_child_constraint": [
+              [
+                1,
+                0,
+                0,
+                -0.014100000262260437
+              ],
+              [
+                0,
+                1,
+                0,
+                0.017000000923871994
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "limits": {
+              "x": [
+                -1.1342744887950962e+38,
+                1.1342744887950962e+38,
+                0,
+                0
+              ],
+              "y": [
+                -1.1342744887950962e+38,
+                1.1342744887950962e+38,
+                0,
+                0
+              ],
+              "z": [
+                -1.1342744887950962e+38,
+                1.1342744887950962e+38,
+                0,
+                0
+              ],
+              "twist": [
+                -1.5707963705062866,
+                1.5707963705062866,
+                0,
+                0
+              ],
+              "cone": [
+                1.5707963705062866,
+                1.5707963705062866,
+                0,
+                0
+              ],
+              "pyramid": [
+                -1.5707963705062866,
+                1.5707963705062866,
+                -1.5707963705062866,
+                1.5707963705062866,
+                0,
+                0
+              ]
+            },
+            "properties": {
+              "x": [
+                0,
+                0,
+                3.4028234663852886e+38,
+                "force"
+              ],
+              "y": [
+                0,
+                0,
+                3.4028234663852886e+38,
+                "force"
+              ],
+              "z": [
+                0,
+                0,
+                3.4028234663852886e+38,
+                "force"
+              ],
+              "twist": [
+                0,
+                0,
+                3.4028234663852886e+38,
+                "force"
+              ],
+              "swing": [
+                0,
+                0,
+                3.4028234663852886e+38,
+                "force"
+              ],
+              "slerp": [
+                0,
+                0,
+                3.4028234663852886e+38,
+                "force"
+              ]
+            },
+            "target": [
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ],
+            "velocity_target": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0
+              ]
+            ]
+          }
+        ],
+        "expected_digest": "60c7f7adfb0a8384c44ff9d8fe13cc5531320e90ca1b3c80660f0f9066ab289d",
+        "actual_digest": "60c7f7adfb0a8384c44ff9d8fe13cc5531320e90ca1b3c80660f0f9066ab289d",
+        "collision_shapes_and_groups_aligned": true,
+        "gripper_constraint_configuration_aligned": true,
+        "dynamics_stepping_qualified": false,
+        "attachment_qualified": false,
+        "hardware_qualified": false
+      },
+      "physical_body_count": 12,
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "gpu_scene_synchronized": true,
+      "world_checkpoint_committed": false,
+      "atomic_worker_qualified": false,
+      "skill_checkpoints": 0,
+      "motion_executed": false,
+      "hardware_connected": false,
+      "sha256": {
+        "rm75_app/swm/native_construction.py": "5d8904909a999a7792bb30e7a2615a6ead406a6fa392c88a90ec552d9f1a9fe9",
+        "rm75_app/swm/native_bootstrap.py": "56a8d37824428f35402eb42fa58a93a16097a4d19fbb2cec686b19ce6cceb5c3",
+        "rm75_app/swm/native_robot_mirror.py": "a648e7e808adc3db02736c5f37be5e7ee070f2b292cabbd60989b84f6a224ef9",
+        "tests/swm/test_native_drive_construction.py": "a3d3228ff5b8d75c65b2317665383dee5b5d07fd4b6d3e34f919e0e983f3b0e1",
+        "runtime_data/swm_release_robot_policy_driver_02/run.py": "b787ef4aa6b8c7ad560426bdc2dfb886bd28aa889ea5dfb15e7a37d280748543",
+        "runtime_data/swm_release_robot_policy_driver_02/registration_result.json": "817026f25adb9a80a03d5147293eb6d82e2f5134c8d34b02d5b0b25bca1fc9bb",
+        "runtime_data/swm_release_robot_policy_bootstrap_02/result.json": "600e3aea67fc21aff4f3f74411fba09429be8b4819a17379542a0c69bfeec341",
+        "runtime_data/swm_release_robot_policy_driver_02.log": "fb809de402b74f41557bc70d2fde7afe37fdecb9290926a051f90d41b63cb454",
+        "runtime_data/swm_release_drive_capture_targeted.log": "d0d3b9465b96315e94fd6ac00c1869c3c483ce74d94fc71dcf4d37c469bc98ca",
+        "runtime_data/swm_release_drive_capture_full.log": "53d1240efe1a3a037c5142eb91ecb4d79889e801550b4a6bbc053e1bbb91c33a",
+        "assets/test_scenes/current_table.json": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908"
+      },
+      "note": "Capture and replay original native create_drive/setter calls including zero limits in order. No primary reconfiguration. Twenty native robot links, sixteen shapes, two original closures compared. Physical stepping/attachment and live dual-mirror transaction not qualified; private mirror closes before outer GPU sync."
     }
   },
   "gates": {
@@ -5018,16 +5422,16 @@
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
-      "native_wiring": "Original native bodies bound to separate geometry identity; robot collision policy, jaw constraints, attachment and live transaction remain incomplete",
+      "native_wiring": "Native physical geometry identity and original robot collision/constraint configuration synchronized; dynamic behavior, attachment, live transaction and formal worker remain incomplete",
       "model_inference": "NOT_RUN",
       "actual_simulation": "Native body identity and state synchronization succeeded; no atomic action",
       "hardware": "NOT_AUTHORIZED_NOT_RUN"
     },
     "robot_physics_policy": {
-      "kernel": "1606 passed; 1 existing warning",
-      "native_wiring": "DRAFT_UNAVAILABLE: assumes three-constraint shared adapter policy but actual frozen primary has two original drives",
+      "kernel": "1608 passed; 1 existing warning on a8818b5",
+      "native_wiring": "Original native constraint construction replay and full robot shape/group/constraint parameter comparison passed; dynamic behavior, attachment and live dual-mirror transaction incomplete",
       "model_inference": "NOT_RUN",
-      "actual_simulation": "Policy sync rejected; read-only source diagnostic succeeded; no atomic action",
+      "actual_simulation": "robot_policy_02 exited 0; no atomic action or committed skill checkpoint",
       "hardware": "NOT_AUTHORIZED_NOT_RUN"
     }
   },
