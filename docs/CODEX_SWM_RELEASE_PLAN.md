@@ -71,3 +71,11 @@ G0 可移植验证与 S1 管理上下文已提交 `9c38a5449fbe02b4eb35481cb99f4
 已在已测 Python 3.11 组合中运行 `swm_release_pen_scene_sync_01`，退出 1：主仿真和规划器初始化成功，但共享 builder 的平移基座前置检查拒绝真实场景。原环境源码显示 `_initialize_episode` 设置基座 `p=[-0.3,0,0]`、yaw=90°；当前只减 offset 的约定不足。没有将场景送入 GPU，也没有放宽检查或执行动作。
 
 下一首要动作：在原 AtomTaskBuilderConfig/FixedSceneAtomTaskBuilder 增加显式 SE(3) 基座合同，让 CompiledNativeTask 的物体/目标转换与碰撞编译共用该外参；记录原生读回的完整矩阵并重跑同一冻结场景。之后才继续独立 jaw/holding、完整 SWM 镜像与正式 worker 六检查点。该缺口是可继续实现的软件工作，不是外部许可阻塞。
+
+## 当前 M1 SE(3) 与真实 12 障碍同步：079e654
+
+已在原共用 frames、AtomTaskBuilderConfig/FixedSceneAtomTaskBuilder 和 CompiledNativeTask 中贯通完整 T_world_base；目标 world→base、后测对象 base→world 与碰撞代理使用同一刚体变换。保留平移兼容，拒绝两套外参同时指定、缩放、反射及非刚体矩阵，配置冻结复制避免外部矩阵修改。
+
+重跑同一输入 `swm_release_pen_scene_sync_02`：退出 0，完整原基座矩阵已记录，9 个对象加原 SAPIEN 桌面和两面虚拟墙共 12 个障碍成功进入共享 cuRobo GPU；名称、数量、启用位、尺寸和逆位姿读回一致。原资产/仿真资源字节及尺度一致性检查通过，未缩小共享代理。保留上次 sync_01 拒绝记录。
+
+定向 10 passed；正式全量 1556 passed、1 个既有警告（41.68 s）。下一步不再停在基座/空场景初始化：补原生 TCP、独立 jaw/holding、全场景 SWM manifest 与 private mirror，接可信 worker 工厂并执行笔 grasp/place 六检查点。当前 GPU acknowledgement 的 robot_state_qualified、attachment_qualified 均为 false，工厂仍不完整，不能据 12 障碍同步解锁执行。

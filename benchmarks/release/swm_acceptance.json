@@ -527,6 +527,697 @@
       "domain": "software_fixture",
       "tested_commit": "f7da832",
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/ -q"
+    },
+    "native_scene_sync_02": {
+      "domain": "native_primary_to_curobo_GPU_collision_sync",
+      "tested_commit": "079e654",
+      "process_exit_code": 0,
+      "status": "COLLISION_GEOMETRY_SYNCHRONIZED_ONLY",
+      "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "actual_python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
+      "primary_closed": true,
+      "planner_initialized": true,
+      "collision_geometry_synchronized": true,
+      "measured_T_world_base": [
+        [
+          -1.1920928955078125e-07,
+          -1.0,
+          -1.8439244797718857e-08,
+          -0.30000004172325134
+        ],
+        [
+          1.0,
+          -1.1920928955078125e-07,
+          1.8439244797718857e-08,
+          -5.820766091346741e-10
+        ],
+        [
+          -1.8439244797718857e-08,
+          -1.8439244797718857e-08,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "source": {
+        "primary_sequence": 3,
+        "capture_started_at": 10908.945113481,
+        "capture_finished_at": 10909.287868998,
+        "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+        "T_world_base": [
+          [
+            -1.1920928955078125e-07,
+            -1.0,
+            -1.8439244797718857e-08,
+            -0.30000004172325134
+          ],
+          [
+            1.0,
+            -1.1920928955078125e-07,
+            1.8439244797718857e-08,
+            -5.820766091346741e-10
+          ],
+          [
+            -1.8439244797718857e-08,
+            -1.8439244797718857e-08,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "object_ids": [
+          "bi",
+          "bitong",
+          "carriot",
+          "desk",
+          "gluestick",
+          "hongshupian",
+          "lvmukuai",
+          "shuazi",
+          "tennis"
+        ],
+        "asset_bindings": {
+          "bi": {
+            "mesh_sha256": "717a9c1d415794bcd17d06d8d21592ad023282ede3bf1cc68673f292dcc80652",
+            "simulation_sha256": "717a9c1d415794bcd17d06d8d21592ad023282ede3bf1cc68673f292dcc80652",
+            "simulation_scale": 0.13794992113145285
+          },
+          "bitong": {
+            "mesh_sha256": "c62151d11a1c0031b2913222d5c8218db57a494d27f5db35204593a9bc7a2d7f",
+            "simulation_sha256": "d41e0b4c671dda71598096c10a645f2c2c97e97312d830dd5bceed872e4cd2d0",
+            "simulation_scale": 0.09494584133019865
+          },
+          "carriot": {
+            "mesh_sha256": "9530b5da1c16c73a9d5f4e8f29cbe6f8900d94540292df25b516229aad7b9a65",
+            "simulation_sha256": "c97f909b565f43206e12f3780f27c3d0f7c8f757c43a30fafcf1e2d7541148f0",
+            "simulation_scale": 0.9999999999999999
+          },
+          "desk": {
+            "mesh_sha256": "857cb2acfd5aa5a504723a760bfe293290158e3a524c38ce31148cd37ce79b6e",
+            "simulation_sha256": "27f055f1165d1a5b2df8168e0bdfdff7017430153bf85cbbfa5c99c3e4c4620b",
+            "simulation_scale": 1.0
+          },
+          "gluestick": {
+            "mesh_sha256": "f399210d01a5bf91eb059ea2a20cbff0d112ff1c52fca9fec9c7b8698e1bb19f",
+            "simulation_sha256": "d13f564601e6b9b1f7c4619bb7d75a6a7013fc7dde05281e8b04ec50078d1bc8",
+            "simulation_scale": 1.0000000000000002
+          },
+          "hongshupian": {
+            "mesh_sha256": "695f93e28f0a6611410a13de961bb4a0bd3ddaabcf74811d0fbfcfece9dc4754",
+            "simulation_sha256": "695f93e28f0a6611410a13de961bb4a0bd3ddaabcf74811d0fbfcfece9dc4754",
+            "simulation_scale": 0.1498806294816057
+          },
+          "lvmukuai": {
+            "mesh_sha256": "d5a86f3123e3ff6e99e8d019431cc2580647d94484607092d1759973e61d7258",
+            "simulation_sha256": "d5a86f3123e3ff6e99e8d019431cc2580647d94484607092d1759973e61d7258",
+            "simulation_scale": 0.06002345345909304
+          },
+          "shuazi": {
+            "mesh_sha256": "520e8353da429cd1005433b6eb86efed50b76e0419619639f84025b9667129c5",
+            "simulation_sha256": "520e8353da429cd1005433b6eb86efed50b76e0419619639f84025b9667129c5",
+            "simulation_scale": 0.10568840840016398
+          },
+          "tennis": {
+            "mesh_sha256": "10b61d7a44d507694d6e374fd63d03f5d50e7209d72047d4673e5fed37a5a0d2",
+            "simulation_sha256": "45fcba2474d2386d8990fcf97fa97f24f7f7e5297f817be4dee0b15f6a7fafb2",
+            "simulation_scale": 1.0
+          }
+        },
+        "infrastructure": {
+          "__maniskill_workspace_table__": {
+            "source": "native_SAPIEN_table_collision_shape",
+            "world_pose": [
+              [
+                0.0,
+                -1.0,
+                0.0,
+                -0.11999999731779099
+              ],
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                -0.4598214626312256
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "dimensions": [
+              2.4179999828338623,
+              1.2089999914169312,
+              0.9196429252624512
+            ]
+          },
+          "virtual_side_wall": {
+            "source": "original_virtual_wall_policy_and_native_actor_pose",
+            "world_pose": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                -0.9150000214576721
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.4009999930858612
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "dimensions": [
+              0.029999999329447746,
+              1.2000000476837158,
+              0.800000011920929
+            ]
+          },
+          "virtual_top_wall": {
+            "source": "original_virtual_wall_policy_and_native_actor_pose",
+            "world_pose": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.8149999976158142
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "dimensions": [
+              1.2000000476837158,
+              1.2000000476837158,
+              0.029999999329447746
+            ]
+          }
+        },
+        "primary_world_mutated": false
+      },
+      "native_ack": {
+        "scene_revision": "bdee2ec52c2e538a4adad2f0501a1c93d6b12b4bd0b0799bf432b1688ddf1e56",
+        "source": "native_GPU_collision_tensors",
+        "coordinate_frame": "base_link",
+        "count": 12,
+        "obstacles": [
+          {
+            "name": "bi",
+            "enabled": true,
+            "dimensions": [
+              0.03453478217124939,
+              0.2070000022649765,
+              0.0345638245344162
+            ],
+            "T_base_proxy": [
+              [
+                7.098051751223009e-08,
+                0.9083841039028954,
+                -0.41813672378365463,
+                -0.1922331832286474
+              ],
+              [
+                4.546640159895943e-08,
+                -0.4181367237836582,
+                -0.9083841039028955,
+                -0.21113500816079545
+              ],
+              [
+                -0.9999999999999962,
+                4.546640159895942e-08,
+                -7.098051751223009e-08,
+                0.01251158028986179
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "bitong",
+            "enabled": true,
+            "dimensions": [
+              0.08500000089406967,
+              0.0949999988079071,
+              0.08500000089406967
+            ],
+            "T_base_proxy": [
+              [
+                0.999939279452158,
+                0.0026982087202875853,
+                0.010684431589975013,
+                -0.2802845332093598
+              ],
+              [
+                0.010714694989231667,
+                -0.011462453380825986,
+                -0.9998768961596122,
+                -0.002302034726998599
+              ],
+              [
+                -0.0025754067614312363,
+                0.9999306635123226,
+                -0.011490667857832452,
+                0.048961977496712994
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "carriot",
+            "enabled": true,
+            "dimensions": [
+              0.04314685985445976,
+              0.03761950135231018,
+              0.20999999344348907
+            ],
+            "T_base_proxy": [
+              [
+                0.753074940598267,
+                9.840913625707047e-09,
+                0.6579347489249344,
+                -0.212982679551118
+              ],
+              [
+                -0.6579347489249309,
+                -9.372801351854225e-08,
+                0.7530749405982643,
+                -0.08526446118335324
+              ],
+              [
+                6.907786245864054e-08,
+                -0.9999999999999956,
+                -6.410953912539486e-08,
+                0.018474949831595616
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "desk",
+            "enabled": true,
+            "dimensions": [
+              0.4729999899864197,
+              0.12289875745773315,
+              0.2756061255931854
+            ],
+            "T_base_proxy": [
+              [
+                0.019344957979072607,
+                -0.008543649282643152,
+                0.9997763643224036,
+                0.394772131670522
+              ],
+              [
+                0.999595663881387,
+                0.021007829162616884,
+                -0.019161937882255918,
+                -0.01753117779889387
+              ],
+              [
+                -0.02083941818566552,
+                0.9997428055109022,
+                0.008946590349035801,
+                0.05563574058214461
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "gluestick",
+            "enabled": true,
+            "dimensions": [
+              0.030726440250873566,
+              0.10999999940395355,
+              0.031415779143571854
+            ],
+            "T_base_proxy": [
+              [
+                -8.379260376500126e-08,
+                -0.029862180926388572,
+                -0.999554025628586,
+                -0.009789023935500686
+              ],
+              [
+                -3.41822910397506e-08,
+                0.9995540256285891,
+                -0.029862180926385793,
+                -0.16129839237743349
+              ],
+              [
+                0.9999999999999956,
+                3.166481672201685e-08,
+                -8.477599215023387e-08,
+                0.015999661012681174
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "hongshupian",
+            "enabled": true,
+            "dimensions": [
+              0.07000000029802322,
+              0.15000000596046448,
+              0.07000000029802322
+            ],
+            "T_base_proxy": [
+              [
+                -0.6226255432891455,
+                0.7824410358462236,
+                0.011111177605697598,
+                0.16361965160375733
+              ],
+              [
+                -0.7814262587149994,
+                -0.6224431185370618,
+                0.04401779613447959,
+                -0.048688315364849744
+              ],
+              [
+                0.04135740604263969,
+                0.018724038286283048,
+                0.9989689561521311,
+                0.03571725992757709
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "lvmukuai",
+            "enabled": true,
+            "dimensions": [
+              0.05999999865889549,
+              0.02843616157770157,
+              0.032143495976924896
+            ],
+            "T_base_proxy": [
+              [
+                0.8675998247214618,
+                0.0,
+                -0.4972630532658633,
+                0.051585956660317185
+              ],
+              [
+                -0.4972630532658633,
+                -0.0,
+                -0.867599824721462,
+                -0.24780856785472707
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.015218066982924938
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "shuazi",
+            "enabled": true,
+            "dimensions": [
+              0.13124999403953552,
+              0.08309492468833923,
+              0.06442781537771225
+            ],
+            "T_base_proxy": [
+              [
+                -0.8904306172518691,
+                -0.45511901285318157,
+                -1.9562952115023053e-08,
+                -0.10655343712222488
+              ],
+              [
+                0.4551190128531819,
+                -0.8904306172518689,
+                -2.6249896043931433e-08,
+                -0.13626071988260421
+              ],
+              [
+                -5.472624752036023e-09,
+                -3.2277182592278633e-08,
+                0.9999999999999993,
+                0.026771120653668164
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "tennis",
+            "enabled": true,
+            "dimensions": [
+              0.07000000029802322,
+              0.07000000029802322,
+              0.07000000029802322
+            ],
+            "T_base_proxy": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.14492912590503693
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                -0.29760149121284485
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.03692774474620819
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "__maniskill_workspace_table__",
+            "enabled": true,
+            "dimensions": [
+              2.4179999828338623,
+              1.2089999914169312,
+              0.9196429252624512
+            ],
+            "T_base_proxy": [
+              [
+                0.9999999999999926,
+                1.192092893807779e-07,
+                -1.8439245896783423e-08,
+                -1.2396839754872952e-08
+              ],
+              [
+                -1.1920928972078365e-07,
+                0.9999999999999926,
+                -1.843924369865415e-08,
+                -0.1800000433772797
+              ],
+              [
+                1.843924369865415e-08,
+                1.8439245896783423e-08,
+                0.9999999999999996,
+                -0.45982146595029055
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "virtual_side_wall",
+            "enabled": true,
+            "dimensions": [
+              0.029999999329447746,
+              1.2000000476837158,
+              0.800000011920929
+            ],
+            "T_base_proxy": [
+              [
+                -1.6858739670250213e-07,
+                0.9999999999999859,
+                -1.8439245581254376e-08,
+                4.545110343195874e-08
+              ],
+              [
+                -0.9999999999999857,
+                -1.6858739693842437e-07,
+                -1.8439242472630218e-08,
+                0.6149999425379626
+              ],
+              [
+                -1.843924558125437e-08,
+                1.843924247263022e-08,
+                0.9999999999999998,
+                0.4009999746236729
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "name": "virtual_top_wall",
+            "enabled": true,
+            "dimensions": [
+              1.2000000476837158,
+              1.2000000476837158,
+              0.029999999329447746
+            ],
+            "T_base_proxy": [
+              [
+                -1.6858739670250213e-07,
+                0.9999999999999859,
+                -1.8439245581254376e-08,
+                -3.994013364204501e-08
+              ],
+              [
+                -0.9999999999999857,
+                -1.6858739693842437e-07,
+                -1.8439242472630218e-08,
+                -0.3000000567512317
+              ],
+              [
+                -1.843924558125437e-08,
+                1.843924247263022e-08,
+                0.9999999999999998,
+                0.8149998728747505
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "robot_state_qualified": false,
+        "attachment_qualified": false
+      },
+      "planner_executed": false,
+      "motion_executed": false,
+      "hardware_connected": false,
+      "raw_artifacts": "runtime_data/swm_release_pen_scene_sync_02",
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -c 'import sys,runpy; sys.path.append(\"/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages\"); sys.argv=[\"tools/validate_swm_native_bootstrap.py\",\"--profile\",\"runtime_data/three_scene/review_a35328c_20260909/tennis_standard_reference_v1/machine.json\",\"--output\",\"runtime_data/swm_release_pen_scene_sync_02\",\"--probe-planner\",\"--sync-planning-scene\"]; runpy.run_path(sys.argv[0],run_name=\"__main__\")'",
+      "sha256": {
+        "input.json": "c38999fba11c9294a5c149154bcfd87fcdbc03564e001781dd0139832ba09e03",
+        "result.json": "9c14c98a883d34b08efc1d9650eaae46322e1324f8776b2d7a1ccdea28319520",
+        "events.jsonl": "afba6ae979126c41ab3b9a574a66beccc31a88f6180bd54829b1018ee5b5d301",
+        "stdout.log": "6196907cde8e0cf61ea77a938ae6c695c5a3acff6dc2ee513938dda450847a5f"
+      }
+    },
+    "se3_targeted": {
+      "passed": 10,
+      "failed": 0,
+      "seconds": 0.41,
+      "domain": "software_fixture",
+      "tested_commit": "079e654",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/test_native_base_se3.py tests/swm/test_native_tasks.py -q"
+    },
+    "se3_full": {
+      "passed": 1556,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 41.68,
+      "domain": "software_regression",
+      "tested_commit": "079e654",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "note": "Tests started before commit and ended after commit on identical unchanged implementation bytes."
     }
   },
   "gates": {
@@ -569,12 +1260,12 @@
         "runs.m1_stage_targeted: software fixtures only, NOT native qualification",
         "runs.native_bootstrap_02: initialization only, not atomic worker qualification",
         "runs.native_planner_probe_02: coexisting initialization only; collision scene NOT synchronized",
-        "runs.native_scene_sync_01: failed before GPU scene application"
+        "runs.native_scene_sync_01: failed before GPU scene application",
+        "runs.native_scene_sync_02: 12 native GPU obstacles matched; NOT atomic execution qualification"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
       "remaining": [
-        "Extend existing builder and SWM compiled task to explicit SE3 base calibration; original native base is not translation-only",
         "Install native pen worker context and independent jaw observation",
         "Resolve attached-object exclusion in native world collision diagnostics",
         "Audit intermediate jaw geometry and native candidate restoration",
@@ -747,17 +1438,18 @@
       "denominator": null,
       "evidence": [
         "runs.m1_stage_full",
-        "runs.recording_wiring_full"
+        "runs.recording_wiring_full",
+        "runs.se3_full"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
     }
   },
   "current_layer_status": {
-    "kernel": "SOFTWARE_REGRESSION_PASSED_1540",
-    "native_wiring": "FULL_SCENE_COMPILE_REJECTED_NONTRANSLATION_BASE",
+    "kernel": "SOFTWARE_REGRESSION_PASSED_1556",
+    "native_wiring": "TWELVE_OBSTACLES_GPU_SYNCED_ROBOT_AND_ATTACHMENT_NOT_QUALIFIED",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "NATIVE_INITIALIZATION_READBACK_ONLY_NO_ATOMIC_EXECUTION",
+    "actual_simulation": "PRIMARY_AND_COLLISION_SYNC_RUN_NO_ATOMIC_EXECUTION",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
   "native_bootstrap": {
@@ -770,12 +1462,13 @@
     "tool": "tools/validate_swm_native_bootstrap.py",
     "successful_environment": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
     "failed_environment": "/home/zhangzhao/anaconda3/bin/python (exit 139)",
-    "remaining": "Shared SE3 calibration; complete native collision synchronization; independent jaw/holding, private mirrors and formal worker six checkpoints",
+    "remaining": "Independent native jaw/holding/TCP observation, full SWM manifest/private mirror and formal worker grasp/place six checkpoints",
     "same_process_planner_environment": {
       "python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
       "append_site_packages": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",
       "evidence": "runs.native_planner_probe_02",
       "worker_installed": false
-    }
+    },
+    "full_collision_scene_evidence": "runs.native_scene_sync_02"
   }
 }

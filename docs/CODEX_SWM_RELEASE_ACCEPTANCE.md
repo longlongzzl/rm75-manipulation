@@ -77,3 +77,11 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python
 实际运行 `runtime_data/swm_release_pen_scene_sync_01`：退出 1；原主仿真和 cuRobo2 初始化成功，随后因非纯平移基座被拒绝。原环境源码包含 90° yaw 基座设置，下一步需原 builder 显式 SE(3) 支持。此轮没有实际 GPU 全场景 acknowledgement，也没有原子动作；不能把新适配器或测试标记为完整场景已同步。
 
 模型推理与硬件未运行，主环境正常关闭。G1/G2/S4 仍未整体通过；上一条全量测试仍保留原提交归属。本轮失败输入、错误及原始日志哈希已记录在机器验收表。
+
+## M1 / SE(3) 修复后的真实全障碍同步
+
+提交 `079e654`。定向 10 passed；全量 **1556 passed / 1 warning / 41.68 s**，测试跨提交期间代码字节未改变。
+
+`runtime_data/swm_release_pen_scene_sync_02` 使用与拒绝案例相同冻结输入和已测同 ABI 环境，退出 0。完整实测 T_world_base 进入原 builder 与 SWM 任务转换。共享 cuRobo GPU 中读回 **12 个障碍**：9 个原对象、真实桌面碰撞盒、两面原策略虚拟墙；身份、尺寸、逆位姿、启用状态一致。没有改成小场景或缩小碰撞代理。
+
+内核：全量回归通过；原生接线：真实障碍几何同步已取得证据，机器人/夹爪/attachment 和正式 worker 尚未完成；模型推理：未运行；实际仿真：原主世界初始化、完整几何同步及读回已运行，未执行原子动作；硬件：未授权、未连接。G1/G2/S4 不标整体通过，也不将无动作读回计作六个技能检查点。
