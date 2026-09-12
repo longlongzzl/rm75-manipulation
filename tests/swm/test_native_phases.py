@@ -23,8 +23,11 @@ class PhasePlanner:
         self.calls = []
         self.relations = []
 
+    def update_scene(self, scene):
+        self.scene = scene
+
     def set_gripper_collision_state(self, closed):
-        pass
+        self.closed = closed
 
     def attach_object(self, name, q):
         pass
@@ -93,18 +96,27 @@ def test_native_grasp_place_use_fresh_full_checkpoints_and_replan_place(rig):
     feedback = lambda: dict(source='measured_feedback', idle=True, captured_at=rig.clock(),
         joint_names=[f'joint_{i}' for i in range(1, 8)], positions=q.tolist())
     runner = SharedPrimitiveExecutor(Sink(), feedback, clock=rig.clock, stop=rig.stop)
-    auditor = lambda p, s: PlanAudit(p.payload_digest, s['snapshot_id'], REQUIRED_AUDITS)
+    audited = []
+    def auditor(p, s):
+        audited.append(p.payload)
+        return PlanAudit(p.payload_digest, s['snapshot_id'], REQUIRED_AUDITS)
     phases = PickPlaceNativePhases(PickPlaceCoordinator(planner, Sink()), build, auditor, runner)
     backend = NativeAtomicBackend(phases.bindings(), execution_domain='fixture')
     runtime = AtomicSkillRuntime(rig.sync, backend, clock=rig.clock, stop=rig.stop)
     assert runtime.run(SkillRequest('grasp', 'a')).skill_verified
     assert executed == ['approach', 'grasp', 'lift']
-    assert not any('place' in name for name in planner.calls)
+    assert any('place' in name for name in planner.calls)  # Lookahead plans, never executes place.
     # Measured object-to-TCP relation changes between the two skills.
     rig.source.poses['a'][0][3] += .002
     assert runtime.run(SkillRequest('place', 'a', pose(.4, z=.03))).skill_verified
     assert executed == ['approach', 'grasp', 'lift', 'preplace', 'place', 'retreat']
     assert planner.relations[-1][0, 3] == pytest.approx(.002)
+    assert audited[0].stages[-1].state_after.holding == 'a'
+    retreat = audited[1].stages[-1]
+    assert retreat.state_before.holding == 'empty'
+    assert retreat.state_before.gripper_closed is False
+    assert np.allclose(retreat.state_before.released_object_pose, pose(.4, z=.03))
+    assert planner.closed is True  # Hypothetical place did not mutate observed held state.
     assert rig.source.boundaries == ['before_grasp', 'pre_execute_grasp', 'after_grasp',
                                      'before_place', 'pre_execute_place', 'after_place']
     assert len({row['snapshot_id'] for row in rig.mirror.rows}) == 6

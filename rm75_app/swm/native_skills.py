@@ -18,10 +18,39 @@ from .skills import ExecutionReceipt, PlannedSkill
 
 
 @dataclass(frozen=True)
+class NativeStageState:
+    """Predicted collision state, not evidence that a grasp actually succeeded."""
+    gripper_closed: bool
+    holding: str
+    T_tcp_object: object = None
+    released_object_pose: object = None
+
+    def __post_init__(self):
+        if type(self.gripper_closed) is not bool or not self.holding:
+            raise ValueError("Explicit jaw geometry and attachment required")
+        if (self.holding != 'empty') != (self.T_tcp_object is not None):
+            raise ValueError("Held geometry requires a TCP-relative transform")
+        if self.holding != 'empty' and self.released_object_pose is not None:
+            raise ValueError("An attached object cannot also be released")
+        for key in ('T_tcp_object', 'released_object_pose'):
+            value = getattr(self, key)
+            if value is not None:
+                object.__setattr__(self, key, tuple(tuple(row) for row in transform(value).tolist()))
+
+    def as_dict(self):
+        return dict(gripper_closed=self.gripper_closed, holding=self.holding,
+                    T_tcp_object=self.T_tcp_object, released_object_pose=self.released_object_pose)
+
+
+@dataclass(frozen=True)
 class NativeStage:
     name: str
     trajectory: object
     gripper_after: bool | None = None
+    state_before: NativeStageState | None = None
+    state_after: NativeStageState | None = None
+    contact_objects: tuple[str, ...] = ()
+    allow_start_contact_escape: bool = False
 
 
 @dataclass(frozen=True)
@@ -35,7 +64,11 @@ class NativePrimitive:
             dict(name=s.name, joint_names=list(s.trajectory.joint_names),
                  positions=np.asarray(s.trajectory.positions).tolist(),
                  dt=None if s.trajectory.dt is None else np.asarray(s.trajectory.dt).tolist(),
-                 gripper_after=s.gripper_after) for s in self.stages]))
+                 gripper_after=s.gripper_after,
+                 state_before=None if s.state_before is None else s.state_before.as_dict(),
+                 state_after=None if s.state_after is None else s.state_after.as_dict(),
+                 contact_objects=s.contact_objects,
+                 allow_start_contact_escape=s.allow_start_contact_escape) for s in self.stages]))
 
 
 class SharedPrimitiveExecutor:
@@ -149,15 +182,31 @@ class PickPlaceNativePhases:
                         lift = c._plan_linear_stage(stage='lift', current=grasp_q, candidate=candidate,
                             task=task, allow_start_contact_escape=True, axis='z', project_distance_to_goal=project)
                         if lift is not None and lift.trajectory is not None:
-                            stages = (NativeStage('approach', approach.trajectory),
-                                      NativeStage('grasp', grasp.trajectory, True), NativeStage('lift', lift.trajectory))
                             relative = np.linalg.inv(_pose_matrix(origin.pose)) @ transform(
                                 snapshot['objects'][request.object_id]['measured']['T_world_object'])
+                            lifted_q = c._end_configuration(lift.trajectory)
+                            # Screen placement with the same original candidates and
+                            # measured/predicted attachment. Discard these paths: the
+                            # place skill MUST solve again after its fresh observation.
+                            if self._placement_stages(task, lifted_q, relative, None) is None:
+                                continue
+                            empty = NativeStageState(False, 'empty')
+                            held = NativeStageState(True, task.object_name, relative)
+                            stages = (NativeStage('approach', approach.trajectory,
+                                          state_before=empty, state_after=empty),
+                                      NativeStage('grasp', grasp.trajectory, True, empty, held,
+                                          (task.object_name,)),
+                                      NativeStage('lift', lift.trajectory, state_before=held,
+                                          state_after=held, allow_start_contact_escape=True))
                             expected = _pose_matrix(c.planner.tool_pose_for_configuration(
-                                c._end_configuration(lift.trajectory), task.tool_frame)) @ relative
+                                lifted_q, task.tool_frame)) @ relative
                             break
                 finally:
+                    # detach alone does not restore moved proxy poses or the
+                    # complete obstacle set after hypothetical candidate planning.
                     c.planner.detach_object(task.object_name)
+                    c.planner.update_scene(task.scene)
+                    c.planner.set_gripper_collision_state(False)
                 if stages is not None:
                     break
         else:
@@ -165,39 +214,66 @@ class PickPlaceNativePhases:
                 raise SceneInvalid("Native place requires measured holding of this instance")
             relative = np.linalg.inv(transform(snapshot['robot']['T_world_tcp'])) @ transform(
                 snapshot['objects'][request.object_id]['measured']['T_world_object'])
-            c.planner.update_attached_object_pose(task.object_name, task.current, relative)
-            # Recompute every release TCP from THIS measured grasp relation.
-            # Nothing from the pre-grasp placement trajectory is reused.
-            for original in sorted(task.place_candidates, key=lambda x: x.score, reverse=True)[:task.max_motion_candidates]:
-                raw_target = original.metadata.get('planning_target_object_pose')
-                if raw_target is None:
-                    raise SceneInvalid("Original placement compiler must provide a world object target")
-                p, r = pose_error(raw_target, request.target)
-                if p > request.position_tolerance_m or r > request.rotation_tolerance_rad:
-                    continue
-                tcp = transform(raw_target) @ np.linalg.inv(relative)
-                candidate = replace(original, pose=Pose(tcp[:3, 3], matrix_to_quaternion_wxyz(tcp[:3, :3])),
-                    metadata={**original.metadata, 'T_tcp_object': relative.tolist()})
-                for pre in _place_approach_candidates(candidate, task.place_clearance):
-                    preplace = c._plan_pose_stage(stage='preplace', current=task.current, candidates=(pre,), task=task)
-                    if preplace is None or preplace.trajectory is None:
-                        continue
-                    place = c._plan_linear_stage(stage='place', current=c._end_configuration(preplace.trajectory),
-                        candidate=candidate, task=task, ignore_object_name=task.place_contact_object_name,
-                        project_distance_to_goal=True)
-                    if place is None or place.trajectory is None:
-                        continue
-                    stages = (NativeStage('preplace', preplace.trajectory), NativeStage('place', place.trajectory, False),
-                              NativeStage('retreat', _reverse_trajectory(place.trajectory)))
-                    expected = transform(raw_target)
-                    break
-                if stages is not None:
-                    break
+            try:
+                c.planner.update_attached_object_pose(task.object_name, task.current, relative)
+                placement = self._placement_stages(task, task.current, relative, request)
+                if placement is not None:
+                    stages, expected = placement
+            finally:
+                # Restore the observed held state, including jaw geometry, on
+                # success, infeasibility and exceptions. Audit starts from here.
+                c.planner.detach_object(task.object_name)
+                c.planner.update_scene(task.scene)
+                c.planner.attach_object(task.object_name, task.current)
+                c.planner.update_attached_object_pose(task.object_name, task.current, relative)
+                c.planner.set_gripper_collision_state(True)
         if stages is None:
             raise RuntimeError('Native atomic phase has no feasible trajectory')
         primitive = NativePrimitive(request.skill, request.object_id, stages)
         return PlannedSkill(digest(request.as_dict()), snapshot['snapshot_id'], primitive.fingerprint(),
                             primitive, expected.tolist(), 'shared_PickPlaceCoordinator_phase_solvers')
+
+
+    def _placement_stages(self, task, current, relative, request):
+        """Shared feasibility screening and post-observation place planning.
+
+        These are candidate paths only. In particular, the reversed retreat
+        still requires the installed auditor under its RELEASED/OPEN state.
+        """
+        from rm75_app.pickplace.coordinator import _place_approach_candidates, _reverse_trajectory
+        from rm75_app.pickplace.cached_scene import matrix_to_quaternion_wxyz
+        from rm75_app.planning.contracts import Pose
+
+        c = self.coordinator
+        held = NativeStageState(True, task.object_name, relative)
+        for original in sorted(task.place_candidates, key=lambda x: x.score, reverse=True)[:task.max_motion_candidates]:
+            raw_target = original.metadata.get('planning_target_object_pose')
+            if raw_target is None:
+                raise SceneInvalid("Original placement compiler must provide a world object target")
+            if request is not None:
+                p, r = pose_error(raw_target, request.target)
+                if p > request.position_tolerance_m or r > request.rotation_tolerance_rad:
+                    continue
+            tcp = transform(raw_target) @ np.linalg.inv(relative)
+            candidate = replace(original, pose=Pose(tcp[:3, 3], matrix_to_quaternion_wxyz(tcp[:3, :3])),
+                metadata={**original.metadata, 'T_tcp_object': relative.tolist()})
+            for pre in _place_approach_candidates(candidate, task.place_clearance):
+                preplace = c._plan_pose_stage(stage='preplace', current=current, candidates=(pre,), task=task)
+                if preplace is None or preplace.trajectory is None:
+                    continue
+                place = c._plan_linear_stage(stage='place', current=c._end_configuration(preplace.trajectory),
+                    candidate=candidate, task=task, ignore_object_name=task.place_contact_object_name,
+                    project_distance_to_goal=True)
+                if place is None or place.trajectory is None:
+                    continue
+                released = NativeStageState(False, 'empty', released_object_pose=raw_target)
+                contacts = () if task.place_contact_object_name is None else (task.place_contact_object_name,)
+                stages = (NativeStage('preplace', preplace.trajectory, state_before=held, state_after=held),
+                          NativeStage('place', place.trajectory, False, held, released, contacts),
+                          NativeStage('retreat', _reverse_trajectory(place.trajectory),
+                              state_before=released, state_after=released))
+                return stages, transform(raw_target)
+        return None
 
 
 class PushNativePhase:
