@@ -1,0 +1,80 @@
+"""Bounded no-contact private robot dynamics comparison, not skill qualification."""
+import json,sys
+from pathlib import Path
+from contextlib import ExitStack
+import numpy as np
+ROOT=Path('/home/zhangzhao/Desktop/rm75-manipulation')
+sys.path.insert(0,str(ROOT))
+from rm75_app.swm.native_execution import NativePrimaryExecutor
+from rm75_app.swm.native_robot import observe_primary_robot, read_primary_drive_state
+from rm75_app.swm.native_robot_mirror import SapienRobotStatePort, apply_native_drive_state
+from rm75_app.swm.native_bootstrap import _array
+from rm75_app.swm.scene import SceneInvalid
+resolved_urdf=None
+original_init=SapienRobotStatePort.__init__
+def remember(self,*args,**kwargs):
+    global resolved_urdf
+    original_init(self,*args,**kwargs)
+    resolved_urdf=self.urdf_path
+SapienRobotStatePort.__init__=remember
+original=NativePrimaryExecutor.execute_trajectory
+captured=False
+def execute(self,stage,trajectory):
+    global captured
+    result=original(self,stage,trajectory)
+    if stage!='approach' or captured:return result
+    captured=True
+    primary=self.primary
+    agent=primary.env.unwrapped.agent
+    if any(c.config.interpolate for c in agent.controller.controllers.values() if hasattr(c,'set_drive_targets')):
+        raise SceneInvalid('Comparison requires original noninterpolating controllers')
+    def contacts():
+        actors=dict(primary.actors)
+        actors['primary_table']=primary.env.unwrapped.table_scene.table
+        rows=[]
+        for name,link in agent.robot.links_map.items():
+            for oid,actor in actors.items():
+                force=_array(agent.scene.get_pairwise_contact_forces(link,actor)).reshape(-1)
+                if not np.isfinite(force).all():raise SceneInvalid('Invalid reference contact force')
+                if np.any(force!=0):rows.append(dict(link=name,object_id=oid,force=force.tolist()))
+        return rows
+    if contacts():raise SceneInvalid('Free-space comparison requires no measured contact')
+    observation=observe_primary_robot(primary)
+    rows=[]
+    with ExitStack() as resources:
+        mirror=SapienRobotStatePort(resolved_urdf,resources=resources)
+        mirror.synchronize_primary_physics(primary)
+        mirror.apply_idle_state(observation)
+        names=[joint.name for joint in mirror._robot.get_active_joints()]
+        for tick in range(3):
+            primary.stop.check()
+            drives=read_primary_drive_state(primary)
+            apply_native_drive_state(mirror._robot,mirror._physics_system,drives)
+            primary.demo.step_and_render(primary.demo.compose_action(self._last_commanded_target,self._gripper_value),
+                tag='bounded_private_dynamics_reference_hold')
+            for _ in range(round(drives['simulation_frequency_hz']/drives['control_frequency_hz'])):
+                primary.stop.check()
+                mirror._scene.step()
+            actual=primary.read_state()
+            measured=dict(zip(actual['joint_names'],actual['positions']))
+            velocities=dict(zip(actual['joint_names'],actual['velocities']))
+            q=_array(mirror._robot.get_qpos()).reshape(-1)
+            v=_array(mirror._robot.get_qvel()).reshape(-1)
+            contact_rows=contacts()
+            rows.append(dict(control_tick=tick+1,joint_names=names,
+                source_q=[measured[n] for n in names],source_qdot=[velocities[n] for n in names],
+                private_q=q.tolist(),private_qdot=v.tolist(),contacts=contact_rows,
+                max_q_error_rad=float(np.max(np.abs(q-[measured[n] for n in names]))),
+                max_qdot_error_rad_s=float(np.max(np.abs(v-[velocities[n] for n in names]))),
+                source_targets_unchanged=read_primary_drive_state(primary)==drives))
+            if contact_rows:break
+    (ROOT/'runtime_data/swm_release_pen_worker_30/dynamics_comparison.json').write_text(json.dumps(dict(
+        domain='experimental_CPU_PhysX_free_space_hold_comparison',rows=rows,
+        primary_extra_hold_control_ticks=len(rows),private_closed=mirror.closed,
+        scene_contact_model_qualified=False,controller_replay_qualified=False,
+        skill_qualified=False,hardware_connected=False),indent=2))
+    if rows[-1]['contacts']:raise SceneInvalid('Reference hold encountered contact')
+    return result
+NativePrimaryExecutor.execute_trajectory=execute
+from rm75_app.workcell.worker import main
+raise SystemExit(main())
