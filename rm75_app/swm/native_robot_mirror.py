@@ -71,6 +71,7 @@ class SapienRobotStatePort:
         self._physics_system = None
         self._robot = None
         self.closed = False
+        self.emit = lambda **row: None
         self.acknowledgement = None
         self.physics_acknowledgement = None
         self._physics_state = None
@@ -233,6 +234,10 @@ class SapienRobotStatePort:
             attachment_qualified=False, hardware_qualified=False)
         if self._physics_state is not None:
             self.acknowledgement['physics_policy'] = self.read_physics_policy()
+        self.emit(kind='swm_native_robot_state_aligned',
+            primary_sequence=observation.get('primary_sequence'),
+            captured_at=observation.get('captured_at'),
+            acknowledgement=self.acknowledgement)
         return self.acknowledgement
 
     def close(self):
