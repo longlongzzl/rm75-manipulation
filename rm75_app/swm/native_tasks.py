@@ -31,17 +31,18 @@ class CompiledNativeTask:
         self.structure_verifier = structure_verifier
         base_builder = getattr(task_builder, 'base', task_builder)
         config = getattr(base_builder, 'config', None)
-        offset = getattr(config, 'robot_base_world_xyz_m', None)
-        self.base_offset = np.zeros(3) if offset is None else np.asarray(offset, dtype=float).reshape(3)
-        if not np.isfinite(self.base_offset).all():
-            raise ValueError('Invalid original robot-base calibration')
+        from rm75_app.core.frames import explicit_robot_base_transform
+        self.T_world_base = explicit_robot_base_transform(
+            world_xyz=getattr(config, 'robot_base_world_xyz_m', None),
+            world_transform=getattr(config, 'robot_base_world_transform', None))
+        self.T_base_world = np.linalg.inv(self.T_world_base)
+        # Retain the informational translation attribute, never use it to drop rotation.
+        self.base_offset = self.T_world_base[:3, 3].copy()
         self._active = None
         self._iterated = False
 
     def _base_target(self, atom):
-        target = transform(atom.target_pose)
-        target[:3, 3] -= self.base_offset
-        return target
+        return self.T_base_world @ transform(atom.target_pose)
 
     def requests(self):
         if self._iterated:
@@ -68,8 +69,7 @@ class CompiledNativeTask:
             asset = snapshot['assets'][obj['asset_id']]
             if asset.get('native_asset_name') != state.asset_name:
                 raise SceneInvalid('Explicit native asset/instance identity binding required')
-            measured = transform(obj['measured']['T_world_object'])
-            measured[:3, 3] += self.base_offset
+            measured = self.T_world_base @ transform(obj['measured']['T_world_object'])
             state.pose = measured
             state.lifecycle = ObjectLifecycle.HELD if obj['lifecycle'] == 'held' else ObjectLifecycle.AVAILABLE
             state.movable = not obj['fixed']

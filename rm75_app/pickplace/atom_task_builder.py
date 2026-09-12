@@ -101,6 +101,18 @@ class AtomTaskBuilderConfig:
     # The multi-object physics environment always builds ManiSkill's canonical
     # table. Enable its exact collision box for simulation planning.
     include_maniskill_workspace_table: bool = False
+    # Full measured T_world_base, mutually exclusive with the legacy XYZ field.
+    robot_base_world_transform: tuple[tuple[float, ...], ...] | None = None
+
+    def __post_init__(self):
+        from rm75_app.core.frames import explicit_robot_base_transform
+        matrix = explicit_robot_base_transform(world_xyz=self.robot_base_world_xyz_m,
+            world_transform=self.robot_base_world_transform)
+        if self.robot_base_world_transform is not None:
+            object.__setattr__(self, 'robot_base_world_transform',
+                tuple(tuple(float(value) for value in row) for row in matrix))
+        elif self.robot_base_world_xyz_m is not None:
+            object.__setattr__(self, 'robot_base_world_xyz_m', tuple(float(value) for value in matrix[:3, 3]))
 
 
 class FixedSceneAtomTaskBuilder:
@@ -508,10 +520,10 @@ class FixedSceneAtomTaskBuilder:
         """Convert a world pose to cuRobo's robot-base planning frame."""
 
         transform = np.asarray(T_world, dtype=np.float64).reshape(4, 4).copy()
-        base_xyz = self.config.robot_base_world_xyz_m
-        if base_xyz is not None:
-            transform[:3, 3] -= np.asarray(base_xyz, dtype=np.float64).reshape(3)
-        return transform
+        from rm75_app.core.frames import explicit_robot_base_transform
+        base = explicit_robot_base_transform(world_xyz=self.config.robot_base_world_xyz_m,
+            world_transform=self.config.robot_base_world_transform)
+        return np.linalg.inv(base) @ transform
 
     def _grasp_candidates(
         self,

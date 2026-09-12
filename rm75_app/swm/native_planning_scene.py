@@ -35,8 +35,10 @@ def compile_primary_collision_scene(primary):
     if np.max(np.abs(measured['velocities'])) > .001:
         raise SceneInvalid('Collision synchronization requires measured idle joints')
     base = robot_base_transform(primary.env)
-    if base is None or not np.allclose(base[:3, :3], np.eye(3), atol=1e-6):
-        raise SceneInvalid('Original task builder requires a measured translation-only base calibration')
+    if base is None:
+        raise SceneInvalid('Native robot base transform is unavailable')
+    from rm75_app.core.frames import explicit_robot_base_transform
+    base = explicit_robot_base_transform(world_transform=base)
     registry = primary.demo._single_scene_object_registry
     if set(registry) != set(measured['objects']):
         raise SceneInvalid('Native inventory changed during collision synchronization')
@@ -57,7 +59,7 @@ def compile_primary_collision_scene(primary):
         assets[oid] = dict(mesh_sha256=actual_mesh, simulation_sha256=actual_sim,
                           simulation_scale=float(sim_scale))
     builder = FixedSceneAtomTaskBuilder(config=AtomTaskBuilderConfig(
-        robot_base_world_xyz_m=tuple(base[:3, 3]), include_maniskill_workspace_table=False))
+        robot_base_world_transform=base, include_maniskill_workspace_table=False))
     compiled = builder._planning_scene(TaskSceneState(states, revision=measured['sequence']))
     objects = list(compiled.objects)
     infrastructure = {}

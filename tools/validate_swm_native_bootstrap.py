@@ -93,6 +93,9 @@ def main():
                 report['planner_scene_qualified'] = False
                 if options.sync_planning_scene:
                     from rm75_app.swm.native_planning_scene import compile_primary_collision_scene, read_curobo_collision_ack
+                    from rm75_app.execution.maniskill_scene import robot_base_transform
+                    measured_base = robot_base_transform(world.env)
+                    report['measured_T_world_base'] = None if measured_base is None else measured_base.tolist()
                     scene, source = compile_primary_collision_scene(world)
                     backend.update_scene(scene)
                     report['collision_scene_source'] = source

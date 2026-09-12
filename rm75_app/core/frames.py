@@ -67,3 +67,27 @@ def robot_base_world_pose(
     transform = np.eye(4, dtype=np.float64)
     transform[:3, 3] = DEFAULT_ROBOT_BASE_WORLD_XYZ_M
     return transform, "rm75_default"
+
+
+def explicit_robot_base_transform(*, world_xyz=None, world_transform=None) -> np.ndarray:
+    """Resolve one explicit rigid base calibration, without silent fallbacks.
+
+    Unlike imported scene hints, a trusted execution calibration must never
+    drop rotation, accept scale/reflection, or combine two representations.
+    """
+    if world_xyz is not None and world_transform is not None:
+        raise ValueError("Specify only one robot-base calibration representation")
+    matrix = np.eye(4, dtype=np.float64)
+    if world_transform is not None:
+        matrix = np.asarray(world_transform, dtype=np.float64).copy()
+    elif world_xyz is not None:
+        xyz = np.asarray(world_xyz, dtype=np.float64)
+        if xyz.shape != (3,):
+            raise ValueError("Robot-base translation must contain three values")
+        matrix[:3, 3] = xyz
+    if (matrix.shape != (4, 4) or not np.isfinite(matrix).all()
+            or not np.allclose(matrix[3], [0., 0., 0., 1.], atol=1e-6, rtol=0)
+            or not np.allclose(matrix[:3, :3].T @ matrix[:3, :3], np.eye(3), atol=1e-6, rtol=0)
+            or not np.isclose(np.linalg.det(matrix[:3, :3]), 1., atol=1e-6, rtol=0)):
+        raise ValueError("Robot-base calibration must be a finite proper SE(3) transform")
+    return matrix
