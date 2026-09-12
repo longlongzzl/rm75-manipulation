@@ -130,8 +130,14 @@ def main(argv=None):
                 raise PermissionError('Task integration has not passed local hardware qualification')
         with ResourceLease(args.app_root/'runtime_data'/'workcell'/'robot.lock'):
             stop.check();events.emit('task_started',task=spec['task'],mode=spec['mode'])
+            swm_result=None
+            if spec['mode']!='preview':
+                from rm75_app.swm.integration import dispatch_if_enabled
+                swm_result=dispatch_if_enabled(spec,profile,args.app_root,run_dir,stop,events)
             if spec['mode']=='preview':
                 result=preview(spec,profile)
+            elif swm_result is not None:
+                result=swm_result
             elif spec['task']=='pusht':
                 result=run_pusht(spec,profile,stop,events)
             else:

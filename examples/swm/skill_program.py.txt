@@ -1,0 +1,5 @@
+# LLM output shape, not a directly executable Python script.
+# Object, functionality and goal IDs must exist in the current SWM/compiler.
+# compile_skill_code parses a bounded AST; it never executes arbitrary Python.
+skills.grasp("block_01", functional_pose="side_grasp")
+skills.place("block_01", target="slot_A")

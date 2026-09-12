@@ -1,0 +1,129 @@
+{
+  "schema": "rm75_swm_core_validation_v1",
+  "base_commit": "44fe0434409cdac923afd9af271f8399378ed536",
+  "python": "3.13.5",
+  "tests": {
+    "passed": 100,
+    "failed": 0,
+    "skipped": 0,
+    "command": "PYTHONPATH=. PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python tools/run_network_isolated.py -- python -m pytest tests/swm -q",
+    "scope": "partial_source_tree_new_swm_modules_with_mock_observation_planning_execution_and_physics"
+  },
+  "compileall": "PASS",
+  "network_isolator_blob": "4d374ce155d84f222007f50d20ba401f7b12a65b",
+  "full_repository_tests": "NOT_RUN",
+  "native_atomic_bindings_installed": false,
+  "native_sam3d": "NOT_RUN",
+  "native_foundationpose": "NOT_RUN",
+  "native_physx_parameter_replay": "NOT_RUN",
+  "llm_api_calls": 0,
+  "hardware_connected": false,
+  "console_changed": false,
+  "files": {
+    "rm75_app/swm/__init__.py": {
+      "bytes": 66,
+      "git_blob": "13d547deda9747f1e6d650cffcbad45b9de1c331",
+      "sha256": "68e6fb60ef6c566081516e998fe2e113d909619bf68b636b1276c7027680cc9d"
+    },
+    "rm75_app/swm/adapters.py": {
+      "bytes": 6114,
+      "git_blob": "489dead722f71c7894fad4184fe167fa61e3508a",
+      "sha256": "8e9448712ab6d794656ea0220d07c31ee29764643103ceb744a4c0ab359f741a"
+    },
+    "rm75_app/swm/identification.py": {
+      "bytes": 20622,
+      "git_blob": "b12fe525011e6718341c55c4f4a1530a7b0b8357",
+      "sha256": "697f67fe34fbde7a58c1f3668574aa04101838353886a3e1e012987dc5c1106f"
+    },
+    "rm75_app/swm/integration.py": {
+      "bytes": 4004,
+      "git_blob": "034af9c3e0d0ee7dc05721b6f3160399402df18c",
+      "sha256": "26db05bb9e99b254d3548ae599d193a7d07f396397af26c0b15239da14d73c93"
+    },
+    "rm75_app/swm/measurements.py": {
+      "bytes": 5364,
+      "git_blob": "06a31bbb6b407c7a1480def5fcef914af74cf857",
+      "sha256": "1e85af563f5a60df0af28a85abc5f79295dc3d73a95fd0434825836b394bc111"
+    },
+    "rm75_app/swm/perception.py": {
+      "bytes": 8108,
+      "git_blob": "72666a5ecba3f7fbec4d0c3f26d04be609ec1d9b",
+      "sha256": "abed69130b212e50156185d52a88f188c44a08ea21fc9de80d32a4795e8e1b4f"
+    },
+    "rm75_app/swm/physics_replay.py": {
+      "bytes": 11535,
+      "git_blob": "22facb8b6f92905ed622902be98d6cff091d10e1",
+      "sha256": "23125dc81b8568188adb10bf274564b982ce33c31b1cf63ad6bd05c0f495d987"
+    },
+    "rm75_app/swm/planning.py": {
+      "bytes": 3942,
+      "git_blob": "320e1c129830a9bd4ccd59e3a39ab7db82ca341c",
+      "sha256": "65a15534bf00b52e1115ae9131661e7a7330fc8df9df7ed218ae534eb28eea07"
+    },
+    "rm75_app/swm/program.py": {
+      "bytes": 7257,
+      "git_blob": "2ff833304367917c685b4459ab82e91d3177fb55",
+      "sha256": "3817871639655babdd3de0697d7b3b0561a96997dbaecfe99575650819e10432"
+    },
+    "rm75_app/swm/scene.py": {
+      "bytes": 18161,
+      "git_blob": "dbe1f2bfc29a9646882f7fad521dac0e1e33545a",
+      "sha256": "2e1b7a996775e7168f48faa6b5c640c974ab9dbb06446ae1b910eff736360947"
+    },
+    "rm75_app/swm/skills.py": {
+      "bytes": 16378,
+      "git_blob": "bea4a7da6d957843b5c9faab557f38196154048e",
+      "sha256": "0b61423807d1474954f721aaefe6a2a141a77990795e6d1229c098a6602125fb"
+    },
+    "rm75_app/swm/storage.py": {
+      "bytes": 3137,
+      "git_blob": "d0aadab632de5609d939452c1cc3aae68c4debe9",
+      "sha256": "c060bee4b6ba372dbff24897a1b114f329642aaaab1d13137cecf1f996bf4ef0"
+    },
+    "tests/swm/__init__.py": {
+      "bytes": 0,
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "tests/swm/conftest.py": {
+      "bytes": 5187,
+      "git_blob": "b90379f35a4c29f46de9904fc6e02446bab72106",
+      "sha256": "adce8fd46cac592a16cd2702d1f65fd958bb7ee274b775929a9dc02772047f96"
+    },
+    "tests/swm/test_identification_program.py": {
+      "bytes": 9434,
+      "git_blob": "6d29a0b08f71a437a3c624b17d8014a3ff03f336",
+      "sha256": "2000809617a328dc45df2093ec87351ab9bedd45cc4619778bd0b903501ebafe"
+    },
+    "tests/swm/test_measurement_storage.py": {
+      "bytes": 6372,
+      "git_blob": "7620305508dad3c0fc262d1f0de33e85e4c11b95",
+      "sha256": "03119fd99dca9aab4d8c70a2619b8cf098d3fe814ff9017e0b4bfc76081336c7"
+    },
+    "tests/swm/test_ports_integration.py": {
+      "bytes": 6698,
+      "git_blob": "26a999078496862349c22f2feef1c16f0374edb7",
+      "sha256": "96b16629fe19d8e89e9eaad49696a2269e3aa43c3a8054a09ec6dbf22cf4f028"
+    },
+    "tests/swm/test_scene_skills.py": {
+      "bytes": 7413,
+      "git_blob": "4afc957ed25df681da345b383d9764442bf23b3d",
+      "sha256": "b2012f82babbed381b197752e883cc7a6796855eb9c56377c90eff5f12596f6c"
+    },
+    "rm75_app/workcell/worker.py": {
+      "bytes": 9904,
+      "git_blob": "31c4ed7a5e3c6cde9720ee7439889c808a850cf3",
+      "sha256": "0e0c7d5f636128803716378bebf5fd2022531df6bf24b0005577140db6218675"
+    },
+    "docs/CHATGPT_SWM_ATOMIC_ARCHITECTURE_20260912.md": {
+      "bytes": 22091,
+      "git_blob": "588c0af97ef758bc4ffef3da8c3f0d9d25d682e1",
+      "sha256": "6c09724499173ea3d79463f7931b46d6edb89ec07bf6393886821bd715a6bdd5"
+    },
+    "examples/swm/skill_program.py.txt": {
+      "bytes": 314,
+      "git_blob": "fb40e1fb7f8fc869e3b5b58ef08f3d9f13e46d69",
+      "sha256": "0908ae2a02e636113fb48b75ee606c3c33940dc05b968dd001548bf2f70344bb"
+    }
+  }
+}
