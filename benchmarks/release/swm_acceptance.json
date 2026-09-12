@@ -8,18 +8,12 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "bcd2dac",
+    "commit": "d7b361f",
     "sha256": {
-      "rm75_app/swm/native_skills.py": "8d268b3622d9a6bd04870e959a7569726031c1cbec5938a06bbc1397b5403d57",
-      "rm75_app/swm/native_audit.py": "2553ddd377a4ed41a83d8779c47f49661cc9766cecc50e84d888400e5ede55f2",
-      "rm75_app/swm/native_registration.py": "ade1d76ccfd5d235dfb09450fc2e0e0f408e7caee78c9fabe10e56eed88340d3",
-      "rm75_app/swm/native_tasks.py": "09ce76e66f69fb0b6dff8b4d5c7874e9cacf3523dbd429dc46682030eb14c0c6",
-      "rm75_app/pickplace/atom_task_builder.py": "5b67689410ffc2c04278c2bf7ff78fd780e6554c756a2f4f4fdd3c17c59c5636",
-      "tests/swm/test_native_stage_audit.py": "bf07a8ddf4584fd8af935c0716dbd5d1141e6fe784aa3e00832c7e36e10a8e8b",
-      "tests/swm/test_native_task_infrastructure.py": "f653e08859e8ba81a233929ed72d5a92880b34b1993531d5e7b91ed9bc996ff3"
+      "rm75_app/pickplace/atom_task_builder.py": "6d2153decbd7ed9b842cb3b3114811f4566beeeece015e726d8880ab22b3b0da"
     },
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Full regression has one known infrastructure type failure. Native evidence/source hashes in runs.native_measured_stage_audit_01."
+    "note": "Final implementation unchanged throughout regression. Native initialization and compiler evidence are explicitly separated."
   },
   "runs": {
     "m0_targeted": {
@@ -6935,6 +6929,138 @@
         "assets/test_scenes/current_table.json": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908"
       },
       "note": "Two identical measured joint states audited with actual six-joint jaw geometry against full native scene, then full native scene/jaw restoration read back. Not a generated grasp path, not task compilation, not execution."
+    },
+    "native_compiler_type_targeted": {
+      "tested_commit": "d7b361f",
+      "domain": "software_fixture",
+      "passed": 11,
+      "failed": 0,
+      "seconds": 0.47
+    },
+    "native_compiler_type_full": {
+      "tested_commit": "d7b361f",
+      "domain": "software_regression",
+      "passed": 1622,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 42.32,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q"
+    },
+    "native_compiler_driver_01": {
+      "tested_commit": "d7b361f",
+      "process_exit_code": 0,
+      "status": "INCOMPLETE_COMPILER_EVIDENCE",
+      "initialization_status": "live_dual_mirror_checkpoint_committed",
+      "private_resources_closed": true,
+      "compiler_verified": false,
+      "target_configuration_captured": false,
+      "atomic_worker_qualified": false,
+      "hardware_connected": false,
+      "sha256": {
+        "rm75_app/pickplace/atom_task_builder.py": "6d2153decbd7ed9b842cb3b3114811f4566beeeece015e726d8880ab22b3b0da",
+        "runtime_data/swm_release_native_compiler_driver_01/run.py": "0abc1def8a297141f78e63ae6af81f7273d81b08b60cd3806b2e655c084319df",
+        "runtime_data/swm_release_native_compiler_driver_01/transaction_result.json": "606b048a2679d8d838132b5892a8384fae817701be0203e26081734d95a7a359",
+        "runtime_data/swm_release_native_compiler_bootstrap_01/result.json": "820464fdb2b72a8e4cf685bc8204236140059c0409097c97275f32b0077ec6be",
+        "runtime_data/swm_release_native_compiler_driver_01.log": "124e99ef74cede438d6b7298c0912103747c5dcc892b669c39947aa3ca93288a",
+        "runtime_data/swm_release_captured_scene_compiler_01.py": "27223270e60288de3e06680b2306eb80506a585c3475c6ce2864fcd4eb0e811f",
+        "runtime_data/swm_release_captured_scene_compiler_01.json": "3afea07de085781fd53728d6f58685c41d3e7b4296505fb5c79e71803928347e",
+        "runtime_data/swm_release_captured_scene_compiler_01.log": "f52645d7e519cc1963f5a886fe8b34870a4639d7cbd1ec4e666390c3a181de6f",
+        "runtime_data/swm_release_native_compiler_targeted.log": "c011dedf6471ed64fc8a86cab029c3c4c0d43b06ede44ec922e1a6fed8132a95",
+        "runtime_data/swm_release_native_compiler_full.log": "2a068adab5b0fe30f16c93d7c86473ac639fd1a47542cfc9bbf9b3b957162110",
+        "assets/test_scenes/current_table.json": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908"
+      },
+      "note": "Malformed sed r command consumed the following substitution as filename text; compiler probe was not inserted. Process exit 0 proves initialization only, not compiler verification."
+    },
+    "captured_native_scene_compiler_01": {
+      "tested_commit": "d7b361f",
+      "process_exit_code": 0,
+      "domain": "original_builder_on_captured_native_snapshot",
+      "source_snapshot_id": "4ec1530c9ce67dfd9d6b22e888abcbfba548c0302d8be8015380aaacf6160be7",
+      "original_builder": {
+        "status": "passed",
+        "object_count": 12,
+        "comparisons": [
+          {
+            "name": "bi",
+            "kind": "cuboid",
+            "position_error_m": 2.7809732887839817e-17,
+            "rotation_error_rad": 0
+          },
+          {
+            "name": "bitong",
+            "kind": "cuboid",
+            "position_error_m": 7.850462293418876e-17,
+            "rotation_error_rad": 0
+          },
+          {
+            "name": "carriot",
+            "kind": "cuboid",
+            "position_error_m": 2.7755575615628914e-17,
+            "rotation_error_rad": 0
+          },
+          {
+            "name": "desk",
+            "kind": "cuboid",
+            "position_error_m": 5.551115123125783e-17,
+            "rotation_error_rad": 0
+          },
+          {
+            "name": "gluestick",
+            "kind": "cuboid",
+            "position_error_m": 2.797157557069881e-17,
+            "rotation_error_rad": 0
+          },
+          {
+            "name": "hongshupian",
+            "kind": "cuboid",
+            "position_error_m": 2.8609792490763984e-17,
+            "rotation_error_rad": 0
+          },
+          {
+            "name": "lvmukuai",
+            "kind": "cuboid",
+            "position_error_m": 2.7755575615628914e-17,
+            "rotation_error_rad": 0
+          },
+          {
+            "name": "shuazi",
+            "kind": "cuboid",
+            "position_error_m": 2.7755575615628914e-17,
+            "rotation_error_rad": 0
+          },
+          {
+            "name": "tennis",
+            "kind": "sphere",
+            "position_error_m": 5.551115123125783e-17,
+            "rotation_error_rad": 0
+          },
+          {
+            "name": "__maniskill_workspace_table__",
+            "kind": "cuboid",
+            "position_error_m": 2.775557561562936e-17,
+            "rotation_error_rad": 0
+          },
+          {
+            "name": "virtual_side_wall",
+            "kind": "cuboid",
+            "position_error_m": 1.1102230246251565e-16,
+            "rotation_error_rad": 0
+          },
+          {
+            "name": "virtual_top_wall",
+            "kind": "cuboid",
+            "position_error_m": 6.617444900424222e-24,
+            "rotation_error_rad": 0
+          }
+        ],
+        "task_candidates_qualified": false,
+        "atomic_worker_qualified": false
+      },
+      "compiled_gpu_application_verified": false,
+      "atomic_worker_qualified": false,
+      "motion_executed": false,
+      "hardware_connected": false,
+      "note": "Independent original builder invocation on the actual fresh captured 12-object snapshot; no replacement geometry, no task candidate generation or live GPU compiler transaction."
     }
   },
   "gates": {
@@ -7184,10 +7310,10 @@
   },
   "current_layer_status": {
     "kernel": {
-      "tested_commit": "bcd2dac",
-      "status": "FAILED_REGRESSION",
-      "passed": 1621,
-      "failed": 1
+      "tested_commit": "d7b361f",
+      "status": "PASSED_REGRESSION",
+      "passed": 1622,
+      "failed": 0
     },
     "native_wiring": "TWELVE_NATIVE_BODY_GEOMETRY_AND_PARAMETERS_ALIGNED_ATTACHMENT_ROBOT_POLICY_AND_WORKER_PENDING",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
@@ -7230,12 +7356,12 @@
       "hardware": "NOT_AUTHORIZED_NOT_RUN"
     },
     "worker_task_boundary": {
-      "kernel": "1621 passed / 1 failed / 1 existing warning",
-      "native_wiring": "Measured six-joint stage state and native restore implemented. Native asset name/infrastructure metadata wired, but original builder fails constructing fixed proxy due to NumPy dimensions type",
+      "kernel": "1622 passed / 0 failed / 1 existing warning",
+      "native_wiring": "Infrastructure dimensions type fixed. Original builder preserves all 12 objects from actual native snapshot; formal task candidates and worker still unqualified",
       "model_inference": "NOT_RUN",
-      "actual_simulation": "Stationary native stage audit succeeded; task compilation and formal worker remain unavailable",
+      "actual_simulation": "Fresh native initialization succeeded; independent captured-native-scene compilation passed. Compiler driver omitted its intended probe and must not qualify live compilation",
       "hardware": "NOT_AUTHORIZED_NOT_RUN",
-      "next_action": "Convert validated infrastructure dimensions to list before CollisionObject construction; run original full-inventory task compilation, then assemble original phases/auditor/executor in formal pen worker."
+      "next_action": "Repair the validation driver using separate sed expressions, capture original pen target configuration and complete original task/phase/worker assembly; do not replace the task with an easier target."
     }
   },
   "native_bootstrap": {
