@@ -49,3 +49,14 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python
 - 硬件：未授权、未连接、未运行。
 
 原 T 连续主物理执行和 N→N+1→下一规划的证据缺失，G6 未通过。原生初始化 URDF/SRDF 输出路径问题仍待修正确认。
+
+## M1 / 原冻结桌面实际初始化
+
+提交 `d0c8708` 修正私有初始化产物目录，已消除前述待确认写入风险。SWM 回归 **139 passed / 0.93 s**。
+
+实际运行 `tools/validate_swm_native_bootstrap.py`，全部通过原网络隔离及 180 s 上限启动，未执行旧 episode：
+
+- `runtime_data/swm_release_pen_bootstrap_01`：系统 Python 3.12，原生对象和关节读回成功，但退出 139，判定失败。JSON 的 initialized_and_read/primary_closed 不能覆盖进程失败。
+- `runtime_data/swm_release_pen_bootstrap_02`：原 profile 指定 Python 3.10，原 9 对象桌面，13 个活动关节 q/qdot，两次独立原生读回；主环境 close 返回、进程退出 0。仅初始化证据成立。
+
+内核：本轮定向回归通过；原生接线：主世界初始化可用但工厂仍未完整安装；模型推理：未运行；实际仿真：已运行初始化与状态读取，未运行原子任务；硬件：未授权、未连接。独立 holding、virtual infrastructure 完整观测、私有镜像、实际 cuRobo 阶段审计和六检查点仍缺证据，G0/G1 不标整体通过。两个运行摘要、时间区间和原始文件哈希见唯一机器验收表。

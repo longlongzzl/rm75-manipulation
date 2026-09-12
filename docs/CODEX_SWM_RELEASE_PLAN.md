@@ -44,3 +44,14 @@ G0 可移植验证与 S1 管理上下文已提交 `9c38a5449fbe02b4eb35481cb99f4
 在原生启动输出路径确认待回期间，已接通另一明确断点：SharedPrimitiveExecutor 在 push 命令前调用 recorder.begin_action，完成反馈核验后将同一录制句柄放入 ExecutionReceipt；runtime 在后测曝光后调用原 transition observer。严格缺覆盖检查保留，命令异常/后测失败/未安装 observer 都释放对应动作窗口；完成窗口裁剪、无动作时有界滚动缓存，活动窗口满额仍拒绝丢弃起点。
 
 定向 25 passed；正式全量 1540 passed、1 个既有警告（71.32 s）。均为软件回归，不是实际推送或 PhysX 成绩。尚未接实际关节反馈 FK/时钟映射、查询延迟、原 T 两动作辨识及 N+1 的下一规划消费；历史 action-id 集合长期有界策略仍需收口。M1 主线仍优先，初始化输出路径风险未绕过，未启动原生验证草稿。
+
+## 当前 M1 原生初始化证据：d0c8708
+
+此前待确认的输出路径风险已按继续修复要求消除：初始化只写新建私有目录，目录存在即拒绝，外部 SRDF 只读复制；旧资产路径不再作为生成物输出。验证入口已提交，不再是未提交草稿。
+
+已串行运行原 current_table 冻结桌面（SHA256 e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908），未运行旧 episode：
+
+- bootstrap_01：Python 3.12 完成原场景初始化、两次读回及 env.close 返回，但进程退出 139，清理验收失败，保留失败记录。
+- bootstrap_02：改用原机器配置指定的 foundationpose310 Python 3.10，同一冻结输入，读回 9 个对象、7 个机械臂关节及 6 个夹爪关节的 q/qdot，两次采集区间独立，env.close 返回且进程退出 0。仅初始化通过，不是 SWM 原子闭环通过。
+
+本轮 SWM 139 passed（0.93 s）；未重跑全量，上一条全量 1540 passed 保留原提交归属。下一步固定原 profile 的 Python 环境，接正式 worker 的私有规划镜像、独立 jaw/holding 观测及原 builder；补齐 virtual table/walls 等完整障碍身份，再运行笔 grasp/place 六个新检查点。不能把此次 2 次无动作读回当作 6 个技能检查点，也不能因进程正常退出宣称所有原生资源泄漏检查完成。

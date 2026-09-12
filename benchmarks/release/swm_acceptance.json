@@ -79,6 +79,339 @@
       "tested_commit": "7f51ceb",
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "note": "Full tests started before commit and ended after commit on identical unchanged implementation bytes."
+    },
+    "native_bootstrap_01": {
+      "domain": "native_maniskill_initialization",
+      "tested_commit": "d0c8708",
+      "python": "/home/zhangzhao/anaconda3/bin/python",
+      "process_exit_code": 139,
+      "status": "FAILED_PROCESS_EXIT",
+      "raw_status": "initialized_and_read",
+      "raw_primary_closed": true,
+      "hardware_connected": false,
+      "atomic_worker_qualified": false,
+      "planner_executed": false,
+      "motion_executed": false,
+      "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "input_object_ids": [
+        "bi",
+        "bitong",
+        "carriot",
+        "desk",
+        "gluestick",
+        "hongshupian",
+        "lvmukuai",
+        "shuazi",
+        "tennis"
+      ],
+      "raw_artifacts": "runtime_data/swm_release_pen_bootstrap_01",
+      "sha256": {
+        "runtime_data/swm_release_pen_bootstrap_01/input.json": "a53f42bf8d6575ef7c441c533681a515f2f718e9200d8f8bd98c55715d08800a",
+        "runtime_data/swm_release_pen_bootstrap_01/result.json": "93cc0fd99edeaf789e7daff542dd397961a832b8435197253d42ff02c8fafdb3",
+        "runtime_data/swm_release_pen_bootstrap_01/events.jsonl": "28d5a40e631abcae06edb692685053fb42c41db9e6ba4e67c5a178ec7ddfac2c",
+        "runtime_data/swm_release_pen_bootstrap_01.log": "2f20f1bb4fa389c55a0c4819eb5777667d9a9e4db33e386c76e5d4d492683126",
+        "runtime_data/swm_release_pen_bootstrap_01/initialization_artifacts/robot.planning.tiny.urdf": "92fe674c459b7e445cc5b914f4bcb078fc96f09fe979076aaac36d4458907b5d",
+        "runtime_data/swm_release_pen_bootstrap_01/initialization_artifacts/robot.permissive.srdf": "733f211c774473659fa650cda6142d10f910c6f8cf39c60645846746d8098ee2"
+      },
+      "captures": [
+        {
+          "sequence": 1,
+          "capture_started_at": 9561.922935853,
+          "capture_finished_at": 9561.924154129,
+          "joint_names": [
+            "joint_1",
+            "joint_2",
+            "joint_3",
+            "joint_4",
+            "joint_5",
+            "joint_6",
+            "joint_7",
+            "gripper_Left_1_Joint",
+            "gripper_Left_2_Joint",
+            "gripper_Right_1_Joint",
+            "gripper_Right_2_Joint",
+            "gripper_Left_Support_Joint",
+            "gripper_Right_Support_Joint"
+          ],
+          "object_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis"
+          ],
+          "q": [
+            1.572896122932434,
+            0.00905626080930233,
+            0.006035430356860161,
+            -1.562686562538147,
+            -0.0004508150741457939,
+            -1.5619994401931763,
+            1.0576796531677246,
+            -0.0004450046399142593,
+            -0.007228843867778778,
+            0.028663400560617447,
+            -0.005655086133629084,
+            0.0016043701907619834,
+            -0.00025351185468025506
+          ],
+          "qdot": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "sequence": 2,
+          "capture_started_at": 9561.924171167,
+          "capture_finished_at": 9561.925607554,
+          "joint_names": [
+            "joint_1",
+            "joint_2",
+            "joint_3",
+            "joint_4",
+            "joint_5",
+            "joint_6",
+            "joint_7",
+            "gripper_Left_1_Joint",
+            "gripper_Left_2_Joint",
+            "gripper_Right_1_Joint",
+            "gripper_Right_2_Joint",
+            "gripper_Left_Support_Joint",
+            "gripper_Right_Support_Joint"
+          ],
+          "object_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis"
+          ],
+          "q": [
+            1.572896122932434,
+            0.00905626080930233,
+            0.006035430356860161,
+            -1.562686562538147,
+            -0.0004508150741457939,
+            -1.5619994401931763,
+            1.0576796531677246,
+            -0.0004450046399142593,
+            -0.007228843867778778,
+            0.028663400560617447,
+            -0.005655086133629084,
+            0.0016043701907619834,
+            -0.00025351185468025506
+          ],
+          "qdot": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "independent_read_intervals": true,
+      "command": "PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/bin/python tools/validate_swm_native_bootstrap.py --profile runtime_data/three_scene/review_a35328c_20260909/tennis_standard_reference_v1/machine.json --output runtime_data/swm_release_pen_bootstrap_01"
+    },
+    "native_bootstrap_02": {
+      "domain": "native_maniskill_initialization",
+      "tested_commit": "d0c8708",
+      "python": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
+      "process_exit_code": 0,
+      "status": "INITIALIZATION_ONLY_PASSED",
+      "raw_status": "initialized_and_read",
+      "raw_primary_closed": true,
+      "hardware_connected": false,
+      "atomic_worker_qualified": false,
+      "planner_executed": false,
+      "motion_executed": false,
+      "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "input_object_ids": [
+        "bi",
+        "bitong",
+        "carriot",
+        "desk",
+        "gluestick",
+        "hongshupian",
+        "lvmukuai",
+        "shuazi",
+        "tennis"
+      ],
+      "raw_artifacts": "runtime_data/swm_release_pen_bootstrap_02",
+      "sha256": {
+        "runtime_data/swm_release_pen_bootstrap_02/input.json": "a53f42bf8d6575ef7c441c533681a515f2f718e9200d8f8bd98c55715d08800a",
+        "runtime_data/swm_release_pen_bootstrap_02/result.json": "1ed528ad10defcfee5ff92c3e0b2d77746592b72f789fb5326a13029d8ad0549",
+        "runtime_data/swm_release_pen_bootstrap_02/events.jsonl": "ef6767c3f2c74006eabb10a39ddbfd1da3134d07684a4c76adde4baff57ae9b4",
+        "runtime_data/swm_release_pen_bootstrap_02.log": "9b00b35fe3abf36355f96fdc25c2fd5b6d45f3166d31e48b008a3cd1d5aca292",
+        "runtime_data/swm_release_pen_bootstrap_02/initialization_artifacts/robot.planning.tiny.urdf": "92fe674c459b7e445cc5b914f4bcb078fc96f09fe979076aaac36d4458907b5d",
+        "runtime_data/swm_release_pen_bootstrap_02/initialization_artifacts/robot.permissive.srdf": "733f211c774473659fa650cda6142d10f910c6f8cf39c60645846746d8098ee2"
+      },
+      "captures": [
+        {
+          "sequence": 1,
+          "capture_started_at": 9606.400239048,
+          "capture_finished_at": 9606.401499836,
+          "joint_names": [
+            "joint_1",
+            "joint_2",
+            "joint_3",
+            "joint_4",
+            "joint_5",
+            "joint_6",
+            "joint_7",
+            "gripper_Left_1_Joint",
+            "gripper_Left_2_Joint",
+            "gripper_Right_1_Joint",
+            "gripper_Right_2_Joint",
+            "gripper_Left_Support_Joint",
+            "gripper_Right_Support_Joint"
+          ],
+          "object_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis"
+          ],
+          "q": [
+            1.572896122932434,
+            0.00905626080930233,
+            0.006035430356860161,
+            -1.562686562538147,
+            -0.0004508150741457939,
+            -1.5619994401931763,
+            1.0576796531677246,
+            -0.0004450046399142593,
+            -0.007228843867778778,
+            0.028663400560617447,
+            -0.005655086133629084,
+            0.0016043701907619834,
+            -0.00025351185468025506
+          ],
+          "qdot": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "sequence": 2,
+          "capture_started_at": 9606.401517524,
+          "capture_finished_at": 9606.402528139,
+          "joint_names": [
+            "joint_1",
+            "joint_2",
+            "joint_3",
+            "joint_4",
+            "joint_5",
+            "joint_6",
+            "joint_7",
+            "gripper_Left_1_Joint",
+            "gripper_Left_2_Joint",
+            "gripper_Right_1_Joint",
+            "gripper_Right_2_Joint",
+            "gripper_Left_Support_Joint",
+            "gripper_Right_Support_Joint"
+          ],
+          "object_ids": [
+            "bi",
+            "bitong",
+            "carriot",
+            "desk",
+            "gluestick",
+            "hongshupian",
+            "lvmukuai",
+            "shuazi",
+            "tennis"
+          ],
+          "q": [
+            1.572896122932434,
+            0.00905626080930233,
+            0.006035430356860161,
+            -1.562686562538147,
+            -0.0004508150741457939,
+            -1.5619994401931763,
+            1.0576796531677246,
+            -0.0004450046399142593,
+            -0.007228843867778778,
+            0.028663400560617447,
+            -0.005655086133629084,
+            0.0016043701907619834,
+            -0.00025351185468025506
+          ],
+          "qdot": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "independent_read_intervals": true,
+      "command": "PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10 tools/validate_swm_native_bootstrap.py --profile runtime_data/three_scene/review_a35328c_20260909/tennis_standard_reference_v1/machine.json --output runtime_data/swm_release_pen_bootstrap_02"
+    },
+    "bootstrap_artifact_swm_regression": {
+      "passed": 139,
+      "failed": 0,
+      "seconds": 0.93,
+      "domain": "software_fixture",
+      "tested_commit": "d0c8708",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/ -q",
+      "source_sha256": {
+        "rm75_app/swm/native_bootstrap.py": "3adffdcb6b3a6e7685409114f4342f60305237fb9fdffc294cb810bf576ad59f",
+        "tools/validate_swm_native_bootstrap.py": "046fe30b8c9ae46de3159c569c26473fabb4d66f20b0d8ced43966200a9363c2",
+        "tests/swm/test_native_bootstrap_lifetime.py": "78d0352d11bf1ae3abe172f40b8ff5bf5e800159ef8a920927189c074fdafc5e"
+      }
     }
   },
   "gates": {
@@ -94,7 +427,9 @@
       "evidence": [
         "runs.m0_full",
         "runs.m0_targeted",
-        "runs.m1_bootstrap_lifetime"
+        "runs.m1_bootstrap_lifetime",
+        "runs.native_bootstrap_01",
+        "runs.native_bootstrap_02"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -114,7 +449,8 @@
       "denominator": null,
       "evidence": [
         "managed_context_contract_only_not_native_qualification",
-        "runs.m1_stage_targeted: software fixtures only, NOT native qualification"
+        "runs.m1_stage_targeted: software fixtures only, NOT native qualification",
+        "runs.native_bootstrap_02: initialization only, not atomic worker qualification"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -122,8 +458,7 @@
         "Install native pen worker context and independent jaw observation",
         "Resolve attached-object exclusion in native world collision diagnostics",
         "Audit intermediate jaw geometry and native candidate restoration",
-        "Run six fresh checkpoints through actual native planner and primary simulation",
-        "Redirect original initialization-generated URDF/SRDF away from asset directory before any native bootstrap run; correction confirmation pending"
+        "Run six fresh checkpoints through actual native planner and primary simulation"
       ]
     },
     "G2": {
@@ -302,16 +637,19 @@
     "kernel": "SOFTWARE_REGRESSION_PASSED_1540",
     "native_wiring": "IN_PROGRESS_NOT_INSTALLED",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "NOT_RUN_THIS_INCREMENT",
+    "actual_simulation": "NATIVE_INITIALIZATION_READBACK_ONLY_NO_ATOMIC_EXECUTION",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
   "native_bootstrap": {
-    "code_commit": "82be044",
+    "code_commit": "d0c8708",
     "factory_registered": false,
-    "native_run_started": false,
+    "native_run_started": true,
     "live_process_handle": null,
-    "known_issue": "Original planning artifact resolver writes beside simulation URDF; not yet redirected",
-    "pending_confirmation": "Fix generated artifacts to per-run directory",
-    "draft_tool": "tools/validate_swm_native_bootstrap.py (uncommitted, not run)"
+    "artifact_write_isolation": "PRIVATE_NEW_DIRECTORY_ONLY",
+    "pending_confirmation": null,
+    "tool": "tools/validate_swm_native_bootstrap.py",
+    "successful_environment": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
+    "failed_environment": "/home/zhangzhao/anaconda3/bin/python (exit 139)",
+    "remaining": "Complete primary/mirror/worker wiring; actual grasp/place checkpoints and native audit; investigate alternate interpreter teardown crash"
   }
 }
