@@ -3579,6 +3579,526 @@
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "log": "runtime_data/swm_release_original_construction_full.log",
       "log_sha256": "673d0a12d0e92ccaa4b0a0a7c178f10e3bc11dbb1ff0c82cd3bfc5b3c2abe425"
+    },
+    "native_body_mirror_04": {
+      "tested_commit": null,
+      "source_stage": "intermediate pre-redundant-kinematic-assignment fix; no exact committed revision claimed",
+      "domain": "actual_primary_and_private_CPU_PhysX",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "SceneInvalid: Native integer/boolean identity differs: bi.auto_compute_mass",
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_body_mirror_driver_04/run.py",
+      "full_mirror_transaction_qualified": false,
+      "atomic_worker_qualified": false,
+      "hardware_connected": false,
+      "sha256": {
+        "driver.py": "cb3164cc4d95ba6708ac126f84dd733701d62564a236bc3ee3d5680b14fffeb8",
+        "result.json": "ca2555cd6180f4fa628903a850b0389d61c7b929d21f11f7d33fb65346f9d822",
+        "input.json": "3c62b3a81f68e1cbff4b1f2812a48781072e19466c1e050a65dfd92cd3dc362a",
+        "bootstrap_result.json": "1ee644f537f3bb81d9102366b3c1060450cb4913523f8d6cb1ee8260d5321564",
+        "stdout.log": "51f246ca72e818857334da045e840f92499ba101143797890b896a5766e1da6d"
+      }
+    },
+    "native_body_mirror_05": {
+      "tested_commit": null,
+      "source_stage": "intermediate pre-redundant-kinematic-assignment fix; no exact committed revision claimed",
+      "domain": "actual_primary_and_private_CPU_PhysX",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "SceneInvalid: Native integer/boolean identity differs: bi.auto_compute_mass",
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_body_mirror_driver_05/run.py",
+      "full_mirror_transaction_qualified": false,
+      "atomic_worker_qualified": false,
+      "hardware_connected": false,
+      "mass_diagnostic": {
+        "source_auto_compute_mass": true,
+        "private_auto_compute_mass": false,
+        "source_mass": 0.04651080444455147,
+        "private_mass": 0.04651080444455147,
+        "inertia_equal": true,
+        "cmass_transform_equal": true,
+        "shape_count": 10,
+        "shape_states_equal": true
+      },
+      "sha256": {
+        "driver.py": "4d62e60e93c75e7176a4a03d6909bd6d89b3b5fbac9cf61fe6f5bf2acb64fe29",
+        "result.json": "9595c387677623f1ba431c10d4eb5415778cc2d436abf855ab9358a564c1ceb7",
+        "input.json": "3c62b3a81f68e1cbff4b1f2812a48781072e19466c1e050a65dfd92cd3dc362a",
+        "bootstrap_result.json": "3f14c610d0fc819dc81b0cc537835333b5222ad5471ef0abee132a535a0e172e",
+        "stdout.log": "caa6809816c86492ee498933d45a0ac0e3d4bce3bcb969b080f1971571d22044",
+        "bi_body_diagnostic.json": "66616cb1224807c78d74fcb3b6768a7e3c4735ce30fe054099269eea3320d449"
+      }
+    },
+    "native_body_mirror_06": {
+      "tested_commit": null,
+      "source_stage": "intermediate pre-redundant-kinematic-assignment fix; no exact committed revision claimed",
+      "domain": "actual_primary_and_private_CPU_PhysX",
+      "exit_code": 1,
+      "status": "failed",
+      "error": "SceneInvalid: Native integer/boolean identity differs: bi.auto_compute_mass",
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_body_mirror_driver_06/run.py",
+      "full_mirror_transaction_qualified": false,
+      "atomic_worker_qualified": false,
+      "hardware_connected": false,
+      "sha256": {
+        "driver.py": "997bf53282e3a10378089e07148f4c32acc384dc66030533b99b9c707c7b4e99",
+        "result.json": "ff37b21a9a94177ad773ea09b9ac0ed4f3bc822d4db2d9d4df5ab5dd20719eda",
+        "input.json": "3c62b3a81f68e1cbff4b1f2812a48781072e19466c1e050a65dfd92cd3dc362a",
+        "bootstrap_result.json": "ca5e98c67dce5b802e820d412a7e40e6bffea20068aebc47c574c3d37c2b5c71",
+        "stdout.log": "21e52296d64bc7080f01aa9336a77ee9ddf39438e5bb8c11075c5002a0c73c10"
+      }
+    },
+    "native_body_mirror_07": {
+      "tested_commit": "d38888e",
+      "source_stage": "final unchanged bytes later committed",
+      "domain": "actual_primary_and_private_CPU_PhysX",
+      "exit_code": 0,
+      "status": "native_body_properties_and_fresh_state_verified",
+      "error": null,
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python runtime_data/swm_release_body_mirror_driver_07/run.py",
+      "full_mirror_transaction_qualified": false,
+      "atomic_worker_qualified": false,
+      "hardware_connected": false,
+      "native_body_ack": {
+        "source": "native_CPU_PhysX_shape_and_body_readback",
+        "objects": {
+          "bi": {
+            "shape_count": 10,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh",
+              "ConvexMesh"
+            ],
+            "mass": 0.04651080444455147,
+            "inertia": [
+              7.150604506023228e-05,
+              3.1645511171518592e-06,
+              7.14740453986451e-05
+            ],
+            "expected_native_digest": "b4ad4d6c5e604e2d603dc54f2192de8e3964707b552eb06d500b437ecf7877f8",
+            "actual_native_digest": "b4ad4d6c5e604e2d603dc54f2192de8e3964707b552eb06d500b437ecf7877f8"
+          },
+          "bitong": {
+            "shape_count": 5,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box",
+              "Box",
+              "Box",
+              "Box",
+              "Box"
+            ],
+            "mass": 0.18447226285934448,
+            "inertia": [
+              0.00027690952992998064,
+              0.0002919824328273535,
+              0.00027690952992998064
+            ],
+            "expected_native_digest": "c0e5522bde827d6e0181065779370bb03f9735bde56ce87d0263090a670dfe9e",
+            "actual_native_digest": "c0e5522bde827d6e0181065779370bb03f9735bde56ce87d0263090a670dfe9e"
+          },
+          "carriot": {
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 0.18753525614738464,
+            "inertia": [
+              0.0005737523315474391,
+              0.0005737523315474391,
+              3.101364563917741e-05
+            ],
+            "expected_native_digest": "42435489bfeaf275ed2d8e20e7ccbd52c60050e539648a3e0797fc617cdaf0a5",
+            "actual_native_digest": "42435489bfeaf275ed2d8e20e7ccbd52c60050e539648a3e0797fc617cdaf0a5"
+          },
+          "desk": {
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 10.013486862182617,
+            "inertia": [
+              0.055286772549152374,
+              0.19832903146743774,
+              0.15939927101135254
+            ],
+            "expected_native_digest": "595de082e1b9668fc9f80a583515985a2d740dc0f360b28b595f742bb7a4dd84",
+            "actual_native_digest": "595de082e1b9668fc9f80a583515985a2d740dc0f360b28b595f742bb7a4dd84"
+          },
+          "gluestick": {
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 0.07217100262641907,
+            "inertia": [
+              6.333005876513198e-05,
+              8.76877675182186e-06,
+              6.333005876513198e-05
+            ],
+            "expected_native_digest": "6e6278d16356ea7f66ed16bb8dd65cc534e17d517ac2a4f92c1bf42313745b25",
+            "actual_native_digest": "6e6278d16356ea7f66ed16bb8dd65cc534e17d517ac2a4f92c1bf42313745b25"
+          },
+          "hongshupian": {
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 0.5358150005340576,
+            "inertia": [
+              0.0009909899672493339,
+              0.000354441610397771,
+              0.000990989850834012
+            ],
+            "expected_native_digest": "0a63b6b215e0054a93880bf40e831de217a72e71b985187f6b93fae9f9cd8837",
+            "actual_native_digest": "0a63b6b215e0054a93880bf40e831de217a72e71b985187f6b93fae9f9cd8837"
+          },
+          "lvmukuai": {
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 0.03998000919818878,
+            "inertia": [
+              4.970427653461229e-06,
+              1.2503400284913369e-05,
+              1.1897312106157187e-05
+            ],
+            "expected_native_digest": "cba6a767cf5ac7557e8b25e930b96639a84497ad7f7e62846a030fe4e86a97a4",
+            "actual_native_digest": "cba6a767cf5ac7557e8b25e930b96639a84497ad7f7e62846a030fe4e86a97a4"
+          },
+          "shuazi": {
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 0.5122414827346802,
+            "inertia": [
+              0.00038226559991016984,
+              0.0007391551625914872,
+              0.0008343722438439727
+            ],
+            "expected_native_digest": "dde8116dd73cea36ba6cc5797a10985e87961dcfff3b231ff1a432608d2d3354",
+            "actual_native_digest": "dde8116dd73cea36ba6cc5797a10985e87961dcfff3b231ff1a432608d2d3354"
+          },
+          "tennis": {
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 0.2500469982624054,
+            "inertia": [
+              0.00016540609067305923,
+              0.000165406076121144,
+              0.000165406076121144
+            ],
+            "expected_native_digest": "7ef85c77108ef0e019e557a7eed21930393f49a1648bc2213448cdc82664fffe",
+            "actual_native_digest": "7ef85c77108ef0e019e557a7eed21930393f49a1648bc2213448cdc82664fffe"
+          },
+          "__maniskill_workspace_table__": {
+            "shape_count": 1,
+            "body_kind": "dynamic",
+            "shape_kinds": [
+              "Box"
+            ],
+            "mass": 2688.44921875,
+            "inertia": [
+              516.9493408203125,
+              1499.363037109375,
+              1637.3560791015625
+            ],
+            "expected_native_digest": "3a19c4b085b2bb54e274c334a87532efc72daae7f6c30a834c34dcd65317d874",
+            "actual_native_digest": "3a19c4b085b2bb54e274c334a87532efc72daae7f6c30a834c34dcd65317d874"
+          },
+          "virtual_side_wall": {
+            "shape_count": 0,
+            "body_kind": "dynamic",
+            "shape_kinds": [],
+            "mass": 9.999999974752427e-07,
+            "inertia": [
+              9.999999974752427e-07,
+              9.999999974752427e-07,
+              9.999999974752427e-07
+            ],
+            "expected_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75",
+            "actual_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75"
+          },
+          "virtual_top_wall": {
+            "shape_count": 0,
+            "body_kind": "dynamic",
+            "shape_kinds": [],
+            "mass": 9.999999974752427e-07,
+            "inertia": [
+              9.999999974752427e-07,
+              9.999999974752427e-07,
+              9.999999974752427e-07
+            ],
+            "expected_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75",
+            "actual_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75"
+          }
+        },
+        "original_body_geometry_and_properties_aligned": true,
+        "primary_world_mutated": false,
+        "attachment_qualified": false,
+        "robot_collision_policy_qualified": false,
+        "hardware_qualified": false
+      },
+      "body_count": 12,
+      "physical_shape_count": 23,
+      "private_robot_state_ack": {
+        "source": "native_CPU_PhysX_articulation_readback",
+        "world_role": "private_mirror",
+        "coordinate_frame": "base_link",
+        "joint_names": [
+          "joint_1",
+          "joint_2",
+          "joint_3",
+          "joint_4",
+          "joint_5",
+          "joint_6",
+          "joint_7",
+          "gripper_Left_1_Joint",
+          "gripper_Left_2_Joint",
+          "gripper_Right_1_Joint",
+          "gripper_Right_2_Joint",
+          "gripper_Left_Support_Joint",
+          "gripper_Right_Support_Joint"
+        ],
+        "positions": [
+          1.572896122932434,
+          0.00905626080930233,
+          0.006035430356860161,
+          -1.562686562538147,
+          -0.0004508150741457939,
+          -1.5619994401931763,
+          1.0576796531677246,
+          -0.0004450046399142593,
+          -0.007228843867778778,
+          0.028663400560617447,
+          -0.005655086133629084,
+          0.0016043701907619834,
+          -0.00025351185468025506
+        ],
+        "velocities": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "link_errors": {
+          "gripper_base_link": {
+            "position_error_m": 1.186082701746396e-07,
+            "rotation_error_rad": 0.0
+          },
+          "gripper_Left_1_Link": {
+            "position_error_m": 1.3902132829331365e-07,
+            "rotation_error_rad": 0.0
+          },
+          "gripper_Left_Support_Link": {
+            "position_error_m": 1.3760193746328147e-07,
+            "rotation_error_rad": 0.0
+          },
+          "gripper_Left_2_Link": {
+            "position_error_m": 1.3363026033991112e-07,
+            "rotation_error_rad": 0.0
+          },
+          "gripper_Right_1_Link": {
+            "position_error_m": 1.4358221958564906e-07,
+            "rotation_error_rad": 0.0
+          },
+          "gripper_Right_Support_Link": {
+            "position_error_m": 1.4871136961507652e-07,
+            "rotation_error_rad": 0.00013241164468051313
+          },
+          "gripper_Right_2_Link": {
+            "position_error_m": 1.5414157831106407e-07,
+            "rotation_error_rad": 0.0
+          },
+          "left_pad": {
+            "position_error_m": 1.3941783320304572e-07,
+            "rotation_error_rad": 0.0
+          },
+          "right_pad": {
+            "position_error_m": 1.443393015661179e-07,
+            "rotation_error_rad": 0.00013241164468051313
+          },
+          "gripper_tcp": {
+            "position_error_m": 1.3689189605805066e-07,
+            "rotation_error_rad": 0.0
+          }
+        },
+        "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+        "robot_state_aligned": true,
+        "primary_world_mutated": false,
+        "attachment_qualified": false,
+        "hardware_qualified": false
+      },
+      "private_actor_pose_velocity_ack": [
+        {
+          "name": "bi",
+          "position_error_m": 8.692400533203332e-09,
+          "rotation_error_rad": 0.0
+        },
+        {
+          "name": "bitong",
+          "position_error_m": 1.5986998742591955e-09,
+          "rotation_error_rad": 0.0
+        },
+        {
+          "name": "carriot",
+          "position_error_m": 5.675993905151181e-09,
+          "rotation_error_rad": 0.00012676877719591275
+        },
+        {
+          "name": "desk",
+          "position_error_m": 2.6122901528838026e-09,
+          "rotation_error_rad": 0.00040962644536003917
+        },
+        {
+          "name": "gluestick",
+          "position_error_m": 1.0856784063499432e-09,
+          "rotation_error_rad": 0.00024990070002969096
+        },
+        {
+          "name": "hongshupian",
+          "position_error_m": 6.295941654915861e-09,
+          "rotation_error_rad": 0.0
+        },
+        {
+          "name": "lvmukuai",
+          "position_error_m": 6.454218070249554e-09,
+          "rotation_error_rad": 8.562500263654022e-05
+        },
+        {
+          "name": "shuazi",
+          "position_error_m": 3.0536883969214426e-09,
+          "rotation_error_rad": 0.0
+        },
+        {
+          "name": "tennis",
+          "position_error_m": 1.3207224624386043e-08,
+          "rotation_error_rad": 0.0
+        },
+        {
+          "name": "__maniskill_workspace_table__",
+          "position_error_m": 3.4746725102659015e-09,
+          "rotation_error_rad": 0.0
+        },
+        {
+          "name": "virtual_side_wall",
+          "position_error_m": 2.5114240905702753e-08,
+          "rotation_error_rad": 0.0003452669847162036
+        },
+        {
+          "name": "virtual_top_wall",
+          "position_error_m": 1.5775987454167553e-08,
+          "rotation_error_rad": 0.0003452669847162036
+        }
+      ],
+      "fresh_preparations": [
+        {
+          "snapshot_id": "8aaec7fc4a040d86832515e47fc18eb5db59a0250414a0d68720b45a3145d4b9",
+          "primary_sequence": 4,
+          "observed_count": 12,
+          "swm_prepare_accepted": true
+        },
+        {
+          "snapshot_id": "fd497fa9f65cc0d4dfa6c4e61e429c0a98b4f1dc4c099e0103e0ffc4df8d697e",
+          "primary_sequence": 5,
+          "observed_count": 12,
+          "swm_prepare_accepted": true
+        }
+      ],
+      "world_checkpoint_committed": false,
+      "physics_stepped": false,
+      "robot_collision_policy_qualified": false,
+      "attachment_qualified": false,
+      "note": "Private native body state proof only. Driver closes private resources before returning the scene to the outer GPU probe; this is NOT a live dual-mirror transaction or atomic worker.",
+      "sha256": {
+        "driver.py": "fa890ad92f0d00a74b6b65e25fd3682f00a4948960e60b56e3cfa5bd593254f8",
+        "result.json": "fdda6a828e6bb394ff37b94073fd342497687f6547eb199748677c3c871fe71e",
+        "input.json": "3c62b3a81f68e1cbff4b1f2812a48781072e19466c1e050a65dfd92cd3dc362a",
+        "bootstrap_result.json": "fa3816232f0250c53f0821d6be81c96e068878d9510474e29e1de647c696515b",
+        "stdout.log": "89695747612560b2e978c5f4df48370c457113821d6e196d60f6002a185775c4"
+      }
+    },
+    "native_mass_mode_api_probe": {
+      "domain": "actual_CPU_PhysX_isolated_body_API",
+      "exit_code": 0,
+      "artifact": "runtime_data/swm_native_mass_mode_probe_01.json",
+      "sha256": "0034e71a854caaeddc93e709f9baef45941d914e9f1f6ef82b5041e7344f9dc5",
+      "observations": [
+        {
+          "stage": "shape_attached",
+          "auto_compute_mass": true,
+          "mass": 0.06400000303983688,
+          "auto_after_mass": true
+        },
+        {
+          "stage": "material_replaced",
+          "auto_compute_mass": true,
+          "mass": 0.06400000303983688,
+          "auto_after_mass": true
+        },
+        {
+          "stage": "same_kinematic",
+          "auto_compute_mass": false,
+          "mass": 0.06400000303983688,
+          "auto_after_mass": false
+        },
+        {
+          "stage": "added_to_scene",
+          "auto_compute_mass": false,
+          "mass": 0.06400000303983688,
+          "auto_after_mass": false
+        }
+      ],
+      "finding": "Even same-value kinematic=False assignment disables automatic mass in the installed SAPIEN runtime.",
+      "hardware_connected": false
+    },
+    "native_body_final_full": {
+      "tested_commit": "d38888e",
+      "domain": "software_regression",
+      "passed": 1595,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 41.73,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "log": "runtime_data/swm_release_native_body_final_full.log",
+      "log_sha256": "737e48e77931fd6a4b6cfa79d3ed1093468fe319eb387f04eae36285f92c7a9d",
+      "note": "Final run after all implementation edits; earlier intermediate full run is not used to qualify this revision."
     }
   },
   "gates": {
@@ -3632,7 +4152,10 @@
         "runs.metric_registration_native_01: metric files and two fresh preparations agree with original proxies and GPU; no complete mirror transaction",
         "runs.native_body_mirror_01: native convex geometry changed; rejected",
         "runs.native_body_mirror_02: actual shrink confirmed, no relaxed collision check",
-        "runs.native_body_mirror_03: original builder capture wired but native post-attachment pose write rejected"
+        "runs.native_body_mirror_03: original builder capture wired but native post-attachment pose write rejected",
+        "runs.native_body_mirror_04: automatic mass mismatch retained",
+        "runs.native_body_mirror_06: explicit mass mode alone insufficient",
+        "runs.native_body_mirror_07: twelve native bodies and measured state aligned; NOT full robot collision/attachment/transaction qualification"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -3816,17 +4339,18 @@
         "runs.native_robot_mirror_full",
         "runs.primary_capture_full",
         "runs.metric_registration_full",
-        "runs.original_construction_full"
+        "runs.original_construction_full",
+        "runs.native_body_final_full"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
     }
   },
   "current_layer_status": {
-    "kernel": "SOFTWARE_REGRESSION_PASSED_1588",
-    "native_wiring": "ORIGINAL_CONSTRUCTION_CAPTURE_WIRED_LOCAL_POSE_APPLICATION_ORDER_FAILED",
+    "kernel": "SOFTWARE_REGRESSION_PASSED_1595",
+    "native_wiring": "TWELVE_NATIVE_BODY_GEOMETRY_AND_PARAMETERS_ALIGNED_ATTACHMENT_ROBOT_POLICY_AND_WORKER_PENDING",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "ORIGINAL_FILE_BASED_MIRROR_ATTEMPT_EXIT_1_NO_ATOMIC_EXECUTION",
+    "actual_simulation": "NATIVE_BODY_AND_MEASURED_STATE_READBACK_EXIT_0_NO_ATOMIC_EXECUTION",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
   "native_bootstrap": {
@@ -3839,7 +4363,7 @@
     "tool": "tools/validate_swm_native_bootstrap.py",
     "successful_environment": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
     "failed_environment": "/home/zhangzhao/anaconda3/bin/python (exit 139)",
-    "remaining": "Apply registered object-frame transforms to original collision records before native shape attachment, rerun complete body mirror, then attachment/robot collision-policy readback and trusted pen worker six checkpoints",
+    "remaining": "Bind native physical descriptors separately from planning proxies, reproduce robot collision masks/closed-loop gripper constraints, implement independent attachment readback and live dual-mirror transaction, then trusted pen worker six skill checkpoints",
     "same_process_planner_environment": {
       "python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
       "append_site_packages": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",
