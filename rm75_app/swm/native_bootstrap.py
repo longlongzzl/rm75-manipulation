@@ -39,6 +39,7 @@ class FrozenPrimaryWorld:
     sequence: int = 0
     closed: bool = False
     construction_recipes: dict = field(default_factory=dict)
+    constraint_recipes: dict = field(default_factory=dict)
 
     def read_state(self):
         """Fresh actual actor/robot reads; no setters and no command-cache data.
@@ -73,6 +74,7 @@ class FrozenPrimaryWorld:
         if not self.closed:
             self.closed = True
             self.construction_recipes.clear()
+            self.constraint_recipes.clear()
             self.env.close()
 
 
@@ -140,12 +142,15 @@ def initialize_frozen_primary(resources, direct, base_args, contract, *, stop, e
 
     stop.check()
     if capture_builders:
+        import sapien
         from mani_skill.utils.building.actor_builder import ActorBuilder
-        from .native_construction import capture_actor_construction
+        from .native_construction import capture_actor_construction, capture_drive_construction
         construction_context = capture_actor_construction(ActorBuilder)
+        drive_context = capture_drive_construction(sapien.Scene, sapien.physx.PhysxDriveComponent)
     else:
         construction_context = nullcontext({})
-    with construction_context as recipes, patch.object(base.gym, 'make', acquire), patch.object(
+        drive_context = nullcontext({})
+    with construction_context as recipes, drive_context as drive_recipes, patch.object(base.gym, 'make', acquire), patch.object(
             planner, 'resolve_planning_artifact_paths', artifact_paths):
         env, demo = base.create_demo(args, bridge, planner, scene_capture_cache=cache)
     if len(acquired) != 1 or env is not acquired[0]:
@@ -158,7 +163,7 @@ def initialize_frozen_primary(resources, direct, base_args, contract, *, stop, e
     if set(registry) != set(contract['names']) or any(row.get('actor') is None for row in registry.values()):
         raise SceneInvalid('Original primary world omitted a frozen scene actor')
     world = FrozenPrimaryWorld(env, demo, args, {oid: row['actor'] for oid, row in registry.items()},
-                               contract, stop, construction_recipes=recipes)
+                               contract, stop, construction_recipes=recipes, constraint_recipes=drive_recipes)
     lifetime['world'] = world
     events.emit('swm_primary_initialized', source=source, object_ids=sorted(world.actors),
                 input_sha256=contract['sha256'], primary_world=True, hardware_connected=False)

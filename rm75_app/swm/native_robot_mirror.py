@@ -90,7 +90,6 @@ class SapienRobotStatePort:
     def synchronize_primary_physics(self, primary):
         """Initialize only the private robot from the original native policy."""
         import sapien
-        from rm75_app.execution.maniskill_scene import create_rm75_gripper_constraints
         from .native_body_mirror import shape_state, compare_native_state, SHAPE_SCALARS
 
         if self.closed or self._physics_state is not None or self._constraints:
@@ -120,20 +119,25 @@ class SapienRobotStatePort:
                     if getattr(shape, key) != state['properties'][key]:
                         setattr(shape, key, state['properties'][key])
             expected_shapes[name] = expected
-        groups = (getattr(agent, '_rm75_planar_gripper_constraints', ()),
-                  getattr(agent, '_rm75_pad_parallel_constraints', ()))
-        if tuple(map(len, groups)) != (2, 1):
-            raise SceneInvalid('Original two closures and parallel-pad constraint required')
+        original_drives = [component for name in sorted(source)
+            for component in source[name].entity.components
+            if isinstance(component, sapien.physx.PhysxDriveComponent)]
         source_constraints = []
-        for group in groups:
-            for drive in group:
-                if len(drive._objs) != 1:
-                    raise SceneInvalid('One primary native component per gripper constraint required')
-                source_constraints.append(constraint_state(drive._objs[0], source))
-        closures, parallel = create_rm75_gripper_constraints(private, self._scene.create_drive)
-        self._constraints = [*closures, *parallel]
-        if (len(closures), len(parallel)) != (2, 1):
-            raise SceneInvalid('Private gripper closure construction incomplete')
+        recipes = []
+        for drive in original_drives:
+            matches = [recipe for recipe in primary.constraint_recipes.values() if recipe.drive is drive]
+            if len(matches) != 1:
+                raise SceneInvalid('Exactly one original construction recipe per robot constraint required')
+            recipes.append(matches[0])
+            source_constraints.append(constraint_state(drive, source))
+        required = {(f'gripper_{side}_2_Link', f'gripper_{side}_Support_Link')
+                    for side in ('Left', 'Right')}
+        edges = {(row['parent'], row['child']) for row in source_constraints}
+        optional = {('gripper_Left_Support_Link', 'gripper_Right_Support_Link')}
+        if not required <= edges or not edges <= required | optional or len(edges) != len(recipes):
+            raise SceneInvalid('Original complete gripper closure topology required')
+        for recipe in recipes:
+            self._constraints.append(recipe.build(self._scene, source, private))
         self._physics_state = dict(shapes=expected_shapes, constraints=source_constraints)
         return self.read_physics_policy()
 
