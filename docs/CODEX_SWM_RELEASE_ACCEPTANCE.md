@@ -69,3 +69,11 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python
 - `swm_release_pen_planner_probe_02`：现有 curobo2 Python 3.11，加同 ABI realman site-packages 作为末尾补充路径，主仿真和共享 cuRobo2 初始化成功、7 关节身份一致、退出 0。
 
 只证明现有依赖可以同进程共存，未安装新包。规划器初始化使用空场景，明确 `planner_scene_qualified=false`、`planner_executed=false`、`motion_executed=false`。未把空场景当作可执行碰撞场景；原 9 对象仍未完整接进规划器。模型推理与硬件本轮均未运行，正式 worker 和六检查点仍待完成。最新全量测试仍归属 `7f51ceb`，本轮没有另做全量回归。
+
+## M1 / 完整碰撞场景接线与实际拒绝
+
+提交 `f7da832`，新增 primary 碰撞编译和 GPU 张量确认，SWM 回归 **145 passed / 0.93 s**。六个新负例验证缓存名称不能掩盖原生存储中的禁用、位姿、尺寸或数量错误，仍属软件 fixture。
+
+实际运行 `runtime_data/swm_release_pen_scene_sync_01`：退出 1；原主仿真和 cuRobo2 初始化成功，随后因非纯平移基座被拒绝。原环境源码包含 90° yaw 基座设置，下一步需原 builder 显式 SE(3) 支持。此轮没有实际 GPU 全场景 acknowledgement，也没有原子动作；不能把新适配器或测试标记为完整场景已同步。
+
+模型推理与硬件未运行，主环境正常关闭。G1/G2/S4 仍未整体通过；上一条全量测试仍保留原提交归属。本轮失败输入、错误及原始日志哈希已记录在机器验收表。

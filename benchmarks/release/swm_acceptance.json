@@ -494,6 +494,39 @@
       "supplementary_python_path": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",
       "path_policy": "append only; curobo2 environment takes precedence; no copies/installations",
       "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -c 'import sys,runpy; sys.path.append(\"/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages\"); sys.argv=[\"tools/validate_swm_native_bootstrap.py\",\"--profile\",\"runtime_data/three_scene/review_a35328c_20260909/tennis_standard_reference_v1/machine.json\",\"--output\",\"runtime_data/swm_release_pen_planner_probe_02\",\"--probe-planner\"]; runpy.run_path(sys.argv[0],run_name=\"__main__\")'"
+    },
+    "native_scene_sync_01": {
+      "domain": "native_primary_and_shared_planner",
+      "tested_commit": "f7da832",
+      "process_exit_code": 1,
+      "status": "REJECTED_BASE_CALIBRATION",
+      "error": "SceneInvalid: Original task builder requires a measured translation-only base calibration",
+      "primary_closed": true,
+      "planner_initialized": true,
+      "collision_geometry_synchronized": false,
+      "planner_executed": false,
+      "motion_executed": false,
+      "hardware_connected": false,
+      "input_sha256": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
+      "actual_python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
+      "raw_artifacts": "runtime_data/swm_release_pen_scene_sync_01",
+      "command": "PYTHONFAULTHANDLER=1 PYTHONDONTWRITEBYTECODE=1 timeout 180s python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -c 'import sys,runpy; sys.path.append(\"/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages\"); sys.argv=[\"tools/validate_swm_native_bootstrap.py\",\"--profile\",\"runtime_data/three_scene/review_a35328c_20260909/tennis_standard_reference_v1/machine.json\",\"--output\",\"runtime_data/swm_release_pen_scene_sync_01\",\"--probe-planner\",\"--sync-planning-scene\"]; runpy.run_path(sys.argv[0],run_name=\"__main__\")'",
+      "sha256": {
+        "input.json": "c38999fba11c9294a5c149154bcfd87fcdbc03564e001781dd0139832ba09e03",
+        "result.json": "69872f19e30b76c9e16d8af3d21b21699adeac1f2fa2f9368821a6fdb639c1b1",
+        "traceback.txt": "388be0873103d52d00080bf988535bb38221050bc8099eba47cf40473f830aa3",
+        "events.jsonl": "b9af9a5c6dab0c56e017403ca49d2aa9448123a816876d63a8e68d05cc6f6126",
+        "stdout.log": "d066144ecbb70e1e28a5ccd38c67745684aa08bbcba5ad2a5fe1b73e66e885d3"
+      },
+      "next_action": "Explicit shared SE3 base calibration, never discard rotation"
+    },
+    "native_scene_ack_regression": {
+      "passed": 145,
+      "failed": 0,
+      "seconds": 0.93,
+      "domain": "software_fixture",
+      "tested_commit": "f7da832",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/ -q"
     }
   },
   "gates": {
@@ -535,11 +568,13 @@
         "managed_context_contract_only_not_native_qualification",
         "runs.m1_stage_targeted: software fixtures only, NOT native qualification",
         "runs.native_bootstrap_02: initialization only, not atomic worker qualification",
-        "runs.native_planner_probe_02: coexisting initialization only; collision scene NOT synchronized"
+        "runs.native_planner_probe_02: coexisting initialization only; collision scene NOT synchronized",
+        "runs.native_scene_sync_01: failed before GPU scene application"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
       "remaining": [
+        "Extend existing builder and SWM compiled task to explicit SE3 base calibration; original native base is not translation-only",
         "Install native pen worker context and independent jaw observation",
         "Resolve attached-object exclusion in native world collision diagnostics",
         "Audit intermediate jaw geometry and native candidate restoration",
@@ -720,7 +755,7 @@
   },
   "current_layer_status": {
     "kernel": "SOFTWARE_REGRESSION_PASSED_1540",
-    "native_wiring": "PRIMARY_AND_PLANNER_COINITIALIZED_WORKER_NOT_INSTALLED",
+    "native_wiring": "FULL_SCENE_COMPILE_REJECTED_NONTRANSLATION_BASE",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
     "actual_simulation": "NATIVE_INITIALIZATION_READBACK_ONLY_NO_ATOMIC_EXECUTION",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
@@ -735,7 +770,7 @@
     "tool": "tools/validate_swm_native_bootstrap.py",
     "successful_environment": "/home/zhangzhao/anaconda3/envs/foundationpose310/bin/python3.10",
     "failed_environment": "/home/zhangzhao/anaconda3/bin/python (exit 139)",
-    "remaining": "Install trusted same-process environment in worker; complete actual scene, jaw/holding, mirrors and six checkpoints",
+    "remaining": "Shared SE3 calibration; complete native collision synchronization; independent jaw/holding, private mirrors and formal worker six checkpoints",
     "same_process_planner_environment": {
       "python": "/home/zhangzhao/anaconda3/envs/curobo2/bin/python",
       "append_site_packages": "/home/zhangzhao/anaconda3/envs/realman/lib/python3.11/site-packages",

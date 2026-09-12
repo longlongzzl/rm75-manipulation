@@ -63,3 +63,11 @@ G0 可移植验证与 S1 管理上下文已提交 `9c38a5449fbe02b4eb35481cb99f4
 已验证现有同 ABI 组合：`envs/curobo2/bin/python`（3.11.15、torch 2.11.0+cu128、cuda-core 0.7.0），在 sys.path 末尾追加现有 `envs/realman/lib/python3.11/site-packages` 提供 ManiSkill/SAPIEN。原 9 对象主仿真与共享 Curobo2Backend 在同一进程初始化成功，实际返回 joint_1..joint_7，主环境 close 返回且退出 0。未复制、修改或安装环境。准确启动命令与证据摘要在验收表。
 
 下一正式接线应沿用这个已测组合，而非继续假定 Python 3.10 单环境足够：将依赖来源固定到可信 worker 初始化；补真实全场景规划镜像、TCP/夹爪/持物证据以及 virtual infrastructure，再运行 grasp/place 六检查点。此次规划器仅空场景初始化，无路径/动作；不能记为碰撞场景已同步或原子 worker 通过。本轮没有新增软件测试数量或重跑全量。
+
+## 当前 M1 真实场景同步：f7da832
+
+新增只读 primary→原 FixedSceneAtomTaskBuilder 碰撞编译及 cuRobo GPU 张量确认。对象使用共享完整尺寸代理；桌面读取 SAPIEN 碰撞盒；虚拟墙保留原尺寸与 actor 位姿；资产哈希/尺度、GPU 名称/数量/启用位/尺寸/逆位姿不一致均拒绝。SWM 145 passed（0.93 s），其中新增 6 项为 GPU 存储协议 fixture，并非实际 GPU 同步成功。
+
+已在已测 Python 3.11 组合中运行 `swm_release_pen_scene_sync_01`，退出 1：主仿真和规划器初始化成功，但共享 builder 的平移基座前置检查拒绝真实场景。原环境源码显示 `_initialize_episode` 设置基座 `p=[-0.3,0,0]`、yaw=90°；当前只减 offset 的约定不足。没有将场景送入 GPU，也没有放宽检查或执行动作。
+
+下一首要动作：在原 AtomTaskBuilderConfig/FixedSceneAtomTaskBuilder 增加显式 SE(3) 基座合同，让 CompiledNativeTask 的物体/目标转换与碰撞编译共用该外参；记录原生读回的完整矩阵并重跑同一冻结场景。之后才继续独立 jaw/holding、完整 SWM 镜像与正式 worker 六检查点。该缺口是可继续实现的软件工作，不是外部许可阻塞。
