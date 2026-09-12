@@ -52,6 +52,15 @@
       "tested_commit": "349890e",
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "note": "Tests started before commit and finished afterward on identical unchanged implementation bytes."
+    },
+    "m1_bootstrap_lifetime": {
+      "passed": 18,
+      "failed": 0,
+      "seconds": 0.07,
+      "domain": "software_fixture",
+      "tested_commit": "82be044",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/test_native_bootstrap_lifetime.py tests/swm/test_runtime_context.py -q",
+      "note": "Constructor/environment stubs only; no actual initialization or asset writes. Tests preceded commit on identical bytes."
     }
   },
   "gates": {
@@ -66,7 +75,8 @@
       "denominator": null,
       "evidence": [
         "runs.m0_full",
-        "runs.m0_targeted"
+        "runs.m0_targeted",
+        "runs.m1_bootstrap_lifetime"
       ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
@@ -94,7 +104,8 @@
         "Install native pen worker context and independent jaw observation",
         "Resolve attached-object exclusion in native world collision diagnostics",
         "Audit intermediate jaw geometry and native candidate restoration",
-        "Run six fresh checkpoints through actual native planner and primary simulation"
+        "Run six fresh checkpoints through actual native planner and primary simulation",
+        "Redirect original initialization-generated URDF/SRDF away from asset directory before any native bootstrap run; correction confirmation pending"
       ]
     },
     "G2": {
@@ -265,5 +276,14 @@
     "model_inference": "NOT_RUN_THIS_INCREMENT",
     "actual_simulation": "NOT_RUN_THIS_INCREMENT",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
+  "native_bootstrap": {
+    "code_commit": "82be044",
+    "factory_registered": false,
+    "native_run_started": false,
+    "live_process_handle": null,
+    "known_issue": "Original planning artifact resolver writes beside simulation URDF; not yet redirected",
+    "pending_confirmation": "Fix generated artifacts to per-run directory",
+    "draft_tool": "tools/validate_swm_native_bootstrap.py (uncommitted, not run)"
   }
 }

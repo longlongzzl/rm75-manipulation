@@ -27,3 +27,13 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python
 - 硬件：未授权、未连接、未运行。
 
 G1 和全部最终验收要求保持未通过；本次不是 SOFTWARE_DELIVERY_READY。
+
+## M1 / 初始化生命周期增量
+
+提交 `82be044`：原 create_demo 的环境即时归属及关闭合同；18 项软件测试通过（0.07 s）。命令：
+
+```bash
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/test_native_bootstrap_lifetime.py tests/swm/test_runtime_context.py -q
+```
+
+原生接线仍未安装，模型推理/实际仿真/硬件本轮均未运行。原构造器的 URDF/SRDF 输出位置会落在资产目录，新入口尚未隔离此写入；因此不能运行或据此宣布初始化合格。路径修正确认待回。上一条 1523 passed 是上一提交的全量结果，不能归属于本次新增代码。

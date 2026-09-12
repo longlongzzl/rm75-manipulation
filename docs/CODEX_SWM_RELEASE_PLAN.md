@@ -32,3 +32,9 @@ G0 可移植验证与 S1 管理上下文已提交 `9c38a5449fbe02b4eb35481cb99f4
 软件回归：SWM 120 passed；正式全量 1523 passed、1 个既有警告（45.32 s）。这些不是实际 GPU/主仿真成绩。未注册任何不完整 worker 工厂，缺适配器检查保留。
 
 下一步仍是笔的正式 worker，而不是扩展 fixture 数量：先明确原生碰撞诊断对已附着目标的 world-obstacle 排除（当前诊断会临时启用场景对象，auditor 可能保守误拒绝），接独立 jaw 观测和原代理几何恢复；再复用原 frozen-world create_demo 创建主仿真及私有镜像，取得六次新采集和原生阶段审计证据。夹爪开合中间几何、候选恢复与联合筛查的原生结果仍待验证，不据此宣称 S2 全部完成。
+
+## M1 初始化资源所有权：82be044
+
+已复用原 create_demo 的初始化边界，并在 gym.make 返回后、reset/demo 构造之前注册清理；完整 actor 注册表缺失、初始化异常、取消、意外 live runtime、抓前持续冻结或额外世界创建均拒绝。仅软件替身测试：初始化生命周期加 managed runtime 共 18 passed（0.07 s）；未运行本轮全量。
+
+原生启动尚未执行：源码确认原 resolve_planning_artifact_paths 会在 sim URDF 同目录生成 planning URDF/SRDF，当前新入口仍继承该行为。已询问是否修正为本次运行目录，未收到明确确认。不得运行 tools/validate_swm_native_bootstrap.py 来绕过这项待修复风险；该脚本仍为未提交草稿。无活跃仿真进程，不将待确认解释为真实运行中的等待。下一原生步骤仍为先消除此写入风险，再运行冻结输入初始化、真实读回并接正式 worker。
