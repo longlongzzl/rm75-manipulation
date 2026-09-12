@@ -34,6 +34,24 @@
       "domain": "software_regression",
       "warning": "Existing trimesh Scene.dump deprecation",
       "tested_commit": "9c38a5449fbe02b4eb35481cb99f40749ded1d74"
+    },
+    "m1_stage_targeted": {
+      "passed": 120,
+      "failed": 0,
+      "seconds": 0.91,
+      "domain": "software_fixture",
+      "tested_commit": "349890e",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/swm/ -q"
+    },
+    "m1_stage_full": {
+      "passed": 1523,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 45.32,
+      "domain": "software_regression",
+      "tested_commit": "349890e",
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "note": "Tests started before commit and finished afterward on identical unchanged implementation bytes."
     }
   },
   "gates": {
@@ -67,10 +85,17 @@
       "numerator": 0,
       "denominator": null,
       "evidence": [
-        "managed_context_contract_only_not_native_qualification"
+        "managed_context_contract_only_not_native_qualification",
+        "runs.m1_stage_targeted: software fixtures only, NOT native qualification"
       ],
       "blocker": null,
-      "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
+      "input_freeze": "PENDING_BEFORE_NATIVE_RUN",
+      "remaining": [
+        "Install native pen worker context and independent jaw observation",
+        "Resolve attached-object exclusion in native world collision diagnostics",
+        "Audit intermediate jaw geometry and native candidate restoration",
+        "Run six fresh checkpoints through actual native planner and primary simulation"
+      ]
     },
     "G2": {
       "status": "NOT_RUN",
@@ -227,9 +252,18 @@
       "command": null,
       "numerator": 0,
       "denominator": null,
-      "evidence": [],
+      "evidence": [
+        "runs.m1_stage_full"
+      ],
       "blocker": null,
       "input_freeze": "PENDING_BEFORE_NATIVE_RUN"
     }
+  },
+  "current_layer_status": {
+    "kernel": "SOFTWARE_REGRESSION_PASSED",
+    "native_wiring": "IN_PROGRESS_NOT_INSTALLED",
+    "model_inference": "NOT_RUN_THIS_INCREMENT",
+    "actual_simulation": "NOT_RUN_THIS_INCREMENT",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
   }
 }
