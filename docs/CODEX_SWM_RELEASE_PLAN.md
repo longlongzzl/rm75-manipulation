@@ -323,3 +323,13 @@ CompiledNativeTask.verify_skill 使用当前活动原子、原参照 ID 和局�
 内核：定向 18 passed / 0.56 s；全量 1636 passed / 1 existing trimesh warning / 42.53 s。原生接线：可信后测接口已实现，尚未装配正式 worker。模型推理：未运行。实际仿真：本轮只离线读取既有原生快照，原 bi/bitong 网格负例正确拒绝桌上的笔入筒，横向越界 0.20257621585 m，原几何余量 0.003 m；不宣称正例抓放或物理执行成功。技能检查点仍为 0。硬件：未授权、未连接。
 
 原候选仍完整：12 对象、70 抓取和 2240 配对放置候选。代码、驱动、结果和日志摘要记录于机器验收表 native_goals_* / native_pen_goal_geometry_01。下一步将原候选阶段求解、原生 auditor、共享执行器和本后测接口装配进正式笔 worker，取得六次真实新采集，不以本轮几何负例替代。保持 PARTIAL_DELIVERY，未完成技能不可用，缺适配器检查保留。本轮代码和证据仅本地提交，未推送。
+
+## M1 / 首次真实原阶段求解与旋转精度修复
+
+native_pen_phase_01 在 solver 之前被原生同位姿比较误拒绝：实际 float32 旋转的微小非正交舍入使旧 trace/acos 对同一矩阵产生约 0.00048 rad 误差。已修复 scene.pose_error：先保留原严格 SE(3) 有效性检查，仅在误差计算中使用极分解旋转因子与 atan2，不改写权威实测矩阵、不放宽目标/碰撞容差。真实微小角、接近 pi、输入不变和非刚体拒绝测例通过。定向 66 passed / 0.70 s；全量 1649 passed / 1 existing warning / 42.02 s。
+
+修复后 native_pen_phase_02 真实进入同一 GPU 原 PickPlaceCoordinator 阶段求解。约 10.01 s 中，pregrasp 8/8 可行、grasp 1/8 可行、lift 2/2 可行、preplace 0/128 可行。因联合放置前瞻失败，没有返回可执行原子，也未进入最终阶段 auditor；禁止执行器保持有效。主环境与私有资源均关闭。外层初始化报告的 planner_executed=false 不覆盖本段实际求解事实，阶段驱动结果为权威细分证据。
+
+进一步原编译器离线诊断：当前阶段适配器截取全局放置前 8 项，只有 4 个不同目标；实际可行 grasp_04 对应的原配对前 8 项有 8 个不同目标。原轴对称姿态字段本身存在，不能误报为已丢失；实际问题是未复用 places_for_grasp 进行前瞻筛选。下一步恢复原配对筛选，再验证可行性，不能直接扩大预算或减少障碍。本诊断尚不证明配对修复足以解决全部 preplace 失败。
+
+内核：上述全量通过。原生接线：已取得真实 pregrasp/grasp/lift 求解和联合前瞻拒绝证据，正式 worker 尚未装配。模型推理：未运行。实际仿真：真实初始化和镜像存活期间调用 GPU 原阶段求解，但没有主环境运动、抓取或六检查点。硬件：未授权、未连接。失败、驱动、结果和代码哈希记录于机器验收表 native_pen_phase_* / rotation_precision_* / native_pen_pairing_diagnosis_01。保持 PARTIAL_DELIVERY，缺适配器检查保留，本轮代码及证据仅本地提交，未推送。

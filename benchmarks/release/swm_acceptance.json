@@ -7502,6 +7502,101 @@
       "result_path": "runtime_data/swm_release_pen_goal_geometry_01.json",
       "result_sha256": "1a5c7ff3f5356da44b51422aeb523db855901e619586e9db19179c8e8f025fce",
       "log_sha256": "54f6577456b924176dd0a7634b3ba6c1eec6c7ca863378af1e09847aedaeea47"
+    },
+    "rotation_precision_targeted_01": {
+      "passed": 66,
+      "failed": 0,
+      "seconds": 0.7
+    },
+    "rotation_precision_full_01": {
+      "passed": 1649,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 42.02,
+      "domain": "software_regression",
+      "log": "runtime_data/swm_release_rotation_precision_full_01.log",
+      "source_sha256": {
+        "rm75_app/swm/scene.py": "7decb3e8c58e001cf906eae9cbfda6828fae2ef7f0d662f2eadcca61427fb543",
+        "tests/swm/test_native_rotation_precision.py": "bd4ccf1b327b5e675ec064d3c9ddcfffbd3f4b3af6327f064e2e1aebd2774087"
+      }
+    },
+    "native_pen_phase_01": {
+      "status": "FAILED_BEFORE_SOLVER",
+      "reason": "Identical float32 rotation falsely differs under trace-acos comparison",
+      "driver_sha256": "5fa9b6452b44cde6bbfd5d5addad8c877119009f85b4393564255145798bc553",
+      "result_sha256": "45b98906416e3a8ea9cbdf51c74a2443a40651ae851d6ed3dd984ace76cf50ca",
+      "result_path": "runtime_data/swm_release_pen_phase_driver_01/transaction_result.json",
+      "motion_executed": false
+    },
+    "native_pen_phase_02": {
+      "status": "failed",
+      "error": "RuntimeError: Native atomic phase has no feasible trajectory",
+      "domain": "actual_native_gpu_phase_planning",
+      "elapsed_s": 10.009172966998449,
+      "stage_summary": [
+        {
+          "stage": "grasp",
+          "count": 8,
+          "successes": 1
+        },
+        {
+          "stage": "lift",
+          "count": 2,
+          "successes": 2
+        },
+        {
+          "stage": "pregrasp",
+          "count": 8,
+          "successes": 8
+        },
+        {
+          "stage": "preplace",
+          "count": 128,
+          "successes": 0
+        }
+      ],
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "motion_executed": false,
+      "atomic_worker_qualified": false,
+      "skill_checkpoints": 0,
+      "driver_sha256": "96e0af502b4ab285c193b114d427cc90e174daa029b71dc6b5b87912a00aba28",
+      "result_sha256": "e3b193ff9f54c7ea64b289af6dd1640e6a42669349dee41bb87c979d122911a9",
+      "result_path": "runtime_data/swm_release_pen_phase_driver_02/transaction_result.json"
+    },
+    "native_pen_pairing_diagnosis_01": {
+      "current_global": {
+        "count": 8,
+        "unique_object_targets": 4,
+        "candidate_ids": [
+          "place_for_grasp_00_+0deg__axial_+0",
+          "place_for_grasp_00_+0deg__axial_+0_flip",
+          "place_for_grasp_01_+0deg_axis_+20mm__axial_+0",
+          "place_for_grasp_02_+0deg_axis_-20mm__axial_+0",
+          "place_for_grasp_01_+0deg_axis_+20mm__axial_+0_flip",
+          "place_for_grasp_02_+0deg_axis_-20mm__axial_+0_flip",
+          "place_for_grasp_00_+0deg__axial_-22",
+          "place_for_grasp_00_+0deg__axial_+22"
+        ]
+      },
+      "original_grasp_pairing": {
+        "count": 8,
+        "unique_object_targets": 8,
+        "candidate_ids": [
+          "place_for_grasp_04_+0deg_axis_-40mm__axial_+0",
+          "place_for_grasp_04_+0deg_axis_-40mm__axial_+0_flip",
+          "place_for_grasp_04_+0deg_axis_-40mm__axial_-22",
+          "place_for_grasp_04_+0deg_axis_-40mm__axial_+22",
+          "place_for_grasp_04_+0deg_axis_-40mm__axial_-22_flip",
+          "place_for_grasp_04_+0deg_axis_-40mm__axial_+22_flip",
+          "place_for_grasp_04_+0deg_axis_-40mm__axial_-45",
+          "place_for_grasp_04_+0deg_axis_-40mm__axial_+45"
+        ]
+      },
+      "selected_grasp": "grasp_04_+0deg_axis_-40mm",
+      "note": "Offline compiler diagnosis, not a new native feasibility result",
+      "result_sha256": "532baec6364db3e7471bac23c4cf5084b355e79e92bbbe0e3bb6c7a26f1430f5",
+      "result_path": "runtime_data/swm_release_pen_pairing_diagnosis_01.json"
     }
   },
   "gates": {

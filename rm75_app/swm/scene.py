@@ -35,8 +35,21 @@ def transform(value):
 
 def pose_error(a, b):
     a, b = transform(a), transform(b)
+    # Native float32 readbacks are valid up to transform()'s strict rigid
+    # tolerance, but R.T @ R can have a trace slightly below 3. acos(trace)
+    # then reports motion even for identical measurements. Compare the polar
+    # rotation factors only; never rewrite the authoritative measured matrices.
+    rotations = []
+    for matrix in (a, b):
+        u, _, vh = np.linalg.svd(matrix[:3, :3])
+        rotations.append(u @ vh)
+    relative = rotations[0].T @ rotations[1]
+    sine = .5 * np.linalg.norm([relative[2, 1] - relative[1, 2],
+                               relative[0, 2] - relative[2, 0],
+                               relative[1, 0] - relative[0, 1]])
+    cosine = np.clip((np.trace(relative) - 1) / 2, -1, 1)
     return (float(np.linalg.norm(a[:3, 3]-b[:3, 3])),
-            float(np.arccos(np.clip((np.trace(a[:3,:3].T @ b[:3,:3])-1)/2, -1, 1))))
+            float(np.arctan2(sine, cosine)))
 
 
 def positive(value, name, *, zero=False):
