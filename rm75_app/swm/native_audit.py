@@ -62,8 +62,9 @@ class CuroboNativeStageAuditor:
         current = JointConfiguration(names, robot['positions'])
         previous = initial
         active_object = holding
+        pending_escape = None
         try:
-            for stage in primitive.stages:
+            for index, stage in enumerate(primitive.stages):
                 if stage.state_before is None or stage.state_after is None:
                     raise SceneInvalid('Native stage lacks explicit pre/post collision state')
                 self._same_state(previous, stage.state_before)
@@ -82,7 +83,16 @@ class CuroboNativeStageAuditor:
                     raise SceneInvalid('Native stage path is discontinuous or starts at another state')
                 active_object = self._apply(stage.state_before, current, primitive.object_id,
                                             scene, active_object)
+                if pending_escape is not None:
+                    beginning = self._contacts(q[:1], names, set(stage.contact_objects))
+                    if not self._same_contacts(pending_escape, beginning):
+                        raise SceneInvalid('Pending support contact changed before lift audit')
                 evidence = self._check_path(stage, q)
+                if pending_escape is not None:
+                    if not evidence['escape']:
+                        raise SceneInvalid('Pending support contact lacks audited escape')
+                    self.last_evidence[-1]['post_transition_escape_verified_by'] = stage.name
+                    pending_escape = None
                 end = JointConfiguration(names, q[-1])
                 active_object = self._apply(stage.state_after, end, primitive.object_id,
                                             scene, active_object)
@@ -90,11 +100,17 @@ class CuroboNativeStageAuditor:
                 # Audit that endpoint in the POST state too, not just the descent.
                 contacts = self._contacts(q[-1:], names, set(stage.contact_objects))
                 if contacts:
-                    raise SceneInvalid(f'{stage.name}: post-transition collision: {contacts[:3]}')
+                    following = primitive.stages[index + 1] if index + 1 < len(primitive.stages) else None
+                    if not self._initial_payload_escape(stage, following, contacts, end,
+                                                        primitive.object_id, snapshot):
+                        raise SceneInvalid(f'{stage.name}: post-transition collision: {contacts[:3]}')
+                    pending_escape = contacts
                 self.last_evidence.append(dict(stage=stage.name, **evidence,
                     state_before=stage.state_before.as_dict(), state_after=stage.state_after.as_dict(),
                     post_transition_contacts=contacts))
                 current, previous = end, stage.state_after
+            if pending_escape is not None:
+                raise SceneInvalid('Unverified post-transition support contact')
         finally:
             # Restore even if attachment application failed partway through;
             # detach_object clears the backend's actual single attachment slot.
@@ -107,6 +123,50 @@ class CuroboNativeStageAuditor:
                 q0 = JointConfiguration(names, robot['positions'])
                 self._apply(initial, q0, primitive.object_id, scene, 'empty')
         return PlanAudit(plan.payload_digest, snapshot['snapshot_id'], REQUIRED_AUDITS)
+
+    @staticmethod
+    def _same_contacts(expected, actual):
+        def depths(rows):
+            result = {}
+            for row in rows:
+                key = (row.get('collision_type'), row.get('robot_link'), row.get('world_object'))
+                result[key] = max(result.get(key, 0.), float(row['penetration_m']))
+            return result
+        before, after = depths(expected), depths(actual)
+        return before.keys() == after.keys() and all(abs(before[key] - after[key]) <= 1e-5 for key in before)
+
+    def _initial_payload_escape(self, stage, following, contacts, q, object_id, snapshot):
+        """Defer only the original table/payload overlap to its immediate lift.
+
+        This is not a collision waiver: the next stage must re-observe the
+        SAME overlap and pass the complete sampled escape audit before any
+        PlanAudit can be returned. Robot-link closing collisions remain fatal.
+        """
+        from rm75_app.core.frames import MANISKILL_TABLE_COLLISION_NAME
+        from rm75_app.pickplace.coordinator import _pose_matrix
+
+        table = MANISKILL_TABLE_COLLISION_NAME
+        limit = float(getattr(self.backend.config, 'retreat_start_contact_max_penetration_m', 0.))
+        if (not 0 < limit <= .020 or stage.name != 'grasp' or stage.gripper_after is not True
+                or stage.state_before.holding != 'empty' or stage.state_after.holding != object_id
+                or following is None or following.name != 'lift'
+                or following.allow_start_contact_escape is not True
+                or following.gripper_after is not None or table in following.contact_objects
+                or not snapshot['objects'].get(table, {}).get('fixed')
+                or 'attached_object' not in self.backend.config.retreat_escape_contact_links):
+            return False
+        if any(row.get('collision_type') != 'world' or row.get('robot_link') != 'attached_object'
+               or row.get('world_object') != table or not 0 < float(row['penetration_m']) <= limit
+               for row in contacts):
+            return False
+        self._same_state(stage.state_after, following.state_before)
+        # Switching to an attachment must not move the observed payload into
+        # a surface. Its original fitted geometry stays at the measured pose.
+        tcp = _pose_matrix(self.backend.tool_pose_for_configuration(q, 'gripper_tcp'))
+        represented = tcp @ transform(stage.state_after.T_tcp_object)
+        measured = snapshot['objects'][object_id]['measured']['T_world_object']
+        position, rotation = pose_error(represented, measured)
+        return position <= 1e-5 and rotation <= 1e-5
 
     @staticmethod
     def _same_state(expected, actual):
@@ -192,6 +252,9 @@ class CuroboNativeStageAuditor:
             oid = row.get('world_object')
             if oid in previous:
                 previous[oid] = max(previous[oid], float(row['penetration_m']))
+        limit = float(getattr(self.backend.config, 'retreat_start_contact_max_penetration_m', 0.))
+        if not 0 < limit <= .020 or any(value > limit for value in previous.values()):
+            raise SceneInvalid('Native escape exceeds original initial-contact limit')
         grouped = {}
         for row in contacts:
             grouped.setdefault(row['candidate_index'], []).append(row)

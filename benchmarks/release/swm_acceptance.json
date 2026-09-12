@@ -7722,6 +7722,233 @@
       "result_sha256": "fc99021b0841b38e92ac6bb6aa7870515fcdb9b3e45b41284dcb66a201d84b2c",
       "result_path": "runtime_data/swm_release_pen_phase_driver_04/transaction_result.json",
       "next_gap": "Investigate measured attachment geometry versus original support-contact policy; do not delete table or relax collision thresholds"
+    },
+    "initial_payload_escape_targeted_01": {
+      "passed": 20,
+      "failed": 1,
+      "seconds": 0.56,
+      "known_failure": "Fixture snapshot says empty but Model initializes held=a; negative fixtures may fail at this same unintended boundary"
+    },
+    "initial_payload_escape_full_01": {
+      "passed": 1663,
+      "failed": 1,
+      "warnings": 1,
+      "seconds": 42.16,
+      "domain": "software_regression",
+      "log": "runtime_data/swm_release_initial_payload_escape_full_01.log",
+      "failed_test": "tests/swm/test_initial_payload_escape.py::test_support_overlap_requires_complete_immediate_escape_proof",
+      "source_sha256": {
+        "rm75_app/swm/native_audit.py": "d488db31f9e9fb6ed41797955673eb90f2c6266f610086ac52cfc8b5d26873c6",
+        "tests/swm/test_initial_payload_escape.py": "0dcdc52e7837d9e4ead818e38de5453947bd8373c9aad9fdc5fbd2eb800dfcbc"
+      }
+    },
+    "native_pen_phase_05": {
+      "status": "AUDIT_REJECTED_GEOMETRY_DIAGNOSED",
+      "geometry": {
+        "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/pen.glb",
+        "registered_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_phase_driver_05/metric_assets/bi.metric.ply",
+        "source_sha256": "717a9c1d415794bcd17d06d8d21592ad023282ede3bf1cc68673f292dcc80652",
+        "registered_sha256": "1ef8131456d07671e2f12933b3aa4861b489fa47a86d081b2f49b52dea68d2bc",
+        "fit_report": {
+          "object_name": "bi",
+          "fit_type": "morphit",
+          "automatic_count": true,
+          "fitted_spheres": 4,
+          "stored_spheres": 4,
+          "max_spheres": 64,
+          "cache_hit": true,
+          "cache_file": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/curobo2_attachment_spheres/a137416be1a6b803b4be6b8d54218a8ce4fe2b4cdd9b87840a52c3d7ee456bcf.npz",
+          "used_convex_hull": false,
+          "fallback_used": false
+        },
+        "gpu_spheres_base": [
+          [
+            -0.2422911673784256,
+            -0.18876861035823822,
+            0.012590641155838966,
+            0.01809384673833847
+          ],
+          [
+            -0.21259644627571106,
+            -0.2022651731967926,
+            0.011991593986749649,
+            0.016831226646900177
+          ],
+          [
+            -0.17836475372314453,
+            -0.21718338131904602,
+            0.013104649260640144,
+            0.018358469009399414
+          ],
+          [
+            -0.1454000025987625,
+            -0.23171751201152802,
+            0.012862471863627434,
+            0.016068438068032265
+          ]
+        ],
+        "original_spheres_object": [
+          [
+            -2.9224631362012587e-05,
+            -0.05489913746714592,
+            0.0006016461993567646,
+            0.01809384673833847
+          ],
+          [
+            0.0005698238965123892,
+            -0.022281518206000328,
+            0.0004452572902664542,
+            0.016831226646900177
+          ],
+          [
+            -0.0005432295729406178,
+            0.015051866881549358,
+            -0.00031681443215347826,
+            0.018358469009399414
+          ],
+          [
+            -0.0003010513028129935,
+            0.051073767244815826,
+            -0.0008980060811154544,
+            0.016068438068032265
+          ]
+        ],
+        "expected_vs_gpu_max_error_m": 2.9802322387695312e-08,
+        "metric_mesh_bottom_above_table_m": 0.0010000001639127731,
+        "sphere_bottom_above_table_m": [
+          -0.005503197634082746,
+          -0.004839625010415627,
+          -0.005253812455150497,
+          -0.0032059592506428203
+        ],
+        "table_dimensions_m": [
+          2.4179999828338623,
+          1.2089999914169312,
+          0.9196429252624512
+        ],
+        "native_collision_rows": [
+          {
+            "collision_type": "world",
+            "state": "path",
+            "candidate_index": 0,
+            "robot_link": "attached_object",
+            "world_object": "__maniskill_workspace_table__",
+            "penetration_m": 0.005503199994564056
+          }
+        ],
+        "motion_executed": false,
+        "note": "Read-only diagnosis at rejected post-grasp state; no threshold changes"
+      },
+      "driver_sha256": "da30db0a02e1a18d2451f8b4e03060e8d65c0c784f5fc8fa38351d418dfd55df",
+      "result_sha256": "3fa133270538cb1cf0787e03c42f1050f73fafca26f4820a52ea0874303f7ac7",
+      "result_path": "runtime_data/swm_release_pen_phase_driver_05/transaction_result.json"
+    },
+    "native_pen_phase_06": {
+      "status": "AUDIT_REJECTED_CONTACT_IDENTITY",
+      "reason": "Pending support contact changed before lift audit",
+      "driver_sha256": "2eb141e3ea6f7e6afafa0c1213c82428f00ee1f6d1529e0c2085c36e37fb5f64",
+      "result_sha256": "eccf0587ad6e5d798461a4e0a73ac0cfc58524a76fda0d8be33cd69c4ca215a6",
+      "result_path": "runtime_data/swm_release_pen_phase_driver_06/transaction_result.json"
+    },
+    "native_pen_phase_07": {
+      "status": "AUDIT_REJECTED_DUPLICATE_PAYLOAD_DIAGNOSED",
+      "diagnosis": {
+        "same": false,
+        "post_grasp": [
+          {
+            "collision_type": "world",
+            "state": "path",
+            "candidate_index": 0,
+            "robot_link": "attached_object",
+            "world_object": "__maniskill_workspace_table__",
+            "penetration_m": 0.005503199994564056
+          }
+        ],
+        "lift_start": [
+          {
+            "collision_type": "world",
+            "state": "path",
+            "candidate_index": 0,
+            "robot_link": "gripper_Left_Support_Link",
+            "world_object": "bi",
+            "penetration_m": 0.008904809132218361
+          },
+          {
+            "collision_type": "world",
+            "state": "path",
+            "candidate_index": 0,
+            "robot_link": "gripper_Right_Support_Link",
+            "world_object": "bi",
+            "penetration_m": 0.011843676678836346
+          },
+          {
+            "collision_type": "world",
+            "state": "path",
+            "candidate_index": 0,
+            "robot_link": "left_pad",
+            "world_object": "bi",
+            "penetration_m": 0.0018707942217588425
+          },
+          {
+            "collision_type": "world",
+            "state": "path",
+            "candidate_index": 0,
+            "robot_link": "right_pad",
+            "world_object": "bi",
+            "penetration_m": 0.004987342283129692
+          },
+          {
+            "collision_type": "world",
+            "state": "path",
+            "candidate_index": 0,
+            "robot_link": "attached_object",
+            "world_object": "bi",
+            "penetration_m": 0.03503280133008957
+          },
+          {
+            "collision_type": "world",
+            "state": "path",
+            "candidate_index": 0,
+            "robot_link": "attached_object",
+            "world_object": "__maniskill_workspace_table__",
+            "penetration_m": 0.005503199994564056
+          }
+        ],
+        "actual_native_enable_flags": {
+          "bi": false,
+          "bitong": true,
+          "carriot": true,
+          "desk": true,
+          "gluestick": true,
+          "hongshupian": true,
+          "lvmukuai": true,
+          "shuazi": true,
+          "tennis": true,
+          "__maniskill_workspace_table__": true,
+          "virtual_side_wall": true,
+          "virtual_top_wall": true
+        },
+        "attachment_fit_report": {
+          "object_name": "bi",
+          "fit_type": "morphit",
+          "automatic_count": true,
+          "fitted_spheres": 4,
+          "stored_spheres": 4,
+          "max_spheres": 64,
+          "cache_hit": true,
+          "cache_file": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/curobo2_attachment_spheres/a137416be1a6b803b4be6b8d54218a8ce4fe2b4cdd9b87840a52c3d7ee456bcf.npz",
+          "used_convex_hull": false,
+          "fallback_used": false
+        }
+      },
+      "driver_sha256": "4e3abfabfa23d99d012e057e3d5ab1b307588db944c9989a88609d7e26283d9b",
+      "result_sha256": "ee12e199cd4543b968c736ce9d204e15b23f4ea6c0e0af01505bab7a84cd0241",
+      "result_path": "runtime_data/swm_release_pen_phase_driver_07/transaction_result.json",
+      "private_resources_closed": true,
+      "primary_closed": true,
+      "motion_executed": false,
+      "atomic_worker_qualified": false,
+      "skill_checkpoints": 0
     }
   },
   "gates": {
