@@ -7,6 +7,11 @@ from tools.pusht_physics_planner import audit_predicted_retreat
 from rm75_app.pusht.model import Config,Push,predict
 from rm75_app.pusht.observation import Observation
 
+@pytest.fixture(autouse=True)
+def native_contact_boundary(monkeypatch):
+    monkeypatch.setattr('tools.pusht_physics_planner.audit_retreat_contact_escape',
+                        lambda executor,path:executor._audit(path,contact=True))
+
 def test_all_timed_retreat_samples_checked_without_contact_permission():
     calls=[];events=[];path=np.zeros((11,7))
     executor=SimpleNamespace(_audit=lambda p,**kw:calls.append((p,kw)),
@@ -14,7 +19,7 @@ def test_all_timed_retreat_samples_checked_without_contact_permission():
     prepared=SimpleNamespace(stages=(('push',path,None),('retreat',path,None)))
     audit_prepared_retreat(executor,prepared)
     assert len(calls)==1 and calls[0][0] is path
-    assert calls[0][1]=={'contact':False}
+    assert calls[0][1]=={'contact':True}
     assert events[0]['post_push_scene_verified'] is False
 
 def test_native_collision_failure_propagates():

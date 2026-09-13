@@ -16,6 +16,7 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from rm75_app.workcell.io import atomic_json
 from rm75_app.workcell.events import StopToken
+from rm75_app.pusht.retreat_contact import audit_retreat_contact_escape
 
 
 def audit_prepared_retreat(executor,prepared):
@@ -28,7 +29,7 @@ def audit_prepared_retreat(executor,prepared):
     rows=[path for stage,path,_ in prepared.stages if stage=='retreat']
     if not rows:raise ValueError('Prepared push has no retreat to audit')
     for path in rows:
-        try:executor._audit(path,contact=False)
+        try:audit_retreat_contact_escape(executor,path)
         except Exception as exc:
             executor.events.emit('physics_retreat_native_rejected',
                 scope='predicted_post_push_ensemble',samples=len(path),

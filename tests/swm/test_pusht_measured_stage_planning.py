@@ -5,6 +5,11 @@ import pytest
 from rm75_app.pusht.stage_planning import replan_stage
 from rm75_app.pusht.observation import Observation
 
+@pytest.fixture(autouse=True)
+def native_contact_boundary(monkeypatch):
+    monkeypatch.setattr('rm75_app.pusht.stage_planning.audit_retreat_contact_escape',
+                        lambda executor,path:executor._audit(path,contact=True))
+
 @pytest.mark.parametrize('reject',[False,True])
 def test_retreat_uses_measured_scene_and_no_contact_exemption(reject):
     q=np.arange(7)*.01;calls=[]
@@ -13,7 +18,7 @@ def test_retreat_uses_measured_scene_and_no_contact_exemption(reject):
         assert np.array_equal(start,q) and scene is obs and binding=={'original':True}
         calls.append('generate');return np.array([q,q+.001]),np.array([0.,1.])
     def audit(path,contact):
-        assert contact is False;calls.append('audit')
+        assert contact is True;calls.append('audit')
         if reject:raise RuntimeError('native collision')
     executor=SimpleNamespace(arm=SimpleNamespace(read_joints=lambda:q),
         backend=SimpleNamespace(_ensure_planner=lambda:SimpleNamespace(

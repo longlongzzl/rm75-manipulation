@@ -1,6 +1,17 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_contact_escape_worker_05": {
+    "status": "TWO_FULL_NATIVE_PUSH_CYCLES_THIRD_CANCELLED_NOT_TASK_SUCCESS",
+    "kernel": "16 targeted passed / 0.05 s; 1918 full passed / 1 warning / 42.82 s; isolated",
+    "native_wiring": "Original allowed contact links may only escape existing target contact monotonically; new/renewed/deepening/end contacts and all static/self contacts reject",
+    "actual_simulation": "Original-agent gravity-compensation comparison, 3819 control steps; two completed five-stage cycles with distinct before/after observations; third cancelled during descend at 180 s cap; no static contacts",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/worker_05/",
+    "empirical_response_fit": "Two original controller fits; NOT SWM multi-parameter PhysX identification",
+    "swm_scene_audit_verified": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
   "pusht_measured_stage_execution_01": {
     "status": "SIMULATED_APPROACH_COMPLETED_NOT_TASK_QUALIFIED",
     "evidence": "benchmarks/release/evidence/pusht_feedback/measured_stage_01/",

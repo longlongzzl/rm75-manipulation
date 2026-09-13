@@ -5,6 +5,7 @@ from rm75_app.workcell.realman import time_parameterize
 from .cartesian_ik import PushPathRejected,plan_cartesian_line
 from .model import Push
 from .physics_replay import STAGES
+from .retreat_contact import audit_retreat_contact_escape
 
 
 def replan_stage(executor,observation,request):
@@ -26,7 +27,7 @@ def replan_stage(executor,observation,request):
         path,times=executor._plan_retreat(q,push,scene,request['contact_binding'])
         # The old generator suspends checks. Recheck with measured target and
         # static scene after restoration, never inherit that exemption.
-        executor._audit(path,contact=False)
+        audit_retreat_contact_escape(executor,path)
     else:
         goal=executor._fk(goal_q);start=executor._fk(q)
         straight=stage!='approach';contact=stage in ('contact','push')
