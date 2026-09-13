@@ -1,0 +1,34 @@
+[
+  {
+    "id": "low",
+    "parameters": {
+      "density_kg_m3": 1000,
+      "dynamic_friction": 0.1,
+      "static_friction": 0.15
+    }
+  },
+  {
+    "id": "nominal",
+    "parameters": {
+      "density_kg_m3": 1000,
+      "dynamic_friction": 0.3,
+      "static_friction": 0.3
+    }
+  },
+  {
+    "id": "high",
+    "parameters": {
+      "density_kg_m3": 1000,
+      "dynamic_friction": 0.6,
+      "static_friction": 0.6
+    }
+  },
+  {
+    "id": "dense",
+    "parameters": {
+      "density_kg_m3": 2000,
+      "dynamic_friction": 0.3,
+      "static_friction": 0.3
+    }
+  }
+]

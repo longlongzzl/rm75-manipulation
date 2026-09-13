@@ -7,6 +7,7 @@ loops: this loop searches FUTURE actions; identification replays ONE past action
 from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 import copy
+from dataclasses import replace
 from .scene import SceneInvalid, digest
 from .skills import PlannedSkill
 from .identification import PhysicsParameters
@@ -43,14 +44,18 @@ class ParallelHypothesisPlanner:
             self.check();solver=self.factory()
             try:
                 if getattr(solver,'owns_real_executor',True):raise PermissionError('Planning workers may not own a real executor')
-                plan=solver.solve(request,copy.deepcopy(snapshot),copy.deepcopy(h['parameters']))
-                if plan is None:return None
-                if not isinstance(plan,PlannedSkill) or plan.source_snapshot_id!=snapshot['snapshot_id'] or plan.skill_digest!=digest(request.as_dict()):
-                    raise SceneInvalid('Solver returned a mismatched atomic plan')
-                return plan
+                generate=getattr(solver,'solve_candidates',None)
+                plans=(generate(request,copy.deepcopy(snapshot),copy.deepcopy(h['parameters'])) if generate is not None
+                       else [solver.solve(request,copy.deepcopy(snapshot),copy.deepcopy(h['parameters']))])
+                if not isinstance(plans,(list,tuple)) or len(plans)>self.max_candidates:
+                    raise SceneInvalid('Native candidate batch exceeds the declared planning budget')
+                for plan in plans:
+                    if plan is not None and (not isinstance(plan,PlannedSkill) or plan.source_snapshot_id!=snapshot['snapshot_id'] or plan.skill_digest!=digest(request.as_dict())):
+                        raise SceneInvalid('Solver returned a mismatched atomic plan')
+                return [plan for plan in plans if plan is not None]
             finally:solver.close()
         with ThreadPoolExecutor(max_workers=self.workers) as pool:
-            plans=list(pool.map(solve_one,hypotheses))
+            plans=[plan for batch in pool.map(solve_one,hypotheses) for plan in batch]
         unique={p.payload_digest:p for p in plans if p is not None}
         candidates=list(unique.values())[:self.max_candidates]
         if not candidates:raise RuntimeError('No native atomic path candidate')
@@ -71,7 +76,11 @@ class ParallelHypothesisPlanner:
             feasible=all(r.get('feasible') is True and math.isfinite(r.get('cost',float('inf'))) for r in rows)
             evidence.append(dict(payload_digest=plan.payload_digest,feasible=feasible,
                                  hypotheses=dict(zip(ids,rows))))
-            if feasible:ranked.append((max(r['cost'] for r in rows),plan))
+            if feasible:
+                worst=max(rows,key=lambda row:row['cost'])
+                if 'expected_object_pose' in worst:
+                    plan=replace(plan,expected_object_pose=worst['expected_object_pose'])
+                ranked.append((worst['cost'],plan))
         if not ranked:raise RuntimeError('No candidate survives all retained physical hypotheses')
         return min(ranked,key=lambda x:x[0])[1],dict(snapshot_id=snapshot['snapshot_id'],
             generated_candidates=len(unique),evaluated_candidates=len(candidates),
