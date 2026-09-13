@@ -6,7 +6,7 @@ Physics lives in its existing separate Python environment, without installations
 """
 import argparse
 import contextlib
-from dataclasses import asdict
+from dataclasses import asdict,replace
 import json
 from pathlib import Path
 import sys
@@ -19,7 +19,7 @@ from rm75_app.workcell.events import StopToken
 
 
 def audit_prepared_retreat(executor,prepared):
-    """Additional rejection gate, not a post-push scene certificate.
+    """Audit a retreat in the caller's stage-correct private scene.
 
     The legacy generator restores collision checks before returning. Reuse its
     exhaustive native audit on the timed retreat with no allowed target contact.
@@ -31,14 +31,31 @@ def audit_prepared_retreat(executor,prepared):
         try:executor._audit(path,contact=False)
         except Exception as exc:
             executor.events.emit('physics_retreat_native_rejected',
-                scope='measured_pre_push_scene',samples=len(path),
+                scope='predicted_post_push_ensemble',samples=len(path),
                 start_q=np.asarray(path[0]).tolist(),end_q=np.asarray(path[-1]).tolist(),
                 error=f'{type(exc).__name__}: {exc}'[:4096],
                 post_push_scene_verified=False)
             raise
     executor.events.emit('physics_retreat_native_audit',
-        scope='measured_pre_push_scene',samples=sum(len(path) for path in rows),
+        scope='predicted_post_push_ensemble',samples=sum(len(path) for path in rows),
         post_push_scene_verified=False)
+
+
+def audit_predicted_retreat(executor,prepared,push,observation):
+    """Original response model and original contact binding, private scenes only."""
+    from rm75_app.pusht.model import predict
+    original_scene=executor._scene(observation)
+    bound=replace(push,contact=tuple(executor.last_contact_binding['surface_contact_xyz'][:2]))
+    if not executor.config.friction_scales:
+        raise ValueError('Retreat requires a nonempty prediction ensemble')
+    try:
+        for scale in executor.config.friction_scales:
+            future=predict(observation.pose,bound,executor.config,scale=scale)
+            predicted=replace(observation,pose=tuple(future),source='prediction')
+            executor.backend.update_scene(executor._scene(predicted))
+            audit_prepared_retreat(executor,prepared)
+    finally:
+        executor.backend.update_scene(original_scene)
 
 
 def main():
@@ -52,9 +69,9 @@ def main():
             from rm75_app.planning.backends.curobo2 import Curobo2Backend,Curobo2BackendConfig
             from rm75_app.pusht.motion import CuroboPushExecutor,pusht_planner_options
             class AuditedPhysicsPushExecutor(CuroboPushExecutor):
-                def plan_push(self,*args,**kwargs):
-                    prepared=super().plan_push(*args,**kwargs)
-                    audit_prepared_retreat(self,prepared)
+                def plan_push(self,push,observation,**kwargs):
+                    prepared=super().plan_push(push,observation,**kwargs)
+                    audit_predicted_retreat(self,prepared,push,observation)
                     return prepared
             from rm75_app.pusht.model import Config,Push
             from rm75_app.pusht.observation import Observation
@@ -146,7 +163,7 @@ def main():
                     else:
                         selected=0;prepared=executor.plan_push(proposals[0][0],observation)
                     result.update(complete_chain=True,validation_success=True,
-                        retreat_native_audit_scope='measured_pre_push_scene',
+                        retreat_native_audit_scope='predicted_post_push_ensemble',
                         retreat_post_push_scene_verified=False,
                         selected_candidate=selected,selected_push=proposals[selected][0].as_dict(),
                         stages=[dict(stage=s,positions=p.tolist(),times=t.tolist()) for s,p,t in prepared.stages])

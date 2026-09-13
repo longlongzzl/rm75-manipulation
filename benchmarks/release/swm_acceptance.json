@@ -1,6 +1,16 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_stage_scene_worker_04": {
+    "status": "PREDICTED_RETREAT_REJECTED_NOT_EXECUTED",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/worker_04/",
+    "kernel": "5 targeted passed; 1898 full passed / 1 warning / 43.83 s; network isolated",
+    "native_wiring": "Original predict/friction_scales and surface-contact binding build predicted post-push private scenes; original scene restored in finally",
+    "actual_simulation": "60 s planning timeout; cancelled; right support / predicted target penetration 0.009140042588114738 m",
+    "post_push_scene_verified": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
   "pusht_retreat_diagnostic_worker_03": {
     "status": "KNOWN_STAGE_SCENE_ERROR_PENDING_FIX",
     "evidence": "benchmarks/release/evidence/pusht_feedback/worker_03/",

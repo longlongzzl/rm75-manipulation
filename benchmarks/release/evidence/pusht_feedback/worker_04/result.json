@@ -1,0 +1,1 @@
+{"command_success": false, "error": "Operator requested a stop", "finished_at": 1789273938.9329472, "hardware_connected": false, "hardware_profile_qualified": false, "mode": "sim", "simulation_backend": "full_arm_physics", "status": "cancelled", "task": "pusht", "task_success": null}
