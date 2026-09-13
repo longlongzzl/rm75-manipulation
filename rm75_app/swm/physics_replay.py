@@ -94,6 +94,29 @@ def require_physical_replay_assets(assets):
             raise ValueError('Unknown physical replay asset role')
 
 
+def compound_cuboid_parts(asset):
+    """Read metric parts from the hashed physical descriptor, never a convex hull."""
+    import hashlib
+    path=Path(asset['collision_path'])
+    if path.stat().st_size>1000000:raise ValueError('Compound collision descriptor too large')
+    raw=path.read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=asset['collision_sha256']:
+        raise ValueError('Changed compound collision descriptor')
+    value=json.loads(raw)
+    if value.get('schema')!='rm75_compound_cuboids_v1' or value.get('units')!='m':
+        raise ValueError('Metric compound collision descriptor required')
+    parts=value.get('parts')
+    if not isinstance(parts,list) or not 1<=len(parts)<=64:
+        raise ValueError('Compound collision requires 1..64 parts')
+    result=[]
+    for part in parts:
+        dims=np.asarray(part['dimensions_m'],dtype=float)
+        if dims.shape!=(3,) or not np.isfinite(dims).all() or (dims<=0).any():
+            raise ValueError('Invalid compound collision dimensions')
+        result.append((transform(part['T_collision_part']),dims))
+    return result
+
+
 def physical_replay(request):
     """Native adapter. Imported/stepped only in the network-isolated subprocess."""
     require_physical_replay_assets(request['initial_snapshot']['assets'])
@@ -115,7 +138,7 @@ def physical_replay(request):
         p=Path(asset['collision_path'])
         if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest()!=asset['collision_sha256']:
             raise ValueError('Changed collision mesh')
-        if asset.get('collision_kind') not in ('convex_mesh','cuboid','sphere'):
+        if asset.get('collision_kind') not in ('convex_mesh','cuboid','sphere','compound_cuboids'):
             raise ValueError('Replay requires a prevalidated convex collision proxy, not gaussian splats')
     def spose(matrix):
         a=transform(matrix);xyzw=Rotation.from_matrix(a[:3,:3]).as_quat()
@@ -142,6 +165,11 @@ def physical_replay(request):
                     radius=float(asset['collision_radius_m'])
                     if not np.isfinite(radius) or radius<=0:raise ValueError('Invalid collision sphere')
                     builder.add_sphere_collision(pose=local_pose,radius=radius,material=material,density=density)
+                elif asset['collision_kind']=='compound_cuboids':
+                    base=transform(asset.get('T_object_collision',np.eye(4)))
+                    for part,dims in compound_cuboid_parts(asset):
+                        builder.add_box_collision(pose=spose(base@part),half_size=dims/2,
+                                                  material=material,density=density)
                 else:
                     dims=np.asarray(asset['collision_dimensions_m'],dtype=float)
                     if dims.shape!=(3,) or not np.isfinite(dims).all() or (dims<=0).any():raise ValueError('Invalid collision box')
@@ -179,12 +207,15 @@ def physical_replay(request):
                 fraction=(sample_times[cursor]-previous_t)/(now-previous_t)
                 poses.append(interpolate_pose(previous,current,fraction).tolist());cursor+=1
             previous,previous_t=current,now
+        target_body=env.target._objs[0].find_component_by_type(sapien.physx.PhysxRigidDynamicComponent)
         return dict(hypothesis_id=request['hypothesis_id'],parameters=request['parameters'],
                     action_digest=request['action_digest'],transition_digest=request['transition_digest'],
                     initial_snapshot_id=snapshot['snapshot_id'],valid=True,time_s=request['sample_times'],
                     T_world_object=poses,engine_domain='physics',engine='ManiSkill/PhysX CPU',
                     material_parameterization='shared_effective_object_support_tool_friction',
                     density_applied_at_collision_construction=True,
+                    native_target_mass_kg=float(target_body.mass),
+                    native_target_collision_shapes=len(target_body.collision_shapes),
                     measured_tool_feedback=dict(source="measured_feedback",time_s=feedback_times,
                         T_world_tcp=feedback_poses,stages=feedback_stages,
                         measurement_source="sapien_kinematic_actor_pose_after_step"),

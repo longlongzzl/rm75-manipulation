@@ -28,6 +28,8 @@ def main():
     parser.add_argument('--python', default=sys.executable)
     parser.add_argument("--stationary", action="store_true")
     parser.add_argument("--lateral-offset-m", type=float, default=0.)
+    parser.add_argument('--compound-pusht-profile',type=Path,
+                        help='Use original two-box T geometry; still a tool-only reference experiment')
     args = parser.parse_args()
     if not np.isfinite(args.lateral_offset_m) or abs(args.lateral_offset_m) > .02:
         raise ValueError("Bounded synthetic tool offset required")
@@ -46,11 +48,30 @@ def main():
             scale_evidence='analytic metric cuboid dimensions', mesh_path=str(path), mesh_sha256=sha,
             collision_path=str(path), collision_sha256=sha, collision_kind='cuboid',
             collision_dimensions_m=dims, volume_m3=float(np.prod(dims)), functional_poses=[])
+    target_z=.0201
+    if args.compound_pusht_profile is not None:
+        from rm75_app.pusht.model import Config,rectangles
+        profile=json.loads(args.compound_pusht_profile.read_text())['pusht']
+        config=Config.from_dict(profile['model']);height=float(profile['physics']['motion']['object_height_m'])
+        parts=[];meshes=[]
+        for x,y,w,h in rectangles(config):
+            dims=[w,h,height];local=pose(x,y,0.)
+            parts.append(dict(dimensions_m=dims,T_collision_part=local))
+            mesh=trimesh.creation.box(extents=dims);mesh.apply_transform(local);meshes.append(mesh)
+        mesh_path=args.output/'target_compound.ply';trimesh.util.concatenate(meshes).export(mesh_path)
+        collision_path=args.output/'target_compound.json'
+        collision_path.write_text(json.dumps(dict(schema='rm75_compound_cuboids_v1',units='m',parts=parts)))
+        assets['target'].update(mesh_path=str(mesh_path),mesh_sha256=hashlib.sha256(mesh_path.read_bytes()).hexdigest(),
+            collision_path=str(collision_path),collision_sha256=hashlib.sha256(collision_path.read_bytes()).hexdigest(),
+            collision_kind='compound_cuboids',collision_role='physical',
+            volume_m3=sum(float(np.prod(p['dimensions_m'])) for p in parts),
+            scale_evidence='Original PushT rectangles and profile object height; not a convex hull')
+        assets['target'].pop('collision_dimensions_m');target_z=height/2+.0001
     manifest = dict(schema='rm75_swm_v1', world_frame='base_link', calibration_id='analytic_cpu_world_v1',
         observation_domain='physics', assets=assets,
         objects=[dict(id=n, name=n, asset_id=n, fixed=n!='target') for n in assets])
     world = SceneWorldModel(manifest)
-    initial_poses = dict(target=pose(z=.0201), table=pose(z=-.02), obstacle=pose(.3, .3, .025))
+    initial_poses = dict(target=pose(z=target_z), table=pose(z=-.02), obstacle=pose(.3, .3, .025))
     tool_start = pose(-.07, y=args.lateral_offset_m, z=.02)
     batch = dict(schema='rm75_swm_observation_v1', world_frame='base_link',
         calibration_id=manifest['calibration_id'], sensor_session='cpu_physx_reference', domain='physics',
@@ -117,7 +138,8 @@ def main():
     posterior = infer_posterior(checked, hypotheses, rollouts)
     report = dict(scope='actual_CPU_PhysX_tool_only_not_full_arm_or_three_task_qualification',
         hardware_connected=False, model_inference_run=False, native_workers=1, ground_truth_parameters=truth,
-        experiment=dict(stationary=args.stationary,lateral_offset_m=args.lateral_offset_m),
+        experiment=dict(stationary=args.stationary,lateral_offset_m=args.lateral_offset_m,
+                        compound_pusht_profile=str(args.compound_pusht_profile) if args.compound_pusht_profile else None),
         measured_transition=checked, posterior=posterior, rollouts=rollouts,
         reference_command_digest=digest(command), measured_action_digest=checked['action_digest'],
         all_valid=all(r.get('valid') is True for r in rollouts))

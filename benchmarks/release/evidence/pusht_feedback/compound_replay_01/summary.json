@@ -1,0 +1,138 @@
+{
+  "scope": "actual_CPU_PhysX_tool_only_not_full_arm_or_three_task_qualification",
+  "all_valid": true,
+  "experiment": {
+    "stationary": false,
+    "lateral_offset_m": 0,
+    "compound_pusht_profile": "runtime_data/workcell/jobs/889567891ce2443bae81af10c117e73a/machine_profile.json"
+  },
+  "posterior": {
+    "schema": "rm75_physics_posterior_v1",
+    "mesh_sha256": "2c3e54f70dd9ef70b3bd9e796d9e80338deba8862d6442be19377c5819824d91",
+    "object_id": "target",
+    "support_id": "table",
+    "domain": "physics",
+    "support_mesh_sha256": "c1781aeb2253ce1aafc9bcade9138df547c843123c320ac0dfef107050c74cbf",
+    "transition_digest": "6d32c83b096f4ac566443496e0ff0520f0d0c1e4c323c40542e2d149268d2440",
+    "actual_action_digest": "e30b8059f2b9bce6390ae222cc4d5b9396162489277757e33702c31c7724db53",
+    "observed_initial_snapshot_id": "600bc5bd67e12bcd355c3b0fcab9bddd00c005eef00cfde792d9e27419fe7909",
+    "observation_mode": "endpoint_only",
+    "updated": true,
+    "particles": [
+      {
+        "id": "low_friction",
+        "parameters": {
+          "static_friction": 0.15,
+          "dynamic_friction": 0.1,
+          "density_kg_m3": 800
+        },
+        "loss": 63.8351704924458,
+        "weight": 0.05000000000000531
+      },
+      {
+        "id": "truth",
+        "parameters": {
+          "static_friction": 0.6,
+          "dynamic_friction": 0.45,
+          "density_kg_m3": 800
+        },
+        "loss": 0.003545988297785913,
+        "weight": 0.4353460972764764
+      },
+      {
+        "id": "high_friction",
+        "parameters": {
+          "static_friction": 1.1,
+          "dynamic_friction": 0.95,
+          "density_kg_m3": 800
+        },
+        "loss": 5.088953323966347,
+        "weight": 0.08030880355247572
+      },
+      {
+        "id": "other_density",
+        "parameters": {
+          "static_friction": 0.6,
+          "dynamic_friction": 0.45,
+          "density_kg_m3": 1600
+        },
+        "loss": 0.008748067648051945,
+        "weight": 0.43434509917104264
+      }
+    ],
+    "best_fit_id": "truth",
+    "best_fit_parameters": {
+      "static_friction": 0.6,
+      "dynamic_friction": 0.45,
+      "density_kg_m3": 800
+    },
+    "minimum_loss": 0.003545988297785913,
+    "density_informative": false,
+    "unique_parameters_identified": false,
+    "note": "Effective material/density belief. No unique density claim; future actions must be replanned from a new checkpoint."
+  },
+  "measured_action_digest": "e30b8059f2b9bce6390ae222cc4d5b9396162489277757e33702c31c7724db53",
+  "reference_command_digest": "8f1105fafb68aa30c2891e79440725be16a737bc47a82bf74d889c6bd24630f3",
+  "rollouts": [
+    {
+      "hypothesis_id": "low_friction",
+      "parameters": {
+        "static_friction": 0.15,
+        "dynamic_friction": 0.1,
+        "density_kg_m3": 800
+      },
+      "valid": true,
+      "action_digest": "e30b8059f2b9bce6390ae222cc4d5b9396162489277757e33702c31c7724db53",
+      "initial_snapshot_id": "600bc5bd67e12bcd355c3b0fcab9bddd00c005eef00cfde792d9e27419fe7909",
+      "native_target_mass_kg": 0.1631999909877777,
+      "native_target_collision_shapes": 2,
+      "engine": "ManiSkill/PhysX CPU",
+      "full_arm_simulated": false
+    },
+    {
+      "hypothesis_id": "truth",
+      "parameters": {
+        "static_friction": 0.6,
+        "dynamic_friction": 0.45,
+        "density_kg_m3": 800
+      },
+      "valid": true,
+      "action_digest": "e30b8059f2b9bce6390ae222cc4d5b9396162489277757e33702c31c7724db53",
+      "initial_snapshot_id": "600bc5bd67e12bcd355c3b0fcab9bddd00c005eef00cfde792d9e27419fe7909",
+      "native_target_mass_kg": 0.1631999909877777,
+      "native_target_collision_shapes": 2,
+      "engine": "ManiSkill/PhysX CPU",
+      "full_arm_simulated": false
+    },
+    {
+      "hypothesis_id": "high_friction",
+      "parameters": {
+        "static_friction": 1.1,
+        "dynamic_friction": 0.95,
+        "density_kg_m3": 800
+      },
+      "valid": true,
+      "action_digest": "e30b8059f2b9bce6390ae222cc4d5b9396162489277757e33702c31c7724db53",
+      "initial_snapshot_id": "600bc5bd67e12bcd355c3b0fcab9bddd00c005eef00cfde792d9e27419fe7909",
+      "native_target_mass_kg": 0.1631999909877777,
+      "native_target_collision_shapes": 2,
+      "engine": "ManiSkill/PhysX CPU",
+      "full_arm_simulated": false
+    },
+    {
+      "hypothesis_id": "other_density",
+      "parameters": {
+        "static_friction": 0.6,
+        "dynamic_friction": 0.45,
+        "density_kg_m3": 1600
+      },
+      "valid": true,
+      "action_digest": "e30b8059f2b9bce6390ae222cc4d5b9396162489277757e33702c31c7724db53",
+      "initial_snapshot_id": "600bc5bd67e12bcd355c3b0fcab9bddd00c005eef00cfde792d9e27419fe7909",
+      "native_target_mass_kg": 0.3263999819755554,
+      "native_target_collision_shapes": 2,
+      "engine": "ManiSkill/PhysX CPU",
+      "full_arm_simulated": false
+    }
+  ]
+}

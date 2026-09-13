@@ -1,6 +1,18 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "compound_pusht_physx_replay_01": {
+    "status": "ACTUAL_TOOL_ONLY_COMPOUND_REPLAY_VALID_NOT_WORKER_ACTION_FIT",
+    "kernel": "6 targeted passed / 0.03 s; 1924 full passed / 1 warning / 43.32 s; isolated",
+    "native_wiring": "Existing replay builds original T as two cuboids in one dynamic actor from a hashed metric descriptor, not a convex hull",
+    "actual_simulation": "Four valid CPU PhysX hypotheses; two native shapes; density 800/1600 maps to measured mass 0.1631999909877777/0.3263999819755554 kg",
+    "losses": [63.8351704924458,0.003545988297785913,5.088953323966347,0.008748067648051945],
+    "density_informative": false,
+    "worker_05_action_consumed": false,
+    "evidence": "benchmarks/release/evidence/pusht_feedback/compound_replay_01/",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
   "pusht_contact_escape_worker_05": {
     "status": "TWO_FULL_NATIVE_PUSH_CYCLES_THIRD_CANCELLED_NOT_TASK_SUCCESS",
     "kernel": "16 targeted passed / 0.05 s; 1918 full passed / 1 warning / 42.82 s; isolated",
