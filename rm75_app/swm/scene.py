@@ -272,6 +272,8 @@ class SceneWorldModel:
 
     def update_physics(self, oid, posterior, *, expected_physics_revision):
         with self._lock:
+            from .identification import require_admissible_posterior
+            require_admissible_posterior(posterior)
             if oid not in self._objects or expected_physics_revision != self.physics_revision:
                 raise SceneInvalid('Unknown object or stale physical belief update')
             obj = self._objects[oid]

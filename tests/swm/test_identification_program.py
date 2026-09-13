@@ -131,6 +131,24 @@ def test_model_agreement_is_not_parameter_information(rig):
     assert result['rejection_reason']=='uninformative' and not result['updated']
 
 
+@pytest.mark.parametrize('fault',['uninformative','forged_flags','missing_gate','bad_weights','bad_peak'])
+def test_world_refuses_unadmitted_physics_without_scene_mutation(rig,fault):
+    data=transition(rig);_,rows=IsolatedReplayPool(lambda r:Replay(r,[])).run(data,hypotheses())
+    if fault in ('uninformative','forged_flags'):
+        for row in rows:row['T_world_object']=copy.deepcopy(data['T_world_object'])
+    result=infer_posterior(data,hypotheses(),rows)
+    if fault=='forged_flags':
+        for key in ('updated','discriminative','model_agreement','parameter_update_admissible'):result[key]=True
+        result['rejection_reason']=None
+    if fault=='missing_gate':result.pop('absolute_residual_gate')
+    if fault=='bad_weights':result['particles'][0]['weight']=2.
+    if fault=='bad_peak':
+        for row in result['particles']:row['maximum_normalized_residual']=10000.
+    before=rig.world.snapshot()
+    with pytest.raises(SceneInvalid):rig.world.update_physics('a',result,expected_physics_revision=0)
+    assert rig.world.snapshot()==before and rig.world.physics_revision==0
+
+
 def test_real_data_cannot_be_fitted_by_fixture_model(rig):
     data=transition(rig);data['domain']='real';data['observation_source']='foundationpose';snap=data['initial_snapshot'];snap['observation_domain']='real'
     snap.pop('snapshot_id');snap['snapshot_id']=digest(snap)

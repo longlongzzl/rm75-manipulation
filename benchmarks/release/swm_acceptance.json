@@ -14935,5 +14935,23 @@
     "model_inference": "NOT_RUN",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "evidence": "benchmarks/release/evidence/pusht_feedback/absolute_gate_01/summary.json"
+  },
+  "belief_mutation_admission_01": {
+    "status": "IMPLEMENTED_ORIGINAL_SWM_SUBMISSION_GATE",
+    "kernel": {
+      "passed": 1938,
+      "warnings": 1,
+      "duration_s": 43.09
+    },
+    "tests": {
+      "rejection_variants": 5,
+      "manager_preserves_prior_and_valid_scene": true
+    },
+    "native_wiring": "original_world_and_manager_fixture_exercised",
+    "actual_simulation": "NOT_RUN_THIS_TURN",
+    "next_planner_consumed_posterior": false,
+    "legacy_belief_restore": "reject_missing_absolute_admission_evidence",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
   }
 }

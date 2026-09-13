@@ -270,6 +270,44 @@ def infer_posterior(transition, hypotheses, rollouts, *, position_noise_m=.003,
         note='Effective material/density belief. No unique density claim; future actions must be replanned from a new checkpoint.')
 
 
+def require_admissible_posterior(posterior):
+    """Validate update evidence at the SWM mutation boundary, not flags alone."""
+    for key in ('updated','discriminative','model_agreement','parameter_update_admissible'):
+        if posterior.get(key) is not True:raise SceneInvalid('Physical posterior is not admitted for update')
+    gate=posterior.get('absolute_residual_gate',{})
+    limit=gate.get('maximum_normalized_residual')
+    if (type(limit) not in (int,float) or not math.isfinite(limit) or not 0<limit<=9 or
+            gate.get('aggregation')!='maximum_over_noninitial_observed_samples'):
+        raise SceneInvalid('Physical posterior lacks a bounded absolute residual gate')
+    for key in ('position_noise_m','rotation_noise_rad'):
+        positive(gate.get(key),key)
+    particles=posterior.get('particles',[])
+    if not 2<=len(particles)<=128 or len({p['id'] for p in particles})!=len(particles):
+        raise SceneInvalid('Invalid physical posterior particle coverage')
+    valid=[];weights=[]
+    for row in particles:
+        PhysicsParameters(**row['parameters'])
+        weight=row['weight'];loss=row['loss'];peak=row.get('maximum_normalized_residual')
+        if type(weight) not in (int,float) or not math.isfinite(weight) or weight<0:
+            raise SceneInvalid('Invalid physical posterior weight')
+        weights.append(weight)
+        if loss is None:
+            if peak is not None or weight!=0:raise SceneInvalid('Failed physical model carries belief mass')
+            continue
+        if (type(loss) not in (int,float) or type(peak) not in (int,float) or
+                not math.isfinite(loss) or not math.isfinite(peak) or loss<0 or peak<loss):
+            raise SceneInvalid('Invalid physical posterior residual evidence')
+        valid.append(row)
+    if (not math.isclose(sum(weights),1.,abs_tol=1e-9) or len(valid)<2 or
+            max(r['loss'] for r in valid)-min(r['loss'] for r in valid)<=.1 or
+            not any(r['maximum_normalized_residual']<=limit for r in valid)):
+        raise SceneInvalid('Physical posterior evidence does not support its update flags')
+    best=min(valid,key=lambda r:r['loss'])
+    if (posterior.get('minimum_loss')!=best['loss'] or posterior.get('best_fit_id')!=best['id'] or
+            posterior.get('best_fit_parameters')!=best['parameters'] or posterior.get('rejection_reason') is not None):
+        raise SceneInvalid('Physical posterior diagnostic identity changed')
+
+
 def select_robust_candidate(candidates, posterior, *, min_weight=.01):
     """Candidate path must be feasible under every retained plausible hypothesis.
 

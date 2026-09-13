@@ -78,6 +78,25 @@ def test_no_recorder_is_not_automatic_physics_success(rig):
     assert rig.world.physics_revision==0 and events[0]['kind']=='swm_physics_fit_skipped'
 
 
+def test_manager_mismatch_preserves_prior_and_valid_after_checkpoint(rig):
+    data=transition(rig);_,rows=IsolatedReplayPool(lambda r:Replay(r,[])).run(data,hypotheses())
+    prior=infer_posterior(data,hypotheses(),rows)
+    rig.world.update_physics('a',prior,expected_physics_revision=0)
+    before,after,trace,receipt=recording(rig);events=[]
+    class WrongReplay(Replay):
+        def replay(self):
+            row=super().replay();row['T_world_object'][-1][0][3]+=.5
+            return row
+    manager=AdaptivePhysicsManager(rig.world,IsolatedReplayPool(lambda r:WrongReplay(r,[])),count=8,seed=12,
+        emit=lambda **kw:events.append(kw),
+        transition_builder=lambda request,receipt,a,b:bind_measured_transition(request,receipt,a,b,recording=trace))
+    result=manager.on_skill(SkillRequest('push','a',pose(.35,z=.03)),receipt,initial_snapshot=before,final_snapshot=after)
+    assert result['posterior']['rejection_reason']=='absolute_model_mismatch'
+    assert not result['posterior']['updated'] and rig.world.physics_revision==1
+    assert rig.world.snapshot()==after and rig.world.snapshot()['physics']['a']==prior
+    assert events[-1]['model_agreement'] is False
+
+
 def test_storage_restart_never_restores_a_live_execution_permission(rig,tmp_path):
     rig.sync.sync('before_grasp');rig.source.holding='a';rig.sync.sync('after_grasp')
     original=rig.world.snapshot();store=SnapshotStore(tmp_path/'swm.json');assert store.save(rig.world)==original['snapshot_id']
