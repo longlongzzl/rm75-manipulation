@@ -10,6 +10,15 @@ from rm75_app.swm.scene import digest
 from rm75_app.workcell.io import atomic_json
 
 
+def compact_prediction_result(result):
+    summary={k:v for k,v in result.items() if k not in ('predicted_tool_readback','time_s','T_world_object')}
+    summary.update(prediction_samples=len(result['time_s']),
+        trajectory_digest=digest(dict(time_s=result['time_s'],T_world_object=result['T_world_object'])),
+        time_s=[result['time_s'][0],result['time_s'][-1]],
+        T_world_object=[result['T_world_object'][0],result['T_world_object'][-1]])
+    return summary
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ('transition','future-motion','geometry','output'):parser.add_argument('--'+name,type=Path,required=True)
@@ -28,13 +37,17 @@ def main():
         request=dict(mode='future_prediction',hypothesis_id=name,
             parameters=dict(static_friction=sf,dynamic_friction=df,density_kg_m3=density),
             initial_snapshot=snapshot,object_id=transition['object_id'],planned_action=action,
-            plan_action_digest=digest(action),future_tool_motion=motion,sample_times=[0.,action['time_s'][-1]])
+            plan_action_digest=digest(action),future_tool_motion=motion,sample_times=action['time_s'])
         world=SubprocessReplayWorld(request,python=args.python,native_tool_geometry=geometry,directory=args.output)
         try:result=world.replay()
         finally:world.close()
         if result.get('mode')!='future_prediction' or result.get('identification_eligible') is not False:
             raise ValueError('Future result mislabeled as measured identification')
-        results.append({k:v for k,v in result.items() if k!='predicted_tool_readback'})
+        from rm75_app.swm.future_collision_samples import future_collision_samples
+        samples=future_collision_samples(motion,result,snapshot,transition['object_id'])
+        compact=compact_prediction_result(result);compact['aligned_collision_samples']=len(samples)
+        compact['native_full_path_audit_run']=False
+        results.append(compact)
     report=dict(scope='original_saved_candidate_native_future_dynamics',results=results,
         source_snapshot_id=snapshot['snapshot_id'],source_plan_digest=motion['source_plan_digest'],
         measured_action=False,posterior_updated=False,online_worker_consumption=False,

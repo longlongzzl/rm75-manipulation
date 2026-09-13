@@ -15088,5 +15088,23 @@
     "model_inference": "NOT_RUN",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "evidence": "benchmarks/release/evidence/pusht_feedback/future_prediction_03/summary.json"
+  },
+  "dense_future_prediction_01": {
+    "status": "PASSED_NATIVE_DENSE_AUDIT_INPUT_ALIGNMENT",
+    "kernel": {
+      "passed": 1952,
+      "warnings": 1,
+      "duration_s": 43.46
+    },
+    "actual_simulation": {
+      "valid_predictions": 4,
+      "aligned_samples_per_prediction": 1880
+    },
+    "native_full_path_audit_run": false,
+    "path_safety_qualified": false,
+    "next_planner_consumed_posterior": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/future_prediction_04/summary.json"
   }
 }

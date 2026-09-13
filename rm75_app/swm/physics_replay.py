@@ -247,7 +247,7 @@ def physical_replay(request):
                 poses.append(interpolate_pose(previous,current,fraction).tolist());cursor+=1
             previous,previous_t=current,now
         target_body=env.target._objs[0].find_component_by_type(sapien.physx.PhysxRigidDynamicComponent)
-        result=dict(hypothesis_id=request['hypothesis_id'],parameters=request['parameters'],
+        result=dict(hypothesis_id=request['hypothesis_id'],parameters=request['parameters'],object_id=target_id,
                     action_digest=request.get('action_digest'),transition_digest=request.get('transition_digest'),
                     initial_snapshot_id=snapshot['snapshot_id'],valid=True,time_s=request['sample_times'],
                     T_world_object=poses,engine_domain='physics',engine='ManiSkill/PhysX CPU',
