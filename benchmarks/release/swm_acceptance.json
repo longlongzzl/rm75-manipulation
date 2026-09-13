@@ -14970,5 +14970,21 @@
     "actual_simulation": "NOT_RUN_THIS_TURN",
     "model_inference": "NOT_RUN",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
+  "managed_planning_02": {
+    "status": "PASSED_SOFTWARE_CALL_CHAIN_FIXTURE_ONLY",
+    "kernel": {
+      "passed": 1941,
+      "errors": 0,
+      "warnings": 1,
+      "duration_s": 42.79
+    },
+    "manager_bank_reaches_solve_and_evaluate": true,
+    "physics_revision_and_plan_identity_bound": true,
+    "original_future_action_solver_installed": false,
+    "next_planner_consumed_posterior": false,
+    "actual_simulation": "NOT_RUN_THIS_TURN",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
   }
 }

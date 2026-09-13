@@ -9,7 +9,7 @@ from rm75_app.swm.skills import SkillRequest,PlannedSkill
 from rm75_app.swm.scene import digest,SceneInvalid
 
 
-def setup(rig):
+def build_managed_fixture(rig):
     data=transition(rig)
     _,rows=IsolatedReplayPool(lambda req:Replay(req,[])).run(data,hypotheses())
     belief=infer_posterior(data,hypotheses(),rows)
@@ -20,7 +20,7 @@ def setup(rig):
 
 
 def test_original_push_binding_passes_current_bank_into_solver_and_audits(rig):
-    manager,snapshot,events=setup(rig);seen=[]
+    manager,snapshot,events=build_managed_fixture(rig);seen=[]
     class Solver:
         owns_real_executor=False
         def solve(self,request,snap,parameters):
@@ -30,7 +30,9 @@ def test_original_push_binding_passes_current_bank_into_solver_and_audits(rig):
             seen.append(('evaluate',copy.deepcopy(parameters)))
             return dict(snapshot_id=snap['snapshot_id'],payload_digest=plan.payload_digest,feasible=True,cost=1.)
         def close(self):pass
-    phase=PushNativePhase(None,None,None,None,None,physics_manager=manager,
+    def unused_execution_boundary(*args):
+        raise AssertionError('Planning must not audit for execution or execute a motion')
+    phase=PushNativePhase(None,None,None,unused_execution_boundary,unused_execution_boundary,physics_manager=manager,
                           hypothesis_planner=ParallelHypothesisPlanner(Solver))
     plan=phase.binding().plan(SkillRequest('push','a',pose(.35,z=.03)),snapshot)
     bank=manager.planning_hypotheses('a',snapshot)['hypotheses']
@@ -41,13 +43,13 @@ def test_original_push_binding_passes_current_bank_into_solver_and_audits(rig):
 
 
 def test_native_push_does_not_silently_ignore_physical_belief(rig):
-    _,snapshot,_=setup(rig)
+    _,snapshot,_=build_managed_fixture(rig)
     with pytest.raises(SceneInvalid,match='SWM_PHYSICS_PLANNER_ADAPTER_REQUIRED'):
         PushNativePhase(None,None,None,None,None).plan(SkillRequest('push','a',pose(.35,z=.03)),snapshot)
 
 
 def test_planning_bank_rejects_stale_checkpoint(rig):
-    manager,snapshot,_=setup(rig)
+    manager,snapshot,_=build_managed_fixture(rig)
     rig.world.invalidate('changed')
     with pytest.raises(SceneInvalid,match='latest valid checkpoint'):
         manager.planning_hypotheses('a',snapshot)
