@@ -382,6 +382,7 @@ class RealManTrajectoryExecutor:
         self._clock = clock_fn
         self.feedback_observer = feedback_observer
         self._feedback_stage = "idle"
+        self.last_feedback_timing = None
         self._armed = False
         self.last_stage_metrics: dict[str, Any] = {}
         self.last_gripper_metrics: dict[str, Any] = {}
@@ -494,11 +495,36 @@ class RealManTrajectoryExecutor:
         return samples, start_gap
 
     def _record_actual_feedback(self) -> None:
-        if self.feedback_observer is not None:
-            positions = self.session.read_joint_radians()
-            self.feedback_observer(dict(source="measured_feedback", stage=self._feedback_stage,
-                captured_at=self._clock(), joint_names=list(self.session.config.joint_names),
-                positions=positions.tolist()))
+        if self.feedback_observer is None:
+            return
+        started = self._clock()
+        positions = np.asarray(self.session.read_joint_radians(), dtype=float)
+        completed = self._clock()
+        if (not np.isfinite([started, completed]).all() or completed < started
+                or positions.shape != (7,) or not np.isfinite(positions).all()
+                or tuple(self.session.config.joint_names) != RM75_JOINT_NAMES):
+            raise RealManHardwareError("Invalid actual feedback identity, values or host query clock")
+        row = dict(source="measured_feedback", stage=self._feedback_stage,
+            captured_at=completed, joint_names=list(self.session.config.joint_names),
+            positions=positions.tolist(), query_started_at=started, query_completed_at=completed,
+            query_duration_s=completed-started, clock_domain="executor_clock",
+            timestamp_semantics="host_query_completion_not_device_sample_time",
+            device_sample_time_known=False, hardware_frequency_qualified=False)
+        delivered = False
+        try:
+            self.feedback_observer(row)
+            delivered = True
+        finally:
+            returned = self._clock()
+            valid = bool(np.isfinite(returned) and returned >= completed)
+            self.last_feedback_timing = dict(query_started_at=started, query_completed_at=completed,
+                query_duration_s=completed-started, observer_returned_at=returned,
+                observer_duration_s=returned-completed if valid else None,
+                synchronous_feedback_duration_s=returned-started if valid else None,
+                observer_delivered=delivered, timing_valid=valid,
+                hardware_frequency_qualified=False)
+        if not valid:
+            raise RealManHardwareError("Invalid synchronous feedback callback clock")
 
     def _stream_samples(self, samples: np.ndarray) -> None:
         next_deadline = self._clock()
