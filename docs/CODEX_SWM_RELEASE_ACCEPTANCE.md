@@ -761,3 +761,15 @@ worker_48 做原初始姿态保持对照，不执行已规划轨迹：在同一�
 worker_50 尝试对照“只有请求与原生读回完全相等时省略驱动 setter，保留 set_action/缓存更新”；尚未得到物理结果，因为诊断错误地断言控制器只有 arm/gripper，在初始化就失败。文本已确认原配置还有 gripper_passive/PassiveControllerConfig。没有省略任何驱动写入，没有运行该假设的动作子步；不能算否定或验证假设。本轮保留失败脚本和身份检查，下一步修正为明确保留被动组、只对正确的两个 PD 控制器进行原生同值对照，再判断是否值得接回正式执行器/预测器。不可缩小接触裕量、放宽静止条件或改 solver 来掩盖问题。
 
 证据：benchmarks/release/evidence/pen_closure/worker_49/substep_summary.json、worker_49/README.md 及 worker_50 失败记录，含输入/原始日志/源码 SHA256。内核仍引用上轮 1809 passed / 1 warning / 42.44 s，非本轮重跑；原生接线未改；实际仿真为子步诊断而非成功原子闭环；模型 FP/SAM3D/LLM 未运行；硬件 NOT_AUTHORIZED_NOT_RUN。所有 G0-G10 尚未交齐，保持 PARTIAL_DELIVERY，未推送。
+
+## M1 / 同值驱动三组对照，尚无同时静止解
+
+本轮 progress，修正 worker_50 的诊断清单，明确保留 arm/gripper/gripper_passive，PassiveController 类型检查保留，原被动组不包装。生产仍为 `3425529`，未改变正式默认深度、控制器、接触裕量或物理参数；本轮不重复运行内核测试，沿用 1809 passed / 1 warning / 42.44 s。
+
+worker_51 同时对 arm/gripper 省略请求与原生读回完全相等的 setter，保留原 set_action/缓存和不同值写入：arm 215 次省略/29 次原写入，gripper 244 次省略/0 次写入。笔在 1220 子步中 1119 次休眠，末态速度零；但 grasp 的 200 步末关节最大速度 0.001589460997 rad/s（joint_6），joint_4=-0.001049020677 rad/s，仍不满足原机器人静止标准。没有把休眠的笔当作整个阶段通过。
+
+worker_52 仅省略 arm 同值写入、worker_53 仅省略 gripper 同值写入：两者机器人末速度均 7.27e-5 rad/s，但笔仍运动，结果与原行为相同。因此需要两组共同处理才改变目标休眠行为，但现证据不支持直接上线双组省略，亦不支持放宽机器人速度阈值。
+
+worker_54 的附加机器人休眠诊断失败：脚本查询了 PhysxArticulation 聚合对象没有暴露的休眠属性，没有取得有效新反馈样本。后续只做网络隔离的类型接口查询，无仿真或设备动作；已确认 PhysxArticulationLinkComponent 有 sleeping，而聚合对象只有 root/get_root 等。下一步应从可信原生 root link 读回休眠状态、绑定身份，并与完整原始 q/qdot 及实际位移对照；不可据接口缺失把速度置零或假定机器人静止。本轮保留该失败，不作物理结论。
+
+四次原生作业均 exit 1，资源清理读回全部 true，无闭爪/抬升成功、无笔六检查点成功。证据和命令见 benchmarks/release/evidence/pen_closure/worker_51/README.md 及 worker_51-54 有界记录。内核沿用上轮全绿；原生生产接线未变；实际仿真为上述对照；FP/SAM3D/LLM 未运行；硬件 NOT_AUTHORIZED_NOT_RUN。保持 PARTIAL_DELIVERY，不标记完成，未推送。

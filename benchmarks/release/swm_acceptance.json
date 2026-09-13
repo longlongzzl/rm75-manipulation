@@ -11,7 +11,7 @@
     "commit": "3425529",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Production unchanged at 3425529. Worker49 records positive-separation zero-impulse robot/target contact candidates accompanying wakeup. Worker50 identical-drive-write hypothesis failed controller inventory assertion before execution; original gripper_passive group must be retained."
+    "note": "Production unchanged. Exact-native-equal drive controls run with original passive controller preserved. Both-group elision lets pen sleep but robot fails original idle; each single-group elision leaves pen moving. Root-link sleep diagnostic remains to be corrected."
   },
   "runs": {
     "m0_targeted": {
@@ -14049,6 +14049,43 @@
       "missing_original_group": "gripper_passive",
       "cleanup_verified": true,
       "evidence": "benchmarks/release/evidence/pen_closure/worker_50"
+    },
+    "m1_drive_controls_worker_51": {
+      "tested_commit": "3425529",
+      "status": "TARGET_SLEEPING_ROBOT_NOT_IDLE",
+      "arm_skipped": 215,
+      "arm_writes": 29,
+      "gripper_skipped": 244,
+      "gripper_writes": 0,
+      "physics_substeps": 1220,
+      "target_sleeping_substeps": 1119,
+      "max_joint_velocity_rad_s": 0.0015894609969109297,
+      "grasp_settle_steps": 200,
+      "production_changed": false,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_51"
+    },
+    "m1_drive_controls_worker_52": {
+      "tested_commit": "3425529",
+      "status": "ARM_ONLY_ELISION_TARGET_STILL_MOVING",
+      "arm_skipped": 215,
+      "arm_writes": 29,
+      "grasp_settle_steps": 200,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_52"
+    },
+    "m1_drive_controls_worker_53": {
+      "tested_commit": "3425529",
+      "status": "GRIPPER_ONLY_ELISION_TARGET_STILL_MOVING",
+      "gripper_skipped": 244,
+      "gripper_writes": 0,
+      "grasp_settle_steps": 200,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_53"
+    },
+    "m1_articulation_sleep_worker_54": {
+      "tested_commit": "3425529",
+      "status": "DIAGNOSTIC_WRONG_SLEEP_READBACK_OWNER",
+      "valid_added_feedback_samples": 0,
+      "cleanup_verified": true,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_54"
     }
   },
   "gates": {
@@ -14307,7 +14344,7 @@
     },
     "native_wiring": "COMPLETE_REGISTERED_OBJECT_IDLE_WITHIN_ORIGINAL_STAGE_BUDGET",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "WORKER49_PROXIMITY_CONTACT_WAKEUP_GRASP_NOT_IDLE_WORKER50_DIAGNOSTIC_INIT_FAILURE",
+    "actual_simulation": "DRIVE_ELISION_CONTROLS_DO_NOT_MEET_SIMULTANEOUS_ROBOT_OBJECT_IDLE",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14374,5 +14411,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Correct diagnostic controller inventory to preserve gripper_passive and wrap only original arm/gripper PD targets; test exact-native-equal write elision without changing contact offsets or idle thresholds"
+  "next_actual_action": "Use owned native articulation root link sleeping readback, not aggregate API, and compare complete raw q/qdot with actual displacement under both-group elision; preserve original thresholds"
 }

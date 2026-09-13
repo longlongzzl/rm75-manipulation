@@ -1,0 +1,31 @@
+{
+  "physics_substeps": 1220,
+  "sleeping_target_substeps": 1119,
+  "last_record": {
+    "kind": "control_end",
+    "control": 244,
+    "substep": 5,
+    "stage": "settle_grasp",
+    "captured_at": 43535.530655211,
+    "measured": {
+      "sleeping": true,
+      "linear_velocity_world_m_s": [
+        0,
+        0,
+        0
+      ],
+      "angular_velocity_world_rad_s": [
+        0,
+        0,
+        0
+      ],
+      "target_position_world_m": [
+        -0.08866771310567856,
+        -0.19187535345554352,
+        0.011477276682853699
+      ]
+    }
+  },
+  "contact_model_qualified": false,
+  "skill_complete": false
+}
