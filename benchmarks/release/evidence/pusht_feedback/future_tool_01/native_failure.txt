@@ -1,0 +1,18 @@
+[2026-09-13 14:45:18.374] [SAPIEN] [warning] loading multiple convex collision meshes from STL file is unsupported and can result in invalid collision meshes. Do you mean to load a single convex mesh instead?
+[2026-09-13 14:45:18.387] [SAPIEN] [warning] loading multiple convex collision meshes from STL file is unsupported and can result in invalid collision meshes. Do you mean to load a single convex mesh instead?
+Traceback (most recent call last):
+  File "/home/zhangzhao/Desktop/rm75-manipulation/tools/compile_swm_future_push.py", line 33, in <module>
+    if __name__=='__main__':main()
+  File "/home/zhangzhao/Desktop/rm75-manipulation/tools/compile_swm_future_push.py", line 24, in main
+    result=compile_future_tool_motion(values['plan'],values['transition']['initial_snapshot'],values['geometry'],args.urdf)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/future_tool.py", line 46, in compile_future_tool_motion
+    compare_native_state(expected,actual,name)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_body_mirror.py", line 111, in compare_native_state
+    compare_native_state(left, right, path + f'[{index}]')
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_body_mirror.py", line 106, in compare_native_state
+    compare_native_state(expected[key], actual[key], path + '.' + key)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_body_mirror.py", line 106, in compare_native_state
+    compare_native_state(expected[key], actual[key], path + '.' + key)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_body_mirror.py", line 117, in compare_native_state
+    raise SceneInvalid(f'Native property differs: {path}')
+rm75_app.swm.scene.SceneInvalid: Native property differs: gripper_Left_1_Link[0].material.restitution
