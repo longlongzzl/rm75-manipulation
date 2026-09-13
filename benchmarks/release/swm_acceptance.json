@@ -1,6 +1,21 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_feedback_native_worker_01": {
+    "tested_commit": "25ab4a5",
+    "job_id": "d0079fb3a9ee450ba3b0278d1eecc390",
+    "status": "FAILED_NATIVE_RETREAT_TABLE_CONTACT",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/worker_01/",
+    "actual_simulation": "full_arm_physics CPU PhysX; 1734 control steps; 57.80000000001903 legacy simulation seconds",
+    "native_feedback": "Control-step records include actual TCP, seven arm joints, six jaw joints and native physical clock; first read inspected",
+    "collision": "gripper_Right_Support_Link / simulation_table; retreat; impulse 0.021869080141186714 Ns",
+    "planner": "One complete chain; gripper internal collision checking enabled; legacy retreat collision checks false",
+    "kernel": "No code change; prior 25ab4a5 regression 1893 passed / 1 warning",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "identification": "NOT_RUN_FAILED_PRIMITIVE",
+    "command": "python3 tools/run_network_isolated.py -- python3 tools/run_pusht_physics_validation.py --backend full_arm_physics --case translation --check-gripper-internal-collisions --timeout-s 180 --output runtime_data/swm_release_pusht_feedback_01"
+  },
   "pusht_native_feedback_boundary_20260913": {
     "kernel": "1893 passed / 1 existing warning / 45.75 s; network isolated; exit 0",
     "targeted": "4 passed / 0.03 s; software fixtures only",

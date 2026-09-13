@@ -1,0 +1,1 @@
+{"mode": "sim", "parameters": {"goal_pose": [0.38, -0.18, 0.0], "initial_pose": [0.35, -0.18, 0.0], "max_steps": 12, "simulation_backend": "full_arm_physics", "speed_mps": 0.015}, "task": "pusht"}
