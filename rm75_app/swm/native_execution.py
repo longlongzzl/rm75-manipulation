@@ -43,6 +43,7 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         self.object_settle_readback = None
         self._closure_feedback = None
         self._closure_requires_reaudit = False
+        self.measured_lift_audit = None
 
     def _read(self):
         self.primary.stop.check()
@@ -109,9 +110,15 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
     def execute_trajectory(self, stage, trajectory):
         self.primary.stop.check()
         if self._closure_requires_reaudit:
-            raise SceneInvalid('Measured jaw and attachment lift re-audit is not installed')
+            from .native_measured_lift import MeasuredLiftAudit
+            adapter = getattr(self, 'measured_lift_audit', None)
+            if not isinstance(adapter, MeasuredLiftAudit):
+                raise SceneInvalid('Measured jaw and attachment lift re-audit is not installed')
+            trajectory = adapter(stage, trajectory)
         super().execute_trajectory(stage, trajectory)
         self._settle(stage)
+        if stage == 'lift':
+            self._closure_requires_reaudit = False
 
     def set_gripper(self, closed):
         self.primary.stop.check()

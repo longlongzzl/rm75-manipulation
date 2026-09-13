@@ -141,6 +141,9 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
         output=output / "closure_prediction.json")
     coordinator = PickPlaceCoordinator(backend, sink)
     auditor = CuroboNativeStageAuditor(backend)
+    from .native_measured_lift import MeasuredLiftAudit
+    sink.measured_lift_audit = MeasuredLiftAudit(sync, auditor, target="bi",
+        stop=stop, emit=events.emit)
 
     def audit(plan, snapshot):
         started = time.monotonic()
