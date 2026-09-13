@@ -42,6 +42,14 @@ def bind_measured_transition(request,receipt,initial_snapshot,final_snapshot,*,r
     for key in ('domain','sensor_session','calibration_id'):
         expected=initial_snapshot['observation_domain'] if key=='domain' else initial_snapshot[key]
         if raw.get(key)!=expected:raise ValueError('Recorder and SWM clock/provenance mismatch')
+    physical_clock_evidence = None
+    if (initial_snapshot["robot"].get("simulation_clock") is not None
+            or final_snapshot["robot"].get("simulation_clock") is not None
+            or "tool_simulation_clocks" in raw):
+        from .physical_recording import physical_recording_view
+        raw,before,after,physical_clock_evidence = physical_recording_view(
+            raw,initial_snapshot,final_snapshot,oid)
+        t0,t1=before["captured_at"],after["captured_at"]
     tool_t=np.asarray(raw['tool_captured_at'],dtype=float)
     if (tool_t.ndim!=1 or len(tool_t)<2 or not np.isfinite(tool_t).all() or
             np.any(np.diff(tool_t)<=0) or tool_t[0]>t0 or tool_t[-1]<t1):
@@ -78,4 +86,6 @@ def bind_measured_transition(request,receipt,initial_snapshot,final_snapshot,*,r
         object_time_s=[float(row['captured_at']-t0) for row in samples],
         T_world_object=[row['T_world_object'] for row in samples],
         object_accepted=[row['accepted'] for row in samples],object_sequences=[row['sequence'] for row in samples])
+    if physical_clock_evidence is not None:
+        data["physical_clock_evidence"] = physical_clock_evidence
     return validate_transition(data)

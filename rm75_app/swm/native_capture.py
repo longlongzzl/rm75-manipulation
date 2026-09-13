@@ -168,6 +168,13 @@ class NativePrimaryCapture:
                 raise ObservationUnavailable('Primary base changed during capture')
             if read_primary_drive_state(self.primary) != robot.get('native_drive_state'):
                 raise ObservationUnavailable('Native drive targets changed during capture')
+            physical_clock = robot.get("simulation_clock")
+            if physical_clock is not None:
+                if self.primary.simulation_clock.read() != physical_clock:
+                    raise ObservationUnavailable("Primary physical clock changed during complete capture")
+                import copy
+                for row in rows:
+                    row["simulation_clock"] = copy.deepcopy(physical_clock)
             self.primary.stop.check()
             finished = self.clock()
             return dict(schema='rm75_swm_observation_v1', world_frame='base_link',

@@ -158,6 +158,8 @@ class MeasuredFeedbackRecorder:
                 actual_action_id=receipt.actual_action_id, **self.provenance, **self._actions[receipt.actual_action_id],
                 tool_captured_at=[r['captured_at'] for r in self._rows],
                 T_world_tcp=[r['T_world_tcp'] for r in self._rows], stages=[r['stage'] for r in self._rows])
+            if any(row.get("simulation_clock") is not None for row in self._rows):
+                recording["tool_simulation_clocks"] = [row.get("simulation_clock") for row in self._rows]
             result = bind_measured_transition(request, receipt, initial_snapshot, final_snapshot, recording=recording)
             self._drop_action(receipt.actual_action_id)
             return result
