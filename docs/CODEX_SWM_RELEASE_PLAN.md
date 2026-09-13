@@ -617,3 +617,15 @@ worker_26 恢复原完整初始化、场景同步、规划审核和 approach/gra
 新增测试存在已发现的夹具/断言问题：PhasePlanner 夹具首次返回 high/low 两个候选，而新测试预期原层级筛选分两轮返回；“忽略排除 ID”负例也因此先用完总预算，未进入预期第二轮。定向 14 passed / 3 failed / 0.48 s；全量串行 **1776 passed / 3 failed / 1 existing warning / 45.26 s**。失败均为新增 test_native_relation_continuation.py 中三项，未删除、跳过或放宽断言，本轮未修正；不能用上一轮全绿覆盖当前回归状态。
 
 下一步先修正新增夹具，使原筛选排除语义、真实多轮调用和重复 ID 负例分别有可触达覆盖；再依据实际原筛选的拒绝原因定位剩余候选不可行及原成功路径已有策略，不能无依据放宽碰撞或发明抓取位姿。对原入口的文本搜索尚未证明 4 mm 抓取重试属于当前正式入口，不能凭历史描述直接接入。保持 PARTIAL_DELIVERY；模型推理和硬件未运行，代码/证据仅本地提交，未推送。
+
+## M1 / 续搜夹具修复，确认原连续轴回退尚未接入
+
+本轮 progress，代码 `9d75dc4`。修正上一轮测试构造：直接测试保留原 fixture 返回 high/low 的事实并验证排除后仅剩 low；另用明确标注的 SingleRelationCoordinator 夹具在原筛选之后限为一个返回结果，真正触达第二轮续搜、预算递减和重复 ID 拒绝。它不冒充原生层级求解。17 项定向通过 / 0.43 s；串行全量 **1779 passed / 1 existing warning / 45.57 s**，37 的三项失败历史保留。
+
+正式每轮 swm_native_relation_search 现在附带原 relation_diagnostics。普通 worker_38 两轮实跑记录：原 70 抓取，grasp_feasible_count=2、pregrasp_feasible_count=36、pick_relation_count=1；第一轮放置可行 4、完整关系 1，第二轮放置可行 8、完整关系 0。两轮均 axis_constrained_resolution.enabled=true、attempted=false，策略为 discrete_primary。因此不是所有放置都不可达，而是离散抓取关系覆盖受限。
+
+源码确认原 coordinator._run_axis_fallback 在离散链失败后调用 resolve_axis_constrained_pose_candidates，再通过原 _rebuild_places_for_resolved_grasp 重建每抓取的放置关系；现原子路径只走离散 screen_relations，遗漏了该候选构建策略。不能直接调用 _run_axis_fallback，因为它随后执行 self.run 旧整任务。
+
+隔离 worker_39 只诊断原解析器和原关系重建函数：70 个输入产生 **369** 个解析候选，来自 **54** 个原 source ID，每个重建 **32** 个放置候选。主 q/qdot、物体和 drive targets 未变，未调用旧整任务，未执行新增主动作，资源清理正常。369 是候选构建数量，不是 369 个无碰撞完整路径；尚未重新运行这些候选的完整关系筛选、闭合预测和阶段审核。
+
+下一步把原连续轴候选构建提取成共享纯规划入口，供旧 coordinator 与原子路径共同使用；在离散续搜耗尽后最多切换一次，保留原 source ID 配对、碰撞策略、总运动预算及候选身份，禁止包装旧整任务。再用正式 worker 取得实际替代候选，推进笔六检查点。模型推理 FP/SAM3D/LLM 与硬件未运行，PARTIAL_DELIVERY，本轮未推送。

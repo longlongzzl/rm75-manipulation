@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "05026e6",
+    "commit": "9d75dc4",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "WIP original relation screening continuation actually ran two rounds in worker_37, excluding first vetoed ID and decrementing budget 8 to 7. No alternative relation or primary actions. Current full regression has three failures in newly added continuation fixtures; not green."
+    "note": "Continuation fixtures repaired; serial full regression 1779 passed. Worker_38 confirms discrete grasp bottleneck and enabled but unattempted axis fallback. Diagnostic worker_39 actually resolves 369 axis candidates from 70 inputs with original place rebuilding; production atomic fallback remains pending."
   },
   "runs": {
     "m0_targeted": {
@@ -13779,6 +13779,45 @@
       "skill_verified": false,
       "status": "no_feasible_trajectory_after_rescreen",
       "evidence": "benchmarks/release/evidence/pen_closure/worker_37/"
+    },
+    "m1_relation_fixture_targeted": {
+      "passed": 17,
+      "failed": 0,
+      "seconds": 0.43
+    },
+    "m1_relation_fixture_full": {
+      "tested_commit": "9d75dc4",
+      "passed": 1779,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 45.57,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_38/full_tests.log"
+    },
+    "m1_relation_diagnostics_worker_38": {
+      "domain": "native_worker",
+      "original_grasps": 70,
+      "grasp_feasible": 2,
+      "pregrasp_feasible": 36,
+      "pick_relations": 1,
+      "axis_enabled": true,
+      "axis_attempted": false,
+      "status": "no_feasible_trajectory",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_38/"
+    },
+    "m1_axis_candidate_worker_39": {
+      "domain": "native_continuous_axis_candidate_diagnostic",
+      "input_count": 70,
+      "resolved_count": 369,
+      "source_id_count": 54,
+      "rebuilt_places_per_candidate": 32,
+      "primary_unchanged": true,
+      "whole_episode_called": false,
+      "new_primary_actions": false,
+      "model_qualified": false,
+      "skill_verified": false,
+      "atomic_fallback_wired": false,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_39/"
     }
   },
   "gates": {
@@ -14028,15 +14067,15 @@
   },
   "current_layer_status": {
     "kernel": {
-      "tested_commit": "05026e6",
-      "status": "REGRESSION_FAILED",
-      "passed": 1776,
-      "failed": 3,
+      "tested_commit": "9d75dc4",
+      "status": "PASSED_REGRESSION",
+      "passed": 1779,
+      "failed": 0,
       "warnings": 1
     },
-    "native_wiring": "ORIGINAL_RELATION_CONTINUATION_TWO_NATIVE_ROUNDS_NO_ALTERNATIVE_RELATION",
+    "native_wiring": "ORIGINAL_CONTINUOUS_AXIS_FALLBACK_GAP_CONFIRMED_NOT_YET_ATOMICALLY_WIRED",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "WORKER_37_PRIVATE_CLOSURE_VETO_AND_TWO_SCREEN_ROUNDS_NO_PRIMARY_ACTIONS",
+    "actual_simulation": "WORKER_38_NATIVE_RELATION_DIAGNOSTICS_WORKER_39_AXIS_CANDIDATE_RESOLUTION_NO_PRIMARY_ACTIONS",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14103,5 +14142,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Repair new continuation fixture coverage without weakening assertions, then diagnose original remaining relation infeasibility and preserve existing successful candidate policy; obtain actual pen six-checkpoint success."
+  "next_actual_action": "Share original pure continuous-axis candidate resolution and place rebuilding between coordinator and atomic planner; invoke once after discrete exhaustion, preserving source identity, full audits and total motion budget, then complete actual pen six checkpoints."
 }
