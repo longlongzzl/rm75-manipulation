@@ -6,6 +6,18 @@ from .native_bootstrap import FrozenPrimaryWorld, _array
 from .scene import SceneInvalid
 
 
+def native_endpoint_metrics(q, velocity, target):
+    """Original all-joint idle and arm error metrics, shared with prediction."""
+    q, velocity, target = (np.asarray(value, dtype=float) for value in (q, velocity, target))
+    if (q.shape != (7,) or velocity.shape != (13,) or target.shape != (7,)
+            or not all(np.isfinite(value).all() for value in (q, velocity, target))):
+        raise SceneInvalid('Complete finite native endpoint feedback required')
+    error = float(np.max(np.abs(q-target)))
+    max_velocity = float(np.max(np.abs(velocity)))
+    return error, max_velocity, max_velocity <= .001
+
+
+
 class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
     """Preserve the shared sink and require measured idle stage endpoints.
 
@@ -54,8 +66,8 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
             self.demo.step_and_render(action, tag='settle_'+stage)
             self._after_control_step('settle_'+stage)
             raw, names, q, velocity = self._read()
-            error = float(np.max(np.abs(q-self._last_commanded_target)))
-            idle = float(np.max(np.abs(velocity))) <= .001
+            error, max_velocity, idle = native_endpoint_metrics(
+                q, velocity, self._last_commanded_target)
             stable = stable + 1 if idle and error <= .02 else 0
             self.last_settle_evidence = dict(stage=stage, steps=index+1,
                 primary_sequence=raw['sequence'], captured_at=raw['capture_started_at'],
@@ -63,7 +75,7 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
                 feedback_joint_names=list(raw["joint_names"]),
                 feedback_positions_rad=list(raw["positions"]),
                 feedback_velocities_rad_s=list(raw["velocities"]),
-                max_velocity_rad_s=float(np.max(np.abs(velocity))),
+                max_velocity_rad_s=max_velocity,
                 endpoint_error_rad=error, stable_steps=stable, idle=idle)
             if stable >= 3:
                 self.emit(kind='swm_primary_stage_settled', **self.last_settle_evidence)

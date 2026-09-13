@@ -93,23 +93,7 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
         if len(fingers) != 2 or not fingers <= set(agent.robot.links_map):
             raise SceneInvalid('Closure prediction requires original finger identity')
         controller = agent.controller.controllers['gripper']
-        cfg = controller.config
-        if cfg.use_delta or cfg.use_target or cfg.interpolate:
-            raise SceneInvalid('Unsupported closure controller state')
-        import torch
-        command = controller._preprocess_action(
-            torch.ones((1, controller.effective_dof), device=controller.device))
-        targets = torch.zeros_like(controller._target_qpos)
-        targets[:, controller.control_joint_indices] = command
-        targets[:, controller.mimic_joint_indices] = (
-            targets[:, controller.mimic_control_joint_indices]
-            * controller._multiplier[None, :] + controller._offset[None, :])
-        values = _array(targets).reshape(-1)
-        if len(values) != len(controller.joints):
-            raise SceneInvalid('Closure drive target identity is incomplete')
-        closed = copy.deepcopy(drives)
-        for joint, value in zip(controller.joints, values):
-            closed['position_targets'][closed['joint_names'].index(joint.name)] = float(value)
+        closed = original_gripper_drive_targets(controller, drives, 1.)
         report['closed_drive_targets'] = closed
         report['phase'] = 'private_prediction'
         with ExitStack() as resources:
@@ -131,8 +115,8 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
             from mani_skill.utils.sapien_utils import compute_total_impulse
             dt = closed['physics_timestep_s']
             substeps = round(closed['simulation_frequency_hz'] / closed['control_frequency_hz'])
-            for tick in range(20):
-                apply_native_drive_state(robot._robot, robot._physics_system, closed)
+            def advance_control(tick, command, stage):
+                apply_native_drive_state(robot._robot, robot._physics_system, command)
                 for substep in range(substeps):
                     primary.stop.check()
                     robot._scene.step()
@@ -149,13 +133,32 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
                         if forbidden_object_contact(names, force, separations,
                                 objects=bodies.actors, fingers=fingers, target=target):
                             forbidden.append(row)
-                    report['steps'].append(dict(control_tick=tick+1, substep=substep+1,
+                    report['steps'].append(dict(stage=stage, control_tick=tick+1, substep=substep+1,
                         q=_array(robot._robot.get_qpos()).reshape(-1).tolist(),
                         qdot=_array(robot._robot.get_qvel()).reshape(-1).tolist(), contacts=contacts))
                     if forbidden:
                         report['forbidden_contacts'] = forbidden
                         report['phase'] = 'rejected'
+                        report['rejection_stage'] = stage
                         raise NativeClosureRejected('Native closure prediction detected forbidden contact')
+                return report['steps'][-1]
+            if candidate_configuration is not None:
+                report['phase'] = 'candidate_open_preparation'
+                opened = original_gripper_drive_targets(controller, closed, -1.)
+                report['candidate_open_drive_targets'] = opened
+                names = [joint.name for joint in robot._robot.get_active_joints()]
+                try:
+                    report['candidate_open_preparation'] = settle_candidate_open(
+                        lambda tick: advance_control(tick, opened, 'candidate_open_hold'),
+                        names, candidate_configuration.positions)
+                except NativeClosureRejected as error:
+                    report['candidate_open_preparation'] = getattr(error, 'evidence', {'completed': False})
+                    report['phase'] = 'rejected'
+                    report['rejection_stage'] = 'candidate_open_hold'
+                    raise
+            report['phase'] = 'private_closure_steps'
+            for tick in range(20):
+                advance_control(tick, closed, 'gripper_close')
             report['phase'] = 'no_forbidden_contact_predicted_not_qualified'
     except BaseException as error:
         report['error'] = repr(error)
@@ -226,7 +229,7 @@ def apply_candidate_endpoint(robot, configuration, closed):
 
 def screen_closure_candidate(primary, registration, urdf_path, candidate, snapshot,
                              configuration, *, target, emit, directory):
-    """Reject this candidate only for an explicit contact prediction.
+    """Reject this candidate only for explicit contact or bounded idle failure.
 
     Identity failures, missing model state, cancellation and ownership errors
     propagate; none may be interpreted as another ordinary infeasible grasp.
@@ -247,3 +250,67 @@ def screen_closure_candidate(primary, registration, urdf_path, candidate, snapsh
     emit(kind='swm_native_closure_candidate_not_rejected', candidate_id=candidate.candidate_id,
         snapshot_id=snapshot['snapshot_id'], evidence_path=str(path), model_qualified=False)
     return True
+
+
+def original_gripper_drive_targets(controller, baseline, value):
+    """Pure original absolute mimic command transform, with no source setters."""
+    from .native_bootstrap import _array
+    from .native_robot_mirror import validate_native_drive_state
+    validate_native_drive_state(baseline)
+    cfg = controller.config
+    if value not in (-1., 1.) or cfg.use_delta or cfg.use_target or cfg.interpolate:
+        raise SceneInvalid('Unsupported closure controller state')
+    import torch
+    command = controller._preprocess_action(
+        torch.ones((1, controller.effective_dof), device=controller.device) * value)
+    targets = torch.zeros_like(controller._target_qpos)
+    targets[:, controller.control_joint_indices] = command
+    targets[:, controller.mimic_joint_indices] = (
+        targets[:, controller.mimic_control_joint_indices]
+        * controller._multiplier[None, :] + controller._offset[None, :])
+    values = _array(targets).reshape(-1)
+    names = [joint.name for joint in controller.joints]
+    jaw = {f'gripper_{side}_{part}_Joint' for side in ('Left', 'Right')
+           for part in ('1', '2', 'Support')}
+    if len(values) != len(names) or not names or len(set(names)) != len(names) or not set(names) <= jaw:
+        raise SceneInvalid('Closure drive target identity is incomplete')
+    result = copy.deepcopy(baseline)
+    for name, position in zip(names, values):
+        result['position_targets'][result['joint_names'].index(name)] = float(position)
+    validate_native_drive_state(result)
+    return result
+
+
+def settle_candidate_open(step, names, arm_target, *, max_steps=200):
+    """Require actual private open-hold feedback under original idle criteria.
+
+    This prepares a hypothetical endpoint, not an executed primary approach.
+    No q/qdot setters are used here. The callback steps only its owned scene
+    and must enforce the same forbidden-contact policy on every substep.
+    """
+    from .native_execution import native_endpoint_metrics
+    arm = tuple(f'joint_{i}' for i in range(1, 8))
+    jaw = {f'gripper_{side}_{part}_Joint' for side in ('Left', 'Right')
+           for part in ('1', '2', 'Support')}
+    if (type(max_steps) is not int or not 3 <= max_steps <= 200
+            or len(names) != 13 or len(set(names)) != 13 or set(names) != set(arm) | jaw):
+        raise SceneInvalid('Original private open-hold identity and step budget required')
+    stable = 0
+    for tick in range(max_steps):
+        row = step(tick)
+        q = np.asarray(row['q'], dtype=float)
+        if q.shape != (13,) or not np.isfinite(q).all():
+            raise SceneInvalid('Private open-hold feedback is incomplete')
+        velocity = np.asarray(row['qdot'], dtype=float)
+        error, max_velocity, idle = native_endpoint_metrics(
+            q[[names.index(name) for name in arm]], velocity, arm_target)
+        stable = stable + 1 if idle and error <= .02 else 0
+        evidence = dict(source='native_private_open_hold_readback', completed=stable >= 3,
+            control_steps=tick+1, stable_steps=stable, endpoint_error_rad=error,
+            max_velocity_rad_s=max_velocity, idle=idle, joint_names=list(names),
+            positions=q.tolist(), velocities=velocity.tolist(), primary_world_mutated=False)
+        if stable >= 3:
+            return evidence
+    error = NativeClosureRejected('Candidate open hold did not reach original idle criterion')
+    error.evidence = evidence
+    raise error
