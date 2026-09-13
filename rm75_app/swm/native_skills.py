@@ -153,13 +153,17 @@ class PickPlaceNativePhases:
     need their original goal-verifier adapter before installation.
     """
 
-    def __init__(self, coordinator, build_task, audit, execute, *, closure_screen=None, emit=None):
+    def __init__(self, coordinator, build_task, audit, execute, *, closure_screen=None, emit=None,
+                 candidate_priority=None):
         self.coordinator = coordinator
         self.build_task = build_task
         self.last_relation_screen = {}
         if closure_screen is not None and not callable(closure_screen):
             raise TypeError("Trusted closure screening callback required")
         self.closure_screen = closure_screen
+        if candidate_priority is not None and not callable(candidate_priority):
+            raise TypeError("Trusted candidate priority callback required")
+        self.candidate_priority = candidate_priority
         self.emit = emit or (lambda **row: None)
         self.relation_screen_history = []
         self.audit = audit
@@ -200,7 +204,7 @@ class PickPlaceNativePhases:
                 c.planner.set_measured_gripper_collision_state(measured_jaw)
             else:
                 c.planner.set_gripper_collision_state(False)
-            for grasp_candidate, screened, task in self._grasp_relations(task, measured_jaw):
+            for grasp_candidate, screened, task in self._grasp_relations(task, measured_jaw, snapshot):
                 pre = _approach_offset_candidates((grasp_candidate,), abs(task.grasp_approach_offset))[0]
                 approach = c._plan_pose_stage(stage='pregrasp', current=task.current, candidates=(pre,), task=task)
                 if approach is None or approach.trajectory is None:
@@ -287,7 +291,7 @@ class PickPlaceNativePhases:
                             primitive, expected.tolist(), 'shared_PickPlaceCoordinator_phase_solvers')
 
 
-    def _grasp_relations(self, task, measured_jaw):
+    def _grasp_relations(self, task, measured_jaw, source_snapshot=None):
         """Share one motion budget across discrete and original axis searches.
 
         Pool-local IDs keep changed axis geometry eligible; an exact source/pose
@@ -308,8 +312,22 @@ class PickPlaceNativePhases:
                 options['excluded_grasp_ids'] = tuple(sorted(attempted))
             screened = self.coordinator.screen_relations(task, **options)
             self.last_relation_screen = copy.deepcopy(dict(screened.diagnostics))
-            ranked = self.coordinator.rank_grasp_relations(
-                task, screened.grasp_candidates, screened.grasp_scores) if screened.grasp_candidates else ()
+            if self.candidate_priority is None or not screened.grasp_candidates:
+                ranked = self.coordinator.rank_grasp_relations(
+                    task, screened.grasp_candidates, screened.grasp_scores) if screened.grasp_candidates else ()
+            else:
+                priorities = self.candidate_priority(task, screened.grasp_candidates, source_snapshot)
+                expected_ids = {candidate.candidate_id for candidate in screened.grasp_candidates}
+                if (not isinstance(priorities, dict) or set(priorities) != expected_ids
+                        or any(type(value) is not int or value not in (0, 1, 2)
+                               for value in priorities.values())):
+                    raise SceneInvalid('Complete explicit candidate priority classifications required')
+                # Keep original distance/score/source-diversity ordering within
+                # each heuristic tier. No candidate is declared safe or removed.
+                ranked = tuple(candidate for level in (0, 1, 2)
+                    for candidate in self.coordinator.rank_grasp_relations(task,
+                        tuple(item for item in screened.grasp_candidates
+                              if priorities[item.candidate_id] == level), screened.grasp_scores))
             remaining = budget - used
             ranked = tuple(ranked)[:remaining]
             ids = [candidate.candidate_id for candidate in ranked]
