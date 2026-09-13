@@ -1,0 +1,68 @@
+Network isolation active: non-Unix sockets blocked in this process and its descendants.
+........................................................................ [  3%]
+........................................................................ [  7%]
+........................................................................ [ 11%]
+........................................................................ [ 15%]
+........................................................................ [ 19%]
+........................................................................ [ 23%]
+........................................................................ [ 27%]
+........................................................................ [ 31%]
+........................................................................ [ 35%]
+........................................................................ [ 39%]
+........................................................................ [ 43%]
+........................................................................ [ 47%]
+.......................F................................................ [ 51%]
+........................................................................ [ 55%]
+........................................................................ [ 59%]
+........................................................................ [ 63%]
+........................................................................ [ 67%]
+........................................................................ [ 71%]
+........................................................................ [ 75%]
+........................................................................ [ 79%]
+........................................................................ [ 83%]
+........................................................................ [ 87%]
+........................................................................ [ 91%]
+........................................................................ [ 95%]
+........................................................................ [ 99%]
+.........                                                                [100%]
+=================================== FAILURES ===================================
+_______ test_settle_readback_does_not_turn_nonfinite_feedback_into_wait ________
+
+capture_rig = namespace(source=<rm75_app.swm.native_capture.NativePrimaryCapture object at 0x7ba084beff50>, world=<rm75_app.swm.scen... T_actor_object=array([[1., 0., 0., 0.],
+       [0., 1., 0., 0.],
+       [0., 0., 1., 0.],
+       [0., 0., 0., 1.]]))})
+
+    def test_settle_readback_does_not_turn_nonfinite_feedback_into_wait(capture_rig):
+        capture_rig.primary.actors['a'].linear_velocity = np.array([np.nan, 0., 0.])
+        with pytest.raises(ObservationUnavailable, match='Nonfinite'):
+>           capture_rig.source.read_settle_state()
+
+tests/swm/test_native_primary_capture.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+rm75_app/swm/native_capture.py:109: in read_settle_state
+    observed = read_primary_actor(binding, self.T_base_world)
+rm75_app/swm/native_capture.py:57: in read_primary_actor
+    linear = _array(actor.linear_velocity).reshape(-1)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = array([nan,  0.,  0.])
+
+    def _array(value):
+        if hasattr(value, 'detach'):
+            value = value.detach().cpu().numpy()
+        result = np.asarray(value, dtype=float)
+        if not np.isfinite(result).all():
+>           raise SceneInvalid('Nonfinite primary simulation readback')
+E           rm75_app.swm.scene.SceneInvalid: Nonfinite primary simulation readback
+
+rm75_app/swm/native_bootstrap.py:27: SceneInvalid
+=============================== warnings summary ===============================
+tests/three_scene/test_rrtrack_plate_material.py::test_actual_plate_uniform_pbr_expands_color_without_changing_mesh
+  /home/zhangzhao/Desktop/rm75-manipulation/tests/three_scene/test_rrtrack_plate_material.py:13: DeprecationWarning: `Scene.dump(concatenate=True)` DEPRECATED FOR REMOVAL APRIL 2025: replace with `Scene.to_geometry()`
+    mesh = trimesh.load(path, force='scene').dump(concatenate=True)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/swm/test_native_primary_capture.py::test_settle_readback_does_not_turn_nonfinite_feedback_into_wait
+1 failed, 1808 passed, 1 warning in 78.94s (0:01:18)

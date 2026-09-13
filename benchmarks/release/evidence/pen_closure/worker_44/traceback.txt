@@ -1,0 +1,32 @@
+Traceback (most recent call last):
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/workcell/worker.py", line 138, in main
+    swm_result=dispatch_if_enabled(spec,profile,args.app_root,run_dir,stop,events)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/integration.py", line 97, in dispatch_if_enabled
+    return _dispatch_session(spec,session,stop)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/integration.py", line 107, in _dispatch_session
+    stop.check();result=runtime.run(request);outcomes.append(result.as_dict())
+                        ^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/skills.py", line 236, in run
+    receipt = self.backend.execute(plan, audit);pending_plan=None
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/adapters.py", line 59, in execute
+    result=binding.execute(plan,audit)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_skills.py", line 127, in __call__
+    self.executor.set_gripper(stage.gripper_after)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_execution.py", line 100, in set_gripper
+    prediction()
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_context.py", line 134, in <lambda>
+    sink.closure_prediction = lambda: reject_predicted_closure(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_closure.py", line 75, in reject_predicted_closure
+    batch = registration.source.capture(tuple(registration.source.bindings),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_capture.py", line 116, in capture
+    observed = read_primary_actor(self.bindings[oid], self.T_base_world)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_capture.py", line 61, in read_primary_actor
+    raise ObservationUnavailable('Primary collision object is not settled at the checkpoint')
+rm75_app.swm.scene.ObservationUnavailable: Primary collision object is not settled at the checkpoint

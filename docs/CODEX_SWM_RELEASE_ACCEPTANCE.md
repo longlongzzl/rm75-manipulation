@@ -727,3 +727,15 @@ worker_42 只读核对本次 36 个原可行轴关系，全部取得原缓存 IK
 证据：benchmarks/release/evidence/pen_closure/gripper_geometry_01/，含可复现命令、原生结果和输入/URDF SHA256。下一实际动作：把原候选抓取方向、目标笔几何与闭爪支撑网格的扫掠范围对齐，核对原有抓取细化策略，再在原预算内选择可审核几何；不按跨候选最大值盲调默认深度。
 
 分层状态：内核回归仍引用 487f993 的 1803 passed，非本轮重新运行；原生接线无新生产改动；模型推理未运行；本轮实际原生运行仅私有碰撞网格 FK，不是新增物理重放或正式 worker 成功；硬件 NOT_AUTHORIZED_NOT_RUN。笔六检查点仍未完成，保持 PARTIAL_DELIVERY，未推送。
+
+## M1 / 完整物体静止接入原阶段预算，+4 mm 假设仍未闭环
+
+本轮 progress，生产提交 `53a912b`。正式原生执行器现通过 trusted context 绑定 NativePrimaryCapture.read_settle_state：在原关节静止条件满足时，读取全部注册物体的原生速度；只有机器人和物体共同连续 3 次静止才完成阶段，仍最多原 200 控制步。物体阈值保持线速度范数 <=0.001 m/s、角速度范数 <=0.005 rad/s。只明确有限的物体运动可继续等待，非有限/缺失/身份异常传播，不清零速度、不写位姿、不增加等待预算。此运动读回不是 SWM 检查点，闭爪前独立新采集仍保留。失败包含具体物体、位姿及速度。
+
+先在未改等待逻辑的 worker_44 运行单一规划深度假设：进程内 bi ObjectSpec 从 0.012777 改为 0.016777 m，沿负 approach 方向，不是通用 world-Z 平移。复用正式 worker/main、原 builder、原场景和全部审计；不改生产默认配置。该次候选缓存预测与精确端点预测均未否决，原阶段审计通过，实际主 approach/grasp 执行到闭爪前，但独立采集拒绝物体未静止。没有正式 grasp 成功。
+
+53a912b 的 worker_45 用同一假设复跑：approach 在 14 控制步后全部静止；grasp 满 200 步后机器人最大速度 7.27e-5 rad/s、端点误差 4.73e-5 rad，但 bi 线速度约 [-0.0004234,-0.0012440,0.0000184] m/s，角速度约 [0.0808439,-0.0380244,-0.0025953] rad/s。因此未发闭爪/抬升，worker exit 1。两次主环境、镜像和 planner 清理读回均 true。这个证据不能证明 +4 mm 是正确默认抓取深度，也尚未定位导致笔运动的具体接触对。
+
+内核：定向 **34 passed / 1 failed / 0.13 s**；原生进程退出后串行完整 tests 为 **1808 passed / 1 failed / 1 existing warning / 78.94 s**。唯一失败为新增 test_settle_readback_does_not_turn_nonfinite_feedback_into_wait 预期 ObservationUnavailable，而原底层 _array 对 NaN 更早抛出 SceneInvalid；安全拒绝仍发生，本轮没有修改或跳过此失败断言。下一步先修正该测试的异常类型，再记录抓取到位期间目标接触与运动来源，保留等待预算与全部保护。
+
+分层：原生接线本轮新增完整物体静止等待；实际仿真为上述单一深度假设，不是默认配置已通过；FP/SAM3D/LLM 未运行；硬件 NOT_AUTHORIZED_NOT_RUN。笔六检查点、其余 G0-G10 门槛未完成，保持 PARTIAL_DELIVERY。证据见 benchmarks/release/evidence/pen_closure/worker_44 和 worker_45；本轮本地提交，未推送。

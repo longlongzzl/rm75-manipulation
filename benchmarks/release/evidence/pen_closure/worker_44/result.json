@@ -1,0 +1,1 @@
+{"command_success": false, "error": "ObservationUnavailable: Primary collision object is not settled at the checkpoint", "finished_at": 1789263464.1430542, "mode": "sim", "status": "failed", "task": "pickplace", "task_success": null}

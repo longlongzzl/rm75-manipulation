@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "487f993",
+    "commit": "53a912b",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Bounded cached closure prioritization formally ran 34 predictions; all opening preparations completed and all closures rejected table contact. No primary atomic actions. Independent marker FK quantifies state-dependent TCP offsets but does not qualify contact calibration or justify changing grasp depth."
+    "note": "Registered object idle wired into unchanged native stage budget. Single +4mm process-local depth hypothesis reaches primary grasp motion but bi remains moving after 200 hold ticks; no close/lift. New regression has one exception-type assertion failure, preserved."
   },
   "runs": {
     "m0_targeted": {
@@ -13959,6 +13959,35 @@
       "private_robot_closed": true,
       "evidence": "benchmarks/release/evidence/pen_closure/gripper_geometry_01",
       "hardware": "NOT_AUTHORIZED_NOT_RUN"
+    },
+    "m1_object_settle_worker_44": {
+      "tested_commit": "7f710e3",
+      "status": "PRE_CLOSE_CAPTURE_REJECTED_UNSETTLED_OBJECT",
+      "domain": "native_PhysX_formal_worker_with_depth_hypothesis",
+      "hypothesis_depth_m": 0.016777,
+      "production_default_changed": false,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_44"
+    },
+    "m1_object_settle_worker_45": {
+      "tested_commit": "53a912b",
+      "status": "GRASP_SETTLE_BUDGET_EXHAUSTED_BI_MOVING",
+      "domain": "native_PhysX_formal_worker_with_depth_hypothesis",
+      "hypothesis_depth_m": 0.016777,
+      "production_default_changed": false,
+      "approach_settle_steps": 14,
+      "grasp_settle_steps": 200,
+      "closed_or_lifted": false,
+      "cleanup_verified": true,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_45"
+    },
+    "m1_object_settle_full_regression": {
+      "tested_commit": "53a912b",
+      "passed": 1808,
+      "failed": 1,
+      "warnings": 1,
+      "elapsed_s": 78.94,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_45/full_tests.log"
     }
   },
   "gates": {
@@ -14208,15 +14237,16 @@
   },
   "current_layer_status": {
     "kernel": {
-      "tested_commit": "487f993",
-      "status": "PASSED_REGRESSION",
-      "passed": 1803,
-      "failed": 0,
-      "warnings": 1
+      "tested_commit": "53a912b",
+      "status": "REGRESSION_FAILED_NEW_EXCEPTION_ASSERTION",
+      "passed": 1808,
+      "failed": 1,
+      "warnings": 1,
+      "elapsed_s": 78.94
     },
-    "native_wiring": "BOUNDED_CACHED_CLOSURE_PRIORITY_FORMALLY_WIRED_EXACT_ENDPOINT_GUARDS_RETAINED",
+    "native_wiring": "COMPLETE_REGISTERED_OBJECT_IDLE_WITHIN_ORIGINAL_STAGE_BUDGET",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "WORKER_43_ALL_34_CACHED_CLOSURES_REJECT_TABLE_CONTACT_NO_PRIMARY_ACTIONS",
+    "actual_simulation": "WORKER_45_DEPTH_HYPOTHESIS_GRASP_TARGET_NOT_IDLE_AFTER_200_NO_CLOSE_OR_LIFT",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14283,5 +14313,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Align original pen candidate/target geometry with native support collision sweep; preserve explicit ObjectSpec depth, original budget and all contact checks until a supported refinement is identified"
+  "next_actual_action": "Correct new NaN exception assertion to original SceneInvalid; identify target contact/motion during open-grasp settling before promoting any planning-depth change"
 }
