@@ -1,0 +1,1 @@
+{"cases": [{"fault": "target_trajectory", "rejected": true}, {"fault": "parameters", "rejected": true}, {"fault": "hypothesis_id", "rejected": true}], "fresh_native_run": false, "hardware_connected": false, "scope": "software_mutation_rejection_using_native_evidence"}

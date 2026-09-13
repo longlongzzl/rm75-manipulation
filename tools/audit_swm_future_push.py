@@ -13,6 +13,7 @@ from rm75_app.workcell.io import atomic_json
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ('profile','transition','future-motion','prediction','output'):parser.add_argument('--'+name,type=Path,required=True)
+    parser.add_argument('--task-request',type=Path)
     args=parser.parse_args()
     from tools.run_network_isolated import block_network
     block_network()
@@ -20,6 +21,8 @@ def main():
         if path.stat().st_size>16000000:raise ValueError('Native audit input exceeds budget')
         return json.loads(path.read_bytes())
     profile=read(args.profile);transition=read(args.transition);motion=read(args.future_motion);prediction=read(args.prediction)
+    task_request=read(args.task_request) if args.task_request else None
+    if task_request is not None and task_request.get('task')!='pusht':raise ValueError('Original PushT task request required')
     args.output.mkdir(parents=True,exist_ok=False);last={};deadline=time.monotonic()+180
     def check():
         if time.monotonic()>deadline:raise TimeoutError('Native future audit budget exceeded')
@@ -36,6 +39,12 @@ def main():
             executor.names=tuple(transition['initial_snapshot']['robot']['joint_names'])
             result['audit']=audit_future_push(executor,motion,prediction,transition['initial_snapshot'],transition['object_id'],
                                              progress=lambda row:last.update(row))
+            if task_request is not None:
+                from rm75_app.swm.future_push_score import score_audited_future_push
+                from rm75_app.swm.scene import digest
+                result['score']=score_audited_future_push(motion,prediction,result['audit'],transition['initial_snapshot'],
+                    transition['object_id'],task_request['parameters']['goal_pose'],executor.config)
+                result['task_request_digest']=digest(task_request)
         result['status']='COLLISION_SAMPLES_PASSED_NOT_EXECUTION_AUTHORIZED'
     except Exception as exc:
         result.update(status='REJECTED',error_type=type(exc).__name__,reason=str(exc)[:4096],last_sample=last)

@@ -15128,5 +15128,33 @@
     "model_inference": "NOT_RUN",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "evidence": "benchmarks/release/evidence/pusht_feedback/future_audit_01/"
+  },
+  "future_goal_score_01": {
+    "status": "PASSED_NATIVE_AUDIT_BOUND_ORIGINAL_GOAL_SCORING",
+    "kernel": {
+      "passed": 1952,
+      "warnings": 1,
+      "duration_s": 42.45
+    },
+    "native_audit_hypotheses": 4,
+    "goal_xyyaw": [
+      0.38,
+      -0.18,
+      0
+    ],
+    "predicted_cost_range": [
+      0.02773899803270724,
+      0.027926209803006453
+    ],
+    "all_predicted_goal_reached": false,
+    "verified_task_goal_reached": false,
+    "software_mutation_rejections": 3,
+    "ranking_only": true,
+    "execution_authorized": false,
+    "next_planner_consumed_posterior": false,
+    "actual_simulation": "FOUR_GPU_REAUDITS_EXISTING_CPU_TRAJECTORIES",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/future_score_01/"
   }
 }

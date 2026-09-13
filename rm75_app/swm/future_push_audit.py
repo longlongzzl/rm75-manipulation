@@ -1,11 +1,12 @@
 """Original PushT collision checks against dense private predicted scenes."""
 from types import SimpleNamespace
 import numpy as np
-from .scene import SceneInvalid,pose_error,transform
+from .scene import SceneInvalid,pose_error,transform,digest
 from .future_collision_samples import future_collision_samples
 
 
 def audit_future_push(executor,motion,prediction,snapshot,object_id, *, progress=lambda row:None):
+    from dataclasses import asdict
     from .physics_replay import compound_cuboid_parts
     from rm75_app.workcell.transforms import quaternion_matrix
     from rm75_app.pusht.retreat_contact import validate_contact_escape
@@ -60,6 +61,10 @@ def audit_future_push(executor,motion,prediction,snapshot,object_id, *, progress
         backend.update_scene(initial)
         backend.set_measured_gripper_collision_state(snapshot['robot']['gripper_joint_positions'])
     return dict(source='original_CuroboPushExecutor_dynamic_scene_collision_audit',samples=len(samples),
+        source_snapshot_id=snapshot['snapshot_id'],source_plan_digest=motion['source_plan_digest'],
+        future_motion_digest=motion['future_motion_digest'],prediction_digest=digest(prediction),
+        parameters_digest=digest(prediction['parameters']),model_digest=digest(asdict(executor.config)),
+        motion_profile_digest=digest(executor.profile),object_id=object_id,
         stages=counts,retreat=escape,allowed_contact_links=sorted(executor.allowed),
         original_joint_limits_checked=True,collision_samples_checked=True,
         full_primitive_audit_issued=False,execution_authorized=False)
