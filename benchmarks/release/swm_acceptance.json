@@ -14502,7 +14502,7 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Improve bounded sphere reuse and conservative volume coverage; per-tetra centroid balls exceeded frozen 8192 capacity at 0.5 mm. No deployment or buffer reduction.",
+  "next_actual_action": "Evaluate exact convex narrow-phase separation certificates with original global/self margins and measured state binding; two sphere-cover methods failed frozen capacity. Do not disable collision pairs without complete proof.",
   "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json",
   "feedback_closure_wiring": {
     "status": "PRIMARY_CLOSURE_EXECUTED_LIFT_ADAPTER_MISSING",
@@ -14530,6 +14530,13 @@
     "evidence": "benchmarks/release/evidence/pen_closure/gripper_cover_01/summary.json",
     "targeted_passed": 6,
     "native_fit": "CAPACITY_REJECTED",
+    "deployed": false
+  },
+  "gripper_cover_02": {
+    "source_commit": "5fbe221",
+    "evidence": "benchmarks/release/evidence/pen_closure/gripper_cover_02/summary.json",
+    "targeted_passed": 7,
+    "native_fit": "PROOF_PARTITION_CAPACITY_REJECTED",
     "deployed": false
   }
 }
