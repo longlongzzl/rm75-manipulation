@@ -35,10 +35,12 @@ def test_original_total_budget_and_action_trace():
         policy.advance(np.zeros((2, 3)))
 
 
-def test_postclosure_trajectory_cannot_reuse_old_audit():
+@pytest.mark.parametrize('paired',[False,True])
+def test_postclosure_trajectory_cannot_reuse_old_audit(paired):
     from types import SimpleNamespace
     sink = object.__new__(NativePrimaryExecutor)
     sink.primary = SimpleNamespace(stop=SimpleNamespace(check=lambda: None))
     sink._closure_requires_reaudit = True
+    sink.paired_observation_mode = paired
     with pytest.raises(SceneInvalid, match='re-audit'):
         sink.execute_trajectory('lift', None)

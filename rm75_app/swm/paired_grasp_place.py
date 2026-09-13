@@ -150,16 +150,24 @@ class PairedGraspPlace:
 
 def atomic_groups(runtime,requests):
     """Consumers accept pending grasp only inside the trusted completed pair."""
-    requests=list(requests)
-    if not 1<=len(requests)<=64:raise SceneInvalid('Bounded nonempty atomic sequence required')
-    index=0;policy=getattr(runtime,'grasp_place_policy',None)
-    while index<len(requests):
-        request=requests[index]
+    requests=iter(requests)
+    count=0;policy=getattr(runtime,'grasp_place_policy',None)
+    while True:
+        try:request=next(requests)
+        except StopIteration:
+            if count==0:raise SceneInvalid('Bounded nonempty atomic sequence required')
+            return
+        count+=1
+        if count>64:raise SceneInvalid('Atomic sequence exceeds its skill budget')
         if policy is not None and request.skill in ('grasp','place'):
-            if not isinstance(policy,PairedGraspPlace) or index+1>=len(requests):
+            if not isinstance(policy,PairedGraspPlace):
                 raise SceneInvalid('Complete trusted grasp-place context required')
-            group=policy.run(runtime,request,requests[index+1]);index+=2
+            try:paired=next(requests)
+            except StopIteration:raise SceneInvalid('Complete trusted grasp-place context required') from None
+            count+=1
+            if count>64:raise SceneInvalid('Atomic sequence exceeds its skill budget')
+            group=policy.run(runtime,request,paired)
         else:
-            group=[(request,runtime.run(request))];index+=1
+            group=[(request,runtime.run(request))]
         yield group
         if not group[-1][1].skill_verified:return

@@ -1,0 +1,58 @@
+{
+  "error": "NativeClosureRejected('Native closure prediction detected forbidden contact')",
+  "candidate_open_preparation": {
+    "source": "native_private_open_hold_readback",
+    "completed": true,
+    "control_steps": 11,
+    "stable_steps": 3,
+    "endpoint_error_rad": 3.612041473388672e-05,
+    "max_velocity_rad_s": 0,
+    "idle": true,
+    "joint_names": [
+      "joint_1",
+      "joint_2",
+      "joint_3",
+      "joint_4",
+      "joint_5",
+      "joint_6",
+      "joint_7",
+      "gripper_Left_1_Joint",
+      "gripper_Left_2_Joint",
+      "gripper_Right_1_Joint",
+      "gripper_Right_2_Joint",
+      "gripper_Left_Support_Joint",
+      "gripper_Right_Support_Joint"
+    ],
+    "positions": [
+      1.3870865106582642,
+      -0.73472660779953,
+      0.1253475397825241,
+      -1.427273154258728,
+      -0.5560072660446167,
+      -1.398746371269226,
+      -0.0704122856259346,
+      0.0004176081856712699,
+      0.0006253289757296443,
+      0.0004439188924152404,
+      0.0006517338915728033,
+      1.604665129661953e-07,
+      -3.9855313493930566e-10
+    ],
+    "velocities": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "primary_world_mutated": false
+  }
+}

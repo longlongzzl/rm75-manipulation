@@ -15364,5 +15364,45 @@
     "held_object_tracking": false,
     "six_visual_checkpoints_required": false,
     "prediction_is_measurement": false
+  },
+  "paired_observation_02_20260913": {
+    "status": "PARTIAL_DELIVERY",
+    "tested_commit": "155160206d09012c02d48070a7a6aacbbc82b886",
+    "tested_source": "base plus listed changes; pre-existing uncommitted test_three_scene_pusht.py and plan_swm_native_push.py also present in tested worktree",
+    "kernel": {
+      "passed": 1965,
+      "warnings": 1,
+      "seconds": 62.28,
+      "full_tests": true
+    },
+    "native_wiring": {
+      "lazy_original_atom_lifetime_fixed": true,
+      "missing_audit_rejected_in_both_modes": true
+    },
+    "actual_simulation": {
+      "run": "runtime_data/swm_paired_pen_worker_02",
+      "status": "no_feasible_native_trajectory",
+      "old_active_atom_error": false,
+      "closure_candidates_rejected": 5,
+      "last_closure_error": "Native closure prediction detected forbidden contact",
+      "observed_boundaries": [
+        "worker_initialization_probe",
+        "before_grasp"
+      ],
+      "full_grasp_place_success": false
+    },
+    "cleanup": {
+      "primary_closed": true,
+      "robot_mirror_closed": true,
+      "planner_pointer_released": true
+    },
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "remaining": [
+      "Resolve original pen candidate/closure infeasibility without relaxing checks",
+      "Complete native release-retreat final observation and recovery",
+      "Separate ordinary PushT rejection from fatal errors"
+    ],
+    "evidence": "benchmarks/release/evidence/paired_observation_02"
   }
 }

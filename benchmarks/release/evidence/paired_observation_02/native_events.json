@@ -1,0 +1,1099 @@
+[
+  {
+    "boundary": "worker_initialization_probe",
+    "kind": "swm_checkpoint",
+    "observation_domain": "physics",
+    "observed_ids": [
+      "bi",
+      "bitong",
+      "carriot",
+      "desk",
+      "gluestick",
+      "hongshupian",
+      "lvmukuai",
+      "shuazi",
+      "tennis",
+      "__maniskill_workspace_table__",
+      "virtual_side_wall",
+      "virtual_top_wall"
+    ],
+    "revision": 1,
+    "sequence": 7,
+    "snapshot_id": "d5c97d29bcc9b12bc49e08b71df253623e0ecd35039a300ca937c4f8ac571eb0",
+    "time": 1789293752.1643593
+  },
+  {
+    "boundary": "before_grasp",
+    "kind": "swm_checkpoint",
+    "observation_domain": "physics",
+    "observed_ids": [
+      "bi",
+      "bitong",
+      "carriot",
+      "desk",
+      "gluestick",
+      "hongshupian",
+      "lvmukuai",
+      "shuazi",
+      "tennis",
+      "__maniskill_workspace_table__",
+      "virtual_side_wall",
+      "virtual_top_wall"
+    ],
+    "revision": 2,
+    "sequence": 11,
+    "snapshot_id": "ddee74e9d0ca6f71a9e576f97e13a42ffef724443649ebb62d2e1f52e35b9d2a",
+    "time": 1789293753.6871893
+  },
+  {
+    "excluded_grasp_ids": [],
+    "kind": "swm_native_relation_search",
+    "original_candidate_count": 70,
+    "pool_candidate_count": 70,
+    "ranked_ids": [
+      "grasp_39_+180deg_axis_-40mm"
+    ],
+    "relation_diagnostics": {
+      "axis_constrained_resolution": {
+        "attempted": false,
+        "enabled": true,
+        "input_count": 70,
+        "resolved_count": 70,
+        "strategy": "discrete_primary"
+      },
+      "candidate_build_time_s": 0.14311445200291928,
+      "candidate_count": 70,
+      "coarse_ik_call_count": 4,
+      "coarse_ik_rows_padded": 256,
+      "coarse_ik_rows_requested": 176,
+      "complete_relation_count": 1,
+      "eligible_place_candidate_count": 4,
+      "endpoint_collision_diagnostics": {},
+      "excluded_grasp_ids": [],
+      "grasp_candidate_count": 70,
+      "grasp_endpoint_summary": {
+        "nearest_failures": [
+          {
+            "candidate_id": "grasp_04_+0deg_axis_-40mm",
+            "normalized_pose_gap": 1.321725845336914,
+            "orientation_error_rad": 0.0013949561398476362,
+            "position_error_m": 0.00646913331001997,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_51_+180deg_tilt_+30deg_axis_-20mm",
+            "normalized_pose_gap": 1.6886351108551025,
+            "orientation_error_rad": 0.0025987804401665926,
+            "position_error_m": 0.008183297701179981,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_41_+180deg_axis_-48mm",
+            "normalized_pose_gap": 2.2934091091156006,
+            "orientation_error_rad": 0.007813222706317902,
+            "position_error_m": 0.010685723274946213,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_06_+0deg_axis_-48mm",
+            "normalized_pose_gap": 2.4609100818634033,
+            "orientation_error_rad": 0.004499028902500868,
+            "position_error_m": 0.011854647658765316,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_20_+0deg_tilt_+30deg_axis_-48mm",
+            "normalized_pose_gap": 2.543043851852417,
+            "orientation_error_rad": 0.007064266595989466,
+            "position_error_m": 0.012008791789412498,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_07_+0deg_tilt_-30deg",
+            "normalized_pose_gap": 2.5632405281066895,
+            "orientation_error_rad": 0.002943767001852393,
+            "position_error_m": 0.012521825730800629,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_02_+0deg_axis_-20mm",
+            "normalized_pose_gap": 2.573415517807007,
+            "orientation_error_rad": 0.004323271103203297,
+            "position_error_m": 0.01243475079536438,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_00_+0deg",
+            "normalized_pose_gap": 2.723375082015991,
+            "orientation_error_rad": 0.0035698735155165195,
+            "position_error_m": 0.0132598876953125,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_49_+180deg_tilt_+30deg",
+            "normalized_pose_gap": 2.729789972305298,
+            "orientation_error_rad": 0.0034086466766893864,
+            "position_error_m": 0.013308085501194,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_48_+180deg_tilt_-30deg_axis_-48mm",
+            "normalized_pose_gap": 2.7387592792510986,
+            "orientation_error_rad": 0.0058565931394696236,
+            "position_error_m": 0.01310813706368208,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_37_+180deg_axis_-20mm",
+            "normalized_pose_gap": 2.7647359371185303,
+            "orientation_error_rad": 0.005139682907611132,
+            "position_error_m": 0.013309710659086704,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_18_+0deg_tilt_+30deg_axis_-40mm",
+            "normalized_pose_gap": 2.821073532104492,
+            "orientation_error_rad": 0.007665508892387152,
+            "position_error_m": 0.013338817283511162,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_01_+0deg_axis_+20mm",
+            "normalized_pose_gap": 2.8917973041534424,
+            "orientation_error_rad": 0.0041732885874807835,
+            "position_error_m": 0.01404165755957365,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_46_+180deg_tilt_-30deg_axis_-40mm",
+            "normalized_pose_gap": 2.919736385345459,
+            "orientation_error_rad": 0.007887373678386211,
+            "position_error_m": 0.01380994450300932,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_35_+180deg",
+            "normalized_pose_gap": 2.940565824508667,
+            "orientation_error_rad": 0.005827658344060183,
+            "position_error_m": 0.014120063744485378,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_08_+0deg_tilt_-30deg_axis_+20mm",
+            "normalized_pose_gap": 2.987596035003662,
+            "orientation_error_rad": 0.005419953726232052,
+            "position_error_m": 0.014395984821021557,
+            "reason": "pose_not_converged"
+          }
+        ],
+        "reason_counts": {
+          "constraint_rejected": 3,
+          "missing_metrics": 0,
+          "pose_not_converged": 65,
+          "success": 2
+        }
+      },
+      "grasp_family_screen_time_s": 2.1752778929949272,
+      "grasp_feasible_count": 2,
+      "grasp_screen_time_s": 2.1752778929949272,
+      "pick_relation_count": 1,
+      "place_candidate_count": 4,
+      "place_endpoint_summary": {
+        "nearest_failures": [],
+        "reason_counts": {
+          "constraint_rejected": 0,
+          "missing_metrics": 4,
+          "pose_not_converged": 0,
+          "success": 0
+        }
+      },
+      "place_family_screen_time_s": 0.3653750060038874,
+      "place_feasible_count": 4,
+      "place_manifold_resolution": {
+        "contact_endpoint_collision_links_ignored": [
+          "left_pad",
+          "right_pad",
+          "gripper_Left_Support_Link",
+          "gripper_Right_Support_Link"
+        ],
+        "enabled": true,
+        "input_count": 32,
+        "mode": "lazy_place",
+        "resolved_count": 4
+      },
+      "place_ready_grasp_count": 1,
+      "place_screen_time_s": 0.3653750060038874,
+      "pregrasp_endpoint_summary": {
+        "nearest_failures": [
+          {
+            "candidate_id": "pregrasp:grasp_29_+0deg_tilt_+60deg_axis_+20mm",
+            "normalized_pose_gap": 5.3851239499635994e-05,
+            "orientation_error_rad": 2.768612432646478e-07,
+            "position_error_m": 2.41570063508334e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_59_+180deg_tilt_-60deg_axis_+40mm",
+            "normalized_pose_gap": 0.00018467237532604486,
+            "orientation_error_rad": 4.656428131966095e-07,
+            "position_error_m": 8.767975714363274e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_32_+0deg_tilt_+60deg_axis_-40mm",
+            "normalized_pose_gap": 0.0010724804596975446,
+            "orientation_error_rad": 1.456328163840226e-06,
+            "position_error_m": 5.216769750404637e-06,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_30_+0deg_tilt_+60deg_axis_-20mm",
+            "normalized_pose_gap": 0.002046484500169754,
+            "orientation_error_rad": 2.730272626649821e-06,
+            "position_error_m": 9.9593953564181e-06,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_62_+180deg_tilt_-60deg_axis_-48mm",
+            "normalized_pose_gap": 0.00341721810400486,
+            "orientation_error_rad": 4.931597231916385e-06,
+            "position_error_m": 1.6592930478509516e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_28_+0deg_tilt_+60deg",
+            "normalized_pose_gap": 0.004272871650755405,
+            "orientation_error_rad": 5.118344233778771e-06,
+            "position_error_m": 2.0852523448411375e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_56_+180deg_tilt_-60deg",
+            "normalized_pose_gap": 0.004566354211419821,
+            "orientation_error_rad": 7.70920541981468e-06,
+            "position_error_m": 2.2060850824345835e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_60_+180deg_tilt_-60deg_axis_-40mm",
+            "normalized_pose_gap": 0.004640237428247929,
+            "orientation_error_rad": 6.935957117093494e-06,
+            "position_error_m": 2.250759098387789e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_61_+180deg_tilt_-60deg_axis_+48mm",
+            "normalized_pose_gap": 0.0050230687484145164,
+            "orientation_error_rad": 8.393140888074413e-06,
+            "position_error_m": 2.4276028852909803e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_34_+0deg_tilt_+60deg_axis_-48mm",
+            "normalized_pose_gap": 0.0056034573353827,
+            "orientation_error_rad": 9.76644514594227e-06,
+            "position_error_m": 2.7040641725761816e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_57_+180deg_tilt_-60deg_axis_+20mm",
+            "normalized_pose_gap": 0.005630405154079199,
+            "orientation_error_rad": 1.04517121144454e-05,
+            "position_error_m": 2.7106852940050885e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_58_+180deg_tilt_-60deg_axis_-20mm",
+            "normalized_pose_gap": 0.010529286228120327,
+            "orientation_error_rad": 1.979692024178803e-05,
+            "position_error_m": 5.066673838882707e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_09_+0deg_tilt_-30deg_axis_-20mm",
+            "normalized_pose_gap": 1.7924236059188843,
+            "orientation_error_rad": 0.005250490270555019,
+            "position_error_m": 0.00843706913292408,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_55_+180deg_tilt_+30deg_axis_-48mm",
+            "normalized_pose_gap": 2.070230484008789,
+            "orientation_error_rad": 0.006060614716261625,
+            "position_error_m": 0.009745091199874878,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_68_+180deg_tilt_+60deg_axis_+48mm",
+            "normalized_pose_gap": 6.933650016784668,
+            "orientation_error_rad": 0.12226124852895737,
+            "position_error_m": 0.022442124783992767,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_50_+180deg_tilt_+30deg_axis_+20mm",
+            "normalized_pose_gap": 7.144238471984863,
+            "orientation_error_rad": 0.011241205967962742,
+            "position_error_m": 0.03459707275032997,
+            "reason": "pose_not_converged"
+          }
+        ],
+        "reason_counts": {
+          "constraint_rejected": 27,
+          "missing_metrics": 0,
+          "pose_not_converged": 7,
+          "success": 36
+        }
+      },
+      "pregrasp_feasible_count": 36,
+      "preplace_endpoint_summary": {
+        "nearest_failures": [],
+        "reason_counts": {
+          "constraint_rejected": 0,
+          "missing_metrics": 32,
+          "pose_not_converged": 0,
+          "success": 0
+        }
+      },
+      "preplace_feasible_count": 26,
+      "refinement_parent_ids": [],
+      "screen_time_s": 2.5406528989988146,
+      "screen_total_time_s": 2.5406528989988146,
+      "screened_grasp_candidate_count": 70,
+      "screened_place_candidate_count": 4,
+      "search_tier": 2,
+      "stable_ik_call_count": 0,
+      "unique_place_candidate_count": 2240
+    },
+    "remaining_motion_budget": 8,
+    "round": 1,
+    "screened_count": 1,
+    "search_mode": "discrete",
+    "sequence": 14,
+    "snapshot_id": "ddee74e9d0ca6f71a9e576f97e13a42ffef724443649ebb62d2e1f52e35b9d2a",
+    "time": 1789293757.4780467,
+    "total_motion_budget": 8
+  },
+  {
+    "excluded_grasp_ids": [
+      "grasp_39_+180deg_axis_-40mm"
+    ],
+    "kind": "swm_native_relation_search",
+    "original_candidate_count": 70,
+    "pool_candidate_count": 70,
+    "ranked_ids": [],
+    "relation_diagnostics": {
+      "axis_constrained_resolution": {
+        "attempted": false,
+        "enabled": true,
+        "input_count": 70,
+        "resolved_count": 70,
+        "strategy": "discrete_primary"
+      },
+      "candidate_build_time_s": 0.14311445200291928,
+      "candidate_count": 70,
+      "coarse_ik_call_count": 5,
+      "coarse_ik_rows_padded": 320,
+      "coarse_ik_rows_requested": 212,
+      "complete_relation_count": 0,
+      "eligible_place_candidate_count": 8,
+      "endpoint_collision_diagnostics": {
+        "diagnostic_time_s": 0.00010088201088365167,
+        "place": {}
+      },
+      "excluded_grasp_ids": [
+        "grasp_39_+180deg_axis_-40mm"
+      ],
+      "grasp_candidate_count": 70,
+      "grasp_endpoint_summary": {
+        "nearest_failures": [
+          {
+            "candidate_id": "grasp_04_+0deg_axis_-40mm",
+            "normalized_pose_gap": 1.3222079277038574,
+            "orientation_error_rad": 0.0014757888857275248,
+            "position_error_m": 0.006463460624217987,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_51_+180deg_tilt_+30deg_axis_-20mm",
+            "normalized_pose_gap": 1.6890591382980347,
+            "orientation_error_rad": 0.0026374387089163065,
+            "position_error_m": 0.008181551471352577,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_41_+180deg_axis_-48mm",
+            "normalized_pose_gap": 2.286792039871216,
+            "orientation_error_rad": 0.007265330757945776,
+            "position_error_m": 0.010707426816225052,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_06_+0deg_axis_-48mm",
+            "normalized_pose_gap": 2.461695671081543,
+            "orientation_error_rad": 0.004565755371004343,
+            "position_error_m": 0.011851903051137924,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_20_+0deg_tilt_+30deg_axis_-48mm",
+            "normalized_pose_gap": 2.5288140773773193,
+            "orientation_error_rad": 0.005518650636076927,
+            "position_error_m": 0.012092205695807934,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_02_+0deg_axis_-20mm",
+            "normalized_pose_gap": 2.5468692779541016,
+            "orientation_error_rad": 0.0027852782513946295,
+            "position_error_m": 0.012455819174647331,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_07_+0deg_tilt_-30deg",
+            "normalized_pose_gap": 2.563140630722046,
+            "orientation_error_rad": 0.002940429374575615,
+            "position_error_m": 0.012521660886704922,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_00_+0deg",
+            "normalized_pose_gap": 2.712324619293213,
+            "orientation_error_rad": 0.0029265638440847397,
+            "position_error_m": 0.013268966227769852,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_49_+180deg_tilt_+30deg",
+            "normalized_pose_gap": 2.742781400680542,
+            "orientation_error_rad": 0.0041725849732756615,
+            "position_error_m": 0.013296647928655148,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_48_+180deg_tilt_-30deg_axis_-48mm",
+            "normalized_pose_gap": 2.7558023929595947,
+            "orientation_error_rad": 0.009581266902387142,
+            "position_error_m": 0.012820885516703129,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_37_+180deg_axis_-20mm",
+            "normalized_pose_gap": 2.765407085418701,
+            "orientation_error_rad": 0.005926264449954033,
+            "position_error_m": 0.01323440857231617,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_18_+0deg_tilt_+30deg_axis_-40mm",
+            "normalized_pose_gap": 2.8333399295806885,
+            "orientation_error_rad": 0.008511820808053017,
+            "position_error_m": 0.013315518386662006,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_01_+0deg_axis_+20mm",
+            "normalized_pose_gap": 2.8777694702148438,
+            "orientation_error_rad": 0.003671762766316533,
+            "position_error_m": 0.014021670445799828,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_46_+180deg_tilt_-30deg_axis_-40mm",
+            "normalized_pose_gap": 2.907668113708496,
+            "orientation_error_rad": 0.007523592561483383,
+            "position_error_m": 0.013785980641841888,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_35_+180deg",
+            "normalized_pose_gap": 2.9196324348449707,
+            "orientation_error_rad": 0.004282960668206215,
+            "position_error_m": 0.014169865287840366,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "grasp_08_+0deg_tilt_-30deg_axis_+20mm",
+            "normalized_pose_gap": 2.9657764434814453,
+            "orientation_error_rad": 0.0036235167644917965,
+            "position_error_m": 0.014466529712080956,
+            "reason": "pose_not_converged"
+          }
+        ],
+        "reason_counts": {
+          "constraint_rejected": 3,
+          "missing_metrics": 0,
+          "pose_not_converged": 65,
+          "success": 2
+        }
+      },
+      "grasp_family_screen_time_s": 0.3272375619999366,
+      "grasp_feasible_count": 2,
+      "grasp_screen_time_s": 0.3272375619999366,
+      "pick_relation_count": 1,
+      "place_candidate_count": 8,
+      "place_endpoint_summary": {
+        "nearest_failures": [],
+        "reason_counts": {
+          "constraint_rejected": 0,
+          "missing_metrics": 8,
+          "pose_not_converged": 0,
+          "success": 0
+        }
+      },
+      "place_family_screen_time_s": 0.5203439420001814,
+      "place_feasible_count": 8,
+      "place_manifold_resolution": {
+        "contact_endpoint_collision_links_ignored": [
+          "left_pad",
+          "right_pad",
+          "gripper_Left_Support_Link",
+          "gripper_Right_Support_Link"
+        ],
+        "enabled": true,
+        "input_count": 32,
+        "mode": "lazy_place",
+        "resolved_count": 8
+      },
+      "place_ready_grasp_count": 1,
+      "place_screen_time_s": 0.5203439420001814,
+      "pregrasp_endpoint_summary": {
+        "nearest_failures": [
+          {
+            "candidate_id": "pregrasp:grasp_29_+0deg_tilt_+60deg_axis_+20mm",
+            "normalized_pose_gap": 5.3851239499635994e-05,
+            "orientation_error_rad": 2.768612432646478e-07,
+            "position_error_m": 2.41570063508334e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_59_+180deg_tilt_-60deg_axis_+40mm",
+            "normalized_pose_gap": 0.00018467237532604486,
+            "orientation_error_rad": 4.656428131966095e-07,
+            "position_error_m": 8.767975714363274e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_32_+0deg_tilt_+60deg_axis_-40mm",
+            "normalized_pose_gap": 0.0010724804596975446,
+            "orientation_error_rad": 1.456328163840226e-06,
+            "position_error_m": 5.216769750404637e-06,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_30_+0deg_tilt_+60deg_axis_-20mm",
+            "normalized_pose_gap": 0.002046484500169754,
+            "orientation_error_rad": 2.730272626649821e-06,
+            "position_error_m": 9.9593953564181e-06,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_62_+180deg_tilt_-60deg_axis_-48mm",
+            "normalized_pose_gap": 0.00341721810400486,
+            "orientation_error_rad": 4.931597231916385e-06,
+            "position_error_m": 1.6592930478509516e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_28_+0deg_tilt_+60deg",
+            "normalized_pose_gap": 0.004272871650755405,
+            "orientation_error_rad": 5.118344233778771e-06,
+            "position_error_m": 2.0852523448411375e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_56_+180deg_tilt_-60deg",
+            "normalized_pose_gap": 0.004566354211419821,
+            "orientation_error_rad": 7.70920541981468e-06,
+            "position_error_m": 2.2060850824345835e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_60_+180deg_tilt_-60deg_axis_-40mm",
+            "normalized_pose_gap": 0.004640237428247929,
+            "orientation_error_rad": 6.935957117093494e-06,
+            "position_error_m": 2.250759098387789e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_61_+180deg_tilt_-60deg_axis_+48mm",
+            "normalized_pose_gap": 0.0050230687484145164,
+            "orientation_error_rad": 8.393140888074413e-06,
+            "position_error_m": 2.4276028852909803e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_34_+0deg_tilt_+60deg_axis_-48mm",
+            "normalized_pose_gap": 0.0056034573353827,
+            "orientation_error_rad": 9.76644514594227e-06,
+            "position_error_m": 2.7040641725761816e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_57_+180deg_tilt_-60deg_axis_+20mm",
+            "normalized_pose_gap": 0.005630405154079199,
+            "orientation_error_rad": 1.04517121144454e-05,
+            "position_error_m": 2.7106852940050885e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_58_+180deg_tilt_-60deg_axis_-20mm",
+            "normalized_pose_gap": 0.010529286228120327,
+            "orientation_error_rad": 1.979692024178803e-05,
+            "position_error_m": 5.066673838882707e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_09_+0deg_tilt_-30deg_axis_-20mm",
+            "normalized_pose_gap": 1.7924236059188843,
+            "orientation_error_rad": 0.005250490270555019,
+            "position_error_m": 0.00843706913292408,
+            "reason": "pose_not_converged"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_55_+180deg_tilt_+30deg_axis_-48mm",
+            "normalized_pose_gap": 2.070230484008789,
+            "orientation_error_rad": 0.006060614716261625,
+            "position_error_m": 0.009745091199874878,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_68_+180deg_tilt_+60deg_axis_+48mm",
+            "normalized_pose_gap": 6.939889907836914,
+            "orientation_error_rad": 0.1297975778579712,
+            "position_error_m": 0.021719692274928093,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_50_+180deg_tilt_+30deg_axis_+20mm",
+            "normalized_pose_gap": 7.144238471984863,
+            "orientation_error_rad": 0.011241205967962742,
+            "position_error_m": 0.03459707275032997,
+            "reason": "pose_not_converged"
+          }
+        ],
+        "reason_counts": {
+          "constraint_rejected": 27,
+          "missing_metrics": 0,
+          "pose_not_converged": 7,
+          "success": 36
+        }
+      },
+      "pregrasp_feasible_count": 36,
+      "preplace_endpoint_summary": {
+        "nearest_failures": [],
+        "reason_counts": {
+          "constraint_rejected": 0,
+          "missing_metrics": 64,
+          "pose_not_converged": 0,
+          "success": 0
+        }
+      },
+      "preplace_feasible_count": 54,
+      "refinement_parent_ids": [],
+      "screen_time_s": 0.847581504000118,
+      "screen_total_time_s": 0.847581504000118,
+      "screened_grasp_candidate_count": 70,
+      "screened_place_candidate_count": 8,
+      "search_tier": 3,
+      "stable_ik_call_count": 0,
+      "unique_place_candidate_count": 2240
+    },
+    "remaining_motion_budget": 7,
+    "round": 2,
+    "screened_count": 0,
+    "search_mode": "discrete",
+    "sequence": 17,
+    "snapshot_id": "ddee74e9d0ca6f71a9e576f97e13a42ffef724443649ebb62d2e1f52e35b9d2a",
+    "time": 1789293761.3132913,
+    "total_motion_budget": 8
+  },
+  {
+    "excluded_grasp_ids": [],
+    "kind": "swm_native_relation_search",
+    "original_candidate_count": 70,
+    "pool_candidate_count": 369,
+    "ranked_ids": [
+      "grasp_20_+0deg_tilt_+30deg_axis_-48mm__axis_solution_02",
+      "grasp_48_+180deg_tilt_-30deg_axis_-48mm",
+      "grasp_34_+0deg_tilt_+60deg_axis_-48mm__axis_solution_20",
+      "grasp_48_+180deg_tilt_-30deg_axis_-48mm__axis_solution_01",
+      "grasp_46_+180deg_tilt_-30deg_axis_-40mm",
+      "grasp_44_+180deg_tilt_-30deg_axis_-20mm",
+      "grasp_28_+0deg_tilt_+60deg__axis_solution_18"
+    ],
+    "relation_diagnostics": {
+      "axis_constrained_resolution": {
+        "attempted": false,
+        "enabled": false,
+        "input_count": 369,
+        "resolved_count": 369,
+        "strategy": "discrete_primary"
+      },
+      "candidate_build_time_s": 0.14311445200291928,
+      "candidate_count": 369,
+      "coarse_ik_call_count": 19,
+      "coarse_ik_rows_padded": 1216,
+      "coarse_ik_rows_requested": 1125,
+      "complete_relation_count": 34,
+      "eligible_place_candidate_count": 43,
+      "endpoint_collision_diagnostics": {},
+      "excluded_grasp_ids": [],
+      "grasp_candidate_count": 369,
+      "grasp_endpoint_summary": {
+        "nearest_failures": [
+          {
+            "candidate_id": "grasp_34_+0deg_tilt_+60deg_axis_-48mm__axis_solution_14",
+            "normalized_pose_gap": 5.527067514776718e-06,
+            "orientation_error_rad": 2.763533757388359e-07,
+            "position_error_m": 0,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_12_+0deg_tilt_-30deg_axis_+48mm",
+            "normalized_pose_gap": 1.3817064427712467e-05,
+            "orientation_error_rad": 1.535842386601871e-07,
+            "position_error_m": 5.372690026206328e-08,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_13_+0deg_tilt_-30deg_axis_-48mm__axis_solution_05",
+            "normalized_pose_gap": 1.5724479453638196e-05,
+            "orientation_error_rad": 1.1982376690866658e-07,
+            "position_error_m": 6.664001972467304e-08,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_34_+0deg_tilt_+60deg_axis_-48mm__axis_solution_06",
+            "normalized_pose_gap": 1.6660162145853974e-05,
+            "orientation_error_rad": 1.5015110932381504e-07,
+            "position_error_m": 6.828570064953965e-08,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_46_+180deg_tilt_-30deg_axis_-40mm__axis_solution_02",
+            "normalized_pose_gap": 1.695252285571769e-05,
+            "orientation_error_rad": 1.980995563144461e-07,
+            "position_error_m": 6.495265836292674e-08,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_06_+0deg_axis_-48mm__axis_solution_01",
+            "normalized_pose_gap": 1.800863174139522e-05,
+            "orientation_error_rad": 2.1757458057436452e-07,
+            "position_error_m": 6.828570064953965e-08,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_42_+180deg_tilt_-30deg__axis_solution_05",
+            "normalized_pose_gap": 2.0365485397633165e-05,
+            "orientation_error_rad": 2.158221974468688e-07,
+            "position_error_m": 8.024520781191313e-08,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_47_+180deg_tilt_-30deg_axis_+48mm__axis_solution_05",
+            "normalized_pose_gap": 2.0591103748301975e-05,
+            "orientation_error_rad": 1.6067569674760307e-07,
+            "position_error_m": 8.688795105626923e-08,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_00_+0deg__axis_solution_02",
+            "normalized_pose_gap": 2.1058503989479505e-05,
+            "orientation_error_rad": 1.465229360064768e-07,
+            "position_error_m": 9.064022776783531e-08,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_02_+0deg_axis_-20mm__axis_solution_03",
+            "normalized_pose_gap": 2.2259058823692612e-05,
+            "orientation_error_rad": 1.5881302317666268e-07,
+            "position_error_m": 9.541398782175747e-08,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_28_+0deg_tilt_+60deg__axis_solution_03",
+            "normalized_pose_gap": 2.3870125005487353e-05,
+            "orientation_error_rad": 1.2935051074691728e-07,
+            "position_error_m": 1.0641557679491598e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_37_+180deg_axis_-20mm__axis_solution_01",
+            "normalized_pose_gap": 2.3888143914518878e-05,
+            "orientation_error_rad": 1.9480697233120736e-07,
+            "position_error_m": 9.996002603429588e-08,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_10_+0deg_tilt_-30deg_axis_+40mm",
+            "normalized_pose_gap": 2.3900314772618003e-05,
+            "orientation_error_rad": 7.000279822477751e-08,
+            "position_error_m": 1.125012971670003e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_29_+0deg_tilt_+60deg_axis_+20mm__axis_solution_03",
+            "normalized_pose_gap": 2.3971979317138903e-05,
+            "orientation_error_rad": 1.0359168811646668e-07,
+            "position_error_m": 1.095007249318769e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_47_+180deg_tilt_-30deg_axis_+48mm__axis_solution_01",
+            "normalized_pose_gap": 2.6916901333606802e-05,
+            "orientation_error_rad": 1.7252646955512319e-07,
+            "position_error_m": 1.1733185800721913e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "grasp_17_+0deg_tilt_+30deg_axis_+40mm__axis_solution_01",
+            "normalized_pose_gap": 2.7645994123304263e-05,
+            "orientation_error_rad": 2.0898109198697057e-07,
+            "position_error_m": 1.1733185800721913e-07,
+            "reason": "constraint_rejected"
+          }
+        ],
+        "reason_counts": {
+          "constraint_rejected": 172,
+          "missing_metrics": 0,
+          "pose_not_converged": 111,
+          "success": 86
+        }
+      },
+      "grasp_family_screen_time_s": 0.397146672999952,
+      "grasp_feasible_count": 86,
+      "grasp_screen_time_s": 0.397146672999952,
+      "pick_relation_count": 52,
+      "place_candidate_count": 43,
+      "place_endpoint_summary": {
+        "nearest_failures": [],
+        "reason_counts": {
+          "constraint_rejected": 0,
+          "missing_metrics": 43,
+          "pose_not_converged": 0,
+          "success": 0
+        }
+      },
+      "place_family_screen_time_s": 1.6196142700064229,
+      "place_feasible_count": 43,
+      "place_manifold_resolution": {
+        "contact_endpoint_collision_links_ignored": [
+          "left_pad",
+          "right_pad",
+          "gripper_Left_Support_Link",
+          "gripper_Right_Support_Link"
+        ],
+        "enabled": true,
+        "input_count": 1664,
+        "mode": "lazy_place",
+        "resolved_count": 43
+      },
+      "place_ready_grasp_count": 34,
+      "place_screen_time_s": 1.6196142700064229,
+      "pregrasp_endpoint_summary": {
+        "nearest_failures": [
+          {
+            "candidate_id": "pregrasp:grasp_44_+180deg_tilt_-30deg_axis_-20mm__axis_solution_05",
+            "normalized_pose_gap": 9.429618330614176e-06,
+            "orientation_error_rad": 2.607466740300879e-07,
+            "position_error_m": 2.107342389479072e-08,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_42_+180deg_tilt_-30deg__axis_solution_04",
+            "normalized_pose_gap": 2.074917938443832e-05,
+            "orientation_error_rad": 2.2128874377358443e-07,
+            "position_error_m": 8.161702425013573e-08,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_47_+180deg_tilt_-30deg_axis_+48mm__axis_solution_03",
+            "normalized_pose_gap": 4.492748121265322e-05,
+            "orientation_error_rad": 1.9239075754740043e-07,
+            "position_error_m": 2.0539833656130213e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_46_+180deg_tilt_-30deg_axis_-40mm__axis_solution_05",
+            "normalized_pose_gap": 5.816802513436414e-05,
+            "orientation_error_rad": 2.0557548907618184e-07,
+            "position_error_m": 2.702825838696299e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_43_+180deg_tilt_-30deg_axis_+20mm__axis_solution_04",
+            "normalized_pose_gap": 5.904015415580943e-05,
+            "orientation_error_rad": 2.3586490272009542e-07,
+            "position_error_m": 2.7161428306499147e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_46_+180deg_tilt_-30deg_axis_-40mm__axis_solution_03",
+            "normalized_pose_gap": 5.9504483942873776e-05,
+            "orientation_error_rad": 1.2836133578275621e-07,
+            "position_error_m": 2.846862798833172e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_45_+180deg_tilt_-30deg_axis_+40mm__axis_solution_03",
+            "normalized_pose_gap": 6.121801561675966e-05,
+            "orientation_error_rad": 1.2193220300105168e-07,
+            "position_error_m": 2.9389684641500935e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_42_+180deg_tilt_-30deg__axis_solution_05",
+            "normalized_pose_gap": 6.441132427426055e-05,
+            "orientation_error_rad": 9.043548487852604e-08,
+            "position_error_m": 3.1301306080422364e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_43_+180deg_tilt_-30deg_axis_+20mm__axis_solution_05",
+            "normalized_pose_gap": 6.569665129063651e-05,
+            "orientation_error_rad": 2.0926783861341391e-07,
+            "position_error_m": 3.075564904975181e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_46_+180deg_tilt_-30deg_axis_-40mm__axis_solution_04",
+            "normalized_pose_gap": 6.571714766323566e-05,
+            "orientation_error_rad": 1.3892436356854887e-07,
+            "position_error_m": 3.146933238440397e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_42_+180deg_tilt_-30deg__axis_solution_03",
+            "normalized_pose_gap": 7.32063635950908e-05,
+            "orientation_error_rad": 1.4667587322492182e-07,
+            "position_error_m": 3.51364207062943e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_44_+180deg_tilt_-30deg_axis_-20mm__axis_solution_03",
+            "normalized_pose_gap": 7.804475899320096e-05,
+            "orientation_error_rad": 1.5540331332886126e-07,
+            "position_error_m": 3.746834806861443e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_44_+180deg_tilt_-30deg_axis_-20mm__axis_solution_04",
+            "normalized_pose_gap": 9.232424781657755e-05,
+            "orientation_error_rad": 1.2109723002140527e-07,
+            "position_error_m": 4.495115035751951e-07,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_63_+180deg_tilt_+60deg__axis_solution_01",
+            "normalized_pose_gap": 0.00424555130302906,
+            "orientation_error_rad": 5.571549536398379e-06,
+            "position_error_m": 2.0670602680183947e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_47_+180deg_tilt_-30deg_axis_+48mm__axis_solution_05",
+            "normalized_pose_gap": 0.005923717748373747,
+            "orientation_error_rad": 8.010835699678864e-06,
+            "position_error_m": 2.8817505153710954e-05,
+            "reason": "constraint_rejected"
+          },
+          {
+            "candidate_id": "pregrasp:grasp_56_+180deg_tilt_-60deg__axis_solution_04",
+            "normalized_pose_gap": 0.014085567556321621,
+            "orientation_error_rad": 3.533622657414526e-05,
+            "position_error_m": 6.689421570627019e-05,
+            "reason": "constraint_rejected"
+          }
+        ],
+        "reason_counts": {
+          "constraint_rejected": 32,
+          "missing_metrics": 0,
+          "pose_not_converged": 35,
+          "success": 302
+        }
+      },
+      "pregrasp_feasible_count": 302,
+      "preplace_endpoint_summary": {
+        "nearest_failures": [],
+        "reason_counts": {
+          "constraint_rejected": 0,
+          "missing_metrics": 344,
+          "pose_not_converged": 0,
+          "success": 0
+        }
+      },
+      "preplace_feasible_count": 126,
+      "refinement_parent_ids": [],
+      "screen_time_s": 2.016760943006375,
+      "screen_total_time_s": 2.016760943006375,
+      "screened_grasp_candidate_count": 369,
+      "screened_place_candidate_count": 43,
+      "search_tier": 1,
+      "stable_ik_call_count": 0,
+      "unique_place_candidate_count": 11808
+    },
+    "remaining_motion_budget": 7,
+    "round": 3,
+    "screened_count": 34,
+    "search_mode": "continuous_axis",
+    "sequence": 87,
+    "snapshot_id": "ddee74e9d0ca6f71a9e576f97e13a42ffef724443649ebb62d2e1f52e35b9d2a",
+    "time": 1789293781.8167925,
+    "total_motion_budget": 8
+  },
+  {
+    "candidate_id": "grasp_34_+0deg_tilt_+60deg_axis_-48mm__axis_solution_20",
+    "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_paired_pen_worker_02/swm_native/closure_candidates/7619e76d2f4c0ac5c146a6c4cf6903f26d28ea75b89c6d9a4efa64a5e0da517d.json",
+    "kind": "swm_native_closure_candidate_rejected",
+    "model_qualified": false,
+    "sequence": 93,
+    "snapshot_id": "ddee74e9d0ca6f71a9e576f97e13a42ffef724443649ebb62d2e1f52e35b9d2a",
+    "time": 1789293787.4116004
+  },
+  {
+    "candidate_id": "grasp_48_+180deg_tilt_-30deg_axis_-48mm__axis_solution_01",
+    "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_paired_pen_worker_02/swm_native/closure_candidates/ce910aeb58af5a9f2da0c3b0d7d7dbd117d624033207cf51e07abc6f82036012.json",
+    "kind": "swm_native_closure_candidate_rejected",
+    "model_qualified": false,
+    "sequence": 95,
+    "snapshot_id": "ddee74e9d0ca6f71a9e576f97e13a42ffef724443649ebb62d2e1f52e35b9d2a",
+    "time": 1789293788.503501
+  },
+  {
+    "candidate_id": "grasp_46_+180deg_tilt_-30deg_axis_-40mm",
+    "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_paired_pen_worker_02/swm_native/closure_candidates/4c6690f2093c3398980ef8d8549ca24d1cde62c2dd3c2e2edfc9842b9d671563.json",
+    "kind": "swm_native_closure_candidate_rejected",
+    "model_qualified": false,
+    "sequence": 97,
+    "snapshot_id": "ddee74e9d0ca6f71a9e576f97e13a42ffef724443649ebb62d2e1f52e35b9d2a",
+    "time": 1789293789.7636871
+  },
+  {
+    "candidate_id": "grasp_44_+180deg_tilt_-30deg_axis_-20mm",
+    "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_paired_pen_worker_02/swm_native/closure_candidates/5bd5eab9328626b196b5cf03f9080b34448fbc7a2319229533cd80aafd698b41.json",
+    "kind": "swm_native_closure_candidate_rejected",
+    "model_qualified": false,
+    "sequence": 99,
+    "snapshot_id": "ddee74e9d0ca6f71a9e576f97e13a42ffef724443649ebb62d2e1f52e35b9d2a",
+    "time": 1789293790.8540688
+  },
+  {
+    "candidate_id": "grasp_28_+0deg_tilt_+60deg__axis_solution_18",
+    "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_paired_pen_worker_02/swm_native/closure_candidates/421ec335b7a8c9e73aad89827d471fff635dbada30387a6e70756939fa738c14.json",
+    "kind": "swm_native_closure_candidate_rejected",
+    "model_qualified": false,
+    "sequence": 101,
+    "snapshot_id": "ddee74e9d0ca6f71a9e576f97e13a42ffef724443649ebb62d2e1f52e35b9d2a",
+    "time": 1789293791.8362124
+  },
+  {
+    "kind": "swm_native_resources_released",
+    "planner_pointer_released": true,
+    "primary_closed": true,
+    "robot_mirror_closed": true,
+    "sequence": 104,
+    "time": 1789293792.0186908
+  }
+]
