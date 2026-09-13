@@ -14502,7 +14502,7 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Build and prove tighter conservative support-link collision-volume sphere coverage, retaining original buffers and collision pairs; validate capacity before native use. Geometry02 isolates coarse envelope rejection, not actual mesh overlap.",
+  "next_actual_action": "Improve bounded sphere reuse and conservative volume coverage; per-tetra centroid balls exceeded frozen 8192 capacity at 0.5 mm. No deployment or buffer reduction.",
   "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json",
   "feedback_closure_wiring": {
     "status": "PRIMARY_CLOSURE_EXECUTED_LIFT_ADAPTER_MISSING",
@@ -14524,5 +14524,12 @@
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
   "worker_64_evidence": "benchmarks/release/evidence/pen_closure/worker_64/summary.json",
-  "gripper_geometry_02_evidence": "benchmarks/release/evidence/pen_closure/gripper_geometry_02/summary.json"
+  "gripper_geometry_02_evidence": "benchmarks/release/evidence/pen_closure/gripper_geometry_02/summary.json",
+  "gripper_cover_01": {
+    "source_commit": "13567cea1e098495b2bef52d77b9b898d06e0787",
+    "evidence": "benchmarks/release/evidence/pen_closure/gripper_cover_01/summary.json",
+    "targeted_passed": 6,
+    "native_fit": "CAPACITY_REJECTED",
+    "deployed": false
+  }
 }
