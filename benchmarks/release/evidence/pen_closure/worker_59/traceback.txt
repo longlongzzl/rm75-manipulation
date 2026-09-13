@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/workcell/worker.py", line 138, in main
+    swm_result=dispatch_if_enabled(spec,profile,args.app_root,run_dir,stop,events)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/integration.py", line 97, in dispatch_if_enabled
+    return _dispatch_session(spec,session,stop)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/integration.py", line 107, in _dispatch_session
+    stop.check();result=runtime.run(request);outcomes.append(result.as_dict())
+                        ^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/skills.py", line 203, in run
+    plan = self.backend.plan(request, copy.deepcopy(initial));pending_plan = plan
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/adapters.py", line 37, in plan
+    result=binding.plan(request,copy.deepcopy(snapshot))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_skills.py", line 288, in plan
+    raise RuntimeError('Native atomic phase has no feasible trajectory')
+RuntimeError: Native atomic phase has no feasible trajectory

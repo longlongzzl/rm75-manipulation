@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "120cd1a",
+    "commit": "eb7f3f0",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Canonical handle mapping repaired in actual worker. Experimental depth/elision run reaches actual close; late table contact at closed hold tick79 aborts before lift. Predictor covers only first20 close ticks, not closed settling."
+    "note": "Shared native grouped drive semantics and bounded closed-hold prediction installed. Worker59 depth hypothesis rejects63 closures and9 closed holds; ordinary worker60 rejects45 closures. No primary atomic actions or six-checkpoint success."
   },
   "runs": {
     "m0_targeted": {
@@ -14143,6 +14143,40 @@
       "elapsed_s": 45.91,
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "evidence": "benchmarks/release/evidence/pen_closure/worker_58/full_tests.log"
+    },
+    "m1_closed_hold_worker_59": {
+      "tested_commit": "eb7f3f0",
+      "status": "NO_FEASIBLE_GRASP",
+      "experimental_depth_m": 0.016777,
+      "predictions": 72,
+      "close_contact_rejections": 63,
+      "closed_hold_budget_rejections": 9,
+      "closed_hold_endpoint_error_min_rad": 0.06101095676422119,
+      "closed_hold_endpoint_error_max_rad": 0.07567310333251953,
+      "primary_atomic_actions": 0,
+      "source_setter_branch_newly_executed": false,
+      "cleanup_verified": true,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_59"
+    },
+    "m1_closed_hold_worker_60": {
+      "tested_commit": "eb7f3f0",
+      "status": "NO_FEASIBLE_GRASP",
+      "ordinary_production_entry": true,
+      "original_depth_m": 0.012777,
+      "predictions": 45,
+      "close_contact_rejections": 45,
+      "primary_atomic_actions": 0,
+      "cleanup_verified": true,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_60"
+    },
+    "m1_closed_hold_full_regression": {
+      "tested_commit": "eb7f3f0",
+      "passed": 1831,
+      "failed": 0,
+      "warnings": 1,
+      "elapsed_s": 48.21,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_59/full_tests.log"
     }
   },
   "gates": {
@@ -14392,16 +14426,16 @@
   },
   "current_layer_status": {
     "kernel": {
-      "tested_commit": "120cd1a",
+      "tested_commit": "eb7f3f0",
       "status": "PASSED_REGRESSION",
-      "passed": 1821,
+      "passed": 1831,
       "failed": 0,
       "warnings": 1,
-      "elapsed_s": 45.91
+      "elapsed_s": 48.21
     },
-    "native_wiring": "CANONICAL_SLEEP_VELOCITY_BINDING_NATIVE_VERIFIED_CLOSURE_INCOMPLETE",
+    "native_wiring": "SHARED_PD_GROUP_WRITES_AND_COMPLETE_BOUNDED_CLOSED_HOLD_PREDICTION",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "EXPERIMENTAL_WORKER58_CLOSE20_THEN_HOLD79_TABLE_CONTACT_ABORT",
+    "actual_simulation": "WORKER59_72_AND_DEFAULT_WORKER60_45_PREDICTIONS_REJECT_NO_PRIMARY_ACTIONS",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14468,5 +14502,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Extend private closure prediction through original bounded closed settling and align actual drive-write semantics; preserve contact thresholds and exact endpoint/fresh capture guards"
+  "next_actual_action": "Inspect original contact-aware closing and actual grasp geometry to satisfy stable holding plus arm endpoint constraints; retain original budgets, default depth and collision criteria"
 }
