@@ -200,7 +200,7 @@ class PickPlaceNativePhases:
                 c.planner.set_measured_gripper_collision_state(measured_jaw)
             else:
                 c.planner.set_gripper_collision_state(False)
-            for grasp_candidate, screened in self._grasp_relations(task, measured_jaw):
+            for grasp_candidate, screened, task in self._grasp_relations(task, measured_jaw):
                 pre = _approach_offset_candidates((grasp_candidate,), abs(task.grasp_approach_offset))[0]
                 approach = c._plan_pose_stage(stage='pregrasp', current=task.current, candidates=(pre,), task=task)
                 if approach is None or approach.trajectory is None:
@@ -288,16 +288,21 @@ class PickPlaceNativePhases:
 
 
     def _grasp_relations(self, task, measured_jaw):
-        """Resume original tier screening without repeating motion attempts.
+        """Share one motion budget across discrete and original axis searches.
 
-        One total original motion budget spans every screen round. The complete
-        task/family graph and per-grasp place mapping remain unchanged. This is
-        planning-only; no executed task prefix is replayed on failure.
+        Pool-local IDs keep changed axis geometry eligible; an exact source/pose
+        fingerprint prevents repeating an already attempted geometric candidate.
+        Full task pairing and scene state travel with each yielded candidate.
         """
+        initial_task = task
+        budget = task.max_motion_candidates
+        used = 0
         attempted = set()
-        original_ids = {candidate.candidate_id for candidate in task.grasp_candidates}
+        attempted_geometry = set()
+        axis_used = False
         self.relation_screen_history = []
-        while len(attempted) < task.max_motion_candidates:
+        while used < budget:
+            original_ids = {candidate.candidate_id for candidate in task.grasp_candidates}
             options = dict(initial_gripper_positions=measured_jaw)
             if attempted:
                 options['excluded_grasp_ids'] = tuple(sorted(attempted))
@@ -305,7 +310,7 @@ class PickPlaceNativePhases:
             self.last_relation_screen = copy.deepcopy(dict(screened.diagnostics))
             ranked = self.coordinator.rank_grasp_relations(
                 task, screened.grasp_candidates, screened.grasp_scores) if screened.grasp_candidates else ()
-            remaining = task.max_motion_candidates - len(attempted)
+            remaining = budget - used
             ranked = tuple(ranked)[:remaining]
             ids = [candidate.candidate_id for candidate in ranked]
             if (len(ids) != len(set(ids)) or set(ids) & attempted
@@ -313,18 +318,41 @@ class PickPlaceNativePhases:
                 raise SceneInvalid('Relation continuation returned repeated or foreign grasp identity')
             evidence = dict(round=len(self.relation_screen_history)+1,
                 snapshot_id=task.scene.revision, excluded_grasp_ids=sorted(attempted),
-                original_candidate_count=len(task.grasp_candidates),
+                original_candidate_count=len(initial_task.grasp_candidates),
+                pool_candidate_count=len(task.grasp_candidates),
+                search_mode='continuous_axis' if axis_used else 'discrete',
                 screened_count=len(screened.grasp_candidates), ranked_ids=ids,
-                total_motion_budget=task.max_motion_candidates,
-                remaining_motion_budget=remaining,
+                total_motion_budget=budget, remaining_motion_budget=remaining,
                 relation_diagnostics=copy.deepcopy(self.last_relation_screen))
             self.relation_screen_history.append(copy.deepcopy(evidence))
             self.emit(kind='swm_native_relation_search', **evidence)
             if not ranked:
-                return
+                if axis_used or not screened.axis_requested:
+                    return
+                axis_used = True
+                fallback, counts = self.coordinator.resolve_axis_fallback_task(initial_task)
+                self.emit(kind='swm_native_axis_candidates_built',
+                    snapshot_id=task.scene.revision, **counts,
+                    eligible_count=0 if fallback is None else len(fallback.grasp_candidates),
+                    remaining_motion_budget=remaining, whole_episode_called=False)
+                if fallback is None:
+                    return
+                task = fallback
+                attempted = set()
+                continue
             for candidate in ranked:
                 attempted.add(candidate.candidate_id)
-                yield candidate, screened
+                geometry = digest(dict(
+                    source_id=str(candidate.metadata.get('source_grasp_candidate_id', candidate.candidate_id)),
+                    position=np.asarray(candidate.pose.position).tolist(),
+                    quaternion_wxyz=np.asarray(candidate.pose.quaternion_wxyz).tolist()))
+                if geometry in attempted_geometry:
+                    self.emit(kind='swm_native_duplicate_candidate_geometry_skipped',
+                        candidate_id=candidate.candidate_id, snapshot_id=task.scene.revision)
+                    continue
+                attempted_geometry.add(geometry)
+                used += 1
+                yield candidate, screened, task
 
 
     def _placement_stages(self, task, current, relative, request, *, jaw_positions=None, candidates=None):

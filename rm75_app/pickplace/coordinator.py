@@ -422,83 +422,57 @@ class PickPlaceCoordinator:
             },
         )
 
+    def resolve_axis_fallback_task(self, task: PickPlaceTask, axis_resolver=None):
+        """Original continuous-axis candidate construction, without execution.
+
+        Both the legacy coordinator and atomic phases use this same source-ID
+        pairing and held-object transform rebuild. No episode or sink is called.
+        """
+        if axis_resolver is None:
+            axis_resolver = getattr(self.planner, 'resolve_axis_constrained_pose_candidates', None)
+        if not callable(axis_resolver):
+            raise NotImplementedError('Original continuous-axis resolver is unavailable')
+        original_grasps = tuple(task.grasp_candidates)
+        original_by_id = {item.candidate_id: item for item in original_grasps}
+        resolved_grasps = tuple(axis_resolver(
+            original_grasps, task.scene, tool_frame=task.tool_frame,
+            ignore_object_names=(task.object_name,),
+            disable_collision_links=_CONTACT_ENDPOINT_COLLISION_LINKS))
+        counts = dict(input_count=len(original_grasps), resolved_count=len(resolved_grasps))
+        if not resolved_grasps:
+            return None, counts
+        places_by_grasp = {}
+        deduplicated_places = {}
+        for resolved in resolved_grasps:
+            source_id = str(resolved.metadata.get('source_grasp_candidate_id', resolved.candidate_id))
+            source = original_by_id.get(source_id)
+            if source is None:
+                continue
+            rebuilt = _rebuild_places_for_resolved_grasp(
+                source, resolved, task.places_for_grasp(source_id))
+            if not rebuilt:
+                continue
+            places_by_grasp[resolved.candidate_id] = rebuilt
+            for place in rebuilt:
+                deduplicated_places[place.candidate_id] = place
+        eligible_grasps = tuple(item for item in resolved_grasps
+                                if item.candidate_id in places_by_grasp)
+        if not eligible_grasps or not deduplicated_places:
+            return None, counts
+        return replace(task, grasp_candidates=eligible_grasps,
+            place_candidates=tuple(deduplicated_places.values()),
+            place_candidates_by_grasp=places_by_grasp, enable_axis_fallback=False), counts
+
     def _run_axis_fallback(
         self,
         task: PickPlaceTask,
         primary: PickPlaceRunResult,
         axis_resolver: Any,
     ) -> PickPlaceRunResult:
-        """Retry a failed discrete chain with continuous-axis FK solutions."""
-
-        original_grasps = tuple(task.grasp_candidates)
-        original_by_id = {
-            item.candidate_id: item for item in original_grasps
-        }
-        resolved_grasps = tuple(
-            axis_resolver(
-                original_grasps,
-                task.scene,
-                tool_frame=task.tool_frame,
-                ignore_object_names=(task.object_name,),
-                disable_collision_links=_CONTACT_ENDPOINT_COLLISION_LINKS,
-            )
-        )
-        if not resolved_grasps:
-            return self._with_axis_fallback_diagnostics(
-                primary,
-                primary,
-                input_count=len(original_grasps),
-                resolved_count=0,
-            )
-
-        places_by_grasp: dict[str, tuple[PoseCandidate, ...]] = {}
-        deduplicated_places: dict[str, PoseCandidate] = {}
-        for resolved in resolved_grasps:
-            source_id = str(
-                resolved.metadata.get(
-                    "source_grasp_candidate_id", resolved.candidate_id
-                )
-            )
-            source = original_by_id.get(source_id)
-            if source is None:
-                continue
-            rebuilt = _rebuild_places_for_resolved_grasp(
-                source,
-                resolved,
-                task.places_for_grasp(source_id),
-            )
-            if not rebuilt:
-                continue
-            places_by_grasp[resolved.candidate_id] = rebuilt
-            for place in rebuilt:
-                deduplicated_places[place.candidate_id] = place
-
-        eligible_grasps = tuple(
-            item for item in resolved_grasps if item.candidate_id in places_by_grasp
-        )
-        if not eligible_grasps or not deduplicated_places:
-            return self._with_axis_fallback_diagnostics(
-                primary,
-                primary,
-                input_count=len(original_grasps),
-                resolved_count=len(resolved_grasps),
-            )
-
-        fallback = self.run(
-            replace(
-                task,
-                grasp_candidates=eligible_grasps,
-                place_candidates=tuple(deduplicated_places.values()),
-                place_candidates_by_grasp=places_by_grasp,
-                enable_axis_fallback=False,
-            )
-        )
-        return self._with_axis_fallback_diagnostics(
-            fallback,
-            primary,
-            input_count=len(original_grasps),
-            resolved_count=len(resolved_grasps),
-        )
+        """Keep the original episode behavior outside the atomic pathway."""
+        fallback_task, counts = self.resolve_axis_fallback_task(task, axis_resolver)
+        fallback = primary if fallback_task is None else self.run(fallback_task)
+        return self._with_axis_fallback_diagnostics(fallback, primary, **counts)
 
     @staticmethod
     def _end_configuration(trajectory: JointTrajectory) -> JointConfiguration:
