@@ -53,7 +53,7 @@ class NativeToolProgram:
         bodies={};entities=[]
         for name,states in self.links.items():
             entity=sapien.Entity();entity.name='measured_'+name
-            builder=scene.create_actor_builder();builder.set_body_type('kinematic')
+            builder=scene.create_actor_builder();builder.physx_body_type='kinematic'
             builder.collision_records=list(source[name].collision_records)
             builder.collision_groups=list(source[name].collision_groups)
             recipe=NativeConstructionRecipe(builder,SimpleNamespace(_objs=()))

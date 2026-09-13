@@ -1,0 +1,14 @@
+    super().__init__(*args, robot_uids='none', **kwargs)
+  File "/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/mani_skill/envs/sapien_env.py", line 327, in __init__
+    obs, _ = self.reset(seed=[2022 + i for i in range(self.num_envs)], options=dict(reconfigure=True))
+  File "/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/mani_skill/envs/sapien_env.py", line 909, in reset
+    self._reconfigure(options)
+  File "/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/mani_skill/envs/sapien_env.py", line 743, in _reconfigure
+    self._load_scene(options)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/physics_replay.py", line 195, in _load_scene
+    self._load_tool(material,None)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/physics_replay.py", line 198, in _load_tool
+    self.native_bodies,self.native_entities=native_program.build(self.scene,spose)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_tool_replay.py", line 66, in build
+    for key,value in state['properties'].items():setattr(shape,key,value)
+RuntimeError: failed to set density: density may not be changed once the shape is attached

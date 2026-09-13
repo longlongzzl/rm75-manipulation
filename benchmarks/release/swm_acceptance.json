@@ -14850,5 +14850,21 @@
     "model_inference": "NOT_RUN",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "evidence": "benchmarks/release/evidence/pusht_feedback/native_link_replay_02/"
+  },
+  "native_link_replay_03": {
+    "status": "FAILED_ATTACHED_SHAPE_DENSITY_WRITE",
+    "kernel": {
+      "passed": 1927,
+      "warnings": 1,
+      "duration_s": 45.45
+    },
+    "native_wiring": "NOT_QUALIFIED",
+    "actual_simulation": "four_construction_attempts_failed",
+    "reason": "density may not be changed once the shape is attached",
+    "posterior_updated": false,
+    "next_planner_consumed_posterior": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/native_link_replay_03/"
   }
 }
