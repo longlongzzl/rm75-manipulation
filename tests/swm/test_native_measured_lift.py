@@ -38,7 +38,7 @@ def test_fresh_measured_jaw_and_start_reach_auditor_without_changing_endpoint():
     assert np.array_equal(result.positions[-1], path.positions[-1])
     assert np.array_equal(path.positions[0], np.zeros(7))
     stage = calls[0][0].payload.stages[0]
-    assert stage.state_before.gripper_positions == snapshot['robot']['gripper_positions']
+    assert dict(stage.state_before.gripper_positions) == snapshot['robot']['gripper_positions']
     assert stage.state_before.holding == 'bi'
     assert stage.state_before.gripper_closed is None
 
@@ -61,3 +61,23 @@ def test_other_stage_and_incomplete_audit_do_not_authorize_path():
     adapter.auditor = lambda plan, observed: PlanAudit(plan.payload_digest, 'stale', REQUIRED_AUDITS)
     with pytest.raises(SceneInvalid, match='current measured lift audit'):
         adapter('lift', path)
+
+
+def test_native_failure_is_recorded_and_never_converted_to_permission():
+    adapter, path, snapshot, calls = setup()
+    rows = []
+    adapter.emit = lambda **row: rows.append(row)
+    class Rejected:
+        last_evidence = []
+        last_collision_evidence = dict(contact_count=1, contacts=[dict(
+            robot_link='finger', world_object='table', penetration_m=.002)])
+        def __call__(self, plan, observed):
+            raise SceneInvalid('native collision')
+    adapter.auditor = Rejected()
+    with pytest.raises(SceneInvalid, match='native collision'):
+        adapter('lift', path)
+    assert len(rows) == 1
+    assert rows[0]['kind'] == 'swm_measured_lift_audit_failed'
+    assert rows[0]['collision_evidence']['contact_count'] == 1
+    assert rows[0]['skill_verified'] is False
+    assert rows[0]['snapshot_id'] == snapshot['snapshot_id']

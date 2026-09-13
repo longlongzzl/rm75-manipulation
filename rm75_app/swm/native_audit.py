@@ -31,6 +31,7 @@ class CuroboNativeStageAuditor:
         self.step = interpolation_step_rad
         self.max_samples = max_samples
         self.last_evidence = []
+        self.last_collision_evidence = None
         self._collision_holding = "empty"
         self._native_audit = False
         self.last_duplicate_exclusion = None
@@ -39,6 +40,7 @@ class CuroboNativeStageAuditor:
         from rm75_app.planning.contracts import JointConfiguration
 
         self.last_evidence = []
+        self.last_collision_evidence = None
         primitive = plan.payload
         if (not isinstance(primitive, NativePrimitive) or not primitive.stages
                 or primitive.fingerprint() != plan.payload_digest):
@@ -291,6 +293,14 @@ class CuroboNativeStageAuditor:
         for offset in range(0, len(samples), 64):
             for row in self._contacts(samples[offset:offset + 64], names, ignored):
                 contacts.append({**row, 'candidate_index': int(row['candidate_index']) + offset})
+        self.last_collision_evidence = dict(stage=stage.name, samples=len(samples),
+            contact_count=len(contacts), contacts=contacts[:64],
+            truncated=len(contacts) > 64,
+            allowed_escape_links=list(self.backend.config.retreat_escape_contact_links),
+            allowed_start_contact_escape=stage.allow_start_contact_escape,
+            ignored_world_objects=sorted(ignored),
+            source='native_collision_diagnostics_for_sampled_path',
+            skill_verified=False)
         if not contacts:
             return dict(samples=len(samples), contacts=0, escape=False)
         if not stage.allow_start_contact_escape:

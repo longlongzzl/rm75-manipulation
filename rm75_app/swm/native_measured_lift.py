@@ -56,7 +56,18 @@ class MeasuredLiftAudit:
         plan = PlannedSkill(identity, snapshot['snapshot_id'], primitive.fingerprint(), primitive,
             snapshot['objects'][self.target]['measured']['T_world_object'],
             'measured remaining lift re-audit; not task goal verification')
-        audit = self.auditor(plan, snapshot)
+        try:
+            audit = self.auditor(plan, snapshot)
+        except BaseException as error:
+            self.emit(kind='swm_measured_lift_audit_failed',
+                snapshot_id=snapshot['snapshot_id'], payload_digest=plan.payload_digest,
+                original_path_digest=digest(old.tolist()), error=str(error),
+                measured_joint_positions=q.tolist(), measured_gripper_positions=jaw,
+                measured_T_tcp_object=relative.tolist(),
+                collision_evidence=getattr(self.auditor, 'last_collision_evidence', None),
+                stages=getattr(self.auditor, 'last_evidence', []),
+                skill_verified=False, primary_world_mutated=False)
+            raise
         if (audit.payload_digest != plan.payload_digest or audit.snapshot_id != snapshot['snapshot_id']
                 or audit.passed != REQUIRED_AUDITS or primitive.fingerprint() != plan.payload_digest):
             raise SceneInvalid('Complete current measured lift audit required')
