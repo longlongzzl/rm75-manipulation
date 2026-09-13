@@ -755,3 +755,15 @@ worker_59 只保留 +4 mm 深度假设，不再额外包驱动诊断。实际 72
 worker_60 另跑不修改深度、不使用诊断脚本的正式默认入口：45 次私有预测全部在 gripper_close 触发接触拒绝。两次均无主 approach/grasp/lift，源控制器写计数为零，因此当前原生运行验证了策略绑定与私有写入，并未新验证源 setter 执行分支。全部私有世界关闭、主状态/驱动未变、最终资源清理 true；worker exit 1，仍无可行笔轨迹。
 
 下一实际动作是核对原接触感知闭爪策略和实际夹持几何，解决闭合后的臂偏离/持物不稳定，而非增大预算或放宽速度/端点/碰撞条件。命令和证据见 benchmarks/release/evidence/pen_closure/worker_59/README.md 及 worker_60。内核全绿；原生接线新增共享控制与完整预测；实际仿真仍未完成六检查点；FP/SAM3D/LLM 未运行；硬件 NOT_AUTHORIZED_NOT_RUN。G0-G10 尚未交齐，PARTIAL_DELIVERY，未推送。
+
+## 2026-09-13 worker_61: private feedback closure evidence
+
+Recovered the terminal result without restarting the simulation. Evidence:
+`benchmarks/release/evidence/pen_closure/worker_61/{probe.py,summary.json,feedback_hypothesis.json,result.json}`.
+The isolated private hypothesis uses depth 0.016777 m instead of original 0.012777 m and adaptive jaw targets, with unchanged physical parameters and existing collision/idle thresholds. After 84 adaptive controls (20 close plus 64 hold), three stable samples satisfy robot and all 12 object idle checks; endpoint error is 0.0009313821792602539 rad. Final pre-step finger forces are 0.6742882116617259 and 0.6092549420255825 N. This is not a holding-angle test or a lift result.
+
+The worker intentionally reports failed at the diagnostic barrier. Prediction reports no forbidden contact, not skill qualification. Primary drive writes are zero; primary-unchanged and resource-release events were emitted. The nominal closed targets in the base prediction report are NOT the adaptive action: the separate feedback trace records that action.
+
+Kernel: no production change or new regression run in this continuation. Native wiring: formal grasp/place remains incomplete. Actual simulation: private adaptive closure only. Model inference: NOT_RUN. Hardware: NOT_AUTHORIZED_NOT_RUN. Overall: PARTIAL_DELIVERY; no gate promoted.
+
+Next actual implementation: share a bounded feedback closure policy between private prediction and the original primary executor, retain independent holding evidence, and refresh measured jaw/attachment geometry before re-auditing the remaining lift. Do not reuse fixed-close predictions or stale lift geometry. Missing-adapter guards remain intact.

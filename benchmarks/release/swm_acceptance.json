@@ -6,7 +6,7 @@
   "baseline_commit": "7e3fee4196e7337e18217a0d72518789113eda77",
   "hardware_status": "NOT_AUTHORIZED_NOT_RUN",
   "native_heavy_workers": 1,
-  "previous_goal_turn_classification": "progress",
+  "previous_goal_turn_classification": "progress: recovered terminal private feedback result; evidence changes next closure implementation",
   "tested_source": {
     "commit": "eb7f3f0",
     "sha256": {},
@@ -14502,5 +14502,6 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Inspect original contact-aware closing and actual grasp geometry to satisfy stable holding plus arm endpoint constraints; retain original budgets, default depth and collision criteria"
+  "next_actual_action": "Share bounded feedback closure between private prediction and primary executor, then independently validate holding and refresh jaw/attachment lift audit; worker_61 is diagnostic only",
+  "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json"
 }

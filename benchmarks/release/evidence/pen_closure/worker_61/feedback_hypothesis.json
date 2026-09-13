@@ -1,0 +1,1280 @@
+{
+  "hypothesis": "private_feedback_close_not_production_action",
+  "original_depth_m": 0.012777,
+  "hypothesis_depth_m": 0.016777,
+  "physical_parameters_changed": false,
+  "thresholds_changed": false,
+  "force_band_n": [
+    0.5,
+    2.0
+  ],
+  "force_target_n": 1.0,
+  "source_execution_authorized": false,
+  "holding_qualified": false,
+  "note": "Base prediction nominal closed targets are not this adaptive action; use trace.",
+  "command": 0.480427969602754,
+  "contact_mode": true,
+  "closed_calls": 84,
+  "trace": [
+    {
+      "control_tick": 1,
+      "command": -0.96,
+      "native_root_targets": [
+        0.018200000000000018,
+        0.018200000000000018
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.9311904907226562e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 2,
+      "command": -0.9199999999999999,
+      "native_root_targets": [
+        0.036400000000000036,
+        0.036400000000000036
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 2.8252601623535156e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 3,
+      "command": -0.8799999999999999,
+      "native_root_targets": [
+        0.05460000000000005,
+        0.05460000000000005
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 2.586841583251953e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 4,
+      "command": -0.8399999999999999,
+      "native_root_targets": [
+        0.07280000000000007,
+        0.07280000000000007
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.7523765563964844e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 5,
+      "command": -0.7999999999999998,
+      "native_root_targets": [
+        0.09100000000000008,
+        0.09100000000000008
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 9.775161743164062e-06,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 6,
+      "command": -0.7599999999999998,
+      "native_root_targets": [
+        0.1092000000000001,
+        0.1092000000000001
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 5.125999450683594e-06,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 7,
+      "command": -0.7199999999999998,
+      "native_root_targets": [
+        0.12740000000000012,
+        0.12740000000000012
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 6.9141387939453125e-06,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 8,
+      "command": -0.6799999999999997,
+      "native_root_targets": [
+        0.14560000000000015,
+        0.14560000000000015
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 8.463859558105469e-06,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 9,
+      "command": -0.6399999999999997,
+      "native_root_targets": [
+        0.16380000000000014,
+        0.16380000000000014
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 9.894371032714844e-06,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 10,
+      "command": -0.5999999999999996,
+      "native_root_targets": [
+        0.18200000000000016,
+        0.18200000000000016
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.049041748046875e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 11,
+      "command": -0.5599999999999996,
+      "native_root_targets": [
+        0.20020000000000018,
+        0.20020000000000018
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.0848045349121094e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 12,
+      "command": -0.5199999999999996,
+      "native_root_targets": [
+        0.2184000000000002,
+        0.2184000000000002
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.1205673217773438e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 13,
+      "command": -0.4799999999999996,
+      "native_root_targets": [
+        0.23660000000000023,
+        0.23660000000000023
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.1801719665527344e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 14,
+      "command": -0.4399999999999996,
+      "native_root_targets": [
+        0.2548000000000002,
+        0.2548000000000002
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.2159347534179688e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 15,
+      "command": -0.39999999999999963,
+      "native_root_targets": [
+        0.27300000000000013,
+        0.27300000000000013
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.2278556823730469e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 16,
+      "command": -0.35999999999999965,
+      "native_root_targets": [
+        0.2912000000000002,
+        0.2912000000000002
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.2516975402832031e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 17,
+      "command": -0.3199999999999997,
+      "native_root_targets": [
+        0.3094000000000002,
+        0.3094000000000002
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.2636184692382812e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 18,
+      "command": -0.2799999999999997,
+      "native_root_targets": [
+        0.32760000000000017,
+        0.32760000000000017
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.3232231140136719e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 19,
+      "command": -0.23999999999999969,
+      "native_root_targets": [
+        0.34580000000000016,
+        0.34580000000000016
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.4543533325195312e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 20,
+      "command": -0.19999999999999968,
+      "native_root_targets": [
+        0.36400000000000016,
+        0.36400000000000016
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.5616416931152344e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 21,
+      "command": -0.15999999999999967,
+      "native_root_targets": [
+        0.38220000000000015,
+        0.38220000000000015
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.6450881958007812e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 22,
+      "command": -0.11999999999999966,
+      "native_root_targets": [
+        0.40040000000000014,
+        0.40040000000000014
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.7404556274414062e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 23,
+      "command": -0.07999999999999965,
+      "native_root_targets": [
+        0.4186000000000002,
+        0.4186000000000002
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.8358230590820312e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 24,
+      "command": -0.039999999999999654,
+      "native_root_targets": [
+        0.43680000000000013,
+        0.43680000000000013
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.9073486328125e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 25,
+      "command": 3.469446951953614e-16,
+      "native_root_targets": [
+        0.45500000000000024,
+        0.45500000000000024
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 1.990795135498047e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 26,
+      "command": 0.04000000000000035,
+      "native_root_targets": [
+        0.4732000000000001,
+        0.4732000000000001
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 2.110004425048828e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 27,
+      "command": 0.08000000000000035,
+      "native_root_targets": [
+        0.49140000000000017,
+        0.49140000000000017
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 2.193450927734375e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 28,
+      "command": 0.12000000000000036,
+      "native_root_targets": [
+        0.5096000000000002,
+        0.5096000000000002
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 2.300739288330078e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 29,
+      "command": 0.16000000000000036,
+      "native_root_targets": [
+        0.5278000000000002,
+        0.5278000000000002
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 2.4080276489257812e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 30,
+      "command": 0.20000000000000037,
+      "native_root_targets": [
+        0.5460000000000002,
+        0.5460000000000002
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 2.491474151611328e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 31,
+      "command": 0.24000000000000038,
+      "native_root_targets": [
+        0.5642000000000003,
+        0.5642000000000003
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 2.574920654296875e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 32,
+      "command": 0.28000000000000036,
+      "native_root_targets": [
+        0.5824000000000001,
+        0.5824000000000001
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 2.7060508728027344e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 33,
+      "command": 0.32000000000000034,
+      "native_root_targets": [
+        0.6006000000000001,
+        0.6006000000000001
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 2.8848648071289062e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 34,
+      "command": 0.3600000000000003,
+      "native_root_targets": [
+        0.6188000000000001,
+        0.6188000000000001
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 3.063678741455078e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 35,
+      "command": 0.4000000000000003,
+      "native_root_targets": [
+        0.6370000000000002,
+        0.6370000000000002
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 3.254413604736328e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 36,
+      "command": 0.4400000000000003,
+      "native_root_targets": [
+        0.6552000000000002,
+        0.6552000000000002
+      ],
+      "pre_step_forces_n": [
+        0.0,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 3.540515899658203e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 37,
+      "command": 0.4410989010989015,
+      "native_root_targets": [
+        0.6557000000000002,
+        0.6557000000000002
+      ],
+      "pre_step_forces_n": [
+        0.16513936262335366,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 3.063678741455078e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 38,
+      "command": 0.44219780219780236,
+      "native_root_targets": [
+        0.6562000000000001,
+        0.6562000000000001
+      ],
+      "pre_step_forces_n": [
+        0.17269439327413413,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 7.05718994140625e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 39,
+      "command": 0.44329670329670345,
+      "native_root_targets": [
+        0.6567000000000001,
+        0.6567000000000001
+      ],
+      "pre_step_forces_n": [
+        0.17757188028320262,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010275840759277344,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 40,
+      "command": 0.4443956043956043,
+      "native_root_targets": [
+        0.6572,
+        0.6572
+      ],
+      "pre_step_forces_n": [
+        0.0725170906981446,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00011599063873291016,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 41,
+      "command": 0.4454945054945054,
+      "native_root_targets": [
+        0.6577,
+        0.6577
+      ],
+      "pre_step_forces_n": [
+        0.17182946692600443,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010383129119873047,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 42,
+      "command": 0.4465934065934063,
+      "native_root_targets": [
+        0.6581999999999999,
+        0.6581999999999999
+      ],
+      "pre_step_forces_n": [
+        0.13595200395489715,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00011551380157470703,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 43,
+      "command": 0.4476923076923074,
+      "native_root_targets": [
+        0.6586999999999998,
+        0.6586999999999998
+      ],
+      "pre_step_forces_n": [
+        0.12191076647576676,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010955333709716797,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 44,
+      "command": 0.44879120879120826,
+      "native_root_targets": [
+        0.6591999999999998,
+        0.6591999999999998
+      ],
+      "pre_step_forces_n": [
+        0.11433167661196028,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010907649993896484,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 45,
+      "command": 0.44989010989010936,
+      "native_root_targets": [
+        0.6596999999999997,
+        0.6596999999999997
+      ],
+      "pre_step_forces_n": [
+        0.1262456139881982,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010657310485839844,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 46,
+      "command": 0.45098901098901023,
+      "native_root_targets": [
+        0.6601999999999997,
+        0.6601999999999997
+      ],
+      "pre_step_forces_n": [
+        0.1309316250060124,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010824203491210938,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 47,
+      "command": 0.4520879120879111,
+      "native_root_targets": [
+        0.6606999999999996,
+        0.6606999999999996
+      ],
+      "pre_step_forces_n": [
+        0.13168511263882096,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010979175567626953,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 48,
+      "command": 0.4531868131868122,
+      "native_root_targets": [
+        0.6611999999999996,
+        0.6611999999999996
+      ],
+      "pre_step_forces_n": [
+        0.1329657857963952,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010991096496582031,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 49,
+      "command": 0.45428571428571307,
+      "native_root_targets": [
+        0.6616999999999995,
+        0.6616999999999995
+      ],
+      "pre_step_forces_n": [
+        0.11820113826946235,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010955333709716797,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 50,
+      "command": 0.45538461538461417,
+      "native_root_targets": [
+        0.6621999999999995,
+        0.6621999999999995
+      ],
+      "pre_step_forces_n": [
+        0.13579264021344897,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010883808135986328,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 51,
+      "command": 0.45648351648351504,
+      "native_root_targets": [
+        0.6626999999999994,
+        0.6626999999999994
+      ],
+      "pre_step_forces_n": [
+        0.10453868986191633,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010991096496582031,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 52,
+      "command": 0.45758241758241613,
+      "native_root_targets": [
+        0.6631999999999993,
+        0.6631999999999993
+      ],
+      "pre_step_forces_n": [
+        0.11837151006196289,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010895729064941406,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 53,
+      "command": 0.458681318681317,
+      "native_root_targets": [
+        0.6636999999999993,
+        0.6636999999999993
+      ],
+      "pre_step_forces_n": [
+        0.13286541174246272,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010979175567626953,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 54,
+      "command": 0.4597802197802181,
+      "native_root_targets": [
+        0.6641999999999992,
+        0.6641999999999992
+      ],
+      "pre_step_forces_n": [
+        0.1255289618222009,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010895729064941406,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 55,
+      "command": 0.460879120879119,
+      "native_root_targets": [
+        0.6646999999999992,
+        0.6646999999999992
+      ],
+      "pre_step_forces_n": [
+        0.12976290126403725,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010800361633300781,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 56,
+      "command": 0.46197802197802007,
+      "native_root_targets": [
+        0.6651999999999991,
+        0.6651999999999991
+      ],
+      "pre_step_forces_n": [
+        0.13320030425103335,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010991096496582031,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 57,
+      "command": 0.46307692307692094,
+      "native_root_targets": [
+        0.6656999999999991,
+        0.6656999999999991
+      ],
+      "pre_step_forces_n": [
+        0.13378936071782727,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.0001119375228881836,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 58,
+      "command": 0.46417582417582204,
+      "native_root_targets": [
+        0.666199999999999,
+        0.666199999999999
+      ],
+      "pre_step_forces_n": [
+        0.12835961394755308,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00011444091796875,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 59,
+      "command": 0.4652747252747229,
+      "native_root_targets": [
+        0.666699999999999,
+        0.666699999999999
+      ],
+      "pre_step_forces_n": [
+        0.13159867682499823,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00011599063873291016,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 60,
+      "command": 0.466373626373624,
+      "native_root_targets": [
+        0.6671999999999989,
+        0.6671999999999989
+      ],
+      "pre_step_forces_n": [
+        0.006128831387175755,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 9.298324584960938e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 61,
+      "command": 0.4674725274725249,
+      "native_root_targets": [
+        0.6676999999999988,
+        0.6676999999999988
+      ],
+      "pre_step_forces_n": [
+        0.134140305603181,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 8.213520050048828e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 62,
+      "command": 0.468571428571426,
+      "native_root_targets": [
+        0.6681999999999988,
+        0.6681999999999988
+      ],
+      "pre_step_forces_n": [
+        0.1388278561050122,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 9.238719940185547e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 63,
+      "command": 0.46967032967032685,
+      "native_root_targets": [
+        0.6686999999999987,
+        0.6686999999999987
+      ],
+      "pre_step_forces_n": [
+        0.13694432784881397,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.0001004934310913086,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 64,
+      "command": 0.4707692307692277,
+      "native_root_targets": [
+        0.6691999999999987,
+        0.6691999999999987
+      ],
+      "pre_step_forces_n": [
+        0.135369482366873,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00010216236114501953,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 65,
+      "command": 0.4718681318681288,
+      "native_root_targets": [
+        0.6696999999999986,
+        0.6696999999999986
+      ],
+      "pre_step_forces_n": [
+        0.012442843778516226,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 9.465217590332031e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 66,
+      "command": 0.4729670329670297,
+      "native_root_targets": [
+        0.6701999999999986,
+        0.6701999999999986
+      ],
+      "pre_step_forces_n": [
+        0.07481370688061037,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 8.678436279296875e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 67,
+      "command": 0.4740659340659308,
+      "native_root_targets": [
+        0.6706999999999985,
+        0.6706999999999985
+      ],
+      "pre_step_forces_n": [
+        0.1233973959109991,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 8.690357208251953e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 68,
+      "command": 0.47516483516483166,
+      "native_root_targets": [
+        0.6711999999999985,
+        0.6711999999999985
+      ],
+      "pre_step_forces_n": [
+        0.12338641392311471,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 8.702278137207031e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 69,
+      "command": 0.47626373626373275,
+      "native_root_targets": [
+        0.6716999999999984,
+        0.6716999999999984
+      ],
+      "pre_step_forces_n": [
+        0.1342354555040501,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 9.572505950927734e-05,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 70,
+      "command": 0.4773626373626336,
+      "native_root_targets": [
+        0.6721999999999984,
+        0.6721999999999984
+      ],
+      "pre_step_forces_n": [
+        0.13313107077996858,
+        0.0
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.0001004934310913086,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 71,
+      "command": 0.47832616897753333,
+      "native_root_targets": [
+        0.6726384068847777,
+        0.6726384068847777
+      ],
+      "pre_step_forces_n": [
+        0.2292806116026517,
+        0.123186230441332
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.00012636184692382812,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 72,
+      "command": 0.47914689791462073,
+      "native_root_targets": [
+        0.6730118385511524,
+        0.6730118385511524
+      ],
+      "pre_step_forces_n": [
+        0.37421205271008495,
+        0.25313666725066664
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.0002390146255493164,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 73,
+      "command": 0.4798388247823979,
+      "native_root_targets": [
+        0.673326665275991,
+        0.673326665275991
+      ],
+      "pre_step_forces_n": [
+        0.48087537695689936,
+        0.37034655032270314
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.0003764629364013672,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 74,
+      "command": 0.480427969602754,
+      "native_root_targets": [
+        0.6735947261692531,
+        0.6735947261692531
+      ],
+      "pre_step_forces_n": [
+        0.5634574490821392,
+        0.4638782134758608
+      ],
+      "in_force_band": false,
+      "pre_step_arm_endpoint_error_rad": 0.0005133152008056641,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 75,
+      "command": 0.480427969602754,
+      "native_root_targets": [
+        0.6735947261692531,
+        0.6735947261692531
+      ],
+      "pre_step_forces_n": [
+        0.6292530265659388,
+        0.5487897198647707
+      ],
+      "in_force_band": true,
+      "pre_step_arm_endpoint_error_rad": 0.000639796257019043,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 76,
+      "command": 0.480427969602754,
+      "native_root_targets": [
+        0.6735947261692531,
+        0.6735947261692531
+      ],
+      "pre_step_forces_n": [
+        0.6566672096153271,
+        0.5822155702768824
+      ],
+      "in_force_band": true,
+      "pre_step_arm_endpoint_error_rad": 0.0007416009902954102,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 77,
+      "command": 0.480427969602754,
+      "native_root_targets": [
+        0.6735947261692531,
+        0.6735947261692531
+      ],
+      "pre_step_forces_n": [
+        0.6669885271594745,
+        0.5951792457740768
+      ],
+      "in_force_band": true,
+      "pre_step_arm_endpoint_error_rad": 0.0008122920989990234,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 78,
+      "command": 0.480427969602754,
+      "native_root_targets": [
+        0.6735947261692531,
+        0.6735947261692531
+      ],
+      "pre_step_forces_n": [
+        0.6736780518927732,
+        0.6052307285772631
+      ],
+      "in_force_band": true,
+      "pre_step_arm_endpoint_error_rad": 0.0008598566055297852,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 79,
+      "command": 0.480427969602754,
+      "native_root_targets": [
+        0.6735947261692531,
+        0.6735947261692531
+      ],
+      "pre_step_forces_n": [
+        0.6718102225221895,
+        0.6053808700163283
+      ],
+      "in_force_band": true,
+      "pre_step_arm_endpoint_error_rad": 0.0008904933929443359,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 80,
+      "command": 0.480427969602754,
+      "native_root_targets": [
+        0.6735947261692531,
+        0.6735947261692531
+      ],
+      "pre_step_forces_n": [
+        0.6733966120919375,
+        0.6079270806122709
+      ],
+      "in_force_band": true,
+      "pre_step_arm_endpoint_error_rad": 0.0009099245071411133,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 81,
+      "command": 0.480427969602754,
+      "native_root_targets": [
+        0.6735947261692531,
+        0.6735947261692531
+      ],
+      "pre_step_forces_n": [
+        0.6732546904468932,
+        0.60877615699671
+      ],
+      "in_force_band": true,
+      "pre_step_arm_endpoint_error_rad": 0.000922083854675293,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 82,
+      "command": 0.480427969602754,
+      "native_root_targets": [
+        0.6735947261692531,
+        0.6735947261692531
+      ],
+      "pre_step_forces_n": [
+        0.6743380889409059,
+        0.6093635974735051
+      ],
+      "in_force_band": true,
+      "pre_step_arm_endpoint_error_rad": 0.0009292364120483398,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 83,
+      "command": 0.480427969602754,
+      "native_root_targets": [
+        0.6735947261692531,
+        0.6735947261692531
+      ],
+      "pre_step_forces_n": [
+        0.6742882116617259,
+        0.6092549420255825
+      ],
+      "in_force_band": true,
+      "pre_step_arm_endpoint_error_rad": 0.0009313821792602539,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 84,
+      "command": 0.480427969602754,
+      "native_root_targets": [
+        0.6735947261692531,
+        0.6735947261692531
+      ],
+      "pre_step_forces_n": [
+        0.6742882116617259,
+        0.6092549420255825
+      ],
+      "in_force_band": true,
+      "pre_step_arm_endpoint_error_rad": 0.0009313821792602539,
+      "holding_qualified": false
+    }
+  ]
+}
