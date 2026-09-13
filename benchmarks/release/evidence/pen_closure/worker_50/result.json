@@ -1,0 +1,1 @@
+{"command_success": false, "error": "SceneInvalid: Original arm/gripper controller identity required", "finished_at": 1789264938.150264, "mode": "sim", "status": "failed", "task": "pickplace", "task_success": null}

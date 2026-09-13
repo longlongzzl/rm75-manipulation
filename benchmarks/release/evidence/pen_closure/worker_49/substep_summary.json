@@ -1,0 +1,171 @@
+{
+  "domain": "original_primary_CPU_PhysX_substep_diagnostic",
+  "records": 1709,
+  "physics_substeps": 1220,
+  "robot_contact_substeps": 1006,
+  "robot_contact_points": 21839,
+  "robot_min_separation_m": 0.03264525905251503,
+  "robot_max_separation_m": 0.03999798744916916,
+  "robot_nonzero_impulse_points": 0,
+  "robot_penetrating_points": 0,
+  "wake_events": [
+    {
+      "control": 43,
+      "substep": 3,
+      "stage": "grasp",
+      "before": {
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ],
+        "target_position_world_m": [
+          -0.08874388784170151,
+          -0.19183948636054993,
+          0.011481656692922115
+        ]
+      },
+      "after": {
+        "sleeping": false,
+        "linear_velocity_world_m_s": [
+          0.0008263196796178818,
+          -0.00042246869998052716,
+          -2.753629451035522e-05
+        ],
+        "angular_velocity_world_rad_s": [
+          0.03723185881972313,
+          0.07705789059400558,
+          4.580873064696789e-05
+        ],
+        "target_position_world_m": [
+          -0.08872499316930771,
+          -0.19184909760951996,
+          0.011478432454168797
+        ]
+      },
+      "robot_contacts": [
+        {
+          "body_names": [
+            "gripper_Left_Support_Link",
+            "scene-0_jiaobang-0"
+          ],
+          "robot_contact": true,
+          "points": [
+            {
+              "separation_m": 0.03993840143084526,
+              "position_world_m": [
+                -0.11584679782390594,
+                -0.22614076733589172,
+                0.01954219490289688
+              ],
+              "normal_world": [
+                -0.7521623969078064,
+                0.37275800108909607,
+                0.5434181094169617
+              ],
+              "impulse_ns": [
+                -0,
+                0,
+                0
+              ]
+            },
+            {
+              "separation_m": 0.03996221721172333,
+              "position_world_m": [
+                -0.11740322411060333,
+                -0.22977575659751892,
+                0.019881311804056168
+              ],
+              "normal_world": [
+                -0.7521623969078064,
+                0.37275800108909607,
+                0.5434181094169617
+              ],
+              "impulse_ns": [
+                -0,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "control": 44,
+      "substep": 1,
+      "stage": "grasp",
+      "before": {
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ],
+        "target_position_world_m": [
+          -0.08873951435089111,
+          -0.19184163212776184,
+          0.011480467393994331
+        ]
+      },
+      "after": {
+        "sleeping": false,
+        "linear_velocity_world_m_s": [
+          0.0006081291357986629,
+          -0.0003124649520032108,
+          -3.381486385478638e-05
+        ],
+        "angular_velocity_world_rad_s": [
+          0.026507729664444923,
+          0.05552942305803299,
+          -0.00020705454517155886
+        ],
+        "target_position_world_m": [
+          -0.08872033655643463,
+          -0.1918511837720871,
+          0.011478628031909466
+        ]
+      },
+      "robot_contacts": []
+    }
+  ],
+  "last_control": {
+    "kind": "control_end",
+    "control": 244,
+    "substep": 5,
+    "stage": "settle_grasp",
+    "captured_at": 43129.949879443,
+    "measured": {
+      "sleeping": false,
+      "linear_velocity_world_m_s": [
+        0.0012440008576959372,
+        -0.0004233873914927244,
+        1.837363379308954e-05
+      ],
+      "angular_velocity_world_rad_s": [
+        0.03802436590194702,
+        0.08084391057491302,
+        -0.0025953412987291813
+      ],
+      "target_position_world_m": [
+        -0.08872120082378387,
+        -0.1918775588274002,
+        0.01148087065666914
+      ]
+    }
+  },
+  "contact_model_qualified": false,
+  "skill_complete": false,
+  "hardware_authorized": false
+}

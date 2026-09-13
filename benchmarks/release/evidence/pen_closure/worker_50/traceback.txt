@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/workcell/worker.py", line 138, in main
+    swm_result=dispatch_if_enabled(spec,profile,args.app_root,run_dir,stop,events)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/integration.py", line 95, in dispatch_if_enabled
+    with context as session:
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/integration.py", line 47, in __enter__
+    session=self.build(self.resources)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_context.py", line 41, in <lambda>
+    return RuntimeContext(lambda resources: _build_pen_session(
+                                            ^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_context.py", line 131, in _build_pen_session
+    sink = NativePrimaryExecutor(primary, emit=events.emit)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/benchmarks/release/evidence/pen_closure/worker_49/probe.py", line 21, in install
+    original_init(self, primary, *args, **kwargs)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/benchmarks/release/evidence/pen_closure/worker_50/probe.py", line 19, in install
+    raise SceneInvalid('Original arm/gripper controller identity required')
+rm75_app.swm.scene.SceneInvalid: Original arm/gripper controller identity required

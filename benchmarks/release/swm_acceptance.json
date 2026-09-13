@@ -11,7 +11,7 @@
     "commit": "3425529",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "NaN regression expectation corrected without weakening safety. Target motion diagnostics distinguish failed grasp-path settling from successful initial-arm stationary control; cause requires substep contact evidence."
+    "note": "Production unchanged at 3425529. Worker49 records positive-separation zero-impulse robot/target contact candidates accompanying wakeup. Worker50 identical-drive-write hypothesis failed controller inventory assertion before execution; original gripper_passive group must be retained."
   },
   "runs": {
     "m0_targeted": {
@@ -14024,6 +14024,31 @@
       "elapsed_s": 42.44,
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "evidence": "benchmarks/release/evidence/pen_closure/worker_46/full_tests.log"
+    },
+    "m1_target_substeps_worker_49": {
+      "tested_commit": "3425529",
+      "run_tree_head": "f9cd92f",
+      "status": "DIAGNOSTIC_GRASP_SETTLE_FAILURE",
+      "physics_substeps": 1220,
+      "robot_contact_substeps": 1006,
+      "robot_contact_points": 21839,
+      "robot_nonzero_impulse_points": 0,
+      "robot_penetrating_points": 0,
+      "first_wake_control": 43,
+      "first_wake_substep": 3,
+      "contact_model_qualified": false,
+      "cleanup_verified": true,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_49"
+    },
+    "m1_identical_drive_worker_50": {
+      "tested_commit": "3425529",
+      "status": "DIAGNOSTIC_CONTROLLER_INVENTORY_ASSERTION_FAILED",
+      "hypothesis_executed": false,
+      "diagnostic_physics_substeps": 0,
+      "drive_writes_elided": 0,
+      "missing_original_group": "gripper_passive",
+      "cleanup_verified": true,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_50"
     }
   },
   "gates": {
@@ -14282,7 +14307,7 @@
     },
     "native_wiring": "COMPLETE_REGISTERED_OBJECT_IDLE_WITHIN_ORIGINAL_STAGE_BUDGET",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "GRASP_PATH_TARGET_UNSETTLED_BUT_INITIAL_ARM_HOLD_IDLE_TICKS_9_TO_200_NO_SKILL_SUCCESS",
+    "actual_simulation": "WORKER49_PROXIMITY_CONTACT_WAKEUP_GRASP_NOT_IDLE_WORKER50_DIAGNOSTIC_INIT_FAILURE",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14349,5 +14374,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Inspect original primary physics-substep target contacts, separations and wakeup state during grasp motion; preserve original scene, depth default, thresholds and budgets"
+  "next_actual_action": "Correct diagnostic controller inventory to preserve gripper_passive and wrap only original arm/gripper PD targets; test exact-native-equal write elision without changing contact offsets or idle thresholds"
 }

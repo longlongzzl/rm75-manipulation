@@ -190,3 +190,13 @@ worker_48 做原初始姿态保持对照，不执行已规划轨迹：在同一�
 该对照否定“原笔在原桌面 200 步内无法静置”的简单解释，但尚不能定位执行抓取轨迹后持续运动的机制。下一实际动作是物理子步中的接触点/separation/唤醒读回，区分瞬时接触、接触裕量影响与其他运动来源；继续保留静止门槛、原总预算和独立新采集，不盲改阻尼、默认深度或碰撞条件。
 
 证据及复现命令：benchmarks/release/evidence/pen_closure/worker_46/README.md，另有 worker_47、worker_48 有界结果与输入/源码摘要。分层状态：内核本轮全绿；原生接线沿用完整物体静止等待；实际仿真为诊断/保持对照而非笔六检查点完成；模型 FP/SAM3D/LLM 未运行；硬件 NOT_AUTHORIZED_NOT_RUN。G0-G10 尚未交齐，保持 PARTIAL_DELIVERY，本地提交，未推送。
+
+## M1 / 子步确认正间距零冲量接触候选伴随唤醒
+
+本轮 progress，生产仍为 `3425529`，未修改生产控制器或默认参数。worker_49 在原主 CPU PhysX scene.step 前后只读采样，244 原控制步对应 **1220 物理子步**、1709 总记录。目标/机器人接触候选出现在 1006 子步，共 21839 个点；全部机器人点 separation 为正，范围 **0.032645259053-0.039997987449 m**，全部 impulse 为零，无目标/机器人穿透点。该数据不是全世界碰撞审核，只覆盖目标相关接触。
+
+第一次睡眠到活动发生在 grasp 的 control 43/substep 3，与左 Support Link/笔约 39.94 mm 正间距、零冲量接触候选同时出现；control 44/substep 1 再次出现睡眠到活动。该证据支持接触裕量关联唤醒，而不是夹爪实体撞击，但不能单凭时间重合认定具体写入操作导致持续唤醒。原 grasp 静止等待仍满 200 步失败，未闭爪/抬升，资源清理读回 true。
+
+worker_50 尝试对照“只有请求与原生读回完全相等时省略驱动 setter，保留 set_action/缓存更新”；尚未得到物理结果，因为诊断错误地断言控制器只有 arm/gripper，在初始化就失败。文本已确认原配置还有 gripper_passive/PassiveControllerConfig。没有省略任何驱动写入，没有运行该假设的动作子步；不能算否定或验证假设。本轮保留失败脚本和身份检查，下一步修正为明确保留被动组、只对正确的两个 PD 控制器进行原生同值对照，再判断是否值得接回正式执行器/预测器。不可缩小接触裕量、放宽静止条件或改 solver 来掩盖问题。
+
+证据：benchmarks/release/evidence/pen_closure/worker_49/substep_summary.json、worker_49/README.md 及 worker_50 失败记录，含输入/原始日志/源码 SHA256。内核仍引用上轮 1809 passed / 1 warning / 42.44 s，非本轮重跑；原生接线未改；实际仿真为子步诊断而非成功原子闭环；模型 FP/SAM3D/LLM 未运行；硬件 NOT_AUTHORIZED_NOT_RUN。所有 G0-G10 尚未交齐，保持 PARTIAL_DELIVERY，未推送。
