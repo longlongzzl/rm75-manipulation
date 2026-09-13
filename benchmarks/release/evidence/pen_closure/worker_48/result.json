@@ -1,0 +1,1 @@
+{"command_success": false, "error": "SceneInvalid: Initial hold diagnostic complete; atomic trajectory intentionally not executed", "finished_at": 1789264490.568749, "mode": "sim", "status": "failed", "task": "pickplace", "task_success": null}

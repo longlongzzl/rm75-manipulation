@@ -689,3 +689,15 @@ worker_26 恢复原完整初始化、场景同步、规划审核和 approach/gra
 内核：定向 **34 passed / 1 failed / 0.13 s**；原生进程退出后串行完整 tests 为 **1808 passed / 1 failed / 1 existing warning / 78.94 s**。唯一失败为新增 test_settle_readback_does_not_turn_nonfinite_feedback_into_wait 预期 ObservationUnavailable，而原底层 _array 对 NaN 更早抛出 SceneInvalid；安全拒绝仍发生，本轮没有修改或跳过此失败断言。下一步先修正该测试的异常类型，再记录抓取到位期间目标接触与运动来源，保留等待预算与全部保护。
 
 分层：原生接线本轮新增完整物体静止等待；实际仿真为上述单一深度假设，不是默认配置已通过；FP/SAM3D/LLM 未运行；硬件 NOT_AUTHORIZED_NOT_RUN。笔六检查点、其余 G0-G10 门槛未完成，保持 PARTIAL_DELIVERY。证据见 benchmarks/release/evidence/pen_closure/worker_44 和 worker_45；本轮本地提交，未推送。
+
+## M1 / 回归恢复全绿，抓取轨迹与初始保持对照区分
+
+本轮 progress，提交 `3425529` 仅修正上一轮新增 NaN 测试的异常期望为原 SceneInvalid；不修改安全拒绝。定向 **35 passed / 0.11 s**，原生作业退出后完整隔离 tests 为 **1809 passed / 1 existing warning / 42.44 s**，53a912b 的失败历史保留。
+
+原深度 +4 mm 进程内假设继续只用于诊断，未写入生产默认配置。worker_46 在关节满足端点条件后记录 192 个物体静止读回，笔只有桌面非零合力、未读到机器人合力。worker_47 扩展到原每控制步：244 个样本覆盖 approach 20、settle_approach 14、grasp 10、settle_grasp 200，仍只有笔/桌面非零合力，笔从 approach 第一个控制步已运动。两次均在 grasp 静止预算处停止，未闭爪/抬升；不能用控制边界零合力声称从未发生接触。
+
+worker_48 做原初始姿态保持对照，不执行已规划轨迹：在同一执行前边界，保持实测原初始七关节与原开爪命令，真实主物理步进 200 控制周期。笔在第 1-8 步运动，第 9-200 步全部满足原静止条件，未读到机器人非零合力。对照明确在结束时抛 diagnostic-complete，中止原子任务，不冒充 worker 成功。无 q/qdot/对象 setter，无场景或物理参数变更，三次资源清理读回全部 true。
+
+该对照否定“原笔在原桌面 200 步内无法静置”的简单解释，但尚不能定位执行抓取轨迹后持续运动的机制。下一实际动作是物理子步中的接触点/separation/唤醒读回，区分瞬时接触、接触裕量影响与其他运动来源；继续保留静止门槛、原总预算和独立新采集，不盲改阻尼、默认深度或碰撞条件。
+
+证据及复现命令：benchmarks/release/evidence/pen_closure/worker_46/README.md，另有 worker_47、worker_48 有界结果与输入/源码摘要。分层状态：内核本轮全绿；原生接线沿用完整物体静止等待；实际仿真为诊断/保持对照而非笔六检查点完成；模型 FP/SAM3D/LLM 未运行；硬件 NOT_AUTHORIZED_NOT_RUN。G0-G10 尚未交齐，保持 PARTIAL_DELIVERY，本地提交，未推送。

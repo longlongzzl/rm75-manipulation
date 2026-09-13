@@ -1,0 +1,1 @@
+{"command_success": false, "error": "SceneInvalid: Primary stage did not reach measured idle within settle budget", "finished_at": 1789264374.568084, "mode": "sim", "status": "failed", "task": "pickplace", "task_success": null}

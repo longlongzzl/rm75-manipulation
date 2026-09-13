@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "53a912b",
+    "commit": "3425529",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Registered object idle wired into unchanged native stage budget. Single +4mm process-local depth hypothesis reaches primary grasp motion but bi remains moving after 200 hold ticks; no close/lift. New regression has one exception-type assertion failure, preserved."
+    "note": "NaN regression expectation corrected without weakening safety. Target motion diagnostics distinguish failed grasp-path settling from successful initial-arm stationary control; cause requires substep contact evidence."
   },
   "runs": {
     "m0_targeted": {
@@ -13988,6 +13988,42 @@
       "elapsed_s": 78.94,
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "evidence": "benchmarks/release/evidence/pen_closure/worker_45/full_tests.log"
+    },
+    "m1_target_contact_worker_46": {
+      "tested_commit": "3425529",
+      "status": "DIAGNOSTIC_GRASP_SETTLE_FAILURE",
+      "samples": 192,
+      "robot_resultant_contact_samples": 0,
+      "coverage": "robot_idle_control_boundaries_only",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_46"
+    },
+    "m1_target_contact_worker_47": {
+      "tested_commit": "3425529",
+      "status": "DIAGNOSTIC_GRASP_SETTLE_FAILURE",
+      "samples": 244,
+      "robot_resultant_contact_samples": 0,
+      "coverage": "all_executed_control_boundaries_not_physics_substeps",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_47"
+    },
+    "m1_initial_hold_worker_48": {
+      "tested_commit": "3425529",
+      "status": "DIAGNOSTIC_COMPLETE_NOT_SKILL_EXECUTION",
+      "control_ticks": 200,
+      "first_continuously_idle_tick": 9,
+      "last_idle_tick": 200,
+      "grasp_trajectory_executed": false,
+      "robot_resultant_contact_samples": 0,
+      "cleanup_verified": true,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_48"
+    },
+    "m1_target_contact_full_regression": {
+      "tested_commit": "3425529",
+      "passed": 1809,
+      "failed": 0,
+      "warnings": 1,
+      "elapsed_s": 42.44,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_46/full_tests.log"
     }
   },
   "gates": {
@@ -14237,16 +14273,16 @@
   },
   "current_layer_status": {
     "kernel": {
-      "tested_commit": "53a912b",
-      "status": "REGRESSION_FAILED_NEW_EXCEPTION_ASSERTION",
-      "passed": 1808,
-      "failed": 1,
+      "tested_commit": "3425529",
+      "status": "PASSED_REGRESSION",
+      "passed": 1809,
+      "failed": 0,
       "warnings": 1,
-      "elapsed_s": 78.94
+      "elapsed_s": 42.44
     },
     "native_wiring": "COMPLETE_REGISTERED_OBJECT_IDLE_WITHIN_ORIGINAL_STAGE_BUDGET",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "WORKER_45_DEPTH_HYPOTHESIS_GRASP_TARGET_NOT_IDLE_AFTER_200_NO_CLOSE_OR_LIFT",
+    "actual_simulation": "GRASP_PATH_TARGET_UNSETTLED_BUT_INITIAL_ARM_HOLD_IDLE_TICKS_9_TO_200_NO_SKILL_SUCCESS",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14313,5 +14349,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Correct new NaN exception assertion to original SceneInvalid; identify target contact/motion during open-grasp settling before promoting any planning-depth change"
+  "next_actual_action": "Inspect original primary physics-substep target contacts, separations and wakeup state during grasp motion; preserve original scene, depth default, thresholds and budgets"
 }
