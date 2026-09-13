@@ -106,6 +106,8 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     primary = initialize_frozen_primary(resources, direct, args, contract, stop=stop, events=events,
         artifact_directory=output / 'initialization_artifacts', capture_builders=True)
     owned["primary"] = primary
+    from .native_simulation_clock import NativeSimulationClock
+    primary.simulation_clock = NativeSimulationClock(primary.env.unwrapped)
     from .native_velocity import NativeArticulationVelocity
     primary.velocity_readback = NativeArticulationVelocity(primary.env.unwrapped.agent.robot)
     from .native_drive_commands import NativeDriveCommands

@@ -17,6 +17,8 @@ def observe_primary_robot(primary):
     from rm75_app.execution.maniskill_task_bridge import _pose_matrix
     from rm75_app.planning.gripper_collision import DYNAMIC_GRIPPER_LINKS
 
+    clock = getattr(primary, "simulation_clock", None)
+    physical_clock = None if clock is None else clock.read()
     raw = primary.read_state()
     drive_state = read_primary_drive_state(primary)
     robot = primary.demo.robot
@@ -53,6 +55,8 @@ def observe_primary_robot(primary):
         raise ObservationUnavailable('Robot moved during idle contact observation')
     if read_primary_drive_state(primary) != drive_state:
         raise ObservationUnavailable('Native drive targets changed during robot observation')
+    if clock is not None and clock.read() != physical_clock:
+        raise ObservationUnavailable("Primary stepped during physical-clock feedback interval")
     finished = time.monotonic()
     return dict(source='native_joint_link_and_contact_feedback', domain='physics',
         captured_at=raw['capture_started_at'], capture_finished_at=finished,
@@ -66,7 +70,7 @@ def observe_primary_robot(primary):
         native_velocity_evidence=raw.get("velocity_evidence"),
         holding=held[0] if held else 'empty', holding_evidence=dict(
             source='original_ManiSkill_is_grasping', min_force_n=.5, max_angle_deg=95, contacts=contacts),
-        hardware_qualified=False)
+        simulation_clock=physical_clock, hardware_qualified=False)
 
 
 def synchronize_robot_geometry(backend, observation):
@@ -143,6 +147,8 @@ def read_primary_tcp_feedback(primary):
     primary.stop.check()
     if primary.closed:
         raise ObservationUnavailable('Primary closed during measured TCP feedback')
+    clock = getattr(primary, "simulation_clock", None)
+    physical_clock = None if clock is None else clock.read()
     raw = primary.read_state()
     arm = tuple(f'joint_{i}' for i in range(1, 8))
     jaw = tuple(f'gripper_{side}_{part}_Joint' for side in ('Left','Right') for part in ('1','2','Support'))
@@ -157,6 +163,8 @@ def read_primary_tcp_feedback(primary):
     after_q = _array(primary.demo.robot.get_qpos()).reshape(-1)
     if after_q.shape != (13,) or not np.array_equal(after_q, q):
         raise ObservationUnavailable('Primary moved during measured TCP feedback')
+    if clock is not None and clock.read() != physical_clock:
+        raise ObservationUnavailable("Primary stepped during physical-clock feedback interval")
     finished = time.monotonic()
     started = float(raw['capture_started_at'])
     if not np.isfinite([started, finished]).all() or finished < started:
@@ -170,4 +178,5 @@ def read_primary_tcp_feedback(primary):
         gripper_positions={name: float(q[names.index(name)]) for name in jaw},
         T_world_tcp=tcp.tolist(), tcp_coordinate_frame='base_link', T_world_base=base.tolist(),
         tcp_source='original_native_TCP_link_pose_at_measured_joint_state',
-        hardware_qualified=False, physical_time_axis_qualified=False)
+        simulation_clock=physical_clock,
+        hardware_qualified=False, physical_time_axis_qualified=physical_clock is not None)
