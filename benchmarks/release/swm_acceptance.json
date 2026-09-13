@@ -14866,5 +14866,29 @@
     "model_inference": "NOT_RUN",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "evidence": "benchmarks/release/evidence/pusht_feedback/native_link_replay_03/"
+  },
+  "native_link_replay_04": {
+    "status": "PASSED_ACTUAL_ACTION_NATIVE_TOOL_REPLAY_NO_INFORMATION",
+    "kernel": {
+      "passed": 1929,
+      "warnings": 1,
+      "duration_s": 45.91
+    },
+    "native_wiring": "offline_same_action_original_tool_passed",
+    "actual_simulation": {
+      "valid_hypotheses": 4,
+      "native_tool_links": 7,
+      "native_tool_shapes": 27,
+      "target_shapes": 2
+    },
+    "posterior_updated": false,
+    "density_informative": false,
+    "next_planner_consumed_posterior": false,
+    "full_arm_replayed": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "material_scope": "original_tool_fixed_object_support_shared_effective_friction",
+    "known_metadata_gap": "inherited material_parameterization label still mentions tool friction",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/native_link_replay_04/"
   }
 }

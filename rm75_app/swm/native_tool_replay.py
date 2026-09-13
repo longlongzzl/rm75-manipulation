@@ -4,6 +4,16 @@ from .scene import digest, transform, pose_error
 from .physics_replay import interpolate_pose
 
 
+def apply_attached_shape_properties(shape, properties):
+    """Density belongs to the original recipe and is immutable after attach."""
+    from .native_body_mirror import compare_native_state
+    for key,value in properties.items():
+        if key=='density':
+            compare_native_state(value,float(shape.density),'tool_shape.density')
+        elif getattr(shape,key)!=value:
+            setattr(shape,key,value)
+
+
 class NativeToolProgram:
     def __init__(self, request, geometry, motion):
         canonical=dict(motion); claimed=canonical.pop('motion_digest')
@@ -63,7 +73,7 @@ class NativeToolProgram:
             for shape,state in zip(body.collision_shapes,states):
                 shape.physical_material=sapien.physx.PhysxMaterial(**state['material'])
                 shape.set_collision_groups(state['collision_groups'])
-                for key,value in state['properties'].items():setattr(shape,key,value)
+                apply_attached_shape_properties(shape,state['properties'])
                 compare_native_state(state,shape_state(shape,np.eye(4)),name)
             entity.add_component(body);entity.set_pose(spose(self.poses[name][0]))
             scene.sub_scenes[0].add_entity(entity)
