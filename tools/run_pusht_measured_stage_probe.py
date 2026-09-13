@@ -37,6 +37,7 @@ def main():
         profile_sha256=hashlib.sha256(args.profile.read_bytes()).hexdigest())
     try:
         session.open()
+        before_swm=session.swm_capture.capture('probe_before')
         session.feedback_action_id=uuid.uuid4().hex
         session._prepared_contact_binding=None
         before=session.observe();before_tool=session.measured_tool_feedback()
@@ -51,8 +52,11 @@ def main():
         after.validate(now=session.clock(),after=before.captured_at,previous=before,
                        max_age_s=session.config.max_observation_age_s)
         after_tool=session.measured_tool_feedback()
+        after_swm=session.swm_capture.capture('probe_after')
         gap=float(np.max(abs(session.base.read_q()-planned.positions[-1])))
         result.update(before=before.as_dict(),after=after.as_dict(),
+            swm_before=before_swm['snapshot_id'],swm_after=after_swm['snapshot_id'],
+            swm_revisions=[before_swm['revision'],after_swm['revision']],
             before_tool=before_tool,after_tool=after_tool,
             actual_action_id=session.feedback_action_id,planned_samples=len(planned.positions),
             planned_duration_s=planned.duration,final_joint_error_rad=gap,

@@ -1,6 +1,20 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_native_swm_capture_worker_06": {
+    "status": "ACTUAL_PUSH_BEFORE_AFTER_SWM_COMMITTED_RUNTIME_INCOMPLETE",
+    "kernel": "1924 full passed / 1 warning / 43.95 s; isolated",
+    "native_wiring": "Original native_body/body_state registers every original PushT rigid actor; measured idle/no-tool-contact captures commit to existing SceneWorldModel",
+    "actual_simulation": "One complete five-stage push with before/after SWM revisions 1/2; second before_push revision 3; worker cancelled at 120 s",
+    "before_snapshot": "b06857056e6889bb13166e79fe1536d82ee832bc8b7df669ba7165da24d155ee",
+    "after_snapshot": "40adac0424b7d350c8d7e3b792aa971948689bfa9c51799143b15dc54abf6d89",
+    "native_control_counters": [61,1995],
+    "mirror_acknowledged": false,
+    "worker_action_physics_fit": false,
+    "evidence": "benchmarks/release/evidence/pusht_feedback/worker_06/",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
   "compound_pusht_physx_replay_01": {
     "status": "ACTUAL_TOOL_ONLY_COMPOUND_REPLAY_VALID_NOT_WORKER_ACTION_FIT",
     "kernel": "6 targeted passed / 0.03 s; 1924 full passed / 1 warning / 43.32 s; isolated",

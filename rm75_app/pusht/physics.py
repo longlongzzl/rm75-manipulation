@@ -136,6 +136,9 @@ class PhysicsSession:
         import imageio.v2 as imageio
         self.video=imageio.get_writer(self.directory/'closed_loop.mp4',fps=10,codec='libx264',pixelformat='yuv420p')
         self.advance(2.)
+        if self.full_arm:
+            from .swm_capture import PushTSceneCapture
+            self.swm_capture=PushTSceneCapture(self)
         self.events.emit('physics_backend_ready',backend=self.kind,hardware_connected=False,
             observer='simulator_ground_truth',simulation_time_s=self.base.physics_time)
 
@@ -349,6 +352,7 @@ class PhysicsSession:
         if drift>1e-5:raise ValueError('Simulated start changed after planning: '
                                        f'{drift:.3e} rad > 1e-5 rad')
         self.feedback_action_id=uuid.uuid4().hex
+        if self.full_arm:self.last_swm_before=self.swm_capture.capture('before_push')
         self.events.emit('physics_action_started',actual_action_id=self.feedback_action_id,
             observation_sequence=obs.sequence,measured_tool_feedback=self.measured_tool_feedback())
         for stage_program in program.stage_programs():
@@ -374,6 +378,7 @@ class PhysicsSession:
             gap=float(np.max(abs(self.base.read_q()-program.rows[-1][2][-1])))
             self.report['last_final_joint_tracking_error_rad']=gap
             if gap>.02:raise RuntimeError('Articulated final joint tracking error')
+            self.last_swm_after=self.swm_capture.capture('after_push')
 
     def close(self):
         if self.video is not None:self.video.close()
