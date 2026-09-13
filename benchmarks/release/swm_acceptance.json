@@ -14502,7 +14502,7 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Fix native counter boolean/nonfinite validation; then bind shared physical epoch to post-observation recorder coverage and transition replay. Collision policy remains unchanged pending approval.",
+  "next_actual_action": "Bind shared native physical epoch to post-observation recorder coverage and transition/replay. Counter validation fixed; collision rules unchanged pending separate approval.",
   "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json",
   "feedback_closure_wiring": {
     "status": "PRIMARY_CLOSURE_EXECUTED_LIFT_ADAPTER_MISSING",
@@ -14581,5 +14581,14 @@
     "full_failed": 1,
     "full_duration_s": 46.39,
     "post_exposure_transition_bound": false
+  },
+  "native_clock_input_fix": {
+    "tested_commit": "fde3a92",
+    "targeted_passed": 14,
+    "full_passed": 1882,
+    "full_failed": 0,
+    "full_duration_s": 42.48,
+    "new_native_run": false,
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
   }
 }
