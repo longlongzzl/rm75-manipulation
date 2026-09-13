@@ -21,7 +21,18 @@ class NativeArticulationVelocity:
         self.native = robot._objs[0]
         self.root = self.native.root
         self.links = tuple(self.native.get_links())
-        self.names = tuple(joint.name for joint in self.native.get_active_joints())
+        from .native_robot_mirror import ARM_JOINTS, GRIPPER_JOINTS, _native_drive_joints
+        mapping = {}
+        for name in ARM_JOINTS + GRIPPER_JOINTS:
+            wrapper = robot.joints_map.get(name)
+            if wrapper is None or len(wrapper._objs) != 1:
+                raise SceneInvalid('Complete canonical joint wrappers required')
+            mapping[name] = wrapper._objs[0]
+        self.mapping = _native_drive_joints(self.native, mapping)
+        self.native_joints = tuple(self.native.get_active_joints())
+        self.names = tuple(self.mapping)
+        self.native_indices = {name: next(index for index, joint in enumerate(self.native_joints)
+            if joint is handle) for name, handle in self.mapping.items()}
         if (len(self.links) != 20 or len({link.name for link in self.links}) != 20
                 or len(self.names) != 13 or len(set(self.names)) != 13
                 or self.root not in self.links or not self.root.is_root
@@ -47,7 +58,9 @@ class NativeArticulationVelocity:
             raise SceneInvalid('Native velocity joint identity mismatch')
         q = finite(positions, (13,))
         raw = finite(velocities, (13,))
-        indices = [self.names.index(name) for name in names]
+        if tuple(self.native.get_active_joints()) != self.native_joints:
+            raise SceneInvalid('Native active joint identity changed')
+        indices = [self.native_indices[name] for name in names]
         native_q = finite(self.native.get_qpos(), (13,))[indices]
         native_v = finite(self.native.get_qvel(), (13,))[indices]
         if not np.array_equal(q, native_q) or not np.array_equal(raw, native_v):
