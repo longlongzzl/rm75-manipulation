@@ -63,6 +63,7 @@ def observe_primary_robot(primary):
         gripper_positions={name: float(q[names.index(name)]) for name in grip_names},
         gripper_velocities={name: float(qdot[names.index(name)]) for name in grip_names},
         gripper_links_in_base=gripper_links, gripper_observed=True, native_drive_state=drive_state,
+        native_velocity_evidence=raw.get("velocity_evidence"),
         holding=held[0] if held else 'empty', holding_evidence=dict(
             source='original_ManiSkill_is_grasping', min_force_n=.5, max_angle_deg=95, contacts=contacts),
         hardware_qualified=False)

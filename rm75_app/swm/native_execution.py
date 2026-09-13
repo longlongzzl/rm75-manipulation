@@ -92,7 +92,7 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
                 feedback_velocities_rad_s=list(raw["velocities"]),
                 max_velocity_rad_s=max_velocity,
                 endpoint_error_rad=error, stable_steps=stable, idle=idle,
-                object_settle_state=objects)
+                object_settle_state=objects, velocity_evidence=raw.get("velocity_evidence")) 
             if stable >= 3:
                 self.emit(kind='swm_primary_stage_settled', **self.last_settle_evidence)
                 return

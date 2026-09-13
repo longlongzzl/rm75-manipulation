@@ -40,6 +40,7 @@ class FrozenPrimaryWorld:
     closed: bool = False
     construction_recipes: dict = field(default_factory=dict)
     constraint_recipes: dict = field(default_factory=dict)
+    velocity_readback: object = None
 
     def read_state(self):
         """Fresh actual actor/robot reads; no setters and no command-cache data.
@@ -59,6 +60,9 @@ class FrozenPrimaryWorld:
         qdot = _array(robot.get_qvel()).reshape(-1)
         if len(names) != len(q) or len(qdot) != len(q) or len(set(names)) != len(names):
             raise SceneInvalid('Primary robot joint readback identity mismatch')
+        velocity_evidence = None
+        if self.velocity_readback is not None:
+            qdot, velocity_evidence = self.velocity_readback(names, q, qdot)
         objects = {oid: _pose_matrix(actor).tolist() for oid, actor in self.actors.items()}
         ended = time.monotonic()
         self.sequence += 1
@@ -66,6 +70,7 @@ class FrozenPrimaryWorld:
             source='native_actor_and_joint_readback', sequence=self.sequence,
             capture_started_at=started, capture_finished_at=ended,
             joint_names=list(names), positions=q.tolist(), velocities=qdot.tolist(),
+            velocity_evidence=velocity_evidence,
             objects=objects, coordinate_frame='native_world',
             initialization_input_sha256=self.contract['sha256'],
             hardware_connected=False, holding_verified=False)

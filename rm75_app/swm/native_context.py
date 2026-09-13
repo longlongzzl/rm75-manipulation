@@ -106,6 +106,8 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     primary = initialize_frozen_primary(resources, direct, args, contract, stop=stop, events=events,
         artifact_directory=output / 'initialization_artifacts', capture_builders=True)
     owned["primary"] = primary
+    from .native_velocity import NativeArticulationVelocity
+    primary.velocity_readback = NativeArticulationVelocity(primary.env.unwrapped.agent.robot)
     backend = resources.enter_context(Curobo2Backend(Curobo2BackendConfig()))
     owned["backend"] = backend
     backend.update_scene(PlanningScene())
