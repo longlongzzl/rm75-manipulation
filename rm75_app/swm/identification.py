@@ -96,11 +96,28 @@ def validate_transition(transition):
     data=copy.deepcopy(transition)
     if data.get('schema')!='rm75_measured_transition_v1': raise ValueError('Expected measured transition')
     if data.get('domain') not in ('real','physics','fixture'): raise ValueError('Missing measurement domain')
-    allowed={'real':('foundationpose','rrtrack_foundationpose'), 'physics':('simulator_ground_truth',), 'fixture':('fixture',)}
+    allowed={'real':('foundationpose','rrtrack_foundationpose'), 'physics':('simulator_ground_truth','native_primary_PhysX_readback'), 'fixture':('fixture',)}
     if data.get('observation_source') not in allowed[data['domain']]:
         raise ValueError('Measured object poses need explicit valid observation provenance')
     if data.get('intervened') is not False or data.get('holding_changed') is not False:
         raise ValueError('External intervention/attachment changes are not physics calibration samples')
+    if data.get('observation_source') == 'native_primary_PhysX_readback':
+        from .physical_recording import _clock
+        evidence = data.get('physical_clock_evidence')
+        snapshot = data.get('initial_snapshot', {})
+        measured = snapshot.get('objects', {}).get(data.get('object_id'), {}).get('measured', {})
+        identity, start = _clock(measured.get('simulation_clock'))
+        if (_clock(snapshot.get('robot', {}).get('simulation_clock')) != (identity, start)
+                or not isinstance(evidence, dict)
+                or evidence.get('source') != 'native_clock_projection_without_host_time_relabeling'
+                or evidence.get('epoch') != identity[0] or evidence.get('physical_start_s') != start):
+            raise ValueError('Native observations require consistent physical-clock projection evidence')
+        end = evidence.get('physical_end_s')
+        duration = data.get('object_time_s', [None])[-1]
+        if (not isinstance(end, (int,float)) or not np.isfinite(end)
+                or not isinstance(duration, (int,float)) or not np.isfinite(duration)
+                or duration <= 0 or not np.isclose(end-start, duration, atol=1e-9, rtol=0)):
+            raise ValueError('Native physical observation duration differs from projection')
     action=data.get('actual_action',{})
     if action.get('source') != 'measured_feedback':
         raise ValueError('Replay measured tool feedback, not a planned command trajectory')

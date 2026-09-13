@@ -18,7 +18,7 @@ def case():
     b=copy.deepcopy(a);b['robot']['simulation_clock']=last
     b['objects']['a']['measured']=dict(captured_at=110.,simulation_clock=last)
     raw=dict(domain='physics',tool_captured_at=[99.,101.,111.],tool_simulation_clocks=[first,first,last],
-        T_world_tcp=[pose,pose,pose],stages=['push']*3)
+        T_world_tcp=[copy.deepcopy(pose) for _ in range(3)],stages=['push']*3)
     return raw,a,b
 
 
