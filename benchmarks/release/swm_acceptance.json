@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "9d75dc4",
+    "commit": "9888ae7",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Continuation fixtures repaired; serial full regression 1779 passed. Worker_38 confirms discrete grasp bottleneck and enabled but unattempted axis fallback. Diagnostic worker_39 actually resolves 369 axis candidates from 70 inputs with original place rebuilding; production atomic fallback remains pending."
+    "note": "Original continuous-axis task construction is shared and formally wired into atomic planning. Worker_40 built 369 axis candidates, screened 34 relations, selected 7 within remaining budget; six axis plus one discrete closure hypotheses rejected table contact, no primary actions or pen six-checkpoint success."
   },
   "runs": {
     "m0_targeted": {
@@ -13818,6 +13818,40 @@
       "skill_verified": false,
       "atomic_fallback_wired": false,
       "evidence": "benchmarks/release/evidence/pen_closure/worker_39/"
+    },
+    "m1_axis_wiring_targeted": {
+      "passed": 39,
+      "failed": 0,
+      "seconds": 0.56
+    },
+    "m1_axis_wiring_full": {
+      "tested_commit": "9888ae7",
+      "passed": 1786,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 45.85,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_40/full_tests.log"
+    },
+    "m1_axis_wiring_worker_40": {
+      "domain": "native_worker_CPU_PhysX",
+      "tested_commit": "9888ae7",
+      "original_candidates": 70,
+      "axis_candidates": 369,
+      "axis_screened_relations": 34,
+      "axis_ranked_candidates": 7,
+      "remaining_motion_budget_at_axis_entry": 7,
+      "total_motion_budget": 8,
+      "private_closure_rejections": 7,
+      "axis_closure_rejections": 6,
+      "primary_actions_executed": false,
+      "all_private_closed": true,
+      "all_primary_unchanged": true,
+      "formal_cleanup_all_true": true,
+      "model_qualified": false,
+      "skill_verified": false,
+      "status": "no_feasible_trajectory",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_40/"
     }
   },
   "gates": {
@@ -14067,15 +14101,15 @@
   },
   "current_layer_status": {
     "kernel": {
-      "tested_commit": "9d75dc4",
+      "tested_commit": "9888ae7",
       "status": "PASSED_REGRESSION",
-      "passed": 1779,
+      "passed": 1786,
       "failed": 0,
       "warnings": 1
     },
-    "native_wiring": "ORIGINAL_CONTINUOUS_AXIS_FALLBACK_GAP_CONFIRMED_NOT_YET_ATOMICALLY_WIRED",
+    "native_wiring": "ORIGINAL_CONTINUOUS_AXIS_CANDIDATES_FORMALLY_WIRED_INTO_ATOMIC_PLANNING",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "WORKER_38_NATIVE_RELATION_DIAGNOSTICS_WORKER_39_AXIS_CANDIDATE_RESOLUTION_NO_PRIMARY_ACTIONS",
+    "actual_simulation": "WORKER_40_SEVEN_PRIVATE_CLOSURE_REJECTIONS_NO_PRIMARY_ACTIONS",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14142,5 +14176,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Share original pure continuous-axis candidate resolution and place rebuilding between coordinator and atomic planner; invoke once after discrete exhaustion, preserving source identity, full audits and total motion budget, then complete actual pen six checkpoints."
+  "next_actual_action": "Align candidate open-state hypothesis with original approach/grasp controller semantics, then perform bounded closure-aware original-candidate screening/ranking using existing cached IK before spending full-motion budget; retain exact endpoint guards and achieve pen six checkpoints."
 }

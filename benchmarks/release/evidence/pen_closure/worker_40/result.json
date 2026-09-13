@@ -1,0 +1,1 @@
+{"command_success": false, "error": "RuntimeError: Native atomic phase has no feasible trajectory", "finished_at": 1789259575.7668688, "mode": "sim", "status": "failed", "task": "pickplace", "task_success": null}
