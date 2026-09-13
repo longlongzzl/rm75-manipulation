@@ -627,3 +627,19 @@ worker_30 进一步在原已审核的 approach 端点追加三次明确记录的
 - 硬件：未授权、未连接、未操作。原生仿真和测试均由 tools/run_network_isolated.py 启动。
 
 证据：`benchmarks/release/evidence/pen_closure/worker_32/` 构造接口、`worker_33/` 有界预测汇总及诊断入口、`worker_34/` 正式预测、事件、结果、输入、代码摘要与两次全量日志。原 33 完整私有步进原始数据保留 runtime_data 路径并归档其 SHA256，未以新的摘要伪造原始逐步记录。状态保持 PARTIAL_DELIVERY，下一步继续原联合候选选择的闭合感知审核与笔六检查点。本轮仅本地提交，未推送。
+
+## M1 / 原抓取候选规划接入私有闭合假设
+
+代码 `4562bd1`。原 PickPlaceNativePhases 候选循环在 grasp 端点求解后调用 CPU 预测，显式禁止接触则继续下一个原候选；附着、lift 和原每抓取对应的 place 联合可行性检查仍由原 coordinator 执行。只捕获专用 NativeClosureRejected；模型不可用、身份错误、取消及主世界被改变等异常不能被吞成普通候选失败。
+
+候选预测保留本次完整实测场景，仅在独立假设 articulation 中设置候选 arm q，并假设零初速，明确记录 measured=false 和 stationary_endpoint_not_executed_approach。该初态不是实测动作终态，不能与 worker_34 的实际 grasp 后采集等同，也不算同一实测动作重放。源对象/机器人没有位置或速度写入；正式执行前仍要实际 approach/grasp、原静止检查、独立新采集及原触桌保护。
+
+- 内核：定向 21 passed / 0.52 s；全量 1774 passed / 1 原有 trimesh warning / 42.55 s。本轮测试与原生 worker 串行，无工作站锁冲突。
+- 原生接线：普通 worker_35 实际在原候选规划边界运行完整 12 对象私有预测。28 个物理子步后拒绝 grasp_39_+180deg_axis_-40mm；没有主仿真 approach/grasp/lift 动作，尚未实现真实替代候选成功。
+- 模型推理：未运行；候选物理预测 model_qualified=false，不能授予 primitive_verified 或 task_goal_reached。
+- 实际仿真：周期 6 / 子步 3 检出左指支撑链接触桌，Z 向力约 0.419333819 N。主 q/qdot/物体及 drive targets 不变为 true；临时镜像关闭、正式主环境/镜像/planner 释放均为 true。未取得笔六检查点，非多参数辨识。
+- 硬件：未授权、未连接、未操作，全部测试/原生仿真均使用内核网络隔离。
+
+worker_36 是只读诊断，不修改原排序输出、预算或参数：原候选 70，原联合关系筛选仅输出 1，排序也是 1，max_motion_candidates=8。筛选返回的唯一候选正是被闭合预测否决者，因此当前正式流程安全失败，而非已成功切换候选。下一步应让既有关系筛选对否决 ID 继续原层级搜索，同时维持总尝试预算及原配对，不能无依据调大预算或放宽几何。
+
+有界证据在 benchmarks/release/evidence/pen_closure/worker_35/ 和 worker_36/，完整逐步原始数据保留 runtime_data 并归档 SHA256。机器表顶层分层状态同步到本次结果，原历史子记录保留。仍为 PARTIAL_DELIVERY，本轮仅本地提交，未推送。

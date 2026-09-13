@@ -595,3 +595,15 @@ worker_26 恢复原完整初始化、场景同步、规划审核和 approach/gra
 10 项定向通过；首次全量因我将测试与正式 worker 重叠启动发生工作站锁冲突，3 failed / 1763 passed / 1 skipped，三份结果均为 Another process owns this robot/workcell。没有删锁或绕过互斥。worker 退出后相关 6 项通过，串行全量 **1767 passed / 1 warning / 42.56 s**。
 
 下一步：把有界闭合拒绝证据反馈给原联合抓放候选选择，使其拒绝后选择新的原生可行候选；先处理候选几何和预测/实测闭合状态审计，再获得笔六检查点。不能把这个前置否决门当作已完成规划候选重试、接触模型合格或同动作多参数辨识。模型推理及硬件均未运行，状态 PARTIAL_DELIVERY，未推送。
+
+## M1 / 原候选循环接入闭合假设否决，定位关系筛选续搜断点
+
+本轮 progress，生产提交 `4562bd1`。PickPlaceNativePhases 在原 grasp 轨迹端点求解后、假设 attach/lift/place 之前调用可信 closure_screen；显式否决继续原候选循环。未改变原抓放配对和抓后 place 重规划。NativeClosureRejected 与普通 SceneInvalid 分开，仅确定预测碰撞可换候选，模型/身份/所有权错误和取消仍终止。
+
+复用原私有闭合预测，候选模式使用本轮原完整新鲜快照；只在独立 articulation 中初始化候选 arm q，并显式假设 qdot=0，记录 measured=false、stationary_endpoint_not_executed_approach。这是端点闭合的负向假设筛选，不是假装主机器人已到位/静止，也不是重放实测 approach。原对象位置与实测 SWM 快照不写。正式执行前的新采集闭合否决保留。
+
+定向 21 passed / 0.52 s，全量串行 1774 passed / 1 existing warning / 42.55 s。普通 worker_35 在规划阶段对 grasp_39_+180deg_axis_-40mm 运行 28 个私有子步，于控制周期 6 / 子步 3 检出左指支撑链接触桌（Z 力约 0.41933 N），否决后原规划报告无可行轨迹，没有主 approach/grasp/lift 动作。私有预测期间主状态/目标不变，所有清理读回正常。
+
+只读 worker_36 确认真正断点：原始抓取候选 70，关系筛选输出 1，排序输出 1，max_motion_candidates=8；不是把运动预算设成 1 导致失败。现候选循环能换到同一筛选结果中的下一候选，但正式场景只有这个被否决的结果，不能宣称已有实际成功替代候选。
+
+下一步：在既有原关系筛选中接入已否决 ID 的有界续搜，保留未尝试原候选/搜索层级、原每抓取配对及总运动预算；不重复已否决候选，不改对象、不放宽碰撞、不凭空新增姿态。先取得真实替代候选，再推进闭合/抬升和六检查点。模型推理、同动作参数闭环、硬件未完成；PARTIAL_DELIVERY，未推送。

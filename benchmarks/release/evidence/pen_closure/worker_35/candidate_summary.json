@@ -1,0 +1,3808 @@
+{
+  "domain": "private_CPU_PhysX_candidate_hypothesis",
+  "phase": "rejected",
+  "error": "NativeClosureRejected('Native closure prediction detected forbidden contact')",
+  "model_qualified": false,
+  "skill_qualified": false,
+  "hardware_connected": false,
+  "object_ids": [
+    "__maniskill_workspace_table__",
+    "bi",
+    "bitong",
+    "carriot",
+    "desk",
+    "gluestick",
+    "hongshupian",
+    "lvmukuai",
+    "shuazi",
+    "tennis",
+    "virtual_side_wall",
+    "virtual_top_wall"
+  ],
+  "snapshot": {
+    "schema": "rm75_swm_snapshot_v1",
+    "revision": 2,
+    "physics_revision": 0,
+    "world_frame": "base_link",
+    "observation_domain": "physics",
+    "calibration_id": "2966cd528ac20641f293374bbf1e53c1e7ed81dc1539364727cc337a77b26e1d",
+    "sensor_session": "f720e1fc607a4b5c9f7d20bd87222210",
+    "valid": true,
+    "invalid_reason": null,
+    "objects": {
+      "bi": {
+        "id": "bi",
+        "name": "bi",
+        "asset_id": "bi",
+        "fixed": false,
+        "measured": {
+          "id": "bi",
+          "mesh_sha256": "1ef8131456d07671e2f12933b3aa4861b489fa47a86d081b2f49b52dea68d2bc",
+          "captured_at": 36287.115192912,
+          "sequence": 3,
+          "accepted": true,
+          "tracking_state": "tracking",
+          "source": "native_primary_PhysX_readback",
+          "position_uncertainty_m": 0,
+          "rotation_uncertainty_rad": 0,
+          "T_world_object": [
+            [
+              1.8439246995847854e-08,
+              0.908384094460396,
+              -0.4181367645721615,
+              -0.19217007854433393
+            ],
+            [
+              1.843924259958931e-08,
+              -0.418136764572155,
+              -0.9083841540650406,
+              -0.2111774456230302
+            ],
+            [
+              -0.9999999999999993,
+              9.039790527237309e-09,
+              -2.4460043948046267e-08,
+              0.012561418129249543
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "linear_velocity": [
+            0,
+            0,
+            0
+          ],
+          "angular_velocity": [
+            0,
+            0,
+            0
+          ],
+          "velocity_source": "native_PhysX_rigid_body_velocity"
+        },
+        "lifecycle": "free"
+      },
+      "bitong": {
+        "id": "bitong",
+        "name": "bitong",
+        "asset_id": "bitong",
+        "fixed": false,
+        "measured": {
+          "id": "bitong",
+          "mesh_sha256": "c49eafd82dc6006ffc9dab5786827d76b6ac5856b56a4bc9be9243359c2d0865",
+          "captured_at": 36287.115567217,
+          "sequence": 3,
+          "accepted": true,
+          "tracking_state": "tracking",
+          "source": "native_primary_PhysX_readback",
+          "position_uncertainty_m": 0,
+          "rotation_uncertainty_rad": 0,
+          "T_world_object": [
+            [
+              0.9999393237963936,
+              0.002698163255302599,
+              0.010684401023440857,
+              -0.2802486425562016
+            ],
+            [
+              0.010714650208836076,
+              -0.011462379380112464,
+              -0.9998769174703407,
+              -0.002245661893439388
+            ],
+            [
+              -0.002575438460403821,
+              0.9999307392411655,
+              -0.011490601659762768,
+              0.048960844433771966
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "linear_velocity": [
+            0,
+            0,
+            0
+          ],
+          "angular_velocity": [
+            0,
+            0,
+            0
+          ],
+          "velocity_source": "native_PhysX_rigid_body_velocity"
+        },
+        "lifecycle": "free"
+      },
+      "carriot": {
+        "id": "carriot",
+        "name": "carriot",
+        "asset_id": "carriot",
+        "fixed": false,
+        "measured": {
+          "id": "carriot",
+          "mesh_sha256": "a7df8bcbf64eff0163f3cd1fdeb710918072adca564b3a7feccf937f768723df",
+          "captured_at": 36287.11588706,
+          "sequence": 3,
+          "accepted": true,
+          "tracking_state": "tracking",
+          "source": "native_primary_PhysX_readback",
+          "position_uncertainty_m": 0,
+          "rotation_uncertainty_rad": 0,
+          "T_world_object": [
+            [
+              0.7530749251920276,
+              1.843923879135575e-08,
+              0.6579346958488155,
+              -0.2131349841551879
+            ],
+            [
+              -0.6579347554534585,
+              -4.1165403274864955e-08,
+              0.7530749251920364,
+              -0.08513355729321875
+            ],
+            [
+              1.754312879906e-09,
+              -0.9999999403953557,
+              -9.319133773647247e-08,
+              0.018834659917824553
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "linear_velocity": [
+            0,
+            0,
+            0
+          ],
+          "angular_velocity": [
+            0,
+            0,
+            0
+          ],
+          "velocity_source": "native_PhysX_rigid_body_velocity"
+        },
+        "lifecycle": "free"
+      },
+      "desk": {
+        "id": "desk",
+        "name": "desk",
+        "asset_id": "desk",
+        "fixed": false,
+        "measured": {
+          "id": "desk",
+          "mesh_sha256": "cf67bdb8baff36e825a411b66f40f2a010041175e8a3ed4f6fbb57164f3928c0",
+          "captured_at": 36287.116201072,
+          "sequence": 3,
+          "accepted": true,
+          "tracking_state": "tracking",
+          "source": "native_primary_PhysX_readback",
+          "position_uncertainty_m": 0,
+          "rotation_uncertainty_rad": 0,
+          "T_world_object": [
+            [
+              0.01934498582113609,
+              -0.008543626502990844,
+              0.9997763609235505,
+              0.3946118627407803
+            ],
+            [
+              0.9995956401680044,
+              0.021007803547837964,
+              -0.0191619676989568,
+              -0.017464507025236664
+            ],
+            [
+              -0.020839391114196203,
+              0.9997427465829795,
+              0.008946556053285431,
+              0.0564786451562644
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "linear_velocity": [
+            0,
+            0,
+            0
+          ],
+          "angular_velocity": [
+            0,
+            0,
+            0
+          ],
+          "velocity_source": "native_PhysX_rigid_body_velocity"
+        },
+        "lifecycle": "free"
+      },
+      "gluestick": {
+        "id": "gluestick",
+        "name": "gluestick",
+        "asset_id": "gluestick",
+        "fixed": false,
+        "measured": {
+          "id": "gluestick",
+          "mesh_sha256": "6f94f6275931c1e54fbe5d9c1ed48567a2bc61235577d6ed53065420997966e5",
+          "captured_at": 36287.116505048,
+          "sequence": 3,
+          "accepted": true,
+          "tracking_state": "tracking",
+          "source": "native_primary_PhysX_readback",
+          "position_uncertainty_m": 0,
+          "rotation_uncertainty_rad": 0,
+          "T_world_object": [
+            [
+              -1.8439246995847854e-08,
+              -0.029862165504219624,
+              -0.9995539820029965,
+              -0.009760558918943162
+            ],
+            [
+              -1.843924259958931e-08,
+              0.999553982002993,
+              -0.02986219530654133,
+              -0.1612877241035041
+            ],
+            [
+              0.9999999999999993,
+              1.7880384782765552e-08,
+              -1.8981656892142528e-08,
+              0.016013788630642962
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "linear_velocity": [
+            0,
+            0,
+            0
+          ],
+          "angular_velocity": [
+            0,
+            0,
+            0
+          ],
+          "velocity_source": "native_PhysX_rigid_body_velocity"
+        },
+        "lifecycle": "free"
+      },
+      "hongshupian": {
+        "id": "hongshupian",
+        "name": "hongshupian",
+        "asset_id": "hongshupian",
+        "fixed": false,
+        "measured": {
+          "id": "hongshupian",
+          "mesh_sha256": "b56793bc79933a4dcebf18bac4219ddcd3b8290f2749cd0086ea0e9b1e920668",
+          "captured_at": 36287.116800273,
+          "sequence": 3,
+          "accepted": true,
+          "tracking_state": "tracking",
+          "source": "native_primary_PhysX_readback",
+          "position_uncertainty_m": 0,
+          "rotation_uncertainty_rad": 0,
+          "T_world_object": [
+            [
+              -0.6226255044726663,
+              0.7824410646749329,
+              0.011111175507031232,
+              0.1636368573424456
+            ],
+            [
+              -0.7814262966837457,
+              -0.622443113963281,
+              0.04401780180558073,
+              -0.048746278187715264
+            ],
+            [
+              0.0413574093963902,
+              0.018724036559274012,
+              0.998968959871212,
+              0.035808449866918134
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "linear_velocity": [
+            0,
+            0,
+            0
+          ],
+          "angular_velocity": [
+            0,
+            0,
+            0
+          ],
+          "velocity_source": "native_PhysX_rigid_body_velocity"
+        },
+        "lifecycle": "free"
+      },
+      "lvmukuai": {
+        "id": "lvmukuai",
+        "name": "lvmukuai",
+        "asset_id": "lvmukuai",
+        "fixed": false,
+        "measured": {
+          "id": "lvmukuai",
+          "mesh_sha256": "7ed9478496c6c0902887dc22c116577ba607977770207c063659eecc9154fbf4",
+          "captured_at": 36287.1170963,
+          "sequence": 3,
+          "accepted": true,
+          "tracking_state": "tracking",
+          "source": "native_primary_PhysX_readback",
+          "position_uncertainty_m": 0,
+          "rotation_uncertainty_rad": 0,
+          "T_world_object": [
+            [
+              0.8675997856541802,
+              -1.8439246995847854e-08,
+              -0.49726305813786764,
+              0.05158144291880367
+            ],
+            [
+              -0.49726305813786825,
+              -1.843924259958931e-08,
+              -0.8675997856541797,
+              -0.24781573461631545
+            ],
+            [
+              6.8287295762593805e-09,
+              0.9999999999999993,
+              -2.5167040091992277e-08,
+              0.01517238292355048
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "linear_velocity": [
+            0,
+            0,
+            0
+          ],
+          "angular_velocity": [
+            0,
+            0,
+            0
+          ],
+          "velocity_source": "native_PhysX_rigid_body_velocity"
+        },
+        "lifecycle": "free"
+      },
+      "shuazi": {
+        "id": "shuazi",
+        "name": "shuazi",
+        "asset_id": "shuazi",
+        "fixed": false,
+        "measured": {
+          "id": "shuazi",
+          "mesh_sha256": "a5742ed9f4a17ef417200169e4ca1099c760a2f978609b58bd0794f5d6e6eacc",
+          "captured_at": 36287.117373676,
+          "sequence": 3,
+          "accepted": true,
+          "tracking_state": "tracking",
+          "source": "native_primary_PhysX_readback",
+          "position_uncertainty_m": 0,
+          "rotation_uncertainty_rad": 0,
+          "T_world_object": [
+            [
+              -0.8904305749989746,
+              -0.455119000724622,
+              -1.956295349998649e-08,
+              -0.10657169049498812
+            ],
+            [
+              0.4551190007246227,
+              -0.8904305749989742,
+              -2.6249895922973828e-08,
+              -0.13625508815238654
+            ],
+            [
+              -5.4726222697947745e-09,
+              -3.2277182953871446e-08,
+              0.9999999999999992,
+              0.026425629101950156
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "linear_velocity": [
+            0,
+            0,
+            0
+          ],
+          "angular_velocity": [
+            0,
+            0,
+            0
+          ],
+          "velocity_source": "native_PhysX_rigid_body_velocity"
+        },
+        "lifecycle": "free"
+      },
+      "tennis": {
+        "id": "tennis",
+        "name": "tennis",
+        "asset_id": "tennis",
+        "fixed": false,
+        "measured": {
+          "id": "tennis",
+          "mesh_sha256": "6a8e77f0c986dc1c6e0d863ac82985d66b273278970229cb9cb6e5ef7b26c545",
+          "captured_at": 36287.117645459,
+          "sequence": 3,
+          "accepted": true,
+          "tracking_state": "tracking",
+          "source": "native_primary_PhysX_readback",
+          "position_uncertainty_m": 0,
+          "rotation_uncertainty_rad": 0,
+          "T_world_object": [
+            [
+              -0.27747240828107667,
+              0.6845021595390094,
+              -0.6741408715069781,
+              0.14493527431137543
+            ],
+            [
+              -0.6265425216997833,
+              -0.6608726062897851,
+              -0.4131488109303387,
+              -0.2975991845903759
+            ],
+            [
+              -0.7283224034109907,
+              0.3077405397480738,
+              0.6122436322949494,
+              0.036934603915930744
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "linear_velocity": [
+            0,
+            0,
+            0
+          ],
+          "angular_velocity": [
+            0,
+            0,
+            0
+          ],
+          "velocity_source": "native_PhysX_rigid_body_velocity"
+        },
+        "lifecycle": "free"
+      },
+      "__maniskill_workspace_table__": {
+        "id": "__maniskill_workspace_table__",
+        "name": "__maniskill_workspace_table__",
+        "asset_id": "__maniskill_workspace_table__",
+        "fixed": true,
+        "measured": {
+          "id": "__maniskill_workspace_table__",
+          "mesh_sha256": "ffaa5addffecd984d024fded7d57110326fab9cfdd1b0ce88ea4609d62e4b243",
+          "captured_at": 36287.117918467,
+          "sequence": 3,
+          "accepted": true,
+          "tracking_state": "tracking",
+          "source": "native_primary_PhysX_readback",
+          "position_uncertainty_m": 0,
+          "rotation_uncertainty_rad": 0,
+          "T_world_object": [
+            [
+              0.9999999999999855,
+              1.1920928921077373e-07,
+              -1.8439246995847854e-08,
+              -1.2396839218898776e-08
+            ],
+            [
+              -1.1920928989078522e-07,
+              0.9999999999999855,
+              -1.843924259958931e-08,
+              -0.18000003592669828
+            ],
+            [
+              1.843924259958931e-08,
+              1.8439246995847854e-08,
+              0.9999999999999993,
+              -0.4598214659502905
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "linear_velocity": [
+            0,
+            0,
+            0
+          ],
+          "angular_velocity": [
+            0,
+            0,
+            0
+          ],
+          "velocity_source": "native_PhysX_rigid_body_velocity"
+        },
+        "lifecycle": "free"
+      },
+      "virtual_side_wall": {
+        "id": "virtual_side_wall",
+        "name": "virtual_side_wall",
+        "asset_id": "virtual_side_wall",
+        "fixed": true,
+        "measured": {
+          "id": "virtual_side_wall",
+          "mesh_sha256": "a676e0d471bc8a7b6e03e8898c4f719da39fbbeffbb04830a19c85f7bc391a0f",
+          "captured_at": 36287.118210612,
+          "sequence": 3,
+          "accepted": true,
+          "tracking_state": "tracking",
+          "source": "native_primary_PhysX_readback",
+          "position_uncertainty_m": 0,
+          "rotation_uncertainty_rad": 0,
+          "T_world_object": [
+            [
+              -1.1920928921077373e-07,
+              0.9999999999999855,
+              -1.8439246995847854e-08,
+              6.650164914007174e-08
+            ],
+            [
+              -0.9999999999999855,
+              -1.1920928989078522e-07,
+              -1.843924259958931e-08,
+              0.6149999723402756
+            ],
+            [
+              -1.8439246995847854e-08,
+              1.843924259958931e-08,
+              0.9999999999999993,
+              0.4010000044259975
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "linear_velocity": [
+            0,
+            0,
+            0
+          ],
+          "angular_velocity": [
+            0,
+            0,
+            0
+          ],
+          "velocity_source": "native_PhysX_rigid_body_velocity"
+        },
+        "lifecycle": "free"
+      },
+      "virtual_top_wall": {
+        "id": "virtual_top_wall",
+        "name": "virtual_top_wall",
+        "asset_id": "virtual_top_wall",
+        "fixed": true,
+        "measured": {
+          "id": "virtual_top_wall",
+          "mesh_sha256": "b77be76ebcb65b93e412db9186b289aaad6508cad6cbb620029990c0a0f297da",
+          "captured_at": 36287.118486653,
+          "sequence": 3,
+          "accepted": true,
+          "tracking_state": "tracking",
+          "source": "native_primary_PhysX_readback",
+          "position_uncertainty_m": 0,
+          "rotation_uncertainty_rad": 0,
+          "T_world_object": [
+            [
+              -1.1920928921077373e-07,
+              0.9999999999999855,
+              -1.8439246995847854e-08,
+              -5.020870138554999e-08
+            ],
+            [
+              -0.9999999999999855,
+              -1.1920928989078522e-07,
+              -1.843924259958931e-08,
+              -0.3000000567512297
+            ],
+            [
+              -1.8439246995847854e-08,
+              1.843924259958931e-08,
+              0.9999999999999993,
+              0.8149999920840388
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "linear_velocity": [
+            0,
+            0,
+            0
+          ],
+          "angular_velocity": [
+            0,
+            0,
+            0
+          ],
+          "velocity_source": "native_PhysX_rigid_body_velocity"
+        },
+        "lifecycle": "free"
+      }
+    },
+    "assets": {
+      "bi": {
+        "source": "legacy",
+        "units": "m",
+        "metric_scale_verified": true,
+        "scale_evidence": "Original shared scale applied without recentering; exported metric bounds read back",
+        "mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/bi.metric.ply",
+        "mesh_sha256": "1ef8131456d07671e2f12933b3aa4861b489fa47a86d081b2f49b52dea68d2bc",
+        "collision_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/bi.collision.ply",
+        "collision_sha256": "ee0e3872ddc421e079a1961fc42dfa32b4101f833af4dd6f2d1c410c1b2845ab",
+        "T_object_collision": [
+          [
+            1,
+            0,
+            0,
+            4.9831680962270456e-05
+          ],
+          [
+            0,
+            1,
+            0,
+            -7.509363545258498e-05
+          ],
+          [
+            0,
+            0,
+            1,
+            -1.2150220518227443e-05
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "original_asset_name": "bi",
+        "native_asset_name": "bi",
+        "collision_role": "planning_proxy",
+        "provenance": {
+          "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/pen.glb",
+          "source_mesh_sha256": "717a9c1d415794bcd17d06d8d21592ad023282ede3bf1cc68673f292dcc80652",
+          "applied_uniform_scale": 0.13794992113145285,
+          "original_simulation_scale": 0.13794992113145285,
+          "original_simulation_sha256": "717a9c1d415794bcd17d06d8d21592ad023282ede3bf1cc68673f292dcc80652",
+          "proxy_source": "shared_build_automatic_collision_proxy",
+          "proxy_scale": 1.5
+        },
+        "physics_model_qualified": false,
+        "collision_kind": "cuboid",
+        "collision_dimensions_m": [
+          0.03453478253078439,
+          0.20700000000000002,
+          0.03456382527334527
+        ],
+        "native_physics_geometry_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/bi.native_physics_geometry.json",
+        "native_physics_geometry_sha256": "278b97027b8645009a9c776c8f97ff108ee517b0807d6584a6639cb468b9a3fd",
+        "native_physics_baseline_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/bi.native_physics_baseline.json",
+        "native_physics_baseline_sha256": "8dc5c2e3a660a7b5d7f5be80d5ebcdfd767e19b79a154f7c297a1d263fa04ea1"
+      },
+      "bitong": {
+        "source": "legacy",
+        "units": "m",
+        "metric_scale_verified": true,
+        "scale_evidence": "Original shared scale applied without recentering; exported metric bounds read back",
+        "mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/bitong.metric.ply",
+        "mesh_sha256": "c49eafd82dc6006ffc9dab5786827d76b6ac5856b56a4bc9be9243359c2d0865",
+        "collision_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/bitong.collision.ply",
+        "collision_sha256": "aede0ff35614dedf516fc81edfca78f9a89da5c8028518f83876c166d6d9b685",
+        "T_object_collision": [
+          [
+            1,
+            0,
+            0,
+            -3.648193192672426e-05
+          ],
+          [
+            0,
+            1,
+            0,
+            1.6807863041794564e-06
+          ],
+          [
+            0,
+            0,
+            1,
+            5.596757109978785e-05
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "original_asset_name": "bitong",
+        "native_asset_name": "bitong",
+        "collision_role": "planning_proxy",
+        "provenance": {
+          "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/holder_85x95.glb",
+          "source_mesh_sha256": "c62151d11a1c0031b2913222d5c8218db57a494d27f5db35204593a9bc7a2d7f",
+          "applied_uniform_scale": 0.09494588084791672,
+          "original_simulation_scale": 0.09494584133019865,
+          "original_simulation_sha256": "d41e0b4c671dda71598096c10a645f2c2c97e97312d830dd5bceed872e4cd2d0",
+          "proxy_source": "shared_build_automatic_collision_proxy",
+          "proxy_scale": 1
+        },
+        "physics_model_qualified": false,
+        "collision_kind": "cuboid",
+        "collision_dimensions_m": [
+          0.08499999999999999,
+          0.095,
+          0.08499999999999999
+        ],
+        "native_physics_geometry_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/bitong.native_physics_geometry.json",
+        "native_physics_geometry_sha256": "ab57453801da931dc72794e4044ae500fa50278aded73792c1c313a22598ab51",
+        "native_physics_baseline_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/bitong.native_physics_baseline.json",
+        "native_physics_baseline_sha256": "4bb81fba5227e06ae406eb473a5621a33154a74b1fcbc5487346469e61204fbe"
+      },
+      "carriot": {
+        "source": "legacy",
+        "units": "m",
+        "metric_scale_verified": true,
+        "scale_evidence": "Original shared scale applied without recentering; exported metric bounds read back",
+        "mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/carriot.metric.ply",
+        "mesh_sha256": "a7df8bcbf64eff0163f3cd1fdeb710918072adca564b3a7feccf937f768723df",
+        "collision_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/carriot.collision.ply",
+        "collision_sha256": "0ed871ccbcf3414db10c5693e2aaa46bf94bc47730e3564114aa481faa16f9ec",
+        "T_object_collision": [
+          [
+            1,
+            0,
+            0,
+            0.0002008199065127852
+          ],
+          [
+            0,
+            1,
+            0,
+            0.0003597091262385112
+          ],
+          [
+            0,
+            0,
+            1,
+            1.634273015966916e-06
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "original_asset_name": "carriot",
+        "native_asset_name": "carriot",
+        "collision_role": "planning_proxy",
+        "provenance": {
+          "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/carriot.glb",
+          "source_mesh_sha256": "9530b5da1c16c73a9d5f4e8f29cbe6f8900d94540292df25b516229aad7b9a65",
+          "applied_uniform_scale": 0.2101038420831295,
+          "original_simulation_scale": 0.9999999999999999,
+          "original_simulation_sha256": "c97f909b565f43206e12f3780f27c3d0f7c8f757c43a30fafcf1e2d7541148f0",
+          "proxy_source": "shared_build_automatic_collision_proxy",
+          "proxy_scale": 1
+        },
+        "physics_model_qualified": false,
+        "collision_kind": "cuboid",
+        "collision_dimensions_m": [
+          0.043146861420565806,
+          0.03761950274805945,
+          0.21
+        ],
+        "native_physics_geometry_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/carriot.native_physics_geometry.json",
+        "native_physics_geometry_sha256": "b2d60228165ca08145433b962436f0275b35a613bc907c1294d743796a707feb",
+        "native_physics_baseline_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/carriot.native_physics_baseline.json",
+        "native_physics_baseline_sha256": "8ab9bb932ad9f70424c13f1e1afaee729b7b1e18a8e54aa504b263952ea2b55b"
+      },
+      "desk": {
+        "source": "legacy",
+        "units": "m",
+        "metric_scale_verified": true,
+        "scale_evidence": "Original shared scale applied without recentering; exported metric bounds read back",
+        "mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/desk.metric.ply",
+        "mesh_sha256": "cf67bdb8baff36e825a411b66f40f2a010041175e8a3ed4f6fbb57164f3928c0",
+        "collision_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/desk.collision.ply",
+        "collision_sha256": "0c8aec50e41d0647e535926f58918c0f327bf2e6c78651f4a980cd47974f1ec0",
+        "T_object_collision": [
+          [
+            1,
+            0,
+            0,
+            -4.59715995859884e-05
+          ],
+          [
+            0,
+            1,
+            0,
+            -0.0008454566558298322
+          ],
+          [
+            0,
+            0,
+            1,
+            0.00015396451017653403
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "original_asset_name": "desk",
+        "native_asset_name": "desk",
+        "collision_role": "planning_proxy",
+        "provenance": {
+          "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/desk.glb",
+          "source_mesh_sha256": "857cb2acfd5aa5a504723a760bfe293290158e3a524c38ce31148cd37ce79b6e",
+          "applied_uniform_scale": 0.429799641192331,
+          "original_simulation_scale": 1,
+          "original_simulation_sha256": "27f055f1165d1a5b2df8168e0bdfdff7017430153bf85cbbfa5c99c3e4c4620b",
+          "proxy_source": "shared_build_automatic_collision_proxy",
+          "proxy_scale": 1.1
+        },
+        "physics_model_qualified": false,
+        "collision_kind": "cuboid",
+        "collision_dimensions_m": [
+          0.47300000000000003,
+          0.12289876112575743,
+          0.2756061363463185
+        ],
+        "native_physics_geometry_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/desk.native_physics_geometry.json",
+        "native_physics_geometry_sha256": "17a4057ebeea9f8b2e380a49b4241654751b76906975f1d86311c4cb5f39c7a7",
+        "native_physics_baseline_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/desk.native_physics_baseline.json",
+        "native_physics_baseline_sha256": "51dcf61b7b5ebb05eb726cf80d6e85f53a6056e6462dd224c5c8e603a0e0cba0"
+      },
+      "gluestick": {
+        "source": "legacy",
+        "units": "m",
+        "metric_scale_verified": true,
+        "scale_evidence": "Original shared scale applied without recentering; exported metric bounds read back",
+        "mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/gluestick.metric.ply",
+        "mesh_sha256": "6f94f6275931c1e54fbe5d9c1ed48567a2bc61235577d6ed53065420997966e5",
+        "collision_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/gluestick.collision.ply",
+        "collision_sha256": "18a90824bd7d2b25e33f5fff627914dfb6decd7fc9bcd345c6d9ca9b7564c3f1",
+        "T_object_collision": [
+          [
+            1,
+            0,
+            0,
+            -1.4126061408641887e-05
+          ],
+          [
+            0,
+            1,
+            0,
+            -9.799314778167821e-06
+          ],
+          [
+            0,
+            0,
+            1,
+            2.8770119383008268e-05
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "original_asset_name": "gluestick",
+        "native_asset_name": "gluestick",
+        "collision_role": "planning_proxy",
+        "provenance": {
+          "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/gluestick.glb",
+          "source_mesh_sha256": "f399210d01a5bf91eb059ea2a20cbff0d112ff1c52fca9fec9c7b8698e1bb19f",
+          "applied_uniform_scale": 0.11000683886605127,
+          "original_simulation_scale": 1.0000000000000002,
+          "original_simulation_sha256": "d13f564601e6b9b1f7c4619bb7d75a6a7013fc7dde05281e8b04ec50078d1bc8",
+          "proxy_source": "shared_build_automatic_collision_proxy",
+          "proxy_scale": 1
+        },
+        "physics_model_qualified": false,
+        "collision_kind": "cuboid",
+        "collision_dimensions_m": [
+          0.030726439963393318,
+          0.11,
+          0.03141578028552757
+        ],
+        "native_physics_geometry_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/gluestick.native_physics_geometry.json",
+        "native_physics_geometry_sha256": "e5d1cd7d75b64adae404e34fabed3b62c2333dc4c3ffb95096d854597150ada6",
+        "native_physics_baseline_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/gluestick.native_physics_baseline.json",
+        "native_physics_baseline_sha256": "f94dff7b08b5402c5254c1b1103fe529df6ff7c59a6fb1ecea0dc2c8861c20ca"
+      },
+      "hongshupian": {
+        "source": "legacy",
+        "units": "m",
+        "metric_scale_verified": true,
+        "scale_evidence": "Original shared scale applied without recentering; exported metric bounds read back",
+        "mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/hongshupian.metric.ply",
+        "mesh_sha256": "b56793bc79933a4dcebf18bac4219ddcd3b8290f2749cd0086ea0e9b1e920668",
+        "collision_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/hongshupian.collision.ply",
+        "collision_sha256": "573474711bcc20a46ee984a18944f2aeadf2132a0feb30d29bac68b3092f5f77",
+        "T_object_collision": [
+          [
+            1,
+            0,
+            0,
+            -3.835377514650855e-05
+          ],
+          [
+            0,
+            1,
+            0,
+            -5.1251958092211e-05
+          ],
+          [
+            0,
+            0,
+            1,
+            -8.873959730684052e-05
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "original_asset_name": "hongshupian",
+        "native_asset_name": "hongshupian",
+        "collision_role": "planning_proxy",
+        "provenance": {
+          "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/hongshupian.glb",
+          "source_mesh_sha256": "695f93e28f0a6611410a13de961bb4a0bd3ddaabcf74811d0fbfcfece9dc4754",
+          "applied_uniform_scale": 0.1498806294816057,
+          "original_simulation_scale": 0.1498806294816057,
+          "original_simulation_sha256": "695f93e28f0a6611410a13de961bb4a0bd3ddaabcf74811d0fbfcfece9dc4754",
+          "proxy_source": "shared_build_automatic_collision_proxy",
+          "proxy_scale": 1
+        },
+        "physics_model_qualified": false,
+        "collision_kind": "cuboid",
+        "collision_dimensions_m": [
+          0.06999999999999999,
+          0.15,
+          0.06999999999999999
+        ],
+        "native_physics_geometry_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/hongshupian.native_physics_geometry.json",
+        "native_physics_geometry_sha256": "a5e0d639c48a8a4f11b7e5f39c72d6f1111c97ac9543d5c287e2fb5f7e9ceb38",
+        "native_physics_baseline_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/hongshupian.native_physics_baseline.json",
+        "native_physics_baseline_sha256": "c5eacbf0431937abacc82672e94438ef071416551139763c735bff0c85b4bf45"
+      },
+      "lvmukuai": {
+        "source": "legacy",
+        "units": "m",
+        "metric_scale_verified": true,
+        "scale_evidence": "Original shared scale applied without recentering; exported metric bounds read back",
+        "mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/lvmukuai.metric.ply",
+        "mesh_sha256": "7ed9478496c6c0902887dc22c116577ba607977770207c063659eecc9154fbf4",
+        "collision_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/lvmukuai.collision.ply",
+        "collision_sha256": "ae51275d8ba6586091f0e42dd5d4c9b1e8d2590a167b8b4c278457e4dc55d825",
+        "T_object_collision": [
+          [
+            1,
+            0,
+            0,
+            3.4614021314187355e-07
+          ],
+          [
+            0,
+            1,
+            0,
+            4.569408581134893e-05
+          ],
+          [
+            0,
+            0,
+            1,
+            -8.471043820844145e-06
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "original_asset_name": "lvmukuai",
+        "native_asset_name": "lvmukuai",
+        "collision_role": "planning_proxy",
+        "provenance": {
+          "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/lvmukuai.glb",
+          "source_mesh_sha256": "d5a86f3123e3ff6e99e8d019431cc2580647d94484607092d1759973e61d7258",
+          "applied_uniform_scale": 0.06002345345909304,
+          "original_simulation_scale": 0.06002345345909304,
+          "original_simulation_sha256": "d5a86f3123e3ff6e99e8d019431cc2580647d94484607092d1759973e61d7258",
+          "proxy_source": "shared_build_automatic_collision_proxy",
+          "proxy_scale": 1
+        },
+        "physics_model_qualified": false,
+        "collision_kind": "cuboid",
+        "collision_dimensions_m": [
+          0.06,
+          0.0284361608775039,
+          0.03214349428873121
+        ],
+        "native_physics_geometry_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/lvmukuai.native_physics_geometry.json",
+        "native_physics_geometry_sha256": "06c9af7841baeee395f26c4dd60717ceaf0f09a536cc92f5ddfee36a86755df6",
+        "native_physics_baseline_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/lvmukuai.native_physics_baseline.json",
+        "native_physics_baseline_sha256": "dfff61b6e22409703e57bc163bbfd6980505a5701def7909339a6521f9a2d000"
+      },
+      "shuazi": {
+        "source": "legacy",
+        "units": "m",
+        "metric_scale_verified": true,
+        "scale_evidence": "Original shared scale applied without recentering; exported metric bounds read back",
+        "mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/shuazi.metric.ply",
+        "mesh_sha256": "a5742ed9f4a17ef417200169e4ca1099c760a2f978609b58bd0794f5d6e6eacc",
+        "collision_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/shuazi.collision.ply",
+        "collision_sha256": "9c4ede059217018216e8f77b21c0e4691d8fcf416ec592ae792a8f197480bd65",
+        "T_object_collision": [
+          [
+            1,
+            0,
+            0,
+            -1.881824123820006e-05
+          ],
+          [
+            0,
+            1,
+            0,
+            -3.294648980694161e-06
+          ],
+          [
+            0,
+            0,
+            1,
+            0.0003454924519300874
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "original_asset_name": "shuazi",
+        "native_asset_name": "shuazi",
+        "collision_role": "planning_proxy",
+        "provenance": {
+          "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/shuazi.glb",
+          "source_mesh_sha256": "520e8353da429cd1005433b6eb86efed50b76e0419619639f84025b9667129c5",
+          "applied_uniform_scale": 0.10568840840016398,
+          "original_simulation_scale": 0.10568840840016398,
+          "original_simulation_sha256": "520e8353da429cd1005433b6eb86efed50b76e0419619639f84025b9667129c5",
+          "proxy_source": "shared_build_automatic_collision_proxy",
+          "proxy_scale": 1.25
+        },
+        "physics_model_qualified": false,
+        "collision_kind": "cuboid",
+        "collision_dimensions_m": [
+          0.13125,
+          0.08309492149793107,
+          0.0644278136198803
+        ],
+        "native_physics_geometry_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/shuazi.native_physics_geometry.json",
+        "native_physics_geometry_sha256": "7177c1ccedcf451e7dd1c6312da518d7f43cc4930774c4fa5422e4cbf94290d7",
+        "native_physics_baseline_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/shuazi.native_physics_baseline.json",
+        "native_physics_baseline_sha256": "0afd5f28114cda04107ef11e7bbdf2116e056174439b4753870a889a7037d18e"
+      },
+      "tennis": {
+        "source": "legacy",
+        "units": "m",
+        "metric_scale_verified": true,
+        "scale_evidence": "Original shared scale applied without recentering; exported metric bounds read back",
+        "mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/tennis.metric.ply",
+        "mesh_sha256": "6a8e77f0c986dc1c6e0d863ac82985d66b273278970229cb9cb6e5ef7b26c545",
+        "collision_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/tennis.collision.ply",
+        "collision_sha256": "b575ebfab578454ca22dab537b1665a269673fb7e29c388a2c8d1573f478fb3c",
+        "T_object_collision": [
+          [
+            1,
+            0,
+            0,
+            8.140641821982576e-06
+          ],
+          [
+            0,
+            1,
+            0,
+            -4.79738746018681e-06
+          ],
+          [
+            0,
+            0,
+            1,
+            8.897959346682646e-07
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "original_asset_name": "tennis",
+        "native_asset_name": "tennis",
+        "collision_role": "planning_proxy",
+        "provenance": {
+          "source_mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/assets/meshs/tennis.glb",
+          "source_mesh_sha256": "10b61d7a44d507694d6e374fd63d03f5d50e7209d72047d4673e5fed37a5a0d2",
+          "applied_uniform_scale": 0.07000374486214005,
+          "original_simulation_scale": 1,
+          "original_simulation_sha256": "45fcba2474d2386d8990fcf97fa97f24f7f7e5297f817be4dee0b15f6a7fafb2",
+          "proxy_source": "shared_build_automatic_collision_proxy",
+          "proxy_scale": 1
+        },
+        "physics_model_qualified": false,
+        "collision_kind": "sphere",
+        "collision_radius_m": 0.035,
+        "native_physics_geometry_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/tennis.native_physics_geometry.json",
+        "native_physics_geometry_sha256": "dc09025f1f2b0b68cfee665a71b4c8571b9d45ac9644e357757a02908e798b3a",
+        "native_physics_baseline_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/tennis.native_physics_baseline.json",
+        "native_physics_baseline_sha256": "60ff5cfdcb786410e45c67eeea788b8aa7428c6d7a6a7f273801c6be2fbc26fc"
+      },
+      "__maniskill_workspace_table__": {
+        "source": "legacy",
+        "units": "m",
+        "metric_scale_verified": true,
+        "scale_evidence": "Original shared scale applied without recentering; exported metric bounds read back",
+        "mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/__maniskill_workspace_table__.metric.ply",
+        "mesh_sha256": "ffaa5addffecd984d024fded7d57110326fab9cfdd1b0ce88ea4609d62e4b243",
+        "collision_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/__maniskill_workspace_table__.collision.ply",
+        "collision_sha256": "ffaa5addffecd984d024fded7d57110326fab9cfdd1b0ce88ea4609d62e4b243",
+        "T_object_collision": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "original_asset_name": "__maniskill_workspace_table__",
+        "native_asset_name": "__maniskill_workspace_table__",
+        "collision_role": "planning_proxy",
+        "provenance": {
+          "source": "native_SAPIEN_table_collision_shape",
+          "original_dimensions_m": [
+            2.4179999828338623,
+            1.2089999914169312,
+            0.9196429252624512
+          ]
+        },
+        "physics_model_qualified": false,
+        "collision_kind": "cuboid",
+        "collision_dimensions_m": [
+          2.4179999828338623,
+          1.2089999914169312,
+          0.9196429252624512
+        ],
+        "native_infrastructure": true,
+        "native_physics_geometry_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/__maniskill_workspace_table__.native_physics_geometry.json",
+        "native_physics_geometry_sha256": "67d45755e5b6a8bbcfba35eb0fa83c275c66d4389e3bb548704466d8152784e6",
+        "native_physics_baseline_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/__maniskill_workspace_table__.native_physics_baseline.json",
+        "native_physics_baseline_sha256": "e4551954083268af7f40c061c5297dadd975b617e26e0a4379dba43772ea06c6"
+      },
+      "virtual_side_wall": {
+        "source": "legacy",
+        "units": "m",
+        "metric_scale_verified": true,
+        "scale_evidence": "Original shared scale applied without recentering; exported metric bounds read back",
+        "mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/virtual_side_wall.metric.ply",
+        "mesh_sha256": "a676e0d471bc8a7b6e03e8898c4f719da39fbbeffbb04830a19c85f7bc391a0f",
+        "collision_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/virtual_side_wall.collision.ply",
+        "collision_sha256": "a676e0d471bc8a7b6e03e8898c4f719da39fbbeffbb04830a19c85f7bc391a0f",
+        "T_object_collision": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "original_asset_name": "virtual_side_wall",
+        "native_asset_name": "virtual_side_wall",
+        "collision_role": "planning_proxy",
+        "provenance": {
+          "source": "original_virtual_wall_policy_and_native_actor_pose",
+          "original_dimensions_m": [
+            0.029999999329447746,
+            1.2000000476837158,
+            0.800000011920929
+          ]
+        },
+        "physics_model_qualified": false,
+        "collision_kind": "cuboid",
+        "collision_dimensions_m": [
+          0.029999999329447746,
+          1.2000000476837158,
+          0.800000011920929
+        ],
+        "native_infrastructure": true,
+        "native_physics_geometry_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/virtual_side_wall.native_physics_geometry.json",
+        "native_physics_geometry_sha256": "b30d7852f72cee0723ffa73e4f17c6f94000c72843d97c48c9d28cfd6f402eef",
+        "native_physics_baseline_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/virtual_side_wall.native_physics_baseline.json",
+        "native_physics_baseline_sha256": "ef0cc2b54d60fd3b998ff524351f4a88d93f9d6fe8297b42b3ff9a131c42a34a"
+      },
+      "virtual_top_wall": {
+        "source": "legacy",
+        "units": "m",
+        "metric_scale_verified": true,
+        "scale_evidence": "Original shared scale applied without recentering; exported metric bounds read back",
+        "mesh_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/virtual_top_wall.metric.ply",
+        "mesh_sha256": "b77be76ebcb65b93e412db9186b289aaad6508cad6cbb620029990c0a0f297da",
+        "collision_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/virtual_top_wall.collision.ply",
+        "collision_sha256": "b77be76ebcb65b93e412db9186b289aaad6508cad6cbb620029990c0a0f297da",
+        "T_object_collision": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "original_asset_name": "virtual_top_wall",
+        "native_asset_name": "virtual_top_wall",
+        "collision_role": "planning_proxy",
+        "provenance": {
+          "source": "original_virtual_wall_policy_and_native_actor_pose",
+          "original_dimensions_m": [
+            1.2000000476837158,
+            1.2000000476837158,
+            0.029999999329447746
+          ]
+        },
+        "physics_model_qualified": false,
+        "collision_kind": "cuboid",
+        "collision_dimensions_m": [
+          1.2000000476837158,
+          1.2000000476837158,
+          0.029999999329447746
+        ],
+        "native_infrastructure": true,
+        "native_physics_geometry_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/virtual_top_wall.native_physics_geometry.json",
+        "native_physics_geometry_sha256": "b30d7852f72cee0723ffa73e4f17c6f94000c72843d97c48c9d28cfd6f402eef",
+        "native_physics_baseline_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_35/swm_native/metric_assets/virtual_top_wall.native_physics_baseline.json",
+        "native_physics_baseline_sha256": "ef0cc2b54d60fd3b998ff524351f4a88d93f9d6fe8297b42b3ff9a131c42a34a"
+      }
+    },
+    "robot": {
+      "source": "native_joint_link_and_contact_feedback",
+      "domain": "physics",
+      "captured_at": 36287.105651739,
+      "capture_finished_at": 36287.114945748,
+      "query_elapsed_s": 0.009294008996221237,
+      "primary_sequence": 3,
+      "joint_names": [
+        "joint_1",
+        "joint_2",
+        "joint_3",
+        "joint_4",
+        "joint_5",
+        "joint_6",
+        "joint_7"
+      ],
+      "positions": [
+        1.572896122932434,
+        0.00905626080930233,
+        0.006035430356860161,
+        -1.562686562538147,
+        -0.0004508150741457939,
+        -1.5619994401931763,
+        1.0576796531677246
+      ],
+      "velocities": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "units": "rad",
+      "idle": true,
+      "T_world_base": [
+        [
+          -1.1920928955078125e-07,
+          -1,
+          -1.8439244797718857e-08,
+          -0.30000004172325134
+        ],
+        [
+          1,
+          -1.1920928955078125e-07,
+          1.8439244797718857e-08,
+          -5.820766091346741e-10
+        ],
+        [
+          -1.8439244797718857e-08,
+          -1.8439244797718857e-08,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "T_world_tcp": [
+        [
+          0.002346177092349042,
+          0.9999971983053799,
+          -0.0002868266016711008,
+          0.001601271976091144
+        ],
+        [
+          0.9996602537238437,
+          -0.002352833277704631,
+          -0.025963016013587074,
+          -0.21678286338171743
+        ],
+        [
+          -0.02596361950159665,
+          -0.00022581527954977664,
+          -0.9996629958224672,
+          0.14821289082953912
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "tcp_coordinate_frame": "base_link",
+      "gripper_positions": {
+        "gripper_Left_1_Joint": -0.0004450046399142593,
+        "gripper_Left_2_Joint": -0.007228843867778778,
+        "gripper_Left_Support_Joint": 0.0016043701907619834,
+        "gripper_Right_1_Joint": 0.028663400560617447,
+        "gripper_Right_2_Joint": -0.005655086133629084,
+        "gripper_Right_Support_Joint": -0.00025351185468025506
+      },
+      "gripper_velocities": {
+        "gripper_Left_1_Joint": 0,
+        "gripper_Left_2_Joint": 0,
+        "gripper_Left_Support_Joint": 0,
+        "gripper_Right_1_Joint": 0,
+        "gripper_Right_2_Joint": 0,
+        "gripper_Right_Support_Joint": 0
+      },
+      "gripper_links_in_base": {
+        "gripper_base_link": [
+          [
+            -0.999997317514668,
+            0.00234603925660134,
+            -0.0002867537838904067,
+            0.0016586333732307099
+          ],
+          [
+            0.0023528337433814527,
+            0.9996601941192158,
+            -0.025963042090627844,
+            -0.21159025198336018
+          ],
+          [
+            0.0002257435095016808,
+            -0.02596364371598723,
+            -0.9996629958224663,
+            0.3481454512510135
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "gripper_Left_1_Link": [
+          [
+            -0.9999970194982684,
+            -0.0007318104908916788,
+            -0.002346069058977693,
+            -0.02851216087796573
+          ],
+          [
+            0.002364397036229655,
+            -0.02596579130181981,
+            -0.9996600749099909,
+            -0.21422340085928926
+          ],
+          [
+            0.0006705934627757762,
+            -0.999662638202855,
+            0.025967341066610104,
+            0.2440373703782274
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "gripper_Left_Support_Link": [
+          [
+            -0.999994635337092,
+            -0.002336248318547722,
+            -0.002346038790989111,
+            -0.0688983788716202
+          ],
+          [
+            0.002406001048424491,
+            -0.025962000627721193,
+            -0.9996600153053519,
+            -0.21509818292567187
+          ],
+          [
+            0.002274464581864196,
+            -0.9996602540465787,
+            0.02596746027590131,
+            0.20671203208822328
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "gripper_Left_2_Link": [
+          [
+            -0.9999690054192691,
+            -0.007515653529881888,
+            -0.0023462776752295,
+            -0.014376032495852911
+          ],
+          [
+            0.0025405882377973446,
+            -0.02594913099541794,
+            -0.9996600153053234,
+            -0.21469415226764668
+          ],
+          [
+            0.007452260937473174,
+            -0.9996349817724609,
+            0.025967460275896907,
+            0.2271898346623798
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "gripper_Right_1_Link": [
+          [
+            0.999578297300728,
+            -0.02894590751148937,
+            0.0023535196394596485,
+            0.031769685777674306
+          ],
+          [
+            -0.0031031364335889293,
+            -0.02588108974589617,
+            0.9996602537229008,
+            -0.214365229846857
+          ],
+          [
+            -0.028875183566287075,
+            -0.9992458830452702,
+            -0.025959950090517273,
+            0.24402376672699394
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "gripper_Right_Support_Link": [
+          [
+            0.9995707871193603,
+            -0.02919922725182114,
+            0.0023535492089513926,
+            0.07103011103097209
+          ],
+          [
+            -0.0031098121482386327,
+            -0.025880251525517234,
+            0.9996602537228972,
+            -0.21545751873494431
+          ],
+          [
+            -0.029128439976908987,
+            -0.9992384920739736,
+            -0.02595995009051673,
+            0.20552156599283541
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "gripper_Right_2_Link": [
+          [
+            0.9999828931030083,
+            0.005368307668288247,
+            0.0023536090464312083,
+            0.01762389264677155
+          ],
+          [
+            -0.002213418581775995,
+            -0.02597252735413506,
+            0.9996602537228945,
+            -0.214769451649714
+          ],
+          [
+            0.005427617351362663,
+            -0.9996482733711067,
+            -0.025960188509094727,
+            0.22718259328670556
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "left_pad": [
+          [
+            -0.999994635337092,
+            -0.002336248318548388,
+            -0.0023460392566503983,
+            -0.04902697922635102
+          ],
+          [
+            0.0024060010484244824,
+            -0.02596200621565664,
+            -0.9996600153053519,
+            -0.2165742039007701
+          ],
+          [
+            0.0022744650475254834,
+            -0.9996602540465788,
+            0.025967460275901303,
+            0.15168523298703626
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "right_pad": [
+          [
+            0.9995707871193603,
+            -0.02919922725182114,
+            0.0023535492089513926,
+            0.049432733915433937
+          ],
+          [
+            -0.0031098121482386327,
+            -0.025880251525517234,
+            0.9996602537228972,
+            -0.21681872878216946
+          ],
+          [
+            -0.029128439976908987,
+            -0.9992384920739736,
+            -0.02595995009051673,
+            0.1511460064779284
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      "gripper_observed": true,
+      "native_drive_state": {
+        "source": "native_joint_drive_targets_readback",
+        "joint_names": [
+          "joint_1",
+          "joint_2",
+          "joint_3",
+          "joint_4",
+          "joint_5",
+          "joint_6",
+          "joint_7",
+          "gripper_Left_1_Joint",
+          "gripper_Left_2_Joint",
+          "gripper_Left_Support_Joint",
+          "gripper_Right_1_Joint",
+          "gripper_Right_2_Joint",
+          "gripper_Right_Support_Joint"
+        ],
+        "position_targets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "velocity_targets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "physics_timestep_s": 0.009999999776482582,
+        "simulation_frequency_hz": 100,
+        "control_frequency_hz": 20
+      },
+      "holding": "empty",
+      "holding_evidence": {
+        "source": "original_ManiSkill_is_grasping",
+        "min_force_n": 0.5,
+        "max_angle_deg": 95,
+        "contacts": {
+          "bi": {
+            "left_force_n": [
+              0,
+              0,
+              0
+            ],
+            "right_force_n": [
+              0,
+              0,
+              0
+            ],
+            "original_grasp_predicate": false
+          },
+          "bitong": {
+            "left_force_n": [
+              0,
+              0,
+              0
+            ],
+            "right_force_n": [
+              0,
+              0,
+              0
+            ],
+            "original_grasp_predicate": false
+          },
+          "carriot": {
+            "left_force_n": [
+              0,
+              0,
+              0
+            ],
+            "right_force_n": [
+              0,
+              0,
+              0
+            ],
+            "original_grasp_predicate": false
+          },
+          "desk": {
+            "left_force_n": [
+              0,
+              0,
+              0
+            ],
+            "right_force_n": [
+              0,
+              0,
+              0
+            ],
+            "original_grasp_predicate": false
+          },
+          "gluestick": {
+            "left_force_n": [
+              0,
+              0,
+              0
+            ],
+            "right_force_n": [
+              0,
+              0,
+              0
+            ],
+            "original_grasp_predicate": false
+          },
+          "hongshupian": {
+            "left_force_n": [
+              0,
+              0,
+              0
+            ],
+            "right_force_n": [
+              0,
+              0,
+              0
+            ],
+            "original_grasp_predicate": false
+          },
+          "lvmukuai": {
+            "left_force_n": [
+              0,
+              0,
+              0
+            ],
+            "right_force_n": [
+              0,
+              0,
+              0
+            ],
+            "original_grasp_predicate": false
+          },
+          "shuazi": {
+            "left_force_n": [
+              0,
+              0,
+              0
+            ],
+            "right_force_n": [
+              0,
+              0,
+              0
+            ],
+            "original_grasp_predicate": false
+          },
+          "tennis": {
+            "left_force_n": [
+              0,
+              0,
+              0
+            ],
+            "right_force_n": [
+              0,
+              0,
+              0
+            ],
+            "original_grasp_predicate": false
+          }
+        }
+      },
+      "hardware_qualified": false
+    },
+    "physics": {},
+    "checkpoint": "before_grasp",
+    "snapshot_id": "22801fbc64540b3fdc8481707ae7de8a30481dbc6d00b6f192cc17d2ca914ebc"
+  },
+  "initial_robot_ack": {
+    "source": "native_CPU_PhysX_articulation_readback",
+    "world_role": "private_mirror",
+    "coordinate_frame": "base_link",
+    "joint_names": [
+      "joint_1",
+      "joint_2",
+      "joint_3",
+      "joint_4",
+      "joint_5",
+      "joint_6",
+      "joint_7",
+      "gripper_Left_1_Joint",
+      "gripper_Left_2_Joint",
+      "gripper_Right_1_Joint",
+      "gripper_Right_2_Joint",
+      "gripper_Left_Support_Joint",
+      "gripper_Right_Support_Joint"
+    ],
+    "positions": [
+      1.572896122932434,
+      0.00905626080930233,
+      0.006035430356860161,
+      -1.562686562538147,
+      -0.0004508150741457939,
+      -1.5619994401931763,
+      1.0576796531677246,
+      -0.0004450046399142593,
+      -0.007228843867778778,
+      0.028663400560617447,
+      -0.005655086133629084,
+      0.0016043701907619834,
+      -0.00025351185468025506
+    ],
+    "velocities": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "link_errors": {
+      "gripper_base_link": {
+        "position_error_m": 2.0009523646331387e-07,
+        "rotation_error_rad": 2.3053045506947562e-07
+      },
+      "gripper_Left_1_Link": {
+        "position_error_m": 2.4792791105955877e-07,
+        "rotation_error_rad": 2.2352679936919397e-07
+      },
+      "gripper_Left_Support_Link": {
+        "position_error_m": 2.653837476218721e-07,
+        "rotation_error_rad": 3.560397217392121e-07
+      },
+      "gripper_Left_2_Link": {
+        "position_error_m": 2.3996644399953166e-07,
+        "rotation_error_rad": 9.783701886706123e-08
+      },
+      "gripper_Right_1_Link": {
+        "position_error_m": 2.406080101960005e-07,
+        "rotation_error_rad": 1.7827912200704668e-07
+      },
+      "gripper_Right_Support_Link": {
+        "position_error_m": 2.3726237230328745e-07,
+        "rotation_error_rad": 2.743758392174592e-07
+      },
+      "gripper_Right_2_Link": {
+        "position_error_m": 2.459726196864915e-07,
+        "rotation_error_rad": 2.395104874714461e-07
+      },
+      "left_pad": {
+        "position_error_m": 2.6273513522209994e-07,
+        "rotation_error_rad": 3.1030627892246835e-07
+      },
+      "right_pad": {
+        "position_error_m": 2.524089752320463e-07,
+        "rotation_error_rad": 1.7909113514257434e-07
+      },
+      "gripper_tcp": {
+        "position_error_m": 2.581069648122798e-07,
+        "rotation_error_rad": 2.723623939754883e-07
+      }
+    },
+    "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+    "robot_state_aligned": true,
+    "primary_world_mutated": false,
+    "native_drive_state": {
+      "source": "native_private_drive_target_and_timestep_readback",
+      "joint_names": [
+        "joint_1",
+        "joint_2",
+        "joint_3",
+        "joint_4",
+        "joint_5",
+        "joint_6",
+        "joint_7",
+        "gripper_Left_1_Joint",
+        "gripper_Left_2_Joint",
+        "gripper_Left_Support_Joint",
+        "gripper_Right_1_Joint",
+        "gripper_Right_2_Joint",
+        "gripper_Right_Support_Joint"
+      ],
+      "position_targets": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "velocity_targets": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "physics_timestep_s": 0.009999999776482582,
+      "simulation_frequency_hz": 100,
+      "control_frequency_hz": 20,
+      "drive_targets_aligned": true,
+      "controller_state_replay_qualified": false,
+      "dynamics_stepping_qualified": false
+    },
+    "attachment_qualified": false,
+    "hardware_qualified": false,
+    "physics_policy": {
+      "source": "native_robot_shape_and_constraint_readback",
+      "link_count": 20,
+      "shape_count": 16,
+      "constraint_count": 2,
+      "constraints": [
+        {
+          "parent": "gripper_Left_2_Link",
+          "child": "gripper_Left_Support_Link",
+          "T_parent_constraint": [
+            [
+              1,
+              0,
+              0,
+              0.04039999842643738
+            ],
+            [
+              0,
+              1,
+              0,
+              0.03750000149011612
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "T_child_constraint": [
+            [
+              1,
+              0,
+              0,
+              -0.014100000262260437
+            ],
+            [
+              0,
+              1,
+              0,
+              0.017000000923871994
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "limits": {
+            "x": [
+              -1.1342744887950962e+38,
+              1.1342744887950962e+38,
+              0,
+              0
+            ],
+            "y": [
+              -1.1342744887950962e+38,
+              1.1342744887950962e+38,
+              0,
+              0
+            ],
+            "z": [
+              -1.1342744887950962e+38,
+              1.1342744887950962e+38,
+              0,
+              0
+            ],
+            "twist": [
+              -1.5707963705062866,
+              1.5707963705062866,
+              0,
+              0
+            ],
+            "cone": [
+              1.5707963705062866,
+              1.5707963705062866,
+              0,
+              0
+            ],
+            "pyramid": [
+              -1.5707963705062866,
+              1.5707963705062866,
+              -1.5707963705062866,
+              1.5707963705062866,
+              0,
+              0
+            ]
+          },
+          "properties": {
+            "x": [
+              0,
+              0,
+              3.4028234663852886e+38,
+              "force"
+            ],
+            "y": [
+              0,
+              0,
+              3.4028234663852886e+38,
+              "force"
+            ],
+            "z": [
+              0,
+              0,
+              3.4028234663852886e+38,
+              "force"
+            ],
+            "twist": [
+              0,
+              0,
+              3.4028234663852886e+38,
+              "force"
+            ],
+            "swing": [
+              0,
+              0,
+              3.4028234663852886e+38,
+              "force"
+            ],
+            "slerp": [
+              0,
+              0,
+              3.4028234663852886e+38,
+              "force"
+            ]
+          },
+          "target": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "velocity_target": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "parent": "gripper_Right_2_Link",
+          "child": "gripper_Right_Support_Link",
+          "T_parent_constraint": [
+            [
+              1,
+              0,
+              0,
+              0.04039999842643738
+            ],
+            [
+              0,
+              1,
+              0,
+              0.03750000149011612
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "T_child_constraint": [
+            [
+              1,
+              0,
+              0,
+              -0.014100000262260437
+            ],
+            [
+              0,
+              1,
+              0,
+              0.017000000923871994
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "limits": {
+            "x": [
+              -1.1342744887950962e+38,
+              1.1342744887950962e+38,
+              0,
+              0
+            ],
+            "y": [
+              -1.1342744887950962e+38,
+              1.1342744887950962e+38,
+              0,
+              0
+            ],
+            "z": [
+              -1.1342744887950962e+38,
+              1.1342744887950962e+38,
+              0,
+              0
+            ],
+            "twist": [
+              -1.5707963705062866,
+              1.5707963705062866,
+              0,
+              0
+            ],
+            "cone": [
+              1.5707963705062866,
+              1.5707963705062866,
+              0,
+              0
+            ],
+            "pyramid": [
+              -1.5707963705062866,
+              1.5707963705062866,
+              -1.5707963705062866,
+              1.5707963705062866,
+              0,
+              0
+            ]
+          },
+          "properties": {
+            "x": [
+              0,
+              0,
+              3.4028234663852886e+38,
+              "force"
+            ],
+            "y": [
+              0,
+              0,
+              3.4028234663852886e+38,
+              "force"
+            ],
+            "z": [
+              0,
+              0,
+              3.4028234663852886e+38,
+              "force"
+            ],
+            "twist": [
+              0,
+              0,
+              3.4028234663852886e+38,
+              "force"
+            ],
+            "swing": [
+              0,
+              0,
+              3.4028234663852886e+38,
+              "force"
+            ],
+            "slerp": [
+              0,
+              0,
+              3.4028234663852886e+38,
+              "force"
+            ]
+          },
+          "target": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "velocity_target": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      ],
+      "expected_digest": "6cd2fdd6a1b34ffb48fc82f6413353cecb6a31bfd23954a4c1b80275e80b0eaa",
+      "actual_digest": "c158bfa44420a316ebfc123127b4aee48f8f60393a42e83fba76ad2caf9642da",
+      "collision_shapes_and_groups_aligned": true,
+      "gripper_constraint_configuration_aligned": true,
+      "articulation_drive_parameters_aligned": true,
+      "link_body_parameters_aligned": true,
+      "link_bodies": {
+        "base_link": {
+          "mass": 1.8619999885559082,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            0.000899831356946379,
+            0.0017046090215444565,
+            0.0017254394479095936
+          ],
+          "T_link_cmass": [
+            [
+              0.04600489139556885,
+              -0.15370216965675354,
+              0.9870457053184509,
+              0.000499869987834245
+            ],
+            [
+              -0.0015209317207336426,
+              -0.9881014823913574,
+              -0.15379568934440613,
+              5.270900146570057e-05
+            ],
+            [
+              0.9989400506019592,
+              0.005574122071266174,
+              -0.04569137096405029,
+              0.06001900136470795
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "link_1": {
+          "mass": 2.1600000858306885,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            0.0028139669448137283,
+            0.005199061706662178,
+            0.005394871346652508
+          ],
+          "T_link_cmass": [
+            [
+              0.0009170770645141602,
+              -0.05531977117061615,
+              -0.998468279838562,
+              -0.0020000000949949026
+            ],
+            [
+              -0.3556550145149231,
+              0.9331680536270142,
+              -0.05202849209308624,
+              0.026920000091195107
+            ],
+            [
+              0.9346169233322144,
+              0.3551579713821411,
+              -0.018818974494934082,
+              -0.013319999910891056
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "link_2": {
+          "mass": 1.7100000381469727,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            0.003057919442653656,
+            0.023643573746085167,
+            0.026899654418230057
+          ],
+          "T_link_cmass": [
+            [
+              -0.1834573745727539,
+              0.6145740747451782,
+              -0.7672300934791565,
+              0.03531000018119812
+            ],
+            [
+              -0.9613808393478394,
+              0.050717294216156006,
+              0.2705080807209015,
+              -0.21398000419139862
+            ],
+            [
+              0.20515906810760498,
+              0.7872270345687866,
+              0.5815353393554688,
+              0.03386000171303749
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "link_3": {
+          "mass": 1.3839999437332153,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            0.002023066859692335,
+            0.004299743101000786,
+            0.007306199986487627
+          ],
+          "T_link_cmass": [
+            [
+              -0.25604796409606934,
+              -0.7273282408714294,
+              -0.6367362141609192,
+              0.06780999898910522
+            ],
+            [
+              0.8732251524925232,
+              0.10850119590759277,
+              -0.4750845432281494,
+              0.10749000310897827
+            ],
+            [
+              0.4146290123462677,
+              -0.6776585578918457,
+              0.6073397994041443,
+              0.014569999650120735
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "link_4": {
+          "mass": 1.1150000095367432,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            0.001034073531627655,
+            0.004068553913384676,
+            0.004400912672281265
+          ],
+          "T_link_cmass": [
+            [
+              -0.0017882585525512695,
+              -0.1577601432800293,
+              -0.9874758124351501,
+              -0.0002099999983329326
+            ],
+            [
+              -0.15069538354873657,
+              0.9762431383132935,
+              -0.1556926965713501,
+              0.025779999792575836
+            ],
+            [
+              0.9885786175727844,
+              0.14852961897850037,
+              -0.025519609451293945,
+              -0.025380000472068787
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "link_5": {
+          "mass": 1.274999976158142,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            0.000951788853853941,
+            0.002327598398551345,
+            0.0028975708410143852
+          ],
+          "T_link_cmass": [
+            [
+              0.9273388385772705,
+              0.1943238377571106,
+              -0.3198138177394867,
+              0.05428000167012215
+            ],
+            [
+              -0.3246404528617859,
+              0.8428457975387573,
+              -0.42920807003974915,
+              0.017810000106692314
+            ],
+            [
+              0.18614837527275085,
+              0.5018458366394043,
+              0.8446890115737915,
+              0.005429999902844429
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "link_6": {
+          "mass": 0.1096000000834465,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            4.5292999857338145e-05,
+            4.811100006918423e-05,
+            7.971499871928245e-05
+          ],
+          "T_link_cmass": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0.0006399999838322401
+            ],
+            [
+              0,
+              0,
+              1,
+              -0.009519999846816063
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "link_7": {
+          "mass": 0.10699999332427979,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            3.507752262521535e-05,
+            4.411922418512404e-05,
+            6.544924690388143e-05
+          ],
+          "T_link_cmass": [
+            [
+              0.007045865058898926,
+              -0.9998762607574463,
+              0.01406872645020485,
+              0.0010939999483525753
+            ],
+            [
+              0.9999748468399048,
+              0.0070326924324035645,
+              -0.000984402373433113,
+              -7.699999696342275e-05
+            ],
+            [
+              0.0008853385224938393,
+              0.014075308106839657,
+              0.9999005198478699,
+              -0.01011900044977665
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "flange_spacer_8mm": {
+          "mass": 0.05000000074505806,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            1.5579165847157128e-05,
+            1.5579165847157128e-05,
+            3.0625000363215804e-05
+          ],
+          "T_link_cmass": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0.004000000189989805
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "gripper_base": {
+          "mass": 0.009999999776482582,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            9.999999974752427e-07,
+            9.999999974752427e-07,
+            9.999999974752427e-07
+          ],
+          "T_link_cmass": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "gripper_base_link": {
+          "mass": 0.49834001064300537,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            0.0002965199528262019,
+            0.00039230004767887294,
+            0.00044011001591570675
+          ],
+          "T_link_cmass": [
+            [
+              4.470348358154297e-06,
+              1.9519211491569877e-05,
+              -1,
+              8.624999736639438e-08
+            ],
+            [
+              0.000790185178630054,
+              0.9999997019767761,
+              1.952273305505514e-05,
+              -4.658299985749181e-06
+            ],
+            [
+              0.9999997019767761,
+              -0.0007901852368377149,
+              4.410743713378906e-06,
+              0.031449999660253525
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "gripper_Left_1_Link": {
+          "mass": 0.28769999742507935,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            6.196882509357238e-07,
+            6.16951183474157e-06,
+            6.364600267261267e-06
+          ],
+          "T_link_cmass": [
+            [
+              0,
+              0,
+              -1,
+              -0.00019999999494757503
+            ],
+            [
+              -0.6095600724220276,
+              -0.792739987373352,
+              0,
+              0.019940000027418137
+            ],
+            [
+              -0.7927399277687073,
+              0.6095600724220276,
+              0,
+              0.02921999990940094
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "gripper_Left_2_Link": {
+          "mass": 0.259660005569458,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            6.188968654896598e-06,
+            5.762359069194645e-05,
+            6.243884126888588e-05
+          ],
+          "T_link_cmass": [
+            [
+              0.010423481464385986,
+              0.9999454617500305,
+              0.0005743065848946571,
+              0.0001230000052601099
+            ],
+            [
+              0.999724805355072,
+              -0.010433197021484375,
+              0.021011080592870712,
+              0.05079000070691109
+            ],
+            [
+              0.02101592719554901,
+              0.0003551403060555458,
+              -0.9997789859771729,
+              0.0010400000028312206
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "gripper_Right_1_Link": {
+          "mass": 0.28769999742507935,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            6.196882509357238e-07,
+            6.16951183474157e-06,
+            6.364600267261267e-06
+          ],
+          "T_link_cmass": [
+            [
+              0,
+              0,
+              -1,
+              -0.00019999999494757503
+            ],
+            [
+              -0.6095600724220276,
+              -0.792739987373352,
+              0,
+              0.019940000027418137
+            ],
+            [
+              -0.7927399277687073,
+              0.6095600724220276,
+              0,
+              0.02921999990940094
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "gripper_Right_2_Link": {
+          "mass": 0.259660005569458,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            6.188968654896598e-06,
+            5.762359069194645e-05,
+            6.243884126888588e-05
+          ],
+          "T_link_cmass": [
+            [
+              0.010423481464385986,
+              0.9999454617500305,
+              0.0005743065848946571,
+              0.0001230000052601099
+            ],
+            [
+              0.999724805355072,
+              -0.010433197021484375,
+              0.021011080592870712,
+              0.05079000070691109
+            ],
+            [
+              0.02101592719554901,
+              0.0003551403060555458,
+              -0.9997789859771729,
+              0.0010400000028312206
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "gripper_tcp": {
+          "mass": 9.999999974752427e-07,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            9.999999974752427e-07,
+            9.999999974752427e-07,
+            9.999999974752427e-07
+          ],
+          "T_link_cmass": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": true,
+          "disable_gravity": true
+        },
+        "gripper_Left_Support_Link": {
+          "mass": 0.6973999738693237,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            3.5122498047712725e-06,
+            3.355000080773607e-05,
+            3.570675107766874e-05
+          ],
+          "T_link_cmass": [
+            [
+              -3.5762786865234375e-07,
+              1.0000001192092896,
+              5.960464477539063e-08,
+              0.0003000000142492354
+            ],
+            [
+              -0.8288571238517761,
+              -3.5762786865234375e-07,
+              0.5594605803489685,
+              0.037390001118183136
+            ],
+            [
+              0.5594605803489685,
+              5.960464477539063e-08,
+              0.8288570046424866,
+              -0.020800000056624413
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "gripper_Right_Support_Link": {
+          "mass": 0.6973999738693237,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            3.5122498047712725e-06,
+            3.355000080773607e-05,
+            3.570675107766874e-05
+          ],
+          "T_link_cmass": [
+            [
+              -3.5762786865234375e-07,
+              1.0000001192092896,
+              5.960464477539063e-08,
+              0.0003000000142492354
+            ],
+            [
+              -0.8288571238517761,
+              -3.5762786865234375e-07,
+              0.5594605803489685,
+              0.037390001118183136
+            ],
+            [
+              0.5594605803489685,
+              5.960464477539063e-08,
+              0.8288570046424866,
+              -0.020800000056624413
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": false,
+          "disable_gravity": true
+        },
+        "left_pad": {
+          "mass": 9.999999974752427e-07,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            9.999999974752427e-07,
+            9.999999974752427e-07,
+            9.999999974752427e-07
+          ],
+          "T_link_cmass": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": true,
+          "disable_gravity": true
+        },
+        "right_pad": {
+          "mass": 9.999999974752427e-07,
+          "linear_damping": 0.05000000074505806,
+          "angular_damping": 0.05000000074505806,
+          "inertia": [
+            9.999999974752427e-07,
+            9.999999974752427e-07,
+            9.999999974752427e-07
+          ],
+          "T_link_cmass": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "auto_compute_mass": true,
+          "disable_gravity": true
+        }
+      },
+      "articulation_drive": {
+        "joints": {
+          "joint_1": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                -3.1059999465942383,
+                3.1059999465942383
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 1000,
+            "damping": 100,
+            "force_limit": 20,
+            "friction": 0.10000000149011612
+          },
+          "joint_2": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                -2.268899917602539,
+                2.268899917602539
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 1000,
+            "damping": 100,
+            "force_limit": 20,
+            "friction": 0.10000000149011612
+          },
+          "joint_3": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                -3.1059999465942383,
+                3.1059999465942383
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 1000,
+            "damping": 100,
+            "force_limit": 20,
+            "friction": 0.10000000149011612
+          },
+          "joint_4": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                -2.3559999465942383,
+                2.3559999465942383
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 1000,
+            "damping": 100,
+            "force_limit": 20,
+            "friction": 0.10000000149011612
+          },
+          "joint_5": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                -3.1059999465942383,
+                3.1059999465942383
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 1000,
+            "damping": 100,
+            "force_limit": 20,
+            "friction": 0.10000000149011612
+          },
+          "joint_6": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                -2.2339999675750732,
+                2.2339999675750732
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 1000,
+            "damping": 100,
+            "force_limit": 20,
+            "friction": 0.10000000149011612
+          },
+          "joint_7": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                -6.28000020980835,
+                6.28000020980835
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 1000,
+            "damping": 100,
+            "force_limit": 20,
+            "friction": 0.10000000149011612
+          },
+          "gripper_Left_1_Joint": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                0,
+                0.9100000262260437
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 1000,
+            "damping": 100,
+            "force_limit": 5,
+            "friction": 1
+          },
+          "gripper_Left_2_Joint": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                0,
+                0.9100000262260437
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 0,
+            "damping": 0,
+            "force_limit": 10000000000,
+            "friction": 0
+          },
+          "gripper_Right_1_Joint": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                0,
+                0.9100000262260437
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 1000,
+            "damping": 100,
+            "force_limit": 5,
+            "friction": 1
+          },
+          "gripper_Right_2_Joint": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                0,
+                0.9100000262260437
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 0,
+            "damping": 0,
+            "force_limit": 10000000000,
+            "friction": 0
+          },
+          "gripper_Left_Support_Joint": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                0,
+                0.9100000262260437
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 0,
+            "damping": 0,
+            "force_limit": 10000000000,
+            "friction": 0
+          },
+          "gripper_Right_Support_Joint": {
+            "type": "revolute_unwrapped",
+            "dof": 1,
+            "limits": [
+              [
+                0,
+                0.9100000262260437
+              ]
+            ],
+            "armature": [
+              0
+            ],
+            "drive_mode": "force",
+            "stiffness": 0,
+            "damping": 0,
+            "force_limit": 10000000000,
+            "friction": 0
+          }
+        },
+        "solver_position_iterations": 15,
+        "solver_velocity_iterations": 1,
+        "sleep_threshold": 0.004999999888241291
+      },
+      "drive_target_replay_qualified": false,
+      "dynamics_stepping_qualified": false,
+      "attachment_qualified": false,
+      "hardware_qualified": false
+    }
+  },
+  "initial_body_ack": {
+    "source": "native_CPU_PhysX_shape_and_body_readback",
+    "objects": {
+      "bi": {
+        "native_physics_geometry_sha256": "278b97027b8645009a9c776c8f97ff108ee517b0807d6584a6639cb468b9a3fd",
+        "shape_count": 10,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh",
+          "ConvexMesh"
+        ],
+        "mass": 0.04651080444455147,
+        "inertia": [
+          7.150604506023228e-05,
+          3.1645511171518592e-06,
+          7.14740453986451e-05
+        ],
+        "expected_native_digest": "b4ad4d6c5e604e2d603dc54f2192de8e3964707b552eb06d500b437ecf7877f8",
+        "actual_native_digest": "b4ad4d6c5e604e2d603dc54f2192de8e3964707b552eb06d500b437ecf7877f8"
+      },
+      "bitong": {
+        "native_physics_geometry_sha256": "ab57453801da931dc72794e4044ae500fa50278aded73792c1c313a22598ab51",
+        "shape_count": 5,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box",
+          "Box",
+          "Box",
+          "Box",
+          "Box"
+        ],
+        "mass": 0.18447226285934448,
+        "inertia": [
+          0.00027690952992998064,
+          0.0002919824328273535,
+          0.00027690952992998064
+        ],
+        "expected_native_digest": "c0e5522bde827d6e0181065779370bb03f9735bde56ce87d0263090a670dfe9e",
+        "actual_native_digest": "c0e5522bde827d6e0181065779370bb03f9735bde56ce87d0263090a670dfe9e"
+      },
+      "carriot": {
+        "native_physics_geometry_sha256": "b2d60228165ca08145433b962436f0275b35a613bc907c1294d743796a707feb",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 0.18753525614738464,
+        "inertia": [
+          0.0005737523315474391,
+          0.0005737523315474391,
+          3.101364563917741e-05
+        ],
+        "expected_native_digest": "42435489bfeaf275ed2d8e20e7ccbd52c60050e539648a3e0797fc617cdaf0a5",
+        "actual_native_digest": "42435489bfeaf275ed2d8e20e7ccbd52c60050e539648a3e0797fc617cdaf0a5"
+      },
+      "desk": {
+        "native_physics_geometry_sha256": "17a4057ebeea9f8b2e380a49b4241654751b76906975f1d86311c4cb5f39c7a7",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 10.013486862182617,
+        "inertia": [
+          0.055286772549152374,
+          0.19832903146743774,
+          0.15939927101135254
+        ],
+        "expected_native_digest": "595de082e1b9668fc9f80a583515985a2d740dc0f360b28b595f742bb7a4dd84",
+        "actual_native_digest": "595de082e1b9668fc9f80a583515985a2d740dc0f360b28b595f742bb7a4dd84"
+      },
+      "gluestick": {
+        "native_physics_geometry_sha256": "e5d1cd7d75b64adae404e34fabed3b62c2333dc4c3ffb95096d854597150ada6",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 0.07217100262641907,
+        "inertia": [
+          6.333005876513198e-05,
+          8.76877675182186e-06,
+          6.333005876513198e-05
+        ],
+        "expected_native_digest": "6e6278d16356ea7f66ed16bb8dd65cc534e17d517ac2a4f92c1bf42313745b25",
+        "actual_native_digest": "6e6278d16356ea7f66ed16bb8dd65cc534e17d517ac2a4f92c1bf42313745b25"
+      },
+      "hongshupian": {
+        "native_physics_geometry_sha256": "a5e0d639c48a8a4f11b7e5f39c72d6f1111c97ac9543d5c287e2fb5f7e9ceb38",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 0.5358150005340576,
+        "inertia": [
+          0.0009909899672493339,
+          0.000354441610397771,
+          0.000990989850834012
+        ],
+        "expected_native_digest": "0a63b6b215e0054a93880bf40e831de217a72e71b985187f6b93fae9f9cd8837",
+        "actual_native_digest": "0a63b6b215e0054a93880bf40e831de217a72e71b985187f6b93fae9f9cd8837"
+      },
+      "lvmukuai": {
+        "native_physics_geometry_sha256": "06c9af7841baeee395f26c4dd60717ceaf0f09a536cc92f5ddfee36a86755df6",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 0.03998000919818878,
+        "inertia": [
+          4.970427653461229e-06,
+          1.2503400284913369e-05,
+          1.1897312106157187e-05
+        ],
+        "expected_native_digest": "cba6a767cf5ac7557e8b25e930b96639a84497ad7f7e62846a030fe4e86a97a4",
+        "actual_native_digest": "cba6a767cf5ac7557e8b25e930b96639a84497ad7f7e62846a030fe4e86a97a4"
+      },
+      "shuazi": {
+        "native_physics_geometry_sha256": "7177c1ccedcf451e7dd1c6312da518d7f43cc4930774c4fa5422e4cbf94290d7",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 0.5122414827346802,
+        "inertia": [
+          0.00038226559991016984,
+          0.0007391551625914872,
+          0.0008343722438439727
+        ],
+        "expected_native_digest": "dde8116dd73cea36ba6cc5797a10985e87961dcfff3b231ff1a432608d2d3354",
+        "actual_native_digest": "dde8116dd73cea36ba6cc5797a10985e87961dcfff3b231ff1a432608d2d3354"
+      },
+      "tennis": {
+        "native_physics_geometry_sha256": "dc09025f1f2b0b68cfee665a71b4c8571b9d45ac9644e357757a02908e798b3a",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 0.2500469982624054,
+        "inertia": [
+          0.00016540609067305923,
+          0.000165406076121144,
+          0.000165406076121144
+        ],
+        "expected_native_digest": "7ef85c77108ef0e019e557a7eed21930393f49a1648bc2213448cdc82664fffe",
+        "actual_native_digest": "7ef85c77108ef0e019e557a7eed21930393f49a1648bc2213448cdc82664fffe"
+      },
+      "__maniskill_workspace_table__": {
+        "native_physics_geometry_sha256": "67d45755e5b6a8bbcfba35eb0fa83c275c66d4389e3bb548704466d8152784e6",
+        "shape_count": 1,
+        "body_kind": "dynamic",
+        "shape_kinds": [
+          "Box"
+        ],
+        "mass": 2688.44921875,
+        "inertia": [
+          516.9493408203125,
+          1499.363037109375,
+          1637.3560791015625
+        ],
+        "expected_native_digest": "3a19c4b085b2bb54e274c334a87532efc72daae7f6c30a834c34dcd65317d874",
+        "actual_native_digest": "3a19c4b085b2bb54e274c334a87532efc72daae7f6c30a834c34dcd65317d874"
+      },
+      "virtual_side_wall": {
+        "native_physics_geometry_sha256": "b30d7852f72cee0723ffa73e4f17c6f94000c72843d97c48c9d28cfd6f402eef",
+        "shape_count": 0,
+        "body_kind": "dynamic",
+        "shape_kinds": [],
+        "mass": 9.999999974752427e-07,
+        "inertia": [
+          9.999999974752427e-07,
+          9.999999974752427e-07,
+          9.999999974752427e-07
+        ],
+        "expected_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75",
+        "actual_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75"
+      },
+      "virtual_top_wall": {
+        "native_physics_geometry_sha256": "b30d7852f72cee0723ffa73e4f17c6f94000c72843d97c48c9d28cfd6f402eef",
+        "shape_count": 0,
+        "body_kind": "dynamic",
+        "shape_kinds": [],
+        "mass": 9.999999974752427e-07,
+        "inertia": [
+          9.999999974752427e-07,
+          9.999999974752427e-07,
+          9.999999974752427e-07
+        ],
+        "expected_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75",
+        "actual_native_digest": "e9a467f725470b5a67cdd053d52b33adb472e50f0446613f13332200838dfc75"
+      }
+    },
+    "original_body_geometry_and_properties_aligned": true,
+    "primary_world_mutated": false,
+    "attachment_qualified": false,
+    "robot_collision_policy_qualified": false,
+    "hardware_qualified": false
+  },
+  "hypothesis_initialization": {
+    "source": "hypothetical_candidate_endpoint_not_observed",
+    "assumption": "stationary_endpoint_not_executed_approach",
+    "joint_names": [
+      "joint_1",
+      "joint_2",
+      "joint_3",
+      "joint_4",
+      "joint_5",
+      "joint_6",
+      "joint_7",
+      "gripper_Left_1_Joint",
+      "gripper_Left_2_Joint",
+      "gripper_Right_1_Joint",
+      "gripper_Right_2_Joint",
+      "gripper_Left_Support_Joint",
+      "gripper_Right_Support_Joint"
+    ],
+    "positions": [
+      1.0381098985671997,
+      -0.49131539463996887,
+      -0.4996761977672577,
+      -1.581451177597046,
+      0.25218796730041504,
+      -1.1335171461105347,
+      1.9594258069992065,
+      -0.0004450046399142593,
+      -0.007228843867778778,
+      0.028663400560617447,
+      -0.005655086133629084,
+      0.0016043701907619834,
+      -0.00025351185468025506
+    ],
+    "velocities": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "measured": false,
+    "primary_world_mutated": false
+  },
+  "closed_drive_targets": {
+    "source": "native_joint_drive_targets_readback",
+    "joint_names": [
+      "joint_1",
+      "joint_2",
+      "joint_3",
+      "joint_4",
+      "joint_5",
+      "joint_6",
+      "joint_7",
+      "gripper_Left_1_Joint",
+      "gripper_Left_2_Joint",
+      "gripper_Left_Support_Joint",
+      "gripper_Right_1_Joint",
+      "gripper_Right_2_Joint",
+      "gripper_Right_Support_Joint"
+    ],
+    "position_targets": [
+      1.0381098985671997,
+      -0.49131539463996887,
+      -0.4996761977672577,
+      -1.581451177597046,
+      0.25218796730041504,
+      -1.1335171461105347,
+      1.9594258069992065,
+      0.9100000262260437,
+      0,
+      0,
+      0.9100000262260437,
+      0,
+      0
+    ],
+    "velocity_targets": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "physics_timestep_s": 0.009999999776482582,
+    "simulation_frequency_hz": 100,
+    "control_frequency_hz": 20
+  },
+  "step_count": 28,
+  "last_step": {
+    "control_tick": 6,
+    "substep": 3,
+    "q": [
+      1.0382931232452393,
+      -0.4877459704875946,
+      -0.49895286560058594,
+      -1.5865495204925537,
+      0.25286540389060974,
+      -1.123002290725708,
+      2.0064101219177246,
+      0.7880013585090637,
+      0.7390431761741638,
+      0.8075161576271057,
+      0.7654774785041809,
+      0.9090119004249573,
+      0.9100000262260437
+    ],
+    "qdot": [
+      -0.003724286099895835,
+      -0.007229122333228588,
+      0.001259133219718933,
+      -0.045051950961351395,
+      -0.004835592117160559,
+      0.0538206622004509,
+      -0.01669907569885254,
+      -0.24599683284759521,
+      -0.2900984287261963,
+      -1.4007993936538696,
+      -0.1136351153254509,
+      -0.964684009552002,
+      -3.8670520782470703
+    ]
+  },
+  "forbidden_contacts": [
+    {
+      "body_names": [
+        "gripper_Left_Support_Link",
+        "__maniskill_workspace_table__"
+      ],
+      "force_in_base_n": [
+        7.177098542692306e-05,
+        -0.00017709674407554265,
+        0.41933381935955183
+      ],
+      "separations_m": [
+        0.0008077906677499413,
+        0.001146993599832058,
+        0.00010085515532409772
+      ]
+    }
+  ],
+  "private_robot_closed": true,
+  "primary_unchanged_while_private_stepped": true
+}

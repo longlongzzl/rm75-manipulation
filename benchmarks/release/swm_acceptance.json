@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "191e7e8",
+    "commit": "4562bd1",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Native full-scene closure veto wired into ordinary worker_34 before primary close. Serial full regression 1767 passed; first overlapping run rejected by existing workcell lock. No six-checkpoint pen success or qualified contact replay."
+    "note": "Original candidate loop now rejects explicit private closure collisions; ordinary worker_35 stopped before primary actions. Read-only worker_36 identifies 70 original candidates but only one returned by relation screening, with motion budget 8. No real replacement candidate or pen six-checkpoint success yet."
   },
   "runs": {
     "m0_targeted": {
@@ -13696,6 +13696,47 @@
       "seconds": 42.56,
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "evidence": "benchmarks/release/evidence/pen_closure/worker_34/full_tests_serial.log"
+    },
+    "m1_candidate_closure_targeted": {
+      "passed": 21,
+      "failed": 0,
+      "seconds": 0.52
+    },
+    "m1_candidate_closure_full": {
+      "tested_commit": "4562bd1",
+      "passed": 1774,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 42.55,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_35/full_tests.log"
+    },
+    "m1_candidate_closure_worker_35": {
+      "domain": "native_CPU_PhysX_candidate_hypothesis",
+      "tested_commit": "4562bd1",
+      "objects": 12,
+      "private_substeps": 28,
+      "control_tick": 6,
+      "substep": 3,
+      "table_force_z_n": 0.41933381935955183,
+      "primary_unchanged": true,
+      "primary_actions_executed": false,
+      "private_closed": true,
+      "formal_cleanup_all_true": true,
+      "model_qualified": false,
+      "skill_verified": false,
+      "status": "no_feasible_trajectory_after_only_screened_candidate_rejected",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_35/"
+    },
+    "m1_candidate_budget_worker_36": {
+      "domain": "read_only_native_worker_diagnostic",
+      "original_count": 70,
+      "screened_count": 1,
+      "ranked_count": 1,
+      "max_motion_candidates": 8,
+      "policy_modified": false,
+      "status": "no_feasible_trajectory",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_36/"
     }
   },
   "gates": {
@@ -13945,14 +13986,14 @@
   },
   "current_layer_status": {
     "kernel": {
-      "tested_commit": "d7b361f",
+      "tested_commit": "4562bd1",
       "status": "PASSED_REGRESSION",
-      "passed": 1622,
+      "passed": 1774,
       "failed": 0
     },
-    "native_wiring": "TWELVE_NATIVE_BODY_GEOMETRY_AND_PARAMETERS_ALIGNED_ATTACHMENT_ROBOT_POLICY_AND_WORKER_PENDING",
+    "native_wiring": "ORIGINAL_GRASP_CANDIDATE_CLOSURE_VETO_WIRED_RELATION_SCREEN_CONTINUATION_PENDING",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "NATIVE_BODY_AND_MEASURED_STATE_READBACK_EXIT_0_NO_ATOMIC_EXECUTION",
+    "actual_simulation": "WORKER_35_PRIVATE_CANDIDATE_REJECTED_BEFORE_PRIMARY_ACTIONS_NO_SIX_CHECKPOINT_SUCCESS",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14019,5 +14060,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Feed bounded native closure rejection into original joint grasp/place candidate selection, preserve full audit and obtain actual pen six-checkpoint closure before expanding tasks."
+  "next_actual_action": "Continue existing relation screening after excluded closure-rejected IDs, preserve original search tiers and grasp/place pairing with bounded total motion attempts, then obtain actual pen six-checkpoint success."
 }
