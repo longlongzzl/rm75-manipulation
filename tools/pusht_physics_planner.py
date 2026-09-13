@@ -18,6 +18,21 @@ from rm75_app.workcell.io import atomic_json
 from rm75_app.workcell.events import StopToken
 
 
+def audit_prepared_retreat(executor,prepared):
+    """Additional rejection gate, not a post-push scene certificate.
+
+    The legacy generator restores collision checks before returning. Reuse its
+    exhaustive native audit on the timed retreat with no allowed target contact.
+    A later SWM boundary must still supply the measured post-push scene.
+    """
+    rows=[path for stage,path,_ in prepared.stages if stage=='retreat']
+    if not rows:raise ValueError('Prepared push has no retreat to audit')
+    for path in rows:executor._audit(path,contact=False)
+    executor.events.emit('physics_retreat_native_audit',
+        scope='measured_pre_push_scene',samples=sum(len(path) for path in rows),
+        post_push_scene_verified=False)
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--profile',required=True,type=Path);parser.add_argument('--directory',required=True,type=Path)
@@ -28,6 +43,11 @@ def main():
         with contextlib.redirect_stdout(sys.stderr):
             from rm75_app.planning.backends.curobo2 import Curobo2Backend,Curobo2BackendConfig
             from rm75_app.pusht.motion import CuroboPushExecutor,pusht_planner_options
+            class AuditedPhysicsPushExecutor(CuroboPushExecutor):
+                def plan_push(self,*args,**kwargs):
+                    prepared=super().plan_push(*args,**kwargs)
+                    audit_prepared_retreat(self,prepared)
+                    return prepared
             from rm75_app.pusht.model import Config,Push
             from rm75_app.pusht.observation import Observation
             from rm75_app.planning.contracts import CollisionObject,Pose,PlanningScene
@@ -99,7 +119,7 @@ def main():
                 events=[];tick=time.monotonic();periodic_audits.clear();motion_diagnostics.clear()
                 class Events:
                     def emit(self,event,**values):events.append(dict(event=event,**values))
-                executor=CuroboPushExecutor(backend,ArmState(),Config.from_dict({**data['model'],
+                executor=AuditedPhysicsPushExecutor(backend,ArmState(),Config.from_dict({**data['model'],
                     'response_fits':request.get('response_fits',data['model'].get('response_fits',[]))}),data['motion'],
                     StopToken(args.directory/'STOP'),Events(),None)
                 result=dict(execute_real=False,hardware_connected=False,hardware_profile_qualified=False,
@@ -111,6 +131,8 @@ def main():
                     else:
                         selected=0;prepared=executor.plan_push(proposals[0][0],observation)
                     result.update(complete_chain=True,validation_success=True,
+                        retreat_native_audit_scope='measured_pre_push_scene',
+                        retreat_post_push_scene_verified=False,
                         selected_candidate=selected,selected_push=proposals[selected][0].as_dict(),
                         stages=[dict(stage=s,positions=p.tolist(),times=t.tolist()) for s,p,t in prepared.stages])
                 except Exception as exc:result['error']=f'{type(exc).__name__}: {exc}'

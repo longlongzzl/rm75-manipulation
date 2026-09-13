@@ -1,6 +1,16 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_retreat_gate_worker_02": {
+    "evidence": "benchmarks/release/evidence/pusht_feedback/worker_02/",
+    "kernel": "3 targeted passed; 1896 full passed / 1 existing warning / 47.40 s; network isolated",
+    "native_wiring": "Original candidate planner now audits every timed retreat sample after collision restoration, with contact=False; scope remains measured pre-push scene",
+    "actual_simulation": "CANCELLED_AT_180_SECOND_PLANNING_TIMEOUT; 61 initialization control steps; no completed plan or push",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "post_push_scene_verified": false,
+    "next": "Persist bounded candidate rejection evidence and plan retreat from post-push measured state; do not bypass missing SWM runtime guards"
+  },
   "pusht_feedback_native_worker_01": {
     "tested_commit": "25ab4a5",
     "job_id": "d0079fb3a9ee450ba3b0278d1eecc390",
