@@ -15269,5 +15269,37 @@
     "execution_authorized": false,
     "known_issue": "Preparation sets transaction key before all native steps finish; failed factory reuse can retain partial preparation. Not repaired or installed in a worker this turn.",
     "evidence": "benchmarks/release/evidence/pusht_feedback/native_factory_01"
+  },
+  "native_factory_lifecycle_20260913": {
+    "status": "PARTIAL_DELIVERY",
+    "tested_commit": "a5f3519ca2feb0b2a5950e49205d2e364f8fc69f",
+    "tested_source": "base plus operation failure invalidation and lifecycle tests; source_sha256.txt",
+    "kernel": {
+      "targeted_passed": 6,
+      "targeted_seconds": 0.04,
+      "full_passed": 1957,
+      "full_failed": 1,
+      "full_warnings": 1,
+      "full_seconds": 53.53,
+      "full_failure": "tests/three_scene/test_three_scene_pusht.py::test_stagnation_is_not_success raised stale_or_future_observation",
+      "isolated_failure_rechecks_passed": 3,
+      "full_regression_green": false
+    },
+    "native_wiring": {
+      "failed_operation_invalidates_factory": true,
+      "partial_candidates_cleared": true,
+      "reuse_rejected": true,
+      "unrelated_files_preserved": true
+    },
+    "actual_process_test": {
+      "owned_isolated_sleep_child_reaped": true,
+      "native_GPU_PhysX_cancellation_qualified": false
+    },
+    "actual_simulation": "NOT_RUN_THIS_TURN",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "execution_authorized": false,
+    "evidence": "benchmarks/release/evidence/pusht_feedback/native_factory_lifecycle_01",
+    "blocker": "Full-suite observation timestamp failure unresolved; native cancellation and online worker still unqualified"
   }
 }

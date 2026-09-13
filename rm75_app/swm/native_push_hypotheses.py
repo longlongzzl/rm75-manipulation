@@ -49,6 +49,16 @@ class NativePushHypothesisFactory:
     def _check(self):
         if self.closed:raise RuntimeError('Native planning transaction closed')
         self.check()
+    @contextmanager
+    def operation(self):
+        """A failed or cancelled operation invalidates the entire transaction."""
+        with self.lock:
+            try:
+                self._check()
+                yield
+            except BaseException:
+                self.close()
+                raise
     @staticmethod
     def _read(path):
         if path.stat().st_size>16000000:raise SceneInvalid('Native planning artifact exceeds budget')
@@ -158,7 +168,7 @@ class _NativePushContext:
     def solve_candidates(self,request,snapshot,parameters):
         if self.closed:raise RuntimeError('Native context closed')
         factory=self.factory
-        with factory.lock:
+        with factory.operation():
             factory._prepare(request,snapshot);plans=[]
             for candidate in factory.candidates:
                 result=factory._predict(candidate,parameters);primitive=candidate['primitive']
@@ -168,7 +178,7 @@ class _NativePushContext:
     def evaluate(self,plan,snapshot,parameters):
         if self.closed:raise RuntimeError('Native context closed')
         factory=self.factory
-        with factory.lock:
+        with factory.operation():
             factory._prepare(factory.request,snapshot)
             if (plan.skill_digest!=digest(factory.request.as_dict()) or
                     plan.source_snapshot_id!=snapshot['snapshot_id'] or

@@ -1,0 +1,68 @@
+Network isolation active: non-Unix sockets blocked in this process and its descendants.
+........................................................................ [  3%]
+........................................................................ [  7%]
+........................................................................ [ 11%]
+........................................................................ [ 14%]
+........................................................................ [ 18%]
+........................................................................ [ 22%]
+........................................................................ [ 25%]
+........................................................................ [ 29%]
+........................................................................ [ 33%]
+........................................................................ [ 36%]
+........................................................................ [ 40%]
+........................................................................ [ 44%]
+........................................................................ [ 47%]
+........................................................................ [ 51%]
+........................................................................ [ 55%]
+........................................................................ [ 58%]
+........................................................................ [ 62%]
+........................................................................ [ 66%]
+........................................................................ [ 69%]
+........................................................................ [ 73%]
+........................................................................ [ 77%]
+........................................................................ [ 80%]
+........................................................................ [ 84%]
+........................................................................ [ 88%]
+........................................................................ [ 91%]
+.................................................F...................... [ 95%]
+........................................................................ [ 99%]
+..............                                                           [100%]
+=================================== FAILURES ===================================
+________________________ test_stagnation_is_not_success ________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-zhangzhao/pytest-158/test_stagnation_is_not_success0')
+
+    def test_stagnation_is_not_success(tmp_path):
+        class Frozen:
+            n=0
+            def observe(self,after=0):self.n+=1;return Observation('s',self.n,time.time(),(.35,0,0),'live_tracker')
+            def execute_push(self,*args):pass
+        env=Frozen()
+>       with pytest.raises(RuntimeError,match='stagnation'):PushTController(env,env,Config(stagnation_steps=2),StopToken(),EventLog(tmp_path),real=True).run([.4,0,0])
+
+tests/three_scene/test_three_scene_pusht.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+rm75_app/pusht/controller.py:183: in run
+    obs.validate(now=self.clock(), max_age_s=self.config.max_observation_age_s, real=self.real)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Observation(session_id='s', sequence=1, captured_at=1789288665.9072402, pose=(0.35, 0, 0), source='live_tracker', frame='base_link', confidence=1.0)
+
+    def validate(self, *, now=None, after=0., previous=None,max_age_s=1.5, real=False):
+        now=time.time() if now is None else now
+        if self.frame != 'base_link':
+            raise ValueError('Observation must be transformed into base_link, not camera/builder coordinates')
+        if not after < self.captured_at <= now+.25 or now-self.captured_at > max_age_s:
+>           raise ValueError('stale_or_future_observation')
+E           ValueError: stale_or_future_observation
+
+rm75_app/pusht/observation.py:40: ValueError
+=============================== warnings summary ===============================
+tests/three_scene/test_rrtrack_plate_material.py::test_actual_plate_uniform_pbr_expands_color_without_changing_mesh
+  /home/zhangzhao/Desktop/rm75-manipulation/tests/three_scene/test_rrtrack_plate_material.py:13: DeprecationWarning: `Scene.dump(concatenate=True)` DEPRECATED FOR REMOVAL APRIL 2025: replace with `Scene.to_geometry()`
+    mesh = trimesh.load(path, force='scene').dump(concatenate=True)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/three_scene/test_three_scene_pusht.py::test_stagnation_is_not_success
+1 failed, 1957 passed, 1 warning in 53.53s
