@@ -8,7 +8,7 @@ import pytest
 from rm75_app.swm import native_capture
 from rm75_app.swm.native_capture import NativePrimaryCapture, PrimaryActorBinding, read_primary_actor
 from rm75_app.swm.native_robot_mirror import ARM_JOINTS, GRIPPER_JOINTS
-from rm75_app.swm.scene import ObservationUnavailable, SceneWorldModel, SyncPolicy
+from rm75_app.swm.scene import ObservationUnavailable, SceneInvalid, SceneWorldModel, SyncPolicy
 
 
 @pytest.fixture
@@ -127,5 +127,5 @@ def test_settle_readback_preserves_full_inventory_and_measured_motion(capture_ri
 
 def test_settle_readback_does_not_turn_nonfinite_feedback_into_wait(capture_rig):
     capture_rig.primary.actors['a'].linear_velocity = np.array([np.nan, 0., 0.])
-    with pytest.raises(ObservationUnavailable, match='Nonfinite'):
+    with pytest.raises(SceneInvalid, match='Nonfinite'):
         capture_rig.source.read_settle_state()
