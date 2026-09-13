@@ -14890,5 +14890,27 @@
     "material_scope": "original_tool_fixed_object_support_shared_effective_friction",
     "known_metadata_gap": "inherited material_parameterization label still mentions tool friction",
     "evidence": "benchmarks/release/evidence/pusht_feedback/native_link_replay_04/"
+  },
+  "native_holdout_01": {
+    "status": "PASSED_FROZEN_DISTRIBUTION_SECOND_ACTION_OFFLINE",
+    "kernel": {
+      "passed": 1929,
+      "warnings": 1,
+      "duration_s": 43.04
+    },
+    "actual_simulation": {
+      "valid_hypotheses": 4,
+      "native_tool_shapes": 27,
+      "weighted_normalized_loss": 0.0019545994463246036
+    },
+    "refitted": false,
+    "weights_updated": false,
+    "next_planner_consumed_posterior": false,
+    "live_swm_updated": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "material_label_corrected": true,
+    "evidence": "benchmarks/release/evidence/pusht_feedback/native_holdout_01/",
+    "remaining": "Online original planner consumption and dedicated holdout rejection tests"
   }
 }

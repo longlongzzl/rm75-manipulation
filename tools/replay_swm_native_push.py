@@ -22,6 +22,7 @@ def main():
     parser.add_argument('--geometry',type=Path,required=True)
     parser.add_argument('--native-motion',type=Path)
     parser.add_argument('--original-urdf',type=Path)
+    parser.add_argument('--frozen-summary',type=Path)
     parser.add_argument('--python',required=True)
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
@@ -45,6 +46,13 @@ def main():
     hypotheses=[dict(id=name,parameters=dict(static_friction=sf,dynamic_friction=df,density_kg_m3=density))
         for name,sf,df,density in [('low_friction',.15,.1,1000.),('nominal',.3,.3,1000.),
                                   ('high_friction',.6,.6,1000.),('other_density',.3,.3,2000.)]]
+    frozen=None
+    if args.frozen_summary:
+        from rm75_app.swm.holdout import frozen_hypotheses,score_frozen_prediction
+        if motion is None:raise ValueError('Holdout requires original native tool motion')
+        if args.frozen_summary.stat().st_size>1000000:raise ValueError('Frozen evidence exceeds budget')
+        frozen_raw=args.frozen_summary.read_bytes();frozen=json.loads(frozen_raw)
+        hypotheses,particles=frozen_hypotheses(frozen,transition,geometry)
     def factory(request):
         if motion is not None:
             request=dict(request,native_tool_construction=dict(urdf=str(args.original_urdf.resolve()),
@@ -54,7 +62,7 @@ def main():
         return SubprocessReplayWorld(request,python=args.python,tool_spheres=geometry['spheres'],
                                      directory=output,timeout_s=180)
     checked,rollouts=IsolatedReplayPool(factory,workers=1).run(transition,hypotheses)
-    posterior=infer_posterior(checked,hypotheses,rollouts)
+    posterior=(infer_posterior(checked,hypotheses,rollouts) if frozen is None else frozen['posterior'])
     report=dict(scope='native_worker_measured_action_replay_with_approximate_original_tool_spheres',
         transition_sha256=hashlib.sha256(raw).hexdigest(),geometry_sha256=hashlib.sha256(geometry_raw).hexdigest(),
         transition_digest=checked['transition_digest'],action_digest=checked['action_digest'],
@@ -73,6 +81,11 @@ def main():
             native_geometry_readback=[{key:row.get(key) for key in
                 ('hypothesis_id','native_tool_geometry_digest','native_tool_motion_digest','native_tool_shape_count')}
                 for row in rollouts])
+    if frozen is not None:
+        report.update(scope='frozen_distribution_second_measured_action_prediction',
+            frozen_summary_sha256=hashlib.sha256(frozen_raw).hexdigest(),
+            posterior_source='first_action_frozen_not_refitted',
+            holdout_prediction=score_frozen_prediction(checked,particles,rollouts))
     atomic_json(output/'summary.json',report)
     print(json.dumps(report,allow_nan=False),flush=True)
     return 0 if all(row.get('valid') is True for row in rollouts) else 1

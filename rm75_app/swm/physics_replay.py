@@ -234,7 +234,8 @@ def physical_replay(request):
                     action_digest=request['action_digest'],transition_digest=request['transition_digest'],
                     initial_snapshot_id=snapshot['snapshot_id'],valid=True,time_s=request['sample_times'],
                     T_world_object=poses,engine_domain='physics',engine='ManiSkill/PhysX CPU',
-                    material_parameterization='shared_effective_object_support_tool_friction',
+                    material_parameterization=('shared_effective_object_support_tool_friction' if native_program is None
+                        else 'shared_effective_object_support_friction_original_native_tool_material_fixed'),
                     density_applied_at_collision_construction=True,
                     native_target_mass_kg=float(target_body.mass),
                     native_target_collision_shapes=len(target_body.collision_shapes),

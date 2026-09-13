@@ -1,0 +1,11 @@
+{
+  "native_tool_construction": {
+    "urdf": "/home/zhangzhao/Desktop/lerobot/rm75_pick_place_app/assets/robot_models/RM75_gripper/RM75-B/urdf/RM75-B.urdf",
+    "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea"
+  },
+  "action_digest": "f28d77d7518f1c76654e20cb5345841ebc7617ac03f017ac25016e4d7e5c21b2",
+  "transition_digest": "d67f726ab0b6db3bc520170ee510ee89a7f33fb5135208acd2d81bf3f7ee530b",
+  "initial_snapshot_id": "a03bd779214dfb36304010b72e35dc57bb140e1dd9548cce42985334fef67d28",
+  "tool_motion_digest": "d095b71e43020055588d048b686ad510c236dd2a28061c4defd2bffed8268800",
+  "tool_sample_count": 1190
+}
