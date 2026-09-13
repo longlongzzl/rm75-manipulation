@@ -15156,5 +15156,46 @@
     "model_inference": "NOT_RUN",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "evidence": "benchmarks/release/evidence/pusht_feedback/future_score_01/"
+  },
+  "new_original_candidates_20260913": {
+    "status": "PARTIAL_DELIVERY",
+    "tested_commit": "0a52a10c2a3449ee4da684a61c051da5a3a459c9",
+    "tested_source": "base plus new candidate files identified in input_code_sha256.txt",
+    "domain": "isolated_original_GPU_planning_and_private_CPU_PhysX",
+    "kernel": {
+      "passed": 1952,
+      "warnings": 1,
+      "seconds": 43.24,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q"
+    },
+    "native_wiring": {
+      "new_original_candidates": 2,
+      "native_fk_compilations": 2,
+      "retreat_ensemble_audits": 6,
+      "online_worker_consumption": false,
+      "live_observation_refreshed": false
+    },
+    "actual_simulation": {
+      "valid": 8,
+      "total": 8,
+      "parameters": [
+        "low",
+        "nominal",
+        "high",
+        "dense"
+      ],
+      "candidate_samples": [
+        1880,
+        1932
+      ],
+      "new_candidate_full_path_audits": false,
+      "primary_task_executed": false
+    },
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "execution_authorized": false,
+    "initial_failed_run": "swm_future_candidates_01: ImportError for main-local AuditedPhysicsPushExecutor; corrected by using original executor and audit_predicted_retreat",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/new_candidates_02",
+    "blocker": "New-candidate predicted-scene audits, goal ranking, complete atomic audit and online worker installation remain required"
   }
 }
