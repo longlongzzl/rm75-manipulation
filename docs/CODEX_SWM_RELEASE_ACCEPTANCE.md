@@ -897,3 +897,13 @@ At worker_64's exact independently observed jaw configuration, actual native sup
 Evidence: `benchmarks/release/evidence/pen_closure/gripper_clearance_01/`. Changing formal behavior from unconditional coarse-sphere rejection to a certified convex narrow phase is an execution-rule change. Separate user approval is requested before production installation, even with unchanged clearances. Until then, existing native audits continue to reject exactly as before; no collision pair is ignored and all missing-adapter checks remain. This does not block independent software/feedback work elsewhere in the full goal.
 
 Kernel: targeted advisory-helper tests pass; previous full result remains 1846 passed at 3902fb2. Native wiring and task simulation: unchanged/incomplete. Model inference NOT_RUN. Hardware NOT_AUTHORIZED_NOT_RUN. Overall PARTIAL_DELIVERY.
+
+## 2026-09-13 S5 feedback query timing / 9c75694
+
+No separate collision-policy approval has arrived. Formal coarse collision rejection and hardware prohibitions are unchanged. Independent S5 work now records host query start/completion/duration around the shared RealMan executor's existing actual joint-feedback read, without adding another query. Samples explicitly label captured_at as host query completion, not device acquisition time; device_sample_time_known=false and hardware_frequency_qualified=false. Invalid actual values, joint identities and backward/nonfinite query clocks reject before recorder delivery.
+
+The executor retains only the most recent synchronous observer timing, including callback success/failure and query-plus-callback duration. No unbounded timing collection was added. The callback error is preserved under the tested valid clock path. This is useful software timing instrumentation, not measured SDK/device latency, clock calibration, hardware frequency qualification, TCP FK integration or completed parameter feedback closure.
+
+Targeted 11 passed (0.46 s). Full formal tests: 1866 passed / 1 existing warning in 66.23 s, terminal exit 0 at source 9c75694. All ran through tools/run_network_isolated.py with explicit tests/ scope and PYTEST_DISABLE_PLUGIN_AUTOLOAD=1; new timing tests use a pure fake session, no SDK imports, no device commands or connection. No native task/model run was added this turn.
+
+Next independent S5 work: bind measured joint feedback to original calibrated TCP FK and explicit clock provenance, then actual action recording through post-observation coverage and parameter-version consumption. Kernel regression green; native task wiring remains incomplete; actual grasp/place still blocked at measured lift collision audit; model inference NOT_RUN; hardware NOT_AUTHORIZED_NOT_RUN. Overall PARTIAL_DELIVERY, not SOFTWARE_DELIVERY_READY.

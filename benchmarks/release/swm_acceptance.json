@@ -14502,7 +14502,7 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Request separate approval before simulation collision-policy integration of exact convex certificates; existing rejection remains. Continue independent feedback/runtime work while approval pending.",
+  "next_actual_action": "Continue independent S5 measured joint-to-TCP FK, clock provenance and action recording integration. Separate collision-policy approval remains pending; formal rejection unchanged.",
   "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json",
   "feedback_closure_wiring": {
     "status": "PRIMARY_CLOSURE_EXECUTED_LIFT_ADAPTER_MISSING",
@@ -14546,5 +14546,16 @@
     "native_certificate": "ORIGINAL_13MM_PAIR_MARGIN_SATISFIED_AT_RECORDED_STATE",
     "production_policy_override": false,
     "approval": "NOT_GRANTED"
+  },
+  "feedback_query_timing": {
+    "tested_commit": "9c75694",
+    "targeted_passed": 11,
+    "full_passed": 1866,
+    "full_failed": 0,
+    "full_duration_s": 66.23,
+    "domain": "isolated_software_fixture",
+    "device_latency_measured": false,
+    "hardware_frequency_qualified": false,
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
   }
 }
