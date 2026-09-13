@@ -19,11 +19,40 @@ def test_json_observer_cannot_use_file_mtime(tmp_path):
     with pytest.raises(TimeoutError):JsonObserver(path,stop,timeout_s=.05).observe(after=time.time()-1)
 def test_stagnation_is_not_success(tmp_path):
     class Frozen:
-        n=0
-        def observe(self,after=0):self.n+=1;return Observation('s',self.n,time.time(),(.35,0,0),'live_tracker')
-        def execute_push(self,*args):pass
+        n=0;now=1000.;executed=0
+        def observe(self,after=0):
+            self.n+=1;self.now=max(self.now,after)+.01
+            return Observation('s',self.n,self.now,(.35,0,0),'live_tracker')
+        def execute_push(self,*args):self.executed+=1
     env=Frozen()
-    with pytest.raises(RuntimeError,match='stagnation'):PushTController(env,env,Config(stagnation_steps=2),StopToken(),EventLog(tmp_path),real=True).run([.4,0,0])
+    with pytest.raises(RuntimeError,match='stagnation'):PushTController(env,env,Config(stagnation_steps=2),StopToken(),EventLog(tmp_path),real=True,clock=lambda:env.now).run([.4,0,0])
+    assert env.executed==2
+
+@pytest.mark.parametrize('delay_point',['search','before_execution'])
+def test_slow_planning_still_rejects_expired_observation(tmp_path,monkeypatch,delay_point):
+    from rm75_app.pusht import controller
+    now=[1000.];executed=[]
+    class Frozen:
+        def observe(self,after=0):
+            now[0]=max(now[0],after)+.01
+            return Observation('s',1,now[0],(.35,0,0),'live_tracker')
+        def execute_push(self,*args):executed.append(True)
+    original_rank=controller.rank_pushes
+    def slow_rank(*args,**kwargs):
+        result=original_rank(*args,**kwargs)
+        if delay_point=='search':now[0]+=2.
+        return result
+    monkeypatch.setattr(controller,'rank_pushes',slow_rank)
+    events=EventLog(tmp_path);original_emit=events.emit
+    def emit(event,**values):
+        result=original_emit(event,**values)
+        if delay_point=='before_execution' and event=='push_planned':now[0]+=2.
+        return result
+    monkeypatch.setattr(events,'emit',emit)
+    env=Frozen()
+    with pytest.raises(ValueError,match='stale_or_future_observation'):
+        PushTController(env,env,Config(),StopToken(),events,real=True,clock=lambda:now[0]).run([.4,0,0])
+    assert not executed
 @pytest.mark.parametrize('goal',[[.35,0,0],[.38,0,0],[.36,.02,.15]])
 def test_surrogate_complete_controller(profile,tmp_path,goal):
     spec={'task':'pusht','mode':'sim','parameters':{'initial_pose':[.35,0,0],'goal_pose':goal,'speed_mps':.015,'max_steps':60}};result=run_pusht(spec,profile,StopToken(),EventLog(tmp_path));assert result['task_success'] is True and result['verification']=='surrogate_pose' and result['model_validated_on_robot'] is False
