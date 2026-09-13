@@ -130,7 +130,7 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     bridge = _compile_pen_task(initial, registration.evidence, fixed, run_dir.name)
     sink = NativePrimaryExecutor(primary, emit=events.emit)
     sink.closure_target = "bi"
-    from .native_closure import reject_predicted_closure
+    from .native_closure import reject_predicted_closure, screen_closure_candidate
     sink.closure_prediction = lambda: reject_predicted_closure(
         primary, registration, robot.urdf_path, target="bi", emit=events.emit,
         output=output / "closure_prediction.json")
@@ -152,7 +152,10 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
             raise
 
     execute = SharedPrimitiveExecutor(sink, sink.feedback, clock=time.monotonic, stop=stop)
-    phases = PickPlaceNativePhases(coordinator, bridge.build_task, audit, execute)
+    phases = PickPlaceNativePhases(coordinator, bridge.build_task, audit, execute,
+        closure_screen=lambda candidate, snapshot, configuration: screen_closure_candidate(
+            primary, registration, robot.urdf_path, candidate, snapshot, configuration,
+            target="bi", emit=events.emit, directory=output / "closure_candidates"))
     runtime = AtomicSkillRuntime(sync, NativeAtomicBackend(phases.bindings(), execution_domain='physics'),
         clock=time.monotonic, stop=stop, goal_verifier=bridge.verify_skill)
     events.emit('swm_native_runtime_bound', task='pickplace', object_id='bi',

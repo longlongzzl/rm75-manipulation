@@ -10,7 +10,11 @@ from pathlib import Path
 
 import numpy as np
 
-from .scene import SceneInvalid, SceneWorldModel, SyncPolicy
+from .scene import SceneInvalid, SceneWorldModel, SyncPolicy, digest
+
+
+class NativeClosureRejected(SceneInvalid):
+    """An explicit negative prediction, distinct from unavailable model state."""
 
 
 def forbidden_object_contact(names, force, separations, *, objects, fingers, target):
@@ -36,7 +40,8 @@ def forbidden_object_contact(names, force, separations, *, objects, fingers, tar
     return not allowed and bool(np.any(force != 0.) or np.any(distances < 0.))
 
 
-def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, output):
+def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, output,
+                             candidate_snapshot=None, candidate_configuration=None):
     """Capture fresh idle state and step only a separate, fully populated scene.
 
     This bounded negative screen does not qualify contact-model agreement,
@@ -53,6 +58,7 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
                   model_qualified=False, skill_qualified=False,
                   hardware_connected=False, phase='capture', steps=[])
     before = None
+    drives = None
     robot = None
     try:
         if target not in registration.source.bindings:
@@ -62,12 +68,23 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
             raise SceneInvalid('Original registered manifest changed')
         world = SceneWorldModel(json.loads(manifest.read_text()))
         world.check_assets()
-        after = time.monotonic()
-        batch = registration.source.capture(tuple(registration.source.bindings),
-            after=after, boundary='native_preclose_prediction')
-        prepared = world.prepare_checkpoint(batch, after=after, now=time.monotonic(),
-            policy=SyncPolicy(), boundary='native_preclose_prediction')
-        snapshot = world.commit_checkpoint(prepared)
+        if (candidate_snapshot is None) != (candidate_configuration is None):
+            raise SceneInvalid('Candidate snapshot and endpoint must be supplied together')
+        if candidate_snapshot is None:
+            after = time.monotonic()
+            batch = registration.source.capture(tuple(registration.source.bindings),
+                after=after, boundary='native_preclose_prediction')
+            prepared = world.prepare_checkpoint(batch, after=after, now=time.monotonic(),
+                policy=SyncPolicy(), boundary='native_preclose_prediction')
+            snapshot = world.commit_checkpoint(prepared)
+        else:
+            snapshot = copy.deepcopy(candidate_snapshot)
+            if (snapshot.get('valid') is not True or snapshot.get('observation_domain') != 'physics'
+                    or snapshot['robot'].get('idle') is not True
+                    or snapshot['robot'].get('holding') != 'empty'
+                    or set(snapshot['objects']) != set(registration.source.bindings)):
+                raise SceneInvalid('Candidate prediction requires complete observed idle physics scene')
+            report['domain'] = 'private_CPU_PhysX_candidate_hypothesis'
         report['snapshot'] = snapshot
         before = primary.read_state()
         drives = read_primary_drive_state(primary)
@@ -107,6 +124,9 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
             report['initial_robot_ack'] = robot.acknowledgement
             report['initial_body_ack'] = bodies.readback()
             report['object_ids'] = sorted(bodies.actors)
+            if candidate_configuration is not None:
+                report['hypothesis_initialization'] = apply_candidate_endpoint(
+                    robot._robot, candidate_configuration, closed)
             entities = [link.entity for link in robot._robot.get_links()]
             from mani_skill.utils.sapien_utils import compute_total_impulse
             dt = closed['physics_timestep_s']
@@ -135,7 +155,7 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
                     if forbidden:
                         report['forbidden_contacts'] = forbidden
                         report['phase'] = 'rejected'
-                        raise SceneInvalid('Native closure prediction detected forbidden contact')
+                        raise NativeClosureRejected('Native closure prediction detected forbidden contact')
             report['phase'] = 'no_forbidden_contact_predicted_not_qualified'
     except BaseException as error:
         report['error'] = repr(error)
@@ -146,7 +166,7 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
                 final = primary.read_state()
                 unchanged = all(final[key] == before[key]
                     for key in ('positions', 'velocities', 'objects'))
-                unchanged = unchanged and read_primary_drive_state(primary) == drives
+                unchanged = unchanged and (drives is None or read_primary_drive_state(primary) == drives)
                 report['primary_unchanged_while_private_stepped'] = unchanged
                 if not unchanged:
                     raise SceneInvalid('Private prediction changed primary state')
@@ -157,3 +177,73 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
                  evidence_path=str(output), model_qualified=False, skill_qualified=False,
                  private_robot_closed=report['private_robot_closed'],
                  primary_unchanged=report.get('primary_unchanged_while_private_stepped'))
+
+
+def apply_candidate_endpoint(robot, configuration, closed):
+    """Private hypothetical initialization, NOT measured feedback or settling.
+
+    Place the arm at a proposed endpoint and assume rest for this negative
+    screen only. Actual approach/grasp, settling and fresh preclose prediction
+    remain mandatory. No object pose or measured SWM snapshot is changed.
+    """
+    from .native_robot_mirror import validate_native_drive_state
+    arm = tuple(f'joint_{i}' for i in range(1, 8))
+    jaw = {f'gripper_{side}_{part}_Joint' for side in ('Left', 'Right')
+           for part in ('1', '2', 'Support')}
+    joints = list(robot.get_active_joints())
+    names = [joint.name for joint in joints]
+    positions = np.asarray(configuration.positions, dtype=float)
+    validate_native_drive_state(closed)
+    if (tuple(configuration.names) != arm or positions.shape != (7,)
+            or not np.isfinite(positions).all() or len(names) != 13
+            or len(set(names)) != 13 or set(names) != set(arm) | jaw):
+        raise SceneInvalid('Candidate endpoint requires original complete joint identity')
+    q = np.asarray(robot.get_qpos(), dtype=float).reshape(-1).copy()
+    if q.shape != (13,) or not np.isfinite(q).all():
+        raise SceneInvalid('Private candidate initialization lacks native joint state')
+    for name, position in zip(arm, positions):
+        limits = np.asarray(joints[names.index(name)].limits, dtype=float)
+        if (limits.shape != (1, 2) or not np.isfinite(limits).all()
+                or not limits[0, 0] <= position <= limits[0, 1]):
+            raise SceneInvalid('Candidate endpoint violates native joint limits')
+        q[names.index(name)] = position
+    velocity = np.zeros(13, dtype=np.float32)
+    robot.set_qpos(q.astype(np.float32))
+    robot.set_qvel(velocity)
+    actual = np.asarray(robot.get_qpos(), dtype=float).reshape(-1)
+    actual_velocity = np.asarray(robot.get_qvel(), dtype=float).reshape(-1)
+    if (actual.shape != (13,) or actual_velocity.shape != (13,)
+            or not np.isfinite(actual).all() or not np.isfinite(actual_velocity).all()
+            or np.max(np.abs(actual-q)) > 1e-6 or np.any(actual_velocity != 0.)):
+        raise SceneInvalid('Private candidate initialization did not apply')
+    for name, position in zip(arm, positions):
+        closed['position_targets'][closed['joint_names'].index(name)] = float(position)
+    return dict(source='hypothetical_candidate_endpoint_not_observed',
+        assumption='stationary_endpoint_not_executed_approach',
+        joint_names=names, positions=actual.tolist(), velocities=actual_velocity.tolist(),
+        measured=False, primary_world_mutated=False)
+
+
+def screen_closure_candidate(primary, registration, urdf_path, candidate, snapshot,
+                             configuration, *, target, emit, directory):
+    """Reject this candidate only for an explicit contact prediction.
+
+    Identity failures, missing model state, cancellation and ownership errors
+    propagate; none may be interpreted as another ordinary infeasible grasp.
+    """
+    identity = digest(dict(candidate_id=candidate.candidate_id,
+        snapshot_id=snapshot['snapshot_id'], joint_names=list(configuration.names),
+        positions=np.asarray(configuration.positions).tolist()))
+    path = Path(directory) / (identity + '.json')
+    path.parent.mkdir(exist_ok=True)
+    try:
+        reject_predicted_closure(primary, registration, urdf_path, target=target,
+            emit=emit, output=path, candidate_snapshot=snapshot,
+            candidate_configuration=configuration)
+    except NativeClosureRejected:
+        emit(kind='swm_native_closure_candidate_rejected', candidate_id=candidate.candidate_id,
+            snapshot_id=snapshot['snapshot_id'], evidence_path=str(path), model_qualified=False)
+        return False
+    emit(kind='swm_native_closure_candidate_not_rejected', candidate_id=candidate.candidate_id,
+        snapshot_id=snapshot['snapshot_id'], evidence_path=str(path), model_qualified=False)
+    return True

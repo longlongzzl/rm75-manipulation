@@ -153,10 +153,13 @@ class PickPlaceNativePhases:
     need their original goal-verifier adapter before installation.
     """
 
-    def __init__(self, coordinator, build_task, audit, execute):
+    def __init__(self, coordinator, build_task, audit, execute, *, closure_screen=None):
         self.coordinator = coordinator
         self.build_task = build_task
         self.last_relation_screen = {}
+        if closure_screen is not None and not callable(closure_screen):
+            raise TypeError("Trusted closure screening callback required")
+        self.closure_screen = closure_screen
         self.audit = audit
         self.execute = execute
 
@@ -210,6 +213,12 @@ class PickPlaceNativePhases:
                 if grasp is None or grasp.trajectory is None:
                     continue
                 grasp_q = c._end_configuration(grasp.trajectory)
+                if self.closure_screen is not None:
+                    permitted = self.closure_screen(grasp_candidate, snapshot, grasp_q)
+                    if type(permitted) is not bool:
+                        raise SceneInvalid("Closure screen must explicitly accept or reject a candidate")
+                    if not permitted:
+                        continue
                 c.planner.attach_object(task.object_name, grasp_q)
                 try:
                     origin = PoseCandidate(grasp_candidate.candidate_id,
