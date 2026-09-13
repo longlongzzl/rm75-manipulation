@@ -1,0 +1,62 @@
+{
+  "domain": "advisory_native_convex_clearance",
+  "execution_authorized": false,
+  "policy_override_installed": false,
+  "policy_change_approval": "NOT_GRANTED",
+  "physics_steps": 0,
+  "primary_world_created": false,
+  "hardware_connected": false,
+  "snapshot_id": "9c92525a0a3768204f30b510c61f72033dbdb00e92f9c96d0d920f42fa9d78e5",
+  "source_sha256": "9222e94ac45e01f48a87e4a5ff16d111a2f268ec7935ccd05703bbb5b496db7c",
+  "config_sha256": "db8dd015e4be361cf73cd0d9802236dfa722f0f4ea6ac700d13b62f95768170e",
+  "pairs": [
+    {
+      "left_shape": 0,
+      "right_shape": 0,
+      "certificate": {
+        "source": "full_convex_volume_separating_axis_lower_bound",
+        "sufficient_clearance_proven": true,
+        "raw_projected_gap_m": 0.02502849625110304,
+        "conservative_gap_lower_bound_m": 0.025028496251031818,
+        "required_clearance_m": 0.013000000000000001,
+        "clearance_terms_m": {
+          "global_first": 0.0025,
+          "global_second": 0.0025,
+          "self_first": 0.004,
+          "self_second": 0.004
+        },
+        "residual_clearance_lower_bound_m": 0.012028496251031816,
+        "axis": [
+          -0.42019796823597966,
+          -0.9074313667597754,
+          -0.0014078745827664772
+        ],
+        "outward_projected_intervals_m": [
+          [
+            0.22774194831312813,
+            0.258131186382772
+          ],
+          [
+            0.2831596826338038,
+            0.31347624956345105
+          ]
+        ],
+        "numeric_interval_guard_m": 3.55719079211538e-14,
+        "vertex_counts": [
+          25,
+          25
+        ],
+        "vertex_sha256": [
+          "95fa230c5ed978ee9851260b0aeedefbe3fd6bcf1e1b0be8bb9daa00bd1c5d7e",
+          "78563ef36c6c5c651ba3fafdf2fb6140ae85cb4d6b022069afbfa55c58f42c6a"
+        ],
+        "exact_minimum_distance": false,
+        "failure_means": "insufficient_certificate_not_proven_collision",
+        "execution_authorized": false,
+        "policy_override_installed": false
+      }
+    }
+  ],
+  "urdf_sha256": "e2f7d65c81b9f292f5bb8bf0a0f93df861e9a331e61276424ce53b5bfb899fea",
+  "private_robot_closed": true
+}
