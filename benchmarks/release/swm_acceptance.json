@@ -15003,5 +15003,27 @@
     "model_inference": "NOT_RUN",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "evidence": "benchmarks/release/evidence/pusht_feedback/future_tool_01/native_failure.txt"
+  },
+  "future_tool_02": {
+    "status": "PASSED_ORIGINAL_NATIVE_PLANNED_FK",
+    "kernel": {
+      "passed": 1941,
+      "warnings": 1,
+      "duration_s": 42.68
+    },
+    "native_wiring": {
+      "samples": 1880,
+      "tool_links": 7,
+      "tool_shapes": 27,
+      "initial_tcp_position_error_m": 0,
+      "initial_tcp_rotation_error_rad": 0
+    },
+    "measured_action": false,
+    "dynamics_predicted": false,
+    "next_planner_consumed_posterior": false,
+    "actual_simulation": "NATIVE_MODEL_FK_ONLY_NO_TARGET_DYNAMICS",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/future_tool_02/summary.json"
   }
 }

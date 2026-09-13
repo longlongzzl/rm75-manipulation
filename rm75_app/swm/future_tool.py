@@ -8,6 +8,7 @@ from .scene import digest,pose_error,SceneInvalid
 def compile_future_tool_motion(plan,snapshot,geometry,urdf):
     import sapien
     from .native_body_mirror import shape_state,compare_native_state
+    from .native_tool_replay import apply_attached_shape_properties
     if (plan.get('complete_chain') is not True or plan.get('validation_success') is not True or
             plan.get('execute_real') is not False or plan.get('hardware_connected') is not False):
         raise SceneInvalid('Original complete nonhardware push candidate required')
@@ -42,7 +43,13 @@ def compile_future_tool_motion(plan,snapshot,geometry,urdf):
         jaws=robot_state['gripper_joint_positions']
         if set(names)!=set(arm_names)|set(jaws):raise SceneInvalid('Original robot joint identity changed')
         for name,expected in geometry['links'].items():
-            actual=[shape_state(shape,np.eye(4)) for shape in links[name].collision_shapes]
+            shapes=links[name].collision_shapes
+            if len(shapes)!=len(expected):raise SceneInvalid('Original FK tool shape count changed')
+            for shape,state in zip(shapes,expected):
+                shape.physical_material=sapien.physx.PhysxMaterial(**state['material'])
+                shape.set_collision_groups(state['collision_groups'])
+                apply_attached_shape_properties(shape,state['properties'])
+            actual=[shape_state(shape,np.eye(4)) for shape in shapes]
             compare_native_state(expected,actual,name)
         for row in samples:
             values={**jaws,**dict(zip(arm_names,row['positions']))}
