@@ -1,0 +1,8 @@
+{
+  "phase": "no_forbidden_contact_predicted_not_qualified",
+  "physics_substeps": 100,
+  "private_robot_closed": true,
+  "model_qualified": false,
+  "skill_qualified": false,
+  "error": null
+}

@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "2f48069",
+    "commit": "120cd1a",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "WIP verified sleep velocity provenance passes fixture regression but formal worker57 fails canonical/native namespaced joint identity mapping during registration. Must reuse original trusted handle bijection before native qualification."
+    "note": "Canonical handle mapping repaired in actual worker. Experimental depth/elision run reaches actual close; late table contact at closed hold tick79 aborts before lift. Predictor covers only first20 close ticks, not closed settling."
   },
   "runs": {
     "m0_targeted": {
@@ -14120,6 +14120,29 @@
       "elapsed_s": 45.31,
       "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
       "evidence": "benchmarks/release/evidence/pen_closure/worker_57/full_tests.log"
+    },
+    "m1_canonical_velocity_worker_58": {
+      "tested_commit": "120cd1a",
+      "status": "ACTUAL_CLOSED_HOLD_TABLE_CONTACT_ABORT",
+      "experimental_depth_and_write_elision": true,
+      "approach_settle_ticks": 14,
+      "grasp_endpoint_settle_ticks": 13,
+      "private_prediction_physics_steps": 100,
+      "actual_close_ticks": 20,
+      "closed_hold_first_forbidden_tick": 79,
+      "table_force_z_n": 0.5370895862579346,
+      "lift_completed": false,
+      "cleanup_verified": true,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_58"
+    },
+    "m1_canonical_velocity_full_regression": {
+      "tested_commit": "120cd1a",
+      "passed": 1821,
+      "failed": 0,
+      "warnings": 1,
+      "elapsed_s": 45.91,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_58/full_tests.log"
     }
   },
   "gates": {
@@ -14369,16 +14392,16 @@
   },
   "current_layer_status": {
     "kernel": {
-      "tested_commit": "2f48069",
+      "tested_commit": "120cd1a",
       "status": "PASSED_REGRESSION",
-      "passed": 1817,
+      "passed": 1821,
       "failed": 0,
       "warnings": 1,
-      "elapsed_s": 45.31
+      "elapsed_s": 45.91
     },
-    "native_wiring": "WIP_SLEEP_VELOCITY_BINDING_NATIVE_IDENTITY_MAPPING_FAILURE",
+    "native_wiring": "CANONICAL_SLEEP_VELOCITY_BINDING_NATIVE_VERIFIED_CLOSURE_INCOMPLETE",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "ALL_LINK_SLEEP_EVIDENCE_ON_OLD_SOURCE_NEW_SOURCE_WORKER57_REGISTRATION_FAILED",
+    "actual_simulation": "EXPERIMENTAL_WORKER58_CLOSE20_THEN_HOLD79_TABLE_CONTACT_ABORT",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14445,5 +14468,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Repair NativeArticulationVelocity using canonical wrapper joints_map and original _native_drive_joints handle bijection; add native namespace/order/foreign handle tests; rerun formal worker"
+  "next_actual_action": "Extend private closure prediction through original bounded closed settling and align actual drive-write semantics; preserve contact thresholds and exact endpoint/fresh capture guards"
 }

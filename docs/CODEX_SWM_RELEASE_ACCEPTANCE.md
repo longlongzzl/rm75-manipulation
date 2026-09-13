@@ -783,3 +783,13 @@ WIP 生产提交 `2f48069` 新增 NativeArticulationVelocity：仅完整链接�
 但实际 worker_57 在场景注册时失败 Native velocity joint identity mismatch，尚未进入原子动作。新增 helper 直接使用带命名空间的原生 joint.name，与原 canonical wrapper 名称不匹配；没有复用已有 native_robot_mirror._native_drive_joints 的句柄双射。新测试使用同名夹具，未覆盖这个真实边界。主环境/planner 关闭 true，robot mirror 尚未创建（null），不能填成三项均 true。因此当前接线不能宣称原生可用，测试全绿不代表交付。
 
 下一步修复 native_velocity 的可信 wrapper->native handle 映射，复用 robot.joints_map 和原 _native_drive_joints，保留完整 13 关节身份检查，禁止后缀猜测或删除检查；补命名空间/乱序/外来句柄负例，再重跑同一原生对照。生产默认深度及同值写入策略尚未改变；笔六检查点、其余 G0-G10 未完成。模型未运行；硬件 NOT_AUTHORIZED_NOT_RUN；PARTIAL_DELIVERY，未推送。证据及精确命令见 benchmarks/release/evidence/pen_closure/worker_55/README.md、worker_56 和 worker_57。
+
+## M1 / 原生关节映射修复，实际闭爪后的保持触桌被保护拦截
+
+本轮 progress，生产提交 `120cd1a`。NativeArticulationVelocity 复用原 _native_drive_joints 的 canonical-wrapper/native-handle 双射，按句柄映射底层数组，不猜名称后缀。补命名空间、native 顺序反转和缺失/外来/重复句柄测试。定向 **51 passed / 0.12 s**；原生作业退出后串行完整 tests **1821 passed / 1 existing warning / 45.91 s**。
+
+worker_58 仍使用明确的 +4 mm 深度和双组同值写入省略诊断配置，未设为生产默认。实际通过初始化、独立检查点和原阶段审核，approach 14 步、grasp 轨迹端点 13 步后，机器人有效速度与完整物体状态共同静止；原始 qdot 与全链接休眠证据保留。这里是阶段到位，不是 grasp 原子成功。
+
+随后闭爪前独立新采集与私有预测运行；私有预测只覆盖 20 控制步/100 物理子步，未触发否决但明确不合格模型证明。主世界实际执行 20 个闭爪周期，之后第 **79** 个闭爪保持周期，原保护检出左 Support Link/桌面 Z 向力 **0.537089586258 N**，立即拒绝后续动作，未抬升/放置。所有创建资源清理 true，worker exit 1。没有成功 after-grasp 检查点或六检查点闭环。
+
+下一步补齐私有闭爪预测的原闭合后静止窗口，并对齐实测动作/驱动写入语义；保留原 200 步预算、接触标准、精确端点复核和真实新采集，不能把前 20 步无否决当作完整动作预测成功。证据与准确命令见 benchmarks/release/evidence/pen_closure/worker_58/README.md。内核全绿；原生映射已实跑通过但闭爪尚失败；FP/SAM3D/LLM 未运行；硬件 NOT_AUTHORIZED_NOT_RUN；PARTIAL_DELIVERY，未推送。
