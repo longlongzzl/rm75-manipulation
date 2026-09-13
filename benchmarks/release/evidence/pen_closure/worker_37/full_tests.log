@@ -1,0 +1,218 @@
+Network isolation active: non-Unix sockets blocked in this process and its descendants.
+........................................................................ [  4%]
+........................................................................ [  8%]
+........................................................................ [ 12%]
+........................................................................ [ 16%]
+........................................................................ [ 20%]
+........................................................................ [ 24%]
+........................................................................ [ 28%]
+........................................................................ [ 32%]
+........................................................................ [ 36%]
+........................................................................ [ 40%]
+........................................................................ [ 44%]
+........................................................................ [ 48%]
+...........FF..F........................................................ [ 52%]
+........................................................................ [ 56%]
+........................................................................ [ 60%]
+........................................................................ [ 64%]
+........................................................................ [ 68%]
+........................................................................ [ 72%]
+........................................................................ [ 76%]
+........................................................................ [ 80%]
+........................................................................ [ 84%]
+........................................................................ [ 89%]
+........................................................................ [ 93%]
+........................................................................ [ 97%]
+...................................................                      [100%]
+=================================== FAILURES ===================================
+_______ test_exclusion_resumes_original_later_tier_without_mutating_task _______
+
+rig = namespace(world=<rm75_app.swm.scene.SceneWorldModel object at 0x743ec7998c20>, clock=<swm.conftest.Clock object at 0x7... 'table'], 'observation_domain': 'fixture'}], stop=namespace(check=<function rig.<locals>.<lambda> at 0x743ec7904ea0>))
+
+    def test_exclusion_resumes_original_later_tier_without_mutating_task(rig):
+        snapshot = rig.sync.sync('initial')
+        task = tiered_task(snapshot)
+        coordinator = PickPlaceCoordinator(PhasePlanner(), SimpleNamespace())
+        first = coordinator.screen_relations(task)
+>       assert [c.candidate_id for c in first.grasp_candidates] == ['high']
+E       AssertionError: assert ['high', 'low'] == ['high']
+E         Left contains one more item: 'low'
+E         Use -v to get more diff
+
+tests/swm/test_native_relation_continuation.py:32: AssertionError
+______ test_actual_phase_rescreens_after_closure_veto_preserving_pairing _______
+
+rig = namespace(world=<rm75_app.swm.scene.SceneWorldModel object at 0x743e82fb43b0>, clock=<swm.conftest.Clock object at 0x7... 'table'], 'observation_domain': 'fixture'}], stop=namespace(check=<function rig.<locals>.<lambda> at 0x743ec79f3a60>))
+
+    def test_actual_phase_rescreens_after_closure_veto_preserving_pairing(rig):
+        snapshot = rig.sync.sync('initial')
+        task = tiered_task(snapshot)
+        planner = PhasePlanner()
+        calls = []
+        events = []
+        def veto(candidate, observed, configuration):
+            calls.append(candidate.candidate_id)
+            return candidate.candidate_id != 'high'
+        phases = PickPlaceNativePhases(PickPlaceCoordinator(planner, SimpleNamespace()),
+            lambda request, observed: task, None, None, closure_screen=veto,
+            emit=lambda **row: events.append(row))
+        result = phases.plan(SkillRequest('grasp', 'a'), snapshot)
+        assert calls == ['high', 'low']
+        assert [s.name for s in result.payload.stages] == ['approach', 'grasp', 'lift']
+        assert any('place_low' in name for name in planner.calls)
+        assert not any('place_high' in name for name in planner.calls)
+>       assert [e['ranked_ids'] for e in events] == [['high'], ['low']]
+E       AssertionError: assert [['high', 'low']] == [['high'], ['low']]
+E         At index 0 diff: ['high', 'low'] != ['high']
+E         Right contains one more item: ['low']
+E         Use -v to get more diff
+
+tests/swm/test_native_relation_continuation.py:59: AssertionError
+___________ test_misbehaving_screen_cannot_repeat_excluded_candidate ___________
+
+rig = namespace(world=<rm75_app.swm.scene.SceneWorldModel object at 0x743e82f688f0>, clock=<swm.conftest.Clock object at 0x7... 'table'], 'observation_domain': 'fixture'}], stop=namespace(check=<function rig.<locals>.<lambda> at 0x743ec79f0f40>))
+
+    def test_misbehaving_screen_cannot_repeat_excluded_candidate(rig):
+        snapshot = rig.sync.sync('initial')
+        task = tiered_task(snapshot)
+        coordinator = PickPlaceCoordinator(PhasePlanner(), SimpleNamespace())
+        original = coordinator.screen_relations
+        coordinator.screen_relations = lambda task, **kwargs: original(task)
+        phases = PickPlaceNativePhases(coordinator, lambda *args: task, None, None,
+            closure_screen=lambda *args: False)
+        with pytest.raises(SceneInvalid, match='repeated or foreign'):
+>           phases.plan(SkillRequest('grasp', 'a'), snapshot)
+
+tests/swm/test_native_relation_continuation.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rm75_app.swm.native_skills.PickPlaceNativePhases object at 0x743e82f69850>
+request = SkillRequest(skill='grasp', object_id='a', target=None, functional_pose_id=None, position_tolerance_m=0.006, rotation_tolerance_rad=0.1, target_reference_id=None, goal_predicate='rigid_pose')
+snapshot = {'assets': {'asset': {'collision_dimensions_m': [0.05, 0.05, 0.05], 'collision_kind': 'cuboid', 'collision_path': '/tm...427c8d1305d15c2be2252', ...}}, 'calibration_id': 'extrinsics-v1', 'checkpoint': 'initial', 'invalid_reason': None, ...}
+
+    def plan(self, request, snapshot):
+        from rm75_app.pickplace.coordinator import (
+            _approach_offset_candidates, _offset_candidates, _place_approach_candidates,
+            _reverse_trajectory, _pose_matrix)
+        from rm75_app.pickplace.cached_scene import matrix_to_quaternion_wxyz
+        from rm75_app.planning.contracts import Pose, PoseCandidate
+    
+        if request.skill not in ('grasp', 'place'):
+            raise NotImplementedError("Only native grasp and place are installed")
+        task = self.build_task(request, copy.deepcopy(snapshot))
+        if (task.object_name != request.object_id or task.scene.revision != snapshot['snapshot_id']
+                or tuple(task.current.names) != tuple(snapshot['robot']['joint_names'])
+                or not np.array_equal(task.current.positions, snapshot['robot']['positions'])):
+            raise SceneInvalid("Native task compiler returned another scene/start/instance")
+        if {o.name for o in task.scene.objects} != set(snapshot['objects']):
+            raise SceneInvalid("Native task omitted obstacles or already placed objects")
+        for obj in task.scene.objects:
+            p, r = pose_error(obj.metadata.get("swm_object_pose", _pose_matrix(obj.pose)), snapshot['objects'][obj.name]['measured']['T_world_object'])
+            if p > 1e-8 or r > 1e-6:
+                raise SceneInvalid("Native task compiler did not use measured object poses")
+        c = self.coordinator
+        measured_jaw = snapshot['robot'].get('gripper_positions')
+        stages = None
+        if request.skill == 'grasp':
+            if snapshot['robot']['holding'] != 'empty':
+                raise SceneInvalid("Native grasp requires an observed empty gripper")
+            if measured_jaw is not None:
+                c.planner.set_measured_gripper_collision_state(measured_jaw)
+            else:
+                c.planner.set_gripper_collision_state(False)
+            for grasp_candidate, screened in self._grasp_relations(task, measured_jaw):
+                pre = _approach_offset_candidates((grasp_candidate,), abs(task.grasp_approach_offset))[0]
+                approach = c._plan_pose_stage(stage='pregrasp', current=task.current, candidates=(pre,), task=task)
+                if approach is None or approach.trajectory is None:
+                    continue
+                grasp = c._plan_linear_stage(stage='grasp', current=c._end_configuration(approach.trajectory),
+                    candidate=grasp_candidate, task=task, ignore_object_name=task.object_name)
+                if grasp is None or grasp.trajectory is None:
+                    continue
+                grasp_q = c._end_configuration(grasp.trajectory)
+                if self.closure_screen is not None:
+                    permitted = self.closure_screen(grasp_candidate, snapshot, grasp_q)
+                    if type(permitted) is not bool:
+                        raise SceneInvalid("Closure screen must explicitly accept or reject a candidate")
+                    if not permitted:
+                        continue
+                c.planner.attach_object(task.object_name, grasp_q)
+                try:
+                    origin = PoseCandidate(grasp_candidate.candidate_id,
+                        c.planner.tool_pose_for_configuration(grasp_q, task.tool_frame))
+                    options = ((_offset_candidates((origin,), abs(task.lift_height), 'lift_world_z')[0], False),
+                               (_approach_offset_candidates((origin,), abs(task.lift_height), 'lift_tool_z')[0], True))
+                    for candidate, project in options:
+                        lift = c._plan_linear_stage(stage='lift', current=grasp_q, candidate=candidate,
+                            task=task, allow_start_contact_escape=True, axis='z', project_distance_to_goal=project)
+                        if lift is not None and lift.trajectory is not None:
+                            relative = np.linalg.inv(_pose_matrix(origin.pose)) @ transform(
+                                snapshot['objects'][request.object_id]['measured']['T_world_object'])
+                            lifted_q = c._end_configuration(lift.trajectory)
+                            # Screen placement with the same original candidates and
+                            # measured/predicted attachment. Discard these paths: the
+                            # place skill MUST solve again after its fresh observation.
+                            if self._placement_stages(task, lifted_q, relative, None,
+                                    candidates=screened.places_by_grasp[grasp_candidate.candidate_id]) is None:
+                                continue
+                            empty = NativeStageState(None if measured_jaw is not None else False,
+                                'empty', gripper_positions=measured_jaw)
+                            held = NativeStageState(True, task.object_name, relative)
+                            stages = (NativeStage('approach', approach.trajectory,
+                                          state_before=empty, state_after=empty),
+                                      NativeStage('grasp', grasp.trajectory, True, empty, held,
+                                          (task.object_name,)),
+                                      NativeStage('lift', lift.trajectory, state_before=held,
+                                          state_after=held, allow_start_contact_escape=True))
+                            expected = _pose_matrix(c.planner.tool_pose_for_configuration(
+                                lifted_q, task.tool_frame)) @ relative
+                            break
+                finally:
+                    # detach alone does not restore moved proxy poses or the
+                    # complete obstacle set after hypothetical candidate planning.
+                    c.planner.detach_object(task.object_name)
+                    c.planner.update_scene(task.scene)
+                    if measured_jaw is not None:
+                        c.planner.set_measured_gripper_collision_state(measured_jaw)
+                    else:
+                        c.planner.set_gripper_collision_state(False)
+                if stages is not None:
+                    break
+        else:
+            if snapshot['robot']['holding'] != request.object_id:
+                raise SceneInvalid("Native place requires measured holding of this instance")
+            relative = np.linalg.inv(transform(snapshot['robot']['T_world_tcp'])) @ transform(
+                snapshot['objects'][request.object_id]['measured']['T_world_object'])
+            try:
+                c.planner.update_attached_object_pose(task.object_name, task.current, relative)
+                placement = self._placement_stages(task, task.current, relative, request,
+                    jaw_positions=measured_jaw)
+                if placement is not None:
+                    stages, expected = placement
+            finally:
+                # Restore the observed held state, including jaw geometry, on
+                # success, infeasibility and exceptions. Audit starts from here.
+                c.planner.detach_object(task.object_name)
+                c.planner.update_scene(task.scene)
+                c.planner.attach_object(task.object_name, task.current)
+                c.planner.update_attached_object_pose(task.object_name, task.current, relative)
+                if measured_jaw is not None:
+                    c.planner.set_measured_gripper_collision_state(measured_jaw)
+                else:
+                    c.planner.set_gripper_collision_state(True)
+        if stages is None:
+>           raise RuntimeError('Native atomic phase has no feasible trajectory')
+E           RuntimeError: Native atomic phase has no feasible trajectory
+
+rm75_app/swm/native_skills.py:284: RuntimeError
+=============================== warnings summary ===============================
+tests/three_scene/test_rrtrack_plate_material.py::test_actual_plate_uniform_pbr_expands_color_without_changing_mesh
+  /home/zhangzhao/Desktop/rm75-manipulation/tests/three_scene/test_rrtrack_plate_material.py:13: DeprecationWarning: `Scene.dump(concatenate=True)` DEPRECATED FOR REMOVAL APRIL 2025: replace with `Scene.to_geometry()`
+    mesh = trimesh.load(path, force='scene').dump(concatenate=True)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/swm/test_native_relation_continuation.py::test_exclusion_resumes_original_later_tier_without_mutating_task
+FAILED tests/swm/test_native_relation_continuation.py::test_actual_phase_rescreens_after_closure_veto_preserving_pairing
+FAILED tests/swm/test_native_relation_continuation.py::test_misbehaving_screen_cannot_repeat_excluded_candidate
+3 failed, 1776 passed, 1 warning in 45.26s

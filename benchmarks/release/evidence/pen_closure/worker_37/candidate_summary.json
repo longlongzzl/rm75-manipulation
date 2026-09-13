@@ -1,0 +1,179 @@
+{
+  "domain": "private_CPU_PhysX_candidate_hypothesis",
+  "phase": "rejected",
+  "error": "NativeClosureRejected('Native closure prediction detected forbidden contact')",
+  "model_qualified": false,
+  "skill_qualified": false,
+  "object_ids": [
+    "__maniskill_workspace_table__",
+    "bi",
+    "bitong",
+    "carriot",
+    "desk",
+    "gluestick",
+    "hongshupian",
+    "lvmukuai",
+    "shuazi",
+    "tennis",
+    "virtual_side_wall",
+    "virtual_top_wall"
+  ],
+  "snapshot_id": "102151e25b020f372767ca244472f6150e2bd6e0f2639967a97292ac091b824c",
+  "hypothesis_initialization": {
+    "source": "hypothetical_candidate_endpoint_not_observed",
+    "assumption": "stationary_endpoint_not_executed_approach",
+    "joint_names": [
+      "joint_1",
+      "joint_2",
+      "joint_3",
+      "joint_4",
+      "joint_5",
+      "joint_6",
+      "joint_7",
+      "gripper_Left_1_Joint",
+      "gripper_Left_2_Joint",
+      "gripper_Right_1_Joint",
+      "gripper_Right_2_Joint",
+      "gripper_Left_Support_Joint",
+      "gripper_Right_Support_Joint"
+    ],
+    "positions": [
+      1.0381098985671997,
+      -0.49131539463996887,
+      -0.4996761977672577,
+      -1.581451177597046,
+      0.25218796730041504,
+      -1.1335171461105347,
+      1.9594258069992065,
+      -0.0004450046399142593,
+      -0.007228843867778778,
+      0.028663400560617447,
+      -0.005655086133629084,
+      0.0016043701907619834,
+      -0.00025351185468025506
+    ],
+    "velocities": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "measured": false,
+    "primary_world_mutated": false
+  },
+  "closed_drive_targets": {
+    "source": "native_joint_drive_targets_readback",
+    "joint_names": [
+      "joint_1",
+      "joint_2",
+      "joint_3",
+      "joint_4",
+      "joint_5",
+      "joint_6",
+      "joint_7",
+      "gripper_Left_1_Joint",
+      "gripper_Left_2_Joint",
+      "gripper_Left_Support_Joint",
+      "gripper_Right_1_Joint",
+      "gripper_Right_2_Joint",
+      "gripper_Right_Support_Joint"
+    ],
+    "position_targets": [
+      1.0381098985671997,
+      -0.49131539463996887,
+      -0.4996761977672577,
+      -1.581451177597046,
+      0.25218796730041504,
+      -1.1335171461105347,
+      1.9594258069992065,
+      0.9100000262260437,
+      0,
+      0,
+      0.9100000262260437,
+      0,
+      0
+    ],
+    "velocity_targets": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "physics_timestep_s": 0.009999999776482582,
+    "simulation_frequency_hz": 100,
+    "control_frequency_hz": 20
+  },
+  "step_count": 28,
+  "last_step": {
+    "control_tick": 6,
+    "substep": 3,
+    "q": [
+      1.0382931232452393,
+      -0.4877459704875946,
+      -0.49895286560058594,
+      -1.5865495204925537,
+      0.25286540389060974,
+      -1.123002290725708,
+      2.0064101219177246,
+      0.7880013585090637,
+      0.7390431761741638,
+      0.8075161576271057,
+      0.7654774785041809,
+      0.9090119004249573,
+      0.9100000262260437
+    ],
+    "qdot": [
+      -0.003724286099895835,
+      -0.007229122333228588,
+      0.001259133219718933,
+      -0.045051950961351395,
+      -0.004835592117160559,
+      0.0538206622004509,
+      -0.01669907569885254,
+      -0.24599683284759521,
+      -0.2900984287261963,
+      -1.4007993936538696,
+      -0.1136351153254509,
+      -0.964684009552002,
+      -3.8670520782470703
+    ]
+  },
+  "forbidden_contacts": [
+    {
+      "body_names": [
+        "gripper_Left_Support_Link",
+        "__maniskill_workspace_table__"
+      ],
+      "force_in_base_n": [
+        7.177098542692306e-05,
+        -0.00017709674407554265,
+        0.41933381935955183
+      ],
+      "separations_m": [
+        0.0008077906677499413,
+        0.001146993599832058,
+        0.00010085515532409772
+      ]
+    }
+  ],
+  "private_robot_closed": true,
+  "primary_unchanged_while_private_stepped": true
+}

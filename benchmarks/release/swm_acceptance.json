@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "4562bd1",
+    "commit": "05026e6",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Original candidate loop now rejects explicit private closure collisions; ordinary worker_35 stopped before primary actions. Read-only worker_36 identifies 70 original candidates but only one returned by relation screening, with motion budget 8. No real replacement candidate or pen six-checkpoint success yet."
+    "note": "WIP original relation screening continuation actually ran two rounds in worker_37, excluding first vetoed ID and decrementing budget 8 to 7. No alternative relation or primary actions. Current full regression has three failures in newly added continuation fixtures; not green."
   },
   "runs": {
     "m0_targeted": {
@@ -13737,6 +13737,48 @@
       "policy_modified": false,
       "status": "no_feasible_trajectory",
       "evidence": "benchmarks/release/evidence/pen_closure/worker_36/"
+    },
+    "m1_relation_continuation_targeted": {
+      "passed": 14,
+      "failed": 3,
+      "seconds": 0.48
+    },
+    "m1_relation_continuation_full": {
+      "tested_commit": "05026e6",
+      "passed": 1776,
+      "failed": 3,
+      "warnings": 1,
+      "seconds": 45.26,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "known_failure": "Three new continuation fixtures assume separate initial tiers but actual fixture returns both candidates; repeated-ID negative never reaches its second round",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_37/full_tests.log"
+    },
+    "m1_relation_continuation_worker_37": {
+      "domain": "native_CPU_PhysX_worker",
+      "tested_commit": "05026e6",
+      "original_candidates": 70,
+      "rounds": [
+        {
+          "round": 1,
+          "screened_count": 1,
+          "remaining_motion_budget": 8,
+          "excluded_grasp_ids": []
+        },
+        {
+          "round": 2,
+          "screened_count": 0,
+          "remaining_motion_budget": 7,
+          "excluded_grasp_ids": [
+            "grasp_39_+180deg_axis_-40mm"
+          ]
+        }
+      ],
+      "same_snapshot": true,
+      "primary_actions_executed": false,
+      "formal_cleanup_all_true": true,
+      "skill_verified": false,
+      "status": "no_feasible_trajectory_after_rescreen",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_37/"
     }
   },
   "gates": {
@@ -13986,14 +14028,15 @@
   },
   "current_layer_status": {
     "kernel": {
-      "tested_commit": "4562bd1",
-      "status": "PASSED_REGRESSION",
-      "passed": 1774,
-      "failed": 0
+      "tested_commit": "05026e6",
+      "status": "REGRESSION_FAILED",
+      "passed": 1776,
+      "failed": 3,
+      "warnings": 1
     },
-    "native_wiring": "ORIGINAL_GRASP_CANDIDATE_CLOSURE_VETO_WIRED_RELATION_SCREEN_CONTINUATION_PENDING",
+    "native_wiring": "ORIGINAL_RELATION_CONTINUATION_TWO_NATIVE_ROUNDS_NO_ALTERNATIVE_RELATION",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "WORKER_35_PRIVATE_CANDIDATE_REJECTED_BEFORE_PRIMARY_ACTIONS_NO_SIX_CHECKPOINT_SUCCESS",
+    "actual_simulation": "WORKER_37_PRIVATE_CLOSURE_VETO_AND_TWO_SCREEN_ROUNDS_NO_PRIMARY_ACTIONS",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14060,5 +14103,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Continue existing relation screening after excluded closure-rejected IDs, preserve original search tiers and grasp/place pairing with bounded total motion attempts, then obtain actual pen six-checkpoint success."
+  "next_actual_action": "Repair new continuation fixture coverage without weakening assertions, then diagnose original remaining relation infeasibility and preserve existing successful candidate policy; obtain actual pen six-checkpoint success."
 }
