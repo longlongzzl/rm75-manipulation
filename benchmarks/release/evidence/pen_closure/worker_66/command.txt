@@ -1,0 +1,5 @@
+PYTHONPATH="$PWD" python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -m rm75_app.workcell.worker --run-dir "$PWD/runtime_data/swm_release_pen_worker_66" --profile "$PWD/runtime_data/swm_release_pen_worker_66/profile.json" --app-root "$PWD"
+Original request/profile copied unchanged from worker_43. Original collision rules unchanged. Worker exit 1: native lift collision audit rejects.
+Targeted tests: 26 passed / 1 failed in 0.10 s.
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest -q tests/
+Full tests exit 1: 1874 passed / 1 failed / 1 existing warning in 46.39 s.

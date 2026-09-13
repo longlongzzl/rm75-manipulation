@@ -14502,7 +14502,7 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Bind native simulation physical step time and post-observation coverage to actual action recording, then transition/posterior/next-planner lifecycle. Collision-policy approval pending; no override.",
+  "next_actual_action": "Fix native counter boolean/nonfinite validation; then bind shared physical epoch to post-observation recorder coverage and transition replay. Collision policy remains unchanged pending approval.",
   "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json",
   "feedback_closure_wiring": {
     "status": "PRIMARY_CLOSURE_EXECUTED_LIFT_ADAPTER_MISSING",
@@ -14569,5 +14569,17 @@
     "physical_time_axis_qualified": false,
     "post_exposure_coverage_qualified": false,
     "task_success": false
+  },
+  "worker_66_clock": {
+    "tested_commit": "5490333",
+    "evidence": "benchmarks/release/evidence/pen_closure/worker_66/summary.json",
+    "actual_samples": 130,
+    "physical_substeps": 640,
+    "physical_time_s": 6.3999998569488525,
+    "checkpoint_clock_aligned": true,
+    "full_passed": 1874,
+    "full_failed": 1,
+    "full_duration_s": 46.39,
+    "post_exposure_transition_bound": false
   }
 }
