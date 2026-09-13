@@ -1,0 +1,69 @@
+{
+  "domain": "native_private_FK_and_configuration_geometry",
+  "physics_steps": 0,
+  "primary_world_created": false,
+  "hardware_connected": false,
+  "model_agreement": false,
+  "source_snapshot_id": "9c92525a0a3768204f30b510c61f72033dbdb00e92f9c96d0d920f42fa9d78e5",
+  "source_sha256": "9222e94ac45e01f48a87e4a5ff16d111a2f268ec7935ccd05703bbb5b496db7c",
+  "config_sha256": "db8dd015e4be361cf73cd0d9802236dfa722f0f4ea6ac700d13b62f95768170e",
+  "spheres_sha256": "45bcdebf5e5cff2450367b83aff6e87b30328ad7d76952e90df3419ddf32b74f",
+  "links": {
+    "gripper_Left_Support_Link": {
+      "native_vs_original_urdf_FK_max_error": 4.381659215457745e-07,
+      "native_shapes": [
+        {
+          "shape_index": 0,
+          "vertex_count": 25,
+          "base_z_min_m": 0.003189461331412291,
+          "base_z_max_m": 0.0717345738378631,
+          "contact_offset_m": 0.009999999776482582
+        }
+      ],
+      "configured_sphere_count": 4,
+      "configured_sphere_lowest_base_z_m": 0.002915629016101356,
+      "globally_buffered_sphere_lowest_base_z_m": 0.00041562901610135575
+    },
+    "gripper_Right_Support_Link": {
+      "native_vs_original_urdf_FK_max_error": 3.843378272305742e-07,
+      "native_shapes": [
+        {
+          "shape_index": 0,
+          "vertex_count": 25,
+          "base_z_min_m": 0.0031289186202737435,
+          "base_z_max_m": 0.07167526282352846,
+          "contact_offset_m": 0.009999999776482582
+        }
+      ],
+      "configured_sphere_count": 5,
+      "configured_sphere_lowest_base_z_m": 0.002114213968366382,
+      "globally_buffered_sphere_lowest_base_z_m": -0.000385786031633618
+    }
+  },
+  "mesh_pair_separation": [
+    {
+      "left_shape": 0,
+      "right_shape": 0,
+      "separation_proven": true,
+      "separating_axis": [
+        -0.42019796823597966,
+        -0.9074313667597754,
+        -0.0014078745827664772
+      ],
+      "gap_lower_bound_m": 0.02502849625110304,
+      "exact_minimum_distance": false
+    }
+  ],
+  "configured_sphere_pair": {
+    "left_index": 0,
+    "right_index": 3,
+    "raw_overlap_m": -0.011301566541410148,
+    "with_global_buffer_overlap_m": -0.006301566541410148,
+    "with_global_and_self_buffers_overlap_m": 0.001698433458589852,
+    "global_pair_buffer_m": 0.005,
+    "self_pair_buffer_m": 0.008,
+    "source": "original_yaml_spheres_transformed_by_actual_native_link_FK_not_GPU_tensor_readback"
+  },
+  "private_robot_closed": true,
+  "all_native_mesh_pairs_proven_separated": true
+}

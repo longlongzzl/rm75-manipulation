@@ -1,0 +1,6 @@
+Production baseline: 3902fb2; no production changes in this run.
+PYTHONPATH="$PWD" python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python benchmarks/release/evidence/pen_closure/gripper_geometry_02/probe.py
+Terminal exit: 0. Private native articulation FK only; zero physics steps; no primary world or hardware.
+Input: runtime_data/swm_release_pen_worker_64/swm_native/checkpoints/0004.json
+The summary records snapshot/config/sphere digests. Native meshes come from actual private articulation collision shapes, not visual meshes.
+Sphere comparison uses original YAML spheres transformed by native FK, not direct GPU tensor readback. The prior worker_64 GPU audit is independent evidence.

@@ -14502,7 +14502,7 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Compare native jaw meshes and original planning collision sphere coverage at worker_64 measured state; persistent jaw self-collision precedes lift replanning. Preserve collision limits and allowlists.",
+  "next_actual_action": "Build and prove tighter conservative support-link collision-volume sphere coverage, retaining original buffers and collision pairs; validate capacity before native use. Geometry02 isolates coarse envelope rejection, not actual mesh overlap.",
   "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json",
   "feedback_closure_wiring": {
     "status": "PRIMARY_CLOSURE_EXECUTED_LIFT_ADAPTER_MISSING",
@@ -14523,5 +14523,6 @@
     "full_duration_s": 45.36,
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
-  "worker_64_evidence": "benchmarks/release/evidence/pen_closure/worker_64/summary.json"
+  "worker_64_evidence": "benchmarks/release/evidence/pen_closure/worker_64/summary.json",
+  "gripper_geometry_02_evidence": "benchmarks/release/evidence/pen_closure/gripper_geometry_02/summary.json"
 }
