@@ -1,6 +1,16 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_recording_wrapper_regression_fix": {
+    "status": "REGRESSION_GREEN_NATIVE_INTEGRATION_STILL_PARTIAL",
+    "kernel": "20 targeted passed / 0.11 s; 1927 full passed / 1 existing warning / 42.75 s; isolated",
+    "change": "AST assertion targets extracted internal gate; real uninitialized PhysicsSession instance exercises public wrapper; exception identity, cleanup and successful return covered",
+    "original_start_limit_rad": 0.00001,
+    "actual_simulation": "NOT_RUN_THIS_CHANGE; worker_07 evidence retains original source attribution",
+    "physics_fit_run": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
   "pusht_native_transition_worker_07": {
     "status": "ACTUAL_TRANSITION_BOUND_REGRESSION_NOT_GREEN",
     "kernel": "1922 passed / 2 failed / 1 warning / 43.49 s; isolated; old AST/unbound fixture assumptions need adaptation to cleanup wrapper",

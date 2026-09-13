@@ -80,7 +80,7 @@ def test_interactive_extra_observe_measures_start_q_drift_without_widening_the_g
     source=(Path(__file__).resolve().parents[2]/'rm75_app/pusht/physics.py').read_text()
     tree=ast.parse(source)
     for name,field in (('prepare_push_candidates','last_planning_start_q_drift_rad'),
-                       ('execute_push','last_pre_execution_start_q_drift_rad')):
+                       ('_execute_push','last_pre_execution_start_q_drift_rad')):
         fn=next(n for n in ast.walk(tree) if isinstance(n,ast.FunctionDef) and n.name==name)
         compares=[n for n in ast.walk(fn) if isinstance(n,ast.Compare)
                   and 'drift' in ast.unparse(n.left) and any(isinstance(o,ast.Gt) for o in n.ops)]
@@ -131,9 +131,28 @@ def test_start_q_drift_still_raises_at_the_original_tolerance_with_measured_valu
     class Base:
         def read_q(self):return np.full(7,2e-5)
 
-    session=SimpleNamespace(stop=StopToken(),report={},full_arm=False,base=Base(),
-        clock=lambda:1.,config=Config(),
-        _prepared_selection=(object(),obs.as_dict(),SimpleNamespace(initial=np.zeros(7))))
+    session=PhysicsSession.__new__(PhysicsSession)
+    session.stop=StopToken();session.report={};session.full_arm=False;session.base=Base()
+    session.clock=lambda:1.;session.config=Config()
+    session._prepared_selection=(object(),obs.as_dict(),SimpleNamespace(initial=np.zeros(7)))
     with pytest.raises(ValueError,match='2.000e-05 rad > 1e-5 rad'):
         PhysicsSession.execute_push(session,session._prepared_selection[0],obs)
     assert session.report['last_pre_execution_start_q_drift_rad']==pytest.approx(2e-5)
+
+@pytest.mark.parametrize('error',[RuntimeError('execution failed'),KeyboardInterrupt()])
+def test_execution_wrapper_cancels_recording_and_preserves_failure(error):
+    from rm75_app.pusht.physics import PhysicsSession
+    session=PhysicsSession.__new__(PhysicsSession);calls=[]
+    def fail(*args):raise error
+    session._execute_push=fail
+    session.action_recording=NS(cancel=lambda:calls.append('cancel'))
+    with pytest.raises(type(error)) as raised:session.execute_push(None,None)
+    assert raised.value is error and calls==['cancel']
+
+def test_execution_wrapper_does_not_cancel_successful_recording():
+    from rm75_app.pusht.physics import PhysicsSession
+    session=PhysicsSession.__new__(PhysicsSession);calls=[];result=object()
+    session._execute_push=lambda *args:result
+    session.action_recording=NS(cancel=lambda:calls.append('cancel'))
+    assert session.execute_push(None,None) is result
+    assert calls==[]
