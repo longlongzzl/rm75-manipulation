@@ -18,7 +18,7 @@ import uuid
 import numpy as np
 
 from .observation import Observation
-from .physics_replay import TcpFK,TimedProgram
+from .physics_replay import TcpFK,TimedProgram,TimedStageProgram
 from .controller import PushTController
 from .model import valid_pose
 from rm75_app.workcell.io import atomic_json,dumps
@@ -295,7 +295,30 @@ class PhysicsSession:
         if drift>1e-5:raise ValueError('Simulated start changed during planning: '
                                        f'{drift:.3e} rad > 1e-5 rad')
         self._prepared_selection=(proposals[selected][0],obs.as_dict(),program)
+        self._prepared_contact_binding=result.get('contact_binding')
         return selected
+
+    def replan_measured_stage(self,stage_program,push,observation):
+        q=self.base.read_q()
+        payload=dict(op='stage',q=q.tolist(),stage=stage_program.hold_stage,
+            goal_q=stage_program.positions[-1].tolist(),push=push.as_dict(),
+            observation=observation.as_dict(),contact_binding=self._prepared_contact_binding)
+        feedback=self.measured_tool_feedback()
+        if feedback is not None:
+            payload['simulated_gripper_joint_positions']=feedback['gripper_joint_positions']
+        self.process.stdin.write(json.dumps(payload)+'\n');self.process.stdin.flush()
+        reply=self.receive();path=Path(reply['result'])
+        path.resolve().relative_to(self.directory.resolve());result=json.loads(path.read_text())
+        if (result.get('stage_validated') is not True or result.get('stage')!=stage_program.hold_stage
+                or result.get('source_observation')!=observation.as_dict()
+                or result.get('measured_start_q')!=q.tolist()):
+            raise RuntimeError('Measured stage planning rejected: '+str(result.get('error','identity mismatch')))
+        self.events.emit('physics_measured_stage_plan',stage=stage_program.hold_stage,
+            actual_action_id=self.feedback_action_id,observation_sequence=observation.sequence,
+            file=path.name,sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+            swm_scene_audit_verified=False)
+        return TimedStageProgram(stage_program.hold_stage,np.asarray(result['positions']),
+                                 np.asarray(result['times']),self.fk)
 
     def check_stage_start(self,stage_program):
         """Fresh read after boundary capture, before installing any new command."""
@@ -337,6 +360,7 @@ class PhysicsSession:
                 stage=stage_program.hold_stage,actual_action_id=self.feedback_action_id,
                 observation=before.as_dict(),tool_feedback=self.measured_tool_feedback(),
                 swm_scene_audit_verified=False)
+            stage_program=self.replan_measured_stage(stage_program,push,before)
             self.check_stage_start(stage_program)
             self.base.active_program=stage_program;self.base.program_started=self.base.physics_time
             self.advance(stage_program.duration)

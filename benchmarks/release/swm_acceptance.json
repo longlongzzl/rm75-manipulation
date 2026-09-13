@@ -1,6 +1,16 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_measured_stage_protocol": {
+    "status": "NATIVE_INITIALIZATION_GAP_PENDING_FIX",
+    "kernel": "11 targeted passed; 1909 full passed / 1 warning / 42.71 s; isolated",
+    "native_wiring": "Worker stage request invokes original single-stage planner, timer and auditor from fresh q/object/jaw feedback; validates response identity and start before command",
+    "native_planner": "FAILED AttributeError: AuditedPhysicsPushExecutor has no attribute names; no trajectory returned",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/stage_planner_01/",
+    "actual_simulation": "NOT_RUN_THIS_CHANGE; planning-only diagnostic on recorded native feedback",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
   "pusht_post_capture_start_guard": {
     "status": "KNOWN_ORDERING_GAP_FIXED_NATIVE_EXECUTION_NOT_QUALIFIED",
     "kernel": "9 targeted passed / 0.03 s; 1907 full passed / 1 existing warning / 66.46 s; network isolated",

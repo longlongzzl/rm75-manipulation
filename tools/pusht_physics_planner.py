@@ -124,7 +124,7 @@ def main():
             for line in sys.stdin:
                 request=json.loads(line)
                 if request.get('op')=='close':break
-                if request.get('op')!='plan':raise ValueError('Only planning is allowed')
+                if request.get('op') not in ('plan','stage'):raise ValueError('Only planning is allowed')
                 q=np.asarray(request['q'],dtype=float)
                 if q.shape!=(7,) or not np.isfinite(q).all():raise ValueError('Invalid simulated joints')
                 observation=Observation.from_dict(request['observation'])
@@ -158,15 +158,20 @@ def main():
                     ignore_gripper_internal_self_collision=backend.config.ignore_gripper_internal_self_collision,
                     retreat_collision_checks=False,complete_chain=False,validation_success=False,events=events,source_observation=request['observation'])
                 try:
-                    if 'push_candidates' in request:
+                    if request['op']=='stage':
+                        from rm75_app.pusht.stage_planning import replan_stage
+                        result.update(replan_stage(executor,observation,request))
+                    elif 'push_candidates' in request:
                         selected,prepared=executor.plan_push_candidates(proposals,observation)
                     else:
                         selected=0;prepared=executor.plan_push(proposals[0][0],observation)
-                    result.update(complete_chain=True,validation_success=True,
-                        retreat_native_audit_scope='predicted_post_push_ensemble',
-                        retreat_post_push_scene_verified=False,
-                        selected_candidate=selected,selected_push=proposals[selected][0].as_dict(),
-                        stages=[dict(stage=s,positions=p.tolist(),times=t.tolist()) for s,p,t in prepared.stages])
+                    if request['op']=='plan':
+                        result.update(complete_chain=True,validation_success=True,
+                            contact_binding=executor.last_contact_binding,
+                            retreat_native_audit_scope='predicted_post_push_ensemble',
+                            retreat_post_push_scene_verified=False,
+                            selected_candidate=selected,selected_push=proposals[selected][0].as_dict(),
+                            stages=[dict(stage=s,positions=p.tolist(),times=t.tolist()) for s,p,t in prepared.stages])
                 except Exception as exc:result['error']=f'{type(exc).__name__}: {exc}'
                 result['response_fits']=list(executor.config.response_fits)
                 result['periodic_ik_audit']=list(periodic_audits)
@@ -174,7 +179,7 @@ def main():
                 result['simulated_gripper_joint_positions']=feedback
                 result['elapsed_s']=time.monotonic()-tick;count+=1
                 path=args.directory/f'plan_{count:03d}.json';atomic_json(path,result)
-                send(dict(result=str(path),success=result['complete_chain'],elapsed_s=result['elapsed_s']))
+                send(dict(result=str(path),success=result.get('stage_validated',result['complete_chain']),elapsed_s=result['elapsed_s']))
     except BaseException as exc:
         send(dict(ready=False,error=f'{type(exc).__name__}: {exc}'))
         raise

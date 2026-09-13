@@ -98,6 +98,11 @@ class TimedProgram:
 class TimedStageProgram:
     """One already-validated stage; no replanning or new execution permission."""
     def __init__(self,name,q,t,fk):
+        q=np.asarray(q,dtype=float);t=np.asarray(t,dtype=float)
+        if (name not in STAGES or q.ndim!=2 or q.shape[1]!=7 or not 2<=len(q)<=100000
+                or t.shape!=(len(q),) or not np.isfinite(q).all() or not np.isfinite(t).all()
+                or abs(t[0])>1e-9 or np.any(np.diff(t)<=0)):
+            raise ValueError('Invalid timed stage program')
         self.hold_stage=name;self.positions=q.copy();self.times=t.copy();self.fk=fk
         self.duration=float(t[-1]);self.initial=q[0].copy()
 
