@@ -52,6 +52,7 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
     from .native_robot_mirror import SapienRobotStatePort
     from .native_drive_commands import apply_private_control
     from .native_velocity import NativeArticulationVelocity
+    from .native_feedback_closure import NativeFeedbackClosure
     from .native_body_mirror import NativeBodyMirror, native_pose
     from .native_scene import SapienScenePort
     from .native_registration import file_digest
@@ -103,6 +104,9 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
         report['exact_equal_target_elision'] = True
         closed = original_gripper_drive_targets(controller, drives, 1.)
         report['closed_drive_targets'] = closed
+        report['closed_drive_targets_role'] = 'nominal_endpoint_not_executed_feedback_action'
+        feedback_closure = NativeFeedbackClosure()
+        report['closure_policy'] = feedback_closure.policy_id
         report['phase'] = 'private_prediction'
         with ExitStack() as resources:
             robot = SapienRobotStatePort(urdf_path, resources=resources)
@@ -126,6 +130,21 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
             dt = closed['physics_timestep_s']
             substeps = round(closed['simulation_frequency_hz'] / closed['control_frequency_hz'])
             def advance_control(tick, command, stage):
+                feedback = None
+                if stage in ('gripper_close', 'closed_hold'):
+                    vectors = {name: np.zeros(3) for name in sorted(fingers)}
+                    for contact in robot._physics_system.get_contacts():
+                        names = [body.entity.name for body in contact.bodies]
+                        if target not in names:
+                            continue
+                        for name in vectors:
+                            if name in names:
+                                vectors[name] += compute_total_impulse(
+                                    [(contact, names[0] == name)]) / dt
+                    value = feedback_closure.advance(list(vectors.values()))
+                    command = original_gripper_drive_targets(controller, command, value)
+                    feedback = dict(feedback_closure.last, finger_names=list(vectors),
+                        drive_targets=command)
                 writes = apply_private_control(robot._robot, robot._physics_system, command, groups)
                 for substep in range(substeps):
                     primary.stop.check()
@@ -157,6 +176,9 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
                 row['qdot'] = effective.tolist()
                 row['velocity_source'] = velocity_evidence['source']
                 row['drive_group_writes'] = writes
+                if feedback is not None:
+                    row['closure_feedback'] = feedback
+                    row['closure_ready'] = feedback['in_force_band']
                 report['last_velocity_evidence'] = velocity_evidence
                 if stage == 'closed_hold':
                     row['object_velocities'] = {oid: dict(
@@ -292,7 +314,8 @@ def original_gripper_drive_targets(controller, baseline, value):
     from .native_robot_mirror import validate_native_drive_state
     validate_native_drive_state(baseline)
     cfg = controller.config
-    if value not in (-1., 1.) or cfg.use_delta or cfg.use_target or cfg.interpolate:
+    if (not np.isscalar(value) or not np.isfinite(value) or not -1. <= value <= 1.
+            or cfg.use_delta or cfg.use_target or cfg.interpolate):
         raise SceneInvalid('Unsupported closure controller state')
     import torch
     command = controller._preprocess_action(
@@ -378,7 +401,7 @@ def settle_closed_hold(step, names, arm_target, object_ids, *, max_steps=200):
                     or not np.isfinite(linear).all() or not np.isfinite(angular).all()):
                 raise SceneInvalid('Finite private closed-hold object velocity required')
             object_idle = object_idle and np.linalg.norm(linear) <= .001 and np.linalg.norm(angular) <= .005
-        stable = stable + 1 if idle and error <= .02 and object_idle else 0
+        stable = stable + 1 if idle and error <= .02 and object_idle and row.get('closure_ready', True) else 0
         evidence = dict(source='native_private_closed_hold_readback', completed=stable >= 3,
             control_steps=tick+1, stable_steps=stable, max_velocity_rad_s=speed,
             endpoint_error_rad=error, robot_idle=idle, object_idle=bool(object_idle),

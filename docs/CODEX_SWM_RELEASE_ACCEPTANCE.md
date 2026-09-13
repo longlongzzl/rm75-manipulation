@@ -817,3 +817,13 @@ The worker intentionally reports failed at the diagnostic barrier. Prediction re
 Kernel: no production change or new regression run in this continuation. Native wiring: formal grasp/place remains incomplete. Actual simulation: private adaptive closure only. Model inference: NOT_RUN. Hardware: NOT_AUTHORIZED_NOT_RUN. Overall: PARTIAL_DELIVERY; no gate promoted.
 
 Next actual implementation: share a bounded feedback closure policy between private prediction and the original primary executor, retain independent holding evidence, and refresh measured jaw/attachment geometry before re-auditing the remaining lift. Do not reuse fixed-close predictions or stale lift geometry. Missing-adapter guards remain intact.
+
+## 2026-09-13: shared feedback closure wiring, not native qualification
+
+Added `native_feedback_closure.py` and connected its bounded policy to both the private closure predictor and `NativePrimaryExecutor`. Both use measured original finger forces, the original semantic command transform, and at most 20 close plus 200 hold controls. Private evidence now includes each adaptive command and measured pre-step forces; the old full-close target is explicitly nominal, not the executed action. Collision checks and object/robot idle limits remain unchanged. A force band does not certify holding.
+
+Primary execution now rejects subsequent trajectories after feedback closure until measured jaw/attachment lift re-audit is installed. This is an explicit incomplete adapter, not a successful grasp or a legacy fallback. Original independent holding checks remain necessary. No production native worker was run with this change yet.
+
+Tests (network isolated, explicit tests scope): new targeted suite 7 passed in 0.05 s; full tests 1837 passed / 1 failed / 1 existing warning in 43.09 s. Failure: `tests/swm/test_native_primary_execution.py::test_original_target_finger_contact_is_not_holding_verification` supplies only left-finger force and expects completion after 23 controls; the new bilateral feedback condition instead exhausts the bounded settle budget. Keep this failure visible. Next change should separate allowed unilateral contact from completed bilateral closure in that test contract, then implement measured-state lift re-audit before claiming the skill available.
+
+Kernel regression: NOT_GREEN. Native wiring: feedback strategy connected, post-close audit adapter incomplete. Actual simulation: no new run; worker_61 remains diagnostic evidence for the earlier implementation only. Model inference: NOT_RUN. Hardware: NOT_AUTHORIZED_NOT_RUN. Overall PARTIAL_DELIVERY; G0-G10 completion is unproven.

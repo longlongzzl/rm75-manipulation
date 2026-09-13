@@ -41,6 +41,8 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         self.closure_target = None
         self.closure_prediction = None
         self.object_settle_readback = None
+        self._closure_feedback = None
+        self._closure_requires_reaudit = False
 
     def _read(self):
         self.primary.stop.check()
@@ -63,6 +65,8 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         stable = 0
         for index in range(self.max_settle_steps):
             self.primary.stop.check()
+            if stage == 'gripper_close' and self._closure_feedback is not None:
+                self._advance_feedback_closure()
             action = self.demo.compose_action(self._last_commanded_target, self._gripper_value)
             self.demo.step_and_render(action, tag='settle_'+stage)
             self._after_control_step('settle_'+stage)
@@ -83,6 +87,8 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
                         or objects['idle'] != all(row['settled'] for row in objects['objects'].values())):
                     raise SceneInvalid('Complete native object settle feedback required')
                 ready = objects['idle']
+            if stage == 'gripper_close' and self._closure_feedback is not None:
+                ready = ready and self._closure_feedback.last['in_force_band']
             stable = stable + 1 if ready else 0
             self.last_settle_evidence = dict(stage=stage, steps=index+1,
                 primary_sequence=raw['sequence'], captured_at=raw['capture_started_at'],
@@ -102,6 +108,8 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
 
     def execute_trajectory(self, stage, trajectory):
         self.primary.stop.check()
+        if self._closure_requires_reaudit:
+            raise SceneInvalid('Measured jaw and attachment lift re-audit is not installed')
         super().execute_trajectory(stage, trajectory)
         self._settle(stage)
 
@@ -114,8 +122,37 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
             prediction = getattr(self, "closure_prediction", None)
             if prediction is not None:
                 prediction()
-        super().set_gripper(closed)
+        if closed:
+            from .native_feedback_closure import NativeFeedbackClosure
+            self._closure_feedback = NativeFeedbackClosure()
+            self._closure_requires_reaudit = True
+            for _ in range(self.gripper_steps):
+                self.primary.stop.check()
+                self._advance_feedback_closure()
+                action = self.demo.compose_action(self._last_commanded_target, self._gripper_value)
+                self.demo.step_and_render(action, tag='gripper_close')
+                self._after_control_step('gripper_close')
+        else:
+            self._closure_feedback = None
+            super().set_gripper(False)
         self._settle('gripper_close' if closed else 'gripper_open')
+
+    def _advance_feedback_closure(self):
+        self.primary.stop.check()
+        actor = self.primary.actors.get(self.closure_target)
+        if actor is None:
+            raise SceneInvalid('Bound native target required for feedback closure')
+        agent = self.primary.env.unwrapped.agent
+        fingers = sorted((agent.finger1_link, agent.finger2_link), key=lambda link: link.name)
+        if len({link.name for link in fingers}) != 2:
+            raise SceneInvalid('Distinct original finger identities required')
+        vectors = [_array(agent.scene.get_pairwise_contact_forces(link, actor)).reshape(-1)
+                   for link in fingers]
+        self._gripper_value = self._closure_feedback.advance(vectors)
+        self.emit(kind='swm_primary_feedback_closure_command',
+            source='native_pairwise_contact_force_readback',
+            finger_names=[link.name for link in fingers],
+            **self._closure_feedback.last)
 
     def feedback(self):
         raw, names, q, velocity = self._read()

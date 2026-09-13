@@ -14502,6 +14502,14 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Share bounded feedback closure between private prediction and primary executor, then independently validate holding and refresh jaw/attachment lift audit; worker_61 is diagnostic only",
-  "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json"
+  "next_actual_action": "Resolve unilateral-contact test contract without weakening closure; implement fresh measured jaw/attachment lift re-audit and run native worker",
+  "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json",
+  "feedback_closure_wiring": {
+    "status": "PARTIAL_NOT_NATIVE_VALIDATED",
+    "targeted_passed": 7,
+    "full_passed": 1837,
+    "full_failed": 1,
+    "postclosure_lift_adapter": "MISSING_FAIL_CLOSED",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  }
 }
