@@ -1,6 +1,18 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_measured_stage_execution_01": {
+    "status": "SIMULATED_APPROACH_COMPLETED_NOT_TASK_QUALIFIED",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/measured_stage_01/",
+    "kernel": "1910 full passed / 1 existing warning / 44.38 s; network isolated",
+    "native_wiring": "Original PhysicsSession fresh capture, measured stage RPC, start recheck, native drive and independent after capture exercised",
+    "actual_simulation": "53 planned samples / 1.7333333333333354 s; native counter 61 to 145; final joint error 0.009797009639441967 rad below original 0.02 rad endpoint gate",
+    "resources_closed": true,
+    "swm_scene_audit_verified": false,
+    "parameter_identification": "NOT_RUN_NONCONTACT_APPROACH",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
   "pusht_stage_joint_identity_fix": {
     "status": "NATIVE_APPROACH_PLANNING_VALIDATED_NOT_EXECUTED",
     "kernel": "3 targeted passed / 0.03 s; 1910 full passed / 1 warning / 42.38 s; isolated",
