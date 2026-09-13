@@ -1,6 +1,16 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_retreat_diagnostic_worker_03": {
+    "status": "KNOWN_STAGE_SCENE_ERROR_PENDING_FIX",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/worker_03/",
+    "kernel": "3 targeted passed; 1896 full passed / 1 warning / 47.40 s; isolated",
+    "native_wiring": "Immediate bounded last-retreat rejection persisted before candidate search completes",
+    "actual_simulation": "60 s timeout, cooperative cancellation during planning; no successful push",
+    "finding": "Retreat audit checks stale pre-push target geometry: right support and right pad rejected against pusht_target_0. Replace with stage-correct predicted and independently measured post-push scene, without ignoring target collisions.",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
   "pusht_retreat_gate_worker_02": {
     "evidence": "benchmarks/release/evidence/pusht_feedback/worker_02/",
     "kernel": "3 targeted passed; 1896 full passed / 1 existing warning / 47.40 s; network isolated",

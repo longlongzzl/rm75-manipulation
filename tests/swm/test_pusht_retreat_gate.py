@@ -16,9 +16,14 @@ def test_all_timed_retreat_samples_checked_without_contact_permission():
 
 def test_native_collision_failure_propagates():
     def reject(*args,**kwargs):raise RuntimeError('native collision')
-    executor=SimpleNamespace(_audit=reject)
+    events=[]
+    executor=SimpleNamespace(_audit=reject,
+        events=SimpleNamespace(emit=lambda *a,**kw:events.append((a,kw))))
     with pytest.raises(RuntimeError,match='native collision'):
         audit_prepared_retreat(executor,SimpleNamespace(stages=(('retreat',np.zeros((2,7)),None),)))
+    assert events[0][0]==('physics_retreat_native_rejected',)
+    assert events[0][1]['samples']==2
+    assert events[0][1]['error']=='RuntimeError: native collision'
 
 def test_absent_retreat_not_certified():
     with pytest.raises(ValueError,match='no retreat'):

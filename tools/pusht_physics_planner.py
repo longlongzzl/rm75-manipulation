@@ -27,7 +27,15 @@ def audit_prepared_retreat(executor,prepared):
     """
     rows=[path for stage,path,_ in prepared.stages if stage=='retreat']
     if not rows:raise ValueError('Prepared push has no retreat to audit')
-    for path in rows:executor._audit(path,contact=False)
+    for path in rows:
+        try:executor._audit(path,contact=False)
+        except Exception as exc:
+            executor.events.emit('physics_retreat_native_rejected',
+                scope='measured_pre_push_scene',samples=len(path),
+                start_q=np.asarray(path[0]).tolist(),end_q=np.asarray(path[-1]).tolist(),
+                error=f'{type(exc).__name__}: {exc}'[:4096],
+                post_push_scene_verified=False)
+            raise
     executor.events.emit('physics_retreat_native_audit',
         scope='measured_pre_push_scene',samples=sum(len(path) for path in rows),
         post_push_scene_verified=False)
@@ -118,7 +126,14 @@ def main():
                 if not 1<=len(proposals)<=128:raise ValueError('Expected 1..128 ranked push candidates')
                 events=[];tick=time.monotonic();periodic_audits.clear();motion_diagnostics.clear()
                 class Events:
-                    def emit(self,event,**values):events.append(dict(event=event,**values))
+                    def emit(self,event,**values):
+                        row=dict(event=event,**values);events.append(row)
+                        if event=='physics_retreat_native_rejected':
+                            # Preserve one bounded diagnostic even when candidate
+                            # search is cancelled before plan_NNN.json is written.
+                            atomic_json(args.directory/'last_retreat_rejection.json',
+                                dict(row,source_observation=request['observation'],
+                                     planning_request=count+1,execute_real=False))
                 executor=AuditedPhysicsPushExecutor(backend,ArmState(),Config.from_dict({**data['model'],
                     'response_fits':request.get('response_fits',data['model'].get('response_fits',[]))}),data['motion'],
                     StopToken(args.directory/'STOP'),Events(),None)
