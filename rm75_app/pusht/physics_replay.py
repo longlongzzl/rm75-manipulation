@@ -90,6 +90,27 @@ class TimedProgram:
         name,point=self.configuration(time_s)
         return name,self.fk(point)
 
+    def stage_programs(self):
+        """Original timed stages, each clamped so time cannot enter its successor."""
+        return tuple(TimedStageProgram(name,q,t,self.fk) for name,_,q,t in self.rows)
+
+
+class TimedStageProgram:
+    """One already-validated stage; no replanning or new execution permission."""
+    def __init__(self,name,q,t,fk):
+        self.hold_stage=name;self.positions=q.copy();self.times=t.copy();self.fk=fk
+        self.duration=float(t[-1]);self.initial=q[0].copy()
+
+    def configuration(self,time_s):
+        if not np.isfinite(time_s):raise ValueError('Finite replay time required')
+        t=np.clip(time_s,0,self.duration)
+        return self.hold_stage,np.array([
+            np.interp(t,self.times,self.positions[:,j]) for j in range(7)])
+
+    def sample(self,time_s):
+        name,q=self.configuration(time_s)
+        return name,self.fk(q)
+
 
 def audit_endpoints(program, points, rotation, position_tolerance, orientation_tolerance):
     """Check replay FK against the original five stage targets and tolerances."""

@@ -79,7 +79,8 @@ class PushTLoopEnv(PushTContactEnv):
         if self.active_program is not None:
             elapsed=self.physics_time-self.program_started
             self.stage,self.commanded_q=self.active_program.configuration(elapsed)
-            if elapsed>self.active_program.duration:self.stage='post_settle'
+            if elapsed>self.active_program.duration:
+                self.stage=getattr(self.active_program,'hold_stage','post_settle')
         else:self.stage='settle'
         if self.full_arm:self._drive(self.commanded_q)
         else:

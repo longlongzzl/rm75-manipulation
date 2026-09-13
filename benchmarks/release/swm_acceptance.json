@@ -1,6 +1,16 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_stage_boundaries": {
+    "status": "IMPLEMENTED_WITH_KNOWN_START_GUARD_GAP",
+    "kernel": "3 targeted passed; 1901 full passed / 1 existing warning / 42.41 s; network isolated",
+    "native_wiring": "Original validated timed paths execute as five clamped stages with new observations before and after; hold retains original stage contact policy",
+    "actual_simulation": "NOT_RUN_THIS_CHANGE",
+    "known_issue": "First before-stage observation advances physics after the old start drift check; recheck actual start after capture before permitting execution",
+    "swm_scene_audit_verified": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
   "pusht_stage_scene_worker_04": {
     "status": "PREDICTED_RETREAT_REJECTED_NOT_EXECUTED",
     "evidence": "benchmarks/release/evidence/pusht_feedback/worker_04/",

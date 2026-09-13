@@ -313,8 +313,23 @@ class PhysicsSession:
         self.feedback_action_id=uuid.uuid4().hex
         self.events.emit('physics_action_started',actual_action_id=self.feedback_action_id,
             observation_sequence=obs.sequence,measured_tool_feedback=self.measured_tool_feedback())
-        self.base.active_program=program;self.base.program_started=self.base.physics_time
-        self.advance(program.duration);self.advance(1.)
+        for stage_program in program.stage_programs():
+            # A clamped stage cannot advance into retreat while a boundary
+            # observation is being collected. Keep original stage contact rules
+            # during holds, rather than relabeling every hold as post_settle.
+            before=self.observe()
+            self.events.emit('physics_stage_boundary',boundary='before',
+                stage=stage_program.hold_stage,actual_action_id=self.feedback_action_id,
+                observation=before.as_dict(),tool_feedback=self.measured_tool_feedback(),
+                swm_scene_audit_verified=False)
+            self.base.active_program=stage_program;self.base.program_started=self.base.physics_time
+            self.advance(stage_program.duration)
+            after=self.observe(after=before.captured_at)
+            self.events.emit('physics_stage_boundary',boundary='after',
+                stage=stage_program.hold_stage,actual_action_id=self.feedback_action_id,
+                observation=after.as_dict(),tool_feedback=self.measured_tool_feedback(),
+                swm_scene_audit_verified=False)
+        self.advance(1.)
         if self.full_arm:
             gap=float(np.max(abs(self.base.read_q()-program.rows[-1][2][-1])))
             self.report['last_final_joint_tracking_error_rad']=gap
