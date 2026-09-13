@@ -2,7 +2,6 @@
 from __future__ import annotations
 import uuid
 import numpy as np
-from .native_bootstrap import _array
 from .scene import ObservationUnavailable
 
 
@@ -27,8 +26,11 @@ class NativeSimulationClock:
         return dt, sim, control, int(substeps)
 
     def _counter(self):
-        value = _array(self.env.elapsed_steps).reshape(-1)
-        if (value.shape != (1,) or value.dtype.kind == 'b' or not np.isfinite(value).all()
+        raw = self.env.elapsed_steps
+        if hasattr(raw, "detach"):
+            raw = raw.detach().cpu().numpy()
+        value = np.asarray(raw).reshape(-1)
+        if (value.shape != (1,) or value.dtype.kind not in 'iu' or not np.isfinite(value).all()
                 or not 0 <= value[0] <= 2**53 or int(value[0]) != value[0]):
             raise ObservationUnavailable('One finite integral native environment step counter required')
         return int(value[0])

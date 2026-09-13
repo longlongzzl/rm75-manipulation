@@ -37,3 +37,25 @@ def test_changed_clock_cannot_relabel_old_physical_time(change):
     if change == 'counter_shape': source.elapsed_steps = np.array([17,17])
     if change == 'nan': source.elapsed_steps = np.array([np.nan])
     with pytest.raises(ObservationUnavailable): clock.read()
+
+
+@pytest.mark.parametrize('value', [np.array([True]), np.array([17.]),
+    np.array([17.5]), np.array(['17']), np.array([None],dtype=object),
+    np.array([2**53+1],dtype=np.uint64)])
+def test_counter_type_and_exact_integer_range_are_not_hidden_by_conversion(value):
+    source = env()
+    clock = NativeSimulationClock(source)
+    source.elapsed_steps = value
+    with pytest.raises(ObservationUnavailable): clock.read()
+
+
+def test_invalid_counter_does_not_advance_last_accepted_clock():
+    source = env()
+    clock = NativeSimulationClock(source)
+    before = clock.read()
+    source.elapsed_steps = np.array([True])
+    with pytest.raises(ObservationUnavailable): clock.read()
+    source.elapsed_steps = np.array([18],dtype=np.int64)
+    after = clock.read()
+    assert after['epoch'] == before['epoch']
+    assert after['elapsed_control_steps'] == 1
