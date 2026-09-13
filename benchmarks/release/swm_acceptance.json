@@ -14912,5 +14912,28 @@
     "material_label_corrected": true,
     "evidence": "benchmarks/release/evidence/pusht_feedback/native_holdout_01/",
     "remaining": "Online original planner consumption and dedicated holdout rejection tests"
+  },
+  "absolute_model_gate_01": {
+    "status": "IMPLEMENTED_ORIGINAL_IDENTIFIER_MANAGER_GATE",
+    "kernel": {
+      "passed": 1932,
+      "warnings": 1,
+      "duration_s": 43.23
+    },
+    "native_evidence_reanalysis": {
+      "model_agreement": true,
+      "discriminative": false,
+      "updated": false
+    },
+    "synthetic_corrupted_rollout_negative": {
+      "model_agreement": false,
+      "discriminative": true,
+      "updated": false
+    },
+    "actual_simulation": "NO_FRESH_PHYSX_RUN",
+    "next_planner_consumed_posterior": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/absolute_gate_01/summary.json"
   }
 }

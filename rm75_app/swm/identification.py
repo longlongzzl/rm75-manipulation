@@ -212,16 +212,17 @@ class IsolatedReplayPool:
 
 
 def infer_posterior(transition, hypotheses, rollouts, *, position_noise_m=.003,
-                    rotation_noise_rad=.04):
+                    rotation_noise_rad=.04, maximum_normalized_residual=9.):
     data=validate_transition(transition)
     positive(position_noise_m,'position_noise_m');positive(rotation_noise_rad,'rotation_noise_rad')
+    positive(maximum_normalized_residual,'maximum_normalized_residual')
     by_id={r['hypothesis_id']:r for r in rollouts}
     if len(by_id)!=len(rollouts) or set(by_id)!={h['id'] for h in hypotheses}:
         raise ValueError('One explicit success/failure result per hypothesis is required')
     rows=[]
     for h in hypotheses:
         PhysicsParameters(**h['parameters'])
-        r=by_id[h['id']];loss=None
+        r=by_id[h['id']];loss=None;peak=None
         if r.get('valid') is True:
             if (r.get('action_digest')!=data['action_digest'] or r.get('transition_digest')!=data['transition_digest']
                     or r.get('parameters')!=h['parameters'] or r.get('initial_snapshot_id')!=data['initial_snapshot']['snapshot_id']):
@@ -233,14 +234,19 @@ def infer_posterior(transition, hypotheses, rollouts, *, position_noise_m=.003,
             if len(r.get('T_world_object',[]))!=len(data['object_time_s']): raise ValueError('Incomplete replay trajectory')
             errors=[pose_error(a,b) for a,b in zip(r['T_world_object'],data['T_world_object'])]
             # t0 is common and supplies no parameter information; do not dilute residuals with it.
-            loss=float(np.mean([(p/position_noise_m)**2+(a/rotation_noise_rad)**2 for p,a in errors[1:]]))
-        rows.append(dict(id=h['id'],parameters=h['parameters'],loss=loss,weight=0.))
+            residuals=[(p/position_noise_m)**2+(a/rotation_noise_rad)**2 for p,a in errors[1:]]
+            loss=float(np.mean(residuals));peak=float(max(residuals))
+        rows.append(dict(id=h['id'],parameters=h['parameters'],loss=loss,
+                         maximum_normalized_residual=peak,weight=0.))
     feasible=[r for r in rows if r['loss'] is not None and math.isfinite(r['loss'])]
     informative=len(feasible)>=2 and max(r['loss'] for r in feasible)-min(r['loss'] for r in feasible)>.1
+    agreement=any(r['maximum_normalized_residual']<=maximum_normalized_residual for r in feasible)
+    admissible=bool(informative and agreement)
     if feasible:
         losses=np.array([r['loss'] for r in feasible]);weights=np.exp(-.5*np.clip(losses-losses.min(),0,100))
         # Some prior mass remains on all feasible candidates, even when one fits better.
-        weights=.8*weights/weights.sum()+.2/len(feasible)
+        weights=(.8*weights/weights.sum()+.2/len(feasible) if admissible
+                 else np.full(len(feasible),1/len(feasible)))
         for row,w in zip(feasible,weights):row['weight']=float(w)
         best=min(feasible,key=lambda r:r['loss'])
     else:best=None
@@ -249,7 +255,14 @@ def infer_posterior(transition, hypotheses, rollouts, *, position_noise_m=.003,
         support_mesh_sha256=data['initial_snapshot']['assets'][data['initial_snapshot']['objects'][data['support_id']]['asset_id']]['mesh_sha256'],
         transition_digest=data['transition_digest'],actual_action_digest=data['action_digest'],
         observed_initial_snapshot_id=data['initial_snapshot']['snapshot_id'],
-        observation_mode=data['observation_mode'],updated=informative,
+        observation_mode=data['observation_mode'],updated=admissible,
+        discriminative=bool(informative),model_agreement=bool(agreement),
+        parameter_update_admissible=admissible,
+        absolute_residual_gate=dict(maximum_normalized_residual=maximum_normalized_residual,
+            position_noise_m=position_noise_m,rotation_noise_rad=rotation_noise_rad,
+            aggregation='maximum_over_noninitial_observed_samples'),
+        rejection_reason=(None if admissible else 'no_valid_models' if not feasible
+                          else 'absolute_model_mismatch' if not agreement else 'uninformative'),
         particles=rows, best_fit_id=None if best is None else best['id'],
         best_fit_parameters=None if best is None else best['parameters'],
         minimum_loss=None if best is None else best['loss'],
@@ -338,6 +351,8 @@ class AdaptivePhysicsManager:
         self.emit(kind='swm_physics_identification',object_id=oid,action_id=data['action_id'],
                   hypotheses=len(bank),valid_rollouts=sum(r.get('valid') is True for r in rollouts),
                   updated=posterior['updated'],observation_mode=posterior['observation_mode'],
+                  discriminative=posterior['discriminative'],model_agreement=posterior['model_agreement'],
+                  rejection_reason=posterior['rejection_reason'],
                   best_fit_id=posterior['best_fit_id'],unique_parameters_identified=False)
         return dict(posterior=posterior,next_hypotheses=copy.deepcopy(self._next[oid]),
                     replan_from_current_measurement=True)

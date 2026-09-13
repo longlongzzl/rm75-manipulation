@@ -101,6 +101,36 @@ def test_different_action_or_parameters_cannot_be_mixed(rig):
     with pytest.raises(ValueError):infer_posterior(data,hypotheses(),rows)
 
 
+def test_all_models_wrong_does_not_shrink_to_least_bad(rig):
+    data=transition(rig);_,rows=IsolatedReplayPool(lambda r:Replay(r,[])).run(data,hypotheses())
+    for index,row in enumerate(rows):
+        row['T_world_object']=copy.deepcopy(data['T_world_object'])
+        row['T_world_object'][-1][0][3]+=.1+index*.02
+    result=infer_posterior(data,hypotheses(),rows)
+    assert result['discriminative'] and not result['model_agreement']
+    assert not result['updated'] and not result['parameter_update_admissible']
+    assert result['rejection_reason']=='absolute_model_mismatch'
+    assert [r['weight'] for r in result['particles']]==pytest.approx([1/3]*3)
+
+
+def test_single_bad_observation_not_hidden_by_average(rig):
+    data=transition(rig);_,rows=IsolatedReplayPool(lambda r:Replay(r,[])).run(data,hypotheses())
+    for index,row in enumerate(rows):
+        row['T_world_object']=copy.deepcopy(data['T_world_object'])
+        row['T_world_object'][-1][0][3]+=.010+index*.001
+    result=infer_posterior(data,hypotheses(),rows)
+    assert result['minimum_loss']<9
+    assert not result['model_agreement'] and not result['updated']
+
+
+def test_model_agreement_is_not_parameter_information(rig):
+    data=transition(rig);_,rows=IsolatedReplayPool(lambda r:Replay(r,[])).run(data,hypotheses())
+    for row in rows:row['T_world_object']=copy.deepcopy(data['T_world_object'])
+    result=infer_posterior(data,hypotheses(),rows)
+    assert result['model_agreement'] and not result['discriminative']
+    assert result['rejection_reason']=='uninformative' and not result['updated']
+
+
 def test_real_data_cannot_be_fitted_by_fixture_model(rig):
     data=transition(rig);data['domain']='real';data['observation_source']='foundationpose';snap=data['initial_snapshot'];snap['observation_domain']='real'
     snap.pop('snapshot_id');snap['snapshot_id']=digest(snap)
