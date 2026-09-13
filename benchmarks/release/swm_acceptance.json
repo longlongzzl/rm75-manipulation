@@ -15197,5 +15197,36 @@
     "initial_failed_run": "swm_future_candidates_01: ImportError for main-local AuditedPhysicsPushExecutor; corrected by using original executor and audit_predicted_retreat",
     "evidence": "benchmarks/release/evidence/pusht_feedback/new_candidates_02",
     "blocker": "New-candidate predicted-scene audits, goal ranking, complete atomic audit and online worker installation remain required"
+  },
+  "new_candidate_audits_20260913": {
+    "status": "PARTIAL_DELIVERY",
+    "tested_commit": "d27f21b86a3fb82559b83a9e1f938d7d3498a8f1",
+    "domain": "isolated_original_GPU_dynamic_scene_audit",
+    "native_wiring": {
+      "candidates": 2,
+      "hypotheses_per_candidate": 4,
+      "valid_audits": 8,
+      "total_audits": 8,
+      "samples_per_candidate": [
+        1880,
+        1932
+      ],
+      "retreat_samples": [
+        257,
+        261
+      ],
+      "full_primitive_audit_issued": false
+    },
+    "actual_simulation": {
+      "new_GPU_audits": 8,
+      "new_CPU_rollouts": 0,
+      "new_primary_task_execution": false
+    },
+    "kernel": "UNCHANGED; previous commit full isolated tests 1952 passed",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "execution_authorized": false,
+    "evidence": "benchmarks/release/evidence/pusht_feedback/new_candidate_audits_02",
+    "blocker": "Formal PushT atomic audit, managed next-plan selection and online worker consumption incomplete"
   }
 }

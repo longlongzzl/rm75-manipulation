@@ -1,0 +1,33 @@
+{
+  "scope": "offline_comparison_of_new_native_audited_candidates",
+  "ranking_rule": "minimum_worst_hypothesis_cost_matching_ParallelHypothesisPlanner",
+  "candidates": [
+    {
+      "plan_digest": "2e72a9eb422af3c4e79a87c45cd41e8ab1f698e4902982b0993cc717bacefbd9",
+      "hypotheses": [
+        "dense",
+        "high",
+        "low",
+        "nominal"
+      ],
+      "all_collision_samples_passed": true,
+      "worst_cost": 0.027926209803006453,
+      "predicted_goal_reached": false
+    },
+    {
+      "plan_digest": "a01de59c1533339961ec9a78c650b4cadfa79dbd13daa3e5f5416c5ceee09953",
+      "hypotheses": [
+        "dense",
+        "high",
+        "low",
+        "nominal"
+      ],
+      "all_collision_samples_passed": true,
+      "worst_cost": 0.027929567670149154,
+      "predicted_goal_reached": false
+    }
+  ],
+  "execution_authorized": false,
+  "online_worker_consumption": false,
+  "formal_PlannedSkill_selected": false
+}
