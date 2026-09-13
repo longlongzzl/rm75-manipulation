@@ -316,7 +316,8 @@ class PickPlaceNativePhases:
                 original_candidate_count=len(task.grasp_candidates),
                 screened_count=len(screened.grasp_candidates), ranked_ids=ids,
                 total_motion_budget=task.max_motion_candidates,
-                remaining_motion_budget=remaining)
+                remaining_motion_budget=remaining,
+                relation_diagnostics=copy.deepcopy(self.last_relation_screen))
             self.relation_screen_history.append(copy.deepcopy(evidence))
             self.emit(kind='swm_native_relation_search', **evidence)
             if not ranked:

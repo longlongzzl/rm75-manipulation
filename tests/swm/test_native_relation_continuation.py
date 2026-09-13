@@ -12,6 +12,18 @@ from .test_native_phases import PhasePlanner
 from .test_original_relation_screen import make_task
 
 
+class SingleRelationCoordinator(PickPlaceCoordinator):
+    """Fixture return shape matching the observed one-relation native rounds.
+
+    This intentionally truncates fixture output AFTER the original screening
+    and exclusion logic. It is not a claim that fixture IK models native tiers.
+    """
+    def screen_relations(self, task, **kwargs):
+        result = super().screen_relations(task, **kwargs)
+        return replace(result, grasp_candidates=result.grasp_candidates[:1])
+
+
+
 def tiered_task(snapshot, budget=2):
     task = make_task(snapshot)
     high, low = task.grasp_candidates
@@ -24,12 +36,12 @@ def tiered_task(snapshot, budget=2):
         max_motion_candidates=budget)
 
 
-def test_exclusion_resumes_original_later_tier_without_mutating_task(rig):
+def test_original_exclusion_preserves_remaining_pair_without_mutating_task(rig):
     snapshot = rig.sync.sync('initial')
     task = tiered_task(snapshot)
     coordinator = PickPlaceCoordinator(PhasePlanner(), SimpleNamespace())
     first = coordinator.screen_relations(task)
-    assert [c.candidate_id for c in first.grasp_candidates] == ['high']
+    assert [c.candidate_id for c in first.grasp_candidates] == ['high', 'low']
     second = coordinator.screen_relations(task, excluded_grasp_ids=('high',))
     assert [c.candidate_id for c in second.grasp_candidates] == ['low']
     assert [p.candidate_id for p in second.places_by_grasp['low']] == ['place_low']
@@ -48,7 +60,7 @@ def test_actual_phase_rescreens_after_closure_veto_preserving_pairing(rig):
     def veto(candidate, observed, configuration):
         calls.append(candidate.candidate_id)
         return candidate.candidate_id != 'high'
-    phases = PickPlaceNativePhases(PickPlaceCoordinator(planner, SimpleNamespace()),
+    phases = PickPlaceNativePhases(SingleRelationCoordinator(planner, SimpleNamespace()),
         lambda request, observed: task, None, None, closure_screen=veto,
         emit=lambda **row: events.append(row))
     result = phases.plan(SkillRequest('grasp', 'a'), snapshot)
@@ -58,6 +70,7 @@ def test_actual_phase_rescreens_after_closure_veto_preserving_pairing(rig):
     assert not any('place_high' in name for name in planner.calls)
     assert [e['ranked_ids'] for e in events] == [['high'], ['low']]
     assert [e['remaining_motion_budget'] for e in events] == [2, 1]
+    assert [e['relation_diagnostics']['excluded_grasp_ids'] for e in events] == [[], ['high']]
     assert planner.closed is False
 
 
@@ -91,7 +104,7 @@ def test_unavailable_prediction_does_not_resume_relations(rig):
 def test_misbehaving_screen_cannot_repeat_excluded_candidate(rig):
     snapshot = rig.sync.sync('initial')
     task = tiered_task(snapshot)
-    coordinator = PickPlaceCoordinator(PhasePlanner(), SimpleNamespace())
+    coordinator = SingleRelationCoordinator(PhasePlanner(), SimpleNamespace())
     original = coordinator.screen_relations
     coordinator.screen_relations = lambda task, **kwargs: original(task)
     phases = PickPlaceNativePhases(coordinator, lambda *args: task, None, None,
