@@ -58,8 +58,10 @@ class SubprocessReplayWorld:
         if self.directory.exists():raise FileExistsError('Use a new transition evidence directory')
         self.directory.mkdir(parents=True)
         if native_tool_geometry is not None or native_tool_motion is not None:
-            from .native_tool_replay import NativeToolProgram
-            NativeToolProgram(request,native_tool_geometry,native_tool_motion)
+            from .native_tool_replay import NativeToolProgram,FutureToolProgram
+            if request.get('mode')=='future_prediction':
+                FutureToolProgram(request,native_tool_geometry,request['future_tool_motion'])
+            else:NativeToolProgram(request,native_tool_geometry,native_tool_motion)
             self.request['native_tool_geometry']=copy.deepcopy(native_tool_geometry)
             self.request['native_tool_motion']=copy.deepcopy(native_tool_motion)
             self.request['tool_spheres']=[]
@@ -135,12 +137,17 @@ def physical_replay(request):
     from types import SimpleNamespace
     from scipy.spatial.transform import Rotation
     theta=PhysicsParameters(**request['parameters']);snapshot=request['initial_snapshot']
-    program=MeasuredTCPProgram(request['actual_action']);target_id=request['object_id']
+    future=request.get('mode')=='future_prediction'
+    if request.get('mode') not in (None,'future_prediction'):raise ValueError('Unknown physics evaluation mode')
+    action=request['planned_action'] if future else request['actual_action']
+    program=MeasuredTCPProgram(action);target_id=request['object_id']
     native_program=None
     if 'native_tool_geometry' in request:
-        from .native_tool_replay import NativeToolProgram
-        native_program=NativeToolProgram(request,request['native_tool_geometry'],request['native_tool_motion'])
-    if request['action_digest']!=digest(request['actual_action']):raise ValueError('Actual action was modified')
+        from .native_tool_replay import NativeToolProgram,FutureToolProgram
+        native_program=(FutureToolProgram(request,request['native_tool_geometry'],request['future_tool_motion']) if future
+            else NativeToolProgram(request,request['native_tool_geometry'],request['native_tool_motion']))
+    if future and native_program is None:raise ValueError('Original native future tool adapter required')
+    if request['plan_action_digest' if future else 'action_digest']!=digest(action):raise ValueError('Tool action was modified')
     canonical=dict(snapshot);sid=canonical.pop('snapshot_id')
     if digest(canonical)!=sid:raise ValueError('Initial SWM snapshot was modified')
     sample_times=np.asarray(request['sample_times'],dtype=float)
@@ -230,8 +237,8 @@ def physical_replay(request):
                 poses.append(interpolate_pose(previous,current,fraction).tolist());cursor+=1
             previous,previous_t=current,now
         target_body=env.target._objs[0].find_component_by_type(sapien.physx.PhysxRigidDynamicComponent)
-        return dict(hypothesis_id=request['hypothesis_id'],parameters=request['parameters'],
-                    action_digest=request['action_digest'],transition_digest=request['transition_digest'],
+        result=dict(hypothesis_id=request['hypothesis_id'],parameters=request['parameters'],
+                    action_digest=request.get('action_digest'),transition_digest=request.get('transition_digest'),
                     initial_snapshot_id=snapshot['snapshot_id'],valid=True,time_s=request['sample_times'],
                     T_world_object=poses,engine_domain='physics',engine='ManiSkill/PhysX CPU',
                     material_parameterization=('shared_effective_object_support_tool_friction' if native_program is None
@@ -247,6 +254,15 @@ def physical_replay(request):
                         measurement_source="sapien_kinematic_actor_pose_after_step"),
                     safety_qualification=False,full_arm_simulated=False,
                     note='Measured tool replay for identification only; not execution path approval')
+        if future:
+            result.pop('action_digest');result.pop('transition_digest')
+            feedback=result.pop('measured_tool_feedback');feedback['source']='planned_tool_pose_readback'
+            result.update(schema='rm75_future_prediction_v1',mode='future_prediction',
+                plan_action_digest=request['plan_action_digest'],future_motion_digest=native_program.motion_digest,
+                source_plan_digest=request['future_tool_motion']['source_plan_digest'],
+                predicted_tool_readback=feedback,measured_action=False,identification_eligible=False,
+                execution_authorized=False,note='Private planned-tool dynamics prediction; not measured execution or path safety approval')
+        return result
     finally:
         if env is not None:env.close()
 

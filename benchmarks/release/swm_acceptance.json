@@ -15025,5 +15025,26 @@
     "model_inference": "NOT_RUN",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "evidence": "benchmarks/release/evidence/pusht_feedback/future_tool_02/summary.json"
+  },
+  "future_prediction_01": {
+    "status": "PASSED_ACTUAL_PLANNED_DOMAIN_CPU_PHYSX",
+    "kernel": {
+      "passed": 1941,
+      "warnings": 1,
+      "duration_s": 44.98
+    },
+    "actual_simulation": {
+      "valid_predictions": 4,
+      "native_tool_shapes": 27,
+      "target_shapes": 2
+    },
+    "measured_action": false,
+    "identification_eligible": false,
+    "execution_authorized": false,
+    "next_planner_consumed_posterior": false,
+    "online_solver_factory_installed": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/future_prediction_01/summary.json"
   }
 }

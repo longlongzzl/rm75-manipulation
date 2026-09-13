@@ -79,3 +79,31 @@ class NativeToolProgram:
             scene.sub_scenes[0].add_entity(entity)
             bodies[name]=body;entities.append(entity)
         return bodies,entities
+
+
+class FutureToolProgram(NativeToolProgram):
+    """Private planned-domain input; cannot pass measured-motion admission."""
+    def __init__(self,request,geometry,motion):
+        canonical=dict(motion);claimed=canonical.pop('future_motion_digest')
+        if (digest(canonical)!=claimed or motion['geometry_digest']!=digest(geometry) or
+                motion.get('schema')!='rm75_future_tool_motion_v1' or motion.get('measured_action') is not False or
+                motion.get('source')!='planned_joint_trajectory_original_native_FK' or
+                motion['source_snapshot_id']!=request['initial_snapshot']['snapshot_id']):
+            raise ValueError('Original bound future tool motion required')
+        rows=motion['samples'];self.times=np.asarray([r['time_s'] for r in rows],float)
+        if (not 2<=len(rows)<=100000 or not np.isfinite(self.times).all() or
+                self.times[0]!=0 or np.any(np.diff(self.times)<=0)):
+            raise ValueError('Invalid future tool sample times')
+        self.links=geometry['links'];self.poses={name:[] for name in self.links}
+        action=request['planned_action']
+        if (action.get('source')!='planned_trajectory' or
+                action['time_s']!=self.times.tolist() or len(action['T_world_tcp'])!=len(rows) or
+                action['stages']!=[r['stage'] for r in rows]):
+            raise ValueError('Future TCP program differs from bound plan')
+        for row,tcp in zip(rows,action['T_world_tcp']):
+            if set(row['link_poses'])!=set(self.links):raise ValueError('Future link coverage changed')
+            p,r=pose_error(row['T_world_tcp'],tcp)
+            if p>1e-9 or r>1e-7:raise ValueError('Future TCP identity changed')
+            for name in self.links:self.poses[name].append(transform(row['link_poses'][name]))
+        self.geometry_digest=motion['geometry_digest'];self.motion_digest=claimed
+        self.construction=dict(urdf=motion['urdf'],urdf_sha256=motion['urdf_sha256'])
