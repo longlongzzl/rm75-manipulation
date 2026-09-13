@@ -10,9 +10,14 @@ from .physics_replay import STAGES
 def replan_stage(executor,observation,request):
     stage=request['stage']
     if stage not in STAGES:raise ValueError('Unknown measured stage')
+    names=tuple(executor.backend._ensure_planner().joint_names)
+    if names!=tuple(f'joint_{index}' for index in range(1,8)):
+        raise ValueError('Measured stage requires original ordered seven arm joints')
+    executor.names=names
     q=np.asarray(executor.arm.read_joints(),dtype=float)
     goal_q=np.asarray(request['goal_q'],dtype=float)
-    if q.shape!=(7,) or goal_q.shape!=(7,) or not np.isfinite(goal_q).all():
+    if (q.shape!=(7,) or goal_q.shape!=(7,) or not np.isfinite(q).all()
+            or not np.isfinite(goal_q).all()):
         raise ValueError('Invalid measured stage joints')
     push=Push(**request['push'])
     scene=executor._scene(observation);executor.backend.update_scene(scene)

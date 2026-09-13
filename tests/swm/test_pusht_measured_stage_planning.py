@@ -16,7 +16,9 @@ def test_retreat_uses_measured_scene_and_no_contact_exemption(reject):
         assert contact is False;calls.append('audit')
         if reject:raise RuntimeError('native collision')
     executor=SimpleNamespace(arm=SimpleNamespace(read_joints=lambda:q),
-        backend=SimpleNamespace(update_scene=lambda s:calls.append('scene'),
+        backend=SimpleNamespace(_ensure_planner=lambda:SimpleNamespace(
+                                    joint_names=tuple(f'joint_{i}' for i in range(1,8))),
+                                update_scene=lambda s:calls.append('scene'),
                                 set_gripper_collision_state=lambda **kw:None),
         _scene=lambda o:o,_plan_retreat=generate,_audit=audit)
     request=dict(stage='retreat',goal_q=q.tolist(),contact_binding={'original':True},
@@ -29,3 +31,10 @@ def test_retreat_uses_measured_scene_and_no_contact_exemption(reject):
         assert result['source_observation']==obs.as_dict()
         assert result['swm_scene_audit_verified'] is False
     assert calls==['scene','generate','audit']
+    assert executor.names==tuple(f'joint_{i}' for i in range(1,8))
+
+def test_wrong_native_joint_order_rejects_before_read_or_plan():
+    executor=SimpleNamespace(backend=SimpleNamespace(_ensure_planner=lambda:
+        SimpleNamespace(joint_names=('joint_2','joint_1','joint_3','joint_4','joint_5','joint_6','joint_7'))))
+    with pytest.raises(ValueError,match='original ordered'):
+        replan_stage(executor,None,{'stage':'approach'})
