@@ -1,0 +1,591 @@
+{
+  "production_commit": "3902fb2",
+  "domain": "formal_worker_primary_CPU_PhysX_with_native_GPU_path_audit",
+  "status": "PARTIAL_DELIVERY",
+  "hardware": "NOT_AUTHORIZED_NOT_RUN",
+  "model_inference": "NOT_RUN",
+  "failure": [
+    {
+      "collision_evidence": {
+        "allowed_escape_links": [
+          "attached_object",
+          "left_pad",
+          "right_pad"
+        ],
+        "allowed_start_contact_escape": true,
+        "contact_count": 54,
+        "contacts": [
+          {
+            "candidate_index": 0,
+            "collision_type": "world",
+            "penetration_m": 0.00038554519414901733,
+            "robot_link": "gripper_Right_Support_Link",
+            "state": "path",
+            "world_object": "__maniskill_workspace_table__"
+          },
+          {
+            "candidate_index": 0,
+            "collision_type": "world",
+            "penetration_m": 0.005577594041824341,
+            "robot_link": "attached_object",
+            "state": "path",
+            "world_object": "__maniskill_workspace_table__"
+          },
+          {
+            "candidate_index": 1,
+            "collision_type": "world",
+            "penetration_m": 0.0003711506724357605,
+            "robot_link": "gripper_Right_Support_Link",
+            "state": "path",
+            "world_object": "__maniskill_workspace_table__"
+          },
+          {
+            "candidate_index": 1,
+            "collision_type": "world",
+            "penetration_m": 0.005565673112869263,
+            "robot_link": "attached_object",
+            "state": "path",
+            "world_object": "__maniskill_workspace_table__"
+          },
+          {
+            "candidate_index": 2,
+            "collision_type": "world",
+            "penetration_m": 0.00014745444059371948,
+            "robot_link": "gripper_Right_Support_Link",
+            "state": "path",
+            "world_object": "__maniskill_workspace_table__"
+          },
+          {
+            "candidate_index": 2,
+            "collision_type": "world",
+            "penetration_m": 0.00534290075302124,
+            "robot_link": "attached_object",
+            "state": "path",
+            "world_object": "__maniskill_workspace_table__"
+          },
+          {
+            "candidate_index": 3,
+            "collision_type": "world",
+            "penetration_m": 0.0040159523487091064,
+            "robot_link": "attached_object",
+            "state": "path",
+            "world_object": "__maniskill_workspace_table__"
+          },
+          {
+            "candidate_index": 4,
+            "collision_type": "world",
+            "penetration_m": 0.002718895673751831,
+            "robot_link": "attached_object",
+            "state": "path",
+            "world_object": "__maniskill_workspace_table__"
+          },
+          {
+            "candidate_index": 5,
+            "collision_type": "world",
+            "penetration_m": 0.001414269208908081,
+            "robot_link": "attached_object",
+            "state": "path",
+            "world_object": "__maniskill_workspace_table__"
+          },
+          {
+            "candidate_index": 0,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446192315313965,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985352931198766,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 1,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.000134461690322496,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985321497407016,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 2,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.0001344639022136107,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985610415550037,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 3,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.0001344639022136107,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.001698561810533801,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 4,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.0001344621559837833,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985387483324996,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 5,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446355296764523,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985574050247185,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 6,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446378579828888,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.001698560203488332,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 7,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446413504425436,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985641910883392,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 8,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446227239910513,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.001698541816062285,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 9,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446250522974879,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985433494787691,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 10,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446320372167975,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.001698552995014653,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 11,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446366938296705,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.001698558624778447,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 12,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446436787489802,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985669317108182,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 13,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446448429021984,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.001698569084846363,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 14,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446157390717417,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.001698530880413801,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 15,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.0001344626216450706,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.001698543326824259,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 16,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446332013700157,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985543779061488,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 17,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.0001344626216450706,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985445127985777,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 18,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446320372167975,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985511522743732,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 19,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446203956846148,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985374165960354,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 20,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446332013700157,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985533533028369,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 21,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446238881442696,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985426297988285,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 22,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446157390717417,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985321468587292,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 23,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.000134461690322496,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985329512956074,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 24,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446308730635792,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.001698550754898144,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 25,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446378579828888,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985598181451234,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 26,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446308730635792,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985497099120325,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 27,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446110824588686,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985263097772305,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 28,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446285447571427,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.001698548214841139,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 29,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.0001344639022136107,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985624516221431,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 30,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446506636682898,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.001698575402871827,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 31,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.0001344634365523234,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985551323909082,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 32,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446366938296705,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985593520650114,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 33,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446227239910513,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985400747712084,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 34,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.0001344626216450706,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985442803231152,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 35,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.0001344626216450706,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.001698544668045275,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 36,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446238881442696,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985429664727325,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 37,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446366938296705,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985593049186204,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 38,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.0001344634365523234,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985557899243386,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 39,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446355296764523,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985574858320238,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 40,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446203956846148,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985366243383454,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 41,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446366938296705,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985590902030417,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 42,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446332013700157,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985549263641014,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 43,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446378579828888,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985602938111646,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          },
+          {
+            "candidate_index": 44,
+            "collision_type": "self",
+            "native_pair_distance_squared_m2": 0.00013446378579828888,
+            "other_robot_link": "gripper_Right_Support_Link",
+            "penetration_m": 0.0016985602938111646,
+            "robot_link": "gripper_Left_Support_Link",
+            "state": "path"
+          }
+        ],
+        "ignored_world_objects": [],
+        "samples": 45,
+        "skill_verified": false,
+        "source": "native_collision_diagnostics_for_sampled_path",
+        "stage": "lift",
+        "truncated": false
+      },
+      "error": "Native escape introduced a new collision/link",
+      "kind": "swm_measured_lift_audit_failed",
+      "measured_T_tcp_object": [
+        [
+          -0.029291485910693752,
+          0.9995369280502459,
+          -0.008241492648227799,
+          0.04287285529049159
+        ],
+        [
+          0.023498942612124634,
+          0.00893139391794899,
+          0.9996838889607355,
+          0.00030423649656968754
+        ],
+        [
+          0.9992946582114799,
+          0.029088552610265873,
+          -0.02374967655900772,
+          0.013769200144505899
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "measured_gripper_positions": {
+        "gripper_Left_1_Joint": 0.6755762696266174,
+        "gripper_Left_2_Joint": 0.6730201244354248,
+        "gripper_Left_Support_Joint": 0.6772921681404114,
+        "gripper_Right_1_Joint": 0.6815140247344971,
+        "gripper_Right_2_Joint": 0.6788004636764526,
+        "gripper_Right_Support_Joint": 0.6835876703262329
+      },
+      "measured_joint_positions": [
+        1.0380892753601074,
+        -0.4913956820964813,
+        -0.49969449639320374,
+        -1.581395149230957,
+        0.25216397643089294,
+        -1.1336605548858643,
+        1.9622960090637207
+      ],
+      "original_path_digest": "2ce5200402acae59e2c7d6c752afa6740e7f939e273c801f7eb40da8c86e8ccc",
+      "payload_digest": "0a43f011dfa9fe038473b1830be3e94809abf8c7db6e31beed3284def6fe2d88",
+      "primary_world_mutated": false,
+      "sequence": 169,
+      "skill_verified": false,
+      "snapshot_id": "9c92525a0a3768204f30b510c61f72033dbdb00e92f9c96d0d920f42fa9d78e5",
+      "stages": [],
+      "time": 1789269401.4390218
+    }
+  ],
+  "resources": [
+    {
+      "kind": "swm_native_resources_released",
+      "planner_pointer_released": true,
+      "primary_closed": true,
+      "robot_mirror_closed": true,
+      "sequence": 172,
+      "time": 1789269401.604664
+    }
+  ],
+  "checkpoints": [
+    {
+      "boundary": "worker_initialization_probe",
+      "revision": 1,
+      "snapshot_id": "1a2023acab0967dbb1d435fcd03e57940aa2353049954ee2273c57b56b8ddb53"
+    },
+    {
+      "boundary": "before_grasp",
+      "revision": 2,
+      "snapshot_id": "85ec743eb948bca6468d6dd1afb63e6fee3c1943f0ffff98ef1cd508da5f7e10"
+    },
+    {
+      "boundary": "pre_execute_grasp",
+      "revision": 3,
+      "snapshot_id": "ec30fac6217f6889ddfea0cd1b6b528c8708ac9454322a24b3e68e94b6590bfc"
+    },
+    {
+      "boundary": "after_close_before_lift",
+      "revision": 4,
+      "snapshot_id": "9c92525a0a3768204f30b510c61f72033dbdb00e92f9c96d0d920f42fa9d78e5"
+    }
+  ],
+  "next_requirement": "Compare actual measured jaw native mesh geometry against planning sphere coverage and identities. Persistent jaw self-collision cannot be presumed solved by another arm path. Do not change collision allowlists or shrink geometry without sound coverage evidence."
+}

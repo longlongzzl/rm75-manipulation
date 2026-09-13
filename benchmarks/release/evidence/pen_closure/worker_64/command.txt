@@ -1,0 +1,7 @@
+Source: 3902fb2; original input and depth unchanged.
+Input: assets/test_scenes/current_table.json
+SHA256: e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908
+Request/profile copied unchanged from runtime_data/swm_release_pen_worker_43/.
+PYTHONPATH="$PWD" python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -m rm75_app.workcell.worker --run-dir "$PWD/runtime_data/swm_release_pen_worker_64" --profile "$PWD/runtime_data/swm_release_pen_worker_64/profile.json" --app-root "$PWD"
+Terminal exit: 1; native collision audit rejection before lift.
+Targeted software regression: 33 passed in 0.42 s.

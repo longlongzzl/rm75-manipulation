@@ -14502,7 +14502,7 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Fix canonical-jaw test assertion; persist rejected native collision pairs; replan remaining lift through original coordinator using fresh measured jaw/attachment state",
+  "next_actual_action": "Compare native jaw meshes and original planning collision sphere coverage at worker_64 measured state; persistent jaw self-collision precedes lift replanning. Preserve collision limits and allowlists.",
   "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json",
   "feedback_closure_wiring": {
     "status": "PRIMARY_CLOSURE_EXECUTED_LIFT_ADAPTER_MISSING",
@@ -14516,11 +14516,12 @@
   "worker_63_evidence": "benchmarks/release/evidence/pen_closure/worker_63/summary.json",
   "measured_lift_wiring": {
     "status": "NATIVE_AUDIT_REJECTED_COLLISION",
-    "tested_commit": "3ba7f6f",
+    "tested_commit": "3902fb2",
     "actual_checkpoint": "after_close_before_lift",
-    "full_passed": 1844,
-    "full_failed": 1,
-    "full_duration_s": 46.49,
+    "full_passed": 1846,
+    "full_failed": 0,
+    "full_duration_s": 45.36,
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
-  }
+  },
+  "worker_64_evidence": "benchmarks/release/evidence/pen_closure/worker_64/summary.json"
 }
