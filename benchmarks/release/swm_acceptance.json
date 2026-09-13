@@ -1,6 +1,21 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_native_transition_worker_07": {
+    "status": "ACTUAL_TRANSITION_BOUND_REGRESSION_NOT_GREEN",
+    "kernel": "1922 passed / 2 failed / 1 warning / 43.49 s; isolated; old AST/unbound fixture assumptions need adaptation to cleanup wrapper",
+    "native_wiring": "Existing recorder begins after before snapshot; real samples bracket both host exposures; receipt finishes after idle check and before after exposure; cancellation closes handle",
+    "actual_simulation": "One completed push produced validated transition; second push cancelled at 120 s; not task success",
+    "action_id": "e4c4292527034280bea6752260b21243",
+    "tool_samples": 1935,
+    "duration_s": 64.46667002886534,
+    "transition_digest": "d6d1c7ce856efc236e7de88f742a564891bfe97b7b62dd681c143dbe447917a0",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/worker_07/",
+    "physics_fit_run": false,
+    "mirror_acknowledged": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
   "pusht_native_swm_capture_worker_06": {
     "status": "ACTUAL_PUSH_BEFORE_AFTER_SWM_COMMITTED_RUNTIME_INCOMPLETE",
     "kernel": "1924 full passed / 1 warning / 43.95 s; isolated",

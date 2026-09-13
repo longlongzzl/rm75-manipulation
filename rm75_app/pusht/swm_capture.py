@@ -65,6 +65,10 @@ class PushTSceneCapture:
             session.advance(1/session.base.control_freq)
         else:raise ObservationUnavailable('Native PushT idle/no-holding checkpoint unavailable')
         self.world.check_assets()
+        recording=getattr(session,'action_recording',None)
+        if recording is not None:
+            if boundary=='after_push':recording.finish_command()
+            recording.sample()
         stamp=time.monotonic();clock=session.simulation_clock.read();base=session.base
         root=pose_matrix(base.robot.pose)
         if not np.allclose(root,np.eye(4),atol=1e-7,rtol=0):
@@ -96,6 +100,7 @@ class PushTSceneCapture:
         prepared=self.world.prepare_checkpoint(batch,after=stamp-1e-6,now=time.monotonic(),
             policy=SyncPolicy(),boundary=boundary)
         snapshot=self.world.commit_checkpoint(prepared)
+        if recording is not None:recording.sample()
         atomic_json(self.directory/f'snapshot_{snapshot["revision"]:04d}.json',snapshot)
         session.events.emit('swm_native_push_checkpoint',boundary=boundary,
             snapshot_id=snapshot['snapshot_id'],revision=snapshot['revision'],

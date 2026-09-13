@@ -139,6 +139,8 @@ class PhysicsSession:
         if self.full_arm:
             from .swm_capture import PushTSceneCapture
             self.swm_capture=PushTSceneCapture(self)
+            from .swm_recording import PushTActionRecording
+            self.action_recording=PushTActionRecording(self)
         self.events.emit('physics_backend_ready',backend=self.kind,hardware_connected=False,
             observer='simulator_ground_truth',simulation_time_s=self.base.physics_time)
 
@@ -189,6 +191,8 @@ class PhysicsSession:
         for _ in range(count):
             self.stop.check();self.env.step(None);self.steps+=1;self.report['physics_stepped']=True
             feedback=self.measured_tool_feedback()
+            recording=getattr(self,'action_recording',None)
+            if recording is not None:recording.sample(feedback)
             pose,state=self.physical_state()
             self.record_observation(dict(time_s=self.base.physics_time,stage=self.base.stage,
                 pose=pose.tolist(),tool_feedback=feedback,**state))
@@ -339,6 +343,13 @@ class PhysicsSession:
                              f'{drift:.3e} rad > 1e-5 rad')
 
     def execute_push(self,push,obs):
+        try:return self._execute_push(push,obs)
+        except BaseException:
+            recording=getattr(self,'action_recording',None)
+            if recording is not None:recording.cancel()
+            raise
+
+    def _execute_push(self,push,obs):
         self.stop.check();obs.validate(now=self.clock(),max_age_s=self.config.max_observation_age_s)
         cached=getattr(self,'_prepared_selection',None)
         if cached is None or cached[0]!=push or cached[1]!=obs.as_dict():
@@ -353,6 +364,7 @@ class PhysicsSession:
                                        f'{drift:.3e} rad > 1e-5 rad')
         self.feedback_action_id=uuid.uuid4().hex
         if self.full_arm:self.last_swm_before=self.swm_capture.capture('before_push')
+        if self.full_arm:self.action_recording.begin(self.last_swm_before,push)
         self.events.emit('physics_action_started',actual_action_id=self.feedback_action_id,
             observation_sequence=obs.sequence,measured_tool_feedback=self.measured_tool_feedback())
         for stage_program in program.stage_programs():
@@ -379,8 +391,11 @@ class PhysicsSession:
             self.report['last_final_joint_tracking_error_rad']=gap
             if gap>.02:raise RuntimeError('Articulated final joint tracking error')
             self.last_swm_after=self.swm_capture.capture('after_push')
+            self.last_swm_transition=self.action_recording.complete(self.last_swm_after)
 
     def close(self):
+        recording=getattr(self,'action_recording',None)
+        if recording is not None:recording.close()
         if self.video is not None:self.video.close()
         if self.env is not None:
             self.report.update(simulated_time_s=self.base.physics_time,physics_control_steps=self.steps,
