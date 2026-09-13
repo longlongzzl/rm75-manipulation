@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "726325e",
+    "commit": "487f993",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Private candidate opening now physically settles under unchanged shared original 13-joint criteria. Worker_41 all seven openings settled in 11 ticks, then all closures rejected table contact. Read-only worker_42 obtained 36 cached IK rows with up to 4.078 mm FK error; no pen atomic success."
+    "note": "Bounded cached closure prioritization formally ran 34 predictions; all opening preparations completed and all closures rejected table contact. No primary atomic actions. Independent marker FK quantifies state-dependent TCP offsets but does not qualify contact calibration or justify changing grasp depth."
   },
   "runs": {
     "m0_targeted": {
@@ -13899,6 +13899,54 @@
       "status": "diagnostic_complete_intentional_stop_before_additional_motion_planning",
       "worker_exit_code": 1,
       "evidence": "benchmarks/release/evidence/pen_closure/worker_42/"
+    },
+    "m1_closure_priority_targeted": {
+      "passed": 29,
+      "failed": 0,
+      "seconds": 0.47
+    },
+    "m1_closure_priority_full": {
+      "tested_commit": "487f993",
+      "passed": 1803,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 42.33,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_43/full_tests.log"
+    },
+    "m1_closure_priority_worker_43": {
+      "domain": "native_worker_CPU_PhysX",
+      "tested_commit": "487f993",
+      "cached_predictions": 34,
+      "prediction_limit": 64,
+      "full_motion_budget": 8,
+      "open_preparations_completed": 34,
+      "closure_table_rejections": 34,
+      "primary_actions_executed": false,
+      "all_private_closed": true,
+      "all_primary_unchanged": true,
+      "formal_cleanup_all_true": true,
+      "skill_verified": false,
+      "status": "no_feasible_trajectory",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_43/"
+    },
+    "m1_gripper_marker_fk_01": {
+      "domain": "native_private_marker_FK_diagnostic",
+      "states": 68,
+      "physics_steps": 0,
+      "primary_world_created": false,
+      "private_robot_closed": true,
+      "contact_calibration_qualified": false,
+      "open_pad_depth_range_m": [
+        -0.0034764134137525576,
+        -0.0034763322471976776
+      ],
+      "rejected_pad_depth_range_m": [
+        -0.00022613172437013773,
+        0.01601747975794475
+      ],
+      "builder_default_offset_m": 0.012777,
+      "evidence": "benchmarks/release/evidence/pen_closure/gripper_fk_01/"
     }
   },
   "gates": {
@@ -14148,15 +14196,15 @@
   },
   "current_layer_status": {
     "kernel": {
-      "tested_commit": "726325e",
+      "tested_commit": "487f993",
       "status": "PASSED_REGRESSION",
-      "passed": 1793,
+      "passed": 1803,
       "failed": 0,
       "warnings": 1
     },
-    "native_wiring": "PRIVATE_CANDIDATE_OPEN_HOLD_USES_ORIGINAL_COMMAND_AND_IDLE_CRITERIA",
+    "native_wiring": "BOUNDED_CACHED_CLOSURE_PRIORITY_FORMALLY_WIRED_EXACT_ENDPOINT_GUARDS_RETAINED",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "WORKER_41_SEVEN_OPEN_PREPARATIONS_THEN_CLOSURE_REJECTIONS_WORKER_42_READ_ONLY_CACHED_IK",
+    "actual_simulation": "WORKER_43_ALL_34_CACHED_CLOSURES_REJECT_TABLE_CONTACT_NO_PRIMARY_ACTIONS",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14223,5 +14271,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Use original cached IK for bounded closure-aware candidate prioritization within the original motion budget, retain measured cache/FK uncertainty and exact solved-endpoint closure checks plus fresh preexecution capture; complete actual pen six checkpoints."
+  "next_actual_action": "Resolve original builder grasp-depth versus actual full gripper contact-geometry consistency and perform evidence-based bounded original-candidate refinement; do not substitute marker FK for contact calibration, raise motion budget or lower collision/idle/success standards."
 }

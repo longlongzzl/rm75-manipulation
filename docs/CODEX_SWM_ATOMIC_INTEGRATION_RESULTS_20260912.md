@@ -146,3 +146,13 @@ FP/SAM3D/LLM 未运行；硬件未授权、未连接、未操作。下一步核�
 只读 worker_42 本次取得 36/36 个原缓存 IK，最大 FK 位置误差约 4.08 mm、旋转误差约 0.01183 rad；未改预算/排序，在额外运动规划前明确停止。这些数据只支持后续有界预筛或排序，不能替代精确端点复核和实测更新。FP/SAM3D/LLM 未运行，硬件未授权、未连接、未操作。
 
 证据在 benchmarks/release/evidence/pen_closure/worker_41/、worker_42/。PARTIAL_DELIVERY，本轮未 push。
+
+## 2026-09-13 续报：缓存闭合排序正式运行，当前候选仍全触桌
+
+提交 `487f993` 接入有界 CachedClosurePriority，保留原评分/来源排序及精确端点门，不让缓存预测授予执行权限。预测上限 64，完整运动预算仍为 8；缓存或模型异常中止。
+
+内核：29 项定向通过，串行全量 1803 passed / 1 warning / 42.33 s。原生接线/实际仿真：普通 worker_43 完成 34 次缓存物理预测，均先完成开爪准备再于闭合阶段触桌拒绝；主状态/驱动未变，资源正常释放。仍无主原子动作或笔六检查点成功。
+
+独立私有标记 FK 对照表明 pad 中点相对 TCP 随关节状态改变，但不等于接触面标定，未据此改 builder 默认 0.012777 m 偏移。下一步应核对原抓取偏移与实际夹爪接触几何，不以增预算或降标准处理全体触桌。FP/SAM3D/LLM 未运行，硬件未授权、未连接、未操作。
+
+证据在 benchmarks/release/evidence/pen_closure/worker_43/、gripper_fk_01/。PARTIAL_DELIVERY，本轮未 push。
