@@ -212,3 +212,13 @@ worker_52 仅省略 arm 同值写入、worker_53 仅省略 gripper 同值写入�
 worker_54 的附加机器人休眠诊断失败：脚本查询了 PhysxArticulation 聚合对象没有暴露的休眠属性，没有取得有效新反馈样本。后续只做网络隔离的类型接口查询，无仿真或设备动作；已确认 PhysxArticulationLinkComponent 有 sleeping，而聚合对象只有 root/get_root 等。下一步应从可信原生 root link 读回休眠状态、绑定身份，并与完整原始 q/qdot 及实际位移对照；不可据接口缺失把速度置零或假定机器人静止。本轮保留该失败，不作物理结论。
 
 四次原生作业均 exit 1，资源清理读回全部 true，无闭爪/抬升成功、无笔六检查点成功。证据和命令见 benchmarks/release/evidence/pen_closure/worker_51/README.md 及 worker_51-54 有界记录。内核沿用上轮全绿；原生生产接线未变；实际仿真为上述对照；FP/SAM3D/LLM 未运行；硬件 NOT_AUTHORIZED_NOT_RUN。保持 PARTIAL_DELIVERY，不标记完成，未推送。
+
+## M1 / 全链接静止与 qdot 缓存区分，新增接线待修复原生身份映射
+
+本轮 progress。旧生产 3425529 上 worker_55 取得 214 个完整关节读回、192 个根链接休眠样本，最后 20 个位置向量完全相同，而 qdot 缓存仍保留 joint_6=0.001589460997 rad/s。worker_56 进一步绑定全部 20 原生链接；192 个休眠样本的所有链接空间线/角速度均精确为零。原始 qdot 未改写，原静止保护仍拒绝。PhysX 官方休眠语义参考 https://nvidia-omniverse.github.io/PhysX/physx/5.3.0/_api_build/class_px_articulation_reduced_coordinate.html ，文档支持链接空间速度为零，不替代本机缓存差异的实测证据。
+
+WIP 生产提交 `2f48069` 新增 NativeArticulationVelocity：仅完整链接身份、前后全部休眠、空间速度精确零、关节位置不变且原始缓存有限/状态一致时，推导有效零速度；原缓存和证明保留在 primary/SWM/阶段记录中，不写 q/qdot，不改变任何阈值。清醒状态保留原速度，证据不一致拒绝。定向 **47 passed / 0.12 s**，原生退出后串行完整 tests **1817 passed / 1 existing warning / 45.31 s**。
+
+但实际 worker_57 在场景注册时失败 Native velocity joint identity mismatch，尚未进入原子动作。新增 helper 直接使用带命名空间的原生 joint.name，与原 canonical wrapper 名称不匹配；没有复用已有 native_robot_mirror._native_drive_joints 的句柄双射。新测试使用同名夹具，未覆盖这个真实边界。主环境/planner 关闭 true，robot mirror 尚未创建（null），不能填成三项均 true。因此当前接线不能宣称原生可用，测试全绿不代表交付。
+
+下一步修复 native_velocity 的可信 wrapper->native handle 映射，复用 robot.joints_map 和原 _native_drive_joints，保留完整 13 关节身份检查，禁止后缀猜测或删除检查；补命名空间/乱序/外来句柄负例，再重跑同一原生对照。生产默认深度及同值写入策略尚未改变；笔六检查点、其余 G0-G10 未完成。模型未运行；硬件 NOT_AUTHORIZED_NOT_RUN；PARTIAL_DELIVERY，未推送。证据及精确命令见 benchmarks/release/evidence/pen_closure/worker_55/README.md、worker_56 和 worker_57。

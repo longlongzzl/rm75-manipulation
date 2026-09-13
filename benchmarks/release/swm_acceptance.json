@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "3425529",
+    "commit": "2f48069",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Production unchanged. Exact-native-equal drive controls run with original passive controller preserved. Both-group elision lets pen sleep but robot fails original idle; each single-group elision leaves pen moving. Root-link sleep diagnostic remains to be corrected."
+    "note": "WIP verified sleep velocity provenance passes fixture regression but formal worker57 fails canonical/native namespaced joint identity mapping during registration. Must reuse original trusted handle bijection before native qualification."
   },
   "runs": {
     "m0_targeted": {
@@ -14086,6 +14086,40 @@
       "valid_added_feedback_samples": 0,
       "cleanup_verified": true,
       "evidence": "benchmarks/release/evidence/pen_closure/worker_54"
+    },
+    "m1_root_sleep_worker_55": {
+      "tested_commit": "3425529",
+      "samples": 214,
+      "sleeping_samples": 192,
+      "last_twenty_unique_position_vectors": 1,
+      "status": "NATIVE_CACHE_DISCREPANCY_DIAGNOSTIC",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_55"
+    },
+    "m1_all_link_sleep_worker_56": {
+      "tested_commit": "3425529",
+      "samples": 214,
+      "sleeping_samples": 192,
+      "link_count": 20,
+      "sleeping_samples_with_nonzero_spatial_velocity": 0,
+      "status": "ALL_LINK_SPATIAL_REST_WITH_NONZERO_JOINT_CACHE",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_56"
+    },
+    "m1_verified_velocity_worker_57": {
+      "tested_commit": "2f48069",
+      "status": "NATIVE_CANONICAL_JOINT_MAPPING_FAILED_DURING_REGISTRATION",
+      "primary_closed": true,
+      "planner_pointer_released": true,
+      "robot_mirror_closed": null,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_57"
+    },
+    "m1_verified_velocity_full_regression": {
+      "tested_commit": "2f48069",
+      "passed": 1817,
+      "failed": 0,
+      "warnings": 1,
+      "elapsed_s": 45.31,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_57/full_tests.log"
     }
   },
   "gates": {
@@ -14335,16 +14369,16 @@
   },
   "current_layer_status": {
     "kernel": {
-      "tested_commit": "3425529",
+      "tested_commit": "2f48069",
       "status": "PASSED_REGRESSION",
-      "passed": 1809,
+      "passed": 1817,
       "failed": 0,
       "warnings": 1,
-      "elapsed_s": 42.44
+      "elapsed_s": 45.31
     },
-    "native_wiring": "COMPLETE_REGISTERED_OBJECT_IDLE_WITHIN_ORIGINAL_STAGE_BUDGET",
+    "native_wiring": "WIP_SLEEP_VELOCITY_BINDING_NATIVE_IDENTITY_MAPPING_FAILURE",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "DRIVE_ELISION_CONTROLS_DO_NOT_MEET_SIMULTANEOUS_ROBOT_OBJECT_IDLE",
+    "actual_simulation": "ALL_LINK_SLEEP_EVIDENCE_ON_OLD_SOURCE_NEW_SOURCE_WORKER57_REGISTRATION_FAILED",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14411,5 +14445,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Use owned native articulation root link sleeping readback, not aggregate API, and compare complete raw q/qdot with actual displacement under both-group elision; preserve original thresholds"
+  "next_actual_action": "Repair NativeArticulationVelocity using canonical wrapper joints_map and original _native_drive_joints handle bijection; add native namespace/order/foreign handle tests; rerun formal worker"
 }

@@ -1,0 +1,341 @@
+{
+  "samples": 214,
+  "sleeping_samples": 192,
+  "sleeping_with_nonzero_link_velocity": 0,
+  "last": {
+    "sample": 214,
+    "link_state": [
+      {
+        "name": "scene-0-RM75_base_link",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_link_1",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_link_2",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_link_3",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_link_4",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_link_5",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_link_6",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_link_7",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_flange_spacer_8mm",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_gripper_base",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_gripper_base_link",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_gripper_Left_1_Link",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_gripper_Left_2_Link",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_gripper_Right_1_Link",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_gripper_Right_2_Link",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_gripper_tcp",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_gripper_Left_Support_Link",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_gripper_Right_Support_Link",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_left_pad",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "scene-0-RM75_right_pad",
+        "sleeping": true,
+        "linear_velocity_world_m_s": [
+          0,
+          0,
+          0
+        ],
+        "angular_velocity_world_rad_s": [
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "sleeping": true,
+    "joint_names": [
+      "joint_1",
+      "joint_2",
+      "joint_3",
+      "joint_4",
+      "joint_5",
+      "joint_6",
+      "joint_7",
+      "gripper_Left_1_Joint",
+      "gripper_Left_2_Joint",
+      "gripper_Right_1_Joint",
+      "gripper_Right_2_Joint",
+      "gripper_Left_Support_Joint",
+      "gripper_Right_Support_Joint"
+    ],
+    "positions": [
+      1.0395317077636719,
+      -0.4842652678489685,
+      -0.5018245577812195,
+      -1.571009635925293,
+      0.24783751368522644,
+      -1.1502147912979126,
+      1.963137149810791,
+      0.0004281174042262137,
+      0.0006360874394886196,
+      0.00041712832171469927,
+      0.0006256859051063657,
+      9.191696648258585e-08,
+      -1.0464551447597614e-09
+    ],
+    "velocities": [
+      -3.574725997168571e-05,
+      -7.51595216570422e-05,
+      4.173279012320563e-05,
+      -0.0010490206768736243,
+      0.0002462425909470767,
+      0.0015894609969109297,
+      -0.00024420538102276623,
+      1.2899386092612986e-05,
+      8.517014066455886e-06,
+      -5.956007953500375e-07,
+      4.5006017899140716e-06,
+      -1.4790186469326727e-05,
+      4.894442463410087e-05
+    ],
+    "primary_sequence": 222,
+    "captured_at": 44224.184121068,
+    "stage_previous_feedback": "grasp",
+    "native_velocities_not_replaced": true
+  },
+  "last_twenty_position_vectors": 1
+}

@@ -1,0 +1,27 @@
+Traceback (most recent call last):
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/workcell/worker.py", line 138, in main
+    swm_result=dispatch_if_enabled(spec,profile,args.app_root,run_dir,stop,events)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/integration.py", line 95, in dispatch_if_enabled
+    with context as session:
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/integration.py", line 47, in __enter__
+    session=self.build(self.resources)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_context.py", line 41, in <lambda>
+    return RuntimeContext(lambda resources: _build_pen_session(
+                                            ^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_context.py", line 115, in _build_pen_session
+    registration = register_primary_scene(primary, output / 'metric_assets', sensor_session=uuid.uuid4().hex)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_registration.py", line 82, in register_primary_scene
+    original, evidence = compile_primary_collision_scene(primary)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_planning_scene.py", line 34, in compile_primary_collision_scene
+    measured = primary.read_state()
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_bootstrap.py", line 65, in read_state
+    qdot, velocity_evidence = self.velocity_readback(names, q, qdot)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_velocity.py", line 47, in __call__
+    raise SceneInvalid('Native velocity joint identity mismatch')
+rm75_app.swm.scene.SceneInvalid: Native velocity joint identity mismatch
