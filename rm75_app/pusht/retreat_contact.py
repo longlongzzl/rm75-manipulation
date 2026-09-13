@@ -2,31 +2,38 @@
 import numpy as np
 from .cartesian_ik import PushPathRejected
 
+class RetreatContactRejected(PushPathRejected):
+    """A valid contact sequence violates the unchanged retreat policy."""
+
 
 def validate_contact_escape(samples,allowed):
     initial=None;previous={};count=0
     for rows in samples:
         current={};count+=1
         for row in rows:
+            if (not isinstance(row,dict) or row.get('collision_type') not in ('world','self')
+                    or not isinstance(row.get('robot_link'),str)
+                    or (row['collision_type']=='world' and not isinstance(row.get('world_object'),str))):
+                raise PushPathRejected('Invalid retreat contact identity')
+            depth=float(row['penetration_m'])
+            if not np.isfinite(depth) or depth<=0:raise PushPathRejected('Invalid retreat contact depth')
             if (row.get('collision_type')!='world' or
                     row.get('world_object') not in ('pusht_target_0','pusht_target_1') or
                     row.get('robot_link') not in allowed):
-                raise PushPathRejected(f'Retreat forbidden contact: {row}')
-            depth=float(row['penetration_m'])
-            if not np.isfinite(depth) or depth<=0:raise PushPathRejected('Invalid retreat contact depth')
+                raise RetreatContactRejected(f'Retreat forbidden contact: {row}')
             key=(row['robot_link'],row['world_object'])
             current[key]=max(current.get(key,0.),depth)
         if initial is None:initial=dict(current)
         else:
             for key,depth in current.items():
                 if key not in previous:
-                    raise PushPathRejected(f'Retreat introduced or renewed contact: {key}')
+                    raise RetreatContactRejected(f'Retreat introduced or renewed contact: {key}')
                 # Numerical comparison allowance only, no collision margin change.
                 if depth>previous[key]+1e-7 or depth>initial[key]+1e-7:
-                    raise PushPathRejected(f'Retreat contact deepened: {key}')
+                    raise RetreatContactRejected(f'Retreat contact deepened: {key}')
         previous=current
     if count<2:raise PushPathRejected('Retreat audit needs at least two samples')
-    if previous:raise PushPathRejected('Retreat ends in contact')
+    if previous:raise RetreatContactRejected('Retreat ends in contact')
     return dict(samples=count,initial_contact_pairs=len(initial),final_contact_pairs=0,
                 initial_max_penetration_m=max(initial.values(),default=0.))
 

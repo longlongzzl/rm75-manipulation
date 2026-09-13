@@ -1,0 +1,147 @@
+[
+  {
+    "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_paired_pen_worker_02/swm_native/closure_candidates/7619e76d2f4c0ac5c146a6c4cf6903f26d28ea75b89c6d9a4efa64a5e0da517d.json",
+    "phase": "rejected",
+    "rejection_stage": "gripper_close",
+    "error": "NativeClosureRejected('Native closure prediction detected forbidden contact')",
+    "forbidden_contacts": [
+      {
+        "body_names": [
+          "gripper_Left_Support_Link",
+          "__maniskill_workspace_table__"
+        ],
+        "force_in_base_n": [
+          -4.308067055017568e-08,
+          -3.4464536440140544e-07,
+          2.1683210991692787
+        ],
+        "separations_m": [
+          0.0014280080795288086,
+          0.0005986392498016357,
+          5.21540641784668e-05
+        ]
+      }
+    ],
+    "last_step": {
+      "stage": "gripper_close",
+      "control_tick": 7,
+      "substep": 2
+    }
+  },
+  {
+    "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_paired_pen_worker_02/swm_native/closure_candidates/ce910aeb58af5a9f2da0c3b0d7d7dbd117d624033207cf51e07abc6f82036012.json",
+    "phase": "rejected",
+    "rejection_stage": "closed_hold",
+    "error": "NativeClosureRejected('Native closure prediction detected forbidden contact')",
+    "forbidden_contacts": [
+      {
+        "body_names": [
+          "gripper_Right_Support_Link",
+          "__maniskill_workspace_table__"
+        ],
+        "force_in_base_n": [
+          7.66686571380059e-06,
+          1.7511817809800446e-05,
+          0.5481336853981097
+        ],
+        "separations_m": [
+          0.00044656344107352197,
+          2.8546024623210542e-05,
+          0.0013717731926590204
+        ]
+      }
+    ],
+    "last_step": {
+      "stage": "closed_hold",
+      "control_tick": 4,
+      "substep": 5
+    }
+  },
+  {
+    "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_paired_pen_worker_02/swm_native/closure_candidates/4c6690f2093c3398980ef8d8549ca24d1cde62c2dd3c2e2edfc9842b9d671563.json",
+    "phase": "rejected",
+    "rejection_stage": "closed_hold",
+    "error": "NativeClosureRejected('Native closure prediction detected forbidden contact')",
+    "forbidden_contacts": [
+      {
+        "body_names": [
+          "gripper_Right_Support_Link",
+          "__maniskill_workspace_table__"
+        ],
+        "force_in_base_n": [
+          1.6763815155474067e-07,
+          3.3527630310948134e-07,
+          4.218752031447411
+        ],
+        "separations_m": [
+          0.0004546046257019043,
+          8.732080459594727e-06,
+          0.0013900399208068848
+        ]
+      }
+    ],
+    "last_step": {
+      "stage": "closed_hold",
+      "control_tick": 4,
+      "substep": 4
+    }
+  },
+  {
+    "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_paired_pen_worker_02/swm_native/closure_candidates/5bd5eab9328626b196b5cf03f9080b34448fbc7a2319229533cd80aafd698b41.json",
+    "phase": "rejected",
+    "rejection_stage": "closed_hold",
+    "error": "NativeClosureRejected('Native closure prediction detected forbidden contact')",
+    "forbidden_contacts": [
+      {
+        "body_names": [
+          "gripper_Right_Support_Link",
+          "__maniskill_workspace_table__"
+        ],
+        "force_in_base_n": [
+          0.0004492864818909444,
+          0.0011829854239049835,
+          4.8756645219549055
+        ],
+        "separations_m": [
+          0.0005279912147670984,
+          1.5289057046175003e-05,
+          0.001487378729507327
+        ]
+      }
+    ],
+    "last_step": {
+      "stage": "closed_hold",
+      "control_tick": 4,
+      "substep": 1
+    }
+  },
+  {
+    "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_paired_pen_worker_02/swm_native/closure_candidates/421ec335b7a8c9e73aad89827d471fff635dbada30387a6e70756939fa738c14.json",
+    "phase": "rejected",
+    "rejection_stage": "gripper_close",
+    "error": "NativeClosureRejected('Native closure prediction detected forbidden contact')",
+    "forbidden_contacts": [
+      {
+        "body_names": [
+          "gripper_Left_Support_Link",
+          "__maniskill_workspace_table__"
+        ],
+        "force_in_base_n": [
+          7.649459570218078e-08,
+          -3.0597838280872313e-07,
+          3.850099157916736
+        ],
+        "separations_m": [
+          0.0017969012260437012,
+          1.9669532775878906e-05,
+          0.0018267631530761719
+        ]
+      }
+    ],
+    "last_step": {
+      "stage": "gripper_close",
+      "control_tick": 9,
+      "substep": 4
+    }
+  }
+]

@@ -1,0 +1,149 @@
+Network isolation active: non-Unix sockets blocked in this process and its descendants.
+........................................................................ [  3%]
+........................................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 14%]
+........................................................................ [ 18%]
+........................................................................ [ 21%]
+........................................................................ [ 25%]
+........................................................................ [ 29%]
+........................................................................ [ 32%]
+........................................................................ [ 36%]
+........................................................................ [ 40%]
+........................................................................ [ 43%]
+........................................................................ [ 47%]
+........................................................................ [ 51%]
+........................................................................ [ 54%]
+........................................................................ [ 58%]
+........................................................................ [ 62%]
+........................................................................ [ 65%]
+........................................................................ [ 69%]
+........................................................................ [ 72%]
+........................................................................ [ 76%]
+........................................................................ [ 80%]
+........................................................................ [ 83%]
+..............................................................FFF....... [ 87%]
+........................................................................ [ 91%]
+........................................................................ [ 94%]
+........................................................................ [ 98%]
+.............................                                            [100%]
+=================================== FAILURES ===================================
+_ test_any_chain_or_freshness_failure_prevents_all_motion_and_restores_world[collision] _
+
+failure = 'collision'
+
+    @pytest.mark.parametrize('failure',['approach','descend','contact','push','retreat','collision','self','neighbor','corridor','stale','drift','time_reverse'])
+    def test_any_chain_or_freshness_failure_prevents_all_motion_and_restores_world(failure):
+        e,p,o,t,b=fixture(failure)
+>       with pytest.raises((RuntimeError,ValueError)): e.execute_push(p,o)
+
+tests/three_scene/test_pusht_motion_chain.py:140: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+rm75_app/pusht/motion.py:307: in execute_push
+    planned=self.plan_push(push,obs)
+rm75_app/pusht/motion.py:254: in plan_push
+    path,ik_rows=plan_cartesian_line(self.backend,request,validate_edge)
+rm75_app/pusht/cartesian_ik.py:35: in plan_cartesian_line
+    validate(edge)
+rm75_app/pusht/motion.py:253: in validate_edge
+    self._audit(edge,contact=contact_allowed)
+rm75_app/pusht/motion.py:97: in _audit
+    raise PushCollisionRejected(forbidden)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PushCollisionRejected([{'collision_type': 'world', 'robot_link': 'arm', 'world_object': 'table'}])
+contacts = [{'collision_type': 'world', 'robot_link': 'arm', 'world_object': 'table'}]
+
+    def __init__(self,contacts):
+        for row in contacts:
+            if (not isinstance(row,dict) or row.get('collision_type') not in ('world','self')
+                    or not isinstance(row.get('robot_link'),str) or not row['robot_link']
+                    or (row['collision_type']=='world' and not isinstance(row.get('world_object'),str))):
+                raise ValueError('Invalid native collision contact identity')
+>           depth=float(row['penetration_m'])
+E           KeyError: 'penetration_m'
+
+rm75_app/pusht/motion.py:41: KeyError
+_ test_any_chain_or_freshness_failure_prevents_all_motion_and_restores_world[self] _
+
+failure = 'self'
+
+    @pytest.mark.parametrize('failure',['approach','descend','contact','push','retreat','collision','self','neighbor','corridor','stale','drift','time_reverse'])
+    def test_any_chain_or_freshness_failure_prevents_all_motion_and_restores_world(failure):
+        e,p,o,t,b=fixture(failure)
+>       with pytest.raises((RuntimeError,ValueError)): e.execute_push(p,o)
+
+tests/three_scene/test_pusht_motion_chain.py:140: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+rm75_app/pusht/motion.py:307: in execute_push
+    planned=self.plan_push(push,obs)
+rm75_app/pusht/motion.py:254: in plan_push
+    path,ik_rows=plan_cartesian_line(self.backend,request,validate_edge)
+rm75_app/pusht/cartesian_ik.py:35: in plan_cartesian_line
+    validate(edge)
+rm75_app/pusht/motion.py:253: in validate_edge
+    self._audit(edge,contact=contact_allowed)
+rm75_app/pusht/motion.py:97: in _audit
+    raise PushCollisionRejected(forbidden)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PushCollisionRejected([{'collision_type': 'self', 'robot_link': 'pusher', 'other_robot_link': 'arm'}])
+contacts = [{'collision_type': 'self', 'other_robot_link': 'arm', 'robot_link': 'pusher'}]
+
+    def __init__(self,contacts):
+        for row in contacts:
+            if (not isinstance(row,dict) or row.get('collision_type') not in ('world','self')
+                    or not isinstance(row.get('robot_link'),str) or not row['robot_link']
+                    or (row['collision_type']=='world' and not isinstance(row.get('world_object'),str))):
+                raise ValueError('Invalid native collision contact identity')
+>           depth=float(row['penetration_m'])
+E           KeyError: 'penetration_m'
+
+rm75_app/pusht/motion.py:41: KeyError
+_ test_any_chain_or_freshness_failure_prevents_all_motion_and_restores_world[neighbor] _
+
+failure = 'neighbor'
+
+    @pytest.mark.parametrize('failure',['approach','descend','contact','push','retreat','collision','self','neighbor','corridor','stale','drift','time_reverse'])
+    def test_any_chain_or_freshness_failure_prevents_all_motion_and_restores_world(failure):
+        e,p,o,t,b=fixture(failure)
+>       with pytest.raises((RuntimeError,ValueError)): e.execute_push(p,o)
+
+tests/three_scene/test_pusht_motion_chain.py:140: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+rm75_app/pusht/motion.py:307: in execute_push
+    planned=self.plan_push(push,obs)
+rm75_app/pusht/motion.py:254: in plan_push
+    path,ik_rows=plan_cartesian_line(self.backend,request,validate_edge)
+rm75_app/pusht/cartesian_ik.py:35: in plan_cartesian_line
+    validate(edge)
+rm75_app/pusht/motion.py:253: in validate_edge
+    self._audit(edge,contact=contact_allowed)
+rm75_app/pusht/motion.py:97: in _audit
+    raise PushCollisionRejected(forbidden)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PushCollisionRejected([{'collision_type': 'world', 'robot_link': 'pusher', 'world_object': 'neighbor'}])
+contacts = [{'collision_type': 'world', 'robot_link': 'pusher', 'world_object': 'neighbor'}]
+
+    def __init__(self,contacts):
+        for row in contacts:
+            if (not isinstance(row,dict) or row.get('collision_type') not in ('world','self')
+                    or not isinstance(row.get('robot_link'),str) or not row['robot_link']
+                    or (row['collision_type']=='world' and not isinstance(row.get('world_object'),str))):
+                raise ValueError('Invalid native collision contact identity')
+>           depth=float(row['penetration_m'])
+E           KeyError: 'penetration_m'
+
+rm75_app/pusht/motion.py:41: KeyError
+=============================== warnings summary ===============================
+tests/three_scene/test_rrtrack_plate_material.py::test_actual_plate_uniform_pbr_expands_color_without_changing_mesh
+  /home/zhangzhao/Desktop/rm75-manipulation/tests/three_scene/test_rrtrack_plate_material.py:13: DeprecationWarning: `Scene.dump(concatenate=True)` DEPRECATED FOR REMOVAL APRIL 2025: replace with `Scene.to_geometry()`
+    mesh = trimesh.load(path, force='scene').dump(concatenate=True)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/three_scene/test_pusht_motion_chain.py::test_any_chain_or_freshness_failure_prevents_all_motion_and_restores_world[collision]
+FAILED tests/three_scene/test_pusht_motion_chain.py::test_any_chain_or_freshness_failure_prevents_all_motion_and_restores_world[self]
+FAILED tests/three_scene/test_pusht_motion_chain.py::test_any_chain_or_freshness_failure_prevents_all_motion_and_restores_world[neighbor]
+3 failed, 1970 passed, 1 warning in 45.31s

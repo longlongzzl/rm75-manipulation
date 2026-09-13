@@ -30,6 +30,20 @@ class PreparedPush:
     start_q: np.ndarray
 
 
+class PushCollisionRejected(PushPathRejected):
+    """Finite native forbidden contacts, distinct from malformed diagnostics."""
+    def __init__(self,contacts):
+        for row in contacts:
+            if (not isinstance(row,dict) or row.get('collision_type') not in ('world','self')
+                    or not isinstance(row.get('robot_link'),str) or not row['robot_link']
+                    or (row['collision_type']=='world' and not isinstance(row.get('world_object'),str))):
+                raise ValueError('Invalid native collision contact identity')
+            depth=float(row['penetration_m'])
+            if not np.isfinite(depth) or depth<=0:raise ValueError('Invalid native collision depth')
+        if not contacts:raise ValueError('Collision rejection needs native contact evidence')
+        super().__init__(f'PushT collision audit rejected path: {contacts[:3]}')
+
+
 class CuroboPushExecutor:
     def __init__(self,backend,arm,config,profile,stop,events,observer):
         self.backend=backend;self.arm=arm;self.config=config;self.profile=profile
@@ -80,7 +94,7 @@ class CuroboPushExecutor:
                          and c.get('world_object') in ('pusht_target_0','pusht_target_1')
                          and c.get('robot_link') in self.allowed)]
             if forbidden:
-                raise PushPathRejected(f'PushT collision audit rejected path: {forbidden[:3]}')
+                raise PushCollisionRejected(forbidden)
 
     def _audit_tcp(self,path,start_pose,xyz,*,straight,stage,check_endpoint=True):
         delta=np.asarray(xyz)-start_pose.position

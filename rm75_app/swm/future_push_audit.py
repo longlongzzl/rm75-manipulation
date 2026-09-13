@@ -3,13 +3,15 @@ from types import SimpleNamespace
 import numpy as np
 from .scene import SceneInvalid,pose_error,transform,digest
 from .future_collision_samples import future_collision_samples
+from .candidate_rejection import CandidateInfeasible
 
 
 def audit_future_push(executor,motion,prediction,snapshot,object_id, *, progress=lambda row:None):
     from dataclasses import asdict
     from .physics_replay import compound_cuboid_parts
     from rm75_app.workcell.transforms import quaternion_matrix
-    from rm75_app.pusht.retreat_contact import validate_contact_escape
+    from rm75_app.pusht.retreat_contact import validate_contact_escape,RetreatContactRejected
+    from rm75_app.pusht.motion import PushCollisionRejected
     samples=future_collision_samples(motion,prediction,snapshot,object_id)
     if any(not obj['fixed'] for oid,obj in snapshot['objects'].items() if oid!=object_id):
         raise SceneInvalid('Dynamic non-target future scene adapter required')
@@ -47,16 +49,21 @@ def audit_future_push(executor,motion,prediction,snapshot,object_id, *, progress
         for index,row in enumerate(samples):
             executor.stop.check();q=np.asarray(row['positions'],float)[None,:];stage=row['stage']
             progress(dict(sample=index,stage=stage,time_s=row['time_s']))
-            if np.any(q<limits[0]) or np.any(q>limits[1]):raise SceneInvalid('Future candidate exceeds original joint limits')
+            if np.any(q<limits[0]) or np.any(q>limits[1]):
+                raise CandidateInfeasible('Future candidate exceeds original joint limits',stage=stage,sample=index)
             backend.update_scene(executor._scene(observation(row['T_world_object'],index+1)))
             # Original link allowlist applies only in the original contact phases.
-            executor._audit(q,contact=stage in ('contact','push','retreat'))
+            try:executor._audit(q,contact=stage in ('contact','push','retreat'))
+            except PushCollisionRejected as exc:
+                raise CandidateInfeasible(str(exc),stage=stage,sample=index) from exc
             if stage=='retreat':
                 state=mods['JointState'].from_position(mods['torch'].as_tensor(q,
                     device=planner.device_cfg.device,dtype=planner.device_cfg.dtype),joint_names=list(executor.names))
                 retreat.append(backend._collision_diagnostics_for_states(planner,{'path':state}))
             counts[stage]=counts.get(stage,0)+1
-        escape=validate_contact_escape(retreat,executor.allowed)
+        try:escape=validate_contact_escape(retreat,executor.allowed)
+        except RetreatContactRejected as exc:
+            raise CandidateInfeasible(str(exc),stage='retreat') from exc
     finally:
         backend.update_scene(initial)
         backend.set_measured_gripper_collision_state(snapshot['robot']['gripper_joint_positions'])

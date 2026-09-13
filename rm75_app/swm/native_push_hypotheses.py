@@ -189,10 +189,21 @@ class _NativePushContext:
             candidate=matches[0];result=factory._predict(candidate,parameters)
             from .future_push_audit import audit_future_push
             from .future_push_score import score_audited_future_push
-            with factory._executor(snapshot) as executor:
-                audit=audit_future_push(executor,candidate['motion'],result,snapshot,factory.request.object_id)
-                score=score_audited_future_push(candidate['motion'],result,audit,snapshot,
-                    factory.request.object_id,factory.goal,executor.config)
+            from .candidate_rejection import CandidateInfeasible
+            try:
+                with factory._executor(snapshot) as executor:
+                    audit=audit_future_push(executor,candidate['motion'],result,snapshot,factory.request.object_id)
+                    score=score_audited_future_push(candidate['motion'],result,audit,snapshot,
+                        factory.request.object_id,factory.goal,executor.config)
+            except CandidateInfeasible as exc:
+                # The native audit restores its scene and the owned GPU context
+                # exits BEFORE returning ordinary infeasibility. All other errors
+                # still reach operation(), which closes the entire transaction.
+                return dict(snapshot_id=snapshot['snapshot_id'],payload_digest=plan.payload_digest,
+                    feasible=False,cost=None,parameters=copy.deepcopy(parameters),
+                    rejection=dict(kind='native_candidate_infeasible',stage=exc.stage,sample=exc.sample,
+                        reason=str(exc)[:4096],parameters_digest=digest(parameters)),
+                    private_native_context_exited=True,full_primitive_audit_issued=False,execution_authorized=False)
             return dict(snapshot_id=snapshot['snapshot_id'],payload_digest=plan.payload_digest,feasible=True,
                 cost=score['cost'],expected_object_pose=result['T_world_object'][-1],parameters=copy.deepcopy(parameters),
                 audit=audit,score=score,full_primitive_audit_issued=False,execution_authorized=False)

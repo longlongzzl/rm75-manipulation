@@ -15404,5 +15404,45 @@
       "Separate ordinary PushT rejection from fatal errors"
     ],
     "evidence": "benchmarks/release/evidence/paired_observation_02"
+  },
+  "candidate_rejection_20260913": {
+    "status": "PARTIAL_DELIVERY",
+    "tested_commit": "b2bba1320049bec7601472b9a86819ffe8bf85b2",
+    "tested_source": "base plus source_sha256.txt changes; two pre-existing dirty files remain excluded from commit",
+    "kernel": {
+      "targeted_passed": 8,
+      "full_passed": 1970,
+      "full_failed": 3,
+      "warnings": 1,
+      "seconds": 45.31,
+      "known_regression": "Missing penetration_m in legacy collision fixtures raises KeyError instead of a controlled fatal validation error"
+    },
+    "native_wiring": {
+      "explicit_candidate_rejection_preserves_search": true,
+      "corrupt_identity_timeout_cancel_close_transaction": true,
+      "private_native_context_exits_before_rejection_result": true
+    },
+    "actual_simulation": {
+      "native_positive_status": "COLLISION_SAMPLES_PASSED_NOT_EXECUTION_AUTHORIZED",
+      "collision_samples": 1880,
+      "new_CPU_rollouts": 0,
+      "new_pen_execution": false,
+      "native_negative_search_qualified": false
+    },
+    "pen_diagnostic": {
+      "rejected_candidates": 5,
+      "common_forbidden_contact": "gripper support link / workspace table",
+      "forces_z_n": [
+        2.1683210991692787,
+        0.5481336853981097,
+        4.218752031447411,
+        4.8756645219549055,
+        3.850099157916736
+      ],
+      "safety_rule_changed": false
+    },
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "evidence": "benchmarks/release/evidence/candidate_rejection_01"
   }
 }
