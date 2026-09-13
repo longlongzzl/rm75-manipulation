@@ -108,6 +108,8 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     owned["primary"] = primary
     from .native_velocity import NativeArticulationVelocity
     primary.velocity_readback = NativeArticulationVelocity(primary.env.unwrapped.agent.robot)
+    from .native_drive_commands import NativeDriveCommands
+    primary.drive_command_policy = NativeDriveCommands(primary, resources=resources, emit=events.emit)
     backend = resources.enter_context(Curobo2Backend(Curobo2BackendConfig()))
     owned["backend"] = backend
     backend.update_scene(PlanningScene())

@@ -39,6 +39,15 @@ class NativeArticulationVelocity:
                 or any(link.articulation != self.native for link in self.links)):
             raise SceneInvalid('Complete original native articulation identity required')
 
+    @classmethod
+    def for_private(cls, articulation):
+        """Bind canonical private native handles, never guessed source aliases."""
+        from types import SimpleNamespace
+        from .native_robot_mirror import _native_drive_joints
+        joints = _native_drive_joints(articulation)
+        return cls(SimpleNamespace(_objs=[articulation], joints_map={name:
+            SimpleNamespace(_objs=[joint]) for name, joint in joints.items()}))
+
     def _links(self):
         if self.native.root != self.root or tuple(self.native.get_links()) != self.links:
             raise SceneInvalid('Native articulation link identity changed')

@@ -49,7 +49,9 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
     """
     from .native_bootstrap import _array
     from .native_robot import read_primary_drive_state
-    from .native_robot_mirror import SapienRobotStatePort, apply_native_drive_state
+    from .native_robot_mirror import SapienRobotStatePort
+    from .native_drive_commands import apply_private_control
+    from .native_velocity import NativeArticulationVelocity
     from .native_body_mirror import NativeBodyMirror, native_pose
     from .native_scene import SapienScenePort
     from .native_registration import file_digest
@@ -93,6 +95,12 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
         if len(fingers) != 2 or not fingers <= set(agent.robot.links_map):
             raise SceneInvalid('Closure prediction requires original finger identity')
         controller = agent.controller.controllers['gripper']
+        policy = getattr(primary, 'drive_command_policy', None)
+        if policy is None or policy.closed:
+            raise SceneInvalid('Shared original drive command policy required')
+        groups = policy.groups
+        report['controller_write_groups'] = groups
+        report['exact_equal_target_elision'] = True
         closed = original_gripper_drive_targets(controller, drives, 1.)
         report['closed_drive_targets'] = closed
         report['phase'] = 'private_prediction'
@@ -112,11 +120,13 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
                 report['hypothesis_initialization'] = apply_candidate_endpoint(
                     robot._robot, candidate_configuration, closed)
             entities = [link.entity for link in robot._robot.get_links()]
+            velocity_observer = NativeArticulationVelocity.for_private(robot._robot)
+            feedback_names = [joint.name for joint in robot._robot.get_active_joints()]
             from mani_skill.utils.sapien_utils import compute_total_impulse
             dt = closed['physics_timestep_s']
             substeps = round(closed['simulation_frequency_hz'] / closed['control_frequency_hz'])
             def advance_control(tick, command, stage):
-                apply_native_drive_state(robot._robot, robot._physics_system, command)
+                writes = apply_private_control(robot._robot, robot._physics_system, command, groups)
                 for substep in range(substeps):
                     primary.stop.check()
                     robot._scene.step()
@@ -141,7 +151,19 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
                         report['phase'] = 'rejected'
                         report['rejection_stage'] = stage
                         raise NativeClosureRejected('Native closure prediction detected forbidden contact')
-                return report['steps'][-1]
+                row = report['steps'][-1]
+                effective, velocity_evidence = velocity_observer(feedback_names, row['q'], row['qdot'])
+                row['raw_native_qdot'] = row['qdot']
+                row['qdot'] = effective.tolist()
+                row['velocity_source'] = velocity_evidence['source']
+                row['drive_group_writes'] = writes
+                report['last_velocity_evidence'] = velocity_evidence
+                if stage == 'closed_hold':
+                    row['object_velocities'] = {oid: dict(
+                        linear_velocity=_array(actor.linear_velocity).reshape(-1).tolist(),
+                        angular_velocity=_array(actor.angular_velocity).reshape(-1).tolist())
+                        for oid, actor in bodies.actors.items()}
+                return row
             if candidate_configuration is not None:
                 report['phase'] = 'candidate_open_preparation'
                 opened = original_gripper_drive_targets(controller, closed, -1.)
@@ -159,6 +181,18 @@ def reject_predicted_closure(primary, registration, urdf_path, *, target, emit, 
             report['phase'] = 'private_closure_steps'
             for tick in range(20):
                 advance_control(tick, closed, 'gripper_close')
+            report['phase'] = 'private_closed_hold'
+            arm_names = tuple(f'joint_{i}' for i in range(1, 8))
+            arm_target = [closed['position_targets'][closed['joint_names'].index(name)] for name in arm_names]
+            try:
+                report['closed_hold'] = settle_closed_hold(
+                    lambda tick: advance_control(tick, closed, 'closed_hold'),
+                    feedback_names, arm_target, tuple(bodies.actors))
+            except NativeClosureRejected as error:
+                report['closed_hold'] = getattr(error, 'evidence', {'completed': False})
+                report['phase'] = 'rejected'
+                report['rejection_stage'] = 'closed_hold'
+                raise
             report['phase'] = 'no_forbidden_contact_predicted_not_qualified'
     except BaseException as error:
         report['error'] = repr(error)
@@ -312,5 +346,46 @@ def settle_candidate_open(step, names, arm_target, *, max_steps=200):
         if stable >= 3:
             return evidence
     error = NativeClosureRejected('Candidate open hold did not reach original idle criterion')
+    error.evidence = evidence
+    raise error
+
+
+def settle_closed_hold(step, names, arm_target, object_ids, *, max_steps=200):
+    """Predict original bounded closed hold; idle is not holding qualification."""
+    from .native_execution import native_endpoint_metrics
+    from .native_robot_mirror import ARM_JOINTS, GRIPPER_JOINTS
+    if (type(max_steps) is not int or not 3 <= max_steps <= 200
+            or len(names) != 13 or len(set(names)) != 13
+            or set(names) != set(ARM_JOINTS + GRIPPER_JOINTS)
+            or not object_ids or len(set(object_ids)) != len(object_ids)):
+        raise SceneInvalid('Complete closed-hold identity and original budget required')
+    stable = 0
+    for tick in range(max_steps):
+        row = step(tick)
+        q = np.asarray(row['q'], dtype=float)
+        if q.shape != (13,) or not np.isfinite(q).all():
+            raise SceneInvalid('Complete private closed-hold joint feedback required')
+        error, speed, idle = native_endpoint_metrics(
+            q[[names.index(name) for name in ARM_JOINTS]], row['qdot'], arm_target)
+        objects = row.get('object_velocities')
+        if not isinstance(objects, dict) or set(objects) != set(object_ids):
+            raise SceneInvalid('Complete private closed-hold object feedback required')
+        object_idle = True
+        for value in objects.values():
+            linear = np.asarray(value['linear_velocity'], dtype=float)
+            angular = np.asarray(value['angular_velocity'], dtype=float)
+            if (linear.shape != (3,) or angular.shape != (3,)
+                    or not np.isfinite(linear).all() or not np.isfinite(angular).all()):
+                raise SceneInvalid('Finite private closed-hold object velocity required')
+            object_idle = object_idle and np.linalg.norm(linear) <= .001 and np.linalg.norm(angular) <= .005
+        stable = stable + 1 if idle and error <= .02 and object_idle else 0
+        evidence = dict(source='native_private_closed_hold_readback', completed=stable >= 3,
+            control_steps=tick+1, stable_steps=stable, max_velocity_rad_s=speed,
+            endpoint_error_rad=error, robot_idle=idle, object_idle=bool(object_idle),
+            joint_names=list(names), positions=q.tolist(), velocities=list(row['qdot']),
+            object_velocities=objects, holding_qualified=False)
+        if stable >= 3:
+            return evidence
+    error = NativeClosureRejected('Private closed hold did not reach original complete idle criterion')
     error.evidence = evidence
     raise error
