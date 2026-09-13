@@ -49,13 +49,21 @@ class MeasuredTCPProgram:
 class SubprocessReplayWorld:
     """One isolated OS process per physical hypothesis, with a wall timeout."""
     domain='physics'
-    def __init__(self, request, *, python, tool_spheres, directory, timeout_s=180, check=lambda:None):
+    def __init__(self, request, *, python, tool_spheres=None, directory, timeout_s=180, check=lambda:None,
+                 native_tool_geometry=None, native_tool_motion=None):
         if not Path(python).is_file():raise FileNotFoundError('Configure the existing physics Python interpreter')
         if not 1<=timeout_s<=900:raise ValueError('Replay timeout must be bounded')
         self.request=copy.deepcopy(request);self.python=str(python);self.timeout=timeout_s
         self.check=check;self.process=None;self.directory=Path(directory)/request['hypothesis_id']
         if self.directory.exists():raise FileExistsError('Use a new transition evidence directory')
         self.directory.mkdir(parents=True)
+        if native_tool_geometry is not None or native_tool_motion is not None:
+            from .native_tool_replay import NativeToolProgram
+            NativeToolProgram(request,native_tool_geometry,native_tool_motion)
+            self.request['native_tool_geometry']=copy.deepcopy(native_tool_geometry)
+            self.request['native_tool_motion']=copy.deepcopy(native_tool_motion)
+            self.request['tool_spheres']=[]
+            return
         spheres=np.asarray(tool_spheres,dtype=float)
         if spheres.ndim!=2 or spheres.shape[1]!=4 or not len(spheres) or not np.isfinite(spheres).all() or (spheres[:,3]<=0).any():
             raise ValueError('Calibrated tool collision spheres required')
@@ -128,6 +136,10 @@ def physical_replay(request):
     from scipy.spatial.transform import Rotation
     theta=PhysicsParameters(**request['parameters']);snapshot=request['initial_snapshot']
     program=MeasuredTCPProgram(request['actual_action']);target_id=request['object_id']
+    native_program=None
+    if 'native_tool_geometry' in request:
+        from .native_tool_replay import NativeToolProgram
+        native_program=NativeToolProgram(request,request['native_tool_geometry'],request['native_tool_motion'])
     if request['action_digest']!=digest(request['actual_action']):raise ValueError('Actual action was modified')
     canonical=dict(snapshot);sid=canonical.pop('snapshot_id')
     if digest(canonical)!=sid:raise ValueError('Initial SWM snapshot was modified')
@@ -182,11 +194,21 @@ def physical_replay(request):
                 else:self.dynamic_others.append(actor)
             self._load_tool(material,None)
         def _load_tool(self, material, tool_visual):
+            if native_program is not None:
+                self.native_bodies,self.native_entities=native_program.build(self.scene,spose)
+                # A collision-free TCP marker supplies actual simulator pose readback.
             builder=self.scene.create_actor_builder();builder.initial_pose=spose(program.poses[0])
             for x,y,z,radius in request['tool_spheres']:
                 builder.add_sphere_collision(pose=sapien.Pose([x,y,z]),radius=radius,material=material)
             self.tool=builder.build_kinematic(name='measured_actual_tool_replay')
             self.tool_body=self.tool._objs[0].find_component_by_type(sapien.physx.PhysxRigidDynamicComponent)
+        def _before_simulation_step(self):
+            super()._before_simulation_step()
+            if native_program is not None:
+                for name,pose in native_program.sample(self.physics_time).items():
+                    self.native_bodies[name].set_kinematic_target(spose(pose))
+        def _after_simulation_step(self):
+            if native_program is None:super()._after_simulation_step()
         def _initialize_episode(self,env_idx,options):
             super()._initialize_episode(env_idx,options);self.settle_s=0.
     env=None
@@ -216,6 +238,9 @@ def physical_replay(request):
                     density_applied_at_collision_construction=True,
                     native_target_mass_kg=float(target_body.mass),
                     native_target_collision_shapes=len(target_body.collision_shapes),
+                    native_tool_geometry_digest=None if native_program is None else native_program.geometry_digest,
+                    native_tool_motion_digest=None if native_program is None else native_program.motion_digest,
+                    native_tool_shape_count=0 if native_program is None else sum(map(len,native_program.links.values())),
                     measured_tool_feedback=dict(source="measured_feedback",time_s=feedback_times,
                         T_world_tcp=feedback_poses,stages=feedback_stages,
                         measurement_source="sapien_kinematic_actor_pose_after_step"),

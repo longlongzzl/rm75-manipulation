@@ -20,6 +20,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--transition',type=Path,required=True)
     parser.add_argument('--geometry',type=Path,required=True)
+    parser.add_argument('--native-motion',type=Path)
     parser.add_argument('--python',required=True)
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
@@ -32,13 +33,20 @@ def main():
             or not transition.get('physical_clock_evidence')):
         raise ValueError('An actual native-worker physical-clock transition is required')
     geometry_raw=args.geometry.read_bytes();geometry=json.loads(geometry_raw)
-    if geometry.get('ready') is not True or geometry.get('execute_real') is not False:
+    motion=None
+    if args.native_motion:
+        if args.native_motion.stat().st_size>16000000:raise ValueError('Native motion exceeds evidence budget')
+        motion=json.loads(args.native_motion.read_bytes())
+    elif geometry.get('ready') is not True or geometry.get('execute_real') is not False:
         raise ValueError('Original simulation planner geometry required')
     output=args.output.resolve();output.mkdir(parents=True,exist_ok=False)
     hypotheses=[dict(id=name,parameters=dict(static_friction=sf,dynamic_friction=df,density_kg_m3=density))
         for name,sf,df,density in [('low_friction',.15,.1,1000.),('nominal',.3,.3,1000.),
                                   ('high_friction',.6,.6,1000.),('other_density',.3,.3,2000.)]]
     def factory(request):
+        if motion is not None:
+            return SubprocessReplayWorld(request,python=args.python,directory=output,timeout_s=180,
+                                         native_tool_geometry=geometry,native_tool_motion=motion)
         return SubprocessReplayWorld(request,python=args.python,tool_spheres=geometry['spheres'],
                                      directory=output,timeout_s=180)
     checked,rollouts=IsolatedReplayPool(factory,workers=1).run(transition,hypotheses)
@@ -53,6 +61,14 @@ def main():
         rollouts=[{key:row.get(key) for key in ('hypothesis_id','valid','parameters','action_digest',
             'transition_digest','initial_snapshot_id','engine','native_target_mass_kg',
             'native_target_collision_shapes','time_s','T_world_object')} for row in rollouts])
+    if motion is not None:
+        report.update(scope='native_worker_measured_link_action_replay',
+            tool_model='original_native_convex_shapes_measured_per_link',
+            native_tool_geometry_qualified=all(row.get('valid') is True for row in rollouts),
+            native_tool_motion_digest=motion['motion_digest'],
+            native_geometry_readback=[{key:row.get(key) for key in
+                ('hypothesis_id','native_tool_geometry_digest','native_tool_motion_digest','native_tool_shape_count')}
+                for row in rollouts])
     atomic_json(output/'summary.json',report)
     print(json.dumps(report,allow_nan=False),flush=True)
     return 0 if all(row.get('valid') is True for row in rollouts) else 1

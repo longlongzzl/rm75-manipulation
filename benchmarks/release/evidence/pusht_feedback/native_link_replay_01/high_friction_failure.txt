@@ -1,0 +1,18 @@
+    obs, _ = self.reset(seed=[2022 + i for i in range(self.num_envs)], options=dict(reconfigure=True))
+  File "/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/mani_skill/envs/sapien_env.py", line 909, in reset
+    self._reconfigure(options)
+  File "/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/mani_skill/envs/sapien_env.py", line 743, in _reconfigure
+    self._load_scene(options)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/physics_replay.py", line 195, in _load_scene
+    self._load_tool(material,None)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/physics_replay.py", line 198, in _load_tool
+    self.native_bodies,self.native_entities=native_program.build(self.scene,spose)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_tool_replay.py", line 51, in build
+    compare_native_state(state,shape_state(shape,np.eye(4)),name)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_body_mirror.py", line 106, in compare_native_state
+    compare_native_state(expected[key], actual[key], path + '.' + key)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_body_mirror.py", line 106, in compare_native_state
+    compare_native_state(expected[key], actual[key], path + '.' + key)
+  File "/home/zhangzhao/Desktop/rm75-manipulation/rm75_app/swm/native_body_mirror.py", line 109, in compare_native_state
+    raise SceneInvalid(f'Native geometry count differs: {path}')
+rm75_app.swm.scene.SceneInvalid: Native geometry count differs: gripper_Left_Support_Link.geometry.vertices
