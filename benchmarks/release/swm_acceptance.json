@@ -15068,5 +15068,25 @@
       "benchmarks/release/evidence/pusht_feedback/future_prediction_02/summary.json",
       "benchmarks/release/evidence/pusht_feedback/native_initial_velocity_01/summary.json"
     ]
+  },
+  "future_contact_evidence_01": {
+    "status": "PASSED_NATIVE_CONTACT_READBACK_NOT_PATH_SAFETY",
+    "kernel": {
+      "passed": 1951,
+      "warnings": 1,
+      "duration_s": 43.6
+    },
+    "actual_simulation": {
+      "valid_predictions": 4,
+      "contact_steps_per_prediction": 15032,
+      "force_contact_link": "gripper_Right_Support_Link",
+      "force_contact_stage": "push"
+    },
+    "path_safety_qualified": false,
+    "absence_of_contact_proves_clearance": false,
+    "next_planner_consumed_posterior": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/future_prediction_03/summary.json"
   }
 }

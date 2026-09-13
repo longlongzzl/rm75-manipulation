@@ -217,10 +217,17 @@ def physical_replay(request):
                     self.native_bodies[name].set_kinematic_target(spose(pose))
         def _after_simulation_step(self):
             if native_program is None:super()._after_simulation_step()
+            else:self.contact_evidence.observe(self.scene.get_contacts(),time_s=self.physics_time,stage=self.stage)
         def _initialize_episode(self,env_idx,options):
             super()._initialize_episode(env_idx,options);self.settle_s=0.
             from .replay_initial_state import apply_private_initial_state
             self.initial_state_readback=apply_private_initial_state(snapshot,self.replay_objects,require_velocities=future)
+            if native_program is not None:
+                from .tool_contact_evidence import ToolContactEvidence
+                from .native_body_mirror import native_body
+                self.contact_evidence=ToolContactEvidence(
+                    {body.entity:name for name,body in self.native_bodies.items()},
+                    {native_body(actor).entity:oid for oid,actor in self.replay_objects.items()},target_id)
     env=None
     try:
         env=ReplayEnv(program=program,spheres=request['tool_spheres'],config=None,
@@ -250,6 +257,7 @@ def physical_replay(request):
                     native_target_mass_kg=float(target_body.mass),
                     native_target_collision_shapes=len(target_body.collision_shapes),
                     initial_state_readback=env.initial_state_readback,
+                    native_tool_contacts=None if native_program is None else env.contact_evidence.report(),
                     native_tool_geometry_digest=None if native_program is None else native_program.geometry_digest,
                     native_tool_motion_digest=None if native_program is None else native_program.motion_digest,
                     native_tool_shape_count=0 if native_program is None else sum(map(len,native_program.links.values())),
