@@ -162,6 +162,7 @@ class AtomicSkillRuntime:
         self.max_rotation_tolerance = positive(max_rotation_tolerance_rad, 'configured_rotation_tolerance')
         self._execution_lock = threading.Lock()
         self._used_actions = set()
+        self.grasp_place_policy = None
         if self.world.domain != backend.execution_domain:
             raise PermissionError('Simulation/fixture adapter cannot execute a real SWM task')
 
@@ -191,6 +192,8 @@ class AtomicSkillRuntime:
 
     def run(self, request):
         if not isinstance(request, SkillRequest): raise TypeError('Expected typed SkillRequest')
+        if self.grasp_place_policy is not None and request.skill in ('grasp','place'):
+            raise SceneInvalid('Use the paired grasp-place sequence, not independent held-object observation')
         program_request = request
         if not self._execution_lock.acquire(blocking=False): raise RuntimeError('Another atomic skill owns this runtime')
         attempts = []; pending_plan = None; receipt = None

@@ -1,0 +1,39 @@
+Network isolation active: non-Unix sockets blocked in this process and its descendants.
+........................................................................ [ 13%]
+........................................................................ [ 26%]
+........................................................................ [ 40%]
+.......................................................F................ [ 53%]
+........................................................................ [ 67%]
+........................................................................ [ 80%]
+........................................................................ [ 93%]
+.................................                                        [100%]
+=================================== FAILURES ===================================
+______________ test_postclosure_trajectory_cannot_reuse_old_audit ______________
+
+    def test_postclosure_trajectory_cannot_reuse_old_audit():
+        from types import SimpleNamespace
+        sink = object.__new__(NativePrimaryExecutor)
+        sink.primary = SimpleNamespace(stop=SimpleNamespace(check=lambda: None))
+        sink._closure_requires_reaudit = True
+        with pytest.raises(SceneInvalid, match='re-audit'):
+>           sink.execute_trajectory('lift', None)
+
+tests/swm/test_native_feedback_closure.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rm75_app.swm.native_execution.NativePrimaryExecutor object at 0x7cf45553c200>
+stage = 'lift', trajectory = None
+
+    def execute_trajectory(self, stage, trajectory):
+        self.primary.stop.check()
+        if self._closure_requires_reaudit:
+            from .native_measured_lift import MeasuredLiftAudit
+            from .paired_grasp_place import PredictedLiftAudit
+            adapter = getattr(self, 'measured_lift_audit', None)
+>           required = PredictedLiftAudit if self.paired_observation_mode else MeasuredLiftAudit
+E           AttributeError: 'NativePrimaryExecutor' object has no attribute 'paired_observation_mode'
+
+rm75_app/swm/native_execution.py:119: AttributeError
+=========================== short test summary info ============================
+FAILED tests/swm/test_native_feedback_closure.py::test_postclosure_trajectory_cannot_reuse_old_audit
+1 failed, 536 passed in 2.71s

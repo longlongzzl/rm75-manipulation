@@ -144,9 +144,7 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
         output=output / "closure_prediction.json")
     coordinator = PickPlaceCoordinator(backend, sink)
     auditor = CuroboNativeStageAuditor(backend)
-    from .native_measured_lift import MeasuredLiftAudit
-    sink.measured_lift_audit = MeasuredLiftAudit(sync, auditor, target="bi",
-        stop=stop, emit=events.emit)
+    sink.paired_observation_mode = True
 
     def audit(plan, snapshot):
         started = time.monotonic()
@@ -174,6 +172,8 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
         candidate_priority=priority)
     runtime = AtomicSkillRuntime(sync, NativeAtomicBackend(phases.bindings(), execution_domain='physics'),
         clock=time.monotonic, stop=stop, goal_verifier=bridge.verify_skill)
+    from .paired_grasp_place import PairedGraspPlace
+    runtime.grasp_place_policy=PairedGraspPlace(phases,auditor,sink)
     events.emit('swm_native_runtime_bound', task='pickplace', object_id='bi',
         input_sha256=contract['sha256'], domain='physics', skills=['grasp', 'place'],
         native_atomic_integration_verified=False, hardware_qualified=False)

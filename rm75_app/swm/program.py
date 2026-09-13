@@ -70,10 +70,12 @@ def run_program(program, runtime, *, maximum_skills=64):
     # Compiled programs are trusted interpreter output; each skill re-observes.
     # Do not replay already finished skill records as a recovery strategy.
     results=[]
-    for index, step in enumerate(program['steps']):
-        request=SkillRequest(**step)
-        outcome=runtime.run(request)
-        results.append(outcome.as_dict())
+    from .paired_grasp_place import atomic_groups
+    index=-1
+    for group in atomic_groups(runtime,[SkillRequest(**step) for step in program['steps']]):
+        index+=len(group)
+        results.extend(outcome.as_dict() for request,outcome in group)
+        request,outcome=group[-1]
         if not outcome.skill_verified:
             return dict(completed=False,results=results,next_skill=index,
                         reason='Stop dependencies; high-level replanner must use the new measured SWM',

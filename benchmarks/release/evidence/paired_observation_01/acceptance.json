@@ -1,0 +1,52 @@
+{
+  "status": "PARTIAL_DELIVERY",
+  "tested_commit": "f0bb5a833b7d748675bbb0aed84829a07305eeea",
+  "tested_source": "base plus paired observation files in source_input_sha256.txt",
+  "current_observation_policy": {
+    "grasp_place": [
+      "before_grasp",
+      "after_release_retreat"
+    ],
+    "empty_hand_pre_execute_refresh_allowed": true,
+    "held_object_observation": false,
+    "held_object_tracking": false,
+    "six_visual_checkpoints_required": false,
+    "prediction_is_measurement": false
+  },
+  "kernel": {
+    "swm_passed": 536,
+    "swm_failed": 1,
+    "seconds": 2.71,
+    "full_tests_run": false,
+    "failure": "test_postclosure_trajectory_cannot_reuse_old_audit constructs sink without new paired_observation_mode field"
+  },
+  "software_probe": {
+    "success": true,
+    "wrong_placement_requests_regrasp": true,
+    "cancel_blocks_place": true,
+    "held_measured_rows_unchanged": true,
+    "hidden_lift_uses_no_object_capture": true,
+    "domain": "fixture_not_native_simulation"
+  },
+  "native_wiring": {
+    "paired_policy_installed_in_pen_worker": true,
+    "joint_plan_preservation_implemented": true,
+    "task_and_program_consumers_updated": true,
+    "complete_flow_verified": false
+  },
+  "actual_simulation": {
+    "run": "runtime_data/swm_paired_pen_worker_01",
+    "status": "failed_before_planning",
+    "error": "SceneInvalid: Request is not the active original compiled atom",
+    "full_grasp_place_success": false
+  },
+  "model_inference": "NOT_RUN",
+  "hardware": "NOT_AUTHORIZED_NOT_RUN",
+  "remaining": [
+    "Align paired request iteration with original compiled active atom lifetime",
+    "Fix incomplete sink fixture failure",
+    "Qualify full native grasp-place and wrong-placement recovery",
+    "Separate ordinary PushT candidate infeasibility from fatal errors"
+  ],
+  "evidence": "benchmarks/release/evidence/paired_observation_01"
+}

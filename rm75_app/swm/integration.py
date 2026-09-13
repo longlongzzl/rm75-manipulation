@@ -70,8 +70,8 @@ def contract_status(profile):
         registered_tasks=sorted(_FACTORIES),skill_contracts=list(SKILLS),
         native_atomic_integration_verified=False,hardware_qualified=False,
         physics_identification='hypothesis_replay_of_same_measured_action; not response_gain_fit',
-        required_boundaries={'pickplace':['before_grasp','after_grasp','before_place','after_place'],
-            'magnetic':['before_grasp','after_grasp','before_place','after_place','verify_structure'],
+        required_boundaries={'pickplace':['before_grasp','after_release_retreat'],
+            'magnetic':['before_grasp','after_release_retreat','verify_structure'],
             'pusht':['before_push','after_push']})
 
 
@@ -103,8 +103,11 @@ def _dispatch_session(spec,session,stop):
     expected='real' if spec['mode']=='real' else 'physics'
     if runtime.world.domain!=expected:raise PermissionError('SWM execution domain is not the requested task mode')
     outcomes=[]
-    for request in requests:
-        stop.check();result=runtime.run(request);outcomes.append(result.as_dict())
+    from .paired_grasp_place import atomic_groups
+    for group in atomic_groups(runtime,requests):
+        stop.check()
+        outcomes.extend(result.as_dict() for request,result in group)
+        request,result=group[-1]
         if not result.skill_verified:
             return dict(command_success=result.command_success,task_success=False,
                         verification='swm_'+expected,swm_checkpointed=True,atomic_results=outcomes,

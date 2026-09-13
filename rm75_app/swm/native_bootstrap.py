@@ -42,7 +42,7 @@ class FrozenPrimaryWorld:
     constraint_recipes: dict = field(default_factory=dict)
     velocity_readback: object = None
 
-    def read_state(self):
+    def read_state(self, *, include_objects=True):
         """Fresh actual actor/robot reads; no setters and no command-cache data.
 
         This is a physical-state exposure interval, not a camera frame or an
@@ -63,11 +63,13 @@ class FrozenPrimaryWorld:
         velocity_evidence = None
         if self.velocity_readback is not None:
             qdot, velocity_evidence = self.velocity_readback(names, q, qdot)
-        objects = {oid: _pose_matrix(actor).tolist() for oid, actor in self.actors.items()}
+        if include_objects and not getattr(self, 'object_observations_allowed', True):
+            raise SceneInvalid('Object readback is unavailable inside the grasp-place window')
+        objects = {oid: _pose_matrix(actor).tolist() for oid, actor in self.actors.items()} if include_objects else {}
         ended = time.monotonic()
         self.sequence += 1
         return dict(schema='rm75.swm_primary_readback_v1', domain='physics',
-            source='native_actor_and_joint_readback', sequence=self.sequence,
+            source='native_actor_and_joint_readback' if include_objects else 'native_joint_only_readback', sequence=self.sequence,
             capture_started_at=started, capture_finished_at=ended,
             joint_names=list(names), positions=q.tolist(), velocities=qdot.tolist(),
             velocity_evidence=velocity_evidence,

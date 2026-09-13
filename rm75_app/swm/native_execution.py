@@ -44,6 +44,7 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         self._closure_feedback = None
         self._closure_requires_reaudit = False
         self.measured_lift_audit = None
+        self.paired_observation_mode = False
         self.feedback_observer = None
         self._feedback_action_id = None
 
@@ -51,10 +52,10 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         self.primary.stop.check()
         if self.primary.closed:
             raise SceneInvalid('Primary simulation closed during execution')
-        raw = self.primary.read_state()
+        raw = self.primary.read_state(include_objects=False) if self.paired_observation_mode else self.primary.read_state()
         names = tuple(raw['joint_names'])
         arm = tuple(f'joint_{i}' for i in range(1, 8))
-        if (raw.get('domain') != 'physics' or raw.get('source') != 'native_actor_and_joint_readback'
+        if (raw.get('domain') != 'physics' or raw.get('source') not in ('native_actor_and_joint_readback','native_joint_only_readback')
                 or len(names) != 13 or len(set(names)) != 13 or not set(arm) <= set(names)):
             raise SceneInvalid('Primary execution feedback has wrong identity or source')
         q, velocity = np.asarray(raw['positions']), np.asarray(raw['velocities'])
@@ -78,7 +79,7 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
                 q, velocity, self._last_commanded_target)
             objects = None
             ready = idle and error <= .02
-            if ready and self.object_settle_readback is not None:
+            if ready and self.object_settle_readback is not None and getattr(self.primary,'object_observations_allowed',True):
                 objects = self.object_settle_readback()
                 if (not isinstance(objects, dict)
                         or objects.get('source') != 'native_registered_object_velocity_readback'
@@ -113,14 +114,19 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         self.primary.stop.check()
         if self._closure_requires_reaudit:
             from .native_measured_lift import MeasuredLiftAudit
+            from .paired_grasp_place import PredictedLiftAudit
             adapter = getattr(self, 'measured_lift_audit', None)
-            if not isinstance(adapter, MeasuredLiftAudit):
+            required = PredictedLiftAudit if self.paired_observation_mode else MeasuredLiftAudit
+            if not isinstance(adapter, required):
                 raise SceneInvalid('Measured jaw and attachment lift re-audit is not installed')
             trajectory = adapter(stage, trajectory)
         super().execute_trajectory(stage, trajectory)
         self._settle(stage)
         if stage == 'lift':
             self._closure_requires_reaudit = False
+        if stage == 'retreat' and self.paired_observation_mode:
+            self.primary.object_observations_allowed = True
+            self._settle('released_retreat')
 
     def set_gripper(self, closed):
         self.primary.stop.check()
@@ -133,6 +139,8 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
                 prediction()
         if closed:
             from .native_feedback_closure import NativeFeedbackClosure
+            if self.paired_observation_mode:
+                self.primary.object_observations_allowed = False
             self._closure_feedback = NativeFeedbackClosure()
             self._closure_requires_reaudit = True
             for _ in range(self.gripper_steps):
@@ -165,6 +173,9 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
 
     def feedback(self):
         raw, names, q, velocity = self._read()
+        if self.paired_observation_mode:
+            from .native_robot import read_primary_tcp_feedback
+            return dict(read_primary_tcp_feedback(self.primary),idle=bool(np.max(np.abs(velocity)) <= .001))
         return dict(source='measured_feedback', captured_at=raw['capture_started_at'],
             primary_sequence=raw['sequence'], joint_names=list(names), positions=q.tolist(),
             idle=bool(np.max(np.abs(velocity)) <= .001))

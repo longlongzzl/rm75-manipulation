@@ -120,6 +120,8 @@ class NativePrimaryCapture:
     def capture(self, ids, *, after, boundary):
         from rm75_app.execution.maniskill_task_bridge import _pose_matrix as actor_pose
 
+        if not getattr(self.primary, 'object_observations_allowed', True):
+            raise ObservationUnavailable('No object capture inside the grasp-place execution window')
         if len(ids) != len(self.bindings) or set(ids) != set(self.bindings):
             raise ObservationUnavailable('Every registered primary collision object is required')
         with self._lock:

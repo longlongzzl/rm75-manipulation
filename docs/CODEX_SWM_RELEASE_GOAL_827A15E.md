@@ -1,5 +1,7 @@
 # RM75 SWM 交付 Goal：基于 827a15e 的结构审阅与完成标准
 
+> 2026-09-13 当前观测合同修订：以 `SWM_ARCHITECTURE_PROGRESS_AND_PLAN_20260913.md` 第四节及 `CHATGPT_REVIEW_5E54D7D_OBSERVATION_POLICY_20260913.md` 为准。抓放采用“抓前定位 → 保留原子技能与联合计划执行抓放 → 松爪并完成退让 → 独立定位验证”。持物区间不增加物体定位或跟踪，不用仿真真值代替被取消的观测；预测与最后实测分开。仍未持物时允许执行前重新采集。本文历史六次视觉检查点、抓后强制实测 attachment 等冲突条款不再作为当前验收门槛；保留原碰撞、非视觉执行反馈、资源清理、最终实测验证及其余 G0–G10 范围。该修订不是实现完成声明，历史成绩原样保留。
+
 日期：2026-09-12  
 仓库：`longlongzzl/rm75-manipulation`  
 协作分支：`chatgpt/three-scene-software-closeout`  

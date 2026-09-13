@@ -247,12 +247,12 @@ class PickPlaceNativePhases:
                             relative = np.linalg.inv(_pose_matrix(origin.pose)) @ transform(
                                 snapshot['objects'][request.object_id]['measured']['T_world_object'])
                             lifted_q = c._end_configuration(lift.trajectory)
-                            # Screen placement with the same original candidates and
-                            # measured/predicted attachment. Discard these paths: the
-                            # place skill MUST solve again after its fresh observation.
-                            if self._placement_stages(task, lifted_q, relative, None,
-                                    candidates=screened.places_by_grasp[grasp_candidate.candidate_id]) is None:
+                            placement = self._placement_stages(task, lifted_q, relative,
+                                getattr(self, '_paired_place_request', None),
+                                candidates=screened.places_by_grasp[grasp_candidate.candidate_id])
+                            if placement is None:
                                 continue
+                            self._selected_placement = placement
                             empty = NativeStageState(None if measured_jaw is not None else False,
                                 'empty', gripper_positions=measured_jaw)
                             held = NativeStageState(True, task.object_name, relative)
@@ -303,6 +303,25 @@ class PickPlaceNativePhases:
         primitive = NativePrimitive(request.skill, request.object_id, stages)
         return PlannedSkill(digest(request.as_dict()), snapshot['snapshot_id'], primitive.fingerprint(),
                             primitive, expected.tolist(), 'shared_PickPlaceCoordinator_phase_solvers')
+
+    def plan_pair(self, grasp_request, place_request, snapshot):
+        """Retain the jointly feasible paths; do not reconstruct a measured attachment."""
+        if (grasp_request.skill!='grasp' or place_request.skill!='place'
+                or grasp_request.object_id!=place_request.object_id):
+            raise SceneInvalid('A paired grasp and place of the same instance is required')
+        self._selected_placement=None
+        self._paired_place_request=place_request
+        try:
+            grasp=self.plan(grasp_request,snapshot)
+            if self._selected_placement is None:raise SceneInvalid('Joint placement candidate missing')
+            stages,expected=self._selected_placement
+            primitive=NativePrimitive('place',place_request.object_id,stages)
+            place=PlannedSkill(digest(place_request.as_dict()),snapshot['snapshot_id'],primitive.fingerprint(),
+                primitive,expected.tolist(),'shared_joint_grasp_place_candidate')
+            return grasp,place
+        finally:
+            self._paired_place_request=None
+            self._selected_placement=None
 
 
     def _grasp_relations(self, task, measured_jaw, source_snapshot=None):

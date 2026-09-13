@@ -36,7 +36,7 @@ class CuroboNativeStageAuditor:
         self._native_audit = False
         self.last_duplicate_exclusion = None
 
-    def __call__(self, plan, snapshot):
+    def __call__(self, plan, snapshot, *, execution_state=None):
         from rm75_app.planning.contracts import JointConfiguration
 
         self.last_evidence = []
@@ -48,6 +48,18 @@ class CuroboNativeStageAuditor:
         if primitive.skill not in ('grasp', 'place'):
             raise SceneInvalid('Native contact auditor not installed for this skill')
         robot = snapshot['robot']
+        approved_state = None
+        if execution_state is not None:
+            feedback=execution_state['feedback'];approved_state=execution_state['state']
+            if (execution_state.get('source')!='approved_grasp_place_prediction'
+                    or execution_state.get('snapshot_id')!=snapshot['snapshot_id']
+                    or execution_state.get('payload_digest')!=plan.payload_digest
+                    or not isinstance(approved_state,NativeStageState)
+                    or feedback.get('source')!='measured_feedback' or feedback.get('idle') is not True
+                    or tuple(feedback['joint_names'])!=tuple(robot['joint_names'])):
+                raise SceneInvalid('Invalid nonvisual execution audit context')
+            robot=dict(robot,positions=feedback['positions'],gripper_positions=feedback['gripper_positions'],
+                holding=approved_state.holding,T_world_tcp=feedback['T_world_tcp'])
         measured_jaw = robot.get('gripper_positions')
         native = snapshot.get('observation_domain') in ('real', 'physics')
         self._native_audit = native
@@ -60,11 +72,12 @@ class CuroboNativeStageAuditor:
             raise SceneInvalid('Native audit requires the complete current collision scene')
         holding = robot['holding']
         self._collision_holding = holding
-        relative = None if holding == 'empty' else (
+        relative = approved_state.T_tcp_object if approved_state is not None else None if holding == 'empty' else (
             np.linalg.inv(transform(robot['T_world_tcp'])) @ transform(
                 snapshot['objects'][holding]['measured']['T_world_object']))
         initial = NativeStageState(None if measured_jaw is not None else robot['gripper_closed'],
                                    holding, relative, gripper_positions=measured_jaw)
+        if approved_state is not None:self._same_state(initial,approved_state)
         names = tuple(robot['joint_names'])
         current = JointConfiguration(names, robot['positions'])
         previous = initial

@@ -159,6 +159,7 @@ class SceneWorldModel:
         self.valid = False
         self.invalid_reason = 'not_observed'
         self.last_checkpoint = None
+        self._execution_state = None
 
     @property
     def assets(self):
@@ -181,8 +182,29 @@ class SceneWorldModel:
                          assets=self.assets, robot=self._robot, physics=self._physics,
                          checkpoint=self.last_checkpoint)
             result = copy.deepcopy(value)
+            if self._execution_state is not None:
+                result['execution_state']=copy.deepcopy(self._execution_state)
+                value=result
             result['snapshot_id'] = digest(value)
             return result
+
+    def begin_predicted_execution(self, operation_id, source_snapshot_id, object_id, prediction):
+        with self._lock:
+            if self._execution_state is not None or not self.valid or self.snapshot()['snapshot_id']!=source_snapshot_id:
+                raise SceneInvalid('A fresh exclusive observed scene is required for paired execution')
+            if object_id not in self._objects:raise SceneInvalid('Unknown predicted instance')
+            self._execution_state=dict(operation_id=identifier(operation_id),object_id=object_id,
+                source_snapshot_id=source_snapshot_id,source='simulation_prediction',
+                phase='executing_grasp_place',predicted_T_world_object=transform(prediction).tolist(),
+                visual_verification_pending=True)
+            self.valid=False;self.invalid_reason='paired_visual_verification_pending';self.revision+=1
+
+    def finish_predicted_execution(self, operation_id, prediction):
+        with self._lock:
+            if not self._execution_state or self._execution_state['operation_id']!=operation_id:
+                raise SceneInvalid('Paired execution identity changed')
+            self._execution_state.update(phase='awaiting_post_release_observation',
+                predicted_T_world_object=transform(prediction).tolist())
 
     def invalidate(self, reason):
         with self._lock:
@@ -261,6 +283,7 @@ class SceneWorldModel:
         with self._lock:
             if prepared['base_revision'] != self.revision: raise SceneInvalid('Concurrent scene update')
             self._robot = prepared['batch']['robot']
+            self._execution_state = None
             self._sensor_session = prepared['batch']['sensor_session']
             for oid, row in prepared['rows'].items():
                 self._objects[oid]['measured'] = row
@@ -310,6 +333,9 @@ class CheckpointSynchronizer:
         with self.world._lock:
             try:
                 self.world.check_assets()
+                execution=self.world._execution_state
+                if execution and execution['phase']!='awaiting_post_release_observation':
+                    raise SceneInvalid('Object synchronization is forbidden inside paired execution')
                 batch = self.source.capture(tuple(self.world._objects), after=after, boundary=boundary)
                 prepared = self.world.prepare_checkpoint(batch, after=after, now=self.clock(),
                                                          policy=self.policy, boundary=boundary)
@@ -319,6 +345,7 @@ class CheckpointSynchronizer:
                     candidate['objects'][oid]['measured'] = copy.deepcopy(row)
                     candidate['objects'][oid]['lifecycle'] = 'held' if batch['robot']['holding']==oid else 'free'
                 candidate['robot'] = copy.deepcopy(batch['robot'])
+                candidate.pop('execution_state',None)
                 candidate['revision'] = self.world.revision+1
                 candidate['valid'] = True; candidate['invalid_reason'] = None
                 candidate['sensor_session'] = batch['sensor_session']; candidate['checkpoint'] = boundary

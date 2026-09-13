@@ -149,12 +149,13 @@ def read_primary_tcp_feedback(primary):
         raise ObservationUnavailable('Primary closed during measured TCP feedback')
     clock = getattr(primary, "simulation_clock", None)
     physical_clock = None if clock is None else clock.read()
-    raw = primary.read_state()
+    raw = (primary.read_state(include_objects=False)
+           if not getattr(primary, 'object_observations_allowed', True) else primary.read_state())
     arm = tuple(f'joint_{i}' for i in range(1, 8))
     jaw = tuple(f'gripper_{side}_{part}_Joint' for side in ('Left','Right') for part in ('1','2','Support'))
     names = tuple(raw['joint_names'])
     q = np.asarray(raw['positions'], dtype=float)
-    if (raw.get('domain') != 'physics' or raw.get('source') != 'native_actor_and_joint_readback'
+    if (raw.get('domain') != 'physics' or raw.get('source') not in ('native_actor_and_joint_readback','native_joint_only_readback')
             or len(names) != 13 or set(names) != set(arm+jaw)
             or q.shape != (13,) or not np.isfinite(q).all()):
         raise ObservationUnavailable('Complete actual primary joint feedback required')
