@@ -26,17 +26,23 @@ def test_rejected_grasp_continues_original_candidate_loop_without_execution(rig)
         snapshot['robot']['positions']), (first, second), (place,), planning_scene(snapshot),
         max_motion_candidates=2, place_candidates_by_grasp={'first': (place,), 'second': (place,)})
     calls = []
+    events = []
     def screen(candidate, observed, configuration):
         calls.append((candidate.candidate_id, observed['snapshot_id']))
         assert configuration.positions[0] == pytest.approx(candidate.pose.position[0])
         return candidate.candidate_id == 'second'
     phases = PickPlaceNativePhases(PickPlaceCoordinator(planner, SimpleNamespace()),
-        lambda request, observed: task, None, None, closure_screen=screen)
+        lambda request, observed: task, None, None, closure_screen=screen, emit=lambda **row: events.append(row))
     result = phases.plan(SkillRequest('grasp', 'a'), snapshot)
     assert calls == [('first', snapshot['snapshot_id']), ('second', snapshot['snapshot_id'])]
     assert result.payload.stages[1].trajectory.positions[-1, 0] == pytest.approx(.31)
     assert [s.name for s in result.payload.stages] == ['approach', 'grasp', 'lift']
     assert planner.closed is False
+    endpoints = [row for row in events if row.get("kind") == "swm_native_grasp_endpoint"]
+    assert [row["candidate_id"] for row in endpoints] == ["first", "second"]
+    assert all(row["measured"] is False and row["source"] == "planned_endpoint_fk" for row in endpoints)
+    assert all(row["snapshot_id"] == snapshot["snapshot_id"] for row in endpoints)
+    assert endpoints[-1]["positions"][0] == pytest.approx(.31)
 
 
 @pytest.mark.parametrize('failure,expected', [(native_closure.NativeClosureRejected('contact'), False),

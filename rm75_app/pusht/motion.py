@@ -38,7 +38,10 @@ class PushCollisionRejected(PushPathRejected):
                     or not isinstance(row.get('robot_link'),str) or not row['robot_link']
                     or (row['collision_type']=='world' and not isinstance(row.get('world_object'),str))):
                 raise ValueError('Invalid native collision contact identity')
-            depth=float(row['penetration_m'])
+            try:
+                depth=float(row['penetration_m'])
+            except (KeyError,TypeError,ValueError,OverflowError) as exc:
+                raise ValueError('Invalid or missing native collision depth') from exc
             if not np.isfinite(depth) or depth<=0:raise ValueError('Invalid native collision depth')
         if not contacts:raise ValueError('Collision rejection needs native contact evidence')
         super().__init__(f'PushT collision audit rejected path: {contacts[:3]}')

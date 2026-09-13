@@ -1,0 +1,18 @@
+{
+  "status": "PARTIAL_DELIVERY",
+  "tested_commit": "396bc2e18702c343c059993731b4f341b041c9ad",
+  "tested_source": "base plus source.patch and source_input_sha256.txt; pre-existing changes preserved",
+  "native_run": "runtime_data/swm_pen_precision_XWbNVQ",
+  "seed": "unchanged original planner reset_seed; no explicit worker seed override",
+  "solver_position_tolerance_m": 0.0001,
+  "targeted_tests": {"passed": 21, "seconds": 0.41},
+  "full_tests": {"passed": 1972, "failed": 1, "warnings": 1, "seconds": 46.62,
+    "failure": "test_actual_phase_rescreens_after_closure_veto_preserving_pairing reads ranked_ids from newly added endpoint event"},
+  "actual_simulation": {"status": "no_feasible_native_trajectory", "planned_endpoints": 8,
+    "maximum_endpoint_position_error_m": 9.657056180250437e-8,
+    "closure_not_rejected": 2, "closure_rejected": 6,
+    "full_grasp_place_success": false, "post_release_checkpoint_qualified": false},
+  "cleanup": {"primary_closed": true, "robot_mirror_closed": true, "planner_pointer_released": true},
+  "safety_thresholds_relaxed": false,
+  "hardware": "NOT_AUTHORIZED_NOT_RUN"
+}

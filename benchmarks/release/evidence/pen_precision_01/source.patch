@@ -1,0 +1,127 @@
+diff --git a/docs/CODEX_SWM_ATOMIC_INTEGRATION_RESULTS_20260912.md b/docs/CODEX_SWM_ATOMIC_INTEGRATION_RESULTS_20260912.md
+index e50263f..0968646 100644
+--- a/docs/CODEX_SWM_ATOMIC_INTEGRATION_RESULTS_20260912.md
++++ b/docs/CODEX_SWM_ATOMIC_INTEGRATION_RESULTS_20260912.md
+@@ -792,3 +792,27 @@ Eight targeted software tests passed: one bad hypothesis eliminates A while B is
+ Full mandatory-isolated tests/: 1970 passed / 3 failed / 1 existing warning, 45.31 s. Three existing motion-chain collision/self/neighbor fixtures omit penetration_m, and the new constructor currently raises KeyError rather than their expected RuntimeError/ValueError family. This is a newly exposed validation compatibility regression, retained without another edit in this turn. Missing depths must not be fabricated or treated as a normal candidate result; a subsequent fix must produce a controlled fatal validation error. The two prior dirty files remain outside this commit but are included in tested-worktree hashes.
+ 
+ Actual native positive regression: original GPU audit/scoring of candidate 0 nominal physical prediction ran again under mandatory network isolation and passed all 1880 samples, with original contact and retreat rules unchanged. No new CPU rollout or primary pen execution ran this turn. Evidence: benchmarks/release/evidence/candidate_rejection_01/ contains the five bounded pen rejection reports, exact source hashes, full/targeted tests and actual native positive audit. Kernel: targeted green, full regression NOT_GREEN. Native wiring: typed candidate rejection added; actual native negative-search qualification remains open. Model inference NOT_RUN; hardware NOT_AUTHORIZED_NOT_RUN. Overall PARTIAL_DELIVERY. Next: repair the controlled missing-depth error contract, qualify rejected-candidate continuation natively, and continue the pen joint-grasp search without relaxing its support/table protection or the current no-held-object-observation policy.
++
++## 2026-09-13 controlled depth validation repair and linear-planning investigation
++
++The two previously retained changes were committed as 396bc2e: deterministic PushT freshness tests and the explicit native-audit cancellation probe. That commit did not run tests or the probe and was not pushed in that turn.
++
++PushCollisionRejected now converts a missing or unparseable penetration_m into an explicit fatal ValueError, preserving the original exception as its cause. Finite positive depth validation remains mandatory. No default depth, collision bypass or ordinary CandidateInfeasible result is introduced for malformed evidence. This repair has not been tested; the historical 1970 passed / 3 failed result remains the last full regression evidence, not a result for the repaired worktree.
++
++Text inspection of the original PickPlaceCoordinator._plan_linear_stage shows that it forwards the candidate to plan_linear_candidates and returns result.best without a separate endpoint refinement in that method. The curobo2 backend declares a default position_tolerance of 0.005 m. These facts do not establish the effective linear-stage tolerance in the formal pen run or prove the cause of support/table contact. A cached-IK versus solved-endpoint discrepancy remains a hypothesis requiring endpoint FK and effective solver-setting evidence. No planner tolerance, endpoint, contact rule or model geometry was changed to make a candidate pass.
++
++Kernel: depth error-contract repair implemented, regression NOT_RUN on this repair. Native wiring: paired policy previously installed, formal grasp-place completion still unqualified. Model inference: NOT_RUN. Actual simulation: NOT_RUN in these follow-up turns; prior worker_02 planning failure remains authoritative. Hardware: NOT_AUTHORIZED_NOT_RUN; no device operation. Overall PARTIAL_DELIVERY.
++
++Next: with explicit execution approval, run the isolated candidate-rejection and motion-chain regressions; establish the actual linear endpoint residual and closure initialization difference before selecting a planning correction; then qualify the complete before-grasp / release-and-retreat / final-observation sequence. Native rejected-candidate continuation, online physical-parameter consumption, FoundationPose/SAM3D, other tasks and the full G0-G10 requirements remain open. No old six-visual-checkpoint acceptance is reinstated.
++
++## 2026-09-13 explicitly authorized isolated regression and formal pen rerun
++
++User explicitly authorized network-isolated regression tests and native pen simulation, excluding all real devices. No real authorization flag was supplied. The copied request remains task=pickplace, mode=sim, object_name=bi; hardware_reviewed remains false. Existing assets, original planner/executor and collision policies were retained without a threshold change.
++
++Kernel: targeted candidate-rejection and motion-chain regression completed with 30 passed in 1.50 s. Full formal tests/ regression, run serially after the native worker terminated, completed with 1973 passed and one trimesh deprecation warning in 48.09 s. Both used PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 and python3 tools/run_network_isolated.py -- python3 -m pytest with explicit test paths. The controlled missing-depth ValueError repair is now covered by the previously failing motion-chain cases. This is a current-worktree result, not a clean committed-release qualification.
++
++Native wiring / actual simulation: original workcell.worker ran under the mandatory network wrapper and a 600-second timeout using the unchanged prior profile/request copied into runtime_data/swm_paired_pen_authorized_AnMQWe/. It terminated with exit code 1 and RuntimeError: Native atomic phase has no feasible trajectory. The actual traceback reaches paired_grasp_place.run -> PickPlaceNativePhases.plan_pair -> plan. Original private closure predictions rejected candidates; retained final events report primary_unchanged=true and private_robot_closed=true. Main executor drive-command release reports zero arm and gripper writes. No complete primary grasp/place or final post-release observation is claimed. Cleanup reports primary_closed=true, robot_mirror_closed=true and planner_pointer_released=true.
++
++Model inference: NOT_RUN. Hardware: NOT_AUTHORIZED_NOT_RUN; no real device connected or operated. Overall PARTIAL_DELIVERY. Software regression success does not qualify formal grasp-place execution. The next implementation investigation remains actual planned-endpoint versus cached-IK closure behavior, without assuming the default backend tolerance is the cause and without relaxing collision checks. The new observation policy and all remaining parameter-loop / other-task / G0-G10 requirements remain intact.
++
++Evidence: runtime_data/swm_paired_pen_authorized_AnMQWe/{request.json,profile.json,console.log,result.json,traceback.txt,events.jsonl,full_tests.log,swm_native/closure_candidates/}. The native launch used /home/zhangzhao/anaconda3/envs/curobo2/bin/python -m rm75_app.workcell.worker with --run-dir, --profile and --app-root only, wrapped by python3 tools/run_network_isolated.py -- timeout --signal=INT --kill-after=30s 600s. No real-device command was used.
+diff --git a/docs/SWM_ARCHITECTURE_PROGRESS_AND_PLAN_20260913.md b/docs/SWM_ARCHITECTURE_PROGRESS_AND_PLAN_20260913.md
+index 5845d6e..82bf3c9 100644
+--- a/docs/SWM_ARCHITECTURE_PROGRESS_AND_PLAN_20260913.md
++++ b/docs/SWM_ARCHITECTURE_PROGRESS_AND_PLAN_20260913.md
+@@ -81,7 +81,7 @@
+ - 放置、松爪、退让后的独立定位用于判断实际效果，不能用仍被夹持或遮挡时的检查替代。
+ - 定位发现偏差时，从实际状态重新规划剩余任务。例如笔已松开但放错位置，需要重新抓取，不能空手重放 place。
+ 
+-**实现状态：此规则已由用户确认，但尚未修改代码。** 此前抓后/放前必须视觉定位，以及抓放六个检查点均须独立视觉采集的要求，应按本节调整。其余非视觉执行检查、碰撞要求和成功标准不随之取消。
++**实现状态：已完成首轮生产接线，包括成对抓放状态消费者、持物期间物体采集保护及隐藏闭爪后同步的替换；正式 worker 仍在原生候选规划阶段失败，完整抓放与释放退让后独立定位尚未验收通过。** 此前抓后/放前必须视觉定位，以及抓放六个检查点均须独立视觉采集的要求，应按本节调整。其余非视觉执行检查、碰撞要求和成功标准不随之取消。
+ 
+ ## 五、大模型驱动的具身智能框架
+ 
+diff --git a/rm75_app/pusht/motion.py b/rm75_app/pusht/motion.py
+index 477009f..d35a141 100644
+--- a/rm75_app/pusht/motion.py
++++ b/rm75_app/pusht/motion.py
+@@ -38,7 +38,10 @@ class PushCollisionRejected(PushPathRejected):
+                     or not isinstance(row.get('robot_link'),str) or not row['robot_link']
+                     or (row['collision_type']=='world' and not isinstance(row.get('world_object'),str))):
+                 raise ValueError('Invalid native collision contact identity')
+-            depth=float(row['penetration_m'])
++            try:
++                depth=float(row['penetration_m'])
++            except (KeyError,TypeError,ValueError,OverflowError) as exc:
++                raise ValueError('Invalid or missing native collision depth') from exc
+             if not np.isfinite(depth) or depth<=0:raise ValueError('Invalid native collision depth')
+         if not contacts:raise ValueError('Collision rejection needs native contact evidence')
+         super().__init__(f'PushT collision audit rejected path: {contacts[:3]}')
+diff --git a/rm75_app/swm/native_context.py b/rm75_app/swm/native_context.py
+index 138da43..4f4e62b 100644
+--- a/rm75_app/swm/native_context.py
++++ b/rm75_app/swm/native_context.py
+@@ -112,7 +112,11 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
+     primary.velocity_readback = NativeArticulationVelocity(primary.env.unwrapped.agent.robot)
+     from .native_drive_commands import NativeDriveCommands
+     primary.drive_command_policy = NativeDriveCommands(primary, resources=resources, emit=events.emit)
+-    backend = resources.enter_context(Curobo2Backend(Curobo2BackendConfig()))
++    # Thin-object grasp endpoints need sub-millimetre solver accuracy.
++    # This tightens pose convergence only; native collision gates stay unchanged.
++    backend = resources.enter_context(Curobo2Backend(Curobo2BackendConfig(position_tolerance=0.0001)))
++    events.emit("swm_native_solver_precision", position_tolerance_m=backend.config.position_tolerance,
++        domain="planning_configuration", measured=False)
+     owned["backend"] = backend
+     backend.update_scene(PlanningScene())
+     backend._ensure_planner()
+diff --git a/rm75_app/swm/native_skills.py b/rm75_app/swm/native_skills.py
+index 341c57d..449a902 100644
+--- a/rm75_app/swm/native_skills.py
++++ b/rm75_app/swm/native_skills.py
+@@ -228,6 +228,15 @@ class PickPlaceNativePhases:
+                 if grasp is None or grasp.trajectory is None:
+                     continue
+                 grasp_q = c._end_configuration(grasp.trajectory)
++                endpoint_pose = _pose_matrix(c.planner.tool_pose_for_configuration(grasp_q, task.tool_frame))
++                endpoint_position_error, endpoint_rotation_error = pose_error(
++                    endpoint_pose, _pose_matrix(grasp_candidate.pose))
++                self.emit(kind="swm_native_grasp_endpoint", candidate_id=grasp_candidate.candidate_id,
++                    snapshot_id=snapshot["snapshot_id"], joint_names=list(grasp_q.names),
++                    positions=np.asarray(grasp_q.positions).tolist(),
++                    T_base_tcp=endpoint_pose.tolist(),
++                    position_error_m=endpoint_position_error, rotation_error_rad=endpoint_rotation_error,
++                    source="planned_endpoint_fk", measured=False)
+                 if self.closure_screen is not None:
+                     permitted = self.closure_screen(grasp_candidate, snapshot, grasp_q)
+                     if type(permitted) is not bool:
+diff --git a/tests/swm/test_native_closure_candidates.py b/tests/swm/test_native_closure_candidates.py
+index f718448..fb21893 100644
+--- a/tests/swm/test_native_closure_candidates.py
++++ b/tests/swm/test_native_closure_candidates.py
+@@ -26,17 +26,23 @@ def test_rejected_grasp_continues_original_candidate_loop_without_execution(rig)
+         snapshot['robot']['positions']), (first, second), (place,), planning_scene(snapshot),
+         max_motion_candidates=2, place_candidates_by_grasp={'first': (place,), 'second': (place,)})
+     calls = []
++    events = []
+     def screen(candidate, observed, configuration):
+         calls.append((candidate.candidate_id, observed['snapshot_id']))
+         assert configuration.positions[0] == pytest.approx(candidate.pose.position[0])
+         return candidate.candidate_id == 'second'
+     phases = PickPlaceNativePhases(PickPlaceCoordinator(planner, SimpleNamespace()),
+-        lambda request, observed: task, None, None, closure_screen=screen)
++        lambda request, observed: task, None, None, closure_screen=screen, emit=lambda **row: events.append(row))
+     result = phases.plan(SkillRequest('grasp', 'a'), snapshot)
+     assert calls == [('first', snapshot['snapshot_id']), ('second', snapshot['snapshot_id'])]
+     assert result.payload.stages[1].trajectory.positions[-1, 0] == pytest.approx(.31)
+     assert [s.name for s in result.payload.stages] == ['approach', 'grasp', 'lift']
+     assert planner.closed is False
++    endpoints = [row for row in events if row.get("kind") == "swm_native_grasp_endpoint"]
++    assert [row["candidate_id"] for row in endpoints] == ["first", "second"]
++    assert all(row["measured"] is False and row["source"] == "planned_endpoint_fk" for row in endpoints)
++    assert all(row["snapshot_id"] == snapshot["snapshot_id"] for row in endpoints)
++    assert endpoints[-1]["positions"][0] == pytest.approx(.31)
+ 
+ 
+ @pytest.mark.parametrize('failure,expected', [(native_closure.NativeClosureRejected('contact'), False),

@@ -228,6 +228,15 @@ class PickPlaceNativePhases:
                 if grasp is None or grasp.trajectory is None:
                     continue
                 grasp_q = c._end_configuration(grasp.trajectory)
+                endpoint_pose = _pose_matrix(c.planner.tool_pose_for_configuration(grasp_q, task.tool_frame))
+                endpoint_position_error, endpoint_rotation_error = pose_error(
+                    endpoint_pose, _pose_matrix(grasp_candidate.pose))
+                self.emit(kind="swm_native_grasp_endpoint", candidate_id=grasp_candidate.candidate_id,
+                    snapshot_id=snapshot["snapshot_id"], joint_names=list(grasp_q.names),
+                    positions=np.asarray(grasp_q.positions).tolist(),
+                    T_base_tcp=endpoint_pose.tolist(),
+                    position_error_m=endpoint_position_error, rotation_error_rad=endpoint_rotation_error,
+                    source="planned_endpoint_fk", measured=False)
                 if self.closure_screen is not None:
                     permitted = self.closure_screen(grasp_candidate, snapshot, grasp_q)
                     if type(permitted) is not bool:

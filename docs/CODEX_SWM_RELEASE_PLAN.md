@@ -1,5 +1,19 @@
 # SWM 软件交付滚动计划
 
+## 当前执行合同：用户完整 M1-M10 Goal（2026-09-13）
+
+当前基线 396bc2e，既有 dirty 修改保留。目标为 SOFTWARE_DELIVERY_READY / HARDWARE_VALIDATION_PENDING；任一软件条件缺失均为 PARTIAL_DELIVERY。下方早期 M0-M1 与六视觉检查点文字均为历史记录，不是当前验收规则。
+
+当前顺序：M1 新视觉策略和笔正式 worker、M3 候选异常分类优先；继续 M2 两底板 Jimu、M3 连续两次 push 与 posterior N+1 消费、M4 实际 FP 与 SAM3D、M5 LLM 恢复、M6 受约束 pull/rotate、M7 原控制台。M8 可追溯回归、M9 原架构及安全门槛、M10 无真实设备贯穿全部工作。原 G0-G10 完整分母保留，不缩减为本轮最小样例。
+
+最新动作：笔正式上下文的位置求解精度收紧为 0.1 毫米，不修改碰撞标准；8 个末端误差均低于 1e-7 米，2 个闭爪预测未拒绝，完整链仍不可行。下一处定位闭爪通过后的 lift/place 联合阶段。21 项定向通过，完整回归 1972 通过、1 失败，旧测试未按事件类型筛选 ranked_ids。
+
+独立模型进展：现有 FoundationPoseRefiner 在本地 mustard0 RGB-D 上实际推理成功；曝光与 RM75 外参未确认，不写入 measured SWM，M4 尚未通过。下一步复用具有对应模型、曝光元数据和标定的现有录制数据接完整检查点；不启动实时相机。
+
+实际证据：benchmarks/release/evidence/pen_precision_01 与 offline_fp_01；机器验收表 current_delivery_goal 为本次完整范围索引。测试/仿真/已有离线模型已获授权，不再等待泛化软件测试许可。
+
+## 历史滚动记录（保留原输入和失败）
+
 目标：完整通过 `CODEX_SWM_RELEASE_GOAL_827A15E.md` 的 G0–G10。当前为 `PARTIAL_DELIVERY`，硬件未获许可。
 
 基线：`7e3fee4196e7337e18217a0d72518789113eda77`，开始时工作树干净。

@@ -15444,5 +15444,126 @@
     "model_inference": "NOT_RUN",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "evidence": "benchmarks/release/evidence/candidate_rejection_01"
+  },
+  "current_delivery_goal": {
+    "target": "SOFTWARE_DELIVERY_READY / HARDWARE_VALIDATION_PENDING",
+    "source": "User full M1-M10 goal; architecture section 4 and retained G0-G10",
+    "baseline_commit": "396bc2e18702c343c059993731b4f341b041c9ad",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "milestones": {
+      "M1": "PARTIAL: paired production wiring; two precision-run closure candidates not rejected; complete pen worker and recovery still unqualified",
+      "M2": "NOT_COMPLETE: both Jimu bases and measured relative structure targets",
+      "M3": "PARTIAL: typed candidate rejection implemented; actual A-reject/B-pass and two-push posterior consumption unqualified",
+      "M4": "PARTIAL: actual FoundationPose adapter inference completed; exposure/extrinsic SWM admission and SAM3D metric registration unqualified",
+      "M5": "NOT_COMPLETE: actual LLM program and recovery loop",
+      "M6": "NOT_COMPLETE: constrained native pull and rotate",
+      "M7": "NOT_COMPLETE: unified console SWM worker/status qualification",
+      "M8": "NOT_GREEN: latest full regression 1972 passed / 1 failed",
+      "M9": "RETAINED: original architecture and safety gates; no relaxed collision checks",
+      "M10": "ENFORCED: isolated software execution only; no real devices"
+    }
+  },
+  "pen_precision_20260913": {
+    "status": "PARTIAL_DELIVERY",
+    "tested_commit": "396bc2e18702c343c059993731b4f341b041c9ad",
+    "tested_source": "base plus source.patch and source_input_sha256.txt; pre-existing changes preserved",
+    "native_run": "runtime_data/swm_pen_precision_XWbNVQ",
+    "seed": "unchanged original planner reset_seed; no explicit worker seed override",
+    "solver_position_tolerance_m": 0.0001,
+    "targeted_tests": {
+      "passed": 21,
+      "seconds": 0.41
+    },
+    "full_tests": {
+      "passed": 1972,
+      "failed": 1,
+      "warnings": 1,
+      "seconds": 46.62,
+      "failure": "test_actual_phase_rescreens_after_closure_veto_preserving_pairing reads ranked_ids from newly added endpoint event"
+    },
+    "actual_simulation": {
+      "status": "no_feasible_native_trajectory",
+      "planned_endpoints": 8,
+      "maximum_endpoint_position_error_m": 9.657056180250437e-08,
+      "closure_not_rejected": 2,
+      "closure_rejected": 6,
+      "full_grasp_place_success": false,
+      "post_release_checkpoint_qualified": false
+    },
+    "cleanup": {
+      "primary_closed": true,
+      "robot_mirror_closed": true,
+      "planner_pointer_released": true
+    },
+    "safety_thresholds_relaxed": false,
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "evidence": "benchmarks/release/evidence/pen_precision_01"
+  },
+  "offline_fp_20260913": {
+    "domain": "offline_recorded_RGBD_model_inference",
+    "seed": 0,
+    "hardware_connected": false,
+    "checkpoint_admitted": false,
+    "capture_time": null,
+    "world_extrinsic": null,
+    "unknown_reason": "Exposure provenance and RM75 world extrinsic are not established for this example",
+    "input_sha256": {
+      "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/rgb/1581120424100262102.png": "b5ec4c86240446f0eaa272251e8b3c77b8fa3609cdfb182b8336088cf051e056",
+      "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/depth/1581120424100262102.png": "66a805a9fe24d587cee0d43963752d635936ea5c3a9c653bf0c1100dbf1eb612",
+      "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/masks/1581120424100262102.png": "fe79e934350b520d8cf1210a6d182f497a8d23871fcd05d8a9314c60655b649f",
+      "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/cam_K.txt": "215ee25197aa8af78d64e51cec1e81ecb48ec2a677eb2497bfb71380a3cd6af7",
+      "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/mesh/textured_simple.obj": "f156897814cba5889427759c52d76f7d7c7dd7902aef87e38ec898195bbc6d79",
+      "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/mesh/textured_simple.obj.mtl": "cd7bda0bfcb616cfb2ece5ccc52029c6e6ec994a98b8bf77e208a32a89627056",
+      "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/mesh/texture_map.png": "5ab81c84e1b0a945c9f1a3f20fe765720ab607ca2841a1da3454b9cf443893b1",
+      "/home/zhangzhao/PycharmProjects/FoundationPose/weights/2024-01-11-20-02-45/model_best.pth": "81924d384bf5c26c646ee4783104982ae3d1e049c181c36641b6a7aeae494c26",
+      "/home/zhangzhao/PycharmProjects/FoundationPose/weights/2023-10-28-18-33-37/model_best.pth": "774700586ddc435d408fc01c9809c43e151232936369dfbea0f0f964ba471d60"
+    },
+    "frame_sequence": 0,
+    "frame_file": "1581120424100262102.png",
+    "depth_unit": "metres_from_original_reader_millimetre_PNG",
+    "mesh_extents": [
+      0.097151,
+      0.066619,
+      0.19140800000000002
+    ],
+    "object_frame": "original_example_mesh",
+    "inference_started_at": 1789300261.9222746,
+    "versions": {
+      "torch": "2.7.1+cu128",
+      "numpy": "2.2.6"
+    },
+    "status": "MODEL_INFERRED_NOT_SWM_CHECKPOINT_QUALIFIED",
+    "T_camera_object": [
+      [
+        0.6081539988517761,
+        -0.2509165108203888,
+        0.7531198859214783,
+        -0.4481935203075409
+      ],
+      [
+        -0.7734569907188416,
+        -0.4008026719093323,
+        0.4910412132740021,
+        0.11880075186491013
+      ],
+      [
+        0.17864219844341278,
+        -0.881134569644928,
+        -0.4378228783607483,
+        0.8016035556793213
+      ],
+      [
+        0,
+        0,
+        0,
+        1
+      ]
+    ],
+    "quality_score": 77.703125,
+    "source": "foundationpose_spherical",
+    "inference_completed_at": 1789300281.5410428,
+    "evidence": "benchmarks/release/evidence/offline_fp_01",
+    "swm_visual_chain_qualified": false,
+    "sam3d_run": false
   }
 }

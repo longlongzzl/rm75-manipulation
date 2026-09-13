@@ -1,0 +1,225 @@
+Network isolation active: non-Unix sockets blocked in this process and its descendants.
+[reset_object()] self.diameter:0.19646325799497472, vox_size:0.009823162899748735
+[reset_object()] self.pts:torch.Size([607, 3])
+[reset_object()] reset done
+[make_rotation_grid()] cam_in_obs:(42, 4, 4)
+[make_rotation_grid()] rot_grid:(252, 4, 4)
+[make_rotation_grid()] after cluster, rot_grid:(252, 4, 4)
+[make_rotation_grid()] self.rot_grid: torch.Size([252, 4, 4])
+[__init__()] self.cfg: 
+ lr: 0.0001
+c_in: 6
+zfar: 'Infinity'
+debug: null
+n_view: 1
+run_id: 3wy8qqex
+use_BN: true
+exp_name: 2024-01-11-20-02-45
+n_epochs: 62
+save_dir: /home/bowenw/debug/2024-01-11-20-02-45/
+use_mask: false
+loss_type: pairwise_valid
+optimizer: adam
+batch_size: 64
+crop_ratio: 1.1
+enable_amp: true
+use_normal: false
+max_num_key: null
+warmup_step: -1
+input_resize:
+- 160
+- 160
+max_step_val: 1000
+vis_interval: 1000
+weight_decay: 0
+normalize_xyz: true
+resume_run_id: null
+clip_grad_norm: 'Infinity'
+lr_epoch_decay: 500
+render_backend: nvdiffrast
+train_num_pair: 5
+lr_decay_epochs:
+- 50
+n_epochs_warmup: 1
+make_pair_online: false
+gradient_max_norm: 'Infinity'
+max_step_per_epoch: 10000
+n_rendering_workers: 1
+save_epoch_interval: 100
+n_dataloader_workers: 100
+split_objects_across_gpus: true
+ckpt_dir: /home/zhangzhao/PycharmProjects/FoundationPose/learning/training/../../weights/2024-01-11-20-02-45/model_best.pth
+
+[__init__()] self.h5_file:None
+[__init__()] Using pretrained model from /home/zhangzhao/PycharmProjects/FoundationPose/learning/training/../../weights/2024-01-11-20-02-45/model_best.pth
+[__init__()] init done
+[__init__()] welcome
+[__init__()] self.cfg: 
+ lr: 0.0001
+c_in: 6
+zfar: .inf
+debug: null
+w_rot: 0.1
+n_view: 1
+run_id: null
+use_BN: true
+rot_rep: axis_angle
+ckpt_dir: /home/zhangzhao/PycharmProjects/FoundationPose/learning/training/../../weights/2023-10-28-18-33-37/model_best.pth
+exp_name: 2023-10-28-18-33-37
+save_dir: /tmp/2023-10-28-18-33-37/
+loss_type: l2
+optimizer: adam
+trans_rep: tracknet
+batch_size: 64
+crop_ratio: 1.2
+use_normal: false
+BN_momentum: 0.1
+max_num_key: null
+warmup_step: -1
+input_resize:
+- 160
+- 160
+max_step_val: 1000
+normal_uint8: false
+vis_interval: 1000
+weight_decay: 0
+n_max_objects: null
+normalize_xyz: true
+clip_grad_norm: 'Infinity'
+rot_normalizer: 0.3490658503988659
+trans_normalizer:
+- 0.019999999552965164
+- 0.019999999552965164
+- 0.05000000074505806
+max_step_per_epoch: 25000
+val_epoch_interval: 10
+n_dataloader_workers: 60
+enable_amp: true
+use_mask: false
+
+[__init__()] self.h5_file:
+[__init__()] Using pretrained model from /home/zhangzhao/PycharmProjects/FoundationPose/learning/training/../../weights/2023-10-28-18-33-37/model_best.pth
+[__init__()] init done
+[register()] Welcome
+[register()] poses:(252, 4, 4)
+[register()] after viewpoint, add_errs min:-1.0
+/home/zhangzhao/anaconda3/envs/foundationpose310/lib/python3.10/site-packages/torch/__init__.py:1240: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at /pytorch/torch/csrc/tensor/python_tensor.cpp:434.)
+  _C._set_default_tensor_type(t)
+[predict()] ob_in_cams:(252, 4, 4)
+[predict()] self.cfg.use_normal:False
+[predict()] trans_normalizer:[0.019999999552965164, 0.019999999552965164, 0.05000000074505806], rot_normalizer:0.3490658503988659
+[predict()] making cropped data
+[make_crop_data_batch()] Welcome make_crop_data_batch
+[make_crop_data_batch()] make tf_to_crops done
+[make_crop_data_batch()] render done
+[make_crop_data_batch()] warp done
+[make_crop_data_batch()] pose batch data done
+[predict()] forward start
+/home/zhangzhao/PycharmProjects/FoundationPose/learning/training/predict_pose_refine.py:190: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=self.amp):
+[predict()] forward done
+[predict()] making cropped data
+[make_crop_data_batch()] Welcome make_crop_data_batch
+[make_crop_data_batch()] make tf_to_crops done
+[make_crop_data_batch()] render done
+[make_crop_data_batch()] warp done
+[make_crop_data_batch()] pose batch data done
+[predict()] forward start
+[predict()] forward done
+[predict()] making cropped data
+[make_crop_data_batch()] Welcome make_crop_data_batch
+[make_crop_data_batch()] make tf_to_crops done
+[make_crop_data_batch()] render done
+[make_crop_data_batch()] warp done
+[make_crop_data_batch()] pose batch data done
+[predict()] forward start
+[predict()] forward done
+[predict()] making cropped data
+[make_crop_data_batch()] Welcome make_crop_data_batch
+[make_crop_data_batch()] make tf_to_crops done
+[make_crop_data_batch()] render done
+[make_crop_data_batch()] warp done
+[make_crop_data_batch()] pose batch data done
+[predict()] forward start
+[predict()] forward done
+[predict()] making cropped data
+[make_crop_data_batch()] Welcome make_crop_data_batch
+[make_crop_data_batch()] make tf_to_crops done
+[make_crop_data_batch()] render done
+[make_crop_data_batch()] warp done
+[make_crop_data_batch()] pose batch data done
+[predict()] forward start
+[predict()] forward done
+[predict()] ob_in_cams:(252, 4, 4)
+[predict()] self.cfg.use_normal:False
+[predict()] making cropped data
+[make_crop_data_batch()] Welcome make_crop_data_batch
+[make_crop_data_batch()] make tf_to_crops done
+[make_crop_data_batch()] render done
+[make_crop_data_batch()] pose batch data done
+[find_best_among_pairs()] pose_data.rgbAs.shape[0]: 252
+/home/zhangzhao/PycharmProjects/FoundationPose/learning/training/predict_score.py:193: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=self.amp):
+[predict()] forward done
+[register()] final, add_errs min:-1.0
+[register()] sort ids:tensor([ 67,  98,   0,   6,   7,  30,  31,  72,  73,  97, 102, 103, 127, 133,
+        168, 186, 199, 223, 241, 242,   1,  68,  96, 169, 224, 109, 126, 145,
+        198, 132, 187,  12,  18,  79,  84,  85, 115, 175, 234,  13,  19,  24,
+         25,  55,  78,  91,  92, 108, 112, 114, 120, 121, 150, 151, 181, 182,
+        228, 229,  90, 176,  56,  54,  86, 104, 236, 247,  74, 193, 235, 205,
+         66, 111, 188,  26, 174, 222,  80, 230, 248, 170,  32,  69, 194, 231,
+        211,  57, 110, 113, 144, 245, 204,  14, 106,  61,  49, 131, 163, 178,
+        246, 192, 196, 240,  39,  53, 123, 171,  81, 180, 149, 172,  48,  15,
+        117,  65, 207,  88, 221,   9, 155, 135,  35, 147, 202,  29,  94, 154,
+        148, 161, 208, 232,  58, 166, 203,  52, 214, 226,  64, 105, 250,  16,
+        191,  70,  75, 141,   5,  23,  45,  77,  87, 119, 209, 183, 197, 165,
+        243, 251,  83,  10, 125, 179,  17,  34, 137,  60, 107, 158, 160, 184,
+         11,  59, 218, 244, 215, 100, 140, 177,  20,  47,  51, 227, 136, 233,
+          4, 124, 213, 239,  62,  76,  95, 138, 143, 195, 220, 249,   2,  50,
+         71,  99, 129,  22,  37, 118, 130, 167, 212,  40,  41,  46,  63, 139,
+        201,  82,  89,  93, 122, 190, 210, 216, 225, 238,   3,  21, 101, 142,
+        219, 153, 159, 185,  44,   8, 116, 134, 162, 164, 200,  27,  28,  43,
+        173,  38, 128, 152, 156, 146, 217, 189, 237,  42, 206, 157,  33,  36])
+[register()] sorted scores:tensor([77.7031, 77.7031, 77.6875, 77.6875, 77.6875, 77.6875, 77.6875, 77.6875,
+        77.6875, 77.6875, 77.6875, 77.6875, 77.6875, 77.6875, 77.6875, 77.6875,
+        77.6875, 77.6875, 77.6875, 77.6875, 77.6719, 77.6719, 77.6719, 77.6719,
+        77.6719, 77.6562, 77.6562, 77.6562, 77.6562, 77.6406, 77.5938, 77.5000,
+        77.5000, 77.5000, 77.5000, 77.5000, 77.5000, 77.5000, 77.5000, 77.4844,
+        77.4844, 77.4844, 77.4844, 77.4844, 77.4844, 77.4844, 77.4844, 77.4844,
+        77.4844, 77.4844, 77.4844, 77.4844, 77.4844, 77.4844, 77.4844, 77.4844,
+        77.4844, 77.4844, 77.4688, 77.4688, 77.4531, 77.4375, 77.4375, 77.4375,
+        77.4375, 77.4375, 77.4219, 77.4062, 77.4062, 77.3906, 77.3750, 77.3750,
+        77.3750, 77.2969, 77.1562, 77.1562, 77.1250, 77.0781, 77.0625, 77.0469,
+        77.0312, 77.0000, 76.9844, 76.9844, 76.9688, 76.9531, 76.9531, 76.9531,
+        76.9375, 76.9375, 76.9219, 76.9062, 76.8438, 76.8281, 76.8125, 76.7969,
+        76.7812, 76.7812, 76.7812, 76.7656, 76.7656, 76.7656, 76.7344, 76.7344,
+        76.7031, 76.7031, 76.6875, 76.6875, 76.6562, 76.6562, 76.6094, 76.5781,
+        76.5781, 76.5625, 76.5625, 76.5469, 76.5469, 76.5156, 76.5156, 76.4844,
+        76.4688, 76.4688, 76.4688, 76.4531, 76.4531, 76.4531, 76.4375, 76.4375,
+        76.4375, 76.4375, 76.4219, 76.4219, 76.4219, 76.4062, 76.4062, 76.4062,
+        76.3906, 76.3906, 76.3906, 76.3750, 76.3750, 76.3594, 76.3594, 76.3594,
+        76.3438, 76.3438, 76.3438, 76.3438, 76.3438, 76.3438, 76.3438, 76.3281,
+        76.3281, 76.3125, 76.3125, 76.3125, 76.2812, 76.2656, 76.2656, 76.2656,
+        76.2500, 76.2500, 76.2500, 76.2344, 76.2344, 76.2344, 76.2344, 76.2344,
+        76.2188, 76.2188, 76.2188, 76.2188, 76.2031, 76.1719, 76.1719, 76.1719,
+        76.1562, 76.1562, 76.1562, 76.1562, 76.1406, 76.1406, 76.1250, 76.1250,
+        76.1250, 76.1250, 76.1094, 76.1094, 76.1094, 76.1094, 76.1094, 76.1094,
+        76.1094, 76.1094, 76.0938, 76.0938, 76.0938, 76.0938, 76.0938, 76.0781,
+        76.0781, 76.0781, 76.0781, 76.0781, 76.0781, 76.0625, 76.0625, 76.0625,
+        76.0625, 76.0625, 76.0625, 76.0469, 76.0469, 76.0469, 76.0469, 76.0469,
+        76.0469, 76.0312, 76.0312, 76.0312, 76.0156, 76.0156, 76.0156, 76.0156,
+        76.0000, 75.9844, 75.9844, 75.9688, 75.9531, 75.9375, 75.9375, 75.9375,
+        75.9375, 75.9375, 75.9219, 75.9062, 75.9062, 75.9062, 75.8906, 75.8750,
+        75.8750, 75.8594, 75.8594, 75.8281, 75.8125, 75.7969, 75.7969, 75.7812,
+        75.7812, 75.7656, 75.7500, 75.7188])
+Warp 1.12.0 initialized:
+   CUDA Toolkit 12.9, Driver 13.0
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 5060 Ti" (8 GiB, sm_120, mempool enabled)
+   Kernel cache:
+     /home/zhangzhao/.cache/warp/1.12.0
+Module Utils 0b33452 load on device 'cuda:0' took 9.07 ms  (cached)
+{"domain": "offline_recorded_RGBD_model_inference", "seed": 0, "hardware_connected": false, "checkpoint_admitted": false, "capture_time": null, "world_extrinsic": null, "unknown_reason": "Exposure provenance and RM75 world extrinsic are not established for this example", "input_sha256": {"/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/rgb/1581120424100262102.png": "b5ec4c86240446f0eaa272251e8b3c77b8fa3609cdfb182b8336088cf051e056", "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/depth/1581120424100262102.png": "66a805a9fe24d587cee0d43963752d635936ea5c3a9c653bf0c1100dbf1eb612", "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/masks/1581120424100262102.png": "fe79e934350b520d8cf1210a6d182f497a8d23871fcd05d8a9314c60655b649f", "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/cam_K.txt": "215ee25197aa8af78d64e51cec1e81ecb48ec2a677eb2497bfb71380a3cd6af7", "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/mesh/textured_simple.obj": "f156897814cba5889427759c52d76f7d7c7dd7902aef87e38ec898195bbc6d79", "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/mesh/textured_simple.obj.mtl": "cd7bda0bfcb616cfb2ece5ccc52029c6e6ec994a98b8bf77e208a32a89627056", "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/mesh/texture_map.png": "5ab81c84e1b0a945c9f1a3f20fe765720ab607ca2841a1da3454b9cf443893b1", "/home/zhangzhao/PycharmProjects/FoundationPose/weights/2024-01-11-20-02-45/model_best.pth": "81924d384bf5c26c646ee4783104982ae3d1e049c181c36641b6a7aeae494c26", "/home/zhangzhao/PycharmProjects/FoundationPose/weights/2023-10-28-18-33-37/model_best.pth": "774700586ddc435d408fc01c9809c43e151232936369dfbea0f0f964ba471d60"}, "frame_sequence": 0, "frame_file": "1581120424100262102.png", "depth_unit": "metres_from_original_reader_millimetre_PNG", "mesh_extents": [0.097151, 0.066619, 0.19140800000000002], "object_frame": "original_example_mesh", "inference_started_at": 1789300261.9222746, "versions": {"torch": "2.7.1+cu128", "numpy": "2.2.6"}, "status": "MODEL_INFERRED_NOT_SWM_CHECKPOINT_QUALIFIED", "T_camera_object": [[0.6081539988517761, -0.2509165108203888, 0.7531198859214783, -0.4481935203075409], [-0.7734569907188416, -0.4008026719093323, 0.4910412132740021, 0.11880075186491013], [0.17864219844341278, -0.881134569644928, -0.4378228783607483, 0.8016035556793213], [0.0, 0.0, 0.0, 1.0]], "quality_score": 77.703125, "source": "foundationpose_spherical", "inference_completed_at": 1789300281.5410428}
+num original candidates = 252
+num of pose after clustering: 252

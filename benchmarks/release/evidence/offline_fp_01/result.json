@@ -1,0 +1,64 @@
+{
+  "domain": "offline_recorded_RGBD_model_inference",
+  "seed": 0,
+  "hardware_connected": false,
+  "checkpoint_admitted": false,
+  "capture_time": null,
+  "world_extrinsic": null,
+  "unknown_reason": "Exposure provenance and RM75 world extrinsic are not established for this example",
+  "input_sha256": {
+    "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/rgb/1581120424100262102.png": "b5ec4c86240446f0eaa272251e8b3c77b8fa3609cdfb182b8336088cf051e056",
+    "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/depth/1581120424100262102.png": "66a805a9fe24d587cee0d43963752d635936ea5c3a9c653bf0c1100dbf1eb612",
+    "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/masks/1581120424100262102.png": "fe79e934350b520d8cf1210a6d182f497a8d23871fcd05d8a9314c60655b649f",
+    "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/cam_K.txt": "215ee25197aa8af78d64e51cec1e81ecb48ec2a677eb2497bfb71380a3cd6af7",
+    "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/mesh/textured_simple.obj": "f156897814cba5889427759c52d76f7d7c7dd7902aef87e38ec898195bbc6d79",
+    "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/mesh/textured_simple.obj.mtl": "cd7bda0bfcb616cfb2ece5ccc52029c6e6ec994a98b8bf77e208a32a89627056",
+    "/home/zhangzhao/PycharmProjects/FoundationPose/demo_data/mustard0/mesh/texture_map.png": "5ab81c84e1b0a945c9f1a3f20fe765720ab607ca2841a1da3454b9cf443893b1",
+    "/home/zhangzhao/PycharmProjects/FoundationPose/weights/2024-01-11-20-02-45/model_best.pth": "81924d384bf5c26c646ee4783104982ae3d1e049c181c36641b6a7aeae494c26",
+    "/home/zhangzhao/PycharmProjects/FoundationPose/weights/2023-10-28-18-33-37/model_best.pth": "774700586ddc435d408fc01c9809c43e151232936369dfbea0f0f964ba471d60"
+  },
+  "frame_sequence": 0,
+  "frame_file": "1581120424100262102.png",
+  "depth_unit": "metres_from_original_reader_millimetre_PNG",
+  "mesh_extents": [
+    0.097151,
+    0.066619,
+    0.19140800000000002
+  ],
+  "object_frame": "original_example_mesh",
+  "inference_started_at": 1789300261.9222746,
+  "versions": {
+    "torch": "2.7.1+cu128",
+    "numpy": "2.2.6"
+  },
+  "status": "MODEL_INFERRED_NOT_SWM_CHECKPOINT_QUALIFIED",
+  "T_camera_object": [
+    [
+      0.6081539988517761,
+      -0.2509165108203888,
+      0.7531198859214783,
+      -0.4481935203075409
+    ],
+    [
+      -0.7734569907188416,
+      -0.4008026719093323,
+      0.4910412132740021,
+      0.11880075186491013
+    ],
+    [
+      0.17864219844341278,
+      -0.881134569644928,
+      -0.4378228783607483,
+      0.8016035556793213
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "quality_score": 77.703125,
+  "source": "foundationpose_spherical",
+  "inference_completed_at": 1789300281.5410428
+}

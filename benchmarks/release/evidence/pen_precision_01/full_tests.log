@@ -1,0 +1,64 @@
+Network isolation active: non-Unix sockets blocked in this process and its descendants.
+........................................................................ [  3%]
+........................................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 14%]
+........................................................................ [ 18%]
+........................................................................ [ 21%]
+........................................................................ [ 25%]
+........................................................................ [ 29%]
+........................................................................ [ 32%]
+........................................................................ [ 36%]
+........................................................................ [ 40%]
+........................................................................ [ 43%]
+........................................................................ [ 47%]
+................................................................F....... [ 51%]
+........................................................................ [ 54%]
+........................................................................ [ 58%]
+........................................................................ [ 62%]
+........................................................................ [ 65%]
+........................................................................ [ 69%]
+........................................................................ [ 72%]
+........................................................................ [ 76%]
+........................................................................ [ 80%]
+........................................................................ [ 83%]
+........................................................................ [ 87%]
+........................................................................ [ 91%]
+........................................................................ [ 94%]
+........................................................................ [ 98%]
+.............................                                            [100%]
+=================================== FAILURES ===================================
+______ test_actual_phase_rescreens_after_closure_veto_preserving_pairing _______
+
+rig = namespace(world=<rm75_app.swm.scene.SceneWorldModel object at 0x7b1ba2ff39e0>, clock=<swm.conftest.Clock object at 0x7... 'table'], 'observation_domain': 'fixture'}], stop=namespace(check=<function rig.<locals>.<lambda> at 0x7b1b8893c5e0>))
+
+    def test_actual_phase_rescreens_after_closure_veto_preserving_pairing(rig):
+        snapshot = rig.sync.sync('initial')
+        task = tiered_task(snapshot)
+        planner = PhasePlanner()
+        calls = []
+        events = []
+        def veto(candidate, observed, configuration):
+            calls.append(candidate.candidate_id)
+            return candidate.candidate_id != 'high'
+        phases = PickPlaceNativePhases(SingleRelationCoordinator(planner, SimpleNamespace()),
+            lambda request, observed: task, None, None, closure_screen=veto,
+            emit=lambda **row: events.append(row))
+        result = phases.plan(SkillRequest('grasp', 'a'), snapshot)
+        assert calls == ['high', 'low']
+        assert [s.name for s in result.payload.stages] == ['approach', 'grasp', 'lift']
+        assert any('place_low' in name for name in planner.calls)
+        assert not any('place_high' in name for name in planner.calls)
+>       assert [e['ranked_ids'] for e in events] == [['high'], ['low']]
+E       KeyError: 'ranked_ids'
+
+tests/swm/test_native_relation_continuation.py:71: KeyError
+=============================== warnings summary ===============================
+tests/three_scene/test_rrtrack_plate_material.py::test_actual_plate_uniform_pbr_expands_color_without_changing_mesh
+  /home/zhangzhao/Desktop/rm75-manipulation/tests/three_scene/test_rrtrack_plate_material.py:13: DeprecationWarning: `Scene.dump(concatenate=True)` DEPRECATED FOR REMOVAL APRIL 2025: replace with `Scene.to_geometry()`
+    mesh = trimesh.load(path, force='scene').dump(concatenate=True)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/swm/test_native_relation_continuation.py::test_actual_phase_rescreens_after_closure_veto_preserving_pairing
+1 failed, 1972 passed, 1 warning in 46.62s

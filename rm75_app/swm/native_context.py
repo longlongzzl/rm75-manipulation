@@ -112,7 +112,11 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     primary.velocity_readback = NativeArticulationVelocity(primary.env.unwrapped.agent.robot)
     from .native_drive_commands import NativeDriveCommands
     primary.drive_command_policy = NativeDriveCommands(primary, resources=resources, emit=events.emit)
-    backend = resources.enter_context(Curobo2Backend(Curobo2BackendConfig()))
+    # Thin-object grasp endpoints need sub-millimetre solver accuracy.
+    # This tightens pose convergence only; native collision gates stay unchanged.
+    backend = resources.enter_context(Curobo2Backend(Curobo2BackendConfig(position_tolerance=0.0001)))
+    events.emit("swm_native_solver_precision", position_tolerance_m=backend.config.position_tolerance,
+        domain="planning_configuration", measured=False)
     owned["backend"] = backend
     backend.update_scene(PlanningScene())
     backend._ensure_planner()
