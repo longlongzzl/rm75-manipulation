@@ -13947,6 +13947,18 @@
       ],
       "builder_default_offset_m": 0.012777,
       "evidence": "benchmarks/release/evidence/pen_closure/gripper_fk_01/"
+    },
+    "pen_gripper_geometry_01": {
+      "status": "DIAGNOSTIC_COMPLETE_NOT_CONTACT_CALIBRATION",
+      "domain": "native_private_collision_mesh_FK",
+      "tested_commit": "487f993",
+      "exit_code": 0,
+      "rows": 136,
+      "physics_steps": 0,
+      "primary_world_created": false,
+      "private_robot_closed": true,
+      "evidence": "benchmarks/release/evidence/pen_closure/gripper_geometry_01",
+      "hardware": "NOT_AUTHORIZED_NOT_RUN"
     }
   },
   "gates": {
@@ -14271,5 +14283,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Resolve original builder grasp-depth versus actual full gripper contact-geometry consistency and perform evidence-based bounded original-candidate refinement; do not substitute marker FK for contact calibration, raise motion budget or lower collision/idle/success standards."
+  "next_actual_action": "Align original pen candidate/target geometry with native support collision sweep; preserve explicit ObjectSpec depth, original budget and all contact checks until a supported refinement is identified"
 }

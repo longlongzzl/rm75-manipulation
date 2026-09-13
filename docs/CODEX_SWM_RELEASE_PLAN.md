@@ -667,3 +667,13 @@ worker_26 恢复原完整初始化、场景同步、规划审核和 approach/gra
 独立 gripper_fk_01 只在私有原 URDF 中应用保存的 q 并读回 gripper_tcp/left_pad/right_pad 标记 FK，无主世界、无物理步进。34 个开爪态的标记中点局部 Z 约 -0.0034764 m；34 个触桌末态约 -0.0002261 至 0.0160175 m。该结果是标记点运动学，不是碰撞球或接触面标定，不能直接拿最大值替换 builder 偏移，也不能把触桌瞬态当成合格持物静态。
 
 下一步聚焦原抓取几何参数与完整实际夹爪接触几何的一致性，在原 builder/原目标中做有证据的有界候选修正；保持当前开爪准备、精确闭合否决和全部成功条件，不再指望仅排序或增加运动预算解决全体触桌。保持 PARTIAL_DELIVERY，FP/SAM3D/LLM 与硬件未运行，本轮未推送。
+
+## M1 / 实体支撑碰撞网格与标记点区分
+
+本轮 progress：在 487f993 生产代码及 worker_43 保存的 34 组私有预测基础上，新增 gripper_geometry_01 原生碰撞网格 FK 诊断。显式 PYTHONPATH 的网络隔离运行 exit 0；首次缺 PYTHONPATH 的导入失败保留，未连接设备。两侧实际 ConvexMesh 的 vertices、scale、shape local pose 和 native link FK 组合得到 136 条形状/状态记录，私有 q 读回核对通过，资源 closed=true，无主世界、无物理步进。
+
+开爪态碰撞网格最大 TCP 局部 Z 为 0.005021438228 m，触桌末态最大为 0.025202232189 m；全部候选的最低 base Z 分别为 0.001218812432 m、-0.000440565498 m。它们是跨候选极值，不能当作同一动作的接触标定或安全深度。确认 bi ObjectSpec 显式 grasp_z_offset=0.012777 m，因此仅修改 builder 默认参数不会改变笔候选。实体网格、pad 标记点和规划锁定关节的碰撞球中点必须分别处理。
+
+证据：benchmarks/release/evidence/pen_closure/gripper_geometry_01/，含可复现命令、原生结果和输入/URDF SHA256。下一实际动作：把原候选抓取方向、目标笔几何与闭爪支撑网格的扫掠范围对齐，核对原有抓取细化策略，再在原预算内选择可审核几何；不按跨候选最大值盲调默认深度。
+
+分层状态：内核回归仍引用 487f993 的 1803 passed，非本轮重新运行；原生接线无新生产改动；模型推理未运行；本轮实际原生运行仅私有碰撞网格 FK，不是新增物理重放或正式 worker 成功；硬件 NOT_AUTHORIZED_NOT_RUN。笔六检查点仍未完成，保持 PARTIAL_DELIVERY，未推送。
