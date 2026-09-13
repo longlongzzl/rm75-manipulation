@@ -15046,5 +15046,27 @@
     "model_inference": "NOT_RUN",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "evidence": "benchmarks/release/evidence/pusht_feedback/future_prediction_01/summary.json"
+  },
+  "private_initial_velocity_01": {
+    "status": "PASSED_NATIVE_INITIAL_STATE_READBACK",
+    "kernel": {
+      "passed": 1948,
+      "warnings": 1,
+      "duration_s": 42.36
+    },
+    "actual_simulation": {
+      "valid_predictions": 4,
+      "complete_velocity_evidence": true,
+      "nonzero_native_initialization_probe": true
+    },
+    "future_missing_velocity": "REJECT",
+    "legacy_missing_velocity": "EXPLICIT_UNQUALIFIED_REST_ASSUMPTION",
+    "next_planner_consumed_posterior": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "evidence": [
+      "benchmarks/release/evidence/pusht_feedback/future_prediction_02/summary.json",
+      "benchmarks/release/evidence/pusht_feedback/native_initial_velocity_01/summary.json"
+    ]
   }
 }

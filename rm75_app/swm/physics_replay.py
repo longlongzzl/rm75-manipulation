@@ -169,7 +169,7 @@ def physical_replay(request):
         def _default_human_render_camera_configs(self):return []
         def _load_scene(self,options):
             material=sapien.physx.PhysxMaterial(theta.static_friction,theta.dynamic_friction,0.)
-            self.world=[];self.dynamic_others=[]
+            self.world=[];self.dynamic_others=[];self.replay_objects={}
             for oid,obj in snapshot['objects'].items():
                 asset=snapshot['assets'][obj['asset_id']];builder=self.scene.create_actor_builder()
                 builder.initial_pose=spose(obj['measured']['T_world_object'])
@@ -194,6 +194,7 @@ def physical_replay(request):
                     if dims.shape!=(3,) or not np.isfinite(dims).all() or (dims<=0).any():raise ValueError('Invalid collision box')
                     builder.add_box_collision(pose=local_pose,half_size=dims/2,material=material,density=density)
                 actor=builder.build_static(name=oid) if obj['fixed'] else builder.build(name=oid)
+                self.replay_objects[oid]=actor
                 if oid==target_id:
                     if obj['fixed']:raise ValueError('Target may not be static')
                     self.target=actor;self.target_pose=spose(obj['measured']['T_world_object'])
@@ -218,6 +219,8 @@ def physical_replay(request):
             if native_program is None:super()._after_simulation_step()
         def _initialize_episode(self,env_idx,options):
             super()._initialize_episode(env_idx,options);self.settle_s=0.
+            from .replay_initial_state import apply_private_initial_state
+            self.initial_state_readback=apply_private_initial_state(snapshot,self.replay_objects,require_velocities=future)
     env=None
     try:
         env=ReplayEnv(program=program,spheres=request['tool_spheres'],config=None,
@@ -246,6 +249,7 @@ def physical_replay(request):
                     density_applied_at_collision_construction=True,
                     native_target_mass_kg=float(target_body.mass),
                     native_target_collision_shapes=len(target_body.collision_shapes),
+                    initial_state_readback=env.initial_state_readback,
                     native_tool_geometry_digest=None if native_program is None else native_program.geometry_digest,
                     native_tool_motion_digest=None if native_program is None else native_program.motion_digest,
                     native_tool_shape_count=0 if native_program is None else sum(map(len,native_program.links.values())),
