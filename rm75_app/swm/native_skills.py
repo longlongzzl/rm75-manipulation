@@ -153,13 +153,15 @@ class PickPlaceNativePhases:
     need their original goal-verifier adapter before installation.
     """
 
-    def __init__(self, coordinator, build_task, audit, execute, *, closure_screen=None):
+    def __init__(self, coordinator, build_task, audit, execute, *, closure_screen=None, emit=None):
         self.coordinator = coordinator
         self.build_task = build_task
         self.last_relation_screen = {}
         if closure_screen is not None and not callable(closure_screen):
             raise TypeError("Trusted closure screening callback required")
         self.closure_screen = closure_screen
+        self.emit = emit or (lambda **row: None)
+        self.relation_screen_history = []
         self.audit = audit
         self.execute = execute
 
@@ -198,12 +200,7 @@ class PickPlaceNativePhases:
                 c.planner.set_measured_gripper_collision_state(measured_jaw)
             else:
                 c.planner.set_gripper_collision_state(False)
-            screened = c.screen_relations(task, initial_gripper_positions=measured_jaw)
-            self.last_relation_screen = copy.deepcopy(dict(screened.diagnostics))
-            if not screened.grasp_candidates:
-                raise RuntimeError('Native atomic phase has no feasible trajectory: original relation screen rejected')
-            ranked_grasps = c.rank_grasp_relations(task, screened.grasp_candidates, screened.grasp_scores)
-            for grasp_candidate in ranked_grasps:
+            for grasp_candidate, screened in self._grasp_relations(task, measured_jaw):
                 pre = _approach_offset_candidates((grasp_candidate,), abs(task.grasp_approach_offset))[0]
                 approach = c._plan_pose_stage(stage='pregrasp', current=task.current, candidates=(pre,), task=task)
                 if approach is None or approach.trajectory is None:
@@ -288,6 +285,45 @@ class PickPlaceNativePhases:
         primitive = NativePrimitive(request.skill, request.object_id, stages)
         return PlannedSkill(digest(request.as_dict()), snapshot['snapshot_id'], primitive.fingerprint(),
                             primitive, expected.tolist(), 'shared_PickPlaceCoordinator_phase_solvers')
+
+
+    def _grasp_relations(self, task, measured_jaw):
+        """Resume original tier screening without repeating motion attempts.
+
+        One total original motion budget spans every screen round. The complete
+        task/family graph and per-grasp place mapping remain unchanged. This is
+        planning-only; no executed task prefix is replayed on failure.
+        """
+        attempted = set()
+        original_ids = {candidate.candidate_id for candidate in task.grasp_candidates}
+        self.relation_screen_history = []
+        while len(attempted) < task.max_motion_candidates:
+            options = dict(initial_gripper_positions=measured_jaw)
+            if attempted:
+                options['excluded_grasp_ids'] = tuple(sorted(attempted))
+            screened = self.coordinator.screen_relations(task, **options)
+            self.last_relation_screen = copy.deepcopy(dict(screened.diagnostics))
+            ranked = self.coordinator.rank_grasp_relations(
+                task, screened.grasp_candidates, screened.grasp_scores) if screened.grasp_candidates else ()
+            remaining = task.max_motion_candidates - len(attempted)
+            ranked = tuple(ranked)[:remaining]
+            ids = [candidate.candidate_id for candidate in ranked]
+            if (len(ids) != len(set(ids)) or set(ids) & attempted
+                    or not set(ids) <= original_ids):
+                raise SceneInvalid('Relation continuation returned repeated or foreign grasp identity')
+            evidence = dict(round=len(self.relation_screen_history)+1,
+                snapshot_id=task.scene.revision, excluded_grasp_ids=sorted(attempted),
+                original_candidate_count=len(task.grasp_candidates),
+                screened_count=len(screened.grasp_candidates), ranked_ids=ids,
+                total_motion_budget=task.max_motion_candidates,
+                remaining_motion_budget=remaining)
+            self.relation_screen_history.append(copy.deepcopy(evidence))
+            self.emit(kind='swm_native_relation_search', **evidence)
+            if not ranked:
+                return
+            for candidate in ranked:
+                attempted.add(candidate.candidate_id)
+                yield candidate, screened
 
 
     def _placement_stages(self, task, current, relative, request, *, jaw_positions=None, candidates=None):

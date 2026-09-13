@@ -1269,7 +1269,13 @@ class PickPlaceCoordinator:
             if callable(set_gripper_collision_state):
                 set_gripper_collision_state(False)
 
-    def screen_relations(self, task: PickPlaceTask, *, initial_gripper_positions=None) -> RelationScreenResult:
+    def screen_relations(self, task: PickPlaceTask, *, initial_gripper_positions=None,
+                         excluded_grasp_ids=()) -> RelationScreenResult:
+        # Keep the original family/refinement graph; exclude only returned
+        # relations so later original tiers remain reachable after a veto.
+        excluded = frozenset(excluded_grasp_ids)
+        if not excluded <= {item.candidate_id for item in task.grasp_candidates}:
+            raise ValueError("Excluded grasp identity is not in the original task")
         coarse_screening_active = False
         set_gripper_collision_state = getattr(
             self.planner, "set_gripper_collision_state", None
@@ -1775,6 +1781,7 @@ class PickPlaceCoordinator:
                         relation_grasp_candidates = tuple(
                             grasp for grasp in place_ready_grasps
                             if complete_places_by_grasp.get(grasp.candidate_id)
+                            and grasp.candidate_id not in excluded
                         )
                         if relation_grasp_candidates:
                             break
@@ -1877,6 +1884,7 @@ class PickPlaceCoordinator:
                     candidate
                     for candidate in place_ready_grasps
                     if complete_places_by_grasp.get(candidate.candidate_id)
+                    and candidate.candidate_id not in excluded
                 )
                 if relation_grasp_candidates:
                     boundary_relations = tuple(
@@ -1961,6 +1969,7 @@ class PickPlaceCoordinator:
             preplace_endpoint_summary = endpoint_summary(all_preplace_candidates)
             place_endpoint_summary = endpoint_summary(all_place_candidates)
             relation_screen = {
+                "excluded_grasp_ids": sorted(excluded),
                 "candidate_count": len(task.grasp_candidates),
                 "grasp_candidate_count": len(task.grasp_candidates),
                 "unique_place_candidate_count": len(declared_place_candidates),

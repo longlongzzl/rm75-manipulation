@@ -155,7 +155,7 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     phases = PickPlaceNativePhases(coordinator, bridge.build_task, audit, execute,
         closure_screen=lambda candidate, snapshot, configuration: screen_closure_candidate(
             primary, registration, robot.urdf_path, candidate, snapshot, configuration,
-            target="bi", emit=events.emit, directory=output / "closure_candidates"))
+            target="bi", emit=events.emit, directory=output / "closure_candidates"), emit=events.emit)
     runtime = AtomicSkillRuntime(sync, NativeAtomicBackend(phases.bindings(), execution_domain='physics'),
         clock=time.monotonic, stop=stop, goal_verifier=bridge.verify_skill)
     events.emit('swm_native_runtime_bound', task='pickplace', object_id='bi',
