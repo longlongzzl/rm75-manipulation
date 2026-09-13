@@ -18,6 +18,21 @@ class ParallelHypothesisPlanner:
         if type(max_candidates) is not int or not 1<=max_candidates<=8:raise ValueError('Bounded candidate budget required')
         self.factory=factory;self.workers=workers;self.max_candidates=max_candidates;self.check=check
 
+    def solve_managed(self, request, snapshot, manager):
+        bank=manager.planning_hypotheses(request.object_id,snapshot)
+        plan,evidence=self.solve(request,snapshot,bank['hypotheses'])
+        current=manager.planning_hypotheses(request.object_id,snapshot)
+        if digest(current)!=digest(bank):
+            raise SceneInvalid('Physical uncertainty changed during candidate planning')
+        evidence.update(physics_revision=bank['physics_revision'],belief_digest=bank['belief_digest'],
+            posterior_transition_digest=bank['posterior_transition_digest'],
+            hypothesis_bank_digest=digest(bank['hypotheses']),plan_id=plan.payload_digest)
+        manager.emit(kind='swm_physics_planning_consumed',object_id=request.object_id,
+            snapshot_id=snapshot['snapshot_id'],physics_revision=bank['physics_revision'],
+            belief_digest=bank['belief_digest'],posterior_transition_digest=bank['posterior_transition_digest'],
+            hypothesis_bank_digest=evidence['hypothesis_bank_digest'],plan_id=plan.payload_digest)
+        return plan,evidence
+
     def solve(self, request, snapshot, hypotheses):
         if not snapshot['valid']:raise SceneInvalid('Cannot plan from an invalid SWM')
         if not 1<=len(hypotheses)<=32:raise ValueError('Hypothesis count outside native planning budget')

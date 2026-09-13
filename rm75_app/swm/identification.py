@@ -339,6 +339,29 @@ class AdaptivePhysicsManager:
         self._next={};self._seen=set();self._round=0
         self.transition_builder=transition_builder
 
+    def planning_hypotheses(self, object_id, snapshot):
+        """Resolve retained uncertainty against the current measured world."""
+        if not snapshot['valid'] or self.world.snapshot()['snapshot_id']!=snapshot['snapshot_id']:
+            raise SceneInvalid('Physical planning requires the latest valid checkpoint')
+        if object_id not in snapshot['objects']:raise SceneInvalid('Unknown physical planning object')
+        prior=snapshot['physics'].get(object_id)
+        if prior is not None:
+            require_admissible_posterior(prior)
+            asset=snapshot['assets'][snapshot['objects'][object_id]['asset_id']]
+            if prior['mesh_sha256']!=asset['mesh_sha256']:
+                raise SceneInvalid('Physical planning belief geometry changed')
+            support=snapshot['objects'].get(prior['support_id'])
+            if not support or not support['fixed'] or snapshot['assets'][support['asset_id']]['mesh_sha256']!=prior['support_mesh_sha256']:
+                raise SceneInvalid('Physical planning belief support changed')
+        # Resample from the current admitted belief, not a cached pre-checkpoint
+        # bank or an uninformative diagnostic posterior from the last fit.
+        self._next[object_id]=sample_hypotheses(self.bounds,count=self.count,
+            seed=(self.seed+self._round)%(2**32),posterior=prior)
+        return dict(object_id=object_id,snapshot_id=snapshot['snapshot_id'],
+            physics_revision=snapshot['physics_revision'],belief_digest=digest(prior),
+            posterior_transition_digest=None if prior is None else prior['transition_digest'],
+            hypotheses=copy.deepcopy(self._next[object_id]))
+
     def on_skill(self, request, receipt, *, initial_snapshot, final_snapshot):
         """Bind post-action vision AFTER it is captured, rather than anticipating it.
 

@@ -14953,5 +14953,22 @@
     "legacy_belief_restore": "reject_missing_absolute_admission_evidence",
     "model_inference": "NOT_RUN",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
+  "managed_planning_01": {
+    "status": "IMPLEMENTED_NOT_VERIFIED",
+    "kernel": {
+      "passed": 1938,
+      "errors": 3,
+      "warnings": 1,
+      "duration_s": 46.1
+    },
+    "failure": "pytest interpreted setup helper as module xunit setup",
+    "additional_fixture_defect": "None audit/execute callbacks rejected by unchanged binding contract",
+    "native_wiring": "manager_bank_to_cross_hypothesis_planner_to_push_binding",
+    "original_future_action_solver_installed": false,
+    "next_planner_consumed_posterior": false,
+    "actual_simulation": "NOT_RUN_THIS_TURN",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
   }
 }

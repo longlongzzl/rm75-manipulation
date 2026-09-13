@@ -442,9 +442,14 @@ class PushNativePhase:
     original local search and returns a segment plus its predicted WORLD pose.
     """
 
-    def __init__(self, planner, select_segment, compile_observation, audit, execute):
+    def __init__(self, planner, select_segment, compile_observation, audit, execute, *,
+                 physics_manager=None, hypothesis_planner=None):
         self.planner, self.select_segment = planner, select_segment
         self.compile_observation, self.audit, self.execute = compile_observation, audit, execute
+        if (physics_manager is None)!=(hypothesis_planner is None):
+            raise ValueError('Physical push planning requires both manager and native hypothesis planner')
+        self.physics_manager=physics_manager;self.hypothesis_planner=hypothesis_planner
+        self.last_physics_plan_evidence=None
 
     def binding(self):
         return NativeAtomicBinding(self.plan, self.audit, self.execute, 'approach->descend->contact->push->retreat')
@@ -454,6 +459,11 @@ class PushNativePhase:
 
         if request.skill != 'push':
             raise NotImplementedError('Only a native push segment is installed')
+        if self.physics_manager is not None:
+            plan,self.last_physics_plan_evidence=self.hypothesis_planner.solve_managed(request,snapshot,self.physics_manager)
+            return plan
+        if snapshot['physics'].get(request.object_id) is not None:
+            raise SceneInvalid('SWM_PHYSICS_PLANNER_ADAPTER_REQUIRED: cannot ignore retained physical uncertainty')
         observation = self.compile_observation(snapshot, request.object_id)
         push, expected = self.select_segment(request, copy.deepcopy(snapshot), observation)
         prepared = self.planner.plan_push(push, observation)
