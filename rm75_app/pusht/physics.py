@@ -61,6 +61,7 @@ class PhysicsSession:
         self.directory=events.directory/'physics';self.directory.mkdir(exist_ok=False)
         self.process=None;self.env=None;self.video=None;self.stderr=None;self.frames=0;self.steps=0
         self.sequence=0;self.session=uuid.uuid4().hex;self.started=time.monotonic()
+        self.feedback_action_id=None
         # Per-control-step ground truth streams to disk; only a bounded tail is
         # kept in memory, so run_until_goal sessions cannot grow an unbounded
         # array. close() rebuilds the original observations.json array.
@@ -130,6 +131,8 @@ class PhysicsSession:
             gravity_compensation=physics.get('gravity_compensation','none'),
             obs_mode='none',reward_mode='none',render_mode='rgb_array',sim_backend='physx_cpu',num_envs=1)
         self.base=self.env.unwrapped;self.env.reset(seed=0)
+        from rm75_app.swm.native_simulation_clock import NativeSimulationClock
+        self.simulation_clock=NativeSimulationClock(self.base)
         import imageio.v2 as imageio
         self.video=imageio.get_writer(self.directory/'closed_loop.mp4',fps=10,codec='libx264',pixelformat='yuv420p')
         self.advance(2.)
@@ -150,14 +153,42 @@ class PhysicsSession:
         _,state=self.physical_state()
         return state['linear_speed_mps']<=.002 and state['angular_speed_rad_s']<=.02
 
+    def measured_tool_feedback(self):
+        """Read native articulated feedback, including post-action observations.
+
+        Raw evidence only: this is not an SWM receipt or fitted transition.
+        The kinematic command surrogate is never labeled measured feedback.
+        """
+        if not self.full_arm:return None
+        started=time.monotonic();clock=self.simulation_clock.read()
+        def joints():
+            return self.base.robot.get_qpos().detach().cpu().numpy().reshape(-1).copy()
+        q=joints()
+        tcp=self.base.tcp.pose.to_transformation_matrix().detach().cpu().numpy().reshape(4,4).copy()
+        if not np.isfinite(q).all() or not np.isfinite(tcp).all():
+            raise RuntimeError('Nonfinite articulated PushT feedback')
+        if not np.array_equal(q,joints()) or self.simulation_clock.read()!=clock:
+            raise RuntimeError('Articulated PushT state changed during feedback read')
+        ended=time.monotonic()
+        return dict(source='measured_feedback',domain='physics',
+            actual_action_id=self.feedback_action_id,sensor_session=self.session,
+            captured_at=started,query_finished_at=ended,query_elapsed_s=ended-started,
+            simulation_clock=clock,frame_id='world',
+            joint_names=[self.base.joint_names[i] for i in self.base.arm_indices],
+            joint_positions=q[self.base.arm_indices].tolist(),
+            gripper_joint_positions={n:float(q[i]) for n,i in self.base.gripper_indices.items()},
+            T_world_tcp=tcp.tolist(),stage=self.base.stage,
+            tcp_source='original_native_TCP_link_pose',hardware_connected=False)
+
     def advance(self,seconds):
         from PIL import Image,ImageDraw
         count=max(1,int(np.ceil(seconds*self.base.control_freq)))
         for _ in range(count):
             self.stop.check();self.env.step(None);self.steps+=1;self.report['physics_stepped']=True
+            feedback=self.measured_tool_feedback()
             pose,state=self.physical_state()
             self.record_observation(dict(time_s=self.base.physics_time,stage=self.base.stage,
-                pose=pose.tolist(),**state))
+                pose=pose.tolist(),tool_feedback=feedback,**state))
             if not np.isfinite(pose).all() or not all(np.isfinite(x) for x in state.values()):
                 raise RuntimeError('Nonfinite physics feedback')
             if not valid_pose(pose,self.config) or abs(state['z_m']-self.motion['object_centroid_z_m'])>.01 or state['tilt_rad']>.10:
@@ -279,6 +310,9 @@ class PhysicsSession:
         self.report['last_pre_execution_start_q_drift_rad']=drift
         if drift>1e-5:raise ValueError('Simulated start changed after planning: '
                                        f'{drift:.3e} rad > 1e-5 rad')
+        self.feedback_action_id=uuid.uuid4().hex
+        self.events.emit('physics_action_started',actual_action_id=self.feedback_action_id,
+            observation_sequence=obs.sequence,measured_tool_feedback=self.measured_tool_feedback())
         self.base.active_program=program;self.base.program_started=self.base.physics_time
         self.advance(program.duration);self.advance(1.)
         if self.full_arm:

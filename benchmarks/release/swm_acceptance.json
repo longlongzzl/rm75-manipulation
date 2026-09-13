@@ -1,6 +1,16 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_native_feedback_boundary_20260913": {
+    "kernel": "1893 passed / 1 existing warning / 45.75 s; network isolated; exit 0",
+    "targeted": "4 passed / 0.03 s; software fixtures only",
+    "native_wiring": "Original PhysicsSession control-step stream now reads articulated native TCP, seven arm joints and six jaw joints with physical clock and action identity; continues through post-action observation",
+    "actual_simulation": "NOT_RUN_THIS_CHANGE",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "remaining": "SWM PushT factory, full stage audit, independent complete scene snapshots, recorder lifecycle, replay/posterior consumption by next planner remain incomplete",
+    "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q"
+  },
   "milestone": "M1",
   "specification": "docs/CODEX_SWM_RELEASE_GOAL_827A15E.md",
   "baseline_commit": "7e3fee4196e7337e18217a0d72518789113eda77",
