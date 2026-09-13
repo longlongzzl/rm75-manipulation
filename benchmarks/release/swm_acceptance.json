@@ -14502,7 +14502,7 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Install fresh postclosure capture and independently verified holding, then re-audit remaining lift with measured jaw/attachment using existing auditor; worker_62 reached this precise boundary",
+  "next_actual_action": "Fix canonical-jaw test assertion; persist rejected native collision pairs; replan remaining lift through original coordinator using fresh measured jaw/attachment state",
   "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json",
   "feedback_closure_wiring": {
     "status": "PRIMARY_CLOSURE_EXECUTED_LIFT_ADAPTER_MISSING",
@@ -14512,5 +14512,15 @@
     "postclosure_lift_adapter": "MISSING_FAIL_CLOSED",
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
   },
-  "worker_62_evidence": "benchmarks/release/evidence/pen_closure/worker_62/summary.json"
+  "worker_62_evidence": "benchmarks/release/evidence/pen_closure/worker_62/summary.json",
+  "worker_63_evidence": "benchmarks/release/evidence/pen_closure/worker_63/summary.json",
+  "measured_lift_wiring": {
+    "status": "NATIVE_AUDIT_REJECTED_COLLISION",
+    "tested_commit": "3ba7f6f",
+    "actual_checkpoint": "after_close_before_lift",
+    "full_passed": 1844,
+    "full_failed": 1,
+    "full_duration_s": 46.49,
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  }
 }

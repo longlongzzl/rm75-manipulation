@@ -1,0 +1,126 @@
+{
+  "production_commit": "3ba7f6f",
+  "domain": "formal_worker_primary_CPU_PhysX",
+  "original_depth_m": 0.012777,
+  "diagnostic_override": false,
+  "status": "PARTIAL_DELIVERY",
+  "model_inference": "NOT_RUN",
+  "hardware": "NOT_AUTHORIZED_NOT_RUN",
+  "checkpoints": [
+    {
+      "boundary": "worker_initialization_probe",
+      "revision": 1,
+      "snapshot_id": "b79824322882c5c84c35f60b849af57ae7b666a3364cb55d75e6f95cc0453114",
+      "observed_ids": [
+        "bi",
+        "bitong",
+        "carriot",
+        "desk",
+        "gluestick",
+        "hongshupian",
+        "lvmukuai",
+        "shuazi",
+        "tennis",
+        "__maniskill_workspace_table__",
+        "virtual_side_wall",
+        "virtual_top_wall"
+      ]
+    },
+    {
+      "boundary": "before_grasp",
+      "revision": 2,
+      "snapshot_id": "1dee539ae256f20d49e865dc4e8f10f054a07895ed607e2b0534765093e2461d",
+      "observed_ids": [
+        "bi",
+        "bitong",
+        "carriot",
+        "desk",
+        "gluestick",
+        "hongshupian",
+        "lvmukuai",
+        "shuazi",
+        "tennis",
+        "__maniskill_workspace_table__",
+        "virtual_side_wall",
+        "virtual_top_wall"
+      ]
+    },
+    {
+      "boundary": "pre_execute_grasp",
+      "revision": 3,
+      "snapshot_id": "e069d9ab7afc5031439c02094c0e0e03d665a2b6cf5fbef0fc2b6c68c25a42d9",
+      "observed_ids": [
+        "bi",
+        "bitong",
+        "carriot",
+        "desk",
+        "gluestick",
+        "hongshupian",
+        "lvmukuai",
+        "shuazi",
+        "tennis",
+        "__maniskill_workspace_table__",
+        "virtual_side_wall",
+        "virtual_top_wall"
+      ]
+    },
+    {
+      "boundary": "after_close_before_lift",
+      "revision": 4,
+      "snapshot_id": "de255247e60929d3ed0afcd3e172c6b3b6dbc6988d993e2fbda79aa6ed602acc",
+      "observed_ids": [
+        "bi",
+        "bitong",
+        "carriot",
+        "desk",
+        "gluestick",
+        "hongshupian",
+        "lvmukuai",
+        "shuazi",
+        "tennis",
+        "__maniskill_workspace_table__",
+        "virtual_side_wall",
+        "virtual_top_wall"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "stage": "approach",
+      "steps": 14,
+      "stable_steps": 3,
+      "endpoint_error_rad": 2.384185791015625e-05,
+      "idle": true,
+      "objects_idle": true
+    },
+    {
+      "stage": "grasp",
+      "steps": 13,
+      "stable_steps": 3,
+      "endpoint_error_rad": 0.00017702579498291016,
+      "idle": true,
+      "objects_idle": true
+    },
+    {
+      "stage": "gripper_close",
+      "steps": 51,
+      "stable_steps": 3,
+      "endpoint_error_rad": 0.00287020206451416,
+      "idle": true,
+      "objects_idle": true
+    }
+  ],
+  "lift_audits": [],
+  "resource_release": [
+    {
+      "kind": "swm_native_resources_released",
+      "planner_pointer_released": true,
+      "primary_closed": true,
+      "robot_mirror_closed": true,
+      "sequence": 171,
+      "time": 1789269097.7362924
+    }
+  ],
+  "next_requirement": "Record exact native rejected collision pairs, replan remaining lift from independently observed postclosure state using original coordinator, retain collision criteria",
+  "known_test_gap": "Fixture compares canonical jaw tuple to input dict; assertion needs representation-aware comparison"
+}
