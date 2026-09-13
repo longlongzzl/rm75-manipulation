@@ -1,0 +1,5 @@
+Source: 9d84b8f; original frozen table input, depth and collision policy unchanged.
+PYTHONPATH="$PWD" python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -m rm75_app.workcell.worker --run-dir "$PWD/runtime_data/swm_release_pen_worker_67" --profile "$PWD/runtime_data/swm_release_pen_worker_67/profile.json" --app-root "$PWD"
+Request/profile copied unchanged from worker_43. Terminal worker exit 1: original native lift collision rejection.
+Native observed result: all 12 objects and robot retain the same physical clock at after_close_before_lift. This is not successful replay or fitting.
+Targeted regression: 15 passed / 1 failed in 0.49 s; known shared-pose test alias failure.

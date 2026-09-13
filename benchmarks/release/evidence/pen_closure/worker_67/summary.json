@@ -1,0 +1,241 @@
+{
+  "tested_commit": "9d84b8f",
+  "snapshot_id": "b34f1648c56de915973dfe8f45445673d064418ace4796fb69ed2d1ac77fe942",
+  "checkpoint": "after_close_before_lift",
+  "robot_clock": {
+    "control_frequency_hz": 20,
+    "elapsed_control_steps": 128,
+    "elapsed_physics_substeps": 640,
+    "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+    "hardware_clock_qualified": false,
+    "native_control_counter": 128,
+    "native_physics_timestep_s": 0.009999999776482582,
+    "origin_control_counter": 0,
+    "physical_time_s": 6.3999998569488525,
+    "physics_substeps_per_control": 5,
+    "scope": "owned_original_env_control_boundaries",
+    "simulation_frequency_hz": 100,
+    "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+  },
+  "objects": [
+    {
+      "id": "__maniskill_workspace_table__",
+      "clock": {
+        "control_frequency_hz": 20,
+        "elapsed_control_steps": 128,
+        "elapsed_physics_substeps": 640,
+        "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+        "hardware_clock_qualified": false,
+        "native_control_counter": 128,
+        "native_physics_timestep_s": 0.009999999776482582,
+        "origin_control_counter": 0,
+        "physical_time_s": 6.3999998569488525,
+        "physics_substeps_per_control": 5,
+        "scope": "owned_original_env_control_boundaries",
+        "simulation_frequency_hz": 100,
+        "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+      }
+    },
+    {
+      "id": "bi",
+      "clock": {
+        "control_frequency_hz": 20,
+        "elapsed_control_steps": 128,
+        "elapsed_physics_substeps": 640,
+        "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+        "hardware_clock_qualified": false,
+        "native_control_counter": 128,
+        "native_physics_timestep_s": 0.009999999776482582,
+        "origin_control_counter": 0,
+        "physical_time_s": 6.3999998569488525,
+        "physics_substeps_per_control": 5,
+        "scope": "owned_original_env_control_boundaries",
+        "simulation_frequency_hz": 100,
+        "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+      }
+    },
+    {
+      "id": "bitong",
+      "clock": {
+        "control_frequency_hz": 20,
+        "elapsed_control_steps": 128,
+        "elapsed_physics_substeps": 640,
+        "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+        "hardware_clock_qualified": false,
+        "native_control_counter": 128,
+        "native_physics_timestep_s": 0.009999999776482582,
+        "origin_control_counter": 0,
+        "physical_time_s": 6.3999998569488525,
+        "physics_substeps_per_control": 5,
+        "scope": "owned_original_env_control_boundaries",
+        "simulation_frequency_hz": 100,
+        "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+      }
+    },
+    {
+      "id": "carriot",
+      "clock": {
+        "control_frequency_hz": 20,
+        "elapsed_control_steps": 128,
+        "elapsed_physics_substeps": 640,
+        "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+        "hardware_clock_qualified": false,
+        "native_control_counter": 128,
+        "native_physics_timestep_s": 0.009999999776482582,
+        "origin_control_counter": 0,
+        "physical_time_s": 6.3999998569488525,
+        "physics_substeps_per_control": 5,
+        "scope": "owned_original_env_control_boundaries",
+        "simulation_frequency_hz": 100,
+        "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+      }
+    },
+    {
+      "id": "desk",
+      "clock": {
+        "control_frequency_hz": 20,
+        "elapsed_control_steps": 128,
+        "elapsed_physics_substeps": 640,
+        "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+        "hardware_clock_qualified": false,
+        "native_control_counter": 128,
+        "native_physics_timestep_s": 0.009999999776482582,
+        "origin_control_counter": 0,
+        "physical_time_s": 6.3999998569488525,
+        "physics_substeps_per_control": 5,
+        "scope": "owned_original_env_control_boundaries",
+        "simulation_frequency_hz": 100,
+        "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+      }
+    },
+    {
+      "id": "gluestick",
+      "clock": {
+        "control_frequency_hz": 20,
+        "elapsed_control_steps": 128,
+        "elapsed_physics_substeps": 640,
+        "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+        "hardware_clock_qualified": false,
+        "native_control_counter": 128,
+        "native_physics_timestep_s": 0.009999999776482582,
+        "origin_control_counter": 0,
+        "physical_time_s": 6.3999998569488525,
+        "physics_substeps_per_control": 5,
+        "scope": "owned_original_env_control_boundaries",
+        "simulation_frequency_hz": 100,
+        "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+      }
+    },
+    {
+      "id": "hongshupian",
+      "clock": {
+        "control_frequency_hz": 20,
+        "elapsed_control_steps": 128,
+        "elapsed_physics_substeps": 640,
+        "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+        "hardware_clock_qualified": false,
+        "native_control_counter": 128,
+        "native_physics_timestep_s": 0.009999999776482582,
+        "origin_control_counter": 0,
+        "physical_time_s": 6.3999998569488525,
+        "physics_substeps_per_control": 5,
+        "scope": "owned_original_env_control_boundaries",
+        "simulation_frequency_hz": 100,
+        "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+      }
+    },
+    {
+      "id": "lvmukuai",
+      "clock": {
+        "control_frequency_hz": 20,
+        "elapsed_control_steps": 128,
+        "elapsed_physics_substeps": 640,
+        "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+        "hardware_clock_qualified": false,
+        "native_control_counter": 128,
+        "native_physics_timestep_s": 0.009999999776482582,
+        "origin_control_counter": 0,
+        "physical_time_s": 6.3999998569488525,
+        "physics_substeps_per_control": 5,
+        "scope": "owned_original_env_control_boundaries",
+        "simulation_frequency_hz": 100,
+        "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+      }
+    },
+    {
+      "id": "shuazi",
+      "clock": {
+        "control_frequency_hz": 20,
+        "elapsed_control_steps": 128,
+        "elapsed_physics_substeps": 640,
+        "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+        "hardware_clock_qualified": false,
+        "native_control_counter": 128,
+        "native_physics_timestep_s": 0.009999999776482582,
+        "origin_control_counter": 0,
+        "physical_time_s": 6.3999998569488525,
+        "physics_substeps_per_control": 5,
+        "scope": "owned_original_env_control_boundaries",
+        "simulation_frequency_hz": 100,
+        "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+      }
+    },
+    {
+      "id": "tennis",
+      "clock": {
+        "control_frequency_hz": 20,
+        "elapsed_control_steps": 128,
+        "elapsed_physics_substeps": 640,
+        "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+        "hardware_clock_qualified": false,
+        "native_control_counter": 128,
+        "native_physics_timestep_s": 0.009999999776482582,
+        "origin_control_counter": 0,
+        "physical_time_s": 6.3999998569488525,
+        "physics_substeps_per_control": 5,
+        "scope": "owned_original_env_control_boundaries",
+        "simulation_frequency_hz": 100,
+        "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+      }
+    },
+    {
+      "id": "virtual_side_wall",
+      "clock": {
+        "control_frequency_hz": 20,
+        "elapsed_control_steps": 128,
+        "elapsed_physics_substeps": 640,
+        "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+        "hardware_clock_qualified": false,
+        "native_control_counter": 128,
+        "native_physics_timestep_s": 0.009999999776482582,
+        "origin_control_counter": 0,
+        "physical_time_s": 6.3999998569488525,
+        "physics_substeps_per_control": 5,
+        "scope": "owned_original_env_control_boundaries",
+        "simulation_frequency_hz": 100,
+        "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+      }
+    },
+    {
+      "id": "virtual_top_wall",
+      "clock": {
+        "control_frequency_hz": 20,
+        "elapsed_control_steps": 128,
+        "elapsed_physics_substeps": 640,
+        "epoch": "7781991974fc4a90beb449b3ccbe2ab5",
+        "hardware_clock_qualified": false,
+        "native_control_counter": 128,
+        "native_physics_timestep_s": 0.009999999776482582,
+        "origin_control_counter": 0,
+        "physical_time_s": 6.3999998569488525,
+        "physics_substeps_per_control": 5,
+        "scope": "owned_original_env_control_boundaries",
+        "simulation_frequency_hz": 100,
+        "source": "original_env_elapsed_steps_and_native_PhysX_timestep"
+      }
+    }
+  ],
+  "fit_qualified": false,
+  "recorder_post_exposure_lifecycle_qualified": false,
+  "hardware": "NOT_AUTHORIZED_NOT_RUN"
+}

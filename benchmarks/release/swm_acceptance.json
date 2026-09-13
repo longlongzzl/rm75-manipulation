@@ -14502,7 +14502,7 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Bind shared native physical epoch to post-observation recorder coverage and transition/replay. Counter validation fixed; collision rules unchanged pending separate approval.",
+  "next_actual_action": "Fix shared-pose negative fixture, validate complete recorder-to-transition physical-time wiring, then install post-exposure recording lifecycle. Collision policy unchanged pending approval.",
   "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json",
   "feedback_closure_wiring": {
     "status": "PRIMARY_CLOSURE_EXECUTED_LIFT_ADAPTER_MISSING",
@@ -14590,5 +14590,15 @@
     "full_duration_s": 42.48,
     "new_native_run": false,
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
+  "worker_67_physical_projection": {
+    "tested_commit": "9d84b8f",
+    "evidence": "benchmarks/release/evidence/pen_closure/worker_67/summary.json",
+    "native_objects_with_matching_clock": 12,
+    "full_passed": 1887,
+    "full_failed": 1,
+    "full_duration_s": 45.71,
+    "actual_fit": false,
+    "post_exposure_lifecycle_qualified": false
   }
 }
