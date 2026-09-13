@@ -14502,7 +14502,7 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Fix shared-pose negative fixture, validate complete recorder-to-transition physical-time wiring, then install post-exposure recording lifecycle. Collision policy unchanged pending approval.",
+  "next_actual_action": "Install the tested recorder/post-exposure physical-time lifecycle in the actual native PushT context, then replay/posterior/next-planner consumption. Pen collision rule unchanged pending approval.",
   "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json",
   "feedback_closure_wiring": {
     "status": "PRIMARY_CLOSURE_EXECUTED_LIFT_ADAPTER_MISSING",
@@ -14600,5 +14600,15 @@
     "full_duration_s": 45.71,
     "actual_fit": false,
     "post_exposure_lifecycle_qualified": false
+  },
+  "native_physical_transition_contract": {
+    "tested_commit": "5932037",
+    "targeted_passed": 20,
+    "full_passed": 1889,
+    "full_failed": 0,
+    "full_duration_s": 45.84,
+    "domain": "software_fixture",
+    "actual_native_push": false,
+    "actual_parameter_fit": false
   }
 }
