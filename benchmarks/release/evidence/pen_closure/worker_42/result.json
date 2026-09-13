@@ -1,0 +1,1 @@
+{"command_success": false, "error": "SceneInvalid: Read-only cache diagnostic complete; additional motion planning not executed", "finished_at": 1789260612.8541775, "mode": "sim", "status": "failed", "task": "pickplace", "task_success": null}

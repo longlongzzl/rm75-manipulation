@@ -8,10 +8,10 @@
   "native_heavy_workers": 1,
   "previous_goal_turn_classification": "progress",
   "tested_source": {
-    "commit": "9888ae7",
+    "commit": "726325e",
     "sha256": {},
     "input_digest": "e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908",
-    "note": "Original continuous-axis task construction is shared and formally wired into atomic planning. Worker_40 built 369 axis candidates, screened 34 relations, selected 7 within remaining budget; six axis plus one discrete closure hypotheses rejected table contact, no primary actions or pen six-checkpoint success."
+    "note": "Private candidate opening now physically settles under unchanged shared original 13-joint criteria. Worker_41 all seven openings settled in 11 ticks, then all closures rejected table contact. Read-only worker_42 obtained 36 cached IK rows with up to 4.078 mm FK error; no pen atomic success."
   },
   "runs": {
     "m0_targeted": {
@@ -13852,6 +13852,53 @@
       "skill_verified": false,
       "status": "no_feasible_trajectory",
       "evidence": "benchmarks/release/evidence/pen_closure/worker_40/"
+    },
+    "m1_open_preparation_targeted": {
+      "passed": 31,
+      "failed": 0,
+      "seconds": 0.44
+    },
+    "m1_open_preparation_full": {
+      "tested_commit": "726325e",
+      "passed": 1793,
+      "failed": 0,
+      "warnings": 1,
+      "seconds": 42.29,
+      "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest tests/ -q",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_41/full_tests.log"
+    },
+    "m1_open_preparation_worker_41": {
+      "domain": "native_worker_CPU_PhysX",
+      "tested_commit": "726325e",
+      "private_candidates": 7,
+      "open_preparations_completed": 7,
+      "open_control_ticks_each": 11,
+      "stable_ticks_required": 3,
+      "max_settle_ticks": 200,
+      "velocity_limit_rad_s": 0.001,
+      "arm_endpoint_limit_rad": 0.02,
+      "closure_contact_rejections": 7,
+      "primary_actions_executed": false,
+      "all_private_closed": true,
+      "all_primary_unchanged": true,
+      "formal_cleanup_all_true": true,
+      "skill_verified": false,
+      "status": "no_feasible_trajectory",
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_41/"
+    },
+    "m1_cached_ik_worker_42": {
+      "domain": "native_original_cached_IK_read_only",
+      "relation_count": 36,
+      "available_count": 36,
+      "max_fk_position_error_m": 0.00407827660844242,
+      "max_fk_rotation_error_rad": 0.011830213295507425,
+      "full_motion_budget": 8,
+      "policy_modified": false,
+      "primary_unchanged": true,
+      "formal_cleanup_all_true": true,
+      "status": "diagnostic_complete_intentional_stop_before_additional_motion_planning",
+      "worker_exit_code": 1,
+      "evidence": "benchmarks/release/evidence/pen_closure/worker_42/"
     }
   },
   "gates": {
@@ -14101,15 +14148,15 @@
   },
   "current_layer_status": {
     "kernel": {
-      "tested_commit": "9888ae7",
+      "tested_commit": "726325e",
       "status": "PASSED_REGRESSION",
-      "passed": 1786,
+      "passed": 1793,
       "failed": 0,
       "warnings": 1
     },
-    "native_wiring": "ORIGINAL_CONTINUOUS_AXIS_CANDIDATES_FORMALLY_WIRED_INTO_ATOMIC_PLANNING",
+    "native_wiring": "PRIVATE_CANDIDATE_OPEN_HOLD_USES_ORIGINAL_COMMAND_AND_IDLE_CRITERIA",
     "model_inference": "NOT_RUN_THIS_INCREMENT",
-    "actual_simulation": "WORKER_40_SEVEN_PRIVATE_CLOSURE_REJECTIONS_NO_PRIMARY_ACTIONS",
+    "actual_simulation": "WORKER_41_SEVEN_OPEN_PREPARATIONS_THEN_CLOSURE_REJECTIONS_WORKER_42_READ_ONLY_CACHED_IK",
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "physics_asset_identity": {
       "kernel": "1603 passed; 1 existing warning on ffaa03c",
@@ -14176,5 +14223,5 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Align candidate open-state hypothesis with original approach/grasp controller semantics, then perform bounded closure-aware original-candidate screening/ranking using existing cached IK before spending full-motion budget; retain exact endpoint guards and achieve pen six checkpoints."
+  "next_actual_action": "Use original cached IK for bounded closure-aware candidate prioritization within the original motion budget, retain measured cache/FK uncertainty and exact solved-endpoint closure checks plus fresh preexecution capture; complete actual pen six checkpoints."
 }
