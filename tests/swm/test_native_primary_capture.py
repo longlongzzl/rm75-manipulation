@@ -107,3 +107,25 @@ def test_drive_target_change_during_actor_capture_rejects_batch(capture_rig, mon
     monkeypatch.setattr(native_capture, 'read_primary_actor', changing)
     with pytest.raises(ObservationUnavailable, match='drive targets changed'):
         r.source.capture(tuple(r.bindings), after=r.clock(), boundary='before_grasp')
+
+
+def test_settle_readback_preserves_full_inventory_and_measured_motion(capture_rig):
+    r = capture_rig
+    r.primary.actors['a'].angular_velocity = np.array([0., 0., .006])
+    state = r.source.read_settle_state()
+    assert set(state['objects']) == set(r.bindings)
+    assert not state['idle'] and not state['objects']['a']['settled']
+    assert state['objects']['a']['angular_velocity'] == [0., 0., .006]
+    assert state['checkpoint_accepted'] is False
+    assert state['primary_world_mutated'] is False
+    assert r.primary.sequence == 0
+    with pytest.raises(ObservationUnavailable, match='a at before_grasp'):
+        r.source.capture(tuple(r.bindings), after=r.clock(), boundary='before_grasp')
+    r.primary.actors['a'].angular_velocity[:] = 0.
+    assert r.source.read_settle_state()['idle'] is True
+
+
+def test_settle_readback_does_not_turn_nonfinite_feedback_into_wait(capture_rig):
+    capture_rig.primary.actors['a'].linear_velocity = np.array([np.nan, 0., 0.])
+    with pytest.raises(ObservationUnavailable, match='Nonfinite'):
+        capture_rig.source.read_settle_state()

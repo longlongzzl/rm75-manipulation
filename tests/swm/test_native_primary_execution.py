@@ -118,3 +118,50 @@ def test_unbound_closure_target_rejects_before_motion():
     executor.closure_target = None
     with pytest.raises(SceneInvalid, match='bound target'): executor.set_gripper(True)
     assert state['steps'] == 0
+
+
+def object_sample(idle):
+    return dict(source='native_registered_object_velocity_readback', idle=idle,
+                objects={'bi': dict(settled=idle)})
+
+
+def test_object_motion_waits_inside_original_budget_and_requires_three_samples():
+    primary, state = make_primary()
+    executor = NativePrimaryExecutor(primary, max_settle_steps=5)
+    executor.object_settle_readback = lambda: object_sample(state['steps'] >= 5)
+    executor.execute_trajectory('grasp', path())
+    assert state['steps'] == 7
+    assert executor.last_settle_evidence['steps'] == 5
+    assert executor.last_settle_evidence['stable_steps'] == 3
+
+
+def test_unsettled_object_cannot_be_hidden_by_idle_robot():
+    primary, state = make_primary()
+    executor = NativePrimaryExecutor(primary, max_settle_steps=3)
+    executor.object_settle_readback = lambda: object_sample(False)
+    with pytest.raises(SceneInvalid, match='settle budget'):
+        executor.execute_trajectory('grasp', path())
+    assert state['steps'] == 5
+    assert executor.last_settle_evidence['stable_steps'] == 0
+    assert not executor.last_settle_evidence['object_settle_state']['idle']
+
+
+def test_object_readback_failure_is_not_silently_retried():
+    from rm75_app.swm.scene import ObservationUnavailable
+    primary, state = make_primary()
+    executor = NativePrimaryExecutor(primary, max_settle_steps=5)
+    def unavailable():
+        raise ObservationUnavailable('native velocity unavailable')
+    executor.object_settle_readback = unavailable
+    with pytest.raises(ObservationUnavailable, match='velocity unavailable'):
+        executor.execute_trajectory('grasp', path())
+    assert state['steps'] == 3
+
+
+def test_inconsistent_object_idle_flag_cannot_authorize_next_stage():
+    primary, state = make_primary()
+    executor = NativePrimaryExecutor(primary, max_settle_steps=5)
+    executor.object_settle_readback = lambda: {**object_sample(False), 'idle': True}
+    with pytest.raises(SceneInvalid, match='object settle feedback'):
+        executor.execute_trajectory('grasp', path())
+    assert state['steps'] == 3

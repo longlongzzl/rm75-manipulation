@@ -33,6 +33,14 @@ class PrimaryActorBinding:
         object.__setattr__(self, 'T_actor_object', matrix)
 
 
+class PrimaryObjectNotSettled(ObservationUnavailable):
+    """Finite measured motion, distinct from missing or corrupt feedback."""
+    def __init__(self, observation):
+        self.observation = observation
+        super().__init__("Primary collision object is not settled at the checkpoint: "
+            + repr(observation))
+
+
 def read_primary_actor(binding, T_base_world):
     from rm75_app.execution.maniskill_task_bridge import _pose_matrix as actor_pose
 
@@ -57,11 +65,12 @@ def read_primary_actor(binding, T_base_world):
     offset_world = T_world_actor[:3, :3] @ binding.T_actor_object[:3, 3]
     linear = T_base_world[:3, :3] @ (linear + np.cross(angular, offset_world))
     angular = T_base_world[:3, :3] @ angular
-    if np.linalg.norm(linear) > .001 or np.linalg.norm(angular) > .005:
-        raise ObservationUnavailable('Primary collision object is not settled at the checkpoint')
-    return dict(T_world_object=(T_base_world @ T_world_actor @ binding.T_actor_object).tolist(),
+    observation = dict(T_world_object=(T_base_world @ T_world_actor @ binding.T_actor_object).tolist(),
                 linear_velocity=linear.tolist(), angular_velocity=angular.tolist(),
                 velocity_source=velocity_source)
+    if np.linalg.norm(linear) > .001 or np.linalg.norm(angular) > .005:
+        raise PrimaryObjectNotSettled(observation)
+    return observation
 
 
 class NativePrimaryCapture:
@@ -86,6 +95,27 @@ class NativePrimaryCapture:
         self._last_sequence = -1
         self._last_stamp = float('-inf')
         self._lock = threading.Lock()
+
+    def read_settle_state(self):
+        """Complete read-only motion sample, never an accepted SWM checkpoint."""
+        with self._lock:
+            if self.primary.closed:
+                raise ObservationUnavailable('Observed primary world is closed')
+            started = self.clock()
+            rows = {}
+            for oid, binding in self.bindings.items():
+                self.primary.stop.check()
+                try:
+                    observed = read_primary_actor(binding, self.T_base_world)
+                    settled = True
+                except PrimaryObjectNotSettled as exc:
+                    observed, settled = exc.observation, False
+                rows[oid] = dict(settled=settled, **observed)
+            return dict(source='native_registered_object_velocity_readback',
+                world_frame='base_link', objects=rows,
+                idle=all(row['settled'] for row in rows.values()),
+                capture_started_at=started, capture_finished_at=self.clock(),
+                checkpoint_accepted=False, primary_world_mutated=False)
 
     def capture(self, ids, *, after, boundary):
         from rm75_app.execution.maniskill_task_bridge import _pose_matrix as actor_pose
@@ -113,7 +143,10 @@ class NativePrimaryCapture:
             rows = []
             for oid in ids:
                 row_stamp = self.clock()
-                observed = read_primary_actor(self.bindings[oid], self.T_base_world)
+                try:
+                    observed = read_primary_actor(self.bindings[oid], self.T_base_world)
+                except PrimaryObjectNotSettled as exc:
+                    raise ObservationUnavailable(f"{oid} at {boundary}: {exc}") from exc
                 rows.append(dict(id=oid, mesh_sha256=self.bindings[oid].mesh_sha256,
                     captured_at=row_stamp, sequence=sequence, accepted=True,
                     tracking_state='tracking', source='native_primary_PhysX_readback',

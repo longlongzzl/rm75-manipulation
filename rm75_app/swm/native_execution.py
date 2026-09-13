@@ -40,6 +40,7 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         self.last_settle_evidence = None
         self.closure_target = None
         self.closure_prediction = None
+        self.object_settle_readback = None
 
     def _read(self):
         self.primary.stop.check()
@@ -68,7 +69,21 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
             raw, names, q, velocity = self._read()
             error, max_velocity, idle = native_endpoint_metrics(
                 q, velocity, self._last_commanded_target)
-            stable = stable + 1 if idle and error <= .02 else 0
+            objects = None
+            ready = idle and error <= .02
+            if ready and self.object_settle_readback is not None:
+                objects = self.object_settle_readback()
+                if (not isinstance(objects, dict)
+                        or objects.get('source') != 'native_registered_object_velocity_readback'
+                        or type(objects.get('idle')) is not bool
+                        or not isinstance(objects.get('objects'), dict)
+                        or not objects['objects']
+                        or any(not isinstance(row, dict) or type(row.get('settled')) is not bool
+                               for row in objects['objects'].values())
+                        or objects['idle'] != all(row['settled'] for row in objects['objects'].values())):
+                    raise SceneInvalid('Complete native object settle feedback required')
+                ready = objects['idle']
+            stable = stable + 1 if ready else 0
             self.last_settle_evidence = dict(stage=stage, steps=index+1,
                 primary_sequence=raw['sequence'], captured_at=raw['capture_started_at'],
                 measured_positions=q.tolist(), joint_names=list(names),
@@ -76,7 +91,8 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
                 feedback_positions_rad=list(raw["positions"]),
                 feedback_velocities_rad_s=list(raw["velocities"]),
                 max_velocity_rad_s=max_velocity,
-                endpoint_error_rad=error, stable_steps=stable, idle=idle)
+                endpoint_error_rad=error, stable_steps=stable, idle=idle,
+                object_settle_state=objects)
             if stable >= 3:
                 self.emit(kind='swm_primary_stage_settled', **self.last_settle_evidence)
                 return
