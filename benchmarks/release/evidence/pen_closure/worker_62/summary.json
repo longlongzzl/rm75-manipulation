@@ -1,0 +1,892 @@
+{
+  "production_commit": "0d0accc",
+  "domain": "formal_worker_primary_CPU_PhysX",
+  "original_depth_m": 0.012777,
+  "diagnostic_override": false,
+  "status": "PARTIAL_DELIVERY",
+  "hardware": "NOT_AUTHORIZED_NOT_RUN",
+  "model_inference": "NOT_RUN",
+  "stages": [
+    {
+      "stage": "approach",
+      "steps": 14,
+      "stable_steps": 3,
+      "endpoint_error_rad": 2.384185791015625e-05,
+      "max_velocity_rad_s": 0,
+      "idle": true,
+      "objects_idle": true
+    },
+    {
+      "stage": "grasp",
+      "steps": 13,
+      "stable_steps": 3,
+      "endpoint_error_rad": 0.00017702579498291016,
+      "max_velocity_rad_s": 0,
+      "idle": true,
+      "objects_idle": true
+    },
+    {
+      "stage": "gripper_close",
+      "steps": 51,
+      "stable_steps": 3,
+      "endpoint_error_rad": 0.00287020206451416,
+      "max_velocity_rad_s": 0,
+      "idle": true,
+      "objects_idle": true
+    }
+  ],
+  "closure_commands": [
+    {
+      "control_tick": 1,
+      "semantic_command": -0.96,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 2,
+      "semantic_command": -0.9199999999999999,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 3,
+      "semantic_command": -0.8799999999999999,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 4,
+      "semantic_command": -0.8399999999999999,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 5,
+      "semantic_command": -0.7999999999999998,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 6,
+      "semantic_command": -0.7599999999999998,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 7,
+      "semantic_command": -0.7199999999999998,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 8,
+      "semantic_command": -0.6799999999999997,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 9,
+      "semantic_command": -0.6399999999999997,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 10,
+      "semantic_command": -0.5999999999999996,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 11,
+      "semantic_command": -0.5599999999999996,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 12,
+      "semantic_command": -0.5199999999999996,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 13,
+      "semantic_command": -0.4799999999999996,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 14,
+      "semantic_command": -0.4399999999999996,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 15,
+      "semantic_command": -0.39999999999999963,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 16,
+      "semantic_command": -0.35999999999999965,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 17,
+      "semantic_command": -0.3199999999999997,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 18,
+      "semantic_command": -0.2799999999999997,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 19,
+      "semantic_command": -0.23999999999999969,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 20,
+      "semantic_command": -0.19999999999999968,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 21,
+      "semantic_command": -0.15999999999999967,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 22,
+      "semantic_command": -0.11999999999999966,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 23,
+      "semantic_command": -0.07999999999999965,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 24,
+      "semantic_command": -0.039999999999999654,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 25,
+      "semantic_command": 3.469446951953614e-16,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 26,
+      "semantic_command": 0.04000000000000035,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 27,
+      "semantic_command": 0.08000000000000035,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 28,
+      "semantic_command": 0.12000000000000036,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 29,
+      "semantic_command": 0.16000000000000036,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 30,
+      "semantic_command": 0.20000000000000037,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 31,
+      "semantic_command": 0.24000000000000038,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 32,
+      "semantic_command": 0.28000000000000036,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 33,
+      "semantic_command": 0.32000000000000034,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 34,
+      "semantic_command": 0.3600000000000003,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 35,
+      "semantic_command": 0.4000000000000003,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 36,
+      "semantic_command": 0.4400000000000003,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 37,
+      "semantic_command": 0.48000000000000026,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 38,
+      "semantic_command": 0.5200000000000002,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 39,
+      "semantic_command": 0.5210989010989011,
+      "pre_step_force_magnitudes_n": [
+        0,
+        0.1549247684684074
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 40,
+      "semantic_command": 0.5210989010989011,
+      "pre_step_force_magnitudes_n": [
+        0.8386771614988171,
+        1.0560343298285149
+      ],
+      "in_force_band": true,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 41,
+      "semantic_command": 0.5200000000000002,
+      "pre_step_force_magnitudes_n": [
+        2.7849002910581033,
+        2.6251125228418557
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 42,
+      "semantic_command": 0.5189010989010991,
+      "pre_step_force_magnitudes_n": [
+        3.9360354735969945,
+        4.226406390052582
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 43,
+      "semantic_command": 0.5178021978021983,
+      "pre_step_force_magnitudes_n": [
+        4.299562011988012,
+        4.430355429503829
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 44,
+      "semantic_command": 0.5167032967032972,
+      "pre_step_force_magnitudes_n": [
+        3.981408212832274,
+        4.158740508543497
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 45,
+      "semantic_command": 0.5156043956043963,
+      "pre_step_force_magnitudes_n": [
+        3.9982844338147054,
+        4.170580960342824
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 46,
+      "semantic_command": 0.5145054945054952,
+      "pre_step_force_magnitudes_n": [
+        3.924788854170695,
+        4.152859439854507
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 47,
+      "semantic_command": 0.5134065934065943,
+      "pre_step_force_magnitudes_n": [
+        3.8339725379484912,
+        4.016349043639097
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 48,
+      "semantic_command": 0.5123076923076932,
+      "pre_step_force_magnitudes_n": [
+        3.7325450658409247,
+        3.906588857075426
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 49,
+      "semantic_command": 0.5112087912087924,
+      "pre_step_force_magnitudes_n": [
+        3.6197946748943672,
+        3.7872473011764756
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 50,
+      "semantic_command": 0.5101098901098913,
+      "pre_step_force_magnitudes_n": [
+        3.3465186519358987,
+        3.288040677580881
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 51,
+      "semantic_command": 0.5090109890109904,
+      "pre_step_force_magnitudes_n": [
+        3.69694534412711,
+        3.8142528500090482
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 52,
+      "semantic_command": 0.5079120879120895,
+      "pre_step_force_magnitudes_n": [
+        3.5971886183921566,
+        3.7110440937775424
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 53,
+      "semantic_command": 0.5068131868131884,
+      "pre_step_force_magnitudes_n": [
+        3.4588669152367695,
+        3.556075856824549
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 54,
+      "semantic_command": 0.5057142857142876,
+      "pre_step_force_magnitudes_n": [
+        3.333954328635032,
+        3.410413640533098
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 55,
+      "semantic_command": 0.5046153846153865,
+      "pre_step_force_magnitudes_n": [
+        3.1242732138481792,
+        3.310374110222365
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 56,
+      "semantic_command": 0.5035164835164856,
+      "pre_step_force_magnitudes_n": [
+        3.3000759066949263,
+        3.3220617727402475
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 57,
+      "semantic_command": 0.5024175824175845,
+      "pre_step_force_magnitudes_n": [
+        3.006694170967652,
+        3.0087676100025313
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 58,
+      "semantic_command": 0.5013186813186836,
+      "pre_step_force_magnitudes_n": [
+        2.853219418588012,
+        2.880420946693187
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 59,
+      "semantic_command": 0.5002197802197825,
+      "pre_step_force_magnitudes_n": [
+        2.729094956210163,
+        2.7360369202413044
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 60,
+      "semantic_command": 0.49912087912088166,
+      "pre_step_force_magnitudes_n": [
+        2.6022602777576234,
+        2.6100707797644036
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 61,
+      "semantic_command": 0.49802197802198056,
+      "pre_step_force_magnitudes_n": [
+        2.4835720955824887,
+        2.4745944961061976
+      ],
+      "in_force_band": false,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 62,
+      "semantic_command": 0.49802197802198056,
+      "pre_step_force_magnitudes_n": [
+        1.8485120525699845,
+        1.824555962102381
+      ],
+      "in_force_band": true,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 63,
+      "semantic_command": 0.49802197802198056,
+      "pre_step_force_magnitudes_n": [
+        1.9394691030013647,
+        1.9388502744637868
+      ],
+      "in_force_band": true,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 64,
+      "semantic_command": 0.49802197802198056,
+      "pre_step_force_magnitudes_n": [
+        1.9510479392733158,
+        1.9497632027504377
+      ],
+      "in_force_band": true,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 65,
+      "semantic_command": 0.49802197802198056,
+      "pre_step_force_magnitudes_n": [
+        1.9551785257054461,
+        1.9561056908304977
+      ],
+      "in_force_band": true,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 66,
+      "semantic_command": 0.49802197802198056,
+      "pre_step_force_magnitudes_n": [
+        1.9570427418311962,
+        1.9614459625856513
+      ],
+      "in_force_band": true,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 67,
+      "semantic_command": 0.49802197802198056,
+      "pre_step_force_magnitudes_n": [
+        1.9589633488423526,
+        1.9620952003791508
+      ],
+      "in_force_band": true,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 68,
+      "semantic_command": 0.49802197802198056,
+      "pre_step_force_magnitudes_n": [
+        1.9568704321688848,
+        1.9641596812428217
+      ],
+      "in_force_band": true,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 69,
+      "semantic_command": 0.49802197802198056,
+      "pre_step_force_magnitudes_n": [
+        1.961391225935705,
+        1.9621582746422355
+      ],
+      "in_force_band": true,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 70,
+      "semantic_command": 0.49802197802198056,
+      "pre_step_force_magnitudes_n": [
+        1.9609361780522125,
+        1.9633652062184646
+      ],
+      "in_force_band": true,
+      "holding_qualified": false
+    },
+    {
+      "control_tick": 71,
+      "semantic_command": 0.49802197802198056,
+      "pre_step_force_magnitudes_n": [
+        1.9609361780522125,
+        1.9633652062184646
+      ],
+      "in_force_band": true,
+      "holding_qualified": false
+    }
+  ],
+  "predictions": [
+    {
+      "phase": "no_forbidden_contact_predicted_not_qualified",
+      "primary_unchanged": true,
+      "private_robot_closed": true,
+      "model_qualified": false,
+      "skill_qualified": false,
+      "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_62/swm_native/closure_priority/655e86cf582e6ef0d17a45aa88ee6df6d6587a15dc9251ed61dac587e11cb066.json"
+    },
+    {
+      "phase": "no_forbidden_contact_predicted_not_qualified",
+      "primary_unchanged": true,
+      "private_robot_closed": true,
+      "model_qualified": false,
+      "skill_qualified": false,
+      "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_62/swm_native/closure_candidates/397738e494e94d841726d0ae20bfd1286999e21ad69c5c575a0f0300a4d58f49.json"
+    },
+    {
+      "phase": "no_forbidden_contact_predicted_not_qualified",
+      "primary_unchanged": true,
+      "private_robot_closed": true,
+      "model_qualified": false,
+      "skill_qualified": false,
+      "evidence_path": "/home/zhangzhao/Desktop/rm75-manipulation/runtime_data/swm_release_pen_worker_62/swm_native/closure_prediction.json"
+    }
+  ],
+  "checkpoints": [
+    {
+      "boundary": "worker_initialization_probe",
+      "revision": 1,
+      "snapshot_id": "e0705b0072894738d3229067baa29f04f1a05e88c516a841385d7a52ea20caff",
+      "observed_ids": [
+        "bi",
+        "bitong",
+        "carriot",
+        "desk",
+        "gluestick",
+        "hongshupian",
+        "lvmukuai",
+        "shuazi",
+        "tennis",
+        "__maniskill_workspace_table__",
+        "virtual_side_wall",
+        "virtual_top_wall"
+      ]
+    },
+    {
+      "boundary": "before_grasp",
+      "revision": 2,
+      "snapshot_id": "02058db97f3ec4afe1746f5ef6c5133e0798a20b19c5992b4547d88a9c235c5b",
+      "observed_ids": [
+        "bi",
+        "bitong",
+        "carriot",
+        "desk",
+        "gluestick",
+        "hongshupian",
+        "lvmukuai",
+        "shuazi",
+        "tennis",
+        "__maniskill_workspace_table__",
+        "virtual_side_wall",
+        "virtual_top_wall"
+      ]
+    },
+    {
+      "boundary": "pre_execute_grasp",
+      "revision": 3,
+      "snapshot_id": "36d04e09c78e42634ebe6fa53378d4b2bceea84719e3469ecc1a25a2d7586483",
+      "observed_ids": [
+        "bi",
+        "bitong",
+        "carriot",
+        "desk",
+        "gluestick",
+        "hongshupian",
+        "lvmukuai",
+        "shuazi",
+        "tennis",
+        "__maniskill_workspace_table__",
+        "virtual_side_wall",
+        "virtual_top_wall"
+      ]
+    }
+  ],
+  "drive_release": [
+    {
+      "counts": {
+        "arm": {
+          "exact_equal_skipped": 99,
+          "written": 29
+        },
+        "gripper": {
+          "exact_equal_skipped": 68,
+          "written": 60
+        }
+      },
+      "groups": [
+        [
+          "arm",
+          [
+            "joint_1",
+            "joint_2",
+            "joint_3",
+            "joint_4",
+            "joint_5",
+            "joint_6",
+            "joint_7"
+          ]
+        ],
+        [
+          "gripper",
+          [
+            "gripper_Right_1_Joint",
+            "gripper_Left_1_Joint"
+          ]
+        ]
+      ],
+      "hardware_qualified": false,
+      "kind": "swm_native_drive_commands_released",
+      "passive_unchanged": [
+        "gripper_Right_Support_Joint",
+        "gripper_Right_2_Joint",
+        "gripper_Left_Support_Joint",
+        "gripper_Left_2_Joint"
+      ],
+      "sequence": 167,
+      "source": "exact_native_precision_group_targets",
+      "time": 1789268780.4072454
+    }
+  ],
+  "resource_release": [
+    {
+      "kind": "swm_native_resources_released",
+      "planner_pointer_released": true,
+      "primary_closed": true,
+      "robot_mirror_closed": true,
+      "sequence": 169,
+      "time": 1789268780.554944
+    }
+  ],
+  "next_requirement": "Fresh complete postclosure capture, independent holding evidence, measured jaw/attachment remaining lift re-audit; do not clear the guard without this adapter"
+}

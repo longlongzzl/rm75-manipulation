@@ -1,0 +1,10 @@
+Production source: 0d0accc. Only test contract edits were present during this run.
+Input: assets/test_scenes/current_table.json
+SHA256: e5dd3154bdb6b509791861478170ffc5f0b6e2c8f08ea89b9b7a5111ee2fd908
+No depth override, diagnostic wrapper, physical parameter edit, or hardware authorization.
+Request/profile: copied unchanged from runtime_data/swm_release_pen_worker_43/.
+PYTHONPATH="$PWD" python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -m rm75_app.workcell.worker --run-dir "$PWD/runtime_data/swm_release_pen_worker_62" --profile "$PWD/runtime_data/swm_release_pen_worker_62/profile.json" --app-root "$PWD"
+Terminal worker exit: 1, explicit missing measured jaw/attachment lift re-audit.
+Targeted regression: 25 passed in 0.08 s.
+Full regression: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 tools/run_network_isolated.py -- python3 -m pytest -q tests/
+Full regression terminal exit: 0; 1839 passed / 1 existing warning in 42.64 s.

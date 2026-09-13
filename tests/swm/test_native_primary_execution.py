@@ -101,9 +101,29 @@ def test_original_target_finger_contact_is_not_holding_verification():
     executor, state = contact_primary(contact_object='bi')
     events = []
     executor.emit = lambda **row: events.append(row)
+    with pytest.raises(SceneInvalid, match='settle budget'):
+        executor.set_gripper(True)
+    assert state['steps'] == 220
+    assert all(not row['skill_verified'] for row in events if row['kind']=='swm_primary_closure_contacts')
+    assert not any(row['forbidden_contacts'] for row in events
+                   if row['kind'] == 'swm_primary_closure_contacts')
+
+
+def test_bilateral_feedback_completes_closure_but_blocks_unaudited_lift():
+    executor, state = contact_primary(contact_object='bi')
+    agent = executor.primary.env.unwrapped.agent
+    original_query = agent.scene.get_pairwise_contact_forces
+    def query(link, actor):
+        if link.name == 'right':
+            link = agent.finger1_link
+        return original_query(link, actor)
+    agent.scene.get_pairwise_contact_forces = query
     executor.set_gripper(True)
     assert state['steps'] == 23
-    assert all(not row['skill_verified'] for row in events if row['kind']=='swm_primary_closure_contacts')
+    assert executor._closure_feedback.last['holding_qualified'] is False
+    with pytest.raises(SceneInvalid, match='re-audit'):
+        executor.execute_trajectory('lift', path())
+    assert state['steps'] == 23
 
 
 @pytest.mark.parametrize('force', [(float('nan'),0.,0.), (0.,0.), (1e-20,0.,0.)])
