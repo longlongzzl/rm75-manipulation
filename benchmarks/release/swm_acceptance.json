@@ -1,6 +1,15 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "pusht_post_capture_start_guard": {
+    "status": "KNOWN_ORDERING_GAP_FIXED_NATIVE_EXECUTION_NOT_QUALIFIED",
+    "kernel": "9 targeted passed / 0.03 s; 1907 full passed / 1 existing warning / 66.46 s; network isolated",
+    "native_wiring": "Each stage re-reads seven finite joints after before-stage capture and checks original 1e-5 rad start limit before installing the stage command",
+    "actual_simulation": "NOT_RUN_THIS_CHANGE",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "remaining": "Measured-state replanning when a stage start drifts, full independent scene audit, successful native push and SWM replay/posterior loop"
+  },
   "pusht_stage_boundaries": {
     "status": "IMPLEMENTED_WITH_KNOWN_START_GUARD_GAP",
     "kernel": "3 targeted passed; 1901 full passed / 1 existing warning / 42.41 s; network isolated",

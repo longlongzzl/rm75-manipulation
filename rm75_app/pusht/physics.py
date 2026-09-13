@@ -297,6 +297,21 @@ class PhysicsSession:
         self._prepared_selection=(proposals[selected][0],obs.as_dict(),program)
         return selected
 
+    def check_stage_start(self,stage_program):
+        """Fresh read after boundary capture, before installing any new command."""
+        self.stop.check()
+        actual=np.asarray(self.base.read_q(),dtype=float)
+        expected=np.asarray(stage_program.initial,dtype=float)
+        if (actual.shape!=(7,) or expected.shape!=(7,) or
+                not np.isfinite(actual).all() or not np.isfinite(expected).all()):
+            raise ValueError('Invalid stage-start joint feedback')
+        drift=float(np.max(abs(actual-expected)))
+        self.report['last_stage_start_check']=dict(stage=stage_program.hold_stage,
+            drift_rad=drift,limit_rad=1e-5,after_boundary_capture=True)
+        if drift>1e-5:
+            raise ValueError('Simulated stage start changed after boundary capture: '
+                             f'{drift:.3e} rad > 1e-5 rad')
+
     def execute_push(self,push,obs):
         self.stop.check();obs.validate(now=self.clock(),max_age_s=self.config.max_observation_age_s)
         cached=getattr(self,'_prepared_selection',None)
@@ -322,6 +337,7 @@ class PhysicsSession:
                 stage=stage_program.hold_stage,actual_action_id=self.feedback_action_id,
                 observation=before.as_dict(),tool_feedback=self.measured_tool_feedback(),
                 swm_scene_audit_verified=False)
+            self.check_stage_start(stage_program)
             self.base.active_program=stage_program;self.base.program_started=self.base.physics_time
             self.advance(stage_program.duration)
             after=self.observe(after=before.captured_at)
