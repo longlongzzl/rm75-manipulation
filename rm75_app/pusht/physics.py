@@ -139,6 +139,9 @@ class PhysicsSession:
         if self.full_arm:
             from .swm_capture import PushTSceneCapture
             self.swm_capture=PushTSceneCapture(self)
+            from .native_tool_recording import export_tool_geometry
+            self.native_tool_geometry=export_tool_geometry(self.base.tool_links)
+            atomic_json(self.swm_capture.directory/'native_tool_geometry.json',self.native_tool_geometry)
             from .swm_recording import PushTActionRecording
             self.action_recording=PushTActionRecording(self)
         self.events.emit('physics_backend_ready',backend=self.kind,hardware_connected=False,
@@ -170,6 +173,10 @@ class PhysicsSession:
             return self.base.robot.get_qpos().detach().cpu().numpy().reshape(-1).copy()
         q=joints()
         tcp=self.base.tcp.pose.to_transformation_matrix().detach().cpu().numpy().reshape(4,4).copy()
+        geometry=getattr(self,'native_tool_geometry',None)
+        link_poses={} if geometry is None else {
+            link.name:link.pose.to_transformation_matrix().detach().cpu().numpy().reshape(4,4).tolist()
+            for link in self.base.tool_links if link.name in geometry['links']}
         if not np.isfinite(q).all() or not np.isfinite(tcp).all():
             raise RuntimeError('Nonfinite articulated PushT feedback')
         if not np.array_equal(q,joints()) or self.simulation_clock.read()!=clock:
@@ -183,6 +190,7 @@ class PhysicsSession:
             joint_positions=q[self.base.arm_indices].tolist(),
             gripper_joint_positions={n:float(q[i]) for n,i in self.base.gripper_indices.items()},
             T_world_tcp=tcp.tolist(),stage=self.base.stage,
+            native_tool_link_poses=link_poses,
             tcp_source='original_native_TCP_link_pose',hardware_connected=False)
 
     def advance(self,seconds):

@@ -1,6 +1,17 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "native_tool_capture_worker_08": {
+    "status": "NATIVE_TOOL_GEOMETRY_AND_MOTION_BOUND_NOT_REPLAYED",
+    "kernel": "1927 full passed / 1 existing warning / 42.73 s; isolated",
+    "native_geometry": "7 collision-bearing original tool links, 27 original PhysX shapes; native local shape transforms/properties preserved",
+    "actual_simulation": "Two completed pushes bind 1935 and 1190 per-link pose samples one-to-one to their actual TCP transitions; final worker cancelled at 180 s",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/worker_08/",
+    "native_tool_replay_run": false,
+    "next_planner_consumed_posterior": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
   "native_worker_action_replay_01": {
     "status": "SAME_ACTUAL_ACTION_FOUR_PHYSX_REPLAYS_VALID_APPROXIMATE_TOOL",
     "kernel": "1927 full passed / 1 warning / 42.67 s; isolated",

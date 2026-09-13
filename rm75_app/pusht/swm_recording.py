@@ -6,11 +6,13 @@ from rm75_app.swm.feedback import MeasuredFeedbackRecorder
 from rm75_app.swm.skills import ExecutionReceipt,SkillRequest
 from rm75_app.workcell.io import atomic_json
 from .model import predict
+from .native_tool_recording import bind_tool_motion
 
 
 class PushTActionRecording:
     def __init__(self,session):
         self.session=session;self.handle=None;self.receipt=None
+        self.native_rows=[];self.last_native_row=None
         self.recorder=MeasuredFeedbackRecorder(domain='physics',sensor_session=session.session,
             calibration_id=session.swm_capture.calibration)
 
@@ -20,6 +22,10 @@ class PushTActionRecording:
         if row['stage']=='settle':
             row['native_stage']='settle';row['stage']='post_settle'
         self.recorder.append(row)
+        native=dict(simulation_clock=row['simulation_clock'],T_world_tcp=row['T_world_tcp'],
+            link_poses=row['native_tool_link_poses'],gripper_joint_positions=row['gripper_joint_positions'])
+        self.last_native_row=native
+        if self.handle is not None:self.native_rows.append(native)
 
     def begin(self,snapshot,push):
         if self.handle is not None:raise RuntimeError('Previous push recording still active')
@@ -39,6 +45,7 @@ class PushTActionRecording:
             support_id='simulation_table',initially_settled=True,
             settling_evidence=dict(source='native_idle_no_tool_contact_checkpoint',
                 snapshot_id=snapshot['snapshot_id'],simulation_clock=snapshot['robot']['simulation_clock']))
+        self.native_rows=[self.last_native_row]
 
     def finish_command(self):
         if self.handle is None or self.receipt is not None:
@@ -50,6 +57,9 @@ class PushTActionRecording:
         transition=self.recorder.transition(self.request,self.receipt,self.initial,snapshot)
         self.handle=None;self.receipt=None
         if transition is None:raise RuntimeError('Completed native push was not eligible for transition binding')
+        motion=bind_tool_motion(transition,self.session.native_tool_geometry,self.native_rows)
+        atomic_json(self.session.swm_capture.directory/f'tool_motion_{transition["action_id"]}.json',motion)
+        self.native_rows=[]
         path=self.session.swm_capture.directory/f'transition_{transition["action_id"]}.json'
         atomic_json(path,transition)
         self.session.events.emit('swm_native_push_transition',action_id=transition['action_id'],
@@ -61,6 +71,7 @@ class PushTActionRecording:
     def cancel(self):
         if self.handle is not None:self.handle.close()
         self.handle=None;self.receipt=None
+        self.native_rows=[]
 
     def close(self):
         self.cancel();self.recorder.close()
