@@ -1,6 +1,21 @@
 {
   "schema": "rm75.swm_release_acceptance_v1",
   "status": "PARTIAL_DELIVERY",
+  "native_worker_action_replay_01": {
+    "status": "SAME_ACTUAL_ACTION_FOUR_PHYSX_REPLAYS_VALID_APPROXIMATE_TOOL",
+    "kernel": "1927 full passed / 1 warning / 42.67 s; isolated",
+    "actual_action_id": "e4c4292527034280bea6752260b21243",
+    "action_digest": "6b421056b381e8268ab6a6f6cfb224699236de8b46c054835cd4d58736ad4866",
+    "actual_simulation": "Four valid private CPU PhysX replays of worker_07 measured action; same initial SWM and original compound T; original 38-sphere tool approximation",
+    "losses": [2.867277166799534,2.8576263628658047,8.214759133311608,2.858436708460045],
+    "density_informative": false,
+    "native_tool_geometry_qualified": false,
+    "next_planner_consumed_posterior": false,
+    "live_swm_updated": false,
+    "evidence": "benchmarks/release/evidence/pusht_feedback/worker_action_replay_01/",
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
   "pusht_recording_wrapper_regression_fix": {
     "status": "REGRESSION_GREEN_NATIVE_INTEGRATION_STILL_PARTIAL",
     "kernel": "20 targeted passed / 0.11 s; 1927 full passed / 1 existing warning / 42.75 s; isolated",
