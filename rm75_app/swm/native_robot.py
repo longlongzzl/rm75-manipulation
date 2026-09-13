@@ -131,3 +131,43 @@ def read_primary_drive_state(primary):
         simulation_frequency_hz=float(env.sim_freq), control_frequency_hz=float(env.control_freq))
     validate_native_drive_state(state)
     return state
+
+
+def read_primary_tcp_feedback(primary):
+    """Read moving simulation joints and TCP in one owned, unstepped interval.
+
+    Native TCP link FK is read, not evaluated from requested command targets.
+    Host read times are explicit; this is not a hardware clock calibration.
+    """
+    from rm75_app.execution.maniskill_task_bridge import _pose_matrix
+    primary.stop.check()
+    if primary.closed:
+        raise ObservationUnavailable('Primary closed during measured TCP feedback')
+    raw = primary.read_state()
+    arm = tuple(f'joint_{i}' for i in range(1, 8))
+    jaw = tuple(f'gripper_{side}_{part}_Joint' for side in ('Left','Right') for part in ('1','2','Support'))
+    names = tuple(raw['joint_names'])
+    q = np.asarray(raw['positions'], dtype=float)
+    if (raw.get('domain') != 'physics' or raw.get('source') != 'native_actor_and_joint_readback'
+            or len(names) != 13 or set(names) != set(arm+jaw)
+            or q.shape != (13,) or not np.isfinite(q).all()):
+        raise ObservationUnavailable('Complete actual primary joint feedback required')
+    base = transform(_pose_matrix(primary.demo.robot))
+    tcp = np.linalg.inv(base) @ transform(_pose_matrix(primary.demo.tcp))
+    after_q = _array(primary.demo.robot.get_qpos()).reshape(-1)
+    if after_q.shape != (13,) or not np.array_equal(after_q, q):
+        raise ObservationUnavailable('Primary moved during measured TCP feedback')
+    finished = time.monotonic()
+    started = float(raw['capture_started_at'])
+    if not np.isfinite([started, finished]).all() or finished < started:
+        raise ObservationUnavailable('Invalid primary feedback query clock')
+    return dict(source='measured_feedback', domain='physics',
+        captured_at=started, query_completed_at=finished, query_elapsed_s=finished-started,
+        clock_domain='host_monotonic_owned_simulation',
+        timestamp_semantics='owned_simulation_read_interval_not_device_sample_clock',
+        primary_sequence=raw['sequence'], joint_names=list(arm),
+        positions=[float(q[names.index(name)]) for name in arm],
+        gripper_positions={name: float(q[names.index(name)]) for name in jaw},
+        T_world_tcp=tcp.tolist(), tcp_coordinate_frame='base_link', T_world_base=base.tolist(),
+        tcp_source='original_native_TCP_link_pose_at_measured_joint_state',
+        hardware_qualified=False, physical_time_axis_qualified=False)

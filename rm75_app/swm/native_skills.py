@@ -118,7 +118,18 @@ class SharedPrimitiveExecutor:
         if self.recorder is not None and primitive.skill == 'push':
             handle = self.recorder.begin_action(action_id, started,
                 **self.recording_context(primitive))
+        begin_feedback = getattr(self.executor, "begin_feedback_action", None)
+        end_feedback = getattr(self.executor, "end_feedback_action", None)
+        if (begin_feedback is None) != (end_feedback is None) or (begin_feedback is not None
+                and (not callable(begin_feedback) or not callable(end_feedback))):
+            if handle is not None:
+                handle.close()
+            raise SceneInvalid("Complete feedback action lifecycle required")
+        feedback_active = False
         try:
+            if begin_feedback is not None:
+                begin_feedback(action_id)
+                feedback_active = True
             for stage in primitive.stages:
                 self.stop.check()
                 self.executor.execute_trajectory(stage.name, stage.trajectory)
@@ -141,6 +152,9 @@ class SharedPrimitiveExecutor:
             if handle is not None:
                 handle.close()
             raise
+        finally:
+            if feedback_active:
+                end_feedback(action_id)
 
 
 class PickPlaceNativePhases:

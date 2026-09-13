@@ -133,6 +133,7 @@ def _build_pen_session(resources, spec, profile, app_root, run_dir, stop, events
     _prepare_pen_attachment(backend, planner, initial, stop, events)
     bridge = _compile_pen_task(initial, registration.evidence, fixed, run_dir.name)
     sink = NativePrimaryExecutor(primary, emit=events.emit)
+    sink.feedback_observer = lambda row: events.emit(kind="swm_primary_tcp_feedback", **row)
     sink.object_settle_readback = registration.source.read_settle_state
     sink.closure_target = "bi"
     from .native_closure import reject_predicted_closure, screen_closure_candidate

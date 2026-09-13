@@ -44,6 +44,8 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         self._closure_feedback = None
         self._closure_requires_reaudit = False
         self.measured_lift_audit = None
+        self.feedback_observer = None
+        self._feedback_action_id = None
 
     def _read(self):
         self.primary.stop.check()
@@ -167,6 +169,30 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
             primary_sequence=raw['sequence'], joint_names=list(names), positions=q.tolist(),
             idle=bool(np.max(np.abs(velocity)) <= .001))
 
+    def begin_feedback_action(self, action_id):
+        if self._feedback_action_id is not None or not isinstance(action_id, str) or not action_id:
+            raise SceneInvalid("Distinct actual feedback action identity required")
+        self._feedback_action_id = action_id
+        try:
+            self._record_primary_feedback("before_atomic")
+        except BaseException:
+            self._feedback_action_id = None
+            raise
+
+    def end_feedback_action(self, action_id):
+        if self._feedback_action_id != action_id:
+            raise SceneInvalid("Feedback action release identity differs")
+        self._feedback_action_id = None
+
+    def _record_primary_feedback(self, stage):
+        if self.feedback_observer is None:
+            return
+        if self._feedback_action_id is None:
+            raise SceneInvalid("Actual action must be bound before primary feedback")
+        from .native_robot import read_primary_tcp_feedback
+        row = read_primary_tcp_feedback(self.primary)
+        self.feedback_observer(dict(row, stage=stage, actual_action_id=self._feedback_action_id))
+
     def _after_control_step(self, stage):
         """Reject detected forbidden closure forces, not a sweep audit substitute.
 
@@ -174,6 +200,7 @@ class NativePrimaryExecutor(ManiSkillTrajectoryExecutor):
         substep. Zero resultant force is not proof of absence of collision.
         The trusted task context must bind the intended object before closing.
         """
+        self._record_primary_feedback(stage)
         if stage not in ('gripper_close', 'settle_gripper_close'):
             return
         self.primary.stop.check()
