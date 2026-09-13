@@ -14502,7 +14502,7 @@
     "full_collision_scene_evidence": "runs.native_scene_sync_02",
     "robot_geometry_evidence": "runs.native_robot_sync_01"
   },
-  "next_actual_action": "Continue independent S5 measured joint-to-TCP FK, clock provenance and action recording integration. Separate collision-policy approval remains pending; formal rejection unchanged.",
+  "next_actual_action": "Bind native simulation physical step time and post-observation coverage to actual action recording, then transition/posterior/next-planner lifecycle. Collision-policy approval pending; no override.",
   "worker_61_private_feedback_evidence": "benchmarks/release/evidence/pen_closure/worker_61/summary.json",
   "feedback_closure_wiring": {
     "status": "PRIMARY_CLOSURE_EXECUTED_LIFT_ADAPTER_MISSING",
@@ -14557,5 +14557,17 @@
     "device_latency_measured": false,
     "hardware_frequency_qualified": false,
     "hardware": "NOT_AUTHORIZED_NOT_RUN"
+  },
+  "worker_65_feedback": {
+    "tested_commit": "cbf372b",
+    "evidence": "benchmarks/release/evidence/pen_closure/worker_65/summary.json",
+    "actual_samples": 130,
+    "actual_action_ids": 1,
+    "full_passed": 1868,
+    "full_failed": 0,
+    "full_duration_s": 43.36,
+    "physical_time_axis_qualified": false,
+    "post_exposure_coverage_qualified": false,
+    "task_success": false
   }
 }

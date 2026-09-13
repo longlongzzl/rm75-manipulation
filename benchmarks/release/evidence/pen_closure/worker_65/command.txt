@@ -1,0 +1,6 @@
+Source: cbf372b. Original frozen table input and depth unchanged.
+PYTHONPATH="$PWD" python3 tools/run_network_isolated.py -- /home/zhangzhao/anaconda3/envs/curobo2/bin/python -m rm75_app.workcell.worker --run-dir "$PWD/runtime_data/swm_release_pen_worker_65" --profile "$PWD/runtime_data/swm_release_pen_worker_65/profile.json" --app-root "$PWD"
+Request/profile copied unchanged from runtime_data/swm_release_pen_worker_43/.
+Terminal exit: 1, original native collision audit rejects lift. No policy change or hardware authorization.
+130 native measured joint/TCP feedback rows, one actual_action_id. Not successful grasp/place or replay-ready post-exposure action data.
+Targeted software regression: 25 passed in 0.21 s.
