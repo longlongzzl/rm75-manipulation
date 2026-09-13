@@ -14834,5 +14834,21 @@
     "hardware": "NOT_AUTHORIZED_NOT_RUN",
     "evidence": "benchmarks/release/evidence/pusht_feedback/native_link_replay_01/",
     "next_action": "Reuse original collision construction assets without weakening native equality"
+  },
+  "native_link_replay_02": {
+    "status": "FAILED_NATIVE_CONSTRUCTION_API",
+    "kernel": {
+      "passed": 1927,
+      "warnings": 1,
+      "duration_s": 46.24
+    },
+    "native_wiring": "original_recipe_integrated_not_qualified",
+    "actual_simulation": "four_construction_attempts_failed",
+    "reason": "ActorBuilder has no set_body_type method",
+    "posterior_updated": false,
+    "next_planner_consumed_posterior": false,
+    "model_inference": "NOT_RUN",
+    "hardware": "NOT_AUTHORIZED_NOT_RUN",
+    "evidence": "benchmarks/release/evidence/pusht_feedback/native_link_replay_02/"
   }
 }

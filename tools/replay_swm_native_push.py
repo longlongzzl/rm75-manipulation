@@ -21,6 +21,7 @@ def main():
     parser.add_argument('--transition',type=Path,required=True)
     parser.add_argument('--geometry',type=Path,required=True)
     parser.add_argument('--native-motion',type=Path)
+    parser.add_argument('--original-urdf',type=Path)
     parser.add_argument('--python',required=True)
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
@@ -35,6 +36,7 @@ def main():
     geometry_raw=args.geometry.read_bytes();geometry=json.loads(geometry_raw)
     motion=None
     if args.native_motion:
+        if not args.original_urdf:raise ValueError('Original native URDF construction source required')
         if args.native_motion.stat().st_size>16000000:raise ValueError('Native motion exceeds evidence budget')
         motion=json.loads(args.native_motion.read_bytes())
     elif geometry.get('ready') is not True or geometry.get('execute_real') is not False:
@@ -45,6 +47,8 @@ def main():
                                   ('high_friction',.6,.6,1000.),('other_density',.3,.3,2000.)]]
     def factory(request):
         if motion is not None:
+            request=dict(request,native_tool_construction=dict(urdf=str(args.original_urdf.resolve()),
+                urdf_sha256=hashlib.sha256(args.original_urdf.read_bytes()).hexdigest()))
             return SubprocessReplayWorld(request,python=args.python,directory=output,timeout_s=180,
                                          native_tool_geometry=geometry,native_tool_motion=motion)
         return SubprocessReplayWorld(request,python=args.python,tool_spheres=geometry['spheres'],

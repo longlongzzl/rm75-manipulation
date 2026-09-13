@@ -26,6 +26,7 @@ class NativeToolProgram:
                 raise ValueError('Native tool motion differs from actual action')
             for name in self.links:self.poses[name].append(transform(row['link_poses'][name]))
         self.geometry_digest=motion['geometry_digest'];self.motion_digest=claimed
+        self.construction=request.get('native_tool_construction')
 
     def sample(self,t):
         i=max(0,min(int(np.searchsorted(self.times,t,side='right')-1),len(self.times)-2))
@@ -34,22 +35,36 @@ class NativeToolProgram:
 
     def build(self, scene, spose):
         import sapien
+        import hashlib
+        from pathlib import Path
+        from types import SimpleNamespace
+        from .native_construction import NativeConstructionRecipe
         from .native_body_mirror import shape_state,compare_native_state
+        if not self.construction:raise ValueError('Original native tool construction adapter required')
+        path=Path(self.construction['urdf'])
+        if hashlib.sha256(path.read_bytes()).hexdigest()!=self.construction['urdf_sha256']:
+            raise ValueError('Original native tool URDF changed')
+        loader=scene.create_urdf_loader();loader.fix_root_link=True
+        loader.disable_self_collisions=False;loader.load_multiple_collisions_from_file=True
+        parsed=loader.parse(str(path))
+        if len(parsed['articulation_builders'])!=1 or parsed['actor_builders']:
+            raise ValueError('Original single robot articulation required')
+        source={link.name:link for link in parsed['articulation_builders'][0].link_builders}
         bodies={};entities=[]
         for name,states in self.links.items():
             entity=sapien.Entity();entity.name='measured_'+name
-            body=sapien.physx.PhysxRigidDynamicComponent();body.kinematic=True
-            for state in states:
-                if state['kind']!='ConvexMesh':raise ValueError('Native tool shape adapter missing')
-                g=state['geometry']
-                shape=sapien.physx.PhysxCollisionShapeConvexMesh(
-                    np.asarray(g['vertices'],dtype=np.float32),np.asarray(g['scale'],dtype=np.float32),
-                    sapien.physx.PhysxMaterial(**state['material']))
-                shape.local_pose=spose(state['T_object_shape'])
+            builder=scene.create_actor_builder();builder.set_body_type('kinematic')
+            builder.collision_records=list(source[name].collision_records)
+            builder.collision_groups=list(source[name].collision_groups)
+            recipe=NativeConstructionRecipe(builder,SimpleNamespace(_objs=()))
+            body=recipe.build_body(np.eye(4));body.kinematic=True
+            if len(body.collision_shapes)!=len(states):
+                raise ValueError('Original native loader changed tool shape count')
+            for shape,state in zip(body.collision_shapes,states):
+                shape.physical_material=sapien.physx.PhysxMaterial(**state['material'])
                 shape.set_collision_groups(state['collision_groups'])
                 for key,value in state['properties'].items():setattr(shape,key,value)
                 compare_native_state(state,shape_state(shape,np.eye(4)),name)
-                body.attach(shape)
             entity.add_component(body);entity.set_pose(spose(self.poses[name][0]))
             scene.sub_scenes[0].add_entity(entity)
             bodies[name]=body;entities.append(entity)
